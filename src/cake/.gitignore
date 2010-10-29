@@ -1,13 +1,11 @@
-# CakePHP application temporary files are ignored but directory structure must stay.
-/app/tmp/cache/models/*
-/app/tmp/cache/persistent/*
-/app/tmp/cache/views/*
-/app/tmp/logs/*
-/app/tmp/sessions/*
-/app/tmp/tests/*
+/app/tmp
+/vendors
+/plugins
 
 # Each developer must have your database.php. Copy database.php.default and configure it to your machine.
 /app/config/database.php
+/app/config/core.php
 
+# Excluding cake console temporary folder from repo
 /cake/console/templates/skel/tmp
 
