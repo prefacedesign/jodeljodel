@@ -3,17 +3,17 @@
 	{
 		var $helpers = array('Form');
 		
-		private $nested_input = false;
-		private $nested_form = false;
+		private $_nested_input = false;
+		private $_nested_form = false;
 		
 		/**
-		 * Most important function.
+		 * Most important function ever.
 		 *
 		 * @access public
 		 * @param  array $htmlAttributes
 		 * @param  array $options
 		 */
-		function field($htmlAttributes = array(), $options = array(), $content = null)
+		function field($htmlAttributes = array(), $options = array())
 		{
 			$defaults = array(
 				'type' => 'text',
@@ -23,8 +23,8 @@
 			
 			if($type == 'superfield')
 			{
-				$this->nested_input = true;
-				$out = $this->iInputContainer();
+				$this->_nested_input = true;
+				$out = $this->iInputContainer($options);
 			}
 			else
 			{
@@ -42,8 +42,13 @@
 			return $out;
 		}
 		
-		function iInputContainer()
+		function iInputContainer($htmlAttributes = array(), $options = array())
 		{
+			$out = '<div class="input">';
+			if($this->_nested_input)
+			{
+				$out 
+			}
 			return '<div>';
 		}
 		
