@@ -1,2 +1,11 @@
 /app/tmp
+/vendors
+/plugins
+
+# Each developer must have your database.php. Copy database.php.default and configure it to your machine.
 /app/config/database.php
+/app/config/core.php
+
+# Excluding cake console temporary folder from repo
+/cake/console/templates/skel/tmp
+
