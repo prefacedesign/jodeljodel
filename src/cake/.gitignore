@@ -1,3 +1,5 @@
 /app/tmp
+/plugins
+/vendors
 /app/config/database.php
 /cake/console/templates/skel/tmp
