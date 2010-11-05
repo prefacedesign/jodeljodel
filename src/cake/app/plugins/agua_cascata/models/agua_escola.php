@@ -8,7 +8,9 @@ class AguaEscola extends AguaCascataAppModel
 {
     var $name = 'AguaEscola';
 
-    var $hasOne = 'AguaProfessor';
+    var $hasOne = array('AguaCascata.AguaProfessor');
+
+    var $actsAs = array('AguaCascata.AguaCascata');
 
     function pegaTodas(){
         return $this->find('all');

@@ -12,6 +12,8 @@ class AguaProfessor extends AguaCascataAppModel
 
     function afterFind($results, $primary)
     {
+//        debug($results);
+//        die;
         foreach ($results as $key => $val)
         {
             $results[$key]['AguaProfessor']['nome'] = $results[$key]['AguaProfessor']['nome'] . " Professor";
