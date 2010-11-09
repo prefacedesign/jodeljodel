@@ -100,28 +100,30 @@
  * var $actsAs = array('Stastatus.StaStatus');
  *
  *
- * To change a status...
+ * To set a status...
  * 
  * // in controller action
- * $this->Category->changeStatus($id, array('status' => 'draft'), true);
+ * $this->Category->setStatus($id, array('status' => 'draft'), true);
  * // the name that`s import isn`t the name of the field, but the name set uped
  * // in the configuration (in this case, status)
  *
  * // if you have two fields configured
- * $this->Category->changeStatus($id, array('status' => 'draft', 'maturarion' => 'mature'), true);
+ * $this->Category->setStatus($id, array('status' => 'draft', 'maturarion' => 'mature'), true);
  * // the true in the third parameter will change the status for
  * // the products associateds. 
  * 
  * to set statuses as active...
  *
  * // in a controller action (status in parameter is the field in the table):
- * $this->Category->setStatusesActive(array('status' => array('published')));
+ * $this->Category->setActiveStatuses(array('status' => array('published')));
  * 
  * // or other way in controller action
  * $this->Category->find('all',array('conditions' => array('id' => 5),'active_statuses' => array('status' => array('published'))));
  *
  * 
  */
+ 
+ App::import('Config', 'Status.config');
  
 class StatusBehavior extends ModelBehavior 
 {
@@ -181,7 +183,7 @@ class StatusBehavior extends ModelBehavior
 	
 	
 	//precisa documentar
-	function changeStatus(&$Model, $id, $fields = array(), $cascade = false)
+	function setStatus(&$Model, $id, $fields = array(), $cascade = false)
 	{
 		$error = false;
 		foreach ($fields as $index => $option)
@@ -218,12 +220,10 @@ class StatusBehavior extends ModelBehavior
 	 * @access public
 	 */
 
-	function setStatusesActive(&$Model, $options = array())
+	function setActiveStatuses(&$Model, $options = array())
 	{
 		foreach ($options as $index => $option)
 		{
-			//debug($index);
-			//debug($option);
 			if ($index != '0')
 			{
 				$this->settings[$Model->alias][$index]['active'] = $option;
@@ -264,9 +264,11 @@ class StatusBehavior extends ModelBehavior
 	
 	function beforeFind(&$Model, $queryData)
 	{
-		//debug($queryData);
 		if (isset($queryData['active_statuses']))
-			$this->setStatusesActive($queryData['active_statuses']);
+		{
+			$oldSettings = $this->settings;
+			$this->setActiveStatuses($Model, $queryData['active_statuses']);
+		}
 		$sql_conditions = '';
 		if (empty($queryData['conditions']))
 			$queryData['conditions'] = array();
@@ -295,94 +297,10 @@ class StatusBehavior extends ModelBehavior
 		if (!empty($sql_conditions))
 			$queryData['conditions'][] = $sql_conditions;
 		//debug($queryData);
+		if (isset($oldSettings))
+			$this->settings = $oldSettings;
 		return $queryData;
 		
-		/*
-		if ($this->__settings[$Model->alias]['find'] && $Model->hasField($this->__settings[$Model->alias]['field']))
-		{
-			
-		
-			$Db =& ConnectionManager::getDataSource($Model->useDbConfig);
-			$include = false;	
-			
-			if ((!empty($queryData['conditions']) && is_string($queryData['conditions'])) || (!empty($queryData['conditions'][0]) && is_string($queryData['conditions'][0])))
-			{
-				
-				$include = true;
-
-				$fields = array(
-					$Db->name($Model->alias) . '.' . $Db->name($this->__settings[$Model->alias]['field']),
-					$Db->name($this->__settings[$Model->alias]['field']),
-					$Model->alias . '.' . $this->__settings[$Model->alias]['field'],
-					$this->__settings[$Model->alias]['field']
-				);
-				
-				foreach($fields as $field)
-				{
-					if (isset($queryData['conditions'][0]))
-					{
-						if (preg_match('/^' . preg_quote($field) . '[\s=!]+/i', $queryData['conditions'][0]) || preg_match('/\\x20+' . preg_quote($field) . '[\s=!]+/i', $queryData['conditions'][0]))
-						{
-							$include = false;
-							break;
-						}
-					}
-					else
-					{
-						if (preg_match('/^' . preg_quote($field) . '[\s=!]+/i', $queryData['conditions']) || preg_match('/\\x20+' . preg_quote($field) . '[\s=!]+/i', $queryData['conditions']))
-						{
-							$include = false;
-							break;
-						}
-					}
-				}
-				
-				
-			}
-			else if (empty($queryData['conditions']) || (! in_array($this->__settings[$Model->alias]['field'], array_keys($queryData['conditions'])) && ! in_array($Model->alias . '.' . $this->__settings[$Model->alias]['field'], array_keys($queryData['conditions']))))
-			{
-				$include = true;
-			}
-
-			
-			
-			if ($include)
-			{
-				if (empty($queryData['conditions']))
-				{
-					$queryData['conditions'] = array();
-				}
-
-				if (is_string($queryData['conditions']))
-				{
-					$queryData['conditions'] = $Db->name($Model->alias) . '.' . $Db->name($this->__settings[$Model->alias]['field']) . '!= 1 AND ' . $queryData['conditions'];
-				}
-				else
-				{
-					
-					$cont = 0;
-					$indices = array_keys($queryData['conditions']);
-					$pesquisa = '';
-					foreach($queryData['conditions'] as $condicao)
-					{
-						if (isset($queryData['conditions'][0]))
-							$pesquisa .= ' AND '.$condicao;
-						else
-							$pesquisa .= ' AND '.$indices[$cont].' = '.$condicao;
-						$cont++;
-					}
-					
-					$queryData['conditions'] = array();
-					$queryData['conditions'][0] = $Db->name($Model->alias) . '.' . $Db->name($this->__settings[$Model->alias]['field']) . ' != 1 '. $pesquisa;
-					
-				}
-			}
-			
-		}
-
-		return $queryData;
-		
-		*/
 	}
 	
 }

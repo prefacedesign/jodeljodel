@@ -4,18 +4,19 @@ App::import('Model','Status.StaNoticia');
 class StaNoticiaTestCase extends CakeTestCase {
     var $fixtures = array('plugin.status.sta_noticia');
 	
-	function testChangeStatus() 
+	
+	function testSetStatus() 
 	{
         $this->StaNoticia =& ClassRegistry::init('StaNoticia');
-        $result = $this->StaNoticia->changeStatus(1, array('status' => 'publicado'));
+        $result = $this->StaNoticia->setStatus(1, array('status' => 'publicado'));
         $expected = true;
         $this->assertEqual($result, $expected);
     } 
 	
-	function testSetStatusesActive()
+	function testsetActiveStatuses()
 	{
 		$this->StaNoticia =& ClassRegistry::init('StaNoticia');
-		$result = $this->StaNoticia->setStatusesActive(array('status' => array('publicado')));
+		$result = $this->StaNoticia->setActiveStatuses(array('status' => array('publicado')));
 		$expected = array(
 			'StaNoticia' => array(
 				'status' => array(
@@ -28,10 +29,10 @@ class StaNoticiaTestCase extends CakeTestCase {
 		$this->assertEqual($result, $expected);
 	}
 	
-	function testSetStatusesActiveDefault()
+	function testsetActiveStatusesDefault()
 	{
 		$this->StaNoticia =& ClassRegistry::init('StaNoticia');
-		$result = $this->StaNoticia->setStatusesActive(array('publicado'));
+		$result = $this->StaNoticia->setActiveStatuses(array('publicado'));
 		$expected = array(
 			'StaNoticia' => array(
 				'status' => array(
@@ -44,10 +45,10 @@ class StaNoticiaTestCase extends CakeTestCase {
 		$this->assertEqual($result, $expected);
 	}
 	
-	function testSetStatusesActiveMultipleDefault()
+	function testsetActiveStatusesMultipleDefault()
 	{
 		$this->StaNoticia =& ClassRegistry::init('StaNoticia');
-		$result = $this->StaNoticia->setStatusesActive(array('publicado','rascunho'));
+		$result = $this->StaNoticia->setActiveStatuses(array('publicado','rascunho'));
 		$expected = array(
 			'StaNoticia' => array(
 				'status' => array(
@@ -90,7 +91,7 @@ class StaNoticiaTestCase extends CakeTestCase {
 	function testFindWithSetStatuses()
 	{
 		$this->StaNoticia =& ClassRegistry::init('StaNoticia');
-		$this->StaNoticia->setStatusesActive(array('publicado'));
+		$this->StaNoticia->setActiveStatuses(array('publicado'));
 		$result = $this->StaNoticia->find('all');
 		$expected = array(
 			'0' => array(
@@ -106,7 +107,7 @@ class StaNoticiaTestCase extends CakeTestCase {
 	function testFindWithTwoSetStatuses()
 	{
 		$this->StaNoticia =& ClassRegistry::init('StaNoticia');
-		$this->StaNoticia->setStatusesActive(array('publicado', 'rascunho'));
+		$this->StaNoticia->setActiveStatuses(array('publicado', 'rascunho'));
 		$result = $this->StaNoticia->find('all');
 		$expected = array(
 			'0' => array(
@@ -131,7 +132,7 @@ class StaNoticiaTestCase extends CakeTestCase {
 		$this->assertEqual($result, $expected);
 	}
 	
-	/*
+	
 	function testFindWithInlineActiveStatuses()
 	{
 		$this->StaNoticia =& ClassRegistry::init('StaNoticia');
@@ -146,7 +147,35 @@ class StaNoticiaTestCase extends CakeTestCase {
 		);
 		$this->assertEqual($result, $expected);
 	}
-	*/
+	
+	
+	function testFindaAfterASeekWithInlineActiveStatuses()
+	{
+		$this->StaNoticia =& ClassRegistry::init('StaNoticia');
+		$result = $this->StaNoticia->find('all');
+		$expected = array(
+			'0' => array(
+				'StaNoticia' => array(
+					'id' => '1',
+					'status' => 'rascunho'
+				)
+			),
+			'1' => array(
+				'StaNoticia' => array(
+					'id' => '2',
+					'status' => 'publicado'
+				)
+			),
+			'2' => array(
+				'StaNoticia' => array(
+					'id' => '3',
+					'status' => 'rascunho'
+				)
+			)
+		);
+		$this->assertEqual($result, $expected);
+	}
+	
 	
 }
 ?> 

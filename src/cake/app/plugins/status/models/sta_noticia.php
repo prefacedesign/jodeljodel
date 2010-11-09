@@ -4,9 +4,9 @@ class StaNoticia extends StatusAppModel
 {	
 	var $name = 'StaNoticia';
 	var $useTable = 'noticias';
-	//var $actsAs = array('Status.Status');
+	var $actsAs = array('Status.Status');
 	
-	
+	/*
 	var $actsAs = array(
   		'Status.Status' => array(
   			'status' => array(
@@ -16,6 +16,7 @@ class StaNoticia extends StatusAppModel
  			)
  		)
 	);
+	*/
 	
 }
 

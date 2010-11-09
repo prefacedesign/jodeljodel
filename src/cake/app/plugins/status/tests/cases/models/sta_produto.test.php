@@ -5,19 +5,19 @@ class StaProdutoTestCase extends CakeTestCase {
     var $fixtures = array('plugin.status.sta_produto');
 	
 	
-	function testChangeStatus() 
+	function testSetStatus() 
 	{
         $this->StaProduto =& ClassRegistry::init('StaProduto');
-        $result = $this->StaProduto->changeStatus(1, array('disponibilidade' => 'ativo', 'etapa' => 'maduro'), false);
+        $result = $this->StaProduto->setStatus(1, array('disponibilidade' => 'ativo', 'etapa' => 'maduro'), false);
         $expected = true;
         $this->assertEqual($result, $expected);
     } 
 	
 	
-	function testSetStatusesActive()
+	function testsetActiveStatuses()
 	{
 		$this->StaProduto =& ClassRegistry::init('StaProduto');
-		$result = $this->StaProduto->setStatusesActive(array('disponibilidade' => array('ativo')));
+		$result = $this->StaProduto->setActiveStatuses(array('disponibilidade' => array('ativo')));
 		$expected = array(
 			'StaProduto' => array(
 				'disponibilidade' => array(
@@ -38,7 +38,7 @@ class StaProdutoTestCase extends CakeTestCase {
 	function testSetTwoStatusesActive()
 	{
 		$this->StaProduto =& ClassRegistry::init('StaProduto');
-		$result = $this->StaProduto->setStatusesActive(array('disponibilidade' => array('ativo'), 'etapa' => array('verde', 'maduro')));
+		$result = $this->StaProduto->setActiveStatuses(array('disponibilidade' => array('ativo'), 'etapa' => array('verde', 'maduro')));
 		$expected = array(
 			'StaProduto' => array(
 				'disponibilidade' => array(
@@ -59,7 +59,7 @@ class StaProdutoTestCase extends CakeTestCase {
 	function testFindAll()
 	{
 		$this->StaProduto =& ClassRegistry::init('StaProduto');
-		$this->StaProduto->setStatusesActive(array('disponibilidade' => array('ativo','inativo'), 'etapa' => array('verde', 'maduro', 'podre')));
+		$this->StaProduto->setActiveStatuses(array('disponibilidade' => array('ativo','inativo'), 'etapa' => array('verde', 'maduro', 'podre')));
 		$result = $this->StaProduto->find('all');
 		$expected = array(
 			'0' => array(
@@ -90,7 +90,7 @@ class StaProdutoTestCase extends CakeTestCase {
 	function testFindWithSetStatuses()
 	{
 		$this->StaProduto =& ClassRegistry::init('StaProduto');
-		$this->StaProduto->setStatusesActive(array('disponibilidade' => array('ativo'), 'etapa' => array('verde', 'maduro')));
+		$this->StaProduto->setActiveStatuses(array('disponibilidade' => array('ativo'), 'etapa' => array('verde', 'maduro')));
 		$result = $this->StaProduto->find('all');
 		$expected = array(
 			'0' => array(
@@ -107,7 +107,7 @@ class StaProdutoTestCase extends CakeTestCase {
 	function testFindWithMoreStatuses()
 	{
 		$this->StaProduto =& ClassRegistry::init('StaProduto');
-		$this->StaProduto->setStatusesActive(array('disponibilidade' => array('ativo'), 'etapa' => array('verde', 'maduro','podre')));
+		$this->StaProduto->setActiveStatuses(array('disponibilidade' => array('ativo'), 'etapa' => array('verde', 'maduro','podre')));
 		$result = $this->StaProduto->find('all');
 		$expected = array(
 			'0' => array(
@@ -132,7 +132,7 @@ class StaProdutoTestCase extends CakeTestCase {
 	function testFindWithSetStatusesaAndOtherConditions()
 	{
 		$this->StaProduto =& ClassRegistry::init('StaProduto');
-		$teste = $this->StaProduto->setStatusesActive(array('disponibilidade' => array('ativo','inativo'), 'etapa' => array('verde', 'maduro')));
+		$teste = $this->StaProduto->setActiveStatuses(array('disponibilidade' => array('ativo','inativo'), 'etapa' => array('verde', 'maduro')));
 		$result = $this->StaProduto->find('all', array('conditions' => array('StaProduto.status' => 'ativo')));
 		$expected = array(
 			'0' => array(
@@ -149,7 +149,7 @@ class StaProdutoTestCase extends CakeTestCase {
 	function testFindWithSetStatusesaAndAnotherConditions()
 	{
 		$this->StaProduto =& ClassRegistry::init('StaProduto');
-		$this->StaProduto->setStatusesActive(array('disponibilidade' => array('ativo','inativo'), 'etapa' => array('verde', 'maduro', 'podre')));
+		$this->StaProduto->setActiveStatuses(array('disponibilidade' => array('ativo','inativo'), 'etapa' => array('verde', 'maduro', 'podre')));
 		$result = $this->StaProduto->find('all', array('conditions' => array('StaProduto.status' => 'ativo', 'StaProduto.etapa' => array('verde','podre'))));
 		$expected = array(
 			'0' => array(
@@ -174,7 +174,7 @@ class StaProdutoTestCase extends CakeTestCase {
 	function testFindWithConditionsInline()
 	{
 		$this->StaProduto =& ClassRegistry::init('StaProduto');
-		$teste = $this->StaProduto->setStatusesActive(array('disponibilidade' => array('ativo'), 'etapa' => array('verde', 'maduro', 'podre')));
+		$teste = $this->StaProduto->setActiveStatuses(array('disponibilidade' => array('ativo'), 'etapa' => array('verde', 'maduro', 'podre')));
 		$result = $this->StaProduto->find('all', array('conditions' => 'StaProduto.id = 2 AND StaProduto.etapa = "verde"'));
 		$expected = array();
 		$this->assertEqual($result, $expected);
