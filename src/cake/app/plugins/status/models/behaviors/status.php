@@ -1,6 +1,6 @@
 <?php
 /**
- * StaStatusBehavior
+ * StatusBehavior
  *
  * @copyright Preface Design
  * @author Rodrigo Caravita, Lucas Vignoli
@@ -84,8 +84,8 @@
  * if you define a default config
  *
  * in your app_controller you can define:
- * Configure::write('StaStatusBehavior.options.availability', array('field' => 'status', 'options' => array('active','inactive'), 'active' => array('active')));
- * Configure::write('StaStatusBehavior.options.maturation', array('options' => array('unseasoned', 'mature', 'rotten')));
+ * Configure::write('StatusBehavior.options.availability', array('field' => 'status', 'options' => array('active','inactive'), 'active' => array('active')));
+ * Configure::write('StatusBehavior.options.maturation', array('options' => array('unseasoned', 'mature', 'rotten')));
  *
  * and in you model:
  * var $actsAs = array(
@@ -94,7 +94,7 @@
  *
  *
  * or, in a fast way:
- * Configure::write('StaStatusBehavior.options.default', array('field' => 'status', 'options' => array('draft','published')));
+ * Configure::write('StatusBehavior.options.default', array('field' => 'status', 'options' => array('draft','published')));
  *
  * in the model:
  * var $actsAs = array('Stastatus.StaStatus');
@@ -123,7 +123,7 @@
  * 
  */
  
-class StaStatusBehavior extends ModelBehavior 
+class StatusBehavior extends ModelBehavior 
 {
 
 	public $settings = array();
@@ -136,7 +136,7 @@ class StaStatusBehavior extends ModelBehavior
 	{
 		if (empty($config))
 		{
-			$default_config = Configure::read('StaStatusBehavior.options.default');
+			$default_config = Configure::read('StatusBehavior.options.default');
 			if (!isset($default_config))
 				die('Error. There is not a default config set aproperly. See the behavior documentation to more details.');
 			else
@@ -153,7 +153,7 @@ class StaStatusBehavior extends ModelBehavior
 			//debug($data);
 			if (!is_array($data))
 			{
-				$default_config = Configure::read('StaStatusBehavior.options');
+				$default_config = Configure::read('StatusBehavior.options');
 				//debug($default_config);
 				if (!isset($default_config[$data]))
 					die('Error. There is not a default config set aproperly to find the name os this configuration: '.$data.'. See the behavior documentation to more details.');
@@ -238,7 +238,7 @@ class StaStatusBehavior extends ModelBehavior
 			}
 			else
 			{
-				$default_config = Configure::read('StaStatusBehavior.options.default');
+				$default_config = Configure::read('StatusBehavior.options.default');
 				if (!isset($default_config))
 					die('Error. There is not a default config set aproperly. See the behavior documentation to more details.');
 				else

@@ -1,10 +1,10 @@
 <?php 
 // to work easily. in the model just use: var $actsAs = array('Stastatus.StaStatus');
-Configure::write('StaStatusBehavior.options.default', array('field' => 'status', 'options' => array('rascunho','publicado'), 'active' => array('publicado')));
+Configure::write('StatusBehavior.options.default', array('field' => 'status', 'options' => array('rascunho','publicado'), 'active' => array('publicado')));
 
-class NoticiaFixture extends CakeTestFixture {
-	var $name = 'Noticia';
-	var $import = array('table'=>'noticias', 'connection'=>'default', 'records'=>false);
+class StaNoticiaFixture extends CakeTestFixture {
+	var $name = 'StaNoticia';
+	var $import = array('model'=>'StaNoticia', 'connection'=>'default', 'records'=>false);
 	
 	
 	var $records = array(
