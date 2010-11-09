@@ -7,7 +7,7 @@ class NoticiaTestCase extends CakeTestCase {
 	function testChangeStatus() 
 	{
         $this->Noticia =& ClassRegistry::init('Noticia');
-        $result = $this->Noticia->changeStatus(1, array('status' => 'publicado'), false);
+        $result = $this->Noticia->changeStatus(1, array('status' => 'publicado'));
         $expected = true;
         $this->assertEqual($result, $expected);
     } 
@@ -103,6 +103,35 @@ class NoticiaTestCase extends CakeTestCase {
 		$this->assertEqual($result, $expected);
 	}
 	
+	function testFindWithTwoSetStatuses()
+	{
+		$this->Noticia =& ClassRegistry::init('Noticia');
+		$this->Noticia->setStatusesActive(array('publicado', 'rascunho'));
+		$result = $this->Noticia->find('all');
+		$expected = array(
+			'0' => array(
+				'Noticia' => array(
+					'id' => '1',
+					'status' => 'rascunho'
+				)
+			),
+			'1' => array(
+				'Noticia' => array(
+					'id' => '2',
+					'status' => 'publicado'
+				)
+			),
+			'2' => array(
+				'Noticia' => array(
+					'id' => '3',
+					'status' => 'rascunho'
+				)
+			)
+		);
+		$this->assertEqual($result, $expected);
+	}
+	
+	/*
 	function testFindWithInlineActiveStatuses()
 	{
 		$this->Noticia =& ClassRegistry::init('Noticia');
@@ -117,7 +146,7 @@ class NoticiaTestCase extends CakeTestCase {
 		);
 		$this->assertEqual($result, $expected);
 	}
-	
+	*/
 	
 }
 ?> 
