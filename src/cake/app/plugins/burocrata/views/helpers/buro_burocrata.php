@@ -1,5 +1,5 @@
 <?php
-	App::import('Helper', 'BuroBurocrata.XmlTag');
+	App::import('Helper', 'Burocrata.XmlTag');
 	class BuroBurocrataHelper extends XmlTagHelper
 	{
 		var $helpers = array('Form');

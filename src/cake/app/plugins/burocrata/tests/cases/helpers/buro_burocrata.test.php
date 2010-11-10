@@ -1,7 +1,7 @@
 <?php
 /* BuroBurocrata Test cases generated on: 2010-11-04 18:11:25 : 1288906525*/
 App::import('Core', array('Helper', 'AppHelper', 'View'));
-App::import('Helper', array('BuroBurocrata.BuroBurocrata', 'Form', 'Html'));
+App::import('Helper', array('Burocrata.BuroBurocrata', 'Form', 'Html'));
 
 class BurocrataTestController extends Controller {
 

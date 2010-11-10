@@ -1,5 +1,5 @@
 <?php
-class ExemplosController extends BurocrataAppController {
+class ExemplosController extends BurocrataUserAppController {
 
 	var $name = 'Exemplos';
 	var $uses = array();
