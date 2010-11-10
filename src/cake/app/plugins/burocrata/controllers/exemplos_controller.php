@@ -1,9 +1,9 @@
 <?php
-class ExemplosController extends BuroBurocrataAppController {
+class ExemplosController extends BurocrataAppController {
 
 	var $name = 'Exemplos';
 	var $uses = array();
-	var $helpers = array('BuroBurocrata.BuroBurocrata');
+	var $helpers = array('Burocrata.BuroBurocrata');
 	
 	function index()
 	{
