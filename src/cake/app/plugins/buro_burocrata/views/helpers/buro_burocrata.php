@@ -5,6 +5,7 @@
 		var $helpers = array('Form');
 		
 		private $_nested_input = false;
+		private $_nested_order = 0;
 		private $_nested_form = false;
 		
 		
@@ -28,6 +29,7 @@
 			
 			if($type == 'super_field')
 			{
+				$this->_nested_order++;
 				$out .= $this->isuperfield($htmlAttributes, $options);
 			}
 			else
@@ -42,6 +44,7 @@
 						unset ($options['instructions']);
 					}
 					$out .= $this->Form->{$type}($name, $options);
+					$out .= $this->Form->error($name);
 				}
 				else
 				{
@@ -61,6 +64,7 @@
 		 */
 		function finput()
 		{
+			$this->_nested_order--;
 			return $this->fdiv();
 		}
 	
@@ -84,7 +88,7 @@
 			if(isset($label))
 				$out .= $this->span(array(),array(), $label);
 			
-			return $out;
+			return "\n".$out;
 		}
 		
 		
@@ -99,15 +103,22 @@
 		function iinputcontainer($htmlAttributes = array(), $options = array())
 		{
 			$defaults = array();
-			if($this->_nested_input)
+			if($this->_nested_order > 0)
 				$defaults['class'] = 'subinput';
 			else
 				$defaults['class'] = 'input';
-				
+			
 			$htmlAttributes = am($defaults, $htmlAttributes);
 			
+			if(isset($options['name']))
+			{
+				$isFieldError = $this->Form->isFieldError($options['name']);
+				if($isFieldError)
+					$htmlAttributes['class'] .= ' error';
+			}
+			
 			$out = $this->idiv($htmlAttributes,$options);
-			return $out;
+			return "\n".$out;
 		}
 		
 		function finputcontainer()
@@ -124,4 +135,22 @@
 		{
 			return $this->fspan();
 		}
+		
+		function iform($htmlAttributes = array(), $options = array())
+		{
+			$View =& ClassRegistry::getObject('View');
+			$defaults = array(
+				'url' => $View->here,
+				'auto_submit' => true,
+				'model' => false
+			);
+			$options = am($defaults, $options);
+			
+			return $this->Form->create($options['model'], array(
+					'url' => $options['url']
+			));
+		}
 	}
+	
+	
+	

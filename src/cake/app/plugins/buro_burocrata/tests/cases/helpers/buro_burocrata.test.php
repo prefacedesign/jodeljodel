@@ -27,8 +27,10 @@ class BuroBurocrataHelperTestCase extends CakeTestCase {
 		$this->BuroBurocrata =& new BuroBurocrataHelper();
 		$this->BuroBurocrata->Form =& new FormHelper();
 		$this->BuroBurocrata->Form->Html =& new HtmlHelper();
-		$view =& new View(new BurocrataTestController());
-		ClassRegistry::addObject('view', $view);
+		
+		$this->View =& new View(new BurocrataTestController());
+		ClassRegistry::addObject('view', $this->View);
+		
 		$this->_appEncoding = Configure::read('App.encoding');
 		$this->_asset = Configure::read('Asset');
 		$this->_debug = Configure::read('debug');
@@ -36,24 +38,54 @@ class BuroBurocrataHelperTestCase extends CakeTestCase {
 
 	function testSimpleInput()
 	{
-		$this->assertEqual(
-			$this->BuroBurocrata->input(array(),array('name' => 'titulo', 'label' => 'Título', 'type' => 'text', 'instructions' => 'Lorem ipsum dolor eler sit.')),
-			'<div class="input"><label for="titulo">Título</label><span>Lorem ipsum dolor eler sit.</span><input name="titulo" type="text" id="titulo" /></div>'
+		$result = $this->BuroBurocrata->input(array(),array('name' => 'titulo', 'label' => 'Título', 'type' => 'text', 'instructions' => 'Lorem ipsum dolor eler sit.'));
+		$expected = array(
+			'div' => array('class' => 'input'),
+				'label' => array('for' => 'titulo'),
+					'Título',
+				'/label',
+				'span' => array(),
+					'Lorem ipsum dolor eler sit.',
+				'/span',
+				'input' => array('name' => 'titulo', 'type' => 'text', 'id' => 'titulo'),
+			'/div'
 		);
-		$this->assertEqual(
-			$this->BuroBurocrata->input(array(),array('name' => 'titulo', 'label' => 'Título', 'type' => 'text')),
-			'<div class="input"><label for="titulo">Título</label><input name="titulo" type="text" id="titulo" /></div>'
+		$this->assertTags($result, $expected);
+		
+		$result = $this->BuroBurocrata->input(array(),array('name' => 'titulo', 'label' => 'Título'));
+		$expected = array(
+			'div' => array('class' => 'input'),
+				'label' => array('for' => 'titulo'),
+					'Título',
+				'/label',
+				'input' => array('name' => 'titulo', 'type' => 'text', 'id' => 'titulo'),
+			'/div'
 		);
+		$this->assertTags($result, $expected);
 	}
 	
 	function testNestedSimpleInputs()
 	{
-		$this->assertEqual(
-			$this->BuroBurocrata->iinput(array(), array('type' => 'super_field', 'label' => 'Detalhes')),
-			'<div class="input"><span>Detalhes</span>'
+		$expected = array(
+			'div' => array('class' => 'input'),
+			'span' => array(),
+				'Detalhes'
 		);
-		$this->assertEqual(
-			$this->BuroBurocrata->input(
+		$result = $this->BuroBurocrata->iinput(array(), array('type' => 'super_field', 'label' => 'Detalhes'));
+		$this->assertTags($result, $expected);
+		
+		$expected = array(
+			'div' => array('class' => 'subinput'),
+				'label' => array('for' => 'gosta_da_gente'),
+					'Você gosta da gente?',
+				'/label',
+				'span' => array(),
+					'Seja sincero. Por favor.',
+				'/span',
+				'input' => array('name' => 'gosta_da_gente', 'type' => 'text', 'id' => 'gosta_da_gente'),
+			'/div'
+		);
+		$result = $this->BuroBurocrata->input(
 				array(), 
 				array(
 					'name' => 'gosta_da_gente',
@@ -61,12 +93,13 @@ class BuroBurocrataHelperTestCase extends CakeTestCase {
 					'type' => 'text',
 					'instructions' => 'Seja sincero. Por favor.'
 				)
-			),
-			'<div class="subinput"><label for="gosta_da_gente">Você gosta da gente?</label><span>Seja sincero. Por favor.</span><input name="gosta_da_gente" type="text" id="gosta_da_gente" /></div>'
-		);
-		$this->assertEqual(
+			);
+		$this->assertTags($result, $expected);
+		
+		
+		$this->assertTags(
 			$this->BuroBurocrata->finput(),
-			'</div>'
+			array('/div')
 		);
 	}
 	

@@ -1,5 +1,5 @@
 <?php
-	echo $buroBurocrata->input(
+	echo $this->BuroBurocrata->input(
 			array(),
 			array(
 				'name' => 'titulo',
@@ -9,7 +9,7 @@
 			)
 		);
 		
-	echo $buroBurocrata->iinput(
+	echo $this->BuroBurocrata->iinput(
 			array(),
 			array(
 				'label' => 'Detalhes',
@@ -17,7 +17,7 @@
 			)
 		);
 	
-		echo $buroBurocrata->input(
+		echo $this->BuroBurocrata->input(
 				array(),
 				array(
 					'name' => 'descricao',
@@ -26,7 +26,7 @@
 					'instructions' => 'Descreva em poucas palavras... patatí...'
 				)
 			);
-		echo $buroBurocrata->input(
+		echo $this->BuroBurocrata->input(
 				array(), 
 				array(
 					'name' => 'gosta_da_gente',
@@ -36,6 +36,42 @@
 				)
 			);
 	
-	echo $buroBurocrata->finput();
+	echo $this->BuroBurocrata->finput();
+	
+	echo "\n";
+	
+	echo $this->BuroBurocrata->iform(
+			array('class' => 'azul'), // Parâmetros HTML
+			array(
+				'model' => 'Noticia', // Somente o Model pai, assim como no FormHelper::create
+				'envio' => 'ajax',
+				'auto_submit' => true, // Não tenho certeza o que isso faz
+				'url' => array('action' => 'recebedor') // Action que vai receber o POST
+			)
+		);
+		
+		
+		echo $this->BuroBurocrata->input(
+				array(), 
+				array(
+					'name' => 'teste',
+					'label' => 'Isso é um teste?',
+					'type' => 'text'
+				)
+			);
+		
+		echo $this->BuroBurocrata->input(
+			array(),
+			array(
+				'type' => 'belongs_to',
+				'association' => 'Periodico',
+				'options' => array(
+					'type' => 'autocomplete', 
+					'allow' => array('link', 'insert', 'modify')
+				)
+			)
+		);
+		
+	echo $this->BuroBurocrata->fform();
 
 	
