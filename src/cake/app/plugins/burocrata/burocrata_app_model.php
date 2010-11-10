@@ -1,6 +1,6 @@
 <?php
 
-class BuroBurocrataAppModel extends AppModel {
+class BurocrataAppModel extends AppModel {
 
 }
 
