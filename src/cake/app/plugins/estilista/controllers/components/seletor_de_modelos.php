@@ -55,8 +55,7 @@ class SeletorDeModelosComponent extends Object
 				unset($this->controller->helpers[$res]);
 			}
 		}*/
-		
-	
+
 		foreach($this->controller->helpers as $helper => $parametros)
 		{
 			if (is_array($parametros))
@@ -77,6 +76,7 @@ class SeletorDeModelosComponent extends Object
 		
 		if (isset($this->controller->view) && $this->controller->view != 'View')
 		{
+			debug($this->controller->view);
 			trigger_error ('Atenção se quiser usar uma view diferente da View, é necessário implementar algo parecido com a EstilistaView');
 		}
 		$this->controller->view = 'Estilista.Estilista';

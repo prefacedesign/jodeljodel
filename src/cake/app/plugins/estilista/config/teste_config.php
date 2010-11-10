@@ -7,7 +7,7 @@ App::import('Vendors','Estilista.instrumentos');
 $paleta = array(
 	'texto'        => new Cor(  0,  0,  0),
 	'fundo'        => new Cor(255,255,255)
-}
+);
 
 
 // @todo create tests for it to really allow same layout for browser
@@ -60,12 +60,11 @@ for ($i = 1; $i <= 4; $i++)
 	$classes_automaticas_usadas['altura'][] = array('qM' => 0, 'qi' => $i);
 }
 
-
 // @todo Improve the way that we choose the layout instruments we are going
 //   to use, and the way it handles shortnames.
 // Passamos para o configure os objetos
 
-Configure::write('Estilista.Conexoes.instrumentos', 
+Configure::write('Estilista.Teste.instrumentos', 
 					array(
 						'gv' => $grade_vertical, 
 						'gh' => $grade_horizontal, 
@@ -75,5 +74,5 @@ Configure::write('Estilista.Conexoes.instrumentos',
 						'paleta' => $paleta
 					)
 				);
-Configure::write('Estilista.Conexoes.classes_automaticas_usadas', $classes_automaticas_usadas);
+Configure::write('Estilista.Teste.classes_automaticas_usadas', $classes_automaticas_usadas);
 ?>
