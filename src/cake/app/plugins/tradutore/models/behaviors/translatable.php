@@ -3,8 +3,6 @@
 /**
  * Translatable behavior class.
  *
- * ...
- *
  * @copyright  Copyright 2010, Preface Design
  * @link       http://www.preface.com.br/
  * @license    MIT License <http://www.opensource.org/licenses/mit-license.php> - redistributions of files must retain the copyright notice
@@ -22,6 +20,8 @@ Configure::load('Tradutore.config');
 
 /**
  * Translatable behavior.
+ *
+ * TODO: Improve header comment of this class.
  *
  * @package    jodeljodel
  * @subpackage jodeljodel.tradutore

@@ -1,6 +1,30 @@
 <?php
 
+/**
+ * Test case class for Translatable behavior.
+ *
+ * @copyright  Copyright 2010, Preface Design
+ * @link       http://www.preface.com.br/
+ * @license    MIT License <http://www.opensource.org/licenses/mit-license.php> - redistributions of files must retain the copyright notice
+ *
+ * @package    jodeljodel
+ * @subpackage jodeljodel.tradutore.test
+ *
+ * @author     Bruno Franciscon Mazzotti <mazzotti@preface.com.br>
+ * @version    Jodel Jodel 0.1
+ * @since      11. Nov. 2010
+ */
+
 App::import('Model', 'Tradutore.TranslatableMock');
+
+
+/**
+ * Test case for Translatable behavior. The test are perfomed via mock object
+ * TranslatableMock.
+ *
+ * @package    jodeljodel
+ * @subpackage jodeljodel.tradutore.test
+ */
 
 class TranslatableTestCase extends CakeTestCase
 {
