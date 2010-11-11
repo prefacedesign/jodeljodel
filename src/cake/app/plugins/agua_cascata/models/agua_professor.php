@@ -23,6 +23,7 @@ class AguaProfessor extends AguaCascataAppModel
 
     function beforeFind($query)
     {
+        debug($query);
         $query['conditions'] = array('id = 1');
         return $query;
    }

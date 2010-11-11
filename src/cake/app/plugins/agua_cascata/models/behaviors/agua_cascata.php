@@ -31,6 +31,24 @@ class AguaCascataBehavior extends ModelBehavior {
         }
 
 */
+
+                //tentando inicialmente resolver o problema de dar um trigger nos behavior
+        //para as relações hasOne
+        foreach ($Model->hasOne as $ModelChild){
+            $className = $ModelChild['className'];
+            if (isset($Model->{$className}) && is_object($Model->{$className})) {
+                $created = FALSE;
+                $options = array();
+                $params = array();
+                //debug($className);
+                //debug($Model);
+                //
+                $results = $Model->{$className}->Behaviors->trigger($Model->{$className}, 'afterFind', array($results,false),array('modParams' => true));
+                
+            }
+        }
+
+  
         return($results);
         //debug($Model);
         //die;
@@ -40,16 +58,7 @@ class AguaCascataBehavior extends ModelBehavior {
     {
         //debug($Model);
         //die;
-        //tentando inicialmente resolver o problema de dar um trigger nos behavior
-        //para as relações hasOne
-        foreach ($Model->hasOne as $ModelChild){
-            $className = $ModelChild['className'];
-            if (isset($Model->{$className}) && is_object($Model->{$className})) {
-                $created = FALSE;
-                $options = array();
-                $Model->Behaviors->trigger($Model->{$className}, 'afterFind', array($created, $options));
-            }
-        }
+        return $query;
 
     }
     
