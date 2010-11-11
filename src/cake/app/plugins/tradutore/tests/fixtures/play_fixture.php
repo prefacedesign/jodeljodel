@@ -17,16 +17,17 @@
 
 
 /**
- * Fixture class used in Translatable behavior test case. The fake data is about
- * William Shakespeare's plays.
+ * Fixture class used in Translatable behavior test case.
+ *
+ * The fake data is about William Shakespeare's plays.
  *
  * @package    jodeljodel
  * @subpackage jodeljodel.tradutore.test
  */
 
-class TranslatableMockFixture extends CakeTestFixture {
+class PlayFixture extends CakeTestFixture {
 
-    var $name = 'TranslatableMock';
+    var $name = 'Play';
 
     var $fields = array(
         'id' => array(

@@ -15,12 +15,13 @@
  * @since      11. Nov. 2010
  */
 
-App::import('Model', 'Tradutore.TranslatableMock');
+App::import('Model', 'Tradutore.Play');
 
 
 /**
- * Test case for Translatable behavior. The test are perfomed via mock object
- * TranslatableMock.
+ * Test case for Translatable behavior.
+ *
+ * The test are perfomed via mock object Play.
  *
  * @package    jodeljodel
  * @subpackage jodeljodel.tradutore.test
@@ -29,26 +30,26 @@ App::import('Model', 'Tradutore.TranslatableMock');
 class TranslatableTestCase extends CakeTestCase
 {
     var $fixtures = array(
-        'plugin.tradutore.translatable_mock'
+        'plugin.tradutore.play'
     );
     
-    var $TranslatableMock;
+    var $Play;
 
 
     function startCase()
     {
         parent::startCase();
-        $this->TranslatableMock = ClassRegistry::init('TranslatableMock');
+        $this->Play = ClassRegistry::init('Play');
     }
 
 
     function testFixturesSanity()
     {
-        $this->TranslatableMock->Behaviors->detach('Tradutore.Translatable');
+        $this->Play->Behaviors->detach('Tradutore.Translatable');
 
         $expected = array(
             0 => array(
-                'TranslatableMock' => array(
+                'Play' => array(
                     'id' => 1,
                     'title' => 'Antony and Cleopatra',
                     'year' => 1606,
@@ -56,7 +57,7 @@ class TranslatableTestCase extends CakeTestCase
                 )
             ),
             1 => array(
-                'TranslatableMock' => array(
+                'Play' => array(
                     'id' => 2,
                     'title' => 'King Lear',
                     'year' => 1605,
@@ -64,7 +65,7 @@ class TranslatableTestCase extends CakeTestCase
                 )
             ),
             2 => array(
-                'TranslatableMock' => array(
+                'Play' => array(
                     'id' => 3,
                     'title' => 'The Comedy of Errors',
                     'year' => 1589,
@@ -73,7 +74,7 @@ class TranslatableTestCase extends CakeTestCase
                 )
             ),
             3 => array(
-                'TranslatableMock' => array(
+                'Play' => array(
                     'id' => 4,
                     'title' => 'The Tragedy of Julius Caesar',
                     'year' => 1599,
@@ -81,7 +82,7 @@ class TranslatableTestCase extends CakeTestCase
                 )
             ),
             4 => array(
-                'TranslatableMock' => array(
+                'Play' => array(
                     'id' => 5,
                     'title' => 'The Tragedy of Hamlet, Prince of Denmark',
                     'year' => 1600,
@@ -90,26 +91,26 @@ class TranslatableTestCase extends CakeTestCase
             )
         );
 
-        $result = $this->TranslatableMock->find('all');
+        $result = $this->Play->find('all');
 
         $this->assertFalse(empty($result));
         $this->assertEqual($expected, $result);
 
-        $this->TranslatableMock->Behaviors->attach('Tradutore.Translatable');
+        $this->Play->Behaviors->attach('Tradutore.Translatable');
     }
 
 
     function testGetSetDefaultLanguage()
     {
         $expected = Configure::read('Tradutore.default_language');
-        $result = $this->TranslatableMock->getDefaultLanguage();
+        $result = $this->Play->getDefaultLanguage();
 
         $this->assertEqual($expected, $result);
 
-        $this->TranslatableMock->setDefaultLanguage('es');
+        $this->Play->setDefaultLanguage('es');
 
         $expected = 'es';
-        $result = $this->TranslatableMock->getDefaultLanguage();
+        $result = $this->Play->getDefaultLanguage();
 
         $this->assertEqual($expected, $result);
     }
@@ -118,14 +119,14 @@ class TranslatableTestCase extends CakeTestCase
     function testGetSetLanguage()
     {
         $expected = Configure::read('Tradutore.default_language');
-        $result = $this->TranslatableMock->getLanguage();
+        $result = $this->Play->getLanguage();
 
         $this->assertEqual($expected, $result);
 
-        $this->TranslatableMock->setLanguage('pt-br');
+        $this->Play->setLanguage('pt-br');
 
         $expected = 'pt-br';
-        $result = $this->TranslatableMock->getLanguage();
+        $result = $this->Play->getLanguage();
 
         $this->assertEqual($expected, $result);
     }
@@ -134,14 +135,14 @@ class TranslatableTestCase extends CakeTestCase
     function testLanguageInsertion()
     {
         $expected = array(
-            'TranslatableMock' => array(
+            'Play' => array(
                 'title' => 'King Lear',
                 'year' => 1605,
-                'language' => $this->TranslatableMock->getLanguage()
+                'language' => $this->Play->getLanguage()
             )
         );
 
-        $result = $this->TranslatableMock->find(
+        $result = $this->Play->find(
             'first',
             array(
                 'fields' => array ('title', 'year'),
