@@ -1,21 +1,30 @@
 <?php
 
-App::import('Model', 'JodelTradutore.JodelTranslatableMock');
+App::import('Model', 'Tradutore.TranslatableMock');
 
-class JodelTranslatableTestCase extends CakeTestCase {
+class TranslatableTestCase extends CakeTestCase
+{
+    var $fixtures = array(
+        'plugin.tradutore.translatable_mock'
+    );
+    
+    var $TranslatableMock;
 
-    var $fixtures = array('plugin.jodel_tradutore.jodel_translatable_mock');
-    var $JodelTranslatableMock;
 
-    function startCase() {
+    function startCase()
+    {
         parent::startCase();
-        $this->JodelTranslatableMock = ClassRegistry::init('JodelTranslatableMock');
+        $this->TranslatableMock = ClassRegistry::init('TranslatableMock');
     }
 
-    function testSanity() {
+
+    function testFixturesSanity()
+    {
+        $this->TranslatableMock->Behaviors->detach('Tradutore.Translatable');
+
         $expected = array(
             0 => array(
-                'JodelTranslatableMock' => array(
+                'TranslatableMock' => array(
                     'id' => 1,
                     'title' => 'Antony and Cleopatra',
                     'year' => 1606,
@@ -23,7 +32,7 @@ class JodelTranslatableTestCase extends CakeTestCase {
                 )
             ),
             1 => array(
-                'JodelTranslatableMock' => array(
+                'TranslatableMock' => array(
                     'id' => 2,
                     'title' => 'King Lear',
                     'year' => 1605,
@@ -31,7 +40,7 @@ class JodelTranslatableTestCase extends CakeTestCase {
                 )
             ),
             2 => array(
-                'JodelTranslatableMock' => array(
+                'TranslatableMock' => array(
                     'id' => 3,
                     'title' => 'The Comedy of Errors',
                     'year' => 1589,
@@ -40,7 +49,7 @@ class JodelTranslatableTestCase extends CakeTestCase {
                 )
             ),
             3 => array(
-                'JodelTranslatableMock' => array(
+                'TranslatableMock' => array(
                     'id' => 4,
                     'title' => 'The Tragedy of Julius Caesar',
                     'year' => 1599,
@@ -48,7 +57,7 @@ class JodelTranslatableTestCase extends CakeTestCase {
                 )
             ),
             4 => array(
-                'JodelTranslatableMock' => array(
+                'TranslatableMock' => array(
                     'id' => 5,
                     'title' => 'The Tragedy of Hamlet, Prince of Denmark',
                     'year' => 1600,
@@ -57,37 +66,65 @@ class JodelTranslatableTestCase extends CakeTestCase {
             )
         );
 
-        $result = $this->JodelTranslatableMock->find('all');
+        $result = $this->TranslatableMock->find('all');
 
         $this->assertFalse(empty($result));
         $this->assertEqual($expected, $result);
+
+        $this->TranslatableMock->Behaviors->attach('Tradutore.Translatable');
     }
 
-    function testGetSetDefaultLanguage() {
-        $expected = JODEL_TRANSLATABLE_DEFAULT_LANGUAGE;
-        $result = $this->JodelTranslatableMock->getDefaultLanguage();
+
+    function testGetSetDefaultLanguage()
+    {
+        $expected = TRANSLATABLE_DEFAULT_LANGUAGE;
+        $result = $this->TranslatableMock->getDefaultLanguage();
 
         $this->assertEqual($expected, $result);
 
-        $this->JodelTranslatableMock->setDefaultLanguage('es');
+        $this->TranslatableMock->setDefaultLanguage('es');
 
         $expected = 'es';
-        $result = $this->JodelTranslatableMock->getDefaultLanguage();
+        $result = $this->TranslatableMock->getDefaultLanguage();
 
         $this->assertEqual($expected, $result);
     }
 
-    function testGetSetLanguage() {
-        $expected = JODEL_TRANSLATABLE_DEFAULT_LANGUAGE;
-        $result = $this->JodelTranslatableMock->getLanguage();
+
+    function testGetSetLanguage()
+    {
+        $expected = TRANSLATABLE_DEFAULT_LANGUAGE;
+        $result = $this->TranslatableMock->getLanguage();
 
         $this->assertEqual($expected, $result);
 
-        $this->JodelTranslatableMock->setLanguage('pt-br');
+        $this->TranslatableMock->setLanguage('pt-br');
 
         $expected = 'pt-br';
-        $result = $this->JodelTranslatableMock->getLanguage();
+        $result = $this->TranslatableMock->getLanguage();
 
+        $this->assertEqual($expected, $result);
+    }
+
+
+    function testLanguageInsertion()
+    {
+        $expected = array(
+            'TranslatableMock' => array(
+                'title' => 'King Lear',
+                'year' => 1605,
+                'language' => $this->TranslatableMock->getLanguage()
+            )
+        );
+
+        $result = $this->TranslatableMock->find(
+            'first',
+            array(
+                'fields' => array ('title', 'year'),
+                'conditions' => array('id' => 2)
+            )
+        );
+        
         $this->assertEqual($expected, $result);
     }
 

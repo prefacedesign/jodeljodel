@@ -1,6 +1,6 @@
 <?php
 
-class JodelTradutoreAppModel extends AppModel {
+class TradutoreAppModel extends AppModel {
     
 }
 

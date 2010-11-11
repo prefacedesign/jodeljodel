@@ -1,11 +1,10 @@
 <?php
 
-class JodelTranslatableMock extends JodelTradutoreAppModel {
-
-    var $name = 'JodelTranslatableMock';
+class TranslatableMock extends TradutoreAppModel
+{
+    var $name = 'TranslatableMock';
     
-    var $actsAs = array('JodelTradutore.JodelTranslatable');
-
+    var $actsAs = array('Tradutore.Translatable');
 }
 
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-class JodelTradutoreAppController extends AppController {
+class TradutoreAppController extends AppController {
 
 }
 

@@ -1,8 +1,8 @@
 <?php
 
-class JodelTranslatableMockFixture extends CakeTestFixture {
+class TranslatableMockFixture extends CakeTestFixture {
 
-    var $name = 'JodelTranslatableMock';
+    var $name = 'TranslatableMock';
 
     var $fields = array(
         'id' => array(
@@ -10,20 +10,20 @@ class JodelTranslatableMockFixture extends CakeTestFixture {
             'key' => 'primary',
             'null' => false
         ),
-        // Translatable
+        // Translatable.
         'title' => array(
             'type' => 'string',
             'length' => 80,
             'default' => '',
             'null' => false
         ),
-        // Not translatable
+        // Not translatable.
         'year' => array(
             'type' => 'integer',
             'length' => 4,
             'null' => false
         ),
-        // Translatable
+        // Translatable.
         'opening_excerpt' => array(
             'type' => 'string',
             'length' => 200,
