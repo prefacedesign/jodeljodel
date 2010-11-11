@@ -77,7 +77,7 @@ class TranslatableTestCase extends CakeTestCase
 
     function testGetSetDefaultLanguage()
     {
-        $expected = TRANSLATABLE_DEFAULT_LANGUAGE;
+        $expected = Configure::read('Tradutore.default_language');
         $result = $this->TranslatableMock->getDefaultLanguage();
 
         $this->assertEqual($expected, $result);
@@ -93,7 +93,7 @@ class TranslatableTestCase extends CakeTestCase
 
     function testGetSetLanguage()
     {
-        $expected = TRANSLATABLE_DEFAULT_LANGUAGE;
+        $expected = Configure::read('Tradutore.default_language');
         $result = $this->TranslatableMock->getLanguage();
 
         $this->assertEqual($expected, $result);

@@ -5,29 +5,26 @@
  *
  * ...
  *
- * Jodel Jodel
- * Copyright 2010, Preface Design
+ * @copyright  Copyright 2010, Preface Design
+ * @link       http://www.preface.com.br/
+ * @license    MIT License <http://www.opensource.org/licenses/mit-license.php> - redistributions of files must retain the copyright notice
  *
- * Licensed under The MIT License.
- * Redistributions of files must retain the above copyright notice.
+ * @package    jodeljodel
+ * @subpackage jodeljodel.tradutore
  *
- * @copyright     Copyright 2010, Preface Design
- * @link          http://www.preface.com.br/
- * @package       jodeljodel
- * @subpackage    jodeljodel.tradutore
- * @since         Jodel Jodel 0.1
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @author     Bruno Franciscon Mazzotti <mazzotti@preface.com.br>
+ * @version    Jodel Jodel 0.1
+ * @since      11. Nov. 2010
  */
 
+Configure::load('Tradutore.config');
 
-define('TRANSLATABLE_DEFAULT_LANGUAGE', 'en');
 
 /**
  * Translatable behavior.
  *
- * @package       jodeljodel
- * @subpackage    jodeljodel.tradutore
- * @link ...
+ * @package    jodeljodel
+ * @subpackage jodeljodel.tradutore
  */
 
 class TranslatableBehavior extends ModelBehavior
@@ -41,8 +38,8 @@ class TranslatableBehavior extends ModelBehavior
         if (!isset($this->__settings[$Model->alias]))
         {
             $this->__settings[$Model->alias] = array(
-                'defaultLanguage' => TRANSLATABLE_DEFAULT_LANGUAGE,
-                'language' => TRANSLATABLE_DEFAULT_LANGUAGE
+                'default_language' => Configure::read('Tradutore.default_language'),
+                'language' => Configure::read('Tradutore.default_language')
             );
         }
         $this->__settings[$Model->alias] = array_merge(
@@ -65,13 +62,13 @@ class TranslatableBehavior extends ModelBehavior
 
     function setDefaultLanguage(&$Model, $defaultLanguage)
     {
-        $this->__setProperty($Model, 'defaultLanguage', $defaultLanguage);
+        $this->__setProperty($Model, 'default_language', $defaultLanguage);
     }
 
 
     function getDefaultLanguage(&$Model)
     {
-        return $this->__getProperty($Model, 'defaultLanguage');
+        return $this->__getProperty($Model, 'default_language');
     }
 
 
@@ -89,13 +86,11 @@ class TranslatableBehavior extends ModelBehavior
 
     function afterFind(&$Model, $results, $primary)
     {
-        $alias = $Model->alias;
-
         foreach ($results as $i => $result)
         {
-            if (isset($result[$alias]))
+            if (isset($result[$Model->alias]))
             {
-                $results[$i][$alias]['language'] = $this->getLanguage($Model);
+                $results[$i][$Model->alias]['language'] = $this->getLanguage($Model);
             }
         }
         
