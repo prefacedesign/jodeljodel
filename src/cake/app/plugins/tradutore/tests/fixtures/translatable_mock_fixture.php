@@ -1,8 +1,32 @@
 <?php
 
-class JodelTranslatableMockFixture extends CakeTestFixture {
+/**
+ * Fixture class used in Translatable behavior test case.
+ *
+ * @copyright  Copyright 2010, Preface Design
+ * @link       http://www.preface.com.br/
+ * @license    MIT License <http://www.opensource.org/licenses/mit-license.php> - redistributions of files must retain the copyright notice
+ *
+ * @package    jodeljodel
+ * @subpackage jodeljodel.tradutore.test
+ *
+ * @author     Bruno Franciscon Mazzotti <mazzotti@preface.com.br>
+ * @version    Jodel Jodel 0.1
+ * @since      11. Nov. 2010
+ */
 
-    var $name = 'JodelTranslatableMock';
+
+/**
+ * Fixture class used in Translatable behavior test case. The fake data is about
+ * William Shakespeare's plays.
+ *
+ * @package    jodeljodel
+ * @subpackage jodeljodel.tradutore.test
+ */
+
+class TranslatableMockFixture extends CakeTestFixture {
+
+    var $name = 'TranslatableMock';
 
     var $fields = array(
         'id' => array(
@@ -10,20 +34,20 @@ class JodelTranslatableMockFixture extends CakeTestFixture {
             'key' => 'primary',
             'null' => false
         ),
-        // Translatable
+        // Translatable.
         'title' => array(
             'type' => 'string',
             'length' => 80,
             'default' => '',
             'null' => false
         ),
-        // Not translatable
+        // Not translatable.
         'year' => array(
             'type' => 'integer',
             'length' => 4,
             'null' => false
         ),
-        // Translatable
+        // Translatable.
         'opening_excerpt' => array(
             'type' => 'string',
             'length' => 200,
