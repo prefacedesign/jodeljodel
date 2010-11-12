@@ -26,6 +26,11 @@ class AguaEquipe extends AguaCascataAppModel
     function afterFindCascata($results){
         foreach ($results as $key => $val)
         {
+            //caso em que é hasMany, não sei se esse caso eu preciso tratar aqui
+            //ou no behaviorCascata
+            if (isset($results[$key]['AguaProfessor'][0])){
+                $results[$key]['AguaProfessor'][0]['nome'] = $results[$key]['AguaProfessor'][0]['nome'] . " Equipe";
+            } else
             $results[$key]['AguaProfessor']['nome'] = $results[$key]['AguaProfessor']['nome'] . " Equipe";
         }
         return $results;

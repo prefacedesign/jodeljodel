@@ -27,7 +27,14 @@ class AguaProfessorTestCase extends CakeTestCase {
                           'created' => null,
                           'modified' => null
 
-                         )
+                         ),
+                        'AguaEquipe' => array
+                        (
+                          'id' => 1,
+                          'nome' => 'a grande',
+                          'created' => null,
+                           'modified' => null
+                        )
                     ),
                 array(
                         'AguaProfessor' => array (
@@ -38,7 +45,14 @@ class AguaProfessorTestCase extends CakeTestCase {
                               'created' => null,
                               'modified' => null
 
-                         )
+                         ),
+                        'AguaEquipe' => array
+                        (
+                          'id' => 2,
+                          'nome' => 'a pequena',
+                          'created' => null,
+                           'modified' => null
+                        )
                     )
             );
 

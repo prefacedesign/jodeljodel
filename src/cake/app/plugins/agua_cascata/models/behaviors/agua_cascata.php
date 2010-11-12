@@ -18,8 +18,27 @@ class AguaCascataBehavior extends ModelBehavior {
 
     function afterFindCascata(&$Model,$results) {
         //aciona o afterFindCascata do Model filho
-        $filhos = am($Model->hasOne,$Model->hasMany,$Model->belongsTo,$Model->hasAndBelongsToMany);
- 	if (empty($filhos)) {
+
+        //carregando os filhos do Model
+        $filhos = array();
+        foreach($Model->hasOne as $filho)
+        {
+            $filhos[] = $filho['className'];
+        }
+        foreach($Model->hasMany as $filho)
+        {
+            $filhos[] = $filho['className'];
+        }
+        foreach($Model->belongsTo as $filho)
+        {
+            $filhos[] = $filho['className'];
+        }
+        foreach($Model->hasAndBelongsToMany as $filho)
+        {
+            $filhos[] = $filho['className'];
+        }
+
+        if (empty($filhos)) {
             return true;
  	}
  	$count = count($filhos);
@@ -30,10 +49,9 @@ class AguaCascataBehavior extends ModelBehavior {
         for ($i = 0; $i < $count; $i++)
         {
             $name = $filhos[$i];
-
-
+            
             //PASSO2: disparar callback dos models filhos
-            $result = $Model->{$name}->dispatchMethod($Model, $callback, $params);
+            $result = $Model->{$name}->dispatchMethod($callback, $params);
 
             if (is_array($result))
             {
