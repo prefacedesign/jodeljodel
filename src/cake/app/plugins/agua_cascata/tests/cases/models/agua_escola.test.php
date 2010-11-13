@@ -9,10 +9,10 @@ class AguaEscolaTestCase extends CakeTestCase {
 
     /**
      * Função para verificar se o que está declarado no afterFind do model Professor e do behavior Pessoa
-     * vem cascateado
+     * vem cascateado - considerando a relação HasMany
      * Esse teste só considera o afterFind, não considera as modificações que deveriam vir pelo beforeFind
      */
-    function testCascataAfterFind() 
+    function testCascataHasManyAfterFind()
     {
         $this->AguaEscola =& ClassRegistry::init('AguaCascata.AguaEscola');
 
@@ -27,13 +27,16 @@ class AguaEscolaTestCase extends CakeTestCase {
                                'modified' => null
                             )
                         ,
-                        'AguaProfessor' => array(
+                        'AguaProfessor' => array (
+                            0 => array(
                               'id' => 1,
                               'nome' => 'joão Pessoa Professor',
                               'agua_escola_id' => 1,
+                              'agua_equipe_id' => 1,
                               'created' => null,
                               'modified' => null
                             )
+                         )
                     ),
                 array(
                         'AguaEscola' => array
@@ -44,16 +47,18 @@ class AguaEscolaTestCase extends CakeTestCase {
                                'modified' => null 
                             )
                         ,
-                        'AguaProfessor' => array(
-                              'id' => 2,
-                              'nome' => 'josé Pessoa Professor',
-                              'agua_escola_id' => 2,
-                              'created' => null, 
-                              'modified' => null
-                            )
+                        'AguaProfessor' => array (
+                            0 => array(
+                                  'id' => 2,
+                                  'nome' => 'josé Pessoa Professor',
+                                  'agua_escola_id' => 2,
+                                  'agua_equipe_id' => 2,
+                                  'created' => null,
+                                  'modified' => null
+                                )
+                         )
                     )
             );
-
 
         //fazer teste aqui para verificar se a cadeia veio!
         $this->assertEqual($result,$expected);

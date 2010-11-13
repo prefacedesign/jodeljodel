@@ -1,7 +1,10 @@
 <?php
-//echo 'aloha';
+    //view relativo a agua_escola
+    debug($escolas);
     foreach($escolas as $escola){
-        echo $escola['AguaProfessor']['id'] . '<br>';
-        echo $escola['AguaProfessor']['nome'] . '<br>';
+        foreach($escola['AguaProfessor'] as $professor){
+            echo $professor['id'] . '<br>';
+            echo $professor['nome'] . '<br>';
+        }
     }
 ?>
