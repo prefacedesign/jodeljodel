@@ -9,6 +9,15 @@ class StaNoticia extends StatusAppModel
 	/*
 	var $actsAs = array(
   		'Status.Status' => array(
+			'tamanho' => array(
+				'field' => 'status2'
+			)
+		)
+	);
+	*/
+	/*
+	var $actsAs = array(
+  		'Status.Status' => array(
   			'status' => array(
  				//'field' => 'status',
  				'options' => array('rascunho', 'publicado'),
