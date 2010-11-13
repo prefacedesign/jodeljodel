@@ -10,7 +10,8 @@ class AguaEstudanteTestCase extends CakeTestCase {
     /**
      * Função para verificar se o que está declarado no afterFind do model Professor e do behavior Pessoa
      * vem cascateado - considerando a relação hasAndBelongsToMany
-     * Este teste também verifica se o Professor dispara o Equipe (já que tem relação belongsTo com ele)
+     * Este ainda não verifica se o Professor dispara o Equipe (já que tem relação belongsTo com ele) - para isso
+     * incluir palavra Equipe no nome do professor
      * Esse teste só considera o afterFind, não considera as modificações que deveriam vir pelo beforeFind
      */
     function testCascataHasAndBelongsToManyAfterFind()
@@ -30,7 +31,7 @@ class AguaEstudanteTestCase extends CakeTestCase {
                         'AguaProfessor' => array (
                           0 => array (
                               'id' => 1,
-                              'nome' => 'joão Equipe Pessoa Professor',
+                              'nome' => 'joão Pessoa Professor',
                               'agua_escola_id' => 1,
                               'agua_equipe_id' => 1,
                               'created' => null,
@@ -44,7 +45,7 @@ class AguaEstudanteTestCase extends CakeTestCase {
                               ),
                           1 => array (
                               'id' => 2,
-                              'nome' => 'josé Equipe Pessoa Professor',
+                              'nome' => 'josé Pessoa Professor',
                               'agua_escola_id' => 2,
                               'agua_equipe_id' => 2,
                               'created' => null,
@@ -70,7 +71,7 @@ class AguaEstudanteTestCase extends CakeTestCase {
                         'AguaProfessor' => array (
                           0 => array (
                               'id' => 1,
-                              'nome' => 'joão Equipe Pessoa Professor',
+                              'nome' => 'joão Pessoa Professor',
                               'agua_escola_id' => 1,
                               'agua_equipe_id' => 1,
                               'created' => null,
@@ -84,7 +85,7 @@ class AguaEstudanteTestCase extends CakeTestCase {
                               ),
                           1 => array (
                               'id' => 2,
-                              'nome' => 'josé Equipe Pessoa Professor',
+                              'nome' => 'josé Pessoa Professor',
                               'agua_escola_id' => 2,
                               'agua_equipe_id' => 2,
                               'created' => null,
