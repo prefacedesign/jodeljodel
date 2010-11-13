@@ -10,7 +10,6 @@ class AguaCascataBehavior extends ModelBehavior {
         //ou seja, chamar o triggerModelCallback para cada filho do Model
         //triggerModelCallback(...)
 
-
         $results = $this->triggerModelCallback($Model, 'afterFindCascata', array($results,false),array('modParams' => true));
 
         return($results);
@@ -64,11 +63,16 @@ class AguaCascataBehavior extends ModelBehavior {
         {
             $results = $params[0];
  	}
- 	
+
+        //TODO: verificar esse return, ao ativar ocorre um uma chamada sucessiva, 
+        //que eu não tenho certeza se é desejada. Não iria ocorrer um loop, num
+        //exemplo como professor belongs to equipe e equipe hasone professor?
+        //return ($results);
     }
 
     function triggerModelCallback(&$Model,$callback,$params,$options)
     {
+
         $filhos = array();
         foreach($Model->hasOne as $filho)
         {
@@ -90,9 +94,11 @@ class AguaCascataBehavior extends ModelBehavior {
         if (empty($filhos)) {
             return true;
  	}
+
+        
  	$options = array_merge(array('break' => false, 'breakOn' => array(null, false), 'modParams' => false), $options);
  	$count = count($filhos);
-
+      
  	for ($i = 0; $i < $count; $i++)
         {
             $name = $filhos[$i];
@@ -102,7 +108,7 @@ class AguaCascataBehavior extends ModelBehavior {
 
             if (is_array($result))
                 $params[0] = $result;
-
+            
 
             //PASSO2: disparar callback dos models filhos
             //$result = $Model->{$name}->dispatchMethod($Model->{$name}, $callback, $params);
