@@ -151,12 +151,10 @@ class StatusBehavior extends ModelBehavior
 		}
 		foreach($config as $index => $data)
 		{
-			//debug($index);
-			//debug($data);
+
+			$default_config = Configure::read('StatusBehavior.options');
 			if (!is_array($data))
 			{
-				$default_config = Configure::read('StatusBehavior.options');
-				//debug($default_config);
 				if (!isset($default_config[$data]))
 					die('Error. There is not a default config set aproperly to find the name os this configuration: '.$data.'. See the behavior documentation to more details.');
 				else
@@ -169,15 +167,24 @@ class StatusBehavior extends ModelBehavior
 			}
 			else
 			{
+				if (isset($default_config[$index]))
+				{
+					$this->defaults['field'] = $index;
+					if (!isset($default_config[$index]['active']))
+						$default_config[$index]['active'] = $default_config[$index]['options'];
+					$this->settings[$Model->alias][$index] = array_merge($this->defaults, $default_config[$index]);
+				}
+				
+				if (is_array($this->settings[$Model->alias][$index]))
+					$this->defaults = $this->settings[$Model->alias][$index];
 				$this->defaults['field'] = $index;
-				if (!isset($data['active']))
+				if (!isset($data['active']) && isset($data['options']))
 					$data['active'] = $data['options'];
 				$this->settings[$Model->alias][$index] = array_merge($this->defaults, $data);
 			}
+
 		}
-		//die;
-		//debug($Model->alias);
-		//debug($this->settings[$Model->alias]);
+
        
 	}
 	
@@ -220,16 +227,31 @@ class StatusBehavior extends ModelBehavior
 	 * @access public
 	 */
 
-	function setActiveStatuses(&$Model, $options = array())
+	function setActiveStatuses(&$Model, $options = array(), $ignore = false)
 	{
 		foreach ($options as $index => $option)
 		{
+			//debug($index);
+			//debug($option);
 			if ($index != '0')
 			{
+				$default_config = Configure::read('StatusBehavior.options');
+				if (isset($default_config[$index]))
+				{
+					if (isset($default_config[$index]['active']) && isset($option))
+					{
+						if ($default_config[$index]['overwrite'])
+						{
+							if ($option !== $default_config[$index]['active'] && !$ignore)
+								die('Error. The global settings of active statuses is different of the local settings, and it is marked to overwrite, then there are a conflict to be resolved.');
+						}
+					}
+				}
 				$this->settings[$Model->alias][$index]['active'] = $option;
 			}
 			elseif (count($this->settings[$Model->alias]) == 1)
 			{
+				//debug('aqui');
 				foreach ($this->settings[$Model->alias] as $idx => $whatever)
 				{
 					$this->settings[$Model->alias][$idx]['active'] = $options;
@@ -251,6 +273,42 @@ class StatusBehavior extends ModelBehavior
 	}
 	
 	
+	function cleanActiveStatuses(&$Model, $options = array())
+	{
+		foreach ($options as $option)
+		{
+			if (!isset($this->settings[$Model->alias][$option]))
+				die('Error. There is not a type defined to this model with the name: '.$option);
+			elseif (isset($this->settings[$Model->alias][$option]['active']))
+				unset($this->settings[$Model->alias][$option]['active']);
+		}
+		return $this->settings;
+	}
+	
+	
+	function setGlobalActiveStatuses($options = array(), $overwrite = false)
+	{
+		$default_config = Configure::read('StatusBehavior.options');
+		foreach($options as $index => $data)
+		{
+			if (!isset($default_config[$index]))
+				die('Error. The name set of the index isnt a valid name, verify if exists a config type set with this name.');
+			else
+			{
+				//debug($default_config[$index]);
+				$default_config[$index]['active'] = $data['active'];
+				$default_config[$index]['overwrite'] = $data['overwrite'];
+				//debug($default_config[$index]);
+				Configure::write('StatusBehavior.options.'.$index, $default_config[$index]);
+			}
+			//debug($data);
+		}
+		return $default_config;
+		
+	}
+
+	
+	
 	
 	/**
 	 * Run before a model is about to be find, found the records using the statuses defined as active
@@ -264,10 +322,12 @@ class StatusBehavior extends ModelBehavior
 	
 	function beforeFind(&$Model, $queryData)
 	{
+		$priority_status = false;
 		if (isset($queryData['active_statuses']))
 		{
 			$oldSettings = $this->settings;
-			$this->setActiveStatuses($Model, $queryData['active_statuses']);
+			$this->setActiveStatuses($Model, $queryData['active_statuses'], true);
+			$priority_status = true;
 		}
 		$sql_conditions = '';
 		if (empty($queryData['conditions']))
@@ -277,20 +337,35 @@ class StatusBehavior extends ModelBehavior
 			$sql_conditions = $queryData['conditions'];
 			$queryData['conditions'] = array();
 		}
-		foreach ($this->settings[$Model->alias] as $options)
+		foreach ($this->settings[$Model->alias] as $idx => $options)
 		{
+			//debug($options);
+			$default_config = Configure::read('StatusBehavior.options');
 			if (isset($options['field']))
 			{
-				//debug($options);
-				if (!isset($queryData['conditions'][$Model->alias.'.'.$options['field']]))
+				$overwrite = false;
+				if (isset($default_config[$idx]))
 				{
-					$queryData['conditions'][$Model->alias.'.'.$options['field']] = $options['active'];
+					if (isset($default_config[$idx]['overwrite']))
+						if ($default_config[$idx]['overwrite'] && !$priority_status)
+							$overwrite = true;
+					
+					if (!$overwrite)
+					{
+						//debug($options['active']);
+						if (!isset($queryData['conditions'][$Model->alias.'.'.$options['field']]))
+							if (isset($options['active']))
+								$queryData['conditions'][$Model->alias.'.'.$options['field']] = $options['active'];
+							elseif (isset($default_config[$idx]['active']))
+								$queryData['conditions'][$Model->alias.'.'.$options['field']] = $default_config[$idx]['active'];
+					}
+					else
+					{
+						$queryData['conditions'][$Model->alias.'.'.$options['field']] = $default_config[$idx]['active'];
+					}
 				}
-				//debug($idx);
-				//debug($options);
-				//$this->settings[$Model->alias][$idx]['active'] = $options;
-				//break 2;
-				//debug($queryData);
+				else
+					$queryData['conditions'][$Model->alias.'.'.$options['field']] = $options['active'];
 			}
 		}
 		

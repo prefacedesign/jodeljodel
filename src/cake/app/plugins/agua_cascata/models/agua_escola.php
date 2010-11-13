@@ -8,7 +8,7 @@ class AguaEscola extends AguaCascataAppModel
 {
     var $name = 'AguaEscola';
 
-    var $hasOne = array('AguaCascata.AguaProfessor');
+    var $hasMany = array('AguaCascata.AguaProfessor');
 
     var $actsAs = array('AguaCascata.AguaCascata');
 
