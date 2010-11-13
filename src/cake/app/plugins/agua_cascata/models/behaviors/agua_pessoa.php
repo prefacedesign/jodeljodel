@@ -6,6 +6,8 @@
 
 class AguaPessoaBehavior extends ModelBehavior {
 
+    
+
     function afterFind(&$Model,$results, $primary)
     {
         //TODO: verificar se precisa colocar if $primary
@@ -24,7 +26,8 @@ class AguaPessoaBehavior extends ModelBehavior {
             //caso em que é hasMany, não sei se esse caso eu preciso tratar aqui
             //ou no behaviorCascata
             if (isset($results[$key]['AguaProfessor'][0])){
-                $results[$key]['AguaProfessor'][0]['nome'] = $results[$key]['AguaProfessor'][0]['nome'] . " Pessoa";
+                foreach ($results[$key]['AguaProfessor'] as $chave_prof => $prof)
+                    $results[$key]['AguaProfessor'][$chave_prof]['nome'] = $results[$key]['AguaProfessor'][$chave_prof]['nome'] . " Pessoa";
             } else
                 $results[$key]['AguaProfessor']['nome'] = $results[$key]['AguaProfessor']['nome'] . " Pessoa";
         }

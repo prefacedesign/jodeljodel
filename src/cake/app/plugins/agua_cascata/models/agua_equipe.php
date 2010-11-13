@@ -19,17 +19,19 @@ class AguaEquipe extends AguaCascataAppModel
             {
                 $results[$key]['AguaProfessor']['nome'] = $results[$key]['AguaProfessor']['nome'] . " Equipe";
             }
-            return $results;
         }
+        return $results;
     }
 
-    function afterFindCascata($results){
+    function afterFindCascata($results)
+    {
         foreach ($results as $key => $val)
         {
             //caso em que é hasMany, não sei se esse caso eu preciso tratar aqui
             //ou no behaviorCascata
             if (isset($results[$key]['AguaProfessor'][0])){
-                $results[$key]['AguaProfessor'][0]['nome'] = $results[$key]['AguaProfessor'][0]['nome'] . " Equipe";
+                foreach ($results[$key]['AguaProfessor'] as $chave_prof => $prof)
+                    $results[$key]['AguaProfessor'][$chave_prof]['nome'] = $results[$key]['AguaProfessor'][$chave_prof]['nome'] . " Equipe";
             } else
             $results[$key]['AguaProfessor']['nome'] = $results[$key]['AguaProfessor']['nome'] . " Equipe";
         }

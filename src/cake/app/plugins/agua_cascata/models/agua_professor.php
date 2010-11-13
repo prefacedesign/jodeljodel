@@ -11,6 +11,7 @@ class AguaProfessor extends AguaCascataAppModel
 
     var $belongsTo = array('AguaCascata.AguaEquipe');
 
+    //var $hasAndBelongsToMany = array('AguaCascata.AguaEstudante');
 
     function afterFind($results, $primary)
     {
@@ -20,8 +21,9 @@ class AguaProfessor extends AguaCascataAppModel
             {
                 $results[$key]['AguaProfessor']['nome'] = $results[$key]['AguaProfessor']['nome'] . " Professor";
             }
-            return $results;
+            
         }
+        return $results;
     }
 
     function afterFindCascata($results)
@@ -31,7 +33,8 @@ class AguaProfessor extends AguaCascataAppModel
             //caso em que é hasMany, não sei se esse caso eu preciso tratar aqui
             //ou no behaviorCascata
             if (isset($results[$key]['AguaProfessor'][0])){
-                $results[$key]['AguaProfessor'][0]['nome'] = $results[$key]['AguaProfessor'][0]['nome'] . " Professor";
+                foreach ($results[$key]['AguaProfessor'] as $chave_prof => $prof)
+                    $results[$key]['AguaProfessor'][$chave_prof]['nome'] = $results[$key]['AguaProfessor'][$chave_prof]['nome'] . " Professor";
             } else
                 $results[$key]['AguaProfessor']['nome'] = $results[$key]['AguaProfessor']['nome'] . " Professor";
         }

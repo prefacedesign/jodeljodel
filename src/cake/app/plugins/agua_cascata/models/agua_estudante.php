@@ -9,10 +9,27 @@ class AguaEstudante extends AguaCascataAppModel
 {
     var $name = 'AguaEstudante';
 
-    //deixar esse teste para depois de acertar os que envolvem professor
-    //var $hasAndBelongsToMany = array('AguaProfessor');
+    var $hasAndBelongsToMany = array('AguaCascata.AguaProfessor' );
 
+    var $actsAs = array('AguaCascata.AguaCascata');
 
+    function pegaTodos()
+    {
+        return $this->find('all');
+    }
+
+/*    function afterFind($results, $primary)
+    {
+        if ($primary)
+        {
+            return $results;
+        }
+    }
+
+    function afterFindCascata($results)
+    {
+        return $results;
+    }*/
 }
 
 ?>

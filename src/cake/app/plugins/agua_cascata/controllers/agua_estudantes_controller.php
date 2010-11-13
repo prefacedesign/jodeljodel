@@ -3,7 +3,9 @@ class AguaEstudantesController extends AguaCascataAppController {
 
 	var $name = 'AguaEstudantes';
 
-        var $hasAndBelongsToMany = array('AguaCascata.AguaProfessor');
+        function index(){
+            $this->set('estudantes', $this->AguaEstudante->find('all'));
+        }
 
 }
 ?>
