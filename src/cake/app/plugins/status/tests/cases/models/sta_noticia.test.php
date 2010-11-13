@@ -16,18 +16,20 @@ class StaNoticiaTestCase extends CakeTestCase {
 	function testsetActiveStatuses()
 	{
 		$this->StaNoticia =& ClassRegistry::init('StaNoticia');
-		$result = $this->StaNoticia->setActiveStatuses(array('status' => array('publicado')));
+		$result = $this->StaNoticia->setActiveStatuses(array('status' => array('rascunho')));
 		$expected = array(
 			'StaNoticia' => array(
 				'status' => array(
 					'field' => 'status',
 					'options' => array('rascunho', 'publicado'),
-					'active' => array('publicado')
+					'active' => array('rascunho')
 				)
 			)
 		);
+		//debug($result);
 		$this->assertEqual($result, $expected);
 	}
+	
 	
 	function testsetActiveStatusesDefault()
 	{
@@ -65,6 +67,7 @@ class StaNoticiaTestCase extends CakeTestCase {
 	{
 		$this->StaNoticia =& ClassRegistry::init('StaNoticia');
 		$result = $this->StaNoticia->find('all');
+		//debug($result);
 		$expected = array(
 			'0' => array(
 				'StaNoticia' => array(
@@ -103,6 +106,7 @@ class StaNoticiaTestCase extends CakeTestCase {
 		);
 		$this->assertEqual($result, $expected);
 	}
+	
 	
 	function testFindWithTwoSetStatuses()
 	{
@@ -175,7 +179,6 @@ class StaNoticiaTestCase extends CakeTestCase {
 		);
 		$this->assertEqual($result, $expected);
 	}
-	
 	
 }
 ?> 
