@@ -28,7 +28,7 @@
 class Play extends AppModel
 {
     var $name = 'Play';
-    
+
     var $actsAs = array('Tradutore.Translatable');
 }
 
