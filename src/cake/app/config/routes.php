@@ -44,11 +44,11 @@
  *	  routing in order to address this issue.
  * 
  */
-	Router::connect('/css/:action-:modelo.css/*',
-		array('plugin' => 'estilista', 'controller' => 'estilos'),
+	Router::connect('/css/:scheme-:action.css/*',
+		array('plugin' => 'typographer', 'controller' => 'type_stylesheet'),
 		array(
-			'pass' => array('modelo'),
-			'modelo' => '[a-z0-9_]+'
+			'pass' => array('scheme'),
+			'scheme' => '[a-z0-9_]+'
 		)
 	);
 	

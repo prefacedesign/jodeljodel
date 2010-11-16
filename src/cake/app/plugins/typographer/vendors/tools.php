@@ -128,7 +128,7 @@ class Grid
 		$this->left_gutter  = $grid_params['left_gutter' ];
 		$this->right_gutter = $grid_params['right_gutter'];
 		$this->alignment    = $grid_params['alignment'];
-		$this->unit         = $grid_params['unidade'];
+		$this->unit         = $grid_params['unit'];
 	}
 	
 	//tem o -1.0 como default pois é muito comum que se tenha 10 módulos - 1!
@@ -201,7 +201,7 @@ class Color
 	
 	function __construct ($r = 0, $g = 0, $b = 0)
 	{
-		$this->set($r, $g, $b);
+		$this->setRGB($r, $g, $b);
 	}
 	
 	function setRGB ($r = 0, $g = 0, $b = 0)

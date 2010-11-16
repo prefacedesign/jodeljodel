@@ -42,9 +42,8 @@ class TypeStyleFactoryHelper extends AppHelper
 	
 	function widthClassNames($params)
 	{
-	
 		extract($params);
-		$t = array('width_');
+		$t = array('w_');
 		
 		if (isset($M))
 		{	$t[0] .= $this->_writeFraction($M, 3) . 'M';	}
@@ -58,11 +57,11 @@ class TypeStyleFactoryHelper extends AppHelper
 		return $t;
 	}
 	
-	function widthRule($params)
+	function widthRules($params)
 	{
 		return array(
 			'width' => array(
-				'w_' => $this->hg->size($params)
+				'width' => $this->hg->size($params)
 			)
 		);
 	}

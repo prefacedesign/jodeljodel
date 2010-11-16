@@ -56,7 +56,7 @@ class TypeLayoutSchemePickerComponent extends Object
 			debug($this->controller->view);
 			trigger_error ('Atenção se quiser usar uma view diferente da View, é necessário implementar algo parecido com a EstilistaView');
 		}
-		$this->controller->view = 'Typographer.TypeView';
+		$this->controller->view = 'Typographer.Type';
 		$this->controller->set('used_automatic_classes', $used_automatic_classes);
 		$this->controller->set($tools);
 		$this->controller->set('layout_scheme', $layout_scheme);

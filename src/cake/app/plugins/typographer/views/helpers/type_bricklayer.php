@@ -164,7 +164,7 @@ class TypeBricklayerHelper extends AppHelper
 	function stag($tag, $attr = null, $options = null)
 	{
 		$standard_options = array('close_me' => false);
-		$options = am($stardard_options, $options);
+		$options = am($standard_options, $options);
 		extract($options);
 		
 		// Mount the attribute string
@@ -191,7 +191,7 @@ class TypeBricklayerHelper extends AppHelper
 
 	function etag($tag)
 	{
-		return '</'.$tag.'>' . (in_array($tag, TypeBricklayer::$tags_without_space_after) ? '' : "\n");
+		return '</'.$tag.'>' . (in_array($tag, TypeBricklayerHelper::$tags_without_space_after) ? '' : "\n");
 	}
 	
 	function tag($tag, $attr = null, $options = null, $content = null)
@@ -221,7 +221,7 @@ class TypeBricklayerHelper extends AppHelper
 		return $t;
 	}
 	
-	function link($attr = array(), $options = array(), $name = '')
+	function anchor($attr = array(), $options = array(), $name = '')
 	{
 		$attr['href'] = Router::url($options['url']);
 		

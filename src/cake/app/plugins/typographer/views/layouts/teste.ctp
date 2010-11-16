@@ -35,21 +35,21 @@ echo $bl->shtml(array(
 				'href' => '/favicon.ico'
 			)
 		);	
-		echo $typeDecorator->css(array(
+		echo $decorator->css(array(
 				'plugin' => 'typographer',
-				'controller' => 'type_stylesheet_controller',
+				'controller' => 'type_stylesheet',
 				'action' => 'style',
 				'teste'
 			)
 		);
-		echo $typeDecorator->css(
+		echo $decorator->css(
 			'instant.css',
 			'inline'
 		);
 		
 		echo $scripts_for_layout;			
-	echo $h->ehead();
-	echo $h->ebody();
+	echo $bl->ehead();
+	echo $bl->ebody();
 		echo $body_content;
-	echo $h->ebody();
-echo $h->ehtml();
+	echo $bl->ebody();
+echo $bl->ehtml();

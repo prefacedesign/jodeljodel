@@ -8,7 +8,7 @@ class TypeTesteController extends TypographerAppController
 	var $uses = array();
 	var $helpers = array(
 		'Typographer.TypeDecorator' => array(
-			'name' => 'typeDecorator',
+			'name' => 'decorator',
 			'compact' => false,
 			'receive_tools' => true
 		),

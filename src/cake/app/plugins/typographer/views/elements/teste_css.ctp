@@ -1,13 +1,13 @@
 <?php //aqui vão as rules de CSS 
 	
-	$typeDecorator->rule(
+	$decorator->rule(
 		'.box_container', 
 		array(
 			'float' => 'left'
 		)
 	);
 	
-	$typeDecorator->rule(
+	$decorator->rule(
 		'.box',
 		array(
 			'float' => 'left',
@@ -15,14 +15,14 @@
 		)
 	);
 	
-	$typeDecorator->rule(
+	$decorator->rule(
 		'.float_break', 
 		array(
 			'clear' => 'both'
 		)
 	);
 	
-	$typeDecorator->rule(
+	$decorator->rule(
 		'*',
 		array(
 			'border' => 'none',
@@ -33,11 +33,11 @@
 		)
 	);
 	
-	$typeDecorator->rule(
+	$decorator->rule(
 		'body',
 		array(
 			'background-color' => $palette['bg']->write(),
-			'font-size'        => $u->t($line_height * 13/18),
+			'font-size'        => $u->t(floor($line_height * 13/20)),
 			'line-height'      => $u->t($line_height),
 			'color'            => $palette['text']->write()
 		)

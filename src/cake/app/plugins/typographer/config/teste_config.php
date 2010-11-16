@@ -5,8 +5,8 @@
 App::import('Vendors','Estilista.tools');
 
 $palette = array(
-	'text' => new Cor(  0,  0,  0),
-	'bg'   => new Cor(255,255,255)
+	'text' => new Color(  0,  0,  0),
+	'bg'   => new Color(255,255,255)
 );
 
 

@@ -83,7 +83,7 @@ class TypeDecoratorHelper extends AppHelper
  		   . $this->propreties($propreties)
 		   . $this->erule();
 		
-		$this->mode = $backup_mode;
+		$this->mode = $mode_backup;
 		return $this->_return($t);
 	}
 	
@@ -98,26 +98,26 @@ class TypeDecoratorHelper extends AppHelper
 		{
 			if (is_array($address))
 			{
-				if (isset($address['plugin']) && $address['plugin'] == 'typographer' && $adress['controller'] == 'type_stylesheet')
+				if (isset($address['plugin']) && $address['plugin'] == 'typographer' && $address['controller'] == 'type_stylesheet')
 				{
-					//@todo If possible use reverse routing for this:
-					$new_address = '/css/' . $address['action'];
+					//@todo If possible use reverse routing for this:					
 					if (isset($address[0]))
 					{
-						$new_address .= '-' . $address[0];
+						$new_address = $address[0] . '-';
 					}
 					if (isset($address[1]))
 					{
-						$new_address .= '-' . $address[1];
+						$new_address .= $address[1] . '-';
 					}
+					$new_address = '/css/' . $new_address . $address['action'];
 					
-					$new_adress .= '.css';
+					$new_address .= '.css';
 					
 					$address = Router::url($new_address);
 				}
 				else
 				{
-					$address = Router::url($new_address);
+					$address = Router::url($address);
 				}
 			}
 			
