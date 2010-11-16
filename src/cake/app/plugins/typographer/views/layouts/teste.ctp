@@ -8,45 +8,48 @@
 // We need to proccess the body before we create the header,
 // because in the header we add the missing CSS rules, that were not created 
 // in the CSS style file.
-$dentro_body = $this->element(
-	$modelo_de_layout.'_layout', 
+
+// @todo Maybe we should use the View to have this always.
+
+$body_content = $this->element(
+	$layout_scheme.'_layout', 
 	array(
-		'plugin' => 'estilista',
+		'plugin' => 'typographer',
 		'content_for_layout' => $content_for_layout
 	)
 );
 
 echo $html->doctype();
-echo $h->iHtml(array(
+echo $bl->shtml(array(
 		'xmlns' => 'http://www.w3.org/1999/xhtml',
 		'xml:lang' => 'pt-br',
 		'lang' => 'pt-br'
 	)
 );
 
-	echo $h->iHead();
+	echo $bl->shead();
 		echo $html->charset();
-		echo $h->title(null, null, $title_for_layout);
-		echo $h->link(array(
+		echo $bl->title(null, null, $title_for_layout);
+		echo $bl->link(array(
 				'rel' => 'shorcut icon',
 				'href' => '/favicon.ico'
 			)
 		);	
-		echo $pintor->css(array(
-				'plugin' => 'estilista',
-				'controller' => 'estilos',
-				'action' => 'estilo',
+		echo $typeDecorator->css(array(
+				'plugin' => 'typographer',
+				'controller' => 'type_stylesheet_controller',
+				'action' => 'style',
 				'teste'
 			)
 		);
-		echo $pintor->css(
-			'estilo_instantaneo.css',
+		echo $typeDecorator->css(
+			'instant.css',
 			'inline'
 		);
 		
 		echo $scripts_for_layout;			
-	echo $h->fHead();
-	echo $h->iBody();
-		echo $dentro_body;
-	echo $h->fBody();
-echo $h->fHtml();
+	echo $h->ehead();
+	echo $h->ebody();
+		echo $body_content;
+	echo $h->ebody();
+echo $h->ehtml();
