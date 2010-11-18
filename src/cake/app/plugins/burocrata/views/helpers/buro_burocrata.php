@@ -61,6 +61,8 @@
 					$inputOptions = array('label' => false, 'error' => false, 'div' => false, 'type' => $options['type']);
 					$out .= $this->Form->input($options['fieldName'], $inputOptions);
 					$out .= $this->Form->error($options['fieldName']);
+					
+					$this->_addFormAttribute('inputs', $options);
 				}
 				else
 				{
@@ -128,6 +130,127 @@
 		
 		
 		/**
+		 * Starts a form
+		 *
+		 * @access public
+		 * @param  array $htmlAttributes
+		 * @param  array $options
+		 * @return	string The HTML well formated
+		 */
+		public function sform($htmlAttributes = array(), $options = array())
+		{
+			$View =& ClassRegistry::getObject('View');
+			$defaults = array(
+				'url' => $View->here,
+				'auto_submit' => true,
+				'model' => false,
+				'data' => false
+			);
+			$options = am($defaults, $options);
+			
+			$htmlDefaults = array(
+				'id' => $domId = uniqid('frm')
+			);
+			$htmlAttributes = am($htmlDefaults, $htmlAttributes);
+			$htmlAttributes = $this->addClass($htmlAttributes, 'form');
+			
+			if($options['data'])
+				$this->_data = $options['data'];
+			elseif($View->data)
+				$this->_data = $View->data;
+			
+			$this->_addForm($htmlAttributes['id']);
+			
+			$this->model = $options['model'];
+			$this->Form->create($options['model'], array('url' => $options['url']));
+			return $this->Bl->sdiv($htmlAttributes);
+		}
+		
+		
+		/**
+		 * 
+		 *
+		 * @access protected
+		 * @param string $id
+		 * @return void
+		 */
+		protected function _addForm($id)
+		{
+			$this->_nestedForm[] = $id;
+			$map =& $this->_formMap;
+			foreach($this->_nestedForm as $form_id) {
+				if(!isset($map[$form_id]))
+					$map[$form_id]= array();
+				if(!isset($map[$form_id]['subforms']))
+					$map[$form_id] = array('subforms' => array(), 'inputs' => array());
+				else
+					$map =& $map[$form_id]['subforms'];
+			}
+		}
+		
+		
+		/**
+		 * 
+		 *
+		 * @access protected
+		 * @param string $attribute
+		 * @param mixed $value
+		 * @return void
+		 */
+		protected function _addFormAttribute($attribute, $value, $append = true)
+		{
+			$current_form = end($this->_nestedForm);
+			$map =& $this->_formMap;
+			foreach($this->_nestedForm as $form_id)
+			{
+				if(isset($map[$form_id])) {
+					if($append && isset($map[$form_id][$attribute])) {
+						$map[$form_id][$attribute] = am($map[$form_id][$attribute], array($value));
+					} else {
+						$map[$form_id][$attribute] = $value;
+					}
+				} else {
+					$map =& $map[$form_id]['subforms'];
+				}
+			}
+		}
+		
+		
+		/**
+		 * Ends a form
+		 *
+		 * @access public
+		 * @return	string The HTML well formated
+		 */
+		public function eform()
+		{
+			array_pop($this->_nestedForm);
+			return $this->Bl->ediv();
+		}
+		
+		
+		public function submit($htmlAttributes = array(), $options = array())
+		{
+			$htmlDefaults = array('class' => '', 'id' => uniqid('btn'));
+			$htmlAttributes = $this->addClass(am($htmlDefaults, $htmlAttributes), 'submit');
+			
+			$defaults = array('label' => 'Submit');
+			$options = am($defaults, $options);
+			
+			$this->_addFormAttribute('submit', $htmlAttributes['id']);
+			
+			return $this->Bl->button($htmlAttributes, $options, $options['label']);
+		}
+		
+		
+		/**
+		 * Overloadable functions for layout modifications
+		 */
+		
+		
+		
+		
+		/**
 		 * Starts a input superfield thats aggregate others inputs
 		 *
 		 * @access public
@@ -163,6 +286,34 @@
 		{
 			$this->_nestedOrder--;
 			return $this->Bl->ediv();
+		}
+		
+		
+		/**
+		 * Starts a instruction enclosure
+		 *
+		 * @access public
+		 * @param  array $htmlAttributes
+		 * @param  array $options
+		 * @return	string The HTML well formated
+		 */
+		public function sinstructions($htmlAttributes = array(), $options = array())
+		{
+			return $this->Bl->sspan($htmlAttributes, $options);
+		}
+		
+		
+		/**
+		 * Ends a instruction enclosure
+		 *
+		 * @access public
+		 * @param  array $htmlAttributes
+		 * @param  array $options
+		 * @return	string The HTML well formated
+		 */
+		public function einstructions()
+		{
+			return $this->Bl->espan();
 		}
 		
 		
@@ -207,90 +358,12 @@
 		}
 		
 		
-		/**
-		 * Starts a instruction enclosure
-		 *
-		 * @access public
-		 * @param  array $htmlAttributes
-		 * @param  array $options
-		 * @return	string The HTML well formated
-		 */
-		public function sinstructions($htmlAttributes = array(), $options = array())
-		{
-			return $this->Bl->sspan($htmlAttributes, $options);
-		}
 		
 		
-		/**
-		 * Ends a instruction enclosure
-		 *
-		 * @access public
-		 * @param  array $htmlAttributes
-		 * @param  array $options
-		 * @return	string The HTML well formated
-		 */
-		public function einstructions()
-		{
-			return $this->Bl->espan();
-		}
 		
 		
-		/**
-		 * Starts a form
-		 *
-		 * @access public
-		 * @param  array $htmlAttributes
-		 * @param  array $options
-		 * @return	string The HTML well formated
-		 */
-		public function sform($htmlAttributes = array(), $options = array())
-		{
-			$View =& ClassRegistry::getObject('View');
-			$defaults = array(
-				'url' => $View->here,
-				'auto_submit' => true,
-				'model' => false,
-				'data' => false
-			);
-			$options = am($defaults, $options);
-			
-			$htmlDefaults = array(
-				'id' => $domId = uniqid('frm')
-			);
-			$htmlAttributes = am($htmlDefaults, $htmlAttributes);
-			$htmlAttributes = $this->addClass($htmlAttributes, 'form');
-			
-			if($options['data'])
-				$this->_data = $options['data'];
-			elseif($View->data)
-				$this->_data = $View->data;
-			
-			$this->_nestedForm[] = $htmlAttributes['id'];
-			$map =& $this->_formMap;
-			foreach($this->_nestedForm as $form_id) {
-				if(!isset($map[$form_id]))
-					$map[$form_id] = array();
-				else
-					$map =& $map[$form_id];
-			}
-			
-			$this->model = $options['model'];
-			$this->Form->create($options['model'], array('url' => $options['url']));
-			return $this->Bl->sdiv($htmlAttributes);
-		}
 		
 		
-		/**
-		 * Ends a form
-		 *
-		 * @access public
-		 * @return	string The HTML well formated
-		 */
-		public function eform()
-		{
-			array_pop($this->_nestedForm);
-			return $this->Bl->ediv();
-		}
 		
 		
 		/**
