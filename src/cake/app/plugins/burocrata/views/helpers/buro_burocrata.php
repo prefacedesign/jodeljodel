@@ -229,6 +229,13 @@
 		}
 		
 		
+		/**
+		 * Default submit button (actually is a simple button with javascript)
+		 * 
+		 * @access public
+		 * @param array $htmlAttributes
+		 * @param array $options
+		 */
 		public function submit($htmlAttributes = array(), $options = array())
 		{
 			$htmlDefaults = array('class' => '', 'id' => uniqid('btn'));

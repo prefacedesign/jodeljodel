@@ -16,13 +16,13 @@
 		
 			echo $this->Buro->input(
 					array(), 
-					array('fieldName' => 'begin', 'label' => 'When it begins?', 'type' => 'datetime')
+					array('fieldName' => 'begin', 'label' => 'When it begins?', 'type' => 'text')
 				);
 			
 			
 			echo $this->Buro->input(
 					array(), 
-					array('fieldName' => 'end', 'label' => 'When it ends?', 'type' => 'datetime')
+					array('fieldName' => 'end', 'label' => 'When it ends?', 'type' => 'text')
 				);
 			
 			echo $this->Buro->input(
@@ -35,18 +35,7 @@
 		echo $this->Buro->submit(array(), array('label' => 'Send this :)'));
 		
 	echo $this->Buro->eform();
-	
-	echo $this->Buro->sform();
-		echo $this->Buro->sform();
-		echo $this->Buro->eform();
-		
-		echo $this->Buro->sform();
-			echo $this->Buro->sform();
-			echo $this->Buro->eform();
-		echo $this->Buro->eform();
-		echo $this->Buro->submit(array(), array('label' => 'Aha!'));
-	echo $this->Buro->eform();
-		
+			
 		// echo $this->Buro->input(
 			// array(),
 			// array(
