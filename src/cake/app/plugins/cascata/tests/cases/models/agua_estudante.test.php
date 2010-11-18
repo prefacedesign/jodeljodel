@@ -3,7 +3,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-App::import('Model', 'AguaCascata.AguaEstudante');
+App::import('Model', 'Cascata.AguaEstudante');
 
 class AguaEstudanteTestCase extends CakeTestCase {
 
@@ -16,7 +16,7 @@ class AguaEstudanteTestCase extends CakeTestCase {
      */
     function testCascataHasAndBelongsToManyAfterFind()
     {
-        $this->AguaEstudante =& ClassRegistry::init('AguaCascata.AguaEstudante');
+        $this->AguaEstudante =& ClassRegistry::init('Cascata.AguaEstudante');
 
         $result = $this->AguaEstudante->pegaTodos();
         $expected = array(

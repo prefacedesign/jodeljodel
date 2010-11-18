@@ -1,5 +1,5 @@
 <?php
-class AguaEstudantesController extends AguaCascataAppController {
+class AguaEstudantesController extends CascataAppController {
 
 	var $name = 'AguaEstudantes';
 

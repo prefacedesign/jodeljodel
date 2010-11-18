@@ -3,7 +3,7 @@
  * Controller criado para realizar testes que geram não cascateamento
  */
 
-class AguaProfessorsController extends AguaCascataAppController {
+class AguaProfessorsController extends CascataAppController {
 
 	var $name = 'AguaProfessors';
         

@@ -4,13 +4,13 @@
  * and open the template in the editor.
  */
 
-class AguaEscola extends AguaCascataAppModel
+class AguaEscola extends CascataAppModel
 {
     var $name = 'AguaEscola';
 
-    var $hasMany = array('AguaCascata.AguaProfessor');
+    var $hasMany = array('Cascata.AguaProfessor');
 
-    var $actsAs = array('AguaCascata.AguaCascata');
+    var $actsAs = array('Cascata.AguaCascata');
 
     function pegaTodas(){
         return $this->find('all');

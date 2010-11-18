@@ -2,7 +2,7 @@
 /**
  * Controller criado para realizar testes que geram não cascateamento
  */
-class AguaEscolasController extends AguaCascataAppController {
+class AguaEscolasController extends CascataAppController {
 
 	var $name = 'AguaEscolas';
 

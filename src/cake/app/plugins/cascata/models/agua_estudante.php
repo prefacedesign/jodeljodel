@@ -5,13 +5,13 @@
  */
 
 
-class AguaEstudante extends AguaCascataAppModel
+class AguaEstudante extends CascataAppModel
 {
     var $name = 'AguaEstudante';
 
-    var $hasAndBelongsToMany = array('AguaCascata.AguaProfessor' );
+    var $hasAndBelongsToMany = array('Cascata.AguaProfessor' );
 
-    var $actsAs = array('AguaCascata.AguaCascata');
+    var $actsAs = array('Cascata.AguaCascata');
 
     function pegaTodos()
     {

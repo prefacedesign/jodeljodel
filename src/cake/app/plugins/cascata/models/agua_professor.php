@@ -3,15 +3,15 @@
  * Arquivo com Model Professor, utilizado para testar os problemas de cascateamos
  * com afterfind e beforefind
  */
-class AguaProfessor extends AguaCascataAppModel
+class AguaProfessor extends CascataAppModel
 {
     var $name = 'AguaProfessor';
 
-    var $actsAs = array('AguaCascata.AguaCascata','AguaCascata.AguaPessoa');
+    var $actsAs = array('Cascata.AguaCascata','Cascata.AguaPessoa');
 
-    var $belongsTo = array('AguaCascata.AguaEquipe');
+    var $belongsTo = array('Cascata.AguaEquipe');
 
-    //var $hasAndBelongsToMany = array('AguaCascata.AguaEstudante');
+    //var $hasAndBelongsToMany = array('Cascata.AguaEstudante');
 
     function afterFind($results, $primary)
     {

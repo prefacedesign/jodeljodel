@@ -4,13 +4,13 @@
  * and open the template in the editor.
  */
 
-class AguaEquipe extends AguaCascataAppModel
+class AguaEquipe extends CascataAppModel
 {
     var $name = 'AguaEquipe';
     
-    var $hasOne = array('AguaCascata.AguaProfessor');
+    var $hasOne = array('Cascata.AguaProfessor');
 
-    var $actsAs = array('AguaCascata.AguaCascata');
+    var $actsAs = array('Cascata.AguaCascata');
 
     function afterFind($results, $primary)
     {
@@ -25,6 +25,7 @@ class AguaEquipe extends AguaCascataAppModel
 
     function afterFindCascata($results)
     {
+        debug($results);
         foreach ($results as $key => $val)
         {
             //caso em que é hasMany, não sei se esse caso eu preciso tratar aqui
