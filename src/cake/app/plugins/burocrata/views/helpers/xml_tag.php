@@ -2,20 +2,9 @@
 
 class XmlTagHelper extends AppHelper
 {	
-	function _juntaAtributos($atr1, $atr2)
+	function stag($tag, $atributos = null, $opcoes = null)
 	{
-		if ($atr1 == null)
-			$atr1 = array();
-		
-		if ($atr2 == null)
-			$atr2 = array();
-			
-		return array_merge_recursive($atr1, $atr2);
-	}
-	
-	function iTag($tag, $atributos = null, $opcoes = null)
-	{
-		$opcoes_padrao = array('sefecha' => false);
+		$opcoes_padrao = array('close_me' => false);
 		$opcoes = am($opcoes_padrao, $opcoes);
 		extract($opcoes);
 		
@@ -37,10 +26,10 @@ class XmlTagHelper extends AppHelper
 				$atr .= ' '.$name.'="'.$value.'"';
 			}
 		}
-		return '<' . $tag . $atr . ($sefecha ? ' /' : '') . '>';
+		return '<' . $tag . $atr . ($close_me ? ' /' : '') . '>';
 	}
 
-	function fTag($tag)
+	function etag($tag)
 	{
 		return '</'.$tag.'>';
 	}
@@ -48,7 +37,7 @@ class XmlTagHelper extends AppHelper
 	function tag($tag, $atributos = null, $opcoes = null, $conteudo = null)
 	{
 		//debug($opcoes);
-		$opcoes_padrao = array('escape' => false, 'sefecha' => false);
+		$opcoes_padrao = array('escape' => false, 'close_me' => false);
 		$opcoes = am($opcoes_padrao, $opcoes);
 		//debug($opcoes);
 		extract($opcoes);
@@ -56,21 +45,21 @@ class XmlTagHelper extends AppHelper
 		
 		$vazio = $conteudo != '0' ? empty($conteudo) : false;
 		
-		if ($sefecha || $vazio)
+		if ($close_me || $vazio)
 		{
-			$sefecha = true;
-			$opcoes['sefecha'] = true;
+			$close_me = true;
+			$opcoes['close_me'] = true;
 		}
 		else
-			$sefecha = false;
+			$close_me = false;
 		
-		$t = $this->iTag($tag, $atributos, $opcoes);
+		$t = $this->stag($tag, $atributos, $opcoes);
 		
-		if (!$sefecha)
+		if (!$close_me)
 		{
 			if (!$escape)
 				$conteudo = h($conteudo);
-			$t .= $conteudo . $this->fTag($tag);
+			$t .= $conteudo . $this->etag($tag);
 		}
 		
 		return $t;
@@ -80,7 +69,7 @@ class XmlTagHelper extends AppHelper
 	{
 		$n_camelo = Inflector::camelize($n);
 		
-		if (substr($n, -4) == 'Seco' || substr($n, -4) == 'Seca')
+		if (substr($n, -3) == 'Dry')
 		{
 			$n = substr($n, 0, -4);
 			switch(count($args))
@@ -96,33 +85,33 @@ class XmlTagHelper extends AppHelper
 			}
 		}
 		
-		if (method_exists($this, 'i' . $n))
+		if (method_exists($this, 's' . $n))
 		{
 			@list($atributos, $opcoes, $conteudo) = $args;
-			$opcoes_padrao = array('escape' => false, 'sefecha' => false);
+			$opcoes_padrao = array('escape' => false, 'close_me' => false);
 			$opcoes = am($opcoes_padrao, $opcoes);
 			extract($opcoes);
 			
-			$t = $this->{'i' . $n}($atributos, $opcoes);
+			$t = $this->{'s' . $n}($atributos, $opcoes);
 			
-			if ($sefecha || empty($conteudo))
+			if ($close_me || empty($conteudo))
 			{
-				$sefecha = true;
-				$opcoes['sefecha'] = true;
+				$close_me = true;
+				$opcoes['close_me'] = true;
 			}
 			else
-				$sefecha = false;
+				$close_me = false;
 			
-			if (!$sefecha)
+			if (!$close_me)
 			{
 				if(!$escape)
 					$conteudo = h($conteudo);
-				$t .= $conteudo . $this->{'f' . $n}($atributos, $opcoes);
+				$t .= $conteudo . $this->{'e' . $n}($atributos, $opcoes);
 			}
 			return $t;
 		}
 		
-		if (preg_match('/(^[if])([A-Za-z]\w*)/', $n, $encontrados))
+		if (preg_match('/(^[se])([A-Za-z]\w*)/', $n, $encontrados))
 		{
 			$tag = $encontrados[2];
 			{
@@ -130,16 +119,16 @@ class XmlTagHelper extends AppHelper
 				{
 					case 2:
 						list($atributos, $opcoes) = $args;
-						return $this->{$encontrados[1] . 'Tag'}($tag, $atributos, $opcoes);
+						return $this->{$encontrados[1] . 'tag'}($tag, $atributos, $opcoes);
 					break;
 					
 					case 1:
 						list($atributos) = $args;
-						return $this->{$encontrados[1] . 'Tag'}($tag, $atributos);
+						return $this->{$encontrados[1] . 'tag'}($tag, $atributos);
 					break;
 					
 					default:
-						return $this->{$encontrados[1] . 'Tag'}($tag);
+						return $this->{$encontrados[1] . 'tag'}($tag);
 					break;
 				}
 			}

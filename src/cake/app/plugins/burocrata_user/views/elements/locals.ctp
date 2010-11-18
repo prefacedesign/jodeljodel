@@ -4,6 +4,11 @@
 	switch($type[0])
 	{
 		case 'admin_form':
+			
+		break;
+		
+		case 'burocrata_form':
+		
 		break;
 		
 		case 'admin_preview':

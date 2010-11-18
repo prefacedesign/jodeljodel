@@ -1,5 +1,5 @@
 <?php
-	echo $this->BuroBurocrata->iform(
+	echo $this->Buro->sform(
 			array('class' => 'azul'), // Parâmetros HTML
 			array(
 				'model' => 'Event', // Somente o Model pai, assim como no FormHelper::create
@@ -9,31 +9,31 @@
 			)
 		);
 		
-		echo $this->BuroBurocrata->iinput(array(),array(
+		echo $this->Buro->sinput(array(),array(
 			'type' => 'super_field',
 			'label' => 'About this event'
 		));
 		
-			echo $this->BuroBurocrata->input(
+			echo $this->Buro->input(
 					array(), 
-					array('name' => 'begin', 'label' => 'When it begins?', 'type' => 'datetime')
+					array('fieldName' => 'begin', 'label' => 'When it begins?', 'type' => 'datetime')
 				);
 			
 			
-			echo $this->BuroBurocrata->input(
+			echo $this->Buro->input(
 					array(), 
-					array('name' => 'end', 'label' => 'When it ends?', 'type' => 'datetime')
+					array('fieldName' => 'end', 'label' => 'When it ends?', 'type' => 'datetime')
 				);
 			
-			echo $this->BuroBurocrata->input(
+			echo $this->Buro->input(
 					array(), 
-					array('name' => 'about', 'type' => 'textarea')
+					array('fieldName' => 'about', 'type' => 'textarea')
 				);
 			
 		
-		echo $this->BuroBurocrata->finput();
+		echo $this->Buro->einput();
 		
-		echo $this->BuroBurocrata->input(
+		echo $this->Buro->input(
 			array(),
 			array(
 				'type' => 'belongs_to',
@@ -47,14 +47,6 @@
 			)
 		);
 		
-		// echo $this->BuroBurocrata->input(
-			// array(),
-			// array(
-				// 'type' => 'has_many',
-				// 'association' => 'Fonte'
-			// )
-		// );
-		
-	echo $this->BuroBurocrata->fform();
+	echo $this->Buro->eform();
 
 	

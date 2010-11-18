@@ -2,28 +2,37 @@
 	App::import('Helper', 'Burocrata.XmlTag');
 	class BuroBurocrataHelper extends XmlTagHelper
 	{
-		var $helpers = array('Form');
+		public $helpers = array('Form', 'Ajax',
+			'Typographer.*TypeBricklayer' => array(
+				'name' => 'Bl',
+				'receive_tools' => true
+			)
+		);
 		
-		protected $_nested_input = false;
-		protected $_nested_order = 0;
-		protected $_nested_form = false;
+		protected $_nestedInput = false;
+		protected $_nestedOrder = 0;
+		
+		protected $_nestedForm = array();
+		protected $_formMap = array();
 		protected $_data = false;
-		protected $_default_superclass = array('buro');
+		protected $_defaultSuperclass = array('buro');
+		
+		
 		
 		/**
-		 * Begin with a form field. Can be anyting.
+		 * Begins a form field.
 		 *
 		 * @access public
 		 * @param  array $htmlAttributes
 		 * @param  array $options
 		 * @return	string The HTML well formated
 		 */
-		public function iinput($htmlAttributes = array(), $options = array())
+		public function sinput($htmlAttributes = array(), $options = array())
 		{
 			$out = '';
 			$defaults = array(
 				'type' => 'text',
-				'name' => null,
+				'fieldName' => null,
 				'label' => null,
 				'options' => array()
 			);
@@ -31,13 +40,13 @@
 			
 			if($options['type'] == 'super_field')
 			{
-				$this->_nested_order++;
-				$out .= $this->isuperfield($htmlAttributes, $options);
+				$out .= $this->ssuperfield($htmlAttributes, $options);
 			}
 			else
 			{
+				$this->_nestedInput = false;
 				if($options['type'] != 'hidden')
-					$out .= $this->iinputcontainer($htmlAttributes, $options);
+					$out .= $this->sinputcontainer($htmlAttributes, $options);
 				
 				if(method_exists($this->Form, $options['type']))
 				{
@@ -50,15 +59,15 @@
 						unset($options['instructions']);
 					}
 					$inputOptions = array('label' => false, 'error' => false, 'div' => false, 'type' => $options['type']);
-					$out .= $this->Form->input($options['name'], $inputOptions);
-					$out .= $this->Form->error($options['name']);
+					$out .= $this->Form->input($options['fieldName'], $inputOptions);
+					$out .= $this->Form->error($options['fieldName']);
 				}
 				else
 				{
-					$out .= $this->{Inflector::variable($options['type'])}($options);
+					$out .= $this->{Inflector::variable('input'.$options['type'])}($options);
 				}
 				if($options['type'] != 'hidden')
-					$out .= $this->finputcontainer();
+					$out .= $this->einputcontainer();
 			}
 			return $out;
 		}
@@ -70,10 +79,13 @@
 		 * @access	public
 		 * @return	string The HTML well formated
 		 */
-		public function finput()
+		public function einput()
 		{
-			$this->_nested_order--;
-			return $this->fdiv();
+			if($this->_nestedInput)
+				return $this->esuperfield();
+				
+			$this->_nestedInput = $this->_nestedOrder > 0;
+			return $this->Bl->ediv();
 		}
 	
 	
@@ -87,8 +99,8 @@
 		 */
 		public function label($htmlAttributes = array(), $options = array(), $text = null)
 		{
-			if(isset($options['name'])) {
-				$fieldName = $options['name'];
+			if(isset($options['fieldName'])) {
+				$fieldName = $options['fieldName'];
 			} else {
 				$View =& ClassRegistry::getObject('View');
 				$fieldName = $View->entity();
@@ -111,7 +123,7 @@
 				$text = __(Inflector::humanize(Inflector::underscore($text)), true);
 			}
 			
-			return parent::ilabel($htmlAttributes) . $text . parent::flabel();;
+			return $this->Bl->slabel($htmlAttributes) . $text . $this->Bl->elabel();
 		}
 		
 		
@@ -123,18 +135,34 @@
 		 * @param  array $options
 		 * @return	string The HTML well formated
 		 */
-		public function isuperfield($htmlAttributes = array(), $options = array())
+		public function ssuperfield($htmlAttributes = array(), $options = array())
 		{
-			$this->_nested_input = true;
-			$htmlAttributes = am(array('class' => 'input'),$htmlAttributes);
+			$this->_nestedOrder++;
+			$this->_nestedInput = true;
+			$htmlAttributes = am(array('class' => 'input'), $htmlAttributes);
 			
 			extract($options);
 			
-			$out = $this->idiv($htmlAttributes);
+			$out = $this->Bl->sdiv($htmlAttributes);
 			if(isset($label))
-				$out .= $this->span(array(),array(), $label);
+				$out .= $this->Bl->sspan() . $label . $this->Bl->espan();
 			
 			return "\n".$out;
+		}
+		
+		
+		/**
+		 * Ends a input superfield thats aggregate others inputs
+		 *
+		 * @access public
+		 * @param  array $htmlAttributes
+		 * @param  array $options
+		 * @return	string The HTML well formated
+		 */
+		public function esuperfield()
+		{
+			$this->_nestedOrder--;
+			return $this->Bl->ediv();
 		}
 		
 		
@@ -146,24 +174,24 @@
 		 * @param  array $options
 		 * @return	string The HTML well formated
 		 */
-		public function iinputcontainer($htmlAttributes = array(), $options = array())
+		public function sinputcontainer($htmlAttributes = array(), $options = array())
 		{
 			$defaults = array();
-			if($this->_nested_order > 0)
+			if($this->_nestedOrder > 0)
 				$defaults['class'] = 'subinput';
 			else
 				$defaults['class'] = 'input';
 			
 			$htmlAttributes = am($defaults, $htmlAttributes);
 			
-			if(isset($options['name']))
+			if(isset($options['fieldName']))
 			{
-				$isFieldError = $this->Form->isFieldError($options['name']);
+				$isFieldError = $this->Form->isFieldError($options['fieldName']);
 				if($isFieldError)
 					$htmlAttributes['class'] .= ' error';
 			}
 			
-			$out = $this->idiv($htmlAttributes,$options);
+			$out = $this->Bl->sdiv($htmlAttributes,$options);
 			return "\n".$out;
 		}
 		
@@ -173,9 +201,9 @@
 		 *
 		 * @access public
 		 */
-		public function finputcontainer()
+		public function einputcontainer()
 		{
-			return $this->fdiv();
+			return $this->Bl->ediv();
 		}
 		
 		
@@ -187,9 +215,9 @@
 		 * @param  array $options
 		 * @return	string The HTML well formated
 		 */
-		public function iinstructions($htmlAttributes = array(), $options = array())
+		public function sinstructions($htmlAttributes = array(), $options = array())
 		{
-			return $this->ispan($htmlAttributes, $options);
+			return $this->Bl->sspan($htmlAttributes, $options);
 		}
 		
 		
@@ -201,9 +229,9 @@
 		 * @param  array $options
 		 * @return	string The HTML well formated
 		 */
-		public function finstructions()
+		public function einstructions()
 		{
-			return $this->fspan();
+			return $this->Bl->espan();
 		}
 		
 		
@@ -215,7 +243,7 @@
 		 * @param  array $options
 		 * @return	string The HTML well formated
 		 */
-		public function iform($htmlAttributes = array(), $options = array())
+		public function sform($htmlAttributes = array(), $options = array())
 		{
 			$View =& ClassRegistry::getObject('View');
 			$defaults = array(
@@ -226,16 +254,29 @@
 			);
 			$options = am($defaults, $options);
 			
+			$htmlDefaults = array(
+				'id' => $domId = uniqid('frm')
+			);
+			$htmlAttributes = am($htmlDefaults, $htmlAttributes);
+			$htmlAttributes = $this->addClass($htmlAttributes, 'form');
+			
 			if($options['data'])
 				$this->_data = $options['data'];
 			elseif($View->data)
 				$this->_data = $View->data;
 			
+			$this->_nestedForm[] = $htmlAttributes['id'];
+			$map =& $this->_formMap;
+			foreach($this->_nestedForm as $form_id) {
+				if(!isset($map[$form_id]))
+					$map[$form_id] = array();
+				else
+					$map =& $map[$form_id];
+			}
+			
 			$this->model = $options['model'];
-			return $this->Form->create(array(
-					'model' => $options['model'],
-					'url' => $options['url']
-			));
+			$this->Form->create($options['model'], array('url' => $options['url']));
+			return $this->Bl->sdiv($htmlAttributes);
 		}
 		
 		
@@ -245,9 +286,10 @@
 		 * @access public
 		 * @return	string The HTML well formated
 		 */
-		public function fform()
+		public function eform()
 		{
-			return $this->Form->end();
+			array_pop($this->_nestedForm);
+			return $this->Bl->ediv();
 		}
 		
 		
@@ -264,7 +306,7 @@
 		 * @return	string The HTML well formated
 		 * @todo	Error handling and default values
 		 */
-		public function belongsTo($options = array())
+		public function inputBelongsTo($options = array())
 		{
 			$inputOptions = $options;
 			$options = $options['options'];
@@ -289,19 +331,30 @@
 			$domId = uniqid('blt');
 			switch($options['type'])
 			{
-				case 'autocomplete': $input = $this->belongsToAutocomplete(array('id' => $domId)); break;
+				case 'autocomplete': $input = $this->belongsToAutocomplete(array('id' => $domId, 'searchField')); break;
 				case 'select': $input = $this->belongsToSelect(array('id' => $domId)); break;
 				default: // TODO: trigger error `type of `
 					return false;
 			}
 			
-			$out = $this->input(array(), array('type' => 'hidden', 'name' => $Model->alias.'.'.$Model->belongsTo[$options['model']]['foreignKey']));
+			$out = $this->input(array(), array('type' => 'hidden', 'fieldName' => $Model->alias.'.'.$Model->belongsTo[$options['model']]['foreignKey']));
 			$out .= $this->label(array('for' => $domId), array(), $inputOptions['label']);
 			if(isset($inputOptions['instructions'])) {
 				$out .= $this->instructions(array(),array(),$inputOptions['instructions']);
 				unset ($inputOptions['instructions']);
 			}
 			$out .= $input;
+			return $out;
+		}
+		
+		
+		function belongsToAutocomplete($options = array())
+		{
+			$out = '';
+			// $out = $this->Ajax->autoComplete($options[''], array(
+				
+			// ));
+			// debug(h($out));
 			return $out;
 		}
 	}
