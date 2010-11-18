@@ -55,6 +55,7 @@ class AguaProfessorTestCase extends CakeTestCase {
                         )
                     )
             );
+        debug($result);
         //fazer teste aqui para verificar se a cadeia veio!
         $this->assertEqual($result,$expected);
     }
