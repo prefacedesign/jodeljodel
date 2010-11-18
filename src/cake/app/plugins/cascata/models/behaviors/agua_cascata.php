@@ -9,118 +9,178 @@ class AguaCascataBehavior extends ModelBehavior {
         //aciona o afterFindCascata do Model filho do Model em questão (que vieram nos resultados)
         //ou seja, chamar o triggerModelCallback para cada filho do Model
         //triggerModelCallback(...)
-
         $results = $this->triggerModelCallback($Model, 'afterFindCascata', array($results,false),array('modParams' => true));
 
         return($results);
     }
 
+    //TODO: verificar se essa função não desempenha o mesmo código do triggerModelCalback
+    //
+    //TODO: verificar se  essas duas possibilidades isset($results[0][$filho['className']]) || isset($results[0][$Model->name][$filho['className']])
+    //não podem ser tratadas de uma melhor maneira - para não ficar verificando toda hora
+    //
+    //TODO: verificar se realmente é para disparar os callbacks dos filhos também
     function afterFindCascata(&$Model,$results) {
         //aciona o afterFindCascata do Model filho
-
         //carregando os filhos do Model
-        $filhos = array();
+         $filhos = array();
         foreach($Model->hasOne as $filho)
         {
-            $filhos[] = $filho['className'];
+            //só desce nos filhos se estiver nos results
+            if(isset($results[0][$filho['className']]) || isset($results[0][$Model->name][$filho['className']]))
+                $filhos[] = $filho['className'];
         }
         foreach($Model->hasMany as $filho)
         {
-            $filhos[] = $filho['className'];
+            //só desce nos filhos se estiver nos results
+            if(isset($results[0][$filho['className']])|| isset($results[0][$Model->name][$filho['className']]))
+                $filhos[] = $filho['className'];
         }
         foreach($Model->belongsTo as $filho)
         {
-            $filhos[] = $filho['className'];
+            //só desce nos filhos se estiver nos results
+            if(isset($results[0][$filho['className']])|| isset($results[0][$Model->name][$filho['className']]))
+                $filhos[] = $filho['className'];
         }
         foreach($Model->hasAndBelongsToMany as $filho)
         {
-            $filhos[] = $filho['className'];
+            //só desce nos filhos se estiver nos results
+            if(isset($results[0][$filho['className']])|| isset($results[0][$Model->name][$filho['className']]))
+                $filhos[] = $filho['className'];
         }
 
+        
         if (empty($filhos)) {
             return true;
  	}
+        
+
  	$count = count($filhos);
 
         $callback = 'afterFindCascata';
         $params = array($results);
 
-        for ($i = 0; $i < $count; $i++)
-        {
-            $name = $filhos[$i];
-            
-            //PASSO2: disparar callback dos models filhos
-            $result = $Model->{$name}->dispatchMethod($callback, $params);
+        $count_results = count($results);
+        //percorre todos os resultados, precisa dar trriger para cada resultado
+	for ($j = 0; $j < $count_results; $j++) {
+            if (is_array($params[0][$j])) {
+                for ($i = 0; $i < $count; $i++)
+                {
+                    $name = $filhos[$i];
 
-            if (is_array($result))
-            {
-                $params[0] = $result;
+                    //PASSO1: dar trigger nos behavior dos filhos
+                    if (isset($Model->{$name}) && is_object($Model->{$name})) {
+                        if (isset($params[0][$j][$name]))
+                            $data = $Model->{$name}->Behaviors->trigger($Model->{$name}, $callback, array(array(array($name => $params[0][$j][$name]) ) ),array('modParams' => true));
+                        else if (isset($params[0][$j][$Model->name][$name]))
+                            $data = $Model->{$name}->Behaviors->trigger($Model->{$name}, $callback, array(array(array($name => $params[0][$j][$Model->name][$name]) ) ),array('modParams' => true));
+
+                    }
+
+                    if (isset($data[0][$name])) {
+                            if (isset($params[0][$j][$name]))
+                                $params[0][$j][$name] = $data[0][$name];
+                            else if (isset($params[0][$j][$Model->name][$name]))
+                                    $params[0][$j][$Model->name][$name] = $data[0][$name];
+
+                    }
+                    
+                    if (isset($Model->{$name}) && is_object($Model->{$name})) {
+                            //disparar callback dos models filhos
+                            if (isset($params[0][$j][$name]))
+                                $data= $Model->{$name}->dispatchMethod($callback, array(array(array($name => $params[0][$j][$name]) ) ) );
+                            else if (isset($params[0][$j][$Model->name][$name]))
+                                $data= $Model->{$name}->dispatchMethod($callback, array(array(array($name => $params[0][$j][$Model->name][$name]) ) ) );
+                            
+                    }
+                    if (isset($data[0][$name])) {
+                            if (isset($params[0][$j][$name]))
+                                $params[0][$j][$name] = $data[0][$name];
+                            else if (isset($params[0][$j][$Model->name][$name]))
+                                    $params[0][$j][$Model->name][$name] = $data[0][$name];
+
+                    }
+
+                }
             }
+        }
 
- 	}
-        
  	if (isset($params[0]))
         {
+            if(isset($results[0][$filho['className']]) || isset($results[0][$Model->name][$filho['className']]))
             $results = $params[0];
  	}
 
-        //TODO: verificar esse return, ao ativar ocorre um uma chamada sucessiva, 
-        //que eu não tenho certeza se é desejada. Não iria ocorrer um loop, num
-        //exemplo como professor belongs to equipe e equipe hasone professor?
-        //return ($results);
+        return ($results);
     }
 
+    //TODO: verificar se os filhos não vem num formato diferente (assim como no Cascata.afterFindCascata
     function triggerModelCallback(&$Model,$callback,$params,$options)
     {
 
         $filhos = array();
         foreach($Model->hasOne as $filho)
         {
-            $filhos[] = $filho['className'];
+            //só desce nos filhos se estiver nos results
+            if(isset($params[0][0][$filho['className']]))
+                $filhos[] = $filho['className'];
         }
         foreach($Model->hasMany as $filho)
         {
-            $filhos[] = $filho['className'];
+            //só desce nos filhos se estiver nos results
+            if(isset($params[0][0][$filho['className']]))
+                $filhos[] = $filho['className'];
         }
         foreach($Model->belongsTo as $filho)
         {
-            $filhos[] = $filho['className'];
+            //só desce nos filhos se estiver nos results
+            if(isset($params[0][0][$filho['className']]))
+                $filhos[] = $filho['className'];
         }
         foreach($Model->hasAndBelongsToMany as $filho)
         {
-            $filhos[] = $filho['className'];
+            //só desce nos filhos se estiver nos results
+            if(isset($params[0][0][$filho['className']]))
+                $filhos[] = $filho['className'];
         }
-
+        
         if (empty($filhos)) {
             return true;
  	}
-
         
- 	$options = array_merge(array('break' => false, 'breakOn' => array(null, false), 'modParams' => false), $options);
+ 	//$options = array_merge(array('break' => false, 'breakOn' => array(null, false), 'modParams' => true), $options);
  	$count = count($filhos);
-      
- 	for ($i = 0; $i < $count; $i++)
-        {
-            $name = $filhos[$i];
 
-            //PASSO1: dar trigger nos behavior
-            $result = $Model->{$name}->Behaviors->trigger($Model->{$name}, $callback, $params,$options);
+        $count_results = count($params[0]);
 
-            if (is_array($result))
-                $params[0] = $result;
-            
+        //percorre todos os resultados, precisa dar trriger para cada resultado
+	for ($j = 0; $j < $count_results; $j++) {
+            if (is_array($params[0][$j])) {
+                for ($i = 0; $i < $count; $i++)
+                {
+                    $name = $filhos[$i];
 
-            //PASSO2: disparar callback dos models filhos
-            //$result = $Model->{$name}->dispatchMethod($Model->{$name}, $callback, $params);
-            $result = $Model->{$name}->dispatchMethod($callback, $params);
+                    //PASSO1: dar trigger nos behavior dos filhos
+                    if (isset($Model->{$name}) && is_object($Model->{$name})) {
+                        $data = $Model->{$name}->Behaviors->trigger($Model->{$name}, $callback, array(array(array($name => $params[0][$j][$name]) ) ),$options);
+                    }
 
-            if ($options['modParams'] && is_array($result))
-            {
-                //TODO: verificar se o params[0] não é sobreposto toda vez, o que deixaria só resultado do último
-                $params[0] = $result;
+                    if (isset($data[0][$name])) {
+                            $params[0][$j][$name] = $data[0][$name];
+                    }
+
+
+                    if (isset($Model->{$name}) && is_object($Model->{$name})) {
+                            //PASSO2: disparar callback dos models filhos
+                            $data= $Model->{$name}->dispatchMethod($callback, array(array(array($name => $params[0][$j][$name]) ) ) );
+                    }
+                    if (isset($data[0][$name])) {
+                            $params[0][$j][$name] = $data[0][$name];
+                    }
+
+                }
             }
-  
- 	}
+        }
  	if ($options['modParams'] && isset($params[0]))
         {
             return $params[0];

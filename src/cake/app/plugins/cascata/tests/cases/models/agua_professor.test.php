@@ -21,7 +21,7 @@ class AguaProfessorTestCase extends CakeTestCase {
                 array(
                         'AguaProfessor' => array (
                           'id' => 1,
-                          'nome' => 'joão Equipe Pessoa Professor',
+                          'nome' => 'joão Pessoa Professor',
                           'agua_escola_id' => 1,
                           'agua_equipe_id' => 1,
                           'created' => null,
@@ -39,7 +39,7 @@ class AguaProfessorTestCase extends CakeTestCase {
                 array(
                         'AguaProfessor' => array (
                               'id' => 2,
-                              'nome' => 'josé Equipe Pessoa Professor',
+                              'nome' => 'josé Pessoa Professor',
                               'agua_escola_id' => 2,
                               'agua_equipe_id' => 2,
                               'created' => null,
@@ -55,7 +55,6 @@ class AguaProfessorTestCase extends CakeTestCase {
                         )
                     )
             );
-
         //fazer teste aqui para verificar se a cadeia veio!
         $this->assertEqual($result,$expected);
     }

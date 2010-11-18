@@ -13,6 +13,7 @@ class AguaEscola extends CascataAppModel
     var $actsAs = array('Cascata.AguaCascata');
 
     function pegaTodas(){
+        
         return $this->find('all');
     }
 }

@@ -163,7 +163,6 @@ class ModelBehavior extends Object {
 			return $this->{$method}($model);
 		}
 		$params = array_values($params);
-
 		switch (count($params)) {
 			case 1:
 				return $this->{$method}($model, $params[0]);
@@ -480,7 +479,7 @@ class BehaviorCollection extends Object {
  * @access public
  */
 	function trigger(&$model, $callback, $params = array(), $options = array()) {
-		if (empty($this->_attached)) {
+                if (empty($this->_attached)) {
 			return true;
 		}
 		$options = array_merge(array('break' => false, 'breakOn' => array(null, false), 'modParams' => false), $options);
@@ -492,7 +491,6 @@ class BehaviorCollection extends Object {
 				continue;
 			}
 			$result = $this->{$name}->dispatchMethod($model, $callback, $params);
-
 			if ($options['break'] && ($result === $options['breakOn'] || (is_array($options['breakOn']) && in_array($result, $options['breakOn'], true)))) {
 				return $result;
 			} elseif ($options['modParams'] && is_array($result)) {

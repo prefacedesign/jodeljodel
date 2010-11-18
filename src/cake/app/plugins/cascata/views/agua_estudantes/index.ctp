@@ -1,3 +1,3 @@
 <?php
-    debug($estudantes);
+    //debug($estudantes);
 ?>
