@@ -30,6 +30,16 @@ class Play extends AppModel
     var $name = 'Play';
 
     var $actsAs = array('Tradutore.Translatable');
+
+    // Equivalent to:
+    // var $actsAs = array(
+    //     'Tradutore.Translatable' => array(
+    //         'className'       => 'PlayTranslation',
+    //         'foreignKey'      => 'play_id',
+    //         'languageField'   => 'language',
+    //         'defaultLanguage' => 'en'
+    //     )
+    // );
 }
 
 ?>

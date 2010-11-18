@@ -36,12 +36,15 @@ class TranslatableTestCase extends CakeTestCase
     );
 
     var $Play;
+    var $PlayTranslation;
     
     
     function startCase()
     {
         parent::startCase();
+
         $this->Play = ClassRegistry::init('Play');
+        $this->PlayTranslation = ClassRegistry::init('PlayTranslation');
     }
 
     
@@ -359,7 +362,7 @@ class TranslatableTestCase extends CakeTestCase
 
     function testGetSetLanguage()
     {
-        $expected = Configure::read('Tradutore.default_language');
+        $expected = Configure::read('Tradutore.defaultLanguage');
         $result = $this->Play->getLanguage();
 
         $this->assertEqual($expected, $result);
