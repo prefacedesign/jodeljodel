@@ -19,15 +19,27 @@
 /**
  * Mock object to test Translatable behavior.
  *
+ * The fake data is about William Shakespeare's plays.
+ *
  * @package    jodeljodel
  * @subpackage jodeljodel.tradutore.test
  */
 
-class TranslatableMock extends TradutoreAppModel
+class Play extends AppModel
 {
-    var $name = 'TranslatableMock';
-    
+    var $name = 'Play';
+
     var $actsAs = array('Tradutore.Translatable');
+
+    // Equivalent to:
+    // var $actsAs = array(
+    //     'Tradutore.Translatable' => array(
+    //         'className'       => 'PlayTranslation',
+    //         'foreignKey'      => 'play_id',
+    //         'languageField'   => 'language',
+    //         'defaultLanguage' => 'en'
+    //     )
+    // );
 }
 
 ?>

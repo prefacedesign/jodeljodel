@@ -33,3 +33,22 @@
  * ...and connect the rest of 'Pages' controller's urls.
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
+	
+/**
+ * Here, we are connecting '/css/sheet-layout_scheme.css' to a action called
+ * 'sheet' in the 'estilos' controller. This allows us to create dynamic CSS,
+ * according to the layout framework, called now "Estilista".
+ *
+ * @todo change plugin name
+ * @todo check wether reverse routing will work in this case, it may be the case to change
+ *	  routing in order to address this issue.
+ * 
+ */
+	Router::connect('/css/:scheme-:action.css/*',
+		array('plugin' => 'typographer', 'controller' => 'type_stylesheet'),
+		array(
+			'pass' => array('scheme'),
+			'scheme' => '[a-z0-9_]+'
+		)
+	);
+	

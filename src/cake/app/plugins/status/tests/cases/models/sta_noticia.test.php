@@ -13,7 +13,7 @@ class StaNoticiaTestCase extends CakeTestCase {
         $this->assertEqual($result, $expected);
     } 
 	
-	function testsetActiveStatuses()
+	function testSetActiveStatuses()
 	{
 		$this->StaNoticia =& ClassRegistry::init('StaNoticia');
 		$result = $this->StaNoticia->setActiveStatuses(array('status' => array('rascunho')));
@@ -26,12 +26,11 @@ class StaNoticiaTestCase extends CakeTestCase {
 				)
 			)
 		);
-		//debug($result);
 		$this->assertEqual($result, $expected);
 	}
 	
 	
-	function testsetActiveStatusesDefault()
+	function testSetActiveStatusesDefaultWhenYouHaveOnlyOneStatusFieldInTheModel()
 	{
 		$this->StaNoticia =& ClassRegistry::init('StaNoticia');
 		$result = $this->StaNoticia->setActiveStatuses(array('publicado'));
@@ -47,7 +46,7 @@ class StaNoticiaTestCase extends CakeTestCase {
 		$this->assertEqual($result, $expected);
 	}
 	
-	function testsetActiveStatusesMultipleDefault()
+	function testSetTwoActiveStatusesDefaultWhenYouHaveOnlyOneStatusFieldInTheModel()
 	{
 		$this->StaNoticia =& ClassRegistry::init('StaNoticia');
 		$result = $this->StaNoticia->setActiveStatuses(array('publicado','rascunho'));
@@ -70,68 +69,94 @@ class StaNoticiaTestCase extends CakeTestCase {
 		//debug($result);
 		$expected = array(
 			'0' => array(
-				'StaNoticia' => array(
-					'id' => '1',
-					'status' => 'rascunho'
-				)
-			),
+				'StaNoticia' => array('id' => '1','status' => 'rascunho')),
 			'1' => array(
-				'StaNoticia' => array(
-					'id' => '2',
-					'status' => 'publicado'
-				)
-			),
+				'StaNoticia' => array('id' => '2','status' => 'publicado')),
 			'2' => array(
-				'StaNoticia' => array(
-					'id' => '3',
-					'status' => 'rascunho'
-				)
-			)
+				'StaNoticia' => array('id' => '3','status' => 'rascunho')),
+			'3' => array(
+				'StaNoticia' => array('id' => '4','status' => 'rascunho')),
+			'4' => array(
+				'StaNoticia' => array('id' => '5','status' => 'publicado')),
+			'5' => array(
+				'StaNoticia' => array('id' => '6','status' => 'rascunho')),
+			'6' => array(
+				'StaNoticia' => array('id' => '7','status' => 'rascunho')),
+			'7' => array(
+				'StaNoticia' => array('id' => '8','status' => 'publicado')),
+			'8' => array(
+				'StaNoticia' => array('id' => '9','status' => 'rascunho')),
+			'9' => array(
+				'StaNoticia' => array('id' => '10','status' => 'publicado')),
+			'10' => array(
+				'StaNoticia' => array('id' => '12','status' => 'rascunho')),
+			'11' => array(
+				'StaNoticia' => array('id' => '15','status' => 'rascunho')),
+			'12' => array(
+				'StaNoticia' => array('id' => '16','status' => 'publicado')),
+			'13' => array(
+				'StaNoticia' => array('id' => '22','status' => 'publicado'))
 		);
 		$this->assertEqual($result, $expected);
 	}
 	
-	function testFindWithSetStatuses()
+	function testFindWithSetStatusesPerformedBefore()
 	{
 		$this->StaNoticia =& ClassRegistry::init('StaNoticia');
 		$this->StaNoticia->setActiveStatuses(array('publicado'));
 		$result = $this->StaNoticia->find('all');
 		$expected = array(
 			'0' => array(
-				'StaNoticia' => array(
-					'id' => '2',
-					'status' => 'publicado'
-				)
-			)
+				'StaNoticia' => array('id' => '2','status' => 'publicado')),
+			'1' => array(
+				'StaNoticia' => array('id' => '5','status' => 'publicado')),
+			'2' => array(
+				'StaNoticia' => array('id' => '8','status' => 'publicado')),
+			'3' => array(
+				'StaNoticia' => array('id' => '10','status' => 'publicado')),
+			'4' => array(
+				'StaNoticia' => array('id' => '16','status' => 'publicado')),
+			'5' => array(
+				'StaNoticia' => array('id' => '22','status' => 'publicado'))
 		);
 		$this->assertEqual($result, $expected);
 	}
 	
 	
-	function testFindWithTwoSetStatuses()
+	function testFindWithTwoSetStatusesPerformedBefore()
 	{
 		$this->StaNoticia =& ClassRegistry::init('StaNoticia');
 		$this->StaNoticia->setActiveStatuses(array('publicado', 'rascunho'));
 		$result = $this->StaNoticia->find('all');
 		$expected = array(
 			'0' => array(
-				'StaNoticia' => array(
-					'id' => '1',
-					'status' => 'rascunho'
-				)
-			),
+				'StaNoticia' => array('id' => '1','status' => 'rascunho')),
 			'1' => array(
-				'StaNoticia' => array(
-					'id' => '2',
-					'status' => 'publicado'
-				)
-			),
+				'StaNoticia' => array('id' => '2','status' => 'publicado')),
 			'2' => array(
-				'StaNoticia' => array(
-					'id' => '3',
-					'status' => 'rascunho'
-				)
-			)
+				'StaNoticia' => array('id' => '3','status' => 'rascunho')),
+			'3' => array(
+				'StaNoticia' => array('id' => '4','status' => 'rascunho')),
+			'4' => array(
+				'StaNoticia' => array('id' => '5','status' => 'publicado')),
+			'5' => array(
+				'StaNoticia' => array('id' => '6','status' => 'rascunho')),
+			'6' => array(
+				'StaNoticia' => array('id' => '7','status' => 'rascunho')),
+			'7' => array(
+				'StaNoticia' => array('id' => '8','status' => 'publicado')),
+			'8' => array(
+				'StaNoticia' => array('id' => '9','status' => 'rascunho')),
+			'9' => array(
+				'StaNoticia' => array('id' => '10','status' => 'publicado')),
+			'10' => array(
+				'StaNoticia' => array('id' => '12','status' => 'rascunho')),
+			'11' => array(
+				'StaNoticia' => array('id' => '15','status' => 'rascunho')),
+			'12' => array(
+				'StaNoticia' => array('id' => '16','status' => 'publicado')),
+			'13' => array(
+				'StaNoticia' => array('id' => '22','status' => 'publicado'))
 		);
 		$this->assertEqual($result, $expected);
 	}
@@ -140,42 +165,54 @@ class StaNoticiaTestCase extends CakeTestCase {
 	function testFindWithInlineActiveStatuses()
 	{
 		$this->StaNoticia =& ClassRegistry::init('StaNoticia');
-		$result = $this->StaNoticia->find('all',array('conditions' => array('id' => array(1,2,3)),'active_statuses' => array('status' => array('publicado'))));
+		$result = $this->StaNoticia->find('all',array('conditions' => array('id' => array(1,2,3,4,5,6,7,8,9,10)),'active_statuses' => array('status' => array('publicado'))));
 		$expected = array(
 			'0' => array(
-				'StaNoticia' => array(
-					'id' => '2',
-					'status' => 'publicado'
-				)
-			)
+				'StaNoticia' => array('id' => '2','status' => 'publicado')),
+			'1' => array(
+				'StaNoticia' => array('id' => '5','status' => 'publicado')),
+			'2' => array(
+				'StaNoticia' => array('id' => '8','status' => 'publicado')),
+			'3' => array(
+				'StaNoticia' => array('id' => '10','status' => 'publicado'))
 		);
 		$this->assertEqual($result, $expected);
 	}
 	
 	
-	function testFindaAfterASeekWithInlineActiveStatuses()
+	function testFindAllAfterASeekWithInlineActiveStatuses()
 	{
 		$this->StaNoticia =& ClassRegistry::init('StaNoticia');
 		$result = $this->StaNoticia->find('all');
 		$expected = array(
 			'0' => array(
-				'StaNoticia' => array(
-					'id' => '1',
-					'status' => 'rascunho'
-				)
-			),
+				'StaNoticia' => array('id' => '1','status' => 'rascunho')),
 			'1' => array(
-				'StaNoticia' => array(
-					'id' => '2',
-					'status' => 'publicado'
-				)
-			),
+				'StaNoticia' => array('id' => '2','status' => 'publicado')),
 			'2' => array(
-				'StaNoticia' => array(
-					'id' => '3',
-					'status' => 'rascunho'
-				)
-			)
+				'StaNoticia' => array('id' => '3','status' => 'rascunho')),
+			'3' => array(
+				'StaNoticia' => array('id' => '4','status' => 'rascunho')),
+			'4' => array(
+				'StaNoticia' => array('id' => '5','status' => 'publicado')),
+			'5' => array(
+				'StaNoticia' => array('id' => '6','status' => 'rascunho')),
+			'6' => array(
+				'StaNoticia' => array('id' => '7','status' => 'rascunho')),
+			'7' => array(
+				'StaNoticia' => array('id' => '8','status' => 'publicado')),
+			'8' => array(
+				'StaNoticia' => array('id' => '9','status' => 'rascunho')),
+			'9' => array(
+				'StaNoticia' => array('id' => '10','status' => 'publicado')),
+			'10' => array(
+				'StaNoticia' => array('id' => '12','status' => 'rascunho')),
+			'11' => array(
+				'StaNoticia' => array('id' => '15','status' => 'rascunho')),
+			'12' => array(
+				'StaNoticia' => array('id' => '16','status' => 'publicado')),
+			'13' => array(
+				'StaNoticia' => array('id' => '22','status' => 'publicado'))
 		);
 		$this->assertEqual($result, $expected);
 	}

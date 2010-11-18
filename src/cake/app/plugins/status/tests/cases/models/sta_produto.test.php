@@ -14,7 +14,7 @@ class StaProdutoTestCase extends CakeTestCase {
     } 
 	
 	
-	function testsetActiveStatuses()
+	function testSetActiveStatuses()
 	{
 		$this->StaProduto =& ClassRegistry::init('StaProduto');
 		$result = $this->StaProduto->setActiveStatuses(array('disponibilidade' => array('ativo')));
@@ -36,7 +36,7 @@ class StaProdutoTestCase extends CakeTestCase {
 	}
 	
 	
-	function testSetTwoStatusesActive()
+	function testSetTwoActiveStatuses()
 	{
 		$this->StaProduto =& ClassRegistry::init('StaProduto');
 		$result = $this->StaProduto->setActiveStatuses(array('disponibilidade' => array('ativo'), 'etapa' => array('verde', 'maduro')));
@@ -59,128 +59,158 @@ class StaProdutoTestCase extends CakeTestCase {
 	
 	
 	
-	function testFindAll()
+	function testFindAllWithCleanActiveStatuse()
 	{
 		$this->StaProduto =& ClassRegistry::init('StaProduto');
-		$this->StaProduto->setActiveStatuses(array('disponibilidade' => array('ativo','inativo'), 'etapa' => array('verde', 'maduro', 'podre')));
+		$this->StaProduto->cleanActiveStatuses(array('disponibilidade','etapa'));
 		$result = $this->StaProduto->find('all');
 		$expected = array(
 			'0' => array(
-				'StaProduto' => array(
-					'id' => '1',
-					'status' => 'ativo',
-					'etapa' => 'verde'
-				)
-			),
+				'StaProduto' => array('id' => '1','status' => 'ativo','etapa' => 'verde')),
 			'1' => array(
-				'StaProduto' => array(
-					'id' => '2',
-					'status' => 'inativo',
-					'etapa' => 'maduro'
-				)
-			),
+				'StaProduto' => array('id' => '2','status' => 'inativo','etapa' => 'maduro')),
 			'2' => array(
-				'StaProduto' => array(
-					'id' => '3',
-					'status' => 'ativo',
-					'etapa' => 'podre'
-				)
-			)
+				'StaProduto' => array('id' => '3','status' => 'ativo','etapa' => 'podre')),
+			'3' => array(
+				'StaProduto' => array('id' => '5','status' => 'ativo','etapa' => 'podre')),
+			'4' => array(
+				'StaProduto' => array('id' => '6','status' => 'ativo','etapa' => 'verde')),
+			'5' => array(
+				'StaProduto' => array('id' => '7','status' => 'ativo','etapa' => 'podre')),
+			'6' => array(
+				'StaProduto' => array('id' => '10','status' => 'inativo','etapa' => 'maduro')),
+			'7' => array(
+				'StaProduto' => array('id' => '12','status' => 'ativo','etapa' => 'verde')),
+			'8' => array(
+				'StaProduto' => array('id' => '13','status' => 'ativo','etapa' => 'maduro')),
+			'9' => array(
+				'StaProduto' => array('id' => '14','status' => 'inativo','etapa' => 'podre')),
+			'10' => array(
+				'StaProduto' => array('id' => '15','status' => 'ativo','etapa' => 'podre')),
+			'11' => array(
+				'StaProduto' => array('id' => '16','status' => 'ativo','etapa' => 'verde')),
+			'12' => array(
+				'StaProduto' => array('id' => '17','status' => 'ativo','etapa' => 'maduro')),
+			'13' => array(
+				'StaProduto' => array('id' => '22','status' => 'inativo','etapa' => 'podre')),
+			'14' => array(
+				'StaProduto' => array('id' => '30','status' => 'inativo','etapa' => 'verde'))
 		);
 		$this->assertEqual($result, $expected);
 	}
 	
 	
-	function testFindWithSetStatuses()
+	function testFindWithSetActiveStatusesPerformedBefore()
 	{
 		$this->StaProduto =& ClassRegistry::init('StaProduto');
 		$this->StaProduto->setActiveStatuses(array('disponibilidade' => array('ativo'), 'etapa' => array('verde', 'maduro')));
 		$result = $this->StaProduto->find('all');
 		$expected = array(
 			'0' => array(
-				'StaProduto' => array(
-					'id' => '1',
-					'status' => 'ativo',
-					'etapa' => 'verde'
-				)
-			)
+				'StaProduto' => array('id' => '1','status' => 'ativo','etapa' => 'verde')),
+			'1' => array(
+				'StaProduto' => array('id' => '6','status' => 'ativo','etapa' => 'verde')),
+			'2' => array(
+				'StaProduto' => array('id' => '12','status' => 'ativo','etapa' => 'verde')),
+			'3' => array(
+				'StaProduto' => array('id' => '13','status' => 'ativo','etapa' => 'maduro')),
+			'4' => array(
+				'StaProduto' => array('id' => '16','status' => 'ativo','etapa' => 'verde')),
+			'5' => array(
+				'StaProduto' => array('id' => '17','status' => 'ativo','etapa' => 'maduro'))
 		);
 		$this->assertEqual($result, $expected);
 	}
 	
-	function testFindWithMoreStatuses()
+	function testFindWithMoreSetActiveStatusesPerformedBefore()
 	{
 		$this->StaProduto =& ClassRegistry::init('StaProduto');
 		$this->StaProduto->setActiveStatuses(array('disponibilidade' => array('ativo'), 'etapa' => array('verde', 'maduro','podre')));
 		$result = $this->StaProduto->find('all');
 		$expected = array(
 			'0' => array(
-				'StaProduto' => array(
-					'id' => '1',
-					'status' => 'ativo',
-					'etapa' => 'verde'
-				)
-			),
+				'StaProduto' => array('id' => '1','status' => 'ativo','etapa' => 'verde')),
 			'1' => array(
-				'StaProduto' => array(
-					'id' => '3',
-					'status' => 'ativo',
-					'etapa' => 'podre'
-				)
-			)
+				'StaProduto' => array('id' => '3','status' => 'ativo','etapa' => 'podre')),
+			'2' => array(
+				'StaProduto' => array('id' => '5','status' => 'ativo','etapa' => 'podre')),
+			'3' => array(
+				'StaProduto' => array('id' => '6','status' => 'ativo','etapa' => 'verde')),
+			'4' => array(
+				'StaProduto' => array('id' => '7','status' => 'ativo','etapa' => 'podre')),
+			'5' => array(
+				'StaProduto' => array('id' => '12','status' => 'ativo','etapa' => 'verde')),
+			'6' => array(
+				'StaProduto' => array('id' => '13','status' => 'ativo','etapa' => 'maduro')),
+			'7' => array(
+				'StaProduto' => array('id' => '15','status' => 'ativo','etapa' => 'podre')),
+			'8' => array(
+				'StaProduto' => array('id' => '16','status' => 'ativo','etapa' => 'verde')),
+			'9' => array(
+				'StaProduto' => array('id' => '17','status' => 'ativo','etapa' => 'maduro'))
 		);
 		$this->assertEqual($result, $expected);
 	}
 	
 	
-	function testFindWithSetStatusesaAndOtherConditions()
+	function testFindWithSetActiveStatusesAndOtherConditions()
 	{
 		$this->StaProduto =& ClassRegistry::init('StaProduto');
 		$teste = $this->StaProduto->setActiveStatuses(array('disponibilidade' => array('ativo','inativo'), 'etapa' => array('verde', 'maduro')));
 		$result = $this->StaProduto->find('all', array('conditions' => array('StaProduto.status' => 'ativo')));
 		$expected = array(
 			'0' => array(
-				'StaProduto' => array(
-					'id' => '1',
-					'status' => 'ativo',
-					'etapa' => 'verde'
-				)
-			)
+				'StaProduto' => array('id' => '1','status' => 'ativo','etapa' => 'verde')),
+			'1' => array(
+				'StaProduto' => array('id' => '6','status' => 'ativo','etapa' => 'verde')),
+			'2' => array(
+				'StaProduto' => array('id' => '12','status' => 'ativo','etapa' => 'verde')),
+			'3' => array(
+				'StaProduto' => array('id' => '13','status' => 'ativo','etapa' => 'maduro')),
+			'4' => array(
+				'StaProduto' => array('id' => '16','status' => 'ativo','etapa' => 'verde')),
+			'5' => array(
+				'StaProduto' => array('id' => '17','status' => 'ativo','etapa' => 'maduro'))
 		);
 		$this->assertEqual($result, $expected);
 	}
 	
-	function testFindWithSetStatusesaAndAnotherConditions()
+	function testFindWithSetActiveStatusesAndAnotherConditions()
 	{
 		$this->StaProduto =& ClassRegistry::init('StaProduto');
 		$this->StaProduto->setActiveStatuses(array('disponibilidade' => array('ativo','inativo'), 'etapa' => array('verde', 'maduro', 'podre')));
 		$result = $this->StaProduto->find('all', array('conditions' => array('StaProduto.status' => 'ativo', 'StaProduto.etapa' => array('verde','podre'))));
 		$expected = array(
 			'0' => array(
-				'StaProduto' => array(
-					'id' => '1',
-					'status' => 'ativo',
-					'etapa' => 'verde'
-				)
-			),
+				'StaProduto' => array('id' => '1','status' => 'ativo','etapa' => 'verde')),
 			'1' => array(
-				'StaProduto' => array(
-					'id' => '3',
-					'status' => 'ativo',
-					'etapa' => 'podre'
-				)
-			)
+				'StaProduto' => array('id' => '3','status' => 'ativo','etapa' => 'podre')),
+			'2' => array(
+				'StaProduto' => array('id' => '5','status' => 'ativo','etapa' => 'podre')),
+			'3' => array(
+				'StaProduto' => array('id' => '6','status' => 'ativo','etapa' => 'verde')),
+			'4' => array(
+				'StaProduto' => array('id' => '7','status' => 'ativo','etapa' => 'podre')),
+			'5' => array(
+				'StaProduto' => array('id' => '12','status' => 'ativo','etapa' => 'verde')),
+			'6' => array(
+				'StaProduto' => array('id' => '15','status' => 'ativo','etapa' => 'podre')),
+			'7' => array(
+				'StaProduto' => array('id' => '16','status' => 'ativo','etapa' => 'verde')),
 		);
 		$this->assertEqual($result, $expected);
 	}
 	
 	
-	function testFindWithConditionsInline()
+	function testFindAllWithConditionsInline()
 	{
 		$this->StaProduto =& ClassRegistry::init('StaProduto');
 		$teste = $this->StaProduto->setActiveStatuses(array('disponibilidade' => array('ativo'), 'etapa' => array('verde', 'maduro', 'podre')));
-		$result = $this->StaProduto->find('all', array('conditions' => 'StaProduto.id = 2 AND StaProduto.etapa = "verde"'));
-		$expected = array();
+		$result = $this->StaProduto->find('all', array('conditions' => 'StaProduto.id in (1,2,3,4,5) AND StaProduto.etapa = "verde"'));
+		$expected = array(
+			'0' => array(
+				'StaProduto' => array('id' => '1','status' => 'ativo','etapa' => 'verde'))
+		);
 		$this->assertEqual($result, $expected);
 	}
 	
@@ -276,17 +306,16 @@ class StaProdutoTestCase extends CakeTestCase {
 	{	
 		StatusBehavior::setGlobalActiveStatuses(array('etapa' => array('active' => array('verde'), 'overwrite' => true)));
 		$this->StaProduto =& ClassRegistry::init('StaProduto');
-		//$teste = $this->StaProduto->setActiveStatuses(array('disponibilidade' => array('ativo'), 'etapa' => array('verde', 'maduro', 'podre')));
 		$result = $this->StaProduto->find('all');
-		//debug($result);
 		$expected = array(
 			'0' => array(
-				'StaProduto' => array(
-					'id' => '1',
-					'status' => 'ativo',
-					'etapa' => 'verde'
-				)
-			)
+				'StaProduto' => array('id' => '1','status' => 'ativo','etapa' => 'verde')),
+			'1' => array(
+				'StaProduto' => array('id' => '6','status' => 'ativo','etapa' => 'verde')),
+			'2' => array(
+				'StaProduto' => array('id' => '12','status' => 'ativo','etapa' => 'verde')),
+			'3' => array(
+				'StaProduto' => array('id' => '16','status' => 'ativo','etapa' => 'verde'))
 		);
 		$this->assertEqual($result, $expected);
 	}
@@ -300,19 +329,23 @@ class StaProdutoTestCase extends CakeTestCase {
 		//debug($result);
 		$expected = array(
 			'0' => array(
-				'StaProduto' => array(
-					'id' => '1',
-					'status' => 'ativo',
-					'etapa' => 'verde'
-				)
-			),
+				'StaProduto' => array('id' => '1','status' => 'ativo','etapa' => 'verde')),
 			'1' => array(
-				'StaProduto' => array(
-					'id' => '2',
-					'status' => 'inativo',
-					'etapa' => 'maduro'
-				)
-			)
+				'StaProduto' => array('id' => '2','status' => 'inativo','etapa' => 'maduro')),
+			'2' => array(
+				'StaProduto' => array('id' => '6','status' => 'ativo','etapa' => 'verde')),
+			'3' => array(
+				'StaProduto' => array('id' => '10','status' => 'inativo','etapa' => 'maduro')),
+			'4' => array(
+				'StaProduto' => array('id' => '12','status' => 'ativo','etapa' => 'verde')),
+			'5' => array(
+				'StaProduto' => array('id' => '13','status' => 'ativo','etapa' => 'maduro')),
+			'6' => array(
+				'StaProduto' => array('id' => '16','status' => 'ativo','etapa' => 'verde')),
+			'7' => array(
+				'StaProduto' => array('id' => '17','status' => 'ativo','etapa' => 'maduro')),
+			'8' => array(
+				'StaProduto' => array('id' => '30','status' => 'inativo','etapa' => 'verde'))
 		);
 		$this->assertEqual($result, $expected);
 	}
@@ -327,37 +360,53 @@ class StaProdutoTestCase extends CakeTestCase {
 		//debug($result);
 		$expected = array(
 			'0' => array(
-				'StaProduto' => array(
-					'id' => '1',
-					'status' => 'ativo',
-					'etapa' => 'verde'
-				)
-			),
+				'StaProduto' => array('id' => '1','status' => 'ativo','etapa' => 'verde')),
 			'1' => array(
-				'StaProduto' => array(
-					'id' => '2',
-					'status' => 'inativo',
-					'etapa' => 'maduro'
-				)
-			)
+				'StaProduto' => array('id' => '2','status' => 'inativo','etapa' => 'maduro')),
+			'2' => array(
+				'StaProduto' => array('id' => '6','status' => 'ativo','etapa' => 'verde')),
+			'3' => array(
+				'StaProduto' => array('id' => '10','status' => 'inativo','etapa' => 'maduro')),
+			'4' => array(
+				'StaProduto' => array('id' => '12','status' => 'ativo','etapa' => 'verde')),
+			'5' => array(
+				'StaProduto' => array('id' => '13','status' => 'ativo','etapa' => 'maduro')),
+			'6' => array(
+				'StaProduto' => array('id' => '16','status' => 'ativo','etapa' => 'verde')),
+			'7' => array(
+				'StaProduto' => array('id' => '17','status' => 'ativo','etapa' => 'maduro')),
+			'8' => array(
+				'StaProduto' => array('id' => '30','status' => 'inativo','etapa' => 'verde'))
 		);
 		$this->assertEqual($result, $expected);
 	}
 	
 	function testFindAfterSetGlobalActiveStatusWithoutOverwriteButThatShouldBeConsideredCauseThereAreNotAnotherStatusSettled()
 	{	
-		StatusBehavior::setGlobalActiveStatuses(array('etapa' => array('active' => array('verde'), 'overwrite' => false)));
+		StatusBehavior::setGlobalActiveStatuses(array(
+			'disponibilidade' => array(
+				'active' => array('ativo','inativo'), 
+				'overwrite' => false
+			), 
+			'etapa' => array(
+				'active' => array('verde'), 
+				'overwrite' => false
+			)
+		));
 		$this->StaProduto =& ClassRegistry::init('StaProduto');
 		$this->StaProduto->cleanActiveStatuses(array('disponibilidade','etapa'));
 		$result = $this->StaProduto->find('all');
 		$expected = array(
 			'0' => array(
-				'StaProduto' => array(
-					'id' => '1',
-					'status' => 'ativo',
-					'etapa' => 'verde'
-				)
-			)
+				'StaProduto' => array('id' => '1','status' => 'ativo','etapa' => 'verde')),
+			'1' => array(
+				'StaProduto' => array('id' => '6','status' => 'ativo','etapa' => 'verde')),
+			'2' => array(
+				'StaProduto' => array('id' => '12','status' => 'ativo','etapa' => 'verde')),
+			'3' => array(
+				'StaProduto' => array('id' => '16','status' => 'ativo','etapa' => 'verde')),
+			'4' => array(
+				'StaProduto' => array('id' => '30','status' => 'inativo','etapa' => 'verde'))
 		);
 		$this->assertEqual($result, $expected);
 	}
