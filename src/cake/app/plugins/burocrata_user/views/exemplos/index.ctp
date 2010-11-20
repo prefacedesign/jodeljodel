@@ -4,7 +4,13 @@
 		array(
 			'model' => 'Event', // Somente o Model pai, assim como no FormHelper::create
 			'envio' => 'ajax',
-			'auto_submit' => true, // Não tenho certeza o que isso faz
+			'callbacks' => array(
+				'onStart' => array('js' => "form.setOpacity(0.5);"),
+				'onComplete' => array('js' => "form.setOpacity(1);", 'popup' => 'Ahá!'),
+				// 'onSuccess'  => array('redirect' => 'http://www.google.com'),
+				'onSave'     => array('popup' => 'Salvou!'),
+				'onRejected' => array('js' => "minhaFuncao(saved, response);")
+			),
 			'url' => array('action' => 'recebedor') // Action que vai receber o POST
 		)
 	);

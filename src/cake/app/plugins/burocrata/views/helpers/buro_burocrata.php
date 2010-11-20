@@ -2,7 +2,7 @@
 	App::import('Helper', 'Burocrata.XmlTag');
 	class BuroBurocrataHelper extends XmlTagHelper
 	{
-		public $helpers = array('Form', 'Ajax',
+		public $helpers = array('Html', 'Form', 'Ajax', 'Js' => 'prototype', 'Burocrata.BuroOfficeBoy',
 			'Typographer.*TypeBricklayer' => array(
 				'name' => 'Bl',
 				'receive_tools' => true
@@ -144,6 +144,7 @@
 				'url' => $View->here,
 				'auto_submit' => true,
 				'model' => false,
+				'callbacks' => array(),
 				'data' => false
 			);
 			$options = am($defaults, $options);
@@ -160,6 +161,8 @@
 				$this->_data = $View->data;
 			
 			$this->_addForm($htmlAttributes['id']);
+			$this->_addFormAttribute('callbacks', $options['callbacks']);
+			$this->_addFormAttribute('url', $options['url']);
 			
 			$this->model = $options['model'];
 			$this->Form->create($options['model'], array('url' => $options['url']));
@@ -190,7 +193,7 @@
 		
 		
 		/**
-		 * 
+		 * Writes a attribute to current form
 		 *
 		 * @access protected
 		 * @param string $attribute
@@ -217,14 +220,43 @@
 		
 		
 		/**
-		 * Ends a form
+		 * Reads a attribute from the current form
+		 *
+		 * @access protected
+		 * @param string $attribute The name of attribute
+		 * @return mixed The attribute, if found, or null otherwise
+		 */
+		protected function _readFormAttribute($attribute)
+		{
+			$current_form = end($this->_nestedForm);
+			$map =& $this->_formMap;
+			foreach($this->_nestedForm as $form_id)
+			{
+				if(isset($map[$form_id]) && isset($map[$form_id][$attribute])) {
+					return $map[$form_id][$attribute];
+				} elseif(!isset($map[$form_id]['subforms'])) {
+					return null;
+				} else {
+					$map =& $map[$form_id]['subforms'];
+				}
+			}
+		}
+		
+		
+		/**
+		 * Ends a form and creates its javascript class
 		 *
 		 * @access public
-		 * @return	string The HTML well formated
+		 * @return string The HTML well formated
 		 */
 		public function eform()
 		{
-			array_pop($this->_nestedForm);
+			$this->BuroOfficeBoy->newForm(
+				$this->_readFormAttribute('url'),
+				end($this->_nestedForm),
+				$this->_readFormAttribute('submit'),
+				$this->_readFormAttribute('callbacks')
+			);
 			return $this->Bl->ediv();
 		}
 		
