@@ -9,6 +9,9 @@
 			)
 		);
 		
+		public $modelAlias;
+		public $modelPlugin;
+		
 		protected $_nestedInput = false;
 		protected $_nestedOrder = 0;
 		
@@ -141,7 +144,7 @@
 		{
 			$View =& ClassRegistry::getObject('View');
 			$defaults = array(
-				'url' => $View->here,
+				'url' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'save'),
 				'auto_submit' => true,
 				'model' => false,
 				'callbacks' => array(),
@@ -164,8 +167,9 @@
 			$this->_addFormAttribute('callbacks', $options['callbacks']);
 			$this->_addFormAttribute('url', $options['url']);
 			
-			$this->model = $options['model'];
-			$this->Form->create($options['model'], array('url' => $options['url']));
+			list($this->modelPlugin, $this->modelAlias) = pluginSplit($options['model']);
+			
+			$this->Form->create($this->modelAlias, array('url' => $options['url']));
 			return $this->Bl->sdiv($htmlAttributes);
 		}
 		

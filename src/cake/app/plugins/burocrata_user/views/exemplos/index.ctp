@@ -2,16 +2,17 @@
 	echo $this->Buro->sform(
 		array('class' => 'azul'), // Parâmetros HTML
 		array(
-			'model' => 'Event', // Somente o Model pai, assim como no FormHelper::create
+			'model' => 'BurocrataUser.Event', // Somente o Model pai, assim como no FormHelper::create
 			'envio' => 'ajax',
 			'callbacks' => array(
 				'onStart' => array('js' => "form.setOpacity(0.5);"),
-				'onComplete' => array('js' => "form.setOpacity(1);", 'popup' => 'Ahá!'),
-				// 'onSuccess'  => array('redirect' => 'http://www.google.com'),
+				'onComplete' => array('js' => "form.setOpacity(1);"),
+				// 'onSuccess'  => 'contentUpdate',
 				'onSave'     => array('popup' => 'Salvou!'),
-				'onRejected' => array('js' => "minhaFuncao(saved, response);")
+				'onRejected' => array('js' => "console.log('aqui estou');"),
+				'onFailure'	 => array('popup' => 'Não foi possível conectar-se ao servidor!')
 			),
-			'url' => array('action' => 'recebedor') // Action que vai receber o POST
+			// 'url' => array('action' => 'recebedor') // Action que vai receber o POST
 		)
 	);
 		

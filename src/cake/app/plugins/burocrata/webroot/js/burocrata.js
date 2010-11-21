@@ -2,15 +2,23 @@ var BuroForm = Class.create({
 	initialize: function()
 	{
 		this.url = arguments[0];
+
 		this.form = $(arguments[1]);
+		this.form.reset = this.resetForm.bind(this);
+
 		this.submit = $(arguments[2]);
 		this.submit.observe('click', this.submits.bind(this));
+	},
+	resetForm: function()
+	{
+		
 	},
 	submits: function(ev)
 	{
 		var data = Form.serializeElements(Form.getElements(this.form));
 		this.trigger('onStart');
 		new Ajax.Request(this.url, {
+			parameters: data,
 			onComplete: function (response) { this.trigger('onComplete'); }.bind(this),
 			onFailure: function (response) { this.trigger('onFailure'); }.bind(this),
 			onSuccess: function (response) {
@@ -29,20 +37,31 @@ var BuroForm = Class.create({
 	},
 	trigger: function(callback)
 	{
-		if(this.callbacks.get(callback))
+		if(!this.callbacks.get(callback))
+			return;
+
+		switch(callback)
 		{
-			switch(callback)
-			{
-				case 'onSave':
-				case 'onReject':
-					this.callbacks.get(callback)(this.json.saved, this.response);
+			case 'onStart':
+				this.callbacks.get(callback)(this.form);
+				break;
+			
+			case 'onSave': 
+			case 'onReject': 
+				this.callbacks.get(callback)(this.form, this.response, this.json, this.json.saved);
 				break;
 				
-				case 'onStart':
-				default:
-					this.callbacks.get(callback)(this.form);
+			case 'onSuccess':
+				this.callbacks.get(callback)(this.form, this.response, this.json);
 				break;
-			}
+				
+			case 'onComplete':
+			case 'onFailure':
+				this.callbacks.get(callback)(this.form, this.response);
+				break;
+			
+			default:
+			break;
 		}
 	}
 });
