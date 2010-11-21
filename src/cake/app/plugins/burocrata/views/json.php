@@ -18,16 +18,6 @@
  */
 class JsonView extends View
 {
-	public $jsonVars;
-	
-	function __construct(&$controller)
-	{
-		$this->jsonVars = array();
-		$this->__passedVars[] = 'jsonVars';
-		
-		parent::__construct($controller);
-	}
-	
 	
 /**
  * Overloads the default render action
@@ -51,8 +41,6 @@ class JsonView extends View
 		
 		if(isset($this->viewVars['jsonVars'])) {
 			return $this->Js->object($this->viewVars['jsonVars']);
-		} elseif(isset($this->jsonVars)) {
-			return $this->Js->object($this->jsonVars);
 		} else {
 			if($this->layout == null)
 				$layout = 'ajax';
