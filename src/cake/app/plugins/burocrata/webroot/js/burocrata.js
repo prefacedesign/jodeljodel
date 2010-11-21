@@ -5,9 +5,30 @@ var BuroForm = Class.create({
 
 		this.form = $(arguments[1]);
 		this.form.reset = this.resetForm.bind(this);
+		this.form.lock = this.lockForm.bind(this);
+		this.form.unlock = this.unlockForm.bind(this);
+		
+		this.form.observe('keypress', function(ev){
+			var element = ev.findElement().nodeName.toLowerCase();
+			var key = ev.keyCode;
+			if(key == 13 && element == 'input')
+				this.submits();
+		}.bind(this));
 
 		this.submit = $(arguments[2]);
 		this.submit.observe('click', this.submits.bind(this));
+		
+		this.inputs = Form.getElements(this.form);
+	},
+	lockForm: function()
+	{
+		this.form.setOpacity(0.5);
+		this.inputs.each(Form.Element.disable);
+	},
+	unlockForm: function()
+	{
+		this.form.setOpacity(1);
+		this.inputs.each(Form.Element.enable);
 	},
 	resetForm: function()
 	{
@@ -15,7 +36,7 @@ var BuroForm = Class.create({
 	},
 	submits: function(ev)
 	{
-		var data = Form.serializeElements(Form.getElements(this.form));
+		var data = Form.serializeElements(this.inputs);
 		this.trigger('onStart');
 		new Ajax.Request(this.url, {
 			parameters: data,
@@ -34,35 +55,39 @@ var BuroForm = Class.create({
 	addCallbacks: function(callbacks)
 	{
 		this.callbacks = $H(callbacks); 
+		return this;
 	},
 	trigger: function(callback)
 	{
-		if(!this.callbacks.get(callback))
-			return;
+		var callback_function = this.callbacks.get(callback);
+		if(!callback_function)
+			return false;
 
 		switch(callback)
 		{
 			case 'onStart':
-				this.callbacks.get(callback)(this.form);
+				callback_function(this.form);
 				break;
 			
 			case 'onSave': 
 			case 'onReject': 
-				this.callbacks.get(callback)(this.form, this.response, this.json, this.json.saved);
+				callback_function(this.form, this.response, this.json, this.json.saved);
 				break;
 				
 			case 'onSuccess':
-				this.callbacks.get(callback)(this.form, this.response, this.json);
+				callback_function(this.form, this.response, this.json);
 				break;
 				
 			case 'onComplete':
 			case 'onFailure':
-				this.callbacks.get(callback)(this.form, this.response);
+				callback_function(this.form, this.response);
 				break;
 			
 			default:
+				return false;
 			break;
 		}
+		return true;
 	}
 });
 

@@ -3,10 +3,9 @@
 		array('class' => 'azul'), // Parâmetros HTML
 		array(
 			'model' => 'BurocrataUser.Event', // Somente o Model pai, assim como no FormHelper::create
-			'envio' => 'ajax',
 			'callbacks' => array(
-				'onStart' => array('js' => "form.setOpacity(0.5);"),
-				'onComplete' => array('js' => "form.setOpacity(1);"),
+				'onStart' => array('lockForm', 'js' => "console.log('iniciou-se')"),
+				'onComplete' => array('unlockForm', 'js' => "console.log('finalizou-se')"),
 				// 'onSuccess'  => 'contentUpdate',
 				'onSave'     => array('popup' => 'Salvou!'),
 				'onRejected' => array('js' => "console.log('aqui estou');"),
@@ -42,7 +41,34 @@
 		echo $this->Buro->submit(array(), array('label' => 'Send this :)'));
 		
 	echo $this->Buro->eform();
+	
+ 	echo $this->Buro->sform(
+		array(),
+		array(
+			'model' => 'BurocrataUser.Local', // Somente o Model pai, assim como no FormHelper::create
+			'callbacks' => array(
+				'onStart' => array('lockForm'),
+				'onComplete' => array('unlockForm'),
+				'onSave'     => array('popup' => 'Salvou!'),
+				'onRejected' => array('popup' => 'Não salvou!'),
+				'onFailure'	 => array('popup' => 'Não foi possível conectar-se ao servidor!')
+			)
+		)
+	);
+		echo $this->Buro->input(
+				array(), 
+				array('fieldName' => 'name', 'label' => 'Name?', 'type' => 'text')
+			);
+		
+		echo $this->Buro->input(
+				array(), 
+				array('fieldName' => 'address', 'label' => 'Address?', 'type' => 'textarea')
+			);
 			
+		echo $this->Buro->submit(array(), array('label' => 'Send this :)'));
+		
+	echo $this->Buro->eform(); 
+	
 		// echo $this->Buro->input(
 			// array(),
 			// array(

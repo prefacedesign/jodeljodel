@@ -8,20 +8,21 @@ class BuroOfficeBoyHelper extends AppHelper
  * Creates the javascript counter-part of one form.
  *
  * @access public
- * @param mixed $url URL 
  * @param string $form_id The form dom ID
- * @param string $submit_id The form submit button dom ID
- * @param array $callbacks One associative array that contains all configurable callbacks for the form
+ * @param array $attributes An array that must contains some attributes that defines the current form
  * @return boolean True if the javascript was sucefully generated, false, otherwise
  */
-	public function newForm($url, $form_id, $submit_id, $callbacks = array())
+	public function newForm($form_id, $attributes)
 	{
 		$this->Html->script('prototype', array('inline' => false));
 		$this->Html->script('/burocrata/js/burocrata.js', array('inline' => false));
 		
+		$attributes = am(array('callbacks' => array()), $attributes);
+		extract($attributes);
+		
 		$script = sprintf(
 			"new BuroForm('%s','%s','%s')",
-			$this->url($url), $form_id, $submit_id
+			$this->url($url), $form_id, $submit
 		);
 		if(!empty($callbacks) && is_array($callbacks))
 			$script .= sprintf('.addCallbacks(%s)', $this->formatFormCallbacks($callbacks));
@@ -29,7 +30,6 @@ class BuroOfficeBoyHelper extends AppHelper
 		$this->Js->buffer($script);
 		$this->Js->writeBuffer(array('inline' => false));
 	}
-	
 	
 
 /**
@@ -52,10 +52,10 @@ class BuroOfficeBoyHelper extends AppHelper
 			$out[] = $callback . ': ' . $this->_parseScript($script, $callback);
 		}
 		
-		return '{'.implode(', ', $out).'}';
+		return '{' . implode(', ', $out) . '}';
 	}
 	
-	
+
 /**
  * Converts one callback to its specific format script
  *
@@ -70,7 +70,11 @@ class BuroOfficeBoyHelper extends AppHelper
 		
 		$js = '';
 		foreach($script as $type => $code)
+		{
+			if(is_numeric($type))
+				$type = $code;
 			$js .= $this->{'_'.$type}($code) . ' ';
+		}
 		
 		$out = '';
 		switch($callback)
@@ -96,8 +100,34 @@ class BuroOfficeBoyHelper extends AppHelper
 		}
 		return $out;
 	}
-	
-	
+
+
+/**
+ * Generates the script that locks the content of form
+ *
+ * @access public
+ * @param mixed $script
+ * @return string The formated script
+ */
+	protected function _lockForm($script)
+	{
+		return 'form.lock();';
+	}
+
+
+/**
+ * Generates the script that locks the content of form
+ *
+ * @access public
+ * @param mixed $script
+ * @return string The formated script
+ */
+	protected function _unlockForm($script)
+	{
+		return 'form.unlock();';
+	}
+
+
 /**
  * Generates the script that updates the content of form, based on json response
  *
@@ -109,8 +139,8 @@ class BuroOfficeBoyHelper extends AppHelper
 	{
 		return 'form.update(json.content);';
 	}
-	
-	
+
+
 /**
  * Just escapes a string to be JSON friendly.
  *
@@ -122,8 +152,8 @@ class BuroOfficeBoyHelper extends AppHelper
 	{
 		return $this->Js->escape($script);
 	}
-	
-	
+
+
 	/**
 	 * Formats a redirect script
 	 *
@@ -135,8 +165,8 @@ class BuroOfficeBoyHelper extends AppHelper
 	{
 		return $this->Js->redirect($url);
 	}
-	
-	
+
+
 	/**
 	 *
 	 * @access public

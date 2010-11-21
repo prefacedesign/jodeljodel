@@ -163,11 +163,13 @@
 			elseif($View->data)
 				$this->_data = $View->data;
 			
+			list($this->modelPlugin, $this->modelAlias) = pluginSplit($options['model']);
+			
 			$this->_addForm($htmlAttributes['id']);
 			$this->_addFormAttribute('callbacks', $options['callbacks']);
 			$this->_addFormAttribute('url', $options['url']);
-			
-			list($this->modelPlugin, $this->modelAlias) = pluginSplit($options['model']);
+			$this->_addFormAttribute('modelPlugin', $this->modelPlugin);
+			$this->_addFormAttribute('modelAlias', $this->modelAlias);
 			
 			$this->Form->create($this->modelAlias, array('url' => $options['url']));
 			return $this->Bl->sdiv($htmlAttributes);
@@ -224,6 +226,29 @@
 		
 		
 		/**
+		 * Read all attributes from the current form
+		 *
+		 * @access protected
+		 * @return array An array with attributes
+		 */
+		protected function _readFormAttributes()
+		{
+			$current_form = end($this->_nestedForm);
+			$map =& $this->_formMap;
+			foreach($this->_nestedForm as $form_id)
+			{
+				if(isset($map[$form_id])) {
+					return $map[$form_id];
+				} elseif(!isset($map[$form_id]['subforms'])) {
+					return null;
+				} else {
+					$map =& $map[$form_id]['subforms'];
+				}
+			}
+		}
+		
+		
+		/**
 		 * Reads a attribute from the current form
 		 *
 		 * @access protected
@@ -232,18 +257,10 @@
 		 */
 		protected function _readFormAttribute($attribute)
 		{
-			$current_form = end($this->_nestedForm);
-			$map =& $this->_formMap;
-			foreach($this->_nestedForm as $form_id)
-			{
-				if(isset($map[$form_id]) && isset($map[$form_id][$attribute])) {
-					return $map[$form_id][$attribute];
-				} elseif(!isset($map[$form_id]['subforms'])) {
-					return null;
-				} else {
-					$map =& $map[$form_id]['subforms'];
-				}
-			}
+			$attributes = $this->_readFormAttributes();
+			if(isset($attributes[$attribute]))
+				return $attributes[$attribute];
+			return null;
 		}
 		
 		
@@ -256,12 +273,23 @@
 		public function eform()
 		{
 			$this->BuroOfficeBoy->newForm(
-				$this->_readFormAttribute('url'),
 				end($this->_nestedForm),
-				$this->_readFormAttribute('submit'),
-				$this->_readFormAttribute('callbacks')
+				$this->_readFormAttributes()
 			);
-			return $this->Bl->ediv();
+			$modelAlias = $this->_readFormAttribute('modelAlias');
+			$modelPlugin = $this->_readFormAttribute('modelPlugin');
+			$url = $this->_readFormAttribute('url');
+			
+			$hash = Security::hash($this->url($url).$modelAlias.$modelPlugin,'sha1',true);
+			
+			$out = $this->Bl->sinput(array('type' => 'hidden', 'name' => 'data[modelAlias]', 'value' => $modelAlias), array('close_me' => true));
+			$out .= $this->Bl->sinput(array('type' => 'hidden', 'name' => 'data[modelPlugin]', 'value' => $modelPlugin), array('close_me' => true));
+			$out .= $this->Bl->sinput(array('type' => 'hidden', 'name' => 'data[hash]', 'value' => $hash), array('close_me' => true));
+			$out .= $out.$this->Bl->ediv();
+			
+			array_pop($this->_nestedForm);
+			
+			return $out;
 		}
 		
 		
