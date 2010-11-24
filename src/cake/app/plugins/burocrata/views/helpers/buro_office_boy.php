@@ -5,6 +5,28 @@ class BuroOfficeBoyHelper extends AppHelper
 	
 
 /**
+ * Creates the javascript counter-part of one autocomplete input.
+ *
+ * @access public
+ * @param string $form_id The form dom ID
+ * @param array $attributes An array that must contains some attributes that defines the current form
+ * @return boolean True if the javascript was sucefully generated, false, otherwise
+ */
+	public function autoComplete($options = array())
+	{
+		$url = $options['url']; unset($options['url']);
+		$id_base = $options['id_base']; unset($options['id_base']);
+		unset($options['callbacks']);
+		
+		$options = $this->Js->object($options);
+		$script = sprintf("new BuroAutocomplete('%s','%s', %s)", $this->url($url), $id_base, $options);
+		
+		$this->Js->buffer($script);
+		$this->Js->writeBuffer(array('inline' => false));
+	}
+
+
+/**
  * Creates the javascript counter-part of one form.
  *
  * @access public
@@ -14,8 +36,7 @@ class BuroOfficeBoyHelper extends AppHelper
  */
 	public function newForm($form_id, $attributes)
 	{
-		$this->Html->script('prototype', array('inline' => false));
-		$this->Html->script('/burocrata/js/burocrata.js', array('inline' => false));
+		$this->_includeScripts();
 		
 		$attributes = am(array('callbacks' => array()), $attributes);
 		extract($attributes);
@@ -59,7 +80,7 @@ class BuroOfficeBoyHelper extends AppHelper
 /**
  * Converts one callback to its specific format script
  *
- * @access public
+ * @access protected
  * @param mixed $script
  * @param script $callback
  * @return string The adequate function script for context
@@ -105,7 +126,7 @@ class BuroOfficeBoyHelper extends AppHelper
 /**
  * Generates the script that locks the content of form
  *
- * @access public
+ * @access protected
  * @param mixed $script
  * @return string The formated script
  */
@@ -118,7 +139,7 @@ class BuroOfficeBoyHelper extends AppHelper
 /**
  * Generates the script that locks the content of form
  *
- * @access public
+ * @access protected
  * @param mixed $script
  * @return string The formated script
  */
@@ -131,7 +152,7 @@ class BuroOfficeBoyHelper extends AppHelper
 /**
  * Generates the script that updates the content of form, based on json response
  *
- * @access public
+ * @access protected
  * @param mixed $script
  * @return string The formated script
  */
@@ -144,7 +165,7 @@ class BuroOfficeBoyHelper extends AppHelper
 /**
  * Just escapes a string to be JSON friendly.
  *
- * @access public
+ * @access protected
  * @param mixed $script 
  * @return string The formated script
  */
@@ -154,27 +175,41 @@ class BuroOfficeBoyHelper extends AppHelper
 	}
 
 
-	/**
-	 * Formats a redirect script
-	 *
-	 * @access protected
-	 * @param mixed $url
-	 * @return string The formated script
-	 */
+/**
+ * Formats a redirect script
+ *
+ * @access protected
+ * @param mixed $url
+ * @return string The formated script
+ */
 	protected function _redirect($url)
 	{
 		return $this->Js->redirect($url);
 	}
 
 
-	/**
-	 *
-	 * @access public
-	 * @param mixed $msg
-	 * @return string The formated script
-	 */
+/**
+ *
+ * @access protected
+ * @param mixed $msg
+ * @return string The formated script
+ */
 	protected function _popup($msg)
 	{
 		return $this->Js->alert((string) $msg);
+	}
+	
+
+/**
+ * Includes the necessary script files to burocrata works
+ *
+ * @access protected
+ */
+	protected function _includeScripts()
+	{
+		$this->Html->script('prototype', array('inline' => false));
+		$this->Html->script('effects', array('inline' => false));
+		$this->Html->script('controls', array('inline' => false));
+		$this->Html->script('/burocrata/js/burocrata.js', array('inline' => false));
 	}
 }

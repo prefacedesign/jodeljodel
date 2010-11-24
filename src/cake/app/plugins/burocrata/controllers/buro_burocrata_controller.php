@@ -11,30 +11,12 @@ class BuroBurocrataController extends BurocrataAppController
 		$saved = false;
 		$error = false;
 		$content = '';
+		$Model = null;
 		
-		if(!isset($this->data['modelAlias']) || !isset($this->data['modelPlugin']) || !isset($this->data['hash']))
-			$error = 'Model and security fields not defineds';
-		
-		if(!$error)
-		{
-			$hash = Security::hash($this->here.$this->data['modelAlias'].$this->data['modelPlugin'],'sha1',true);
-			if($hash != $this->data['hash'])
-				$error = 'Security hash didn\'t match.';
-		}
+		$error = $this->_load($Model);
 		
 		if(!$error)
 		{
-			$model_name = $this->data['modelAlias'];
-			if(!empty($this->data['modelPlugin']))
-				$model_name = $this->data['modelPlugin'] . '.' . $model_name;
-			
-			if(!$this->loadModel($model_name))
-				$error = 'Couldn\'t load model';
-		}
-		
-		if(!$error)
-		{
-			$Model =& $this->{$this->data['modelAlias']}; 
 			if(method_exists($Model, 'saveBurocrata'))
 				$saved = $Model->saveBurocrata($this->data) !== false;
 			else
@@ -47,12 +29,82 @@ class BuroBurocrataController extends BurocrataAppController
 	}
 	
 	
+	function autocomplete()
+	{
+		$error = false;
+		$content = '';
+		$Model = null;
+		
+		$error = $this->_load($Model);
+		
+		if(!$error)
+		{
+			$data = $this->data;
+			unset($data['request']);
+			
+			$conditions = $this->postConditions($data, 'LIKE');
+			
+			if(method_exists($Model, 'findBurocrataAutocomplete'))
+				$content = $Model->findBurocrataAutocomplete($conditions);
+			else
+				$content = $Model->find('list', compact('conditions', 'order'));
+		}
+		
+		if(!$error && empty($content))
+			$content = array('-1' => __('Nothing found.', true));
+		
+		$this->set('jsonVars', compact('error', 'content'));
+	}
+	
+	
 	function view()
 	{
+		
 	}
 	
 	
 	function delete()
 	{
+	}
+
+
+/**
+ * Loads the model especified in $this->data POST.
+ *
+ * @access protected
+ * @param $var An variable to be filled with Model Object
+ * @return mixed true when single model found and instance created, error returned if model not found.
+ */
+	protected function _load(&$var)
+	{
+		$error = false;
+		
+		if(!isset($this->data['request']))
+			$error = 'Request security field not defined';
+		
+		if(!$error)
+		{
+			// The counter-part of this code is in BuroBurocrataHelper::_security method
+			@list($model_plugin, $model_alias, $secure) = explode('|', $this->data['request']);
+			$hash = Security::hash($this->here.$model_alias.$model_plugin);
+			$uncip = Security::cipher(pack("H*" , $secure), $hash);
+			if($uncip != $model_plugin.'.'.$model_alias)
+				$error = 'Security hash didn\'t match.';
+		}
+		
+		if(!$error)
+		{
+			$model_class_name = $model_alias;
+			if(!empty($model_plugin))
+				$model_class_name = $model_plugin . '.' . $model_class_name;
+			
+			if(!$this->loadModel($model_class_name))
+				$error = 'Couldn\'t load model';
+		}
+		
+		if(!$error)
+			$var = $this->{$model_alias};
+		
+		return $error;
 	}
 }

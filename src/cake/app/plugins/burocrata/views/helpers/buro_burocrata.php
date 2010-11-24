@@ -47,9 +47,13 @@
 			}
 			else
 			{
+				$htmlAttributes = am(array('container' => array()), $htmlAttributes);
 				$this->_nestedInput = false;
 				if($options['type'] != 'hidden')
-					$out .= $this->sinputcontainer($htmlAttributes, $options);
+				{
+					$out .= $this->sinputcontainer($htmlAttributes['container'], $options);
+					unset($htmlAttributes['container']);
+				}
 				
 				if(method_exists($this->Form, $options['type']))
 				{
@@ -61,7 +65,7 @@
 						$out .= $this->instructions(array(),array(),$options['instructions']);
 						unset($options['instructions']);
 					}
-					$inputOptions = array('label' => false, 'error' => false, 'div' => false, 'type' => $options['type']);
+					$inputOptions = am($htmlAttributes, array('label' => false, 'error' => false, 'div' => false, 'type' => $options['type']));
 					$out .= $this->Form->input($options['fieldName'], $inputOptions);
 					$out .= $this->Form->error($options['fieldName']);
 					
@@ -71,6 +75,7 @@
 				{
 					$out .= $this->{Inflector::variable('input'.$options['type'])}($options);
 				}
+				
 				if($options['type'] != 'hidden')
 					$out .= $this->einputcontainer();
 			}
@@ -145,7 +150,7 @@
 			$View =& ClassRegistry::getObject('View');
 			$defaults = array(
 				'url' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'save'),
-				'auto_submit' => true,
+				'writeForm' => false,
 				'model' => false,
 				'callbacks' => array(),
 				'data' => false
@@ -172,7 +177,22 @@
 			$this->_addFormAttribute('modelAlias', $this->modelAlias);
 			
 			$this->Form->create($this->modelAlias, array('url' => $options['url']));
-			return $this->Bl->sdiv($htmlAttributes);
+			
+			$out = $this->Bl->sdiv($htmlAttributes);
+			if($options['writeForm'] == true)
+			{
+				$elementOptions = array('type' => array('burocrata','form'));
+				if($this->modelPlugin)
+					$elementOptions['plugin'] = $this->modelPlugin;
+				if($this->_data)
+					$elementOptions['data'] = $this->_data;
+					
+				$out .= $View->element(Inflector::underscore($this->modelAlias), $elementOptions);
+				
+				if(!$this->_readFormAttribute('submit'))
+					$out .= $this->submit(array(), array('label' => __('Save', true)));
+			}
+			return $out;
 		}
 		
 		
@@ -264,6 +284,15 @@
 		}
 		
 		
+		
+		private function _security($url, $modelPlugin, $modelAlias)
+		{
+			$hash = Security::hash($this->url($url).$modelAlias.$modelPlugin);
+			$secure = bin2hex(Security::cipher($modelPlugin.'.'.$modelAlias, $hash));
+			return implode('|', array($modelPlugin, $modelAlias, $secure));
+		}
+		
+		
 		/**
 		 * Ends a form and creates its javascript class
 		 *
@@ -280,17 +309,20 @@
 			$modelPlugin = $this->_readFormAttribute('modelPlugin');
 			$url = $this->_readFormAttribute('url');
 			
-			$hash = Security::hash($this->url($url).$modelAlias.$modelPlugin,'sha1',true);
-			
-			$out = $this->Bl->sinput(array('type' => 'hidden', 'name' => 'data[modelAlias]', 'value' => $modelAlias), array('close_me' => true));
-			$out .= $this->Bl->sinput(array('type' => 'hidden', 'name' => 'data[modelPlugin]', 'value' => $modelPlugin), array('close_me' => true));
-			$out .= $this->Bl->sinput(array('type' => 'hidden', 'name' => 'data[hash]', 'value' => $hash), array('close_me' => true));
-			$out .= $out.$this->Bl->ediv();
+			$out = $this->Bl->sinput(array(
+				'type' => 'hidden',
+				'name' => 'data[request]',
+				'value' => $this->_security($url, $modelPlugin, $modelAlias),
+				), array('close_me' => true)
+			);
+			$out .= $this->Bl->ediv();
 			
 			array_pop($this->_nestedForm);
+			$this->Form->end();
 			
 			return $out;
 		}
+		
 		
 		
 		/**
@@ -312,6 +344,9 @@
 			
 			return $this->Bl->button($htmlAttributes, $options, $options['label']);
 		}
+		
+		
+		
 		
 		
 		/**
@@ -432,7 +467,36 @@
 		
 		
 		
-		
+		public function inputAutocomplete($options = array())
+		{
+			$defaults = array(
+				'id_base' => uniqid(),
+				'model' => false,
+				'minChars' => 2,
+				'url' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'autocomplete'),
+				'callbacks' => array()
+			);
+			$autocomplete_options = am($defaults, $options['options']);
+			
+			if(!$autocomplete_options['model'])
+				return 'Missing `model` param.';
+			list($modelPlugin, $modelAlias) = pluginSplit($autocomplete_options['model']);
+			$url = $autocomplete_options['url'];
+			$autocomplete_options['parameters'] = 'data[request]='.$this->_security($url, $modelPlugin, $modelAlias);
+			unset($autocomplete_options['model']);
+			
+			$this->BuroOfficeBoy->autoComplete($autocomplete_options);
+			
+			$out = $this->input(array('class' => 'autocomplete', 'id' => 'input'.$autocomplete_options['id_base']),
+				array(
+					'type' => 'text',
+					'fieldName' => $options['options']['fieldName']
+				)
+			);
+			$out .= $this->Bl->div(array('id' => 'div'.$autocomplete_options['id_base']), array('close_me' => false), '');
+			
+			return $out;
+		}
 		
 		
 		
@@ -455,24 +519,36 @@
 			$inputOptions = $options;
 			$options = $options['options'];
 			$defaults = array(
-				'model' => false,
+				'assocName' => false,
+				'url' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'autocomplete'),
 				'type' => 'autocomplete',
 				'allow' => array('create', 'modify', 'relate')
 			);
 			$options = am($defaults, $options);
 			
 			// TODO: Trigger error `related model not set`
-			if(!$options['model']) return false; 
+			if(!$options['assocName']) return 'related model not set'; 
 			
-			// TODO: Trigger error `model not find`
-			$model = $this->model;
-			if (!ClassRegistry::isKeySet($model)) return false;
+			// TODO: Trigger error `parent model not found`
+			$model = $this->modelAlias;
+			if (!ClassRegistry::isKeySet($model)) return 'parent model not found';
 			$Model =& ClassRegistry::getObject($model);
 			
 			// TODO: Trigger error `not a belongsTo related model`
-			if(!isset($Model->belongsTo[$options['model']])) return false;
+			if(!isset($Model->belongsTo[$options['assocName']])) return 'not a belongsTo related model';
+			$belongs_to_config = $Model->belongsTo[$options['assocName']];
 			
+			
+			$out = $this->input(array(), array('type' => 'hidden', 'fieldName' => $Model->alias.'.'.$belongs_to_config['foreignKey']));
+			
+			// Creates an input
 			$domId = uniqid('blt');
+			$out .= $this->label(array('for' => $domId), array(), $inputOptions['label']);
+			if(isset($inputOptions['instructions'])) {
+				$out .= $this->instructions(array(),array(),$inputOptions['instructions']);
+				unset ($inputOptions['instructions']);
+			}
+			
 			switch($options['type'])
 			{
 				case 'autocomplete': $input = $this->belongsToAutocomplete(array('id' => $domId, 'searchField')); break;
@@ -480,24 +556,20 @@
 				default: // TODO: trigger error `type of `
 					return false;
 			}
-			
-			$out = $this->input(array(), array('type' => 'hidden', 'fieldName' => $Model->alias.'.'.$Model->belongsTo[$options['model']]['foreignKey']));
-			$out .= $this->label(array('for' => $domId), array(), $inputOptions['label']);
-			if(isset($inputOptions['instructions'])) {
-				$out .= $this->instructions(array(),array(),$inputOptions['instructions']);
-				unset ($inputOptions['instructions']);
-			}
 			$out .= $input;
+			
+			$divId = uniqid('div');
+			$out .= $this->Bl->div(array('id' => $divId));
+			
 			return $out;
 		}
 		
 		
 		function belongsToAutocomplete($options = array())
 		{
-			$out = '';
-			// $out = $this->Ajax->autoComplete($options[''], array(
+			$out = $this->BuroOfficeBoy->autoComplete($options['url'], array(
 				
-			// ));
+			));
 			// debug(h($out));
 			return $out;
 		}

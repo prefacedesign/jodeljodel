@@ -1,4 +1,51 @@
-var BuroForm = Class.create({
+/**
+ * Abstract class that implements the behaviour of callbacks
+ * with the methods `addCallback` and `trigger`
+ */
+var Callbackable = Class.create({
+	addCallbacks: function(callbacks)
+	{
+		if(typeof(this.callbacks) == 'undefined')
+			this.callbacks = $H({});
+		
+		this.callbacks = this.callbacks.merge(callbacks); 
+		return this;
+	},
+	trigger: function()
+	{
+		if(typeof(this.callbacks) == 'undefined')
+			this.callbacks = $H({});
+		
+		var callback = arguments[0];
+		var callback_function = this.callbacks.get(callback);
+		if(!callback_function)
+			return false;
+		
+		var i,args = new Array();
+		for(i = 1; i < arguments.length; i++)
+			args.push(arguments[i]);
+		
+		callback_function.apply(this, args);
+		
+		return true;
+	}
+});
+
+
+/**
+ * Adds all javascript functionality to the form.
+ *
+ * Callbacks:
+ * - `onStart` function (form){}
+ * - `onComplete` function (form, response){}
+ * - `onFailure` function (form, response){}
+ * - `onError` function (error){}
+ * - `onSave` function (form, response, json, saved){}
+ * - `onReject` function (form, response, json, saved){}
+ * - `onSuccess` function (form, response, json){}
+ *
+ */
+var BuroForm = Class.create(Callbackable, {
 	initialize: function()
 	{
 		this.url = arguments[0];
@@ -37,57 +84,25 @@ var BuroForm = Class.create({
 	submits: function(ev)
 	{
 		var data = Form.serializeElements(this.inputs);
-		this.trigger('onStart');
+		this.trigger('onStart', this.form);
 		new Ajax.Request(this.url, {
 			parameters: data,
-			onComplete: function (response) { this.trigger('onComplete'); }.bind(this),
-			onFailure: function (response) { this.trigger('onFailure'); }.bind(this),
+			onComplete: function (response) { this.trigger('onComplete', this.form, response); }.bind(this),
+			onFailure: function (response) { this.trigger('onFailure', this.form, response); }.bind(this),
 			onSuccess: function (response) {
 				if(response.responseJSON) this.json = response.responseJSON;
+				
+				if(this.json && this.json.error != false)
+					this.trigger('onError', this.json.error);
+				
 				if(this.json && this.json.saved === true)	
-					this.trigger('onSave');
+					this.trigger('onSave',this.form, response, this.json, this.json.saved);
 				else if(this.json && this.json.saved === false)
-					this.trigger('onReject');
-				this.trigger('onSuccess');
+					this.trigger('onReject', this.form, response, this.json, this.json.saved);
+				
+				this.trigger('onSuccess', this.form, response, this.json);
 			}.bind(this)
 		});
-	},
-	addCallbacks: function(callbacks)
-	{
-		this.callbacks = $H(callbacks); 
-		return this;
-	},
-	trigger: function(callback)
-	{
-		var callback_function = this.callbacks.get(callback);
-		if(!callback_function)
-			return false;
-
-		switch(callback)
-		{
-			case 'onStart':
-				callback_function(this.form);
-				break;
-			
-			case 'onSave': 
-			case 'onReject': 
-				callback_function(this.form, this.response, this.json, this.json.saved);
-				break;
-				
-			case 'onSuccess':
-				callback_function(this.form, this.response, this.json);
-				break;
-				
-			case 'onComplete':
-			case 'onFailure':
-				callback_function(this.form, this.response);
-				break;
-			
-			default:
-				return false;
-			break;
-		}
-		return true;
 	}
 });
 
@@ -106,3 +121,70 @@ var BuroForm = Class.create({
 //      \     |     /
 // 	     \    |    /
 //         complete
+
+/**
+ * Extends the default Autocomplete built in Scriptaculous.
+ *
+ * Callbacks:
+ * - `onStart` function (form){}
+ * - `onComplete` function (form, response){}
+ * - `onFailure` function (form, response){}
+ * - `onError` function (error){}
+ * - `onSave` function (form, response, json, saved){}
+ * - `onReject` function (form, response, json, saved){}
+ * - `onSuccess` function (form, response, json){}
+ *
+ */
+var BuroAutocomplete = Class.create(Callbackable, {
+	initialize: function(url, id_base, options)
+	{
+		var id_of_text_field = 'input'+id_base,
+			id_of_div_to_populate = 'div'+id_base;
+		options.updateElement = this.alternateUpdateElement.bind(this);
+		
+		this.autocompleter = new Ajax.Autocompleter(id_of_text_field, id_of_div_to_populate, url, options);
+		this.autocompleter.options.onComplete = this.onComplete.bind(this);
+		
+		this.addCallbacks({
+			onSelect: function(pair, li_item){
+				alert(pair.key);
+				alert(pair.value);
+			}
+		});
+	},
+	
+	onComplete: function(request)
+	{
+		if(request && request.responseJSON)
+		{
+			this.json = request.responseJSON;
+			if(this.json.error != false)
+			{
+				this.trigger('onError', this.json.error);
+				return;
+			}
+			if (Object.isArray(this.json.content))
+				this.json.content = {};
+			this.foundContent = $H(this.json.content);
+			this.autocompleter.updateChoices(this.createChoices());
+		}
+	},
+	
+	createChoices: function()
+	{
+		var i, ul = new Element('ul');
+		var keys = this.foundContent.keys();
+		for(i = 0; i < keys.length; i++)
+		{
+			ul.insert(new Element('li').update(this.foundContent.get(keys[i])));
+		}
+		return ul;
+	},
+	
+	alternateUpdateElement: function(selectedElement)
+	{
+		var pair = {key: this.foundContent.keys()[this.autocompleter.index]};
+		pair.value = this.foundContent.get(pair.key);
+		this.trigger('onSelect', pair, selectedElement);
+	}
+});
