@@ -33,11 +33,15 @@ class BuroOfficeBoyHelper extends AppHelper
 			'onSuccess' => 'function(form, response, json){%s}',
 			'onComplete' => 'function(form, response){%s}',
 			'onFailure' => 'function(form, response){%s}',
-			'onError' => 'function(error){%s}'
+			'onError' => 'function(code, error){%s}'
 		),
 		'autocomplete' => array(
-			'onSelect' => 'function(){%s}',
-			'onError' => 'function(error){%s}'
+			'onStart' => 'function(input){%s}',
+			'onSelect' => 'function(input, pair, element){%s}',
+			'onSuccess' => 'function(input, response, json){%s}',
+			'onComplete' => 'function(input, response){%s}',
+			'onFailure' => 'function(input, response){%s}',
+			'onError' => 'function(code, error){%s}'
 		)
 	);
 

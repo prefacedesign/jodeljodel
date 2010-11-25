@@ -10,20 +10,20 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'receive_tools' => true
 		)
 	);
-	
+
 	public $modelAlias;
 	public $modelPlugin;
-	
+
 	protected $_nestedInput = false;
 	protected $_nestedOrder = 0;
-	
+
 	protected $_nestedForm = array();
 	protected $_formMap = array();
 	protected $_data = false;
 	protected $_defaultSuperclass = array('buro');
-	
-	
-	
+
+
+
 /**
  * Begins a form field.
  *
@@ -83,7 +83,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		}
 		return $out;
 	}
-	
+
 
 /**
  * End of form field. Ends all types of fields.
@@ -96,7 +96,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		if($this->_nestedInput)
 			return $this->esuperfield();
 			
-		$this->_nestedInput = $this->_nestedOrder > 0;
+		$this->_nestedInput = --$this->_nestedOrder > 0;
 		return $this->Bl->ediv();
 	}
 
@@ -137,14 +137,17 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		return $this->Bl->slabel($htmlAttributes) . $text . $this->Bl->elabel();
 	}
-	
-	
+
+
 /**
- * Starts a form. Accepts the following options on second parameter:
- * - `url` (optional - /burocrata/buro_burocrata/save)
- * - `writeForm` (optional - false) If true, attempts to write all form, using the conventional element 
- * - `model` (optional - false) Model className, with plugin 
- * - `data` (optional - null)
+ * Starts a form.
+ * 
+ * ### Accepts the following options on second parameter:
+ *
+ * - `url` - URL where data will be posted. Defaults to /burocrata/buro_burocrata/save
+ * - `model` - Model className, with plugin name when appropriate. Defaults to false
+ * - `writeForm` - If true, attempts to write all form, using the conventional element. Defaults to false
+ * - `data` Optional data that will fill out the form. Defaults to $this->data
  *
  * @access public
  * @param  array $htmlAttributes Controls the HTML parameters
@@ -200,8 +203,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		}
 		return $out;
 	}
-	
-	
+
+
 /**
  * 
  *
@@ -222,8 +225,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 				$map =& $map[$form_id]['subforms'];
 		}
 	}
-	
-	
+
+
 /**
  * Writes a attribute to current form
  *
@@ -249,8 +252,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 			}
 		}
 	}
-	
-	
+
+
 /**
  * Read all attributes from the current form
  *
@@ -272,8 +275,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 			}
 		}
 	}
-	
-	
+
+
 /**
  * Reads a attribute from the current form
  *
@@ -288,8 +291,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 			return $attributes[$attribute];
 		return null;
 	}
-	
-	
+
+
 /**
  *
  * @access private
@@ -304,8 +307,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$secure = bin2hex(Security::cipher($modelPlugin.'.'.$modelAlias, $hash));
 		return implode('|', array($modelPlugin, $modelAlias, $secure));
 	}
-	
-	
+
+
 /**
  * Ends a form and creates its javascript class
  *
@@ -335,9 +338,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		return $out;
 	}
-	
-	
-	
+
+
 /**
  * Default submit button (actually is a simple button with javascript)
  * 
@@ -357,11 +359,11 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		return $this->Bl->button($htmlAttributes, $options, $options['label']);
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 /**
  * Overloadable functions for layout modifications
  */
@@ -376,7 +378,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  * @access public
  * @param  array $htmlAttributes
  * @param  array $options
- * @return	string The HTML well formated
+ * @return string The HTML well formated
  */
 	public function ssuperfield($htmlAttributes = array(), $options = array())
 	{
@@ -392,58 +394,58 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		return "\n".$out;
 	}
-	
-	
+
+
 /**
  * Ends a input superfield thats aggregate others inputs
  *
  * @access public
  * @param  array $htmlAttributes
  * @param  array $options
- * @return	string The HTML well formated
+ * @return string The HTML well formated
  */
 	public function esuperfield()
 	{
 		$this->_nestedOrder--;
 		return $this->Bl->ediv();
 	}
-	
-	
+
+
 /**
  * Starts a instruction enclosure
  *
  * @access public
  * @param  array $htmlAttributes
  * @param  array $options
- * @return	string The HTML well formated
+ * @return string The HTML well formated
  */
 	public function sinstructions($htmlAttributes = array(), $options = array())
 	{
 		return $this->Bl->sspan($htmlAttributes, $options);
 	}
-	
-	
+
+
 /**
  * Ends a instruction enclosure
  *
  * @access public
  * @param  array $htmlAttributes
  * @param  array $options
- * @return	string The HTML well formated
+ * @return string The HTML well formated
  */
 	public function einstructions()
 	{
 		return $this->Bl->espan();
 	}
-	
-	
+
+
 /**
  * Starts a input container
  *
  * @access public
  * @param  array $htmlAttributes
  * @param  array $options
- * @return	string The HTML well formated
+ * @return string The HTML well formated
  */
 	public function sinputcontainer($htmlAttributes = array(), $options = array())
 	{
@@ -465,8 +467,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out = $this->Bl->sdiv($htmlAttributes,$options);
 		return "\n".$out;
 	}
-	
-	
+
+
 /**
  * Ends a input container
  *
@@ -476,18 +478,22 @@ class BuroBurocrataHelper extends XmlTagHelper
 	{
 		return $this->Bl->ediv();
 	}
-	
-	
+
+
 /**
- * Render a autocomplete input. The parameters are:
- * - `model` (obrigatory) Model name where the find will perform
- * - `minChars` (optional - 2) Number of chars before start ajax call
- * - `id_base` (optional - uniqid) An string that will be appended on every DOM ID
- * - `url` (optional) URL for post data (must return a JSON with error and content parameters)
- * - `callbacks` (optional) An array with possible callbacks with Jodel Callbacks convention
+ * Render a autocomplete input.
+ *
+ * ### The parameters are:
+ *
+ * - `model` - Model name where the find will perform. No default, but needed only is url param not set.
+ * - `url` - URL for post data (must return a JSON with error and content parameters). Defaults to BuroBurocrataController actions if mode parameter is set.
+ * - `minChars` - Number of chars before start ajax call - Defaults to 2.
+ * - `id_base` - An string that will be appended on every DOM ID. Defaults to uniqid().
+ * - `callbacks` - An array with possible callbacks with Jodel Callbacks convention.
  *
  * @access public
  * @param array $options An array that defines all configurable parameters
+ * @return string The HTML well formated
  */
 	public function inputAutocomplete($options = array())
 	{
@@ -500,11 +506,11 @@ class BuroBurocrataHelper extends XmlTagHelper
 		);
 		$autocomplete_options = am($defaults, $options['options']);
 		
-		if(!$autocomplete_options['model'])
-			return 'Missing `model` param.';
-		list($modelPlugin, $modelAlias) = pluginSplit($autocomplete_options['model']);
-		$url = $autocomplete_options['url'];
-		$autocomplete_options['parameters'] = 'data[request]='.$this->_security($url, $modelPlugin, $modelAlias);
+		if($autocomplete_options['model'])
+		{
+			list($modelPlugin, $modelAlias) = pluginSplit($autocomplete_options['model']);
+			$autocomplete_options['parameters'] = 'data[request]='.$this->_security($autocomplete_options['url'], $modelPlugin, $modelAlias);
+		}
 		unset($autocomplete_options['model']);
 		
 		$this->BuroOfficeBoy->autoComplete($autocomplete_options);
@@ -523,16 +529,19 @@ class BuroBurocrataHelper extends XmlTagHelper
 
 /**
  * Construct a belongsTo form based on passed variable
- * The options are:
- * - `type` Type of form (can be 'autocomplete' or 'select')
- * - `allow` An array that contains the actions allowed - the default is array('create', 'modify', 'relate')
- * - `model` The Alias used by related model (there is no default and MUST be passed)
- * - `actions` An array that defines all the URLs for CRUD actions
  *
- * @access	public
- * @param	array $options An array with non-defaults values
- * @return	string The HTML well formated
- * @todo	Error handling and default values
+ * ### The options are:
+ *
+ * - `model` - The Alias used by related model (there is no default and MUST be passed).
+ * - `type` - Type of form (can be 'autocomplete' or 'select'). Defaults to 'autocomplete'.
+ * - `allow` - An array that contains the actions allowed - Defaults to array('create', 'modify', 'relate').
+ * - `actions` - An array that defines all the URLs for CRUD actions Defaults to BuroBurocrataController actions.
+ * - `callbacks` - An array with possible callbacks with Jodel Callbacks convention.
+ *
+ * @access public
+ * @param array $options An array with non-defaults values
+ * @return string The HTML well formated
+ * @todo Error handling and default values
  */
 	public function inputBelongsTo($options = array())
 	{
@@ -583,8 +592,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		return $out;
 	}
-	
-	
+
+
 	function belongsToAutocomplete($options = array())
 	{
 		$out = $this->autoComplete($options['url'], array(

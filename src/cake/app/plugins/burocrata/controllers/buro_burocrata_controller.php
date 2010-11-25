@@ -2,11 +2,41 @@
 
 class BuroBurocrataController extends BurocrataAppController
 {
-	var $name = 'BuroBurocrata';
-	var $uses = array();
-	var $view = 'Burocrata.Json';
-	
-	function save()
+
+/**
+ * The controller name
+ *
+ * @var string
+ * @access public
+ */
+	public $name = 'BuroBurocrata';
+
+
+/**
+ * List of Models to be loaded on construct
+ *
+ * @var array
+ * @access public
+ */
+	public $uses = array();
+
+
+/**
+ * Default View object to use
+ *
+ * @var string
+ * @access public
+ */
+	public $view = 'Burocrata.Json';
+
+
+/**
+ * Attempts to save the data POSTed 
+ *
+ * @access public
+ * @return json An javascript object that contains `error`, `content` and `saved` properties
+ */
+	public function save()
 	{
 		$saved = false;
 		$error = false;
@@ -27,9 +57,15 @@ class BuroBurocrataController extends BurocrataAppController
 			'saved', 'content', 'error'
 		));
 	}
-	
-	
-	function autocomplete()
+
+
+/**
+ * Return a list to fill a autocomplete field.
+ *
+ * @access public
+ * @return json An javascript object that contains `error` and `content` properties
+ */
+	public function autocomplete()
 	{
 		$error = false;
 		$content = '';
@@ -42,10 +78,13 @@ class BuroBurocrataController extends BurocrataAppController
 			$data = $this->data;
 			unset($data['request']);
 			
+			// temporary conditions and order
+			// todo: something more elaborated
 			$conditions = $this->postConditions($data, 'LIKE');
+			$order = array(array_pop(array_keys($conditions)) => 'ASC');
 			
 			if(method_exists($Model, 'findBurocrataAutocomplete'))
-				$content = $Model->findBurocrataAutocomplete($conditions);
+				$content = $Model->findBurocrataAutocomplete($data);
 			else
 				$content = $Model->find('list', compact('conditions', 'order'));
 		}
@@ -55,15 +94,27 @@ class BuroBurocrataController extends BurocrataAppController
 		
 		$this->set('jsonVars', compact('error', 'content'));
 	}
-	
-	
-	function view()
+
+
+/**
+ * Return a JSON object containing an already rendered element
+ *
+ * @access public
+ * @return json An javascript object that contains `error` and `content` properties
+ */
+	public function view()
 	{
 		
 	}
-	
-	
-	function delete()
+
+
+/**
+ * Attempts to delete a database entry
+ *
+ * @access public
+ * @return json An javascript object that contains `error` and `content` properties
+ */
+	public function delete()
 	{
 	}
 
@@ -86,6 +137,8 @@ class BuroBurocrataController extends BurocrataAppController
 		{
 			// The counter-part of this code is in BuroBurocrataHelper::_security method
 			@list($model_plugin, $model_alias, $secure) = explode('|', $this->data['request']);
+			unset($this->data['request']);
+			
 			$hash = Security::hash($this->here.$model_alias.$model_plugin);
 			$uncip = Security::cipher(pack("H*" , $secure), $hash);
 			if($uncip != $model_plugin.'.'.$model_alias)
