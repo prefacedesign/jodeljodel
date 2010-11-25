@@ -7,7 +7,7 @@ class AguaF extends CascataAppModel
 {
     var $name = 'AguaF';
 
-    var $actsAs = array('Cascata.AguaX','Cascata.AguaCascata');
+    var $actsAs = array('Cascata.AguaCascata','Cascata.AguaX');
 
 
     function afterFind($results, $primary)

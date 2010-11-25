@@ -25,7 +25,7 @@ class AguaBTestCase extends CakeTestCase {
 
         $result = $this->AguaB->getAll();
 
-        $expectedB = 'nome B';
+        $expectedB = 'nome Y B';
         $expectedE = 'nome X E';
         $expectedF = 'nome X F';
         $expectedG = 'nome X G';

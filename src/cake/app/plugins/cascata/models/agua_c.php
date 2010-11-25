@@ -7,7 +7,7 @@ class AguaC extends CascataAppModel
 {
     var $name = 'AguaC';
     
-    var $actsAs = array('Cascata.AguaCascata');
+    var $actsAs = array('Cascata.AguaCascata','Cascata.AguaY');
 
     var $hasMany = array('Cascata.AguaH');
 

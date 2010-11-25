@@ -7,7 +7,7 @@ class AguaD extends CascataAppModel
 {
     var $name = 'AguaD';
 
-    var $actsAs = array('Cascata.AguaCascata');
+    var $actsAs = array('Cascata.AguaCascata', 'Cascata.AguaY');
 
     var $belongsTo = array('Cascata.AguaJ');
 
