@@ -1,8 +1,8 @@
 <?php
-	class Local extends BurocrataUserAppModel
-	{
-		var $name = 'Local';
 
-		var $hasMany = array('BurocrataUser.Event');
-
-	}
+class Local extends BurocrataUserAppModel
+{
+	var $name = 'Local';
+	var $displayField = 'name';
+	var $hasMany = array('BurocrataUser.Event');
+}
