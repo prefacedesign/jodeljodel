@@ -7,16 +7,34 @@ class AguaJ extends CascataAppModel
 {
     var $name = 'AguaJ';
     
-    //var $actsAs = array('Cascata.X');
+    var $actsAs = array('Cascata.AguaX','Cascata.AguaCascata');
 
-    var $useTable = false;
     
     function afterFind($results, $primary)
     {
+        if ($primary)
+            $results = $this->changeName($results);
+        return $results;
 
-        $results['J'] = 1;
+    }
+
+
+    function afterFindCascata($results)
+    {
+        $results = $this->changeName($results);
         return $results;
     }
+
+    function changeName($results)
+    {
+        if (isset($results[0][$this->name]['nome']))
+            $results[0][$this->name]['nome'] .= ' J';
+        else
+            $results[0][$this->name]['nome'] = 'J';
+        return $results;
+    }
+
+
 
     function getAll()
     {

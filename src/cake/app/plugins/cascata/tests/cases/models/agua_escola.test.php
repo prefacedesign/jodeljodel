@@ -12,7 +12,7 @@ class AguaEscolaTestCase extends CakeTestCase {
      * vem cascateado - considerando a relação HasMany
      * Esse teste só considera o afterFind, não considera as modificações que deveriam vir pelo beforeFind
      */
-    function testCascataHasManyAfterFind()
+   /* function testCascataHasManyAfterFind()
     {
         $this->AguaEscola =& ClassRegistry::init('Cascata.AguaEscola');
 
@@ -62,7 +62,7 @@ class AguaEscolaTestCase extends CakeTestCase {
 
         //fazer teste aqui para verificar se a cadeia veio!
         $this->assertEqual($result,$expected);
-    }
+    }*/
 }
 
 ?>
