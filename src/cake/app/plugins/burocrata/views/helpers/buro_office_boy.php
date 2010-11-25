@@ -1,25 +1,71 @@
 <?php
+
+/**
+ * BuroOfficeBoy helper.
+ *
+ * Creates all javascript necessary for BuroBurocrataHelper work.
+ *
+ * @package       jodel
+ * @subpackage    jodel.burocrata.view.helpers
+ */
 class BuroOfficeBoyHelper extends AppHelper
 {
-	var $helpers = array('Html', 'Js' => 'prototype');
-	
+/**
+ * Other helpers used by OfficeBoy
+ * 
+ * @var array
+ * @access public
+ */
+	public $helpers = array('Html', 'Js' => 'prototype');
+
+
+/**
+ * Callbacks tamplate
+ *
+ * @var array
+ * @access protected
+ */
+	protected $callbacks = array(
+		'form' => array(
+			'onStart' => 'function(form){%s}',
+			'onSave' => 'function(form, response, json, saved){%s}',
+			'onReject' => 'function(form, response, json, saved){%s}',
+			'onSuccess' => 'function(form, response, json){%s}',
+			'onComplete' => 'function(form, response){%s}',
+			'onFailure' => 'function(form, response){%s}',
+			'onError' => 'function(error){%s}'
+		),
+		'autocomplete' => array(
+			'onSelect' => 'function(){%s}',
+			'onError' => 'function(error){%s}'
+		)
+	);
+
 
 /**
  * Creates the javascript counter-part of one autocomplete input.
  *
  * @access public
  * @param string $form_id The form dom ID
- * @param array $attributes An array that must contains some attributes that defines the current form
+ * @param array $options An array that must contains some attributes that defines the current form
  * @return boolean True if the javascript was sucefully generated, false, otherwise
  */
 	public function autoComplete($options = array())
 	{
-		$url = $options['url']; unset($options['url']);
-		$id_base = $options['id_base']; unset($options['id_base']);
+		$this->_includeScripts();
+		
+		$options = am(array('callbacks' => array()), $options);
+		extract($options);
+		
+		unset($options['url']);
+		unset($options['id_base']);
 		unset($options['callbacks']);
 		
 		$options = $this->Js->object($options);
 		$script = sprintf("new BuroAutocomplete('%s','%s', %s)", $this->url($url), $id_base, $options);
+		
+		if(!empty($callbacks) && is_array($callbacks))
+			$script .= $this->formatCallbacks('autocomplete', $callbacks);
 		
 		$this->Js->buffer($script);
 		$this->Js->writeBuffer(array('inline' => false));
@@ -31,27 +77,25 @@ class BuroOfficeBoyHelper extends AppHelper
  *
  * @access public
  * @param string $form_id The form dom ID
- * @param array $attributes An array that must contains some attributes that defines the current form
+ * @param array $options An array that must contains some attributes that defines the current form
  * @return boolean True if the javascript was sucefully generated, false, otherwise
  */
-	public function newForm($form_id, $attributes)
+	public function newForm($form_id, $options)
 	{
 		$this->_includeScripts();
 		
-		$attributes = am(array('callbacks' => array()), $attributes);
-		extract($attributes);
+		$options = am(array('callbacks' => array()), $options);
+		extract($options);
 		
-		$script = sprintf(
-			"new BuroForm('%s','%s','%s')",
-			$this->url($url), $form_id, $submit
-		);
+		$script = sprintf("new BuroForm('%s','%s','%s')",$this->url($url), $form_id, $submit);
+		
 		if(!empty($callbacks) && is_array($callbacks))
-			$script .= sprintf('.addCallbacks(%s)', $this->formatFormCallbacks($callbacks));
+			$script .= $this->formatCallbacks('form', $callbacks);
 		
 		$this->Js->buffer($script);
 		$this->Js->writeBuffer(array('inline' => false));
 	}
-	
+
 
 /**
  * Handles the array of callbacks and converts it to javascript
@@ -60,7 +104,7 @@ class BuroOfficeBoyHelper extends AppHelper
  * @param array $callbacks One associative array that contains all configurable callbacks for the form
  * @return string An javascript object that contains all registred callbacks
  */	
-	protected function formatFormCallbacks($callbacks)
+	protected function formatCallbacks($type, $callbacks)
 	{
 		if(!is_array($callbacks))
 			return null;
@@ -68,24 +112,28 @@ class BuroOfficeBoyHelper extends AppHelper
 		$out = array();
 		foreach($callbacks as $callback => $script)
 		{
+			if(!isset($this->callbacks[$type][$callback]))
+				continue;
+			
 			if(is_string($script))
 				$script = array($script => null);
-			$out[] = $callback . ': ' . $this->_parseScript($script, $callback);
+			
+			$js = sprintf($this->callbacks[$type][$callback], $this->_parseScript($script));
+			$out[] = $callback . ':' . $js;
 		}
 		
-		return '{' . implode(', ', $out) . '}';
+		return '.addCallbacks({' . implode(', ', $out) . '})';
 	}
-	
+
 
 /**
- * Converts one callback to its specific format script
+ * Converts an array to javascript using the jodel convention
  *
  * @access protected
  * @param mixed $script
- * @param script $callback
  * @return string The adequate function script for context
  */
-	protected function _parseScript($script, $callback)
+	protected function _parseScript($script)
 	{
 		if(!is_array($script)) return null;
 		
@@ -97,29 +145,7 @@ class BuroOfficeBoyHelper extends AppHelper
 			$js .= $this->{'_'.$type}($code) . ' ';
 		}
 		
-		$out = '';
-		switch($callback)
-		{
-			case 'onStart':
-				$out = sprintf('function(form) { %s}', $js);
-				break;
-			
-			case 'onSave':
-			case 'onReject':
-				$out = sprintf('function(form, response, json, saved) { %s}', $js);
-				break;
-			
-			case 'onSuccess':
-				$out = sprintf('function(form, response, json) { %s}', $js);
-				break;
-			
-			case 'onComplete':
-			case 'onFailure':
-			default:
-				$out = sprintf('function(form, response) { %s}', $js);
-				break;
-		}
-		return $out;
+		return $js;
 	}
 
 
@@ -198,7 +224,7 @@ class BuroOfficeBoyHelper extends AppHelper
 	{
 		return $this->Js->alert((string) $msg);
 	}
-	
+
 
 /**
  * Includes the necessary script files to burocrata works
