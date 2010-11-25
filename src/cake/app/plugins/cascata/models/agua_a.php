@@ -53,6 +53,12 @@ class AguaA extends CascataAppModel
         return ($this->find('all'));
     }
 
+    function getAllRecursive3()
+    {
+        $this->recursive = 3;
+        return ($this->find('all'));
+    }
+
     function getOnlyA()
     {
         return ($this->find('all',array('contain' => false)));
@@ -81,8 +87,20 @@ class AguaA extends CascataAppModel
 
     function getOnlyAandDandJ()
     {
-        return ($this->find('all', array('contain' => array(
-            'AguaD' => array('AguaJ') ) ) ));
+        return ($this->find('all', array
+            (
+                'contain' => array
+                (
+                    'AguaD' => array
+                     (
+                        'AguaJ' => array
+                        (
+                            'id'
+                         )
+                     )
+                )
+            )
+       ));
     }
 
 

@@ -47,7 +47,7 @@ class AguaATestCase extends CakeTestCase {
     /*
      * Função para testar o getAll do model A com recursive = 2
      * este teste serve para verificar se o cascateamento está ocorrendo
-     * com um nível > 1
+     * com um nível = 2
      */
     function testAgetAllRecursive2()
     {
@@ -244,7 +244,14 @@ class AguaATestCase extends CakeTestCase {
 
     }
 
-
+    /*
+     * Teste usando containable descendo 1 nível e limitando 1 campo
+     * aqui ocorre o mesmo problema do anterior, o campo nome de J
+     * não deveria vir, porém vem devido ao mecanismo de teste
+     * pra verificar se não está chamando models/behaviors a toa
+     * @todo: pensar em uma maneira de realizar o teste de limitar
+     * os atributos sem ficar com esse 'erro'
+     */
     function testAgetOnlyAandDandJ()
     {
         $this->AguaA =& ClassRegistry::init('Cascata.AguaA');
@@ -268,7 +275,7 @@ class AguaATestCase extends CakeTestCase {
                                 'AguaJ' => array
                                 (
                                     'id' => 1,
-                                    'nome' => 'nome X J'
+                                    'nome' => 'X J'
                                 )
                             )
 
@@ -279,7 +286,6 @@ class AguaATestCase extends CakeTestCase {
 
 
     }
-
 
 }
 
