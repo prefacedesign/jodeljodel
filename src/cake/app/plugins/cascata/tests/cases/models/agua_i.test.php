@@ -3,29 +3,29 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+App::import('Model', 'Cascata.AguaI');
 
-App::import('Model', 'Cascata.AguaJ');
-
-class AguaJTestCase extends CakeTestCase {
+class AguaITestCase extends CakeTestCase {
 
     var $fixtures = array(
-        'plugin.cascata.agua_j'
+        'plugin.cascata.agua_i'
     );
     /**
      * Função para verificar se o que está declarado no afterFind do model Professor e do behavior Pessoa
      * vem cascateado - considerando a relação belongsTo
      * Esse teste só considera o afterFind, não considera as modificações que deveriam vir pelo beforeFind
      */
-    function testJgetAll()
+    function testIgetAll()
     {
-        $this->AguaJ =& ClassRegistry::init('Cascata.AguaJ');
+        $this->AguaI =& ClassRegistry::init('Cascata.AguaI');
 
-        $result = $this->AguaJ->getAll();
-        $expected = 'nome X J';
-        $this->assertEqual($result[0][$this->AguaJ->name]['nome'],$expected);
+        $result = $this->AguaI->getAll();
+        $expected = 'nome X I';
+        $this->assertEqual($result[0][$this->AguaI->name]['nome'],$expected);
     }
 
 }
+
 
 
 ?>

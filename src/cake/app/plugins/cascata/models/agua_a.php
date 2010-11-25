@@ -3,13 +3,18 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-class AguaD extends CascataAppModel
+class AguaA extends CascataAppModel
 {
-    var $name = 'AguaD';
+    var $name = 'AguaA';
 
     var $actsAs = array('Cascata.AguaCascata');
 
-    var $belongsTo = array('Cascata.AguaJ');
+    var $hasMany = array('Cascata.AguaB');
+
+    var $belongsTo = array('Cascata.AguaD');
+
+    var $hasAndBelongsToMany = array('Cascata.AguaC');
+
 
     function afterFind($results, $primary)
     {
@@ -18,6 +23,7 @@ class AguaD extends CascataAppModel
         return $results;
 
     }
+
 
     function afterFindCascata($results)
     {
@@ -28,18 +34,25 @@ class AguaD extends CascataAppModel
     function changeName($results)
     {
         if (isset($results[0][$this->name]['nome']))
-            $results[0][$this->name]['nome'] .= ' D';
+            $results[0][$this->name]['nome'] .= ' A';
         else
-            $results[0][$this->name]['nome'] = 'D';
+            $results[0][$this->name]['nome'] = 'A';
         return $results;
     }
+
+
 
     function getAll()
     {
         return ($this->find('all'));
     }
 
-}
+    function getAllRecursive2()
+    {
+        $this->recursive = 2;
+        return ($this->find('all'));
+    }
 
+}
 
 ?>

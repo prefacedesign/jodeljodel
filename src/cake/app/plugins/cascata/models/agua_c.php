@@ -3,14 +3,16 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-class AguaD extends CascataAppModel
+class AguaC extends CascataAppModel
 {
-    var $name = 'AguaD';
-
+    var $name = 'AguaC';
+    
     var $actsAs = array('Cascata.AguaCascata');
 
-    var $belongsTo = array('Cascata.AguaJ');
+    var $hasMany = array('Cascata.AguaH');
 
+    var $hasOne = array('Cascata.AguaI');
+    
     function afterFind($results, $primary)
     {
         if ($primary)
@@ -18,6 +20,7 @@ class AguaD extends CascataAppModel
         return $results;
 
     }
+
 
     function afterFindCascata($results)
     {
@@ -27,12 +30,18 @@ class AguaD extends CascataAppModel
 
     function changeName($results)
     {
-        if (isset($results[0][$this->name]['nome']))
-            $results[0][$this->name]['nome'] .= ' D';
+        //caso seja um sub-vetor
+        if (isset($results[0][$this->name][0]['nome']))
+                $results[0][$this->name][0]['nome'] .= ' C';
         else
-            $results[0][$this->name]['nome'] = 'D';
+            if (isset($results[0][$this->name]['nome']))
+                $results[0][$this->name]['nome'] .= ' C';
+            else
+                $results[0][$this->name]['nome'] = 'C';
         return $results;
     }
+
+
 
     function getAll()
     {

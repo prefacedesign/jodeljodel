@@ -3,14 +3,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-class AguaD extends CascataAppModel
+class AguaE extends CascataAppModel
 {
-    var $name = 'AguaD';
+    var $name = 'AguaE';
+    
+    var $actsAs = array('Cascata.AguaX','Cascata.AguaCascata');
 
-    var $actsAs = array('Cascata.AguaCascata');
-
-    var $belongsTo = array('Cascata.AguaJ');
-
+    
     function afterFind($results, $primary)
     {
         if ($primary)
@@ -18,6 +17,7 @@ class AguaD extends CascataAppModel
         return $results;
 
     }
+
 
     function afterFindCascata($results)
     {
@@ -28,11 +28,13 @@ class AguaD extends CascataAppModel
     function changeName($results)
     {
         if (isset($results[0][$this->name]['nome']))
-            $results[0][$this->name]['nome'] .= ' D';
+            $results[0][$this->name]['nome'] .= ' E';
         else
-            $results[0][$this->name]['nome'] = 'D';
+            $results[0][$this->name]['nome'] = 'E';
         return $results;
     }
+
+
 
     function getAll()
     {
@@ -40,6 +42,5 @@ class AguaD extends CascataAppModel
     }
 
 }
-
 
 ?>
