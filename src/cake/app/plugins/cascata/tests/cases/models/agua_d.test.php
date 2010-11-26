@@ -18,7 +18,8 @@ class AguaDTestCase extends CakeTestCase {
         $this->AguaD =& ClassRegistry::init('Cascata.AguaD');
 
         $result = $this->AguaD->getAll();
-        $expectedD = 'nome D';
+
+        $expectedD = 'nome Y D';
         $expectedJ = 'nome X J';
         
         $this->assertEqual($result[0][$this->AguaD->name]['nome'],$expectedD);

@@ -22,7 +22,7 @@ class AguaCTestCase extends CakeTestCase {
         $this->AguaC =& ClassRegistry::init('Cascata.AguaC');
 
         $result = $this->AguaC->getAll();
-        $expectedC = 'nome C';
+        $expectedC = 'nome Y C';
         $expectedH = 'nome X H';
         $expectedI = 'nome X I';
         

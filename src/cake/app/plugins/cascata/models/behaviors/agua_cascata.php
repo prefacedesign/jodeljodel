@@ -23,29 +23,29 @@ class AguaCascataBehavior extends ModelBehavior {
     function afterFindCascata(&$Model,$results) {
         //aciona o afterFindCascata do Model filho
         //carregando os filhos do Model
-         $filhos = array();
+        $filhos = array();
         foreach($Model->hasOne as $filho)
         {
             //só desce nos filhos se estiver nos results
-            if(isset($results[0][$filho['className']]) || isset($results[0][$Model->name][$filho['className']]) || ($results[0][$Model->name][0][$filho['className']]))
+            if(isset($results[0][$filho['className']]) || isset($results[0][$Model->name][$filho['className']]) || isset($results[0][$Model->name][0][$filho['className']]))
                 $filhos[] = $filho['className'];
         }
         foreach($Model->hasMany as $filho)
         {
             //só desce nos filhos se estiver nos results
-            if(isset($results[0][$filho['className']])|| isset($results[0][$Model->name][$filho['className']]) || ($results[0][$Model->name][0][$filho['className']]))
+            if(isset($results[0][$filho['className']])|| isset($results[0][$Model->name][$filho['className']]) || isset($results[0][$Model->name][0][$filho['className']]))
                 $filhos[] = $filho['className'];
         }
         foreach($Model->belongsTo as $filho)
         {
             //só desce nos filhos se estiver nos results
-            if(isset($results[0][$filho['className']])|| isset($results[0][$Model->name][$filho['className']]) || ($results[0][$Model->name][0][$filho['className']]))
+            if(isset($results[0][$filho['className']])|| isset($results[0][$Model->name][$filho['className']]) || isset($results[0][$Model->name][0][$filho['className']]))
                 $filhos[] = $filho['className'];
         }
         foreach($Model->hasAndBelongsToMany as $filho)
         {
             //só desce nos filhos se estiver nos results
-            if(isset($results[0][$filho['className']])|| isset($results[0][$Model->name][$filho['className']]) || ($results[0][$Model->name][0][$filho['className']]))
+            if(isset($results[0][$filho['className']])|| isset($results[0][$Model->name][$filho['className']]) || isset($results[0][$Model->name][0][$filho['className']]))
                 $filhos[] = $filho['className'];
         }
         

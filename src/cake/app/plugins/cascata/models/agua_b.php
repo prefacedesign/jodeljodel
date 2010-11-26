@@ -8,7 +8,7 @@ class AguaB extends CascataAppModel
 {
     var $name = 'AguaB';
 
-    var $actsAs = array('Cascata.AguaCascata');
+    var $actsAs = array('Cascata.AguaCascata','Cascata.AguaY');
 
     var $hasOne = array('Cascata.AguaE');
 
@@ -41,7 +41,7 @@ class AguaB extends CascataAppModel
             if (isset($results[0][$this->name]['nome']))
                 $results[0][$this->name]['nome'] .= ' B';
             else
-                $results[0][$this->name]['nome'] = 'B';
+                $results[0][$this->name]['nome'] = 'D';
         return $results;
     }
 
