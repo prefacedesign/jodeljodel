@@ -65,7 +65,23 @@
 				'model' => 'BurocrataUser.Local',
 				'fieldName' => 'Local.name',
 				'callbacks' => array(
-					'onSelect' => array('js' => 'alert(item.inspect());')
+					'onSelect' => array('js' => "input.value = ''; alert(pair.value);"),
+					'onSuccess' => array('popup' => 'Ahá!')
+				)
+			)
+		)
+	);
+	
+	
+	echo $this->Buro->input(array(),
+		array(
+			'type' => 'autocomplete',
+			'label' => 'Local of event',
+			'options' => array(
+				'model' => 'BurocrataUser.Hash',
+				'fieldName' => 'Local.name',
+				'callbacks' => array(
+					'onSelect' => array('js' => "input.value = ''; alert(pair.value);")
 				)
 			)
 		)

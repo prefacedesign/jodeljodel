@@ -1,3 +1,6 @@
+const E_NOT_JSON = 1; // Not a JSON response
+const E_JSON = 2; // JSON tells me the error
+
 /**
  * Abstract class that implements the behaviour of callbacks
  * with the methods `addCallback` and `trigger`
@@ -110,29 +113,27 @@ var BuroForm = Class.create(Callbackable, {
 //
 //         start
 //       ____|___
-//	    |http ok?|
+//     |http ok?|
 //         /  \
-// 		  /    \
+//        /    \
 // failure    success
 //     |    ____|______
 //     |   |data saved?|
 //     |        /\
 //     \    save  reject
 //      \     |     /
-// 	     \    |    /
+//       \    |    /
 //         complete
 
 /**
  * Extends the default Autocomplete built in Scriptaculous.
  *
  * Callbacks:
- * - `onStart` function (form){}
- * - `onComplete` function (form, response){}
- * - `onFailure` function (form, response){}
- * - `onError` function (error){}
- * - `onSave` function (form, response, json, saved){}
- * - `onReject` function (form, response, json, saved){}
- * - `onSuccess` function (form, response, json){}
+ * - `onStart` function (input){}
+ * - `onComplete` function (input, response){}
+ * - `onFailure` function (input, response){}
+ * - `onError` function (code, error){}
+ * - `onSuccess` function (input, response, json){}
  *
  */
 var BuroAutocomplete = Class.create(Callbackable, {
@@ -144,6 +145,10 @@ var BuroAutocomplete = Class.create(Callbackable, {
 		
 		this.autocompleter = new Ajax.Autocompleter(id_of_text_field, id_of_div_to_populate, url, options);
 		this.autocompleter.options.onComplete = this.onComplete.bind(this);
+		this.autocompleter.options.onFailure = this.onFailure.bind(this);
+		this.autocompleter.options.onSuccess = this.onSuccess.bind(this);
+		
+		this.input = this.autocompleter.element;
 		
 		this.addCallbacks({
 			onSelect: function(pair, li_item){
@@ -153,21 +158,42 @@ var BuroAutocomplete = Class.create(Callbackable, {
 		});
 	},
 	
-	onComplete: function(request)
+	onSuccess: function(response)
 	{
-		if(request && request.responseJSON)
-		{
-			this.json = request.responseJSON;
-			if(this.json.error != false)
-			{
-				this.trigger('onError', this.json.error);
-				return;
-			}
-			if (Object.isArray(this.json.content))
-				this.json.content = {};
-			this.foundContent = $H(this.json.content);
-			this.autocompleter.updateChoices(this.createChoices());
+		if(response && response.responseJSON)
+			this.trigger('onSuccess', this.input, response, response.responseJSON);
+	},
+	
+	onFailure: function(response)
+	{
+		this.trigger('onFailure', this.input, response);
+	},
+	
+	onComplete: function(response)
+	{
+		if(!response || !response.responseJSON) {
+			this.trigger('onError', E_NOT_JSON);
+			return;
 		}
+		
+		this.json = response.responseJSON;
+		if(this.json.error != false)
+		{
+			this.trigger('onError', E_JSON, this.json.error);
+			return;
+		}
+		if (Object.isArray(this.json.content))
+			this.json.content = {};
+		this.foundContent = $H(this.json.content);
+		this.autocompleter.updateChoices(this.createChoices());
+		
+		this.trigger('onComplete', this.input, response);
+	},
+	
+	getUpdatedChoices: function($super)
+	{
+		this.trigger('onStart', this.input);
+		$super();
 	},
 	
 	createChoices: function()
@@ -175,16 +201,16 @@ var BuroAutocomplete = Class.create(Callbackable, {
 		var i, ul = new Element('ul');
 		var keys = this.foundContent.keys();
 		for(i = 0; i < keys.length; i++)
-		{
 			ul.insert(new Element('li').update(this.foundContent.get(keys[i])));
-		}
+		
 		return ul;
 	},
 	
 	alternateUpdateElement: function(selectedElement)
 	{
-		var pair = {key: this.foundContent.keys()[this.autocompleter.index]};
-		pair.value = this.foundContent.get(pair.key);
-		this.trigger('onSelect', pair, selectedElement);
+		var pair = {id: this.foundContent.keys()[this.autocompleter.index]};
+		pair.value = this.foundContent.get(pair.id);
+		
+		this.trigger('onSelect', pair, selectedElement, this.input);
 	}
 });
