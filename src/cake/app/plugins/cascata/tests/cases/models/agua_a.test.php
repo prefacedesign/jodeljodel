@@ -33,15 +33,59 @@ class AguaATestCase extends CakeTestCase {
 
         $result = $this->AguaA->getAll();
 
-        $expectedA = 'nome Y A';
-        $expectedD = 'nome Y D';
-        $expectedB = 'nome Y B';
-        $expectedC = 'nome Y C';
+        
 
-        $this->assertEqual($result[0][$this->AguaA->name]['nome'],$expectedA);
-        $this->assertEqual($result[0]['AguaD']['nome'],$expectedD);
-        $this->assertEqual($result[0]['AguaB'][0]['nome'],$expectedB);
-        $this->assertEqual($result[0]['AguaC'][0]['nome'],$expectedC);
+        $expected = array
+        (
+            array
+                (
+                    'AguaA' => array
+                        (
+                            'id' => 1,
+                            'nome' => 'nome Y A',
+                            'agua_d_id' => 1
+                        ),
+
+                    'AguaD' => array
+                        (
+                            'id' => 1,
+                            'nome' => 'nome Y D',
+                            'agua_j_id' => 1
+                        ),
+
+                    'AguaB' => array
+                        (
+                            array
+                                (
+                                    'id' => 1,
+                                    'nome' => 'nome Y B',
+                                    'agua_a_id' => 1
+                                )
+
+                        ),
+
+                    'AguaC' => array
+                        (
+                            array
+                                (
+                                    'id' => 1,
+                                    'nome' => 'nome Y C',
+                                    'AguaAsAguaC' => array
+                                        (
+                                            'id' => 1,
+                                            'agua_a_id' => 1,
+                                            'agua_c_id' => 1
+                                        )
+
+                                )
+
+                        )
+
+                )
+
+        );
+
+        $this->assertEqual($result,$expected);
     }
 
     /*
@@ -54,34 +98,118 @@ class AguaATestCase extends CakeTestCase {
         $this->AguaA =& ClassRegistry::init('Cascata.AguaA');
 
         $result = $this->AguaA->getAllRecursive2();
-
-        $expectedA = 'nome Y A';
-
-        $expectedD = 'nome Y D';
-        $expectedDJ = 'nome X J';
-
-        $expectedB = 'nome Y B';
-        $expectedBE = 'nome X E';
-        $expectedBF = 'nome X F';
-        $expectedBG = 'nome X G';
-
-        $expectedC = 'nome Y C';
-        $expectedCI = 'nome X I';
-        $expectedCH = 'nome X H';
-
-        $this->assertEqual($result[0][$this->AguaA->name]['nome'],$expectedA);
         
-        $this->assertEqual($result[0]['AguaD']['nome'],$expectedD);
-        $this->assertEqual($result[0]['AguaD']['AguaJ']['nome'],$expectedDJ);
+        $expected = array
+        (
+            array
+                (
+                    'AguaA' => array
+                        (
+                            'id' => 1,
+                            'nome' => 'nome Y A',
+                            'agua_d_id' => 1
+                        ),
 
-        $this->assertEqual($result[0]['AguaB'][0]['nome'],$expectedB);
-        $this->assertEqual($result[0]['AguaB'][0]['AguaE']['nome'],$expectedBE);
-        $this->assertEqual($result[0]['AguaB'][0]['AguaF'][0]['nome'],$expectedBF);
-        $this->assertEqual($result[0]['AguaB'][0]['AguaG'][0]['nome'],$expectedBG);
+                    'AguaD' => array
+                        (
+                            'id' => 1,
+                            'nome' => 'nome Y D',
+                            'agua_j_id' => 1,
+                            'AguaJ' => array
+                                (
+                                    'id' => 1,
+                                    'nome' => 'nome X J'
+                                )
 
-        $this->assertEqual($result[0]['AguaC'][0]['nome'],$expectedC);
-        $this->assertEqual($result[0]['AguaC'][0]['AguaI']['nome'],$expectedCI);
-        $this->assertEqual($result[0]['AguaC'][0]['AguaH'][0]['nome'],$expectedCH);
+                        ),
+
+                    'AguaB' => array
+                        (
+                            array
+                                (
+                                    'id' => 1,
+                                    'nome' => 'nome Y B',
+                                    'agua_a_id' => 1,
+                                    'AguaE' => array
+                                        (
+                                            'id' => 1,
+                                            'nome' => 'nome X E',
+                                            'agua_b_id' => 1
+                                        ),
+
+                                    'AguaF' => array
+                                        (
+                                            array
+                                                (
+                                                    'id' => 1,
+                                                    'nome' => 'nome X F',
+                                                    'agua_b_id' => 1
+                                                )
+
+                                        ),
+
+                                    'AguaG' => array
+                                        (
+                                            array
+                                                (
+                                                    'id' => 1,
+                                                    'nome' => 'nome X G',
+                                                    'AguaBsAguaG' => array
+                                                        (
+                                                            'id' => 1,
+                                                            'agua_b_id' => 1,
+                                                            'agua_g_id' => 1
+                                                        )
+
+                                                )
+
+                                        )
+
+                                )
+
+                        ),
+
+                    'AguaC' => array
+                        (
+                            array
+                                (
+                                    'id' => 1,
+                                    'nome' => 'nome Y C',
+                                    'AguaAsAguaC' => array
+                                        (
+                                            'id' => 1,
+                                            'agua_a_id' => 1,
+                                            'agua_c_id' => 1
+                                        ),
+
+                                    'AguaI' => array
+                                        (
+                                            'id' => 1,
+                                            'nome' => 'nome X I',
+                                            'agua_c_id' => 1
+                                        ),
+
+                                    'AguaH' => array
+                                        (
+                                            array
+                                                (
+                                                    'id' => 1,
+                                                    'nome' => 'nome X H',
+                                                    'agua_c_id' => 1
+                                                )
+
+                                        )
+
+                                )
+
+                        )
+
+                )
+
+        );
+
+
+        $this->assertEqual($result,$expected);
     }
 
 
@@ -93,6 +221,7 @@ class AguaATestCase extends CakeTestCase {
         $this->AguaA =& ClassRegistry::init('Cascata.AguaA');
 
         $result = $this->AguaA->getOnlyA();
+
         $expected = array(
                 array(
                         'AguaA' => array (

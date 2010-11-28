@@ -19,11 +19,28 @@ class AguaDTestCase extends CakeTestCase {
 
         $result = $this->AguaD->getAll();
 
-        $expectedD = 'nome Y D';
-        $expectedJ = 'nome X J';
-        
-        $this->assertEqual($result[0][$this->AguaD->name]['nome'],$expectedD);
-        $this->assertEqual($result[0]['AguaJ']['nome'],$expectedJ);
+        $expected = array
+        (
+            array
+                (
+                    'AguaD' => array
+                        (
+                            'id' => 1,
+                            'nome' => 'nome Y D',
+                            'agua_j_id' => 1
+                        ),
+
+                    'AguaJ' => array
+                        (
+                            'id' => 1,
+                            'nome' => 'nome X J'
+                        )
+
+                )
+
+        );
+     
+        $this->assertEqual($result,$expected);
     }
 }
 
