@@ -1,7 +1,6 @@
 <?php
 /* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Classe de teste mais completa
  */
 class AguaA extends CascataAppModel
 {
