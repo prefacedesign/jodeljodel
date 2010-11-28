@@ -6,13 +6,18 @@
 App::import('Model', 'Cascata.AguaEscola');
 
 class AguaEscolaTestCase extends CakeTestCase {
+    var $fixtures = array(
+        'plugin.cascata.agua_escola',
+        'plugin.cascata.agua_professor',
+        'plugin.cascata.agua_equipe'
+    );
 
     /**
      * Função para verificar se o que está declarado no afterFind do model Professor e do behavior Pessoa
      * vem cascateado - considerando a relação HasMany
      * Esse teste só considera o afterFind, não considera as modificações que deveriam vir pelo beforeFind
      */
-   /* function testCascataHasManyAfterFind()
+    function testCascataHasManyAfterFind()
     {
         $this->AguaEscola =& ClassRegistry::init('Cascata.AguaEscola');
 
@@ -62,7 +67,7 @@ class AguaEscolaTestCase extends CakeTestCase {
 
         //fazer teste aqui para verificar se a cadeia veio!
         $this->assertEqual($result,$expected);
-    }*/
+    }
 }
 
 ?>
