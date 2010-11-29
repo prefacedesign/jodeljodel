@@ -2,6 +2,9 @@
 /vendors
 /plugins
 
+# Generated images shouldn't be versioned.
+/app/webroot/img/derivatives
+
 # Each developer must have your database.php. Copy database.php.default and configure it to your machine.
 /app/config/database.php
 /app/config/core.php

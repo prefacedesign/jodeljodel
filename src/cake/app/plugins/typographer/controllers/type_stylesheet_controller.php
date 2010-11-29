@@ -6,13 +6,13 @@ class TypeStylesheetController extends TypographerAppController
 	var $layout = 'css';
 	var $helpers = array(
 		'Typographer.TypeDecorator' => array(
-			'name' => 'decorator',
+			'name' => 'Decorator',
 			'compact' => false,
 			'mode' => 'inline_echo',
 			'receive_tools' => true
 		),
 		'Typographer.*TypeStyleFactory' => array(
-			'name' => 'styleFactory', 
+			'name' => 'StyleFactory', 
 			'receive_automatic_classes' => false, 
 			'receive_tools' => true,
 			'generate_automatic_classes' => true //significa que eu que vou produzir as classes automaticas
