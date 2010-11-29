@@ -20,8 +20,22 @@ class AguaGTestCase extends CakeTestCase {
         $this->AguaG =& ClassRegistry::init('Cascata.AguaG');
 
         $result = $this->AguaG->getAll();
-        $expected = 'nome X G';
-        $this->assertEqual($result[0][$this->AguaG->name]['nome'],$expected);
+        
+        $expected = array
+        (
+            array
+                (
+                    'AguaG' => array
+                        (
+                            'id' => 1,
+                            'nome' => 'nome X G'
+                        )
+
+                )
+
+        );
+
+        $this->assertEqual($result, $expected);
     }
 
 }
