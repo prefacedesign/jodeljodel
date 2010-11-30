@@ -48,7 +48,7 @@ class TypeStyleFactoryHelper extends AppHelper
 		if (isset($M))
 		{	$t[0] .= $this->_writeFraction($M, 3) . 'M';	}
 		if (isset($i))
-		{ 	$t[0] .= $this->_writeFraction($i, 3) . 'g';	}
+		{ 	$t[0] .= $this->_writeFraction($g, 3) . 'g';	}
 		if (isset($m))
 		{	$t[0] .= $this->_writeFraction($m, 3) .  'm'; 	}
 		if (isset($u))
@@ -97,7 +97,6 @@ class TypeStyleFactoryHelper extends AppHelper
 			)
 		);
 	}
-	
 	
 	function registerUsedRules($rule_list) // no mesmo formato do vetor
 	{

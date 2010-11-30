@@ -25,15 +25,58 @@ class AguaBTestCase extends CakeTestCase {
 
         $result = $this->AguaB->getAll();
 
-        $expectedB = 'nome Y B';
-        $expectedE = 'nome X E';
-        $expectedF = 'nome X F';
-        $expectedG = 'nome X G';
 
-        $this->assertEqual($result[0][$this->AguaB->name]['nome'],$expectedB);
-        $this->assertEqual($result[0]['AguaE']['nome'],$expectedE);
-        $this->assertEqual($result[0]['AguaF'][0]['nome'],$expectedF);
-        $this->assertEqual($result[0]['AguaG'][0]['nome'],$expectedG);
+        $expected = array
+        (
+            array
+                (
+                    'AguaB' => array
+                        (
+                            'id' => 1,
+                            'nome' => 'nome Y B',
+                            'agua_a_id' => 1
+                        ),
+
+                    'AguaE' => array
+                        (
+                            'id' => 1,
+                            'nome' => 'nome X E',
+                            'agua_b_id' => 1
+                        ),
+
+                    'AguaF' => array
+                        (
+                            array
+                                (
+                                    'id' => 1,
+                                    'nome' => 'nome X F',
+                                    'agua_b_id' => 1
+                                )
+
+                        ),
+
+                    'AguaG' => array
+                        (
+                            array
+                                (
+                                    'id' => 1,
+                                    'nome' => 'nome X G',
+                                    'AguaBsAguaG' => array
+                                        (
+                                            'id' => 1,
+                                            'agua_b_id' => 1,
+                                            'agua_g_id' => 1
+                                        )
+
+                                )
+
+                        )
+
+                )
+
+        );
+
+        $this->assertEqual($result,$expected);
     }
 
 }

@@ -5,12 +5,24 @@ class TypeBricklayerHelper extends AppHelper
 	static $automatic_tags = array(
 		'html','head','title','link','body',
 		'h1','h2','h3','h4','div','br','span','hr','img',
-		'form', 'input','textarea','p','a','script', 'small',
+		'form', 'input','textarea','p', 'em','a','script', 'small',
 		'hr','script', 'object', 'param'
 	);
 	
 	static $tags_without_space_after = array(
 		'i', 'em', 'span', 'a'
+	);
+	
+	static $tags_that_need_closing_tag = array(
+		'div'
+	);
+	
+	static $tags_that_begin_with_e = array(
+		'em'
+	);
+	
+	static $tags_that_begin_with_s = array(
+		'span'
 	);
 	
 	var $helpers = array(
@@ -81,7 +93,7 @@ class TypeBricklayerHelper extends AppHelper
 		//falta incorporar ainda um monte de opções possíveis para as caixas
 		//e ainda um monte de coisas
 		
-		if (isset($opcoes['size']))
+		if (isset($options['size']))
 		{
 			$this->TypeStyleFactory->widthGenerateClasses(array(0 => $options['size']));
 			$own_attr['class'] = am($own_attr['class'], $this->TypeStyleFactory->widthClassNames($options['size']));
@@ -151,9 +163,9 @@ class TypeBricklayerHelper extends AppHelper
 		{
 			$t .= $this->sp($attr, $options);
 			if (isset($options['escape']) && $options['escape'])
-				$t .= $para;
-			else
 				$t .= h($para);
+			else
+				$t .= $para;
 			$t .= $this->ep();
 		}
 		
@@ -196,7 +208,7 @@ class TypeBricklayerHelper extends AppHelper
 	
 	function tag($tag, $attr = null, $options = null, $content = null)
 	{
-		$standard_options = array('escape' => false, 'close_me' => false);
+		$standard_options = array('escape' => true, 'close_me' => false);
 		$options = am($standard_options, $options);
 		extract($options);
 		unset($options['escape']); // não faz sentido passar adiante
@@ -204,7 +216,10 @@ class TypeBricklayerHelper extends AppHelper
 		if ($close_me || empty($content))
 		{
 			$close_me = true;
-			$opcoes['close_me'] = true;
+			$options['close_me'] = true;
+			
+			if (in_array($tag, TypeBricklayerHelper::$tags_that_need_closing_tag))
+				$close_me = false;
 		}
 		else
 			$close_me = false;
@@ -213,7 +228,7 @@ class TypeBricklayerHelper extends AppHelper
 		
 		if (!$close_me)
 		{
-			if (!$escape)
+			if ($escape)
 				$content = h($content);
 			$t .= $content . $this->eTag($tag);
 		}
@@ -249,7 +264,7 @@ class TypeBricklayerHelper extends AppHelper
 		if (method_exists($this, 's' . $n))
 		{ //@todo Make a class of it
 			list($attr, $options, $content) = $args;
-			$standard_options = array('escape' => false, 'close_me' => false);
+			$standard_options = array('escape' => true, 'close_me' => false);
 			$options = am($standard_options, $options);
 			extract($options);
 			
@@ -265,14 +280,16 @@ class TypeBricklayerHelper extends AppHelper
 			
 			if (!$close_me)
 			{
-				if(!$escape)
+				if($escape)
 					$content = h($content);
 				$t .= $content . $this->{'e' . $n}($attr, $options);
 			}
 			return $t;
 		}
 		
-		if (preg_match('/(^[se])([A-Za-z]\w*)/', $n, $matches))
+		if (!in_array($n, TypeBricklayerHelper::$tags_that_begin_with_e) 
+			&& !in_array($n, TypeBricklayerHelper::$tags_that_begin_with_s) 
+			&&	preg_match('/(^[se])([A-Za-z]\w*)/', $n, $matches))
 		{
 			$tag = $matches[2];
 			{
@@ -294,7 +311,7 @@ class TypeBricklayerHelper extends AppHelper
 				}
 			}
 		}
-		else //@todo Add check: are these permited tags?
+		else //@todo Add check: are these allowed tags?
 		{
 			switch(count($args))
 			{
@@ -319,7 +336,7 @@ class TypeBricklayerHelper extends AppHelper
 			}
 		}
 		//@todo Translate this!
-		trigger_error('PedreiroHelper::'.$n.'(): Não exite este método.');
+		trigger_error('PedreiroHelper::'.$n.'(): Não existe este método.');
 	}
 }
 

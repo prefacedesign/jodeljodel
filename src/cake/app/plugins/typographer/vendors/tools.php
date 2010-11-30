@@ -365,7 +365,7 @@ class CompoundImage extends ImageGenerator
 			switch ($layer['type'])
 			{
 				case 'apply_color':
-					$name .= sprintf('_ac%02x%02x%02x', $layer['color']->r, $layer['cor']->g, $layer['color']->b);
+					$name .= sprintf('_ac%02x%02x%02x', $layer['color']->r, $layer['color']->g, $layer['color']->b);
 				break;
 				case 'image':
 					$original_file = str_replace($layer['path'],'.',''); //temos que pegar só o nome do arquivo!
@@ -379,7 +379,7 @@ class CompoundImage extends ImageGenerator
 					$name .= sprintf('_i-' . $original_file);
 				break;
 				case 'tint_image':
-					$original_file = str_replace($camada['path'],'.',''); //temos que pegar só o nome do arquivo!
+					$original_file = str_replace($layer['path'],'.',''); //temos que pegar só o nome do arquivo!
 					$tok = strtok($original_file, '/\\');
 				
 					while ($tok !== false)
@@ -411,10 +411,10 @@ class CompoundImage extends ImageGenerator
 	function generateImageFile($params, $path)
 	{
 		$ext = isset($params['ext']) ? $params['ext'] : 'png';
-		if (isset($params['wi']))
+		if (isset($params['iw']))
 		{
-			$w = $params['wi']; //caso não tenha depois vai puxar
-			$h = $params['hi'];
+			$w = $params['iw']; //caso não tenha depois vai puxar
+			$h = $params['ih'];
 			$scale = true;
 		}
 		else
@@ -429,7 +429,7 @@ class CompoundImage extends ImageGenerator
 		
 		foreach($params['layers'] as $layer)
 		{
-			switch ($layer['tipo'])
+			switch ($layer['type'])
 			{
 				case 'apply_color':										
 					$x = isset($layer['pos']['x']) ? $layer['pos']['x'] : 0;
@@ -470,18 +470,18 @@ class CompoundImage extends ImageGenerator
 				break;
 				
 				case 'tint_image':					
-					list($width, $height, $type) = getimagesize(WWW_ROOT . $layer['layer']);
+					list($width, $height, $type) = getimagesize(WWW_ROOT . $layer['path']);
 								
 					switch($type)
 					{
 						case IMAGETYPE_JPEG:
-							$img2 = imagecreatefromjpeg(WWW_ROOT . $layer['layer']);
+							$img2 = imagecreatefromjpeg(WWW_ROOT . $layer['path']);
 						break;
 						case IMAGETYPE_PNG:
-							$img2 = imagecreatefrompng(WWW_ROOT . $layer['layer']);
+							$img2 = imagecreatefrompng(WWW_ROOT . $layer['path']);
 						break;
 						case IMAGETYPE_GIF:
-							$img2 = imagecreatefromgif(WWW_ROOT . $layer['layer']);
+							$img2 = imagecreatefromgif(WWW_ROOT . $layer['path']);
 						break;
 						default:
 							trigger_error ('A imagem é de um tipo não suportado -- ImagemComposta::criaArquivo()');
