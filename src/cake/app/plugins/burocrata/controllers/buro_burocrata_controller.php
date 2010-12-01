@@ -32,7 +32,11 @@ class BuroBurocrataController extends BurocrataAppController
 
 /**
  * Attempts to save the data POSTed 
- *
+ * The JSON object returned has 3 attributes:
+ * - `error` - is false when everyting went ok, or an frindly string describing the error
+ * - `saved` - is false when couldn't saved the data, or the ID of the new entry on database
+ * - `content` - i realy don't know, yet, why this is here, but will be used for something
+ * 
  * @access public
  * @return json An javascript object that contains `error`, `content` and `saved` properties
  */
@@ -51,6 +55,9 @@ class BuroBurocrataController extends BurocrataAppController
 				$saved = $Model->saveBurocrata($this->data) !== false;
 			else
 				$saved = $Model->save($this->data) !== false;
+			
+			if($saved)
+				$saved = $Model->id;
 		}
 		
 		$this->set('jsonVars', compact(
@@ -60,10 +67,12 @@ class BuroBurocrataController extends BurocrataAppController
 
 
 /**
- * Return a list to fill a autocomplete field.
+ * Return a list to fill the autocomplete field.
  *
  * @access public
  * @return json An javascript object that contains `error` and `content` properties
+ * @todo Better conditions suport
+ * @todo Suport for order statment
  */
 	public function autocomplete()
 	{
@@ -81,7 +90,7 @@ class BuroBurocrataController extends BurocrataAppController
 			// temporary conditions and order
 			// todo: something more elaborated
 			$conditions = $this->postConditions($data, 'LIKE');
-			$order = array(array_pop(array_keys($conditions)) => 'ASC');
+			$order = null;
 			
 			if(method_exists($Model, 'findBurocrataAutocomplete'))
 				$content = $Model->findBurocrataAutocomplete($data);
@@ -97,7 +106,7 @@ class BuroBurocrataController extends BurocrataAppController
 
 
 /**
- * Return a JSON object containing an already rendered element
+ * Return a JSON object containing an already rendered and populated element
  *
  * @access public
  * @return json An javascript object that contains `error` and `content` properties
@@ -109,7 +118,7 @@ class BuroBurocrataController extends BurocrataAppController
 
 
 /**
- * Attempts to delete a database entry
+ * Attempts to delete an database entry
  *
  * @access public
  * @return json An javascript object that contains `error` and `content` properties
@@ -131,7 +140,7 @@ class BuroBurocrataController extends BurocrataAppController
 		$error = false;
 		
 		if(!isset($this->data['request']))
-			$error = 'Request security field not defined';
+			$error = __('Request security field not defined', true);
 		
 		if(!$error)
 		{
@@ -142,7 +151,7 @@ class BuroBurocrataController extends BurocrataAppController
 			$hash = Security::hash($this->here.$model_alias.$model_plugin);
 			$uncip = Security::cipher(pack("H*" , $secure), $hash);
 			if($uncip != $model_plugin.'.'.$model_alias)
-				$error = 'Security hash didn\'t match.';
+				$error = __('Security hash didn\'t match.', true);
 		}
 		
 		if(!$error)
@@ -152,7 +161,7 @@ class BuroBurocrataController extends BurocrataAppController
 				$model_class_name = $model_plugin . '.' . $model_class_name;
 			
 			if(!$this->loadModel($model_class_name))
-				$error = 'Couldn\'t load model';
+				$error = __('Couldn\'t load model', true);
 		}
 		
 		if(!$error)

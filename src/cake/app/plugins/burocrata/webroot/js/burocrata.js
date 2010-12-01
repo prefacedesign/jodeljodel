@@ -90,15 +90,21 @@ var BuroForm = Class.create(Callbackable, {
 		this.trigger('onStart', this.form);
 		new Ajax.Request(this.url, {
 			parameters: data,
-			onComplete: function (response) { this.trigger('onComplete', this.form, response); }.bind(this),
-			onFailure: function (response) { this.trigger('onFailure', this.form, response); }.bind(this),
+			onComplete: function (response) {
+				if(!response.getAllHeaders())
+					this.trigger('onFailure', this.form, response); // No server response
+				this.trigger('onComplete', this.form, response);
+			}.bind(this),
+			onFailure: function (response) {
+				this.trigger('onFailure', this.form, response); // Page not found
+			}.bind(this),
 			onSuccess: function (response) {
 				if(response.responseJSON) this.json = response.responseJSON;
 				
 				if(this.json && this.json.error != false)
 					this.trigger('onError', this.json.error);
 				
-				if(this.json && this.json.saved === true)	
+				if(this.json && this.json.saved !== false)	
 					this.trigger('onSave',this.form, response, this.json, this.json.saved);
 				else if(this.json && this.json.saved === false)
 					this.trigger('onReject', this.form, response, this.json, this.json.saved);
@@ -171,7 +177,10 @@ var BuroAutocomplete = Class.create(Callbackable, {
 	
 	onComplete: function(response)
 	{
-		if(!response || !response.responseJSON) {
+		if(!response.getAllHeaders())
+			this.trigger('onFailure', this.form, response); // No server response
+		
+		if(!response.responseJSON) {
 			this.trigger('onError', E_NOT_JSON);
 			return;
 		}
@@ -208,9 +217,10 @@ var BuroAutocomplete = Class.create(Callbackable, {
 	
 	alternateUpdateElement: function(selectedElement)
 	{
-		var pair = {id: this.foundContent.keys()[this.autocompleter.index]};
+		var keys = this.foundContent.keys();
+		var pair = {};
+		pair.id = keys[this.autocompleter.index];
 		pair.value = this.foundContent.get(pair.id);
-		
-		this.trigger('onSelect', pair, selectedElement, this.input);
+		this.trigger('onSelect', this.input, pair, selectedElement);
 	}
 });

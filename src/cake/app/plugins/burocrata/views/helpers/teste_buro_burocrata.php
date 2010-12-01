@@ -13,7 +13,7 @@
 		{
 			return $this->Bl->div(
 				array('class' => 'submit'), 
-				array('escape' => true),
+				array('escape' => false),
 				parent::submit($htmlAttributes, $options)
 			);
 		}

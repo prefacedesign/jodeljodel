@@ -92,8 +92,6 @@ class XmlTagHelper extends AppHelper
 			$opcoes = am($opcoes_padrao, $opcoes);
 			extract($opcoes);
 			
-			$t = $this->{'s' . $n}($atributos, $opcoes);
-			
 			if ($close_me || empty($conteudo))
 			{
 				$close_me = true;
@@ -101,6 +99,8 @@ class XmlTagHelper extends AppHelper
 			}
 			else
 				$close_me = false;
+
+			$t = $this->{'s' . $n}($atributos, $opcoes);
 			
 			if (!$close_me)
 			{

@@ -16,7 +16,7 @@ class BuroOfficeBoyHelper extends AppHelper
  * @var array
  * @access public
  */
-	public $helpers = array('Html', 'Js' => 'prototype');
+	public $helpers = array('Html', 'Ajax', 'Js' => 'prototype');
 
 
 /**
@@ -54,7 +54,7 @@ class BuroOfficeBoyHelper extends AppHelper
  * @param array $options An array that must contains some attributes that defines the current form
  * @return boolean True if the javascript was sucefully generated, false, otherwise
  */
-	public function autoComplete($options = array())
+	public function autocomplete($options = array())
 	{
 		$this->_includeScripts();
 		
@@ -154,6 +154,19 @@ class BuroOfficeBoyHelper extends AppHelper
 
 
 /**
+ * Generates the script that resets the content of form
+ *
+ * @access protected
+ * @param mixed $script
+ * @return string The formated script
+ */
+	protected function _resetForm($script)
+	{
+		return 'form.reset();';
+	}
+
+
+/**
  * Generates the script that locks the content of form
  *
  * @access protected
@@ -201,7 +214,7 @@ class BuroOfficeBoyHelper extends AppHelper
  */
 	protected function _js($script)
 	{
-		return $this->Js->escape($script);
+		return $script;
 	}
 
 
@@ -230,6 +243,17 @@ class BuroOfficeBoyHelper extends AppHelper
 	}
 
 
+/**
+ * Renders a Ajax.Resquest or a Ajax.Updater
+ *
+ * @access protected
+ * @param array $options
+ * @return string The formated script
+ */
+	protected function _ajax($options)
+	{
+		return $this->Ajax->remoteFunction($options);
+	}
 /**
  * Includes the necessary script files to burocrata works
  *
