@@ -1,0 +1,159 @@
+Convenções do Burocrata:
+
+
+ 1. Formulários
+  - Para iniciar um formulário, basta usar  o  método  BuroBurocrataHelper::sform  (start
+    form).
+  - Os parâmetros do sform seguem o padrão do XmlTagHelper (o primeiro configura os para-
+    metros HTML e o segundo as opções)
+  - As opções do formulário são:
+     - `url` - URL where data will be posted. Defaults to /burocrata/buro_burocrata/save
+     - `model` - Model className, with plugin name when appropriate. Defaults to false
+     - `writeForm` - If true, attempts to write all form, using the conventional element.
+	   Defaults to false.
+     - `data` Optional data that will fill out the form. Defaults to $this->data.
+  - É permitido formulários aninhados
+  - Para fechar um formulário basta chamar o método BuroBurocrataHelper::eform (end form),
+    que já cria, inclusive, uma instância da classe JS 
+
+
+ 2. Inputs
+  - Todos (e qualquer) input pode ser acessado via BuroBurocrataHelper::input,  que segue
+    o mesmo padrão do XmlTagHelper
+  - No parâmetro $options, é necessário especificar o tipo de input (type), que pode ser:
+     `text`
+     `textarea`
+     `radio`
+     `checkbox`
+     `datetime`
+     `select`
+     `super_field`
+     `autocomplete`
+     `belongs_to`
+     `has_many`
+     e muitos outros que serão implementados com o tempo
+   - Cada tipo de input possui um grupo de configurações específico que deve ser  enviado
+     via $options['options']
+   - O grupo de parâmetros a serem enviados nas opções pode variar de acordo com o layout
+     também
+
+  2.1 Input comuns
+    Os inputs comuns, por enquanto, são gerados pelo FormHelper, para agilizar o processo
+	de implementação.
+    Mais tarde isso será trocado e o próprio BuroBurocrataHelper tratará de montar  esses
+	inputs mais simples também.
+
+  2.2 Input especiais
+    2.2.1 `superfield`': Esse  input  é iniciado com o método BuroBurocrataHelper::sinput
+	      especificando o tipo `super_field`.
+          Todos  os  inputs  dentro  dele  serão diferenciados, mas isso precisa melhorar
+		  ainda na implementação.
+          Para fecha-lo, basta usar o einput e o helper saberá que se está fechando aque-
+		  le input.
+    2.2.2 `autocomplete`: Gera um input que possui a função de autocomplete inclusa:  as-
+	      sim que o usuário inicia a digitação, o input busca no DB os dados.
+          Ele recebe as sequintes opções:
+           - `model` - Model name where the find will perform. No default, but needed on-
+		     ly is url param not set.
+           - `url` - URL for post data (must return a JSON with error and content parame-
+		     ters). Defaults to BuroBurocrataController actions if mode parameter is set.
+           - `minChars` - Number of chars before start ajax call - Defaults to 2.
+           - `id_base` - An string that will be appended on  every  DOM ID.  Defaults  to
+		     uniqid().
+           - `callbacks` - An array with possible callbacks with Jodel Callbacks  conven-
+		     tion.
+          Apesar de `model` e `url` serem opcionais, um deles é sempre necessário.  Se  a
+		  URL for especificada, ela deve retornar um JSON com  pelo  menos  os  atributos 
+		  `error` e `content`  (o  content  é  um  objeto  contendo  os  dados no formato 
+		  {'id': 'label'}).
+          Se não for especificada a URL, ainda é possível configruar o find implementando
+		  o método findBurocrataAutocomplete que recebe os dados enviados pelo form e de-
+		  verá retornar uma lista do tipo [id] => 'Nome que aparecerá'.
+          Para usar o dado (quando o usuário seleciona um dos resultados) basta implemen-
+		  tar o callback `onSelect`.
+          O CSS deve ser fornecido para os seletores `input.autocomplete` e `div.autocom-
+		  plete`.
+    2.2.3 `belongs_to`: Cria um input que ajuda no preenchimento de um  dado  relacionado
+	      (relação belongsTo). Se model A belongsTo B, é possível usar esse input no  mo-
+		  del A, colocando um input (autocomplete, select, ou qq outra implementação  que
+		  venha aparecer) com opção de criar um novo registro em B, ou alterar um  já  e-
+		  xistente, sem sair do formulário de A.
+		  Por enquanto é necessário que o campo foreingKey da tabela pai aceite NULL.
+          Ele recebe as seguintes opções:
+           - `model` - The Alias used by related model (there is no default and  MUST  be
+		     passed).
+           - `type` - Type of form (can be 'autocomplete' or 'select').
+		     Defaults to 'autocomplete'.
+           - `allow` - An array that contains the actions allowed.
+		     Defaults to array('create', 'modify', 'relate').
+           - `actions` - An array that defines all the URLs for CRUD actions.
+		     Defaults to BuroBurocrataController actions.
+           - `callbacks` - An array with possible callbacks with Jodel Callbacks conven-
+		     tion.
+    2.2.4 `has_many`: ainda precisa planejar/implementar
+    2.2.5 `habtm`: ainda precisa planejar/implementar
+    2.2.6 `tags`: ainda precisa planejar/implementar
+    2.2.7 `upload`: ainda precisa planejar/implementar (será  uma  adaptação/melhoria  do
+	      plugin upload que rola por ai)
+ 
+ 
+ 3. Callbacks
+  - Cada input especial tem seus próprios callbacks e cada callback recebe um número  di-
+    ferente de parâmetros.
+  - O helper BuroOfficeBoy já encapsula os códigos JS em funções de acordo com callback.
+  - As classes de JS não tratam erros, para isso existe o callback `onError`, que  deverá
+    ser implementado para qq input especial que usam AJAX.
+  - Os callbacks comuns para os inputs que usam AJAX são:
+     `onStart` - Disparado logo antes da chamada ajax se iniciar
+     `onFailure` - Disparado se a chamada ajax retornar algum código HTTP de falha  (4xx, 
+				   5xx ...) como o 404 (not found) ou sem resposta.
+     `onSuccess` - Disparado quando o `onFailure` não é disparado (códigos 2xx)
+     `onComplete` - Disparado ao final de tudo (sempre é chamado e é o último callback a
+	                ser disparado numa chamada)
+  - Se o request for uma tentativa de salvar algum dado, ele ainda possui os callbacks
+     `onSave` - Disparado quando o dado foi salvo
+     `onReject` - Disparado quando o dado não foi salvo
+   - Ainda existem outros callbacks (mais específicos de cada input): vide a documentação
+     de cada input.
+ 
+ 
+ 4. JSON
+  - Por padrão toda chamada AJAX retornará um JSON (para isso basta usar a View Burocrata.JsonView, como $this->view no controller)
+  - Para setar os dados do JSON, basta usar "$this->set('jsonVars', array('error' => false, 'content' => 'Test'));" e não será necessário
+    implementar a parte .ctp da view
+  - O Controller::set('jsonVars') só pode ser chamado uma vez, pois ele substitui o set anterior.
+  - Se a variável jsonVars não for passada para a view, ele procurará o .ctp correspondente e o renderizará, então, se for necessário
+    renderizar um element, ou se o programador julgar necessário usar o .ctp, basta usar esse procedimento. Aí fica a cargo do programador
+    criar e dar echo no objeto JSON no padrão Jodel (sugiro usar o método JsHelper::object, para isso)
+  - O JSON deverá conter os parâmetros `error` e `content` sempre, quando é um request de save, deve retornar o parâmetro `saved` também
+  - O parâmetro `error` deve ser false ou deve conter a string ou código de erro
+  - O formato do parâmetro `content` varia com o contexto
+  - O parâmetro `saved` deve ser false ou deve conter a o ID do registro salvo na tabela
+  
+ 5. Javascript
+  - O Javascript principal é sempre feito pelo Helper BuroOfficeBoy (que provavelmente entrará pro esquema de Schema)
+  - As implementações de javascript mais elaboradas (Classes) ficam em /burocrata/js/burocrata.js,
+    e esse arquivo é adicionado automaticamente ao HTML quando o helper é usado (se não foi adicionado, ainda)
+  - O prototype e o scriptaculous são necessários para o Burocrata funcionar, e são adicionados automaticamente também (se não foi adicionado, ainda)
+  - Passar javascript por parâmetro em funções do PHP (para helper ou element) segue o padrão [tipo_script] => parametros. 
+    Algumas regras e comportamentos da passagem de javascript:
+     * Deve ser array (se não for array, será conver tido num)
+       Ex.
+         'contentUpdate' será convertido em array('contentUpdate' => null)
+     * O array deve ser indexado por tipo de script
+     * Tipos já implementados: 
+        `js` - passar js puro
+        `contentUpdate` - substitui o form pelo conteúdo do parâmetro `content` do retorno
+        `redirect` - redirect via javascript
+        `popup` - um alert, mas poderá ser melhorado
+		`lockForm` - trava o formulário para edição
+		`unlockForm` - destrava o formulário
+		`resetForm` - (todo) ainda não consegui pensar uma forma legal de fazer isso
+		`ajax` - (todo) uma forma simples de iniciar outra chamada ajax num callback de outra (precisa ser muito bem pensado)
+     * Se um índice for numérico, aquele indice será convertido para o seu valor
+       Ex.
+          array('js' => "meu_script()", 'contentUpdate') será convertido para array('js' => "meu_script()", 'contentUpdate' => 'contentUpdate')
+     * Cada tipo de script deve ter um método correspondente que o renderiza
+       Ex.:
+          array('js' => "alert('aa')") será gerado pelo método BuroOfficeBoyHelper::_js, que receberá a string "alert('aa')"
+          array('meuTipo' => array('1','3','6')) será gerado pelo método BuroOfficeBoyHelper::_meuTipo, que receberá o array array('1','3','6')
