@@ -1,8 +1,9 @@
 <?php
 echo $this->Bl->sdiv(array('id' => 'main_column'));
+
 	echo $this->Bl->sdiv(array('id' => 'header'));
 		echo $this->Bl->sbox(array(),array('size' => array('M' => 5, 'g' => -1)));
-			echo $this->Bl->p(array(), array('escape' => false), 
+			echo $this->Bl->p(array(), array('escape' => false),
 				$this->Bl->emDry(preg_replace('/\/$/','', Router::url('/',true))) . ' / ' . __('Content management area', true)
 			);
 		echo $this->Bl->ebox();		
@@ -11,9 +12,12 @@ echo $this->Bl->sdiv(array('id' => 'main_column'));
 			echo $this->Bl->a(array('href' => array('/')), array(), __('Logout', true));
 		echo $this->Bl->ediv();
 	echo $this->Bl->ediv();
+	
 	echo $this->Bl->sdiv(array('id' => 'content'));
 		echo $content_for_layout;
+		echo $this->Bl->floatBreak();
 	echo $this->Bl->ediv();
+	
 	echo $this->Bl->sdiv(array('id' => 'footer'));
 		echo $this->Bl->sbox(array(),array('size' => array('M' => 4, 'g' => -1)));
 			echo $this->Bl->pDry(__('Powered by Jodel Jodel',true));
@@ -24,5 +28,6 @@ echo $this->Bl->sdiv(array('id' => 'main_column'));
 				);
 		echo $this->Bl->ebox();
 	echo $this->Bl->ediv(); 
+
 echo $this->Bl->ediv();
 ?>

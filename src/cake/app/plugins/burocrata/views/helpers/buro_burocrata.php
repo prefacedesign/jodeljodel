@@ -30,6 +30,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  * @access public
  * @param  array $htmlAttributes
  * @param  array $options
+ * @todo	Documentate better the input options
  * @return	string The HTML well formated
  */
 	public function sinput($htmlAttributes = array(), $options = array())
@@ -153,7 +154,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  * @access public
  * @param  array $htmlAttributes Controls the HTML parameters
  * @param  array $options 
- * @return	string The HTML well formated
+ * @return string The HTML well formated
  */
 	public function sform($htmlAttributes = array(), $options = array())
 	{
@@ -172,7 +173,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'id' => $domId = uniqid('frm')
 		);
 		$htmlAttributes = am($htmlDefaults, $htmlAttributes);
-		$htmlAttributes = $this->addClass($htmlAttributes, 'form');
+		$htmlAttributes = $this->addClass($htmlAttributes, 'buro_form');
 		
 		if($options['data'])
 			$this->_data = $options['data'];
@@ -440,6 +441,9 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function sinstructions($htmlAttributes = array(), $options = array())
 	{
+		// @todo add _mergeAttributes
+		$htmlAttributes  = $this->_mergeAttributes(array('class' => array('instructions')), $htmlAttributes);
+		
 		return $this->Bl->sspan($htmlAttributes, $options);
 	}
 
@@ -470,7 +474,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 	{
 		$defaults = array();
 		if($this->_nestedOrder > 0)
-			$defaults['class'] = 'subinput';
+			$defaults['class'] = 'subinput'; //@todo Make the prefix automatic;
 		else
 			$defaults['class'] = 'input';
 		
@@ -480,7 +484,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		{
 			$isFieldError = $this->Form->isFieldError($options['fieldName']);
 			if($isFieldError)
-				$htmlAttributes['class'] .= ' error';
+				$htmlAttributes['class'] .= ' error'; //@todo Do not use strings with spaces for htmlAttributes, use arrays instead
 		}
 		
 		$out = $this->Bl->sdiv($htmlAttributes,$options);

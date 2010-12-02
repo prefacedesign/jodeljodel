@@ -243,6 +243,61 @@ class TypeBricklayerHelper extends AppHelper
 		return $this->a($attr, $options, $name);
 	}
 	
+	/**
+	 * Make consecutive calls to anchor method.
+	 * All anchors are enclosed within a span tag.
+	 * 
+	 * @see TypeBricklayerHelper->anchor
+	 * 
+	 * @author Mazzoti, Fedel, Lucas
+	 * @since  02 Dez. 2010
+	 * @access public
+	 * 
+	 * @param array $attr    HTML attributes of the enclosing span.
+	 * @param array $options One mandatory argument must be passed in $options array: $linkList.
+     *                       It is an array of arrays, each one containing the parameters of anchor method.	 
+	 *                       Two optional arguments can be supplied in $options array: $separator and $lastSeparator.
+     *                       $separator is the connector string between items i - 1 and i, with i < n.
+	 *                       $lastSeparator is the connector string between item n - 1 and n.
+	 *                       If not supplied both separators defaults to ', '.
+	 * @param       $content Ignored by this method, the content is created based on $options.
+ 	 * 
+	 * @return String of HTML tags representing the anchor list.
+	 */
+	function anchorList($attr = array(), $options = array(), $content = null)
+	{
+		$standardOptions = array(
+			'lastSeparator' => ', ',
+			'separator' => ', '
+		);
+		
+		$options = am($standardOptions, $options);
+		extract($options);
+	
+		$r = $this->sspan($attr, $options);
+		
+		foreach($linkList as $key => $link)
+		{
+			$curAttr = array();
+			if (isset($link['attr']))
+				$curAttr = $link['attr'];
+			
+			$curOptions = array();
+			if (isset($link['options']))
+				$curOptions = $link['options'];
+				
+			$curOptions['url'] = $link['url'];
+			
+			$r .= $this->anchor($curAttr, $curOptions, $link['name']);
+			
+			if ($key == count($linkList) - 2) 
+				$r .= $lastSeparator;
+			elseif ($key != count($linkList) - 1) 
+				$r .= $separator;			
+		}
+		return $r . $this->espan();
+	}
+	
 	function __call($n, $args)
 	{	
 		if (substr($n, -3) == 'Dry' || substr($n, -3) == 'Dry')
@@ -263,12 +318,10 @@ class TypeBricklayerHelper extends AppHelper
 		
 		if (method_exists($this, 's' . $n))
 		{ //@todo Make a class of it
-			list($attr, $options, $content) = $args;
+			@list($attr, $options, $content) = $args;
 			$standard_options = array('escape' => true, 'close_me' => false);
 			$options = am($standard_options, $options);
 			extract($options);
-			
-			$t = $this->{'s' . $n}($attr, $options);
 			
 			if ($close_me || empty($content))
 			{
@@ -277,6 +330,8 @@ class TypeBricklayerHelper extends AppHelper
 			}
 			else
 				$close_me = false;
+				
+			$t = $this->{'s' . $n}($attr, $options);
 			
 			if (!$close_me)
 			{

@@ -1,7 +1,18 @@
 <?php
-
+//@todo Make the XMLTag a appart plugin, and inherit the TypeBricklayerHelper from him.
 class XmlTagHelper extends AppHelper
 {	
+	function _mergeAttributes($atr1, $atr2)
+	{
+		if ($atr1 == null)
+			$atr1 = array();
+		
+		if ($atr2 == null)
+			$atr2 = array();
+			
+		return array_merge_recursive($atr1, $atr2);
+	}
+
 	function stag($tag, $atributos = null, $opcoes = null)
 	{
 		$opcoes_padrao = array('close_me' => false);

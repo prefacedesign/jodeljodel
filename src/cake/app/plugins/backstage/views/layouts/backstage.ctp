@@ -35,9 +35,9 @@ echo $this->Bl->shtml(array(
 			'inline'
 		);
 		
-		echo $scripts_for_layout;			
+		echo $scripts_for_layout;
 	echo $this->Bl->ehead();
-	echo $this->Bl->ebody();
+	echo $this->Bl->sbody();
 		echo $body_content;
 	echo $this->Bl->ebody();
 echo $this->Bl->ehtml();

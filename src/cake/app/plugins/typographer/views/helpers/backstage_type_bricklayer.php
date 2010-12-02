@@ -20,10 +20,54 @@ class BackstageTypeBricklayerHelper extends TypeBricklayerHelper
 			if (in_array('image', $options['superclass']))
 				unset($new_attr['class']);
 		}
-		$attr = $this->_mergeAttributes($attr, $new_attr); */
-		
+		$attr = $this->_mergeAttributes($attr, $new_attr);
+		*/
 		return parent::sa($attr, $options);
 	}
+	
+	function sh1($attr = array(), $options = array(), $content = array())
+	{
+		$standard_options = array(
+			'escape' => true
+		);
+		
+		$options = am($standard_options, $options);
+		extract($options);
+	
+		$divAttr = array('class' => 'h1div');
+	
+		if (isset($contentDivAttr))
+		{
+			$divAttr = $this->_mergeAttributes($divAttr, $contentDivAttr);
+		}
+	
+		$r  = $this->sdiv($divAttr);
+		if (isset($additionalText))
+		{
+			$r .= $this->span(array(), array('escape' => $escape), $additionalText);
+		}	
+		$r .= parent::sh1($attr, $options);
+		
+		return $r;
+	}
+	
+	function eh1()
+	{
+		return parent::eh1() . $this->ediv();
+	}
+	
+	function scontrolBox($attr = array(), $options = array())
+	{
+		$attr = $this->_mergeAttributes(array('class' => array('control_box')), $attr);
+		
+		return $this->sdiv($attr, $options) . $this->sdiv();
+	}
+	
+	function econtrolBox()
+	{
+		return $this->ediv().$this->ediv();
+	}
+
 }
 
 

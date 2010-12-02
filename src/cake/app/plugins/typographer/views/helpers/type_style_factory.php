@@ -47,10 +47,10 @@ class TypeStyleFactoryHelper extends AppHelper
 		
 		if (isset($M))
 		{	$t[0] .= $this->_writeFraction($M, 3) . 'M';	}
-		if (isset($i))
+		if (isset($g))
 		{ 	$t[0] .= $this->_writeFraction($g, 3) . 'g';	}
 		if (isset($m))
-		{	$t[0] .= $this->_writeFraction($m, 3) .  'm'; 	}
+		{	$t[0] .= $this->_writeFraction($m, 3) . 'm'; 	}
 		if (isset($u))
 		{	$t[0] .= $this->_writeFraction($u, 3) . 'u'; 	}
 		
@@ -79,11 +79,11 @@ class TypeStyleFactoryHelper extends AppHelper
 		
 		if (isset($M))
 		{	$t[0] .= $this->_writeFraction($M, 3) . 'M';	}
-		if (isset($qi))
+		if (isset($g))
 		{ 	$t[0] .= $this->_writeFraction($g, 3) . 'g';	}
-		if (isset($qm))
+		if (isset($m))
 		{	$t[0] .= $this->_writeFraction($m, 3) .  'm'; 	}
-		if (isset($qu))
+		if (isset($u))
 		{	$t[0] .= $this->_writeFraction($u, 3) . 'u'; 	}
 		
 		return $t;

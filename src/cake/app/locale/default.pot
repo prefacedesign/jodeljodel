@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2010-11-29 15:47-0200\n"
+"POT-Creation-Date: 2010-12-02 17:06-0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,27 +14,95 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: \plugins\burocrata\controllers\buro_burocrata_controller.php:93
+#: \plugins\backstage\views\back_contents\edit.ctp:6
+msgid "Now, this document is hidden."
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:6
+msgid "You can publish it or delete it."
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:13
+msgid "anchorList and"
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:15
+msgid "english"
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:16;28
+msgid "portuguese"
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:17
+msgid "japanese"
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:18
+msgid "javanese"
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:23
+msgid "This %s already has translations for %s."
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:27
+msgid "backstage edit page: Editing"
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:28
+msgid " the %s version."
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:32
+msgid "anchorList or"
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:34
+msgid "mark it as ready"
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:35
+msgid "remove it"
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:40
+msgid "Version marked as draft. You can %s"
+msgstr ""
+
+#: \plugins\burocrata\controllers\buro_burocrata_controller.php:102
 msgid "Nothing found."
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:202
+#: \plugins\burocrata\controllers\buro_burocrata_controller.php:143
+msgid "Request security field not defined"
+msgstr ""
+
+#: \plugins\burocrata\controllers\buro_burocrata_controller.php:154
+msgid "Security hash didn't match."
+msgstr ""
+
+#: \plugins\burocrata\controllers\buro_burocrata_controller.php:164
+msgid "Couldn't load model"
+msgstr ""
+
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:204
 msgid "Save"
 msgstr ""
 
-#: \plugins\typographer\views\elements\backstage_layout.ctp:6
+#: \plugins\typographer\views\elements\backstage_layout.ctp:7
 msgid "Content management area"
 msgstr ""
 
-#: \plugins\typographer\views\elements\backstage_layout.ctp:11
+#: \plugins\typographer\views\elements\backstage_layout.ctp:12
 msgid "Logout"
 msgstr ""
 
-#: \plugins\typographer\views\elements\backstage_layout.ctp:19
+#: \plugins\typographer\views\elements\backstage_layout.ctp:23
 msgid "Powered by Jodel Jodel"
 msgstr ""
 
-#: \plugins\typographer\views\elements\backstage_layout.ctp:22
+#: \plugins\typographer\views\elements\backstage_layout.ctp:26
 msgid "This site, alongside its public version, was developed by "
 msgstr ""
 
