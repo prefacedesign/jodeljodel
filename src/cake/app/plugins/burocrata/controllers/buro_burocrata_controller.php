@@ -106,6 +106,7 @@ class BuroBurocrataController extends BurocrataAppController
  */
 	public function save()
 	{
+                
 		$saved = false;
 		$error = false;
 		$content = '';

@@ -39,7 +39,7 @@
 		function afterSave(&$Model, $created)
 		{
 			$dashInfo = $Model->getDashboardInfo($Model->id);	//gets the summarized description of this registry
-			$dashInfo['id'] = $Model->alias.'@'.$Model->id;;			//creates an ID for the dashboard that is the concatenation of Model and Id inside model
+			$dashInfo['id'] = $Model->alias.'@'.$Model->id;	    //creates an ID for the dashboard that is the concatenation of Model and Id inside model
 			
 			$dashboard = ClassRegistry::init(array('class' => 'Dashboard.DashDashboardItem'));		//creates a refference to the dashboard model
 			$dashboard->saveDashItem($dashInfo);		//saves the summary int the dashboard
