@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2010-12-02 17:06-0200\n"
-"PO-Revision-Date: 2010-12-02 17:12-0300\n"
+"POT-Creation-Date: 2010-12-03 17:28-0200\n"
+"PO-Revision-Date: 2010-12-03 18:22-0300\n"
 "Last-Translator: Lucas Vignoli Reis <lucas@preface.com.br>\n"
 "Language-Team: Preface Design <preface@preface.com.br>\n"
 "MIME-Version: 1.0\n"
@@ -69,28 +69,92 @@ msgid "remove it"
 msgstr "removê-la"
 
 #: \plugins\backstage\views\back_contents\edit.ctp:40
-msgid "Version marked as draft. You can %s"
-msgstr "Versão marcada como rascunho. Você pode %s"
+msgid "Version marked as draft. You can %s."
+msgstr "Versão marcada como rascunho. Você pode %s."
 
-#: \plugins\burocrata\controllers\buro_burocrata_controller.php:102
+#: \plugins\burocrata\controllers\buro_burocrata_controller.php:103
 msgid "Nothing found."
 msgstr ""
 
-#: \plugins\burocrata\controllers\buro_burocrata_controller.php:143
+#: \plugins\burocrata\controllers\buro_burocrata_controller.php:144
 msgid "Request security field not defined"
 msgstr ""
 
-#: \plugins\burocrata\controllers\buro_burocrata_controller.php:154
+#: \plugins\burocrata\controllers\buro_burocrata_controller.php:155
 msgid "Security hash didn't match."
 msgstr ""
 
-#: \plugins\burocrata\controllers\buro_burocrata_controller.php:164
+#: \plugins\burocrata\controllers\buro_burocrata_controller.php:165
 msgid "Couldn't load model"
-msgstr ""
+msgstr "Não foi possível carregar o model."
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:204
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:205
 msgid "Save"
 msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:17
+msgid "Form - PersPerson name superfield"
+msgstr "Nome da pessoa"
+
+#: \plugins\person\views\elements\pers_person.ctp:18
+msgid "Form - PersPerson name superfield - instructions"
+msgstr " "
+
+#: \plugins\person\views\elements\pers_person.ctp:28
+msgid "Form - PersPerson.surname"
+msgstr "Sobrenome"
+
+#: \plugins\person\views\elements\pers_person.ctp:29
+msgid "Form - PersPerson.surname - instructions"
+msgstr "Preencha com o sobrenome completo, p.e., para José Carlos Penteado Lima: \"Penteado Lima\""
+
+#: \plugins\person\views\elements\pers_person.ctp:35
+msgid "Form - PersPerson.name"
+msgstr "Nome"
+
+#: \plugins\person\views\elements\pers_person.ctp:36
+msgid "Form - PersPerson.name - instructions"
+msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+
+#: \plugins\person\views\elements\pers_person.ctp:42
+msgid "Form - PersPerson.reference_name"
+msgstr "Como esta pessoa deve ser citada?"
+
+#: \plugins\person\views\elements\pers_person.ctp:43
+msgid "Form - PersPerson.reference_name - instructions"
+msgstr "Por exemplo, para José Carlos Penteado Lima: \"LIMA, J. C. P.\""
+
+#: \plugins\person\views\elements\pers_person.ctp:53
+msgid "Form - PersPerson.lattes_link"
+msgstr "Qual é o link para o seu currículo lattes?"
+
+#: \plugins\person\views\elements\pers_person.ctp:54
+msgid "Form - PersPerson.lattes_link - instructions"
+msgstr " "
+
+#: \plugins\person\views\elements\pers_person.ctp:60
+msgid "Form - PersPerson.research_fields"
+msgstr "Quais são os campos de pesquisa em que atua?"
+
+#: \plugins\person\views\elements\pers_person.ctp:61
+msgid "Form - PersPerson.research_fields - instructions"
+msgstr "P. e.: teoria de sistemas dinâmicos, dinâmica fônica."
+
+#: \plugins\person\views\elements\pers_person.ctp:67
+msgid "Form - PersPerson.profile"
+msgstr "Perfil"
+
+#: \plugins\person\views\elements\pers_person.ctp:68
+msgid "Form - PersPerson.profile - instructions"
+msgstr " "
+
+#: \plugins\person\views\elements\pers_person.ctp:74
+msgid "Form - PersPerson.cooperation_with_dinafon"
+msgstr "Como colabora com o Dinafon?"
+
+#: \plugins\person\views\elements\pers_person.ctp:75
+msgid "Form - PersPerson.cooperation_with_dinafon - instructions"
+msgstr "Descreva em poucas palavras como que a pessoa participa e/ou colabora com o Dinafon."
 
 #: \plugins\typographer\views\elements\backstage_layout.ctp:7
 msgid "Content management area"
@@ -159,3 +223,14 @@ msgstr ""
 msgid "Debug setting does not allow access to this url."
 msgstr ""
 
+#~ msgid "Name"
+#~ msgstr "Nome"
+
+#~ msgid "Family name"
+#~ msgstr "Sobrenome"
+
+#~ msgid "Instructions for Family name"
+#~ msgstr "Coloque apenas o último sobrenome, os outros nomes coloque nome."
+
+#~ msgid "Profile"
+#~ msgstr "Perfil"

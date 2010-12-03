@@ -41,16 +41,12 @@ echo $bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 
 	echo $bl->econtrolBox();
         
-	echo $bl->floatBreak();
-//        echo $buro->form(array(), array(
-//            'model' => $contentPlugin . '.' .$modelName,
-//            'writeForm' => true
-//        ));
-        echo $buro->sform(array(), array(
-            'model' => $fullModelName,
-            'writeForm' => true
-        ));
-        echo $buro->eform();
+	//echo $bl->floatBreak();
+	echo $buro->sform(array(), array(
+		'model' => $fullModelName,
+		'writeForm' => true
+	));
+	echo $buro->eform();
 	
 echo $bl->ebox();
 
