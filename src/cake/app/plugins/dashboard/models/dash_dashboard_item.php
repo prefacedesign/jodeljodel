@@ -7,7 +7,6 @@
 	class DashDashboardItem extends AppModel
 	{
 		var $name = 'DashDashboardItem';
-		var $useDbConfig = 'treinamento_db';
 		
 		/*
 		Inserts or updates one item in the dashboard

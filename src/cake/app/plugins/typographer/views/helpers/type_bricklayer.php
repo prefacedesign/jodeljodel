@@ -68,7 +68,7 @@ class TypeBricklayerHelper extends AppHelper
 		
 		if (isset($options['size']))
 		{
-			$this->TypeDecorator->widthGenerateClasses(array(0 => $options['size']));
+			$this->TypeStyleFactory->widthGenerateClasses(array(0 => $options['size']));
 			$own_attr['class'] = am($own_attr['class'], $this->TypeStyleFactory->widthClassNames($options['size']));
 		}
 		

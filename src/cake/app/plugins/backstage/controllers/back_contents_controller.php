@@ -1,5 +1,4 @@
 <?php
-
 class BackContentsController extends BackstageAppController
 {
     var $name = 'BackContents';
@@ -29,7 +28,6 @@ class BackContentsController extends BackstageAppController
         $this->set('modelName', $modelName);
         $this->set('fullModelName', $fullModelName);
     }
-
 }
 
 ?>

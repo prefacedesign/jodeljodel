@@ -23,6 +23,9 @@ class PersPerson extends PersonAppModel {
 			),
 		),
 	);
+	
+	var $actsAs = array('Dashboard.DashDashboardable');
+	
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
 	/*var $belongsTo = array(
@@ -38,7 +41,7 @@ class PersPerson extends PersonAppModel {
 			'foreignKey' => 'img_image_id',
 			'conditions' => '',
 			'fields' => '',
-			'order' => ''
+			'order' => '' 
 		)
 	);*/
 
@@ -54,5 +57,27 @@ class PersPerson extends PersonAppModel {
         {
             return $this->findById($id);
         }
+		
+		function getDashboardInfo($id)
+		{
+			$data = $this->findById($id);
+			
+			if ($data == null)
+				return null;
+			
+			$dashdata = array(
+				'dashable_id' => $data['PersPerson']['id'],
+				'dashable_model' => $this->name,
+				'type' => 'Person',
+				'status' => $data['PersPerson']['publishing_status'],
+				'created' => $data['PersPerson']['created'],
+				'modified' => $data['PersPerson']['modified'], 
+				'name' => $data['PersPerson']['name'] . ' ' . $data['PersPerson']['surname'],
+				'info' => 'Profile: ' . substr($data['PersPerson']['profile'],0, 20) . '...',
+				'idiom' => 'PT'
+			);
+			
+			return $dashdata;
+		}
 }
 ?>

@@ -3,7 +3,7 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
 CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-USE `mydb` ;
+USE `mydb`;
 
 -- -----------------------------------------------------
 -- Table `auth_authors`
@@ -24,7 +24,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `news_news` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `auth_author_id` INT NOT NULL ,
+  `auth_author_id` INT NULL ,
   `publishing_status` ENUM('published','draft') NULL ,
   `title` VARCHAR(255) NULL ,
   `date` VARCHAR(255) NULL ,
@@ -58,7 +58,7 @@ CREATE  TABLE IF NOT EXISTS `pers_people` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `auth_author_id` INT NULL ,
   `img_image_id` INT NULL ,
-  `published_status` ENUM('published','draft') NULL ,
+  `publishing_status` ENUM('published','draft') NULL ,
   `surname` VARCHAR(255) NULL ,
   `name` VARCHAR(255) NULL ,
   `reference_name` VARCHAR(255) NULL ,
@@ -98,7 +98,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `file_files` (
   `id` INT NOT NULL ,
-  `sfil_stored_file_id` INT NOT NULL ,
+  `sfil_stored_file_id` INT NULL ,
   `type_o_file` ENUM('stored','link') NULL ,
   `title` INT NULL ,
   `type` VARCHAR(45) NULL ,
@@ -135,8 +135,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `pap_papers` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `file_file_id` INT NOT NULL ,
-  `jour_journal_id` INT NOT NULL ,
+  `file_file_id` INT NULL ,
+  `jour_journal_id` INT NULL ,
   `publishing_status` ENUM('published','draft') NULL ,
   `title` TEXT NULL ,
   `abstract` VARCHAR(255) NULL ,
@@ -233,6 +233,24 @@ CREATE  TABLE IF NOT EXISTS `auth_authors_pap_papers` (
     REFERENCES `pap_papers` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `dash_dashboard_items`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `dash_dashboard_items` (
+  `id` VARCHAR(255) NOT NULL ,
+  `created` DATETIME NULL ,
+  `modified` DATETIME NULL ,
+  `dashable_id` INT NULL ,
+  `dashable_model` VARCHAR(60) NULL ,
+  `status` ENUM('published','draft','removed') NULL ,
+  `name` VARCHAR(255) NULL ,
+  `info` VARCHAR(255) NULL ,
+  `idiom` VARCHAR(255) NULL ,
+  `type` VARCHAR(60) NULL ,
+  PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
 
