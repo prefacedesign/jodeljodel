@@ -5,7 +5,7 @@
 	switch($type[0])
 	{
 		case 'admin_form':
-			echo $this->element('user_form');
+			echo $this->element('user_form', array('plugin' => 'burocrata_user'));
 		break;
 		
 		case 'burocrata':
@@ -14,11 +14,11 @@
 				case 'form':
 				case 'admin_form':
 				case 'subform':
-					echo $this->element('user_form');
+					echo $this->element('user_form', array('plugin' => 'burocrata_user'));
 				break;
 				
 				case 'view':
-					echo $this->element('local_burocrata_view');
+					echo $this->element('user_burocrata_view', array('plugin' => 'burocrata_user'));
 				break;
 			}
 		break;

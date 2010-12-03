@@ -13,6 +13,15 @@ class BuroBurocrataController extends BurocrataAppController
 
 
 /**
+ * List of components
+ *
+ * @var string
+ * @access public
+ */
+	public $components = array('Typographer.TypeLayoutSchemePicker');
+
+
+/**
  * List of Models to be loaded on construct
  *
  * @var array
@@ -28,6 +37,61 @@ class BuroBurocrataController extends BurocrataAppController
  * @access public
  */
 	public $view = 'Burocrata.Json';
+
+
+/**
+ * Name of the current model
+ *
+ * @var string
+ * @access protected
+ */
+	protected $model_name = null;
+
+
+/**
+ * Plugin of the current model
+ *
+ * @var string
+ * @access protected
+ */
+	protected $model_plugin = null;
+
+
+/**
+ * beforeRender callback
+ *
+ * @access public
+ */
+	public function beforeFilter()
+	{
+		if(isset($this->data['layout_scheme']))
+		{
+			$this->helpers = am($this->helpers,
+				array(
+					'Typographer.TypeDecorator' => array(
+						'name' => 'decorator',
+						'compact' => false,
+						'receive_tools' => true
+					),
+					'Typographer.*TypeStyleFactory' => array(
+						'name' => 'styleFactory', 
+						'receive_automatic_classes' => true, 
+						'receive_tools' => true,
+						'generate_automatic_classes' => false
+					),
+					'Typographer.*TypeBricklayer' => array(
+						'name' => 'Bl',
+						'receive_tools' => true,
+					),
+					'Burocrata.*BuroBurocrata' => array(
+						'name' => 'Buro'
+					)
+				)
+			);
+			$this->TypeLayoutSchemePicker->pick($this->data['layout_scheme']);
+			unset($this->data['layout_scheme']);
+		}
+	}
 
 
 /**
@@ -49,7 +113,7 @@ class BuroBurocrataController extends BurocrataAppController
 		
 		$error = $this->_load($Model);
 		
-		if(!$error)
+		if($error === false)
 		{
 			if(method_exists($Model, 'saveBurocrata'))
 				$saved = $Model->saveBurocrata($this->data) !== false;
@@ -82,10 +146,9 @@ class BuroBurocrataController extends BurocrataAppController
 		
 		$error = $this->_load($Model);
 		
-		if(!$error)
+		if($error === false)
 		{
 			$data = $this->data;
-			unset($data['request']);
 			
 			// temporary conditions and order
 			// todo: something more elaborated
@@ -98,7 +161,7 @@ class BuroBurocrataController extends BurocrataAppController
 				$content = $Model->find('list', compact('conditions', 'order'));
 		}
 		
-		if(!$error && empty($content))
+		if($error === false && empty($content))
 			$content = array('-1' => __('Nothing found.', true));
 		
 		$this->set('jsonVars', compact('error', 'content'));
@@ -113,7 +176,21 @@ class BuroBurocrataController extends BurocrataAppController
  */
 	public function view()
 	{
+		$error = false;
+		$data = array();
+		$Model = null;
 		
+		$error = $this->_load($Model);
+		
+		if($error === false)
+		{
+			$Model->recusrsive = -1;
+			$data = $Model->findById($this->data['id']);
+		}
+		
+		$this->set('model_name', $this->model_name);
+		$this->set('model_plugin', $this->model_plugin);
+		$this->set(compact('error', 'data'));
 	}
 
 
@@ -142,7 +219,7 @@ class BuroBurocrataController extends BurocrataAppController
 		if(!isset($this->data['request']))
 			$error = __('Request security field not defined', true);
 		
-		if(!$error)
+		if($error === false)
 		{
 			// The counter-part of this code is in BuroBurocrataHelper::_security method
 			@list($model_plugin, $model_alias, $secure) = explode('|', $this->data['request']);
@@ -154,7 +231,7 @@ class BuroBurocrataController extends BurocrataAppController
 				$error = __('Security hash didn\'t match.', true);
 		}
 		
-		if(!$error)
+		if($error === false)
 		{
 			$model_class_name = $model_alias;
 			if(!empty($model_plugin))
@@ -164,8 +241,12 @@ class BuroBurocrataController extends BurocrataAppController
 				$error = __('Couldn\'t load model', true);
 		}
 		
-		if(!$error)
+		if($error === false)
+		{
+			$this->model_name = $model_alias;
+			$this->model_plugin = $model_plugin;
 			$var = $this->{$model_alias};
+		}
 		
 		return $error;
 	}

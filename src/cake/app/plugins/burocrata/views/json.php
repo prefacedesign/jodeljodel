@@ -11,12 +11,13 @@
  * @since     
  * @license   
  */
- 
- 
+
+App::import('View', 'Typographer.Type');
+
 /**
  * Methods for displaying presentation data in JSON for passing data via JS.
  */
-class JsonView extends View
+class JsonView extends TypeView
 {
 	
 /**
@@ -42,7 +43,7 @@ class JsonView extends View
 		if(isset($this->viewVars['jsonVars'])) {
 			return $this->Js->object($this->viewVars['jsonVars']);
 		} else {
-			if($this->layout == null)
+			if(empty($layout))
 				$layout = 'ajax';
 			return parent::render($action, $layout, $file);
 		}

@@ -252,8 +252,43 @@ class BuroOfficeBoyHelper extends AppHelper
  */
 	protected function _ajax($options)
 	{
+		$options['bind'] = true;
+		
+		$View = ClassRegistry::getObject('View');
+		if(isset($View->viewVars['layout_scheme']))
+		{
+			$layout_scheme = 'data[layout_scheme]=' . $View->viewVars['layout_scheme'];
+			if(!isset($options['params']))
+				$options['params'] = $layout_scheme;
+			else
+				$options['params'] .= '&'.$layout_scheme;
+		}
+		
+		if(isset($options['params']))
+		{
+			if(!isset($options['with']))
+				$options['with'] = "'".$options['params']."'";
+			else
+				$options['with'] .= '+'."'&".$options['params']."'";
+			
+			unset($options['params']);
+		}
+		
+		if(isset($options['update']))
+		{
+			$update = $options['update'];
+			unset($options['update']);
+			
+			if(!isset($options['complete']))
+				$options['complete'] = '';
+			$complete = "if(request.responseJSON && !request.responseJSON.error) $('$update').update(request.responseJSON.content);";
+			$options['complete'] = $complete . $options['complete'];
+		}
+		
 		return $this->Ajax->remoteFunction($options);
 	}
+
+
 /**
  * Includes the necessary script files to burocrata works
  *

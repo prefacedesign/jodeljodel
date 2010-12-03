@@ -51,12 +51,10 @@ class TypeLayoutSchemePickerComponent extends Object
 			}
 		}
 		
-		if (isset($this->controller->view) && $this->controller->view != 'View')
+		if (!isset($this->controller->view) || $this->controller->view == 'View')
 		{
-			debug($this->controller->view);
-			trigger_error ('Atenção se quiser usar uma view diferente da View, é necessário implementar algo parecido com a EstilistaView');
+			$this->controller->view = 'Typographer.Type';
 		}
-		$this->controller->view = 'Typographer.Type';
 		$this->controller->set('used_automatic_classes', $used_automatic_classes);
 		$this->controller->set($tools);
 		$this->controller->set('layout_scheme', $layout_scheme);

@@ -336,6 +336,9 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function eform()
 	{
+		$View = ClassRegistry::getObject('View');		
+		$out = '';
+		
 		$this->BuroOfficeBoy->newForm(
 			end($this->_nestedForm),
 			$this->_readFormAttributes()
@@ -344,10 +347,17 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$modelPlugin = $this->_readFormAttribute('modelPlugin');
 		$url = $this->_readFormAttribute('url');
 		
-		$out = $this->Bl->sinput(array(
+		if(!empty($modelAlias))
+			$out .= $this->Bl->sinput(array(
+				'type' => 'hidden',
+				'name' => 'data[request]',
+				'value' => $this->security($url, $modelPlugin, $modelAlias),
+				), array('close_me' => true)
+			);
+		$out .= $this->Bl->sinput(array(
 			'type' => 'hidden',
-			'name' => 'data[request]',
-			'value' => $this->security($url, $modelPlugin, $modelAlias),
+			'name' => 'data[layout_scheme]',
+			'value' => $View->viewVars['layout_scheme'],
 			), array('close_me' => true)
 		);
 		$out .= $this->Bl->ediv();
@@ -517,6 +527,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function inputAutocomplete($options = array())
 	{
+		$View = ClassRegistry::getObject('View');
 		if(!isset($options['options']['model']) && !isset($options['options']['url']))
 		{
 			// error (`url` or `model` must be set)
@@ -531,12 +542,14 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'callbacks' => array()
 		);
 		$autocomplete_options = am($defaults, $options['options']);
+		$parameters = array();
+		
+		$parameters[] = 'data[layout_scheme]='.$View->viewVars['layout_scheme'];
 		
 		if($autocomplete_options['model'])
 		{
 			list($modelPlugin, $modelAlias) = pluginSplit($autocomplete_options['model']);
-			$autocomplete_options['parameters'] = $this->securityParams($autocomplete_options['url'], $modelPlugin, $modelAlias);
-			
+			$parameters[] = $this->securityParams($autocomplete_options['url'], $modelPlugin, $modelAlias);
 		}
 		
 		if(!isset($options['options']['url']) && (!isset($options['fieldName']) || empty($options['fieldName'])))
@@ -548,6 +561,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		unset($autocomplete_options['model']);
 		unset($options['options']);
+		
+		$autocomplete_options['parameters'] = implode('&', $parameters);
 		
 		$this->BuroOfficeBoy->autocomplete($autocomplete_options);
 		
@@ -649,10 +664,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 		);
 		
 		list($plugin, $model_name) = pluginSplit($model);
-		$url = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'view');
 		
 		$input_id = uniqid('input');
-		$div_id = uniqid('div');
+		$update = uniqid('div');
+		$url = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'view');
+		$params = $this->securityParams($url, $plugin, $model_name);
+		$with = "'data[id]='+pair.id";
 		
 		$autocomplete_options = array(
 			'options' => array(
@@ -660,7 +677,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 				'callbacks' => array(
 					'onSelect' => array(
 						'js' => "if(pair.id > 0) $('$input_id').value = pair.id;",
-						'ajax' => array('update' => $div_id, 'url' => $url, 'params' => $this->securityParams($url, $plugin, $model)),
+						'ajax' => compact('update', 'url', 'with', 'params'),
 					)
 				)
 			)
@@ -670,7 +687,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$out = $this->inputAutocomplete(am($options, $autocomplete_options));
 		$out .= $this->input(array('id' => $input_id), array('type' => 'hidden', 'fieldName' => $fieldName));
-		$out .= $this->Bl->div(array('id' => $div_id), array(), ' ');
+		$out .= $this->Bl->div(array('id' => $update), array(), ' ');
 		return $out;
 	}
 }
