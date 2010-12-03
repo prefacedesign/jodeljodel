@@ -41,5 +41,18 @@ class PersPerson extends PersonAppModel {
 			'order' => ''
 		)
 	);*/
+
+        function createEmpty()
+        {
+            $data = $this->save(array());
+            $data[$this->name]['id'] = $this->id;
+            
+            return $data;
+        }
+        
+        function findBurocrata($id)
+        {
+            return $this->findById($id);
+        }
 }
 ?>

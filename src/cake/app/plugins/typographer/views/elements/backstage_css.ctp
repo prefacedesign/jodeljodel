@@ -25,7 +25,7 @@
 			'margin' => '0',
 			'padding' => '0',
 			'text-decoration' => 'none',
-			'font-family' => '"Lucida Sans", "Bitsream Vera"'
+			'font-family' => '"Lucida Sans", "Bitstream Vera Sans"'
 		)
 	);
 	

@@ -3,7 +3,7 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
 CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-USE `mydb`;
+USE `mydb` ;
 
 -- -----------------------------------------------------
 -- Table `auth_authors`
@@ -56,8 +56,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `pers_people` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `auth_author_id` INT NOT NULL ,
-  `img_image_id` INT NOT NULL ,
+  `auth_author_id` INT NULL ,
+  `img_image_id` INT NULL ,
   `published_status` ENUM('published','draft') NULL ,
   `surname` VARCHAR(255) NULL ,
   `name` VARCHAR(255) NULL ,

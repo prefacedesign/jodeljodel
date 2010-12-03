@@ -21,13 +21,13 @@ echo $bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 	);
 	echo $bl->p(array('class' => 'small_text'), array('escape' => false),
 		sprintf (__('This %s already has translations for %s.',true), 'article', $tmp));
-	
+
 	echo $bl->scontrolBox();
 		echo $bl->h3(array(), array('escape' => false), $bl->spanDry(
-			__('backstage edit page: Editing', true)) 
+			__('backstage edit page: Editing', true))
 			.  sprintf(__(' the %s version.',true),__('portuguese',true))
 		);
-		
+
 		$tmp = $bl->anchorList(array(),array(
 				'lastSeparator' => __('anchorList or', true),
 				'linkList' => array(
@@ -38,28 +38,21 @@ echo $bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 		);
 		echo $bl->p(array('class' => 'small_text'), array('escape' => false),
 				sprintf(__('Version marked as draft. You can %s.',true), $tmp));
-			
+
 	echo $bl->econtrolBox();
+        
 	echo $bl->floatBreak();
-	echo $buro->sform(array(),array('url' => 'www.google.com.br'));
-		echo $buro->input(array(),array(
-			'type' => 'text', 
-			'fieldName' => 'somefield', 
-			'label' => 'Some Field' 
-			//'instructions' => 'Some instructions to fill this field for the ignorant user.'
-		));
-		
-		echo $buro->input(array(),array(
-			'type' => 'textarea', 
-			'fieldName' => 'somefield', 
-			'label' => 'Some Field', 
-			'instructions' => 'Some instructions to fill this field for the ignorant user.'
-		));
-		
-	echo $buro->eform();
+
+//        echo $buro->form(array(), array(
+//            'model' => $contentPlugin . '.' .$modelName,
+//            'writeForm' => true
+//        ));
+        echo $buro->sform(array(), array(
+            'model' => $fullModelName,
+            'writeForm' => true
+        ));
+        echo $buro->eform();
 	
 echo $bl->ebox();
-
-//echo $this->element($model_name, array('plugin' => $content_plugin, 'type' => 'backstage_edit_form'));
 					 
 ?>
