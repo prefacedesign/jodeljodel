@@ -110,6 +110,9 @@ Convenções do Burocrata:
      `onSuccess` - Disparado quando o `onFailure` não é disparado (códigos 2xx)
      `onComplete` - Disparado ao final de tudo (sempre é chamado e é o último callback a
 	                ser disparado numa chamada)
+	 `onError` - Disparado quando o request ajax vem com algum erro  descrito  (código de
+				 erro E_JSON,  ou  quando  a  chamada  ajax  não  retorna um JSON (código
+				 E_NOT_JSON).
   - Se o request for uma tentativa de salvar algum dado, ele ainda possui os callbacks
      `onSave` - Disparado quando o dado foi salvo
      `onReject` - Disparado quando o dado não foi salvo

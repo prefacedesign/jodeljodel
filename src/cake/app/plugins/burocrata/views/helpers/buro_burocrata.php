@@ -54,10 +54,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$htmlAttributes = am(array('container' => array()), $htmlAttributes);
 			$this->_nestedInput = false;
 			if($options['type'] != 'hidden')
-			{
 				$out .= $this->sinputcontainer($htmlAttributes['container'], $options);
-				unset($htmlAttributes['container']);
-			}
+			unset($htmlAttributes['container']);
 			
 			if(method_exists($this->Form, $options['type']))
 			{
@@ -138,6 +136,20 @@ class BuroBurocrataHelper extends XmlTagHelper
 		}
 		
 		return $this->Bl->slabel($htmlAttributes) . $text . $this->Bl->elabel();
+	}
+
+
+/**
+ * Just overloads the main tag method from XmlTag to avoid auto-closing divs.
+ *
+ * @access public
+ * @param $htmlAttributes
+ * @param $options
+ * @return string The HTML well formated
+ */
+	public function form($htmlAttributes = array(), $options = array())
+	{
+		return $this->sform($htmlAttributes, $options) . $this->eform();
 	}
 
 
@@ -628,7 +640,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		// TODO: Trigger error `not a belongsTo related model`
 		if(!isset($ParentModel->belongsTo[$assocName])) return 'not a belongsTo related model';
-		$fieldName = $assocName . '.' . $ParentModel->belongsTo[$assocName]['foreignKey'];
+		$fieldName = implode('.', array($parent_model, $ParentModel->belongsTo[$assocName]['foreignKey']));
 		
 		switch($type)
 		{

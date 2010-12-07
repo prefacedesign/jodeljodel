@@ -1,6 +1,6 @@
 <?php
-	
-	$object['error'] = $error;
+
+	$object = compact('error', 'saved');
 	$object['content'] = null;
 	
 	if(!$error)
@@ -9,7 +9,7 @@
 			array(
 				'plugin' => Inflector::underscore($model_plugin),
 				'data' => $data,
-				'type' => array('burocrata', 'view')
+				'type' => array('burocrata', 'form')
 			)
 		);
 	}

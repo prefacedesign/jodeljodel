@@ -14,22 +14,15 @@
 				case 'form':
 				case 'admin_form':
 				case 'subform':
+				case 'belongsto_form':
 					echo $this->element('user_form', array('plugin' => 'burocrata_user'));
 				break;
 				
 				case 'view':
+				case 'admin_view':
+				case 'preview':
+				case 'belongsto_preview':
 					echo $this->element('user_burocrata_view', array('plugin' => 'burocrata_user'));
-				break;
-			}
-		break;
-		
-		case 'admin_preview':
-			switch($type[1])
-			{
-				case 'list_item':
-				break;
-				
-				default:
 				break;
 			}
 		break;

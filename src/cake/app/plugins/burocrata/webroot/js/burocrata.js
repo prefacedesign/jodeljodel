@@ -3,7 +3,7 @@ const E_JSON = 2; // JSON tells me the error
 
 /**
  * Abstract class that implements the behaviour of callbacks
- * with the methods `addCallback` and `trigger`
+ * with the methods `addCallbacks` and `trigger`
  */
 var Callbackable = Class.create({
 	addCallbacks: function(callbacks)
@@ -42,7 +42,7 @@ var Callbackable = Class.create({
  * - `onStart` function (form){}
  * - `onComplete` function (form, response){}
  * - `onFailure` function (form, response){}
- * - `onError` function (error){}
+ * - `onError` function (code, error){}
  * - `onSave` function (form, response, json, saved){}
  * - `onReject` function (form, response, json, saved){}
  * - `onSuccess` function (form, response, json){}
@@ -51,24 +51,37 @@ var Callbackable = Class.create({
 var BuroForm = Class.create(Callbackable, {
 	initialize: function()
 	{
-		this.url = arguments[0];
-
-		this.form = $(arguments[1]);
-		this.form.reset = this.resetForm.bind(this);
-		this.form.lock = this.lockForm.bind(this);
-		this.form.unlock = this.unlockForm.bind(this);
+		var n_args = arguments.length;
 		
-		this.form.observe('keypress', function(ev){
-			var element = ev.findElement().nodeName.toLowerCase();
-			var key = ev.keyCode;
-			if(key == 13 && element == 'input')
-				this.submits();
-		}.bind(this));
+		if(n_args > 0)
+			this.url = arguments[0];
 
-		this.submit = $(arguments[2]);
-		this.submit.observe('click', this.submits.bind(this));
+		if(n_args > 1)
+		{
+			this.form = $(arguments[1]);
+			this.form.reset = this.resetForm.bind(this);
+			this.form.lock = this.lockForm.bind(this);
+			this.form.unlock = this.unlockForm.bind(this);
+			// this.form.observe('keypress', function(ev){
+				// var element = ev.findElement().nodeName.toLowerCase();
+				// var key = ev.keyCode;
+				// if(key == 13 && element == 'input')
+					// this.submits();
+			// }.bind(this));
+			
+			this.inputs = Form.getElements(this.form);
+		}
+
+		if(n_args > 2)
+		{
+			this.submit = $(arguments[2]);
+			this.submit.observe('click', this.submits.bind(this));
+		}
 		
-		this.inputs = Form.getElements(this.form);
+		if(n_args > 3)
+		{
+			this.addCallbacks(arguments[3]);
+		}
 	},
 	lockForm: function()
 	{
@@ -88,25 +101,26 @@ var BuroForm = Class.create(Callbackable, {
 	{
 		var data = Form.serializeElements(this.inputs);
 		this.trigger('onStart', this.form);
-		new Ajax.Request(this.url, {
-			parameters: data,
+		new BuroAjax(this.url, {parameters: data},
+		{
+			onError: function(code, error) {
+				this.trigger('onError', code, error);
+			}.bind(this),
+			
 			onComplete: function (response) {
-				if(!response.getAllHeaders())
-					this.trigger('onFailure', this.form, response); // No server response
 				this.trigger('onComplete', this.form, response);
 			}.bind(this),
+			
 			onFailure: function (response) {
 				this.trigger('onFailure', this.form, response); // Page not found
 			}.bind(this),
-			onSuccess: function (response) {
-				if(response.responseJSON) this.json = response.responseJSON;
+			
+			onSuccess: function (response, json) {
+				this.json = json;
 				
-				if(this.json && this.json.error != false)
-					this.trigger('onError', this.json.error);
-				
-				if(this.json && this.json.saved !== false)	
-					this.trigger('onSave',this.form, response, this.json, this.json.saved);
-				else if(this.json && this.json.saved === false)
+				if(this.json.saved !== false)	
+					this.trigger('onSave', this.form, response, this.json, this.json.saved);
+				else
 					this.trigger('onReject', this.form, response, this.json, this.json.saved);
 				
 				this.trigger('onSuccess', this.form, response, this.json);
@@ -222,5 +236,53 @@ var BuroAutocomplete = Class.create(Callbackable, {
 		pair.id = keys[this.autocompleter.index];
 		pair.value = this.foundContent.get(pair.id);
 		this.trigger('onSelect', this.input, pair, selectedElement);
+	}
+});
+
+
+/**
+ * Extends the default Ajax.Request built in Prototype.
+ *
+ * Callbacks:
+ * - `onStart` function (input){}
+ * - `onComplete` function (input, response){}
+ * - `onFailure` function (input, response){}
+ * - `onError` function (code, error){}
+ * - `onSuccess` function (input, response, json){}
+ *
+ */
+var BuroAjax = Class.create(Callbackable, {
+	initialize: function(url, options, callbacks)
+	{
+		this.addCallbacks(callbacks);
+		
+		var ajax_options = {};
+		
+		ajax_options.parameters = options.parameters;
+		ajax_options.onComplete = this.requestOnComplete.bind(this);
+		ajax_options.onSuccess = this.requestOnSuccess.bind(this);
+		ajax_options.onFailure = this.requestOnFailure.bind(this);
+		new Ajax.Request(url, ajax_options);
+	},
+	requestOnComplete: function (response) {
+		if(!response.getAllHeaders())
+			this.trigger('onFailure', this.form, response); // No server response
+		this.trigger('onComplete', this.form, response);
+	},
+	requestOnSuccess: function(response)
+	{
+		var json = false;
+		if(response.responseJSON) json = response.responseJSON;
+		
+		if(!json)
+			this.trigger('onError', E_NOT_JSON);
+		else if (json.error != false)
+			this.trigger('onError', E_JSON, json.error);
+		else
+			this.trigger('onSuccess', response, json);
+	},
+	requestOnFailure: function(response)
+	{
+		this.trigger('onFailure', response); // Page not found
 	}
 });

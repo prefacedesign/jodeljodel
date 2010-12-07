@@ -5,7 +5,7 @@
 	switch($type[0])
 	{
 		case 'admin_form':
-			echo $this->element('local_form');
+			echo $this->element('galery_form', array('plugin' => 'burocrata_user'));
 		break;
 		
 		case 'burocrata':
@@ -14,22 +14,15 @@
 				case 'form':
 				case 'admin_form':
 				case 'subform':
-					echo $this->element('local_form');
+				case 'belongsto_form':
+					echo $this->element('galery_form', array('plugin' => 'burocrata_user'));
 				break;
 				
 				case 'view':
-					echo $this->element('local_burocrata_view');
-				break;
-			}
-		break;
-		
-		case 'admin_preview':
-			switch($type[1])
-			{
-				case 'list_item':
-				break;
-				
-				default:
+				case 'admin_view':
+				case 'preview':
+				case 'belongsto_preview':
+					echo $this->element('galery_burocrata_view', array('plugin' => 'burocrata_user'));
 				break;
 			}
 		break;
