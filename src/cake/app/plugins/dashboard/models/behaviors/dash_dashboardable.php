@@ -52,6 +52,10 @@
 			$dashboard->removeDashItem($dashId);	//removes the item from the dashboard
 		}
 		
+		
+		//@todo This function is completely wrong. It should only update those that need updating, and
+		// 		it should also find entries in the Dashboard that don't have equivalent entries in the table,
+		//		and vice-versa.
 		function synchronizeWithDashboard(&$Model)
 		{
 			$Model->saveAll($Model->find('all')); //saves all the registries (so they are inserted or updated in the dashboards since aftersave is called)

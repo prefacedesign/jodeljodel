@@ -227,7 +227,8 @@
 			'color' => $palette['control_box_fg']->write(),
 			'float'	=> 'left',
 			'width' => '100%',
-			'margin-top' => $vg->size(array('g' => 1))
+			'margin-top' => $vg->size(array('g' => 1)),
+			'margin-bottom' => $vg->size(array('g' => 1))
 	));
 	
 	$this->Decorator->rule(
@@ -263,8 +264,7 @@
 		'.control_box a:visited',
 		array(
 			'color' => $palette['control_box_fg']->write(),
-			'border-color' =>  $palette['control_box_fg']->write()
-			
+			'border-color' =>  $palette['control_box_fg']->write()			
 		)
 	);
 	
@@ -278,9 +278,15 @@
 	);
 	
 	$this->Decorator->rule(
+		'.buro_form', array(
+			'float' => 'left',
+			'width' => '100%'
+	));
+	
+	$this->Decorator->rule(
 		'.buro_form div.input', array(
 			'border-top' => $u->t(1) . ' solid ' . $palette['text'] ->write(),
-			'margin-top' => $vg->size(array('g' => 1))
+			'margin-bottom' => $vg->size(array('g' => 2))
 	));
 	
 	$this->Decorator->rule(
@@ -302,13 +308,14 @@
 	$border_size = 1;
 	$padding_size = $hg->size(array('m' => 2), false);
 	$margin_top = $vg->size(array('m' => 1), false);
+	$padding_top = $vg->size(array('m' => 1), false);
 	$this->Decorator->rule(
 		'.buro_form input, .buro_form textarea', array(
 			'border' => $u->t($border_size) . ' solid ' .  $palette['input_borders']->write(),
 			'background-color' => $palette['input_bg']->write(),
 			'color'	=> $palette['input_fg']->write(),
 			'width' => $u->t($hg->size(array('M' => 5, 'g' => -1),false) - 2*($border_size + $padding_size)),
-			'padding' => '0 ' . $u->t($padding_size),
+			'padding' => $u->t($padding_top) . ' ' . $u->t($padding_size),
 			'margin-top' => $u->t($margin_top),
 			'margin-bottom' => $u->t($vg->size(array('g' => 0.5),false) - $margin_top),
 			'font-size' => $u->t($line_height * 13/18),
@@ -316,8 +323,39 @@
 	));
 	
 	$this->Decorator->rule(
+		'.buro_form textarea', array(
+			'height' => $vg->size(array('g' => 8.5, 'u' => -2*$border_size - $padding_top))
+	));
+	
+	$this->Decorator->rule(
 		'.buro_form input[type="text"]', array(
-			'height' => $u->t($vg->size(array('g' => 1.5),false), - 2*$border_size)
+			'height' => $u->t($vg->size(array('g' => 1.5),false) - 2*$border_size - $padding_top)
+	));
+	
+	$this->Decorator->rule(
+		'.buro_form .superfield h6', array(
+			'font-weight' => 'bold',
+			'text-transform' => 'uppercase',
+			'line-height' => $u->t($line_height * 4/3),
+			'font-size' => $u->t($line_height * 13/18),
+			'letter-spacing' => '0.135ex',
+			'display' => 'block'
+	));
+	
+	$this->Decorator->rule(
+		'.buro_form .superfield label', array(
+			'text-transform' => 'none',
+			'font-size' => $u->t($line_height * 13/18),
+			'line-height' => $u->t($line_height),
+			'margin-top' => $hg->size(array('m' => 2)),
+			'font-style' => 'bold',
+			'display'	=> 'block',
+			'letter-spacing' => '0'
+	));
+	
+	$this->Decorator->rule(
+		'button', array(
+			''
 	));
 	
 ?>

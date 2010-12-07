@@ -6,7 +6,7 @@
 class TypeDecoratorHelper extends AppHelper
 {
 	var $mode = 'html_header';  //or 'inline', or 'inline_echo';
-	var $active_css_buffer = 'inline.css';
+	var $active_css_buffer = 'instant.css';
 	var $css_buffers = array();
 	var $compact = false;
 

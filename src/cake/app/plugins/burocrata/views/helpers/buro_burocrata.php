@@ -426,13 +426,16 @@ class BuroBurocrataHelper extends XmlTagHelper
 	{
 		$this->_nestedOrder++;
 		$this->_nestedInput = true;
-		$htmlAttributes = am(array('class' => 'input'), $htmlAttributes);
+		$htmlAttributes = $this->_mergeAttributes(array('class' => array('input','superfield')), $htmlAttributes);
 		
 		extract($options);
 		
 		$out = $this->Bl->sdiv($htmlAttributes);
 		if(isset($label))
-			$out .= $this->Bl->sspan() . $label . $this->Bl->espan();
+			$out .= $this->Bl->h6(array(),array('escape' => false), $label);
+			
+		if (isset($instructions))
+			$out .= $this->Bl->p(array(), isset($options['escape']) && $options['escape'] ? array('escape' => $options['escape']) : array(), $instructions); 
 		
 		return "\n".$out;
 	}
