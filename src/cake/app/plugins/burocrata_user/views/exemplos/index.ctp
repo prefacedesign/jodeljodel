@@ -8,7 +8,8 @@
 			'callbacks' => array(
 				'onStart'	=> array('lockForm'),
 				'onComplete'=> array('unlockForm'),
-				'onSave'    => array('popup' => 'Salvou!'),
+				'onSave'    => array('contentUpdate'),
+				'onError'   => array('js' => "if(code == E_NOT_JSON) alert('Não é json'); else alert(error);"),
 				'onFailure'	=> array('popup' => 'Não foi possível conectar-se ao servidor!')
 			)
 		)

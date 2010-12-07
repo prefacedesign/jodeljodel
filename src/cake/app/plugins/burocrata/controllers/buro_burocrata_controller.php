@@ -106,7 +106,6 @@ class BuroBurocrataController extends BurocrataAppController
  */
 	public function save()
 	{
-                
 		$saved = false;
 		$error = false;
 		$content = '';
@@ -122,12 +121,13 @@ class BuroBurocrataController extends BurocrataAppController
 				$saved = $Model->save($this->data) !== false;
 			
 			if($saved)
+			{
 				$saved = $Model->id;
+				$this->data = array();
+			}
 		}
 		
-		$this->set('jsonVars', compact(
-			'saved', 'content', 'error'
-		));
+		$this->set(compact('saved', 'content', 'error'));
 	}
 
 
@@ -189,8 +189,6 @@ class BuroBurocrataController extends BurocrataAppController
 			$data = $Model->findById($this->data['id']);
 		}
 		
-		$this->set('model_name', $this->model_name);
-		$this->set('model_plugin', $this->model_plugin);
 		$this->set(compact('error', 'data'));
 	}
 
@@ -246,6 +244,10 @@ class BuroBurocrataController extends BurocrataAppController
 		{
 			$this->model_name = $model_alias;
 			$this->model_plugin = $model_plugin;
+			
+			$this->set('model_name', $this->model_name);
+			$this->set('model_plugin', $this->model_plugin);
+			
 			$var = $this->{$model_alias};
 		}
 		

@@ -8,7 +8,6 @@
 		$object['content'] = $this->element(Inflector::underscore($model_name),
 			array(
 				'plugin' => Inflector::underscore($model_plugin),
-				'data' => $data,
 				'type' => array('burocrata', 'form')
 			)
 		);

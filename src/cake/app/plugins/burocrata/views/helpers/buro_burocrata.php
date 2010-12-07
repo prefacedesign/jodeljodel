@@ -573,8 +573,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		if(!isset($options['options']['url']) && (!isset($options['fieldName']) || empty($options['fieldName'])))
 		{
-			if (!ClassRegistry::isKeySet($modelAlias)) return 'parent model not found';
-			$Model =& ClassRegistry::getObject($modelAlias);
+			$Model =& ClassRegistry::init($modelAlias);
 			$options['fieldName'] = implode('.', array($modelAlias, $Model->displayField));
 		}
 		
@@ -638,8 +637,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		// TODO: Trigger error `parent model not found`
 		$parent_model = $this->modelAlias;
-		if (!ClassRegistry::isKeySet($parent_model)) return 'parent model not found';
-		$ParentModel =& ClassRegistry::getObject($parent_model);
+		$ParentModel =& ClassRegistry::init($this->modelPlugin . '.' . $parent_model);
+		if(!$ParentModel) return 'parent model not found';
 		
 		// TODO: Trigger error `not a belongsTo related model`
 		if(!isset($ParentModel->belongsTo[$assocName])) return 'not a belongsTo related model';
