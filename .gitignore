@@ -1,4 +1,5 @@
 /nbfolder
 /nbproject
 
-/docs/dinafon/*.mwb.bak
+*.mwb.bak
+*.dia~
