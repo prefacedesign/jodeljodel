@@ -59,7 +59,6 @@ var BuroForm = Class.create(Callbackable, {
 		if(n_args > 1)
 		{
 			this.form = $(arguments[1]);
-			this.form.reset = this.resetForm.bind(this);
 			this.form.lock = this.lockForm.bind(this);
 			this.form.unlock = this.unlockForm.bind(this);
 			// this.form.observe('keypress', function(ev){
@@ -93,39 +92,38 @@ var BuroForm = Class.create(Callbackable, {
 		this.form.setOpacity(1);
 		this.inputs.each(Form.Element.enable);
 	},
-	resetForm: function()
-	{
-		
-	},
 	submits: function(ev)
 	{
 		var data = Form.serializeElements(this.inputs);
 		this.trigger('onStart', this.form);
-		new BuroAjax(this.url, {parameters: data},
-		{
-			onError: function(code, error) {
-				this.trigger('onError', code, error);
-			}.bind(this),
-			
-			onComplete: function (response) {
-				this.trigger('onComplete', this.form, response);
-			}.bind(this),
-			
-			onFailure: function (response) {
-				this.trigger('onFailure', this.form, response); // Page not found
-			}.bind(this),
-			
-			onSuccess: function (response, json) {
-				this.json = json;
+		new BuroAjax(
+			this.url,
+			{parameters: data},
+			{
+				onError: function(code, error) {
+					this.trigger('onError', code, error);
+				}.bind(this),
 				
-				if(this.json.saved !== false)	
-					this.trigger('onSave', this.form, response, this.json, this.json.saved);
-				else
-					this.trigger('onReject', this.form, response, this.json, this.json.saved);
+				onComplete: function (response) {
+					this.trigger('onComplete', this.form, response);
+				}.bind(this),
 				
-				this.trigger('onSuccess', this.form, response, this.json);
-			}.bind(this)
-		});
+				onFailure: function (response) {
+					this.trigger('onFailure', this.form, response); // Page not found
+				}.bind(this),
+				
+				onSuccess: function (response, json) {
+					this.json = json;
+					
+					if(this.json.saved !== false)	
+						this.trigger('onSave', this.form, response, this.json, this.json.saved);
+					else
+						this.trigger('onReject', this.form, response, this.json, this.json.saved);
+					
+					this.trigger('onSuccess', this.form, response, this.json);
+				}.bind(this)
+			}
+		);
 	}
 });
 
@@ -265,16 +263,16 @@ var BuroAjax = Class.create(Callbackable, {
 		new Ajax.Request(url, ajax_options);
 	},
 	requestOnComplete: function (response) {
-		if(!response.getAllHeaders())
-			this.trigger('onFailure', this.form, response); // No server response
-		this.trigger('onComplete', this.form, response);
+		this.trigger('onComplete', response);
 	},
 	requestOnSuccess: function(response)
 	{
 		var json = false;
 		if(response.responseJSON) json = response.responseJSON;
 		
-		if(!json)
+		if(!response.getAllHeaders())
+			this.trigger('onFailure', response); // No server response
+		else if(!json)
 			this.trigger('onError', E_NOT_JSON);
 		else if (json.error != false)
 			this.trigger('onError', E_JSON, json.error);

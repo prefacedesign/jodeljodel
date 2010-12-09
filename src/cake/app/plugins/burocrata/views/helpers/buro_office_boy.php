@@ -52,7 +52,7 @@ class BuroOfficeBoyHelper extends AppHelper
  * @access public
  * @param string $form_id The form dom ID
  * @param array $options An array that must contains some attributes that defines the current form
- * @return boolean True if the javascript was sucefully generated, false, otherwise
+ * @return string The javascript code generated
  */
 	public function autocomplete($options = array())
 	{
@@ -71,8 +71,9 @@ class BuroOfficeBoyHelper extends AppHelper
 		if(!empty($callbacks) && is_array($callbacks))
 			$script .= $this->formatCallbacks('autocomplete', $callbacks);
 		
-		$this->Js->buffer($script);
-		$this->Js->writeBuffer(array('inline' => false));
+		if(!$this->Ajax->isAjax())
+			$script = $this->Js->domReady($script);
+		return $script;
 	}
 
 
@@ -82,7 +83,7 @@ class BuroOfficeBoyHelper extends AppHelper
  * @access public
  * @param string $form_id The form dom ID
  * @param array $options An array that must contains some attributes that defines the current form
- * @return boolean True if the javascript was sucefully generated, false, otherwise
+ * @return string The javascript code generated
  */
 	public function newForm($form_id, $options)
 	{
@@ -96,8 +97,18 @@ class BuroOfficeBoyHelper extends AppHelper
 		if(!empty($callbacks) && is_array($callbacks))
 			$script .= $this->formatCallbacks('form', $callbacks);
 		
-		$this->Js->buffer($script);
-		$this->Js->writeBuffer(array('inline' => false));
+		if(!$this->Ajax->isAjax())
+			$script = $this->Js->domReady($script);
+		return $script;
+	}
+
+
+/**
+ *
+ *
+ */
+	public function ajax($options)
+	{
 	}
 
 
@@ -201,7 +212,18 @@ class BuroOfficeBoyHelper extends AppHelper
  */
 	protected function _contentUpdate($script)
 	{
-		return 'form.update(json.content);';
+		switch($script)
+		{
+			case 'all':
+				$script = 'form.replace(json.content);';
+				break;
+				
+			case 'content':
+			default;
+				$script = 'form.update(json.content);';
+				break;
+		}
+		return $script;
 	}
 
 

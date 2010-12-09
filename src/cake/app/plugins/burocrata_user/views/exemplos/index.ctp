@@ -1,45 +1,5 @@
 <?php
-	echo $this->Buro->form(
-		array('class' => 'azul'), // Parâmetros HTML
-		array(
-			// 'url' => array('action' => 'recebedor'), // Action que vai receber o POST
-			'model' => 'BurocrataUser.Galery', // Somente o Model pai, assim como no FormHelper::create
-			'writeForm' => true,
-			'callbacks' => array(
-				'onStart'	=> array('lockForm'),
-				'onComplete'=> array('unlockForm'),
-				'onSave'    => array('contentUpdate'),
-				'onError'   => array('js' => "if(code == E_NOT_JSON) alert('Não é json'); else alert(error);"),
-				'onFailure'	=> array('popup' => 'Não foi possível conectar-se ao servidor!')
-			)
-		)
-	);
-	
-	
-	
-	
-	// echo '<div style="clear: both"></div>';
-	// echo '<br />';
-	
-	
-	
-	
-	// echo $this->Buro->sform(
-			// array(), 
-			// array(
-				// 'model' => 'BurocrataUser.User',
-				// 'writeForm' => true,
-				// 'callbacks' => array(
-					// 'onSave' => array('popup' => 'Salvou com sucesso'),
-					// 'onFailure' => array('popup' => 'Não foi possível completar o request')
-				// )
-			// )
-		// );
-	// echo $this->Buro->eform();
-	
-
-	// echo '<div style="clear: both"></div>';
-
+	echo $this->Buro->insertForm('BurocrataUser.Galery', 'teste');	
 
 
 

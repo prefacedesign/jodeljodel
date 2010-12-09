@@ -13,6 +13,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 
 	public $modelAlias;
 	public $modelPlugin;
+	public $View;
 
 	protected $_nestedInput = false;
 	protected $_nestedOrder = 0;
@@ -20,8 +21,27 @@ class BuroBurocrataHelper extends XmlTagHelper
 	protected $_nestedForm = array();
 	protected $_formMap = array();
 	protected $_data = false;
-	protected $_defaultSuperclass = array('buro');
+	
+	protected static $defaultSuperclass = array('buro');
 
+
+/**
+ * An alias method for the View::element method that enclosures the Jodel coventions
+ *
+ * @access public
+ * @param string $modelClassName The model in format Plugin.Model
+ * @param mixed $typeParams 
+ * @return string The element rendered
+ */
+	public function insertForm($modelClassName, $typeParams = array())
+	{
+		$type= am(BuroBurocrataHelper::$defaultSuperclass, 'form', $typeParams);
+		
+		list($plugin, $model_alias) = pluginSplit($modelClassName);
+		
+		$View = &$this->_getView();
+		return $View->element(Inflector::underscore($model_alias), compact('plugin', 'type'));
+	}
 
 
 /**
@@ -67,9 +87,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 					$out .= $this->instructions(array(),array(),$options['instructions']);
 					unset($options['instructions']);
 				}
-				$inputOptions = am($htmlAttributes, $options['options'], array('label' => false, 'error' => false, 'div' => false, 'type' => $options['type']));
+				$inputOptions = am($htmlAttributes, $options['options'], array('label' => false, 'div' => false, 'type' => $options['type']));
 				$out .= $this->Form->input($options['fieldName'], $inputOptions);
-				$out .= $this->Form->error($options['fieldName']);
+				
+				$View = $this->_getView();
 				
 				$this->_addFormAttribute('inputs', $options);
 			}
@@ -114,7 +135,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		if(isset($options['fieldName'])) {
 			$fieldName = $options['fieldName'];
 		} else {
-			$View =& ClassRegistry::getObject('View');
+			$View =& $this->_getView();
 			$fieldName = $View->entity();
 			$fieldName = array_pop($fieldName);
 		}
@@ -136,6 +157,20 @@ class BuroBurocrataHelper extends XmlTagHelper
 		}
 		
 		return $this->Bl->slabel($htmlAttributes) . $text . $this->Bl->elabel();
+	}
+
+
+/**
+ * Error message
+ *
+ * @access public
+ * @param  array $htmlAttributes
+ * @param  array $options
+ * @return	string The HTML well formated
+ */
+	public function error($htmlAttributes = array(), $options = array())
+	{
+		return $this->Form->error($options['fieldName']);
 	}
 
 
@@ -170,7 +205,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function sform($htmlAttributes = array(), $options = array())
 	{
-		$View =& ClassRegistry::getObject('View');
+		$View =& $this->_getView();
 		$defaults = array(
 			'url' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'save'),
 			'writeForm' => false, 
@@ -205,7 +240,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out = $this->Bl->sdiv($htmlAttributes);
 		if($options['writeForm'] == true)
 		{
-			$elementOptions = array('type' => array('burocrata','form'));
+			$elementOptions = array('type' => am(BuroBurocrataHelper::$defaultSuperclass, 'form'));
 			if($this->modelPlugin)
 				$elementOptions['plugin'] = $this->modelPlugin;
 			if($this->_data)
@@ -309,6 +344,21 @@ class BuroBurocrataHelper extends XmlTagHelper
 
 
 /**
+ * Gets and caches an View object reference
+ *
+ * @access protected
+ * @return object The View object reference
+ */
+	protected function _getView()
+	{
+		if(!$this->View)
+			return $this->View = &ClassRegistry::getObject('view');
+		
+		return $this->View;
+	}
+
+
+/**
  * Generates a encoded string that will be decoded on the other side of request.
  * This string contain the model name and plugin and is hashed using the URL as key.
  *
@@ -349,13 +399,9 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function eform()
 	{
-		$View = ClassRegistry::getObject('View');		
+		$View = $this->_getView();
 		$out = '';
 		
-		$this->BuroOfficeBoy->newForm(
-			end($this->_nestedForm),
-			$this->_readFormAttributes()
-		);
 		$modelAlias = $this->_readFormAttribute('modelAlias');
 		$modelPlugin = $this->_readFormAttribute('modelPlugin');
 		$url = $this->_readFormAttribute('url');
@@ -374,6 +420,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 			), array('close_me' => true)
 		);
 		$out .= $this->Bl->ediv();
+		$out .= $this->Html->scriptBlock(
+			$this->BuroOfficeBoy->newForm(
+				end($this->_nestedForm),
+				$this->_readFormAttributes()
+			)
+		);
 		
 		array_pop($this->_nestedForm);
 		$this->Form->end();
@@ -546,7 +598,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function inputAutocomplete($options = array())
 	{
-		$View = ClassRegistry::getObject('View');
+		$View = $this->_getView();
 		if(!isset($options['options']['model']) && !isset($options['options']['url']))
 		{
 			// error (`url` or `model` must be set)
@@ -571,9 +623,13 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$parameters[] = $this->securityParams($autocomplete_options['url'], $modelPlugin, $modelAlias);
 		}
 		
-		if(!isset($options['options']['url']) && (!isset($options['fieldName']) || empty($options['fieldName'])))
+		if(!empty($modelAlias) && !isset($options['options']['url']) && (!isset($options['fieldName']) || empty($options['fieldName'])))
 		{
-			$Model =& ClassRegistry::init($modelAlias);
+			$class_name = $modelAlias;
+			if(!empty($modelPlugin))
+				$class_name = $modelPlugin . '.' . $class_name;
+				
+			$Model =& ClassRegistry::init($class_name);
 			$options['fieldName'] = implode('.', array($modelAlias, $Model->displayField));
 		}
 		
@@ -582,7 +638,6 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$autocomplete_options['parameters'] = implode('&', $parameters);
 		
-		$this->BuroOfficeBoy->autocomplete($autocomplete_options);
 		
 		$out = $this->input(array('class' => 'autocomplete', 'id' => 'input'.$autocomplete_options['id_base']),
 			am($options, array(
@@ -591,6 +646,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			))
 		);
 		$out .= $this->Bl->div(array('id' => 'div'.$autocomplete_options['id_base'], 'class' => 'autocomplete'), array('close_me' => false), ' ');
+		$out .= $this->Html->scriptBlock($this->BuroOfficeBoy->autocomplete($autocomplete_options));
 		
 		return $out;
 	}
@@ -672,7 +728,14 @@ class BuroBurocrataHelper extends XmlTagHelper
 	}
 
 
-	function belongsToAutocomplete($options = array())
+/**
+ * Creates the autocomplete form for the belongsto input
+ *
+ * @access public
+ * @params $options array
+ * @return string The HTML well formated
+ */
+	public function belongsToAutocomplete($options = array())
 	{
 		extract($options['options']);
 		unset($options['options']);
@@ -705,7 +768,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$out = $this->inputAutocomplete(am($options, $autocomplete_options));
 		$out .= $this->input(array('id' => $input_id), array('type' => 'hidden', 'fieldName' => $fieldName));
-		$out .= $this->Bl->div(array('id' => $update), array(), ' ');
+		$out .= $this->Bl->div(array('id' => $update), array('escape' => false), $this->error(array(), compact('fieldName')) . ' ');
 		return $out;
 	}
 }
