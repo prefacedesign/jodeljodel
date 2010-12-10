@@ -748,9 +748,11 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$input_id = uniqid('input');
 		$update = uniqid('div');
+		
 		$url = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'view');
-		$params = $this->securityParams($url, $plugin, $model_name);
-		$with = "'data[id]='+pair.id";
+		$params = array($this->securityParams($url, $plugin, $model_name));
+		$params['data[id]'] = '@pair.id@';
+		$callbacks = array('onSuccess' => array('contentUpdate' => $update));
 		
 		$autocomplete_options = array(
 			'options' => array(
@@ -758,7 +760,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 				'callbacks' => array(
 					'onSelect' => array(
 						'js' => "if(pair.id > 0) $('$input_id').value = pair.id;",
-						'ajax' => compact('update', 'url', 'with', 'params'),
+						'ajax' => compact('callbacks', 'url', 'params'),
 					)
 				)
 			)

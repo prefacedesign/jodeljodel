@@ -58,6 +58,15 @@ class BuroBurocrataController extends BurocrataAppController
 
 
 /**
+ * Current layout scheme
+ *
+ * @var string
+ * @access protected
+ */
+	protected $layout_scheme = null;
+
+
+/**
  * beforeRender callback
  *
  * @access public
@@ -88,9 +97,16 @@ class BuroBurocrataController extends BurocrataAppController
 					)
 				)
 			);
-			$this->TypeLayoutSchemePicker->pick($this->data['layout_scheme']);
+			$this->layout_scheme = $this->data['layout_scheme'];
 			unset($this->data['layout_scheme']);
 		}
+	}
+
+
+	public function beforeRender()
+	{
+		if($this->layout_scheme)
+			$this->TypeLayoutSchemePicker->pick($this->layout_scheme);
 	}
 
 

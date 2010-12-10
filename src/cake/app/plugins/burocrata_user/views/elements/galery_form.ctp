@@ -7,7 +7,7 @@ echo $this->Buro->sform(array('class' => 'azul'), // Parâmetros HTML
 		'callbacks' => array(
 			'onStart'	=> array('lockForm'),
 			'onComplete'=> array('unlockForm'),
-			'onSuccess' => array('contentUpdate' => 'all'),
+			'onSuccess' => array('contentUpdate' => 'replace'),
 			'onSave'    => array('popup' => 'Salvou a gabaça'),
 			// 'onReject'  => array('popup' => 'Existe algum erro de validação.'),
 			'onError'   => array('js' => "if(code == E_NOT_JSON) alert('Não é json! Não é json!'); else alert(error);"),
@@ -60,7 +60,7 @@ echo $this->Buro->sform(array('class' => 'azul'), // Parâmetros HTML
 				'model' => 'BurocrataUser.User',
 				// 'queryField' => 'User.name',
 				'callbacks' => array(
-					'onSelect' => array('js' => 'this.input.value = pair.value')
+					// 'onSelect' => array('js' => 'this.input.value = pair.value')
 				)
 			)
 		)
