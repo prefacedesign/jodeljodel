@@ -29,7 +29,7 @@ class TextText extends TextAppModel
 				'conditions' => array(
 					'id' => $id
 				),
-				'fields' => arrau(
+				'fields' => array(
 					'text_content'
 				)
 			)
