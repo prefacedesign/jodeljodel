@@ -1,11 +1,26 @@
 const E_NOT_JSON = 1; // Not a JSON response
 const E_JSON = 2; // JSON tells me the error
 
+
+/**
+ * A instance of a Hash without overwrite of values
+ */
+var BuroClassRegistry = new (Class.create(Hash, {
+	set: function($super, id, obj)
+	{
+		if(this.get(id))
+			return false;
+		
+		return $super(id, obj);
+	}
+}))();
+
+
 /**
  * Abstract class that implements the behaviour of callbacks
  * with the methods `addCallbacks` and `trigger`
  */
-var Callbackable = Class.create({
+var BuroCallbackable = Class.create({
 	addCallbacks: function(callbacks)
 	{
 		if(typeof(this.callbacks) == 'undefined')
@@ -48,7 +63,7 @@ var Callbackable = Class.create({
  * - `onSuccess` function (form, response, json){}
  *
  */
-var BuroForm = Class.create(Callbackable, {
+var BuroForm = Class.create(BuroCallbackable, {
 	initialize: function()
 	{
 		var n_args = arguments.length;
@@ -58,26 +73,21 @@ var BuroForm = Class.create(Callbackable, {
 
 		if(n_args > 1)
 		{
-			this.form = $(arguments[1]);
+			var id_base = arguments[1];
+			this.form = $('frm' + id_base);
 			this.form.lock = this.lockForm.bind(this);
 			this.form.unlock = this.unlockForm.bind(this);
-			// this.form.observe('keypress', function(ev){
-				// var element = ev.findElement().nodeName.toLowerCase();
-				// var key = ev.keyCode;
-				// if(key == 13 && element == 'input')
-					// this.submits();
-			// }.bind(this));
+			this.form.observe('keypress', this.keyPress.bind(this));
 			
 			this.inputs = Form.getElements(this.form);
-		}
 
-		if(n_args > 2)
-		{
-			this.submit = $(arguments[2]);
+			BuroClassRegistry.set(this.form.id, this);
+			
+			this.submit = $('sbmt' + id_base);
 			this.submit.observe('click', this.submits.bind(this));
 		}
 		
-		if(n_args > 3)
+		if(n_args > 2)
 		{
 			this.addCallbacks(arguments[3]);
 		}
@@ -91,6 +101,12 @@ var BuroForm = Class.create(Callbackable, {
 	{
 		this.form.setOpacity(1);
 		this.inputs.each(Form.Element.enable);
+	},
+	keyPress: function(ev){
+		var element = ev.findElement().nodeName.toLowerCase();
+		var key = ev.keyCode;
+		if(key == 13 && element == 'input' && confirm('Deseja enviar os dados do formulário?'))
+			this.submits();
 	},
 	submits: function(ev)
 	{
@@ -154,9 +170,11 @@ var BuroForm = Class.create(Callbackable, {
  * - `onSuccess` function (input, response, json){}
  *
  */
-var BuroAutocomplete = Class.create(Callbackable, {
+var BuroAutocomplete = Class.create(BuroCallbackable, {
 	initialize: function(url, id_base, options)
 	{
+		BuroClassRegistry.set(id_base, this);
+		
 		var id_of_text_field = 'input'+id_base,
 			id_of_div_to_populate = 'div'+id_base;
 		options.updateElement = this.alternateUpdateElement.bind(this);
@@ -167,13 +185,6 @@ var BuroAutocomplete = Class.create(Callbackable, {
 		this.autocompleter.options.onSuccess = this.onSuccess.bind(this);
 		
 		this.input = this.autocompleter.element;
-		
-		this.addCallbacks({
-			onSelect: function(pair, li_item){
-				alert(pair.key);
-				alert(pair.value);
-			}
-		});
 	},
 	
 	onSuccess: function(response)
@@ -249,7 +260,7 @@ var BuroAutocomplete = Class.create(Callbackable, {
  * - `onSuccess` function (input, response, json){}
  *
  */
-var BuroAjax = Class.create(Callbackable, {
+var BuroAjax = Class.create(BuroCallbackable, {
 	initialize: function(url, options, callbacks)
 	{
 		this.addCallbacks(callbacks);

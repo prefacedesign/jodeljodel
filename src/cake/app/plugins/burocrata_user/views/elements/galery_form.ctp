@@ -1,5 +1,4 @@
 <?php
-
 echo $this->Buro->sform(array('class' => 'azul'), // Parâmetros HTML
 	array(
 		// 'url' => array('action' => 'recebedor'), // Action que vai receber o POST
@@ -71,6 +70,6 @@ echo $this->Buro->sform(array('class' => 'azul'), // Parâmetros HTML
 	echo $this->Bl->br();
 	echo $this->Bl->br();
 	
-	echo $this->Buro->submit(array(), array('label' => 'Send this :)'));
+	echo $this->Buro->submit(array(), array('label' => 'Send this :)', 'cancel' => 'Cancelar'));
 
 echo $this->Buro->eform();

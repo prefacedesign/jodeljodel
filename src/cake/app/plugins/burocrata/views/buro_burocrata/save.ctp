@@ -8,6 +8,7 @@
 		$class_name = $model_name;
 		if(!empty($model_plugin))
 			$class_name = $model_plugin . '.' . $class_name;
+		
 		$object['content'] = $this->Buro->insertForm($class_name);
 	}
 	

@@ -1,4 +1,23 @@
 <?php
+echo $this->Buro->sform(array(),
+	array(
+		'model' => 'BurocrataUser.User',
+		'callbacks' => array(
+			'onStart'	=> array('lockForm'),
+			'onComplete'=> array('unlockForm'),
+			// 'onSuccess' => array('ajax' => 'replace'),
+			'onSave'    => array('popup' => 'Salvou a gabaça'),
+			// 'onReject'  => array('popup' => 'Existe algum erro de validação.'),
+			'onError'   => array('js' => "if(code == E_NOT_JSON) alert('Não é json! Não é json!'); else alert(error);"),
+			'onFailure'	=> array('popup' => 'Erro de comunicação com o servidor!')
+		)
+	)
+);
+	echo $this->Buro->input(
+		array(),
+		array('fieldName' => 'id', 'type' => 'hidden')
+	);
+	
 	echo $this->Buro->input(
 		array(),
 		array('fieldName' => 'name')
@@ -20,5 +39,6 @@
 			)
 		)
 	);
-	
-	echo '<div style="clear: both"></div>';
+
+	echo $this->Buro->submit();
+echo $this->Buro->eform();

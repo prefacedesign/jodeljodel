@@ -93,14 +93,14 @@ class BuroOfficeBoyHelper extends AppHelper
  * @param array $options An array that must contains some attributes that defines the current form
  * @return string The javascript code generated
  */
-	public function newForm($form_id, $options)
+	public function newForm($options)
 	{
 		$this->_includeScripts();
 		
 		$options = am(array('callbacks' => array()), $options);
 		extract($options);
 		
-		$script = sprintf("new BuroForm('%s','%s','%s')",$this->url($url), $form_id, $submit);
+		$script = sprintf("new BuroForm('%s','%s')",$this->url($url), $baseID);
 		
 		if(!empty($callbacks) && is_array($callbacks))
 			$script .= sprintf('.addCallbacks(%s)', $this->formatCallbacks('form', $callbacks));
@@ -142,7 +142,7 @@ class BuroOfficeBoyHelper extends AppHelper
 		
 		$View = ClassRegistry::getObject('View');
 		if(isset($View->viewVars['layout_scheme']))
-			$params['data[layout_scheme]'] = $View->viewVars['layout_scheme'];
+			$params['data[_b][layout_scheme]'] = $View->viewVars['layout_scheme'];
 		
 		$url = $this->url($url);
 		$callbacks = $this->formatCallbacks('ajax', $callbacks);
