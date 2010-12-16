@@ -21,16 +21,9 @@ class CorkCorkHelperTestCase extends CakeTestCase {
 			'id_content' => 1
 		);
 
-		$expected = array (
-			'TextText' => array(
-				'text_content' => 'Conteudo do texto Conteudo
-				  do texto Conteudo do texto Conteudo do
-				  texto Conteudo do texto Conteudo do texto '
-			)
-		);
+		$expected = 'Conteúdo do Text <BR>Conteudo do texto Conteudo do texto Conteudo do texto Conteudo do texto Conteudo do texto Conteudo do texto ';
 
 		$result = $this->CorkCork->tile($html_config, $options);
-
 
 		$this->assertEqual($result,$expected);
 	}

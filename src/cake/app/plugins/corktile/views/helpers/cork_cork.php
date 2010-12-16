@@ -25,9 +25,25 @@ class CorkCorkHelper extends AppHelper {
 			 * chamar função getCorkContent do model CorkCorktile.type
 			 *
 			 */
-			$pluginName = Inflector::camelize($return['CorkCorktile']['type']);
+			$pluginNamelow = $return['CorkCorktile']['type'];
+			$pluginName = Inflector::camelize($pluginNamelow);
 			$contentModel=& ClassRegistry::init($pluginName.'.'.$pluginName.$pluginName);
-			return $contentModel->getCorkContent($return['CorkCorktile']['id_content'], array("html_config" => $html_config));
+
+			$dataCork = $contentModel->getCorkContent($return['CorkCorktile']['id_content'], array("html_config" => $html_config));
+
+			//$View = &ClassRegistry::getObject("View");
+			$View = ClassRegistry::init("View");
+
+
+			$result = $View->element($pluginNamelow, array(
+					'plugin' => $pluginName,
+					'type' => 'cork',
+					'options' => $options,
+					'data' => $dataCork
+				)
+			);
+
+			return $result;
 		}
 		
 	}
