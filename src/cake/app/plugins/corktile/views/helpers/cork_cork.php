@@ -15,9 +15,9 @@ class CorkCorkHelper extends AppHelper {
 			 * caso não exista a chave é inserido na base do corktile
 			 * caso exista, já será recuperado para o $this. será?
 			 */
-			$return = $corkModel->findByKey($options['key']);
-			if ($return == '')
-				$return = $corkModel->save(array('CorkCorktile' => $options));
+			$currentCork = $corkModel->findByKey($options['key']);
+			if ($currentCork == '')
+				$currentCork = $corkModel->save(array('CorkCorktile' => $options));
 
 			//@TODO fazer o tratamento do localization padrão
 
@@ -25,21 +25,28 @@ class CorkCorkHelper extends AppHelper {
 			 * chamar função getCorkContent do model CorkCorktile.type
 			 *
 			 */
-			$pluginNamelow = $return['CorkCorktile']['type'];
+			$pluginNamelow = $currentCork['CorkCorktile']['type'];
 			$pluginName = Inflector::camelize($pluginNamelow);
 			$contentModel=& ClassRegistry::init($pluginName.'.'.$pluginName.$pluginName);
 
-			$dataCork = $contentModel->getCorkContent($return['CorkCorktile']['id_content'], array("html_config" => $html_config));
+			$dataCork = $contentModel->getCorkContent($currentCork['CorkCorktile']['id_content'], array("html_config" => $html_config));
 
-			//$View = &ClassRegistry::getObject("View");
 			$View = ClassRegistry::init("View");
 
-
-			$result = $View->element($pluginNamelow, array(
+			//@TODO: ver a respeito do cache (quanto tempo deixar?)
+			$resultContent = $View->element($pluginNamelow, array(
 					'plugin' => $pluginName,
-					'type' => 'cork',
+					'type' => array('cork'),
 					'options' => $options,
 					'data' => $dataCork
+				)
+			);
+
+			$result = $View->element('corktile', array(
+					'plugin' => 'corktile',
+					'location' => $currentCork['CorkCorktile']['location'],
+					'description' => $currentCork['CorkCorktile']['description'],
+					'content' => $resultContent
 				)
 			);
 

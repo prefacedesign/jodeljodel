@@ -4,13 +4,10 @@ class CorkCorktilesController extends CorktileAppController {
 	var $name = 'CorkCorktiles';
 	//var $scaffold;
 
-	function view($id)
+	function edit($key)
 	{
+		
 
-	}
-
-	function edit($id)
-	{
 		
 	}
 
