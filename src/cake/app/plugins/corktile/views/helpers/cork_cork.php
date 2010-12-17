@@ -1,13 +1,20 @@
 <?php
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 class CorkCorkHelper extends AppHelper {
-	function tile ($html_config = array(), $options = array())
+	public $helpers = array('Html', 'Form', 'Ajax', 'Js' => 'prototype', 'Burocrata.BuroOfficeBoy',
+		'Typographer.*TypeBricklayer' => array(
+			'name' => 'Bl'
+		)
+	);
+
+	function tile ($htmlAttributes = array(), $options = array())
 	{
 		if (isset($options['key'])) {
+			$htmlDefault = array ('class' => array('cork'));
+
+			$htmlAttributes = _mergeAttributes($htmlAttributes, $htmlDefault);
 			$corkModel = & ClassRegistry::init('Corktile.CorkCorktile');
+
 			/*
 			 *@TODO verificar se retorna null quando não encontra
 			 */
@@ -27,7 +34,7 @@ class CorkCorkHelper extends AppHelper {
 			 */
 			$pluginNamelow = $currentCork['CorkCorktile']['type'];
 			$pluginName = Inflector::camelize($pluginNamelow);
-			$contentModel=& ClassRegistry::init($pluginName.'.'.$pluginName.$pluginName);
+		$contentModel=& ClassRegistry::init($pluginName.'.'.$pluginName.$pluginName);
 
 			$dataCork = $contentModel->getCorkContent($currentCork['CorkCorktile']['id_content'], array("html_config" => $html_config));
 
@@ -42,11 +49,14 @@ class CorkCorkHelper extends AppHelper {
 				)
 			);
 
+
 			$result = $View->element('corktile', array(
 					'plugin' => 'corktile',
 					'location' => $currentCork['CorkCorktile']['location'],
 					'description' => $currentCork['CorkCorktile']['description'],
-					'content' => $resultContent
+					'content' => $resultContent,
+					'htmlAttributes' => $htmlAttributes,
+					'Bl' => $this->Bl
 				)
 			);
 

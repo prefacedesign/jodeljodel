@@ -2,9 +2,7 @@
 /* 
  * Element do corktile, responsável pelo contorno do que estiver preso ao corktile
  */
-echo '------------------------';
-echo '<BR>';
+echo $Bl->sdiv($htmlAttributes, $options);
 echo $content;
-echo '<BR>';
-echo '------------------------';
+echo $Bl->ediv($htmlAttributes, $options);
 ?>
