@@ -88,6 +88,9 @@ class BuroBurocrataController extends BurocrataAppController
 			unset($this->data['_b']);
 		}
 		
+		if(isset($this->buroData['baseID']))
+			$this->set('baseID', $this->buroData['baseID']);
+		
 		if(isset($this->buroData['layout_scheme']))
 		{
 			$this->helpers = am($this->helpers,
@@ -230,9 +233,6 @@ class BuroBurocrataController extends BurocrataAppController
 			else
 				$content = $Model->find('list', compact('conditions', 'order'));
 		}
-		
-		if($error === false && empty($content))
-			$content = array('-1' => __('Nothing found.', true));
 		
 		$this->set('jsonVars', compact('error', 'content'));
 	}

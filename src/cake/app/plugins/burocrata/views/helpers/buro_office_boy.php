@@ -38,9 +38,11 @@ class BuroOfficeBoyHelper extends AppHelper
 		),
 		'autocomplete' => array(
 			'onStart' => 'function(input){%s}',
+			'onShow' => 'function(element, update){%s}',
+			'onHide' => 'function(element, update){%s}',
 			'onSelect' => 'function(input, pair, element){%s}',
 			'onSuccess' => 'function(input, response, json){%s}',
-			'onComplete' => 'function(input, response){%s}',
+			'onUpdate' => 'function(input, response){%s}',
 			'onFailure' => 'function(input, response){%s}',
 			'onError' => 'function(code, error){%s}'
 		),
@@ -70,11 +72,11 @@ class BuroOfficeBoyHelper extends AppHelper
 		extract($options);
 		
 		unset($options['url']);
-		unset($options['id_base']);
+		unset($options['baseID']);
 		unset($options['callbacks']);
 		
 		$options = $this->Js->object($options);
-		$script = sprintf("new BuroAutocomplete('%s','%s', %s)", $this->url($url), $id_base, $options);
+		$script = sprintf("new BuroAutocomplete('%s','%s', %s)", $this->url($url), $baseID, $options);
 		
 		if(!empty($callbacks) && is_array($callbacks))
 			$script .= sprintf('.addCallbacks(%s)', $this->formatCallbacks('autocomplete', $callbacks));

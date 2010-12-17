@@ -208,21 +208,16 @@ class TypeBricklayerHelper extends AppHelper
 	
 	function tag($tag, $attr = null, $options = null, $content = null)
 	{
-		$standard_options = array('escape' => true, 'close_me' => false);
+		$standard_options = array();
+		$standard_options['escape'] = true;
+		$standard_options['close_me'] = empty($content);
+		
 		$options = am($standard_options, $options);
 		extract($options);
-		unset($options['escape']); // não faz sentido passar adiante
+		unset($options['escape']);
 		
-		if ($close_me || empty($content))
-		{
-			$close_me = true;
-			$options['close_me'] = true;
-			
-			if (in_array($tag, TypeBricklayerHelper::$tags_that_need_closing_tag))
-				$close_me = false;
-		}
-		else
-			$close_me = false;
+		if ($close_me && in_array($tag, TypeBricklayerHelper::$tags_that_need_closing_tag))
+			$close_me = $options['close_me'] = false;
 		
 		$t = $this->sTag($tag, $attr, $options);
 		

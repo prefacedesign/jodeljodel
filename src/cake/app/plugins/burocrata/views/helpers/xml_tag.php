@@ -68,7 +68,7 @@ class XmlTagHelper extends AppHelper
 		
 		if (!$close_me)
 		{
-			if (!$escape)
+			if ($escape)
 				$conteudo = h($conteudo);
 			$t .= $conteudo . $this->etag($tag);
 		}
@@ -105,7 +105,7 @@ class XmlTagHelper extends AppHelper
 			
 			if (!$close_me)
 			{
-				if(!$escape)
+				if($escape)
 					$conteudo = h($conteudo);
 				$t .= $conteudo . $this->{'e' . $n}($atributos, $opcoes);
 			}

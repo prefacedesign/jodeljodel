@@ -1,13 +1,13 @@
 <?php
+
 echo $this->Buro->sform(array(),
 	array(
 		'model' => 'BurocrataUser.User',
 		'callbacks' => array(
 			'onStart'	=> array('lockForm'),
 			'onComplete'=> array('unlockForm'),
-			// 'onSuccess' => array('ajax' => 'replace'),
-			'onSave'    => array('popup' => 'Salvou a gabaça'),
-			// 'onReject'  => array('popup' => 'Existe algum erro de validação.'),
+			'onSave'    => array('js' => "BuroClassRegistry.get('$baseID').onSave();"),
+			'onReject'  => array('popup' => 'Existe algum erro de validação.'),
 			'onError'   => array('js' => "if(code == E_NOT_JSON) alert('Não é json! Não é json!'); else alert(error);"),
 			'onFailure'	=> array('popup' => 'Erro de comunicação com o servidor!')
 		)

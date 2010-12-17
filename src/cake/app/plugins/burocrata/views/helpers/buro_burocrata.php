@@ -77,10 +77,13 @@ class BuroBurocrataHelper extends XmlTagHelper
 		else
 		{
 			$htmlAttributes = am(array('container' => array()), $htmlAttributes);
-			$this->_nestedInput = false;
-			if($options['type'] != 'hidden')
-				$out .= $this->sinputcontainer($htmlAttributes['container'], $options);
+			$container = $htmlAttributes['container'];
 			unset($htmlAttributes['container']);
+			
+			$this->_nestedInput = false;
+			
+			if($options['type'] != 'hidden' && $container !== false)
+				$out .= $this->sinputcontainer($container, $options);
 			
 			if(method_exists($this->Form, $options['type']))
 			{
@@ -105,7 +108,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 				$out .= $this->{Inflector::variable('input'.$options['type'])}($options);
 			}
 			
-			if($options['type'] != 'hidden')
+			if($options['type'] != 'hidden' && $container !== false)
 				$out .= $this->einputcontainer();
 		}
 		return $out;
@@ -162,7 +165,6 @@ class BuroBurocrataHelper extends XmlTagHelper
 			}
 			$text = __(Inflector::humanize(Inflector::underscore($text)), true);
 		}
-		
 		return $this->Bl->slabel($htmlAttributes) . $text . $this->Bl->elabel();
 	}
 
@@ -398,8 +400,9 @@ class BuroBurocrataHelper extends XmlTagHelper
 
 
 /**
- *
- *
+ * Creates a param name in format data[_b][$paramName]
+ * If a $value is passed, then a '=$value' is appended on string
+ * 
  * @access public
  * @param mixed $param A dot separated string or a array
  * @param string $value The param value if the case
@@ -413,9 +416,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		if(!count($paramName))
 			return '';
 		
-		$i_param = 'data[_b]';
-		foreach($paramName as $param)
-			$i_param .= '[' . $param . ']';
+		$i_param = 'data[_b][' . implode('][', $paramName) . ']';
 		
 		if($value !== false)
 			$i_param .= '='.$value;
@@ -560,7 +561,6 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function sinstructions($htmlAttributes = array(), $options = array())
 	{
-		// @todo add _mergeAttributes
 		$htmlAttributes = $this->addClass($htmlAttributes, 'instructions');
 		$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultObjectClass);
 		
@@ -632,7 +632,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  * - `model` - Model name where the find will perform. No default, but needed only is url param not set.
  * - `url` - URL for post data (must return a JSON with error and content parameters). Defaults to BuroBurocrataController actions if mode parameter is set.
  * - `minChars` - Number of chars before start ajax call - Defaults to 2.
- * - `id_base` - An string that will be appended on every DOM ID. Defaults to uniqid().
+ * - `baseID` - An string that will be appended on every DOM ID. Defaults to uniqid().
  * - `callbacks` - An array with possible callbacks with Jodel Callbacks convention.
  *
  * @access public
@@ -650,7 +650,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		}
 		
 		$defaults = array(
-			'id_base' => uniqid(),
+			'baseID' => uniqid(),
 			'model' => false,
 			'minChars' => 2,
 			'url' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'autocomplete'),
@@ -683,16 +683,46 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$autocomplete_options['parameters'] = implode('&', $parameters);
 		
 		
-		$out = $this->input(array('class' => 'autocomplete', 'id' => 'input'.$autocomplete_options['id_base']),
+		$out = $this->input(
+			array(
+				'class' => 'autocomplete',
+				'id' => 'input'.$autocomplete_options['baseID'],
+				'container' => false
+			),
 			am($options, array(
 				'type' => 'text',
 				'fieldName' => $options['fieldName']
 			))
 		);
-		$out .= $this->Bl->div(array('id' => 'div'.$autocomplete_options['id_base'], 'class' => 'autocomplete'), array(), ' ');
+		
+		$out .= $this->Bl->div(
+			array('id' => 'div'.$autocomplete_options['baseID'], 'class' => 'autocomplete list'),
+			array('escape' => false)
+		);
+		$out .= $this->inputAutocompleteMessage(
+			array('class' => 'nothing_found'),
+			array(),
+			__('Nothing found.', true)
+		);
 		$out .= $this->Html->scriptBlock($this->BuroOfficeBoy->autocomplete($autocomplete_options));
 		
 		return $out;
+	}
+
+
+	function sinputAutocompleteMessage($htmlAttributes = array(), $options = array())
+	{
+		$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultObjectClass);
+		$htmlAttributes = $this->addClass($htmlAttributes, 'autocomplete');
+		$htmlAttributes = $this->addClass($htmlAttributes, 'message');
+		$htmlAttributes = $this->addClass($htmlAttributes, 'display:none;', 'style');
+		return $this->Bl->sdiv($htmlAttributes, $options);
+	}
+
+
+	function einputAutocompleteMessage()
+	{
+		return $this->Bl->ediv();
 	}
 
 
@@ -721,7 +751,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'assocName' => false,
 			'url' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'autocomplete'),
 			'type' => 'autocomplete',
-			'allow' => array('create', 'modify', 'relate')
+			'allow' => array('create', 'modify', 'relate'),
+			'baseID' => uniqid()
 		);
 		$options = am($defaults, $options);
 		extract($options);
@@ -744,81 +775,99 @@ class BuroBurocrataHelper extends XmlTagHelper
 		if(!isset($ParentModel->belongsTo[$assocName])) return 'not a belongsTo related model';
 		$fieldName = implode('.', array($parent_model, $ParentModel->belongsTo[$assocName]['foreignKey']));
 		
-		switch($type)
-		{
-			case 'autocomplete':
-				$model_class_name = $model;
-				if($plugin)
-					$model_class_name = $plugin . '.' . $model_class_name;
-				
-				$autocomplete_options = $input_options;
-				$autocomplete_options['options']['model'] = $model_class_name;
-				$autocomplete_options['options']['fieldName'] = $fieldName;
-				$autocomplete_options['options'] = am($options, $autocomplete_options['options']);
-				$input = $this->belongsToAutocomplete($autocomplete_options);
-				
-				break;
-			case 'select': 
-				$input = $this->belongsToSelect(array('id' => $domId));
-				break;
-				
-			default:
-				// TODO: trigger error `type not found`
-				return false;
-		}
-		$out = $input;
+		$model_class_name = $model;
+		if($plugin)
+			$model_class_name = $plugin . '.' . $model_class_name;
 		
-		return $out;
-	}
-
-
-/**
- * Creates the autocomplete form for the belongsto input
- *
- * @access public
- * @params $options array
- * @return string The HTML well formated
- */
-	public function belongsToAutocomplete($options = array())
-	{
-		extract($options['options']);
-		unset($options['options']);
-		$out = $out = $this->input(
-			array('id' => $input_id = uniqid('npt')),
-			array('type' => 'hidden', 'fieldName' => $fieldName)
-		);
+		// END OF PARSING PARAMS
 		
-		list($plugin, $model_name) = pluginSplit($model);
+		$out = '';
 		
-		$input_id = uniqid('input');
-		$update = uniqid('div');
+		$hidden_input_id = 'hii'.$baseID;
+		$link_id_new = 'lin'.$baseID;
+		$update = 'update'.$baseID;
+		
+		
+		// Input + Autocomplete list + Nothing found
 		
 		$url = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'view');
-		$params = array($this->securityParams($url, $plugin, $model_name));
+		$params = array($this->securityParams($url, $plugin, $model));
 		$params[$this->internalParam('id')] = '@pair.id@';
-		$callbacks = array('onSuccess' => array('contentUpdate' => $update));
+		$callbacks = array(
+			'onSuccess' => array(
+				'contentUpdate' => $update,
+				'js' => "$('$update').next('.actions').show();"
+			)
+		);
 		
 		$autocomplete_options = array(
 			'options' => array(
-				'model' => $model,
+				'baseID' => 'a'.$baseID,
+				'model' => $model_class_name,
 				'callbacks' => array(
+					'onUpdate' => array('js' => "$('$link_id_new').up().show()"),
 					'onSelect' => array(
-						'js' => "if(pair.id > 0) $('$input_id').value = pair.id;",
+						'js' => "if(pair.id > 0){ $('$update').update(); $('$hidden_input_id').value = pair.id; this.input.value = pair.value;}",
 						'ajax' => compact('callbacks', 'url', 'params'),
 					)
 				)
 			)
 		);
-		if(isset($queryField))
-			$options['fieldName'] = $queryField;
 		
-		$out = $this->inputAutocomplete(am($options, $autocomplete_options));
-		$out .= $this->input(array('id' => $input_id), array('type' => 'hidden', 'fieldName' => $fieldName));
-		$out .= $this->Bl->div(
+		if(isset($options['queryField']))
+			$options['fieldName'] = $options['queryField'];
+		
+		$out .= $this->inputAutocomplete(am($input_options, $autocomplete_options));
+		
+		
+		// "Create a new item" link
+		
+		$out .= $this->inputAutocompleteMessage(
+			array('class' => 'action'),
+			array('escape' => false),
+			$this->Bl->a(array('id' => $link_id_new, 'href' => ''), array(), __('Create a new item', true))
+		);
+		
+		
+		// Hidden input
+		
+		$out .= $this->input(array('id' => $hidden_input_id), array('type' => 'hidden', 'fieldName' => $fieldName));
+		
+		
+		// Controls + Error message
+		
+		$link_id_edit = uniqid('link');
+		
+		$updateble = $this->Bl->div(
 			array('id' => $update),
 			array('escape' => false),
-			$this->error(array(), compact('fieldName')) . ' '
+			$this->error(array(), compact('fieldName'))
 		);
+		
+		
+		$url_edit = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'edit');
+		$ajax = $this->BuroOfficeBoy->ajaxRequest(array(
+				'url' => $url_edit,
+				'params' => array(
+					$this->securityParams($url_edit, $plugin, $model),
+					$this->internalParam('id') => "@BuroClassRegistry.get('a$baseID').pair.id@",
+					$this->internalParam('baseID', $baseID)
+				),
+				'callbacks' => array(
+					'onStart' => array('js' => array("$('$update').next('.actions').hide();")),
+					'onSuccess' => array('contentUpdate' => $update)
+				)
+			));
+		$links = $this->Bl->a(array('id' => $link_id_edit, 'href' => ''), array(), __('Belongsto edit related data', true));
+		$links .= $this->Html->scriptBlock("$('$link_id_edit').observe('click', function(ev){ev.stop(); $ajax;});");
+		
+		$actions = $this->Bl->div(array('class' => 'actions', 'style' => 'display:none;'), array('escape' => false), $links);
+		
+		$out .= $this->Bl->sdiv(array('class' => 'controls'));
+			$out .= $updateble;
+			$out .= $actions;
+		$out .= $this->Bl->ediv();
+		
 		return $out;
 	}
 }

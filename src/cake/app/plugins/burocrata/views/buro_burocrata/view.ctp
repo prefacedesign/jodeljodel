@@ -14,19 +14,6 @@
 				)
 			)
 		);
-		$url = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'edit');
-		$ajax = $this->Buro->BuroOfficeBoy->ajaxRequest(array(
-					'url' => $url,
-					'params' => array(
-						$this->Buro->securityParams($url, $model_plugin, $model_name),
-						$this->Buro->internalParam('id', $data[$model_name]['id'])
-					),
-					'callbacks' => array(
-						'onSuccess' => array('contentUpdate' => $div_id)
-					)
-			  ));
-		$object['content'] .= $this->Bl->anchor(array('id' => $link_id = uniqid('link')), array('url' => false), __('Belongsto edit related data', true));
-		$object['content'] .= $this->Html->scriptBlock("$('$link_id').observe('click', function(ev){ev.stop(); $ajax;})");
 	}
 	
 	echo $this->Js->object($object);

@@ -105,8 +105,11 @@ var BuroForm = Class.create(BuroCallbackable, {
 	keyPress: function(ev){
 		var element = ev.findElement().nodeName.toLowerCase();
 		var key = ev.keyCode;
-		if(key == 13 && element == 'input' && confirm('Deseja enviar os dados do formulário?'))
+		if(ev.ctrlKey && key == Event.KEY_RETURN && element == 'input' && confirm('Deseja enviar os dados do formulário?'))
+		{
+			ev.stop();
 			this.submits();
+		}
 	},
 	submits: function(ev)
 	{
@@ -168,6 +171,7 @@ var BuroForm = Class.create(BuroCallbackable, {
  * - `onFailure` function (input, response){}
  * - `onError` function (code, error){}
  * - `onSuccess` function (input, response, json){}
+ * - `onSelect` function (input, response, json){}
  *
  */
 var BuroAutocomplete = Class.create(BuroCallbackable, {
@@ -178,13 +182,36 @@ var BuroAutocomplete = Class.create(BuroCallbackable, {
 		var id_of_text_field = 'input'+id_base,
 			id_of_div_to_populate = 'div'+id_base;
 		options.updateElement = this.alternateUpdateElement.bind(this);
+		options.onHide = this.onHide.bind(this);
 		
 		this.autocompleter = new Ajax.Autocompleter(id_of_text_field, id_of_div_to_populate, url, options);
 		this.autocompleter.options.onComplete = this.onComplete.bind(this);
 		this.autocompleter.options.onFailure = this.onFailure.bind(this);
 		this.autocompleter.options.onSuccess = this.onSuccess.bind(this);
+		this.autocompleter.options.onCreate = this.onCreate.bind(this);
+		
+		this.onShow = this.autocompleter.options.onShow;
+		this.autocompleter.options.onShow = this.onShowTrap.bind(this);
 		
 		this.input = this.autocompleter.element;
+		this.pair = {};
+		
+		while(tmp = this.autocompleter.update.next('.message'))
+		{
+			this.autocompleter.update.insert(tmp);
+		}
+	},
+	
+	onHide: function(element, update)
+	{
+		new Effect.Fade(update,{duration:0.15});
+		this.trigger('onHide');
+	},
+	
+	onShowTrap: function(element, update)
+	{
+		this.onShow(element, update);
+		this.trigger('onShow');
 	},
 	
 	onSuccess: function(response)
@@ -196,6 +223,11 @@ var BuroAutocomplete = Class.create(BuroCallbackable, {
 	onFailure: function(response)
 	{
 		this.trigger('onFailure', this.input, response);
+	},
+	
+	onCreate: function()
+	{
+		this.trigger('onStart', this.input);
 	},
 	
 	onComplete: function(response)
@@ -217,15 +249,19 @@ var BuroAutocomplete = Class.create(BuroCallbackable, {
 		if (Object.isArray(this.json.content))
 			this.json.content = {};
 		this.foundContent = $H(this.json.content);
-		this.autocompleter.updateChoices(this.createChoices());
 		
-		this.trigger('onComplete', this.input, response);
-	},
-	
-	getUpdatedChoices: function($super)
-	{
-		this.trigger('onStart', this.input);
-		$super();
+		if (!this.autocompleter.update.down('ul'))
+			this.autocompleter.update.insert({top: new Element('ul')});
+		this.autocompleter.update.down('ul').replace(this.createChoices());
+		
+		this.autocompleter.updateChoices(this.autocompleter.update.innerHTML);
+		
+		if(this.autocompleter.entryCount != 1)
+			this.autocompleter.update.down('.nothing_found').hide();
+		else
+			this.autocompleter.update.down('.nothing_found').show();
+		
+		this.trigger('onUpdate', this.input, response);
 	},
 	
 	createChoices: function()
@@ -234,17 +270,19 @@ var BuroAutocomplete = Class.create(BuroCallbackable, {
 		var keys = this.foundContent.keys();
 		for(i = 0; i < keys.length; i++)
 			ul.insert(new Element('li').update(this.foundContent.get(keys[i])));
-		
+		ul.insert(new Element('li').hide());
 		return ul;
 	},
 	
 	alternateUpdateElement: function(selectedElement)
 	{
 		var keys = this.foundContent.keys();
-		var pair = {};
-		pair.id = keys[this.autocompleter.index];
-		pair.value = this.foundContent.get(pair.id);
-		this.trigger('onSelect', this.input, pair, selectedElement);
+		if(!keys.length)
+			return false;
+		
+		this.pair.id = keys[this.autocompleter.index];
+		this.pair.value = this.foundContent.get(this.pair.id);
+		this.trigger('onSelect', this.input, this.pair, selectedElement);
 	}
 });
 
@@ -253,11 +291,11 @@ var BuroAutocomplete = Class.create(BuroCallbackable, {
  * Extends the default Ajax.Request built in Prototype.
  *
  * Callbacks:
- * - `onStart` function (input){}
- * - `onComplete` function (input, response){}
- * - `onFailure` function (input, response){}
+ * - `onStart` function (){}
+ * - `onComplete` function (response){}
+ * - `onFailure` function (response){}
  * - `onError` function (code, error){}
- * - `onSuccess` function (input, response, json){}
+ * - `onSuccess` function (response, json){}
  *
  */
 var BuroAjax = Class.create(BuroCallbackable, {
@@ -271,6 +309,7 @@ var BuroAjax = Class.create(BuroCallbackable, {
 		ajax_options.onComplete = this.requestOnComplete.bind(this);
 		ajax_options.onSuccess = this.requestOnSuccess.bind(this);
 		ajax_options.onFailure = this.requestOnFailure.bind(this);
+		this.trigger('onStart');
 		new Ajax.Request(url, ajax_options);
 	},
 	requestOnComplete: function (response) {
@@ -293,5 +332,37 @@ var BuroAjax = Class.create(BuroCallbackable, {
 	requestOnFailure: function(response)
 	{
 		this.trigger('onFailure', response); // Page not found
+	}
+});
+
+
+/**
+ * 
+ *
+ * Callbacks:
+ * - `onInitilize` function (response){}
+ * - `onComplete` function (response){}
+ * - `onFailure` function (response){}
+ * - `onError` function (code, error){}
+ * - `onSuccess` function (response, json){}
+ *
+ */
+var BuroBelongsTo = Class.create(BuroCallbackable, {
+	initialize: function(id_base)
+	{
+		BuroClassRegistry.set(id_base, this);
+	},
+	showForm: function()
+	{
+	},
+	showPreview: function()
+	{
+	},
+	onSelect: function()
+	{
+	},
+	onSave: function()
+	{
+		alert('a');
 	}
 });
