@@ -454,9 +454,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			), array('close_me' => true)
 		);
 		$out .= $this->Bl->ediv();
-		$out .= $this->Html->scriptBlock(
-			$this->BuroOfficeBoy->newForm($this->_readFormAttributes())
-		);
+		$out .= $this->BuroOfficeBoy->newForm($this->_readFormAttributes());
 		
 		array_pop($this->_nestedForm);
 		$this->Form->end();
@@ -704,7 +702,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			array(),
 			__('Nothing found.', true)
 		);
-		$out .= $this->Html->scriptBlock($this->BuroOfficeBoy->autocomplete($autocomplete_options));
+		$out .= $this->BuroOfficeBoy->autocomplete($autocomplete_options);
 		
 		return $out;
 	}
@@ -785,30 +783,21 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$hidden_input_id = 'hii'.$baseID;
 		$link_id_new = 'lin'.$baseID;
+		$link_id_edit = 'lie'.$baseID;
 		$update = 'update'.$baseID;
-		
+		$acplt_baseID = uniqid();
+		$edit_call_baseID = uniqid();
 		
 		// Input + Autocomplete list + Nothing found
 		
-		$url = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'view');
-		$params = array($this->securityParams($url, $plugin, $model));
-		$params[$this->internalParam('id')] = '@pair.id@';
-		$callbacks = array(
-			'onSuccess' => array(
-				'contentUpdate' => $update,
-				'js' => "$('$update').next('.actions').show();"
-			)
-		);
-		
 		$autocomplete_options = array(
 			'options' => array(
-				'baseID' => 'a'.$baseID,
+				'baseID' => $acplt_baseID,
 				'model' => $model_class_name,
 				'callbacks' => array(
 					'onUpdate' => array('js' => "$('$link_id_new').up().show()"),
 					'onSelect' => array(
-						'js' => "if(pair.id > 0){ $('$update').update(); $('$hidden_input_id').value = pair.id; this.input.value = pair.value;}",
-						'ajax' => compact('callbacks', 'url', 'params'),
+						'js' => "BuroClassRegistry.get('$baseID').selected(pair);"
 					)
 				)
 			)
@@ -829,44 +818,70 @@ class BuroBurocrataHelper extends XmlTagHelper
 		);
 		
 		
-		// Hidden input
+		// Hidden input that holds the related data ID
 		
 		$out .= $this->input(array('id' => $hidden_input_id), array('type' => 'hidden', 'fieldName' => $fieldName));
 		
 		
 		// Controls + Error message
 		
-		$link_id_edit = uniqid('link');
-		
-		$updateble = $this->Bl->div(
+		$updateble_div = $this->Bl->div(
 			array('id' => $update),
 			array('escape' => false),
 			$this->error(array(), compact('fieldName'))
 		);
 		
+		$links = $this->Bl->a(array('id' => $link_id_edit, 'href' => ''), array(), __('Belongsto edit related data', true));
+		
+		$actions_div = $this->Bl->div(
+			array('class' => 'actions', 'style' => 'display:none;'),
+			array('escape' => false),
+			$links
+		);
+		
+		$out .= $this->Bl->sdiv(array('class' => 'controls'));
+			$out .= $updateble_div;
+			$out .= $actions_div;
+		$out .= $this->Bl->ediv();
+		
+		
+		
+		
+		$url_view = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'view');
+		$open_prev_ajax = array(
+			'url' => $url_view,
+			'params' => array($this->securityParams($url_view, $plugin, $model), $this->internalParam('id') => '@id@'),
+			'callbacks' => array(
+				'onSuccess' => array(
+					'contentUpdate' => $update,
+					'js' => "$('$update').next('.actions').show();"
+				)
+			)
+		);
 		
 		$url_edit = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'edit');
-		$ajax = $this->BuroOfficeBoy->ajaxRequest(array(
+		$open_form_ajax = array(
+				'baseID' => $edit_call_baseID,
 				'url' => $url_edit,
 				'params' => array(
 					$this->securityParams($url_edit, $plugin, $model),
-					$this->internalParam('id') => "@BuroClassRegistry.get('a$baseID').pair.id@",
+					$this->internalParam('id') => "@to_edit ? this.autocomplete.pair.id : null@",
 					$this->internalParam('baseID', $baseID)
 				),
 				'callbacks' => array(
-					'onStart' => array('js' => array("$('$update').next('.actions').hide();")),
 					'onSuccess' => array('contentUpdate' => $update)
 				)
-			));
-		$links = $this->Bl->a(array('id' => $link_id_edit, 'href' => ''), array(), __('Belongsto edit related data', true));
-		$links .= $this->Html->scriptBlock("$('$link_id_edit').observe('click', function(ev){ev.stop(); $ajax;});");
+			);
 		
-		$actions = $this->Bl->div(array('class' => 'actions', 'style' => 'display:none;'), array('escape' => false), $links);
 		
-		$out .= $this->Bl->sdiv(array('class' => 'controls'));
-			$out .= $updateble;
-			$out .= $actions;
-		$out .= $this->Bl->ediv();
+		$officeboy_options = array();
+		$officeboy_options['baseID'] = $baseID;
+		$officeboy_options['autocomplete_baseID'] = $acplt_baseID;
+		$officeboy_options['callbacks'] = array(
+			'onShowForm' => array('ajax' => $open_form_ajax),
+			'onShowPreview' => array('ajax' => $open_prev_ajax)
+		);
+		$out .= $this->BuroOfficeBoy->belongsTo($officeboy_options);
 		
 		return $out;
 	}

@@ -184,6 +184,21 @@ var BuroAutocomplete = Class.create(BuroCallbackable, {
 		options.updateElement = this.alternateUpdateElement.bind(this);
 		options.onHide = this.onHide.bind(this);
 		
+		
+		Ajax.Autocompleter.prototype.markPrevious = function() {
+				if(this.index > 0) this.index--;
+					else this.index = this.entryCount-1;
+				if(this.getEntry(this.index).cumulativeOffset().top < document.viewport.getScrollOffsets().top)
+					this.getEntry(this.index).scrollIntoView(true);
+			}
+		Ajax.Autocomplete.prototype.markNext = function() {
+			if(this.index < this.entryCount-1) this.index++;
+				else this.index = 0;
+			if(this.getEntry(this.index).cumulativeOffset().top+this.getEntry(this.index).getHeight() > document.viewport.getScrollOffsets().top+document.viewport.getHeight())
+				this.getEntry(this.index).scrollIntoView(false);
+		}
+		
+		
 		this.autocompleter = new Ajax.Autocompleter(id_of_text_field, id_of_div_to_populate, url, options);
 		this.autocompleter.options.onComplete = this.onComplete.bind(this);
 		this.autocompleter.options.onFailure = this.onFailure.bind(this);
@@ -250,16 +265,44 @@ var BuroAutocomplete = Class.create(BuroCallbackable, {
 			this.json.content = {};
 		this.foundContent = $H(this.json.content);
 		
-		if (!this.autocompleter.update.down('ul'))
-			this.autocompleter.update.insert({top: new Element('ul')});
-		this.autocompleter.update.down('ul').replace(this.createChoices());
+		var ac = this.autocompleter;
 		
-		this.autocompleter.updateChoices(this.autocompleter.update.innerHTML);
+		if (!ac.update.down('ul'))
+			ac.update.insert({top: new Element('ul')});
+		ac.update.down('ul').replace(this.createChoices());
 		
-		if(this.autocompleter.entryCount != 1)
-			this.autocompleter.update.down('.nothing_found').hide();
+		if(!ac.changed && ac.hasFocus)
+		{
+			Element.cleanWhitespace(ac.update);
+			Element.cleanWhitespace(ac.update.down());
+
+			if(ac.update.firstChild && ac.update.down().childNodes) {
+				ac.entryCount =
+					ac.update.down('ul').childNodes.length;
+				for (var i = 0; i < ac.entryCount; i++) {
+					var entry = ac.getEntry(i);
+					entry.autocompleteIndex = i;
+					ac.addObservers(entry);
+				}
+			} else {
+				ac.entryCount = 0;
+			}
+
+			ac.stopIndicator();
+			ac.index = 0;
+
+			if(ac.entryCount==1 && ac.options.autoSelect) {
+				ac.selectEntry();
+				ac.hide();
+			} else {
+				ac.render();
+			}
+		}
+		
+		if(ac.entryCount != 1)
+			ac.update.down('.nothing_found').hide();
 		else
-			this.autocompleter.update.down('.nothing_found').show();
+			ac.update.down('.nothing_found').show();
 		
 		this.trigger('onUpdate', this.input, response);
 	},
@@ -348,21 +391,42 @@ var BuroAjax = Class.create(BuroCallbackable, {
  *
  */
 var BuroBelongsTo = Class.create(BuroCallbackable, {
-	initialize: function(id_base)
+	initialize: function(id_base, autocompleter_id_base, callbacks)
 	{
-		BuroClassRegistry.set(id_base, this);
+		this.id_base = id_base;
+		BuroClassRegistry.set(this.id_base, this);
+		this.autocomplete = BuroClassRegistry.get(autocompleter_id_base);
+		
+		this.addCallbacks(callbacks);
+		
+		this.input = $('hii'+id_base);
+		this.update = $('update'+id_base);
+		
+		$('lie'+this.id_base).observe('click', function(ev){ev.stop(); this.showForm(true);}.bind(this));
+		$('lin'+this.id_base).observe('click', function(ev){ev.stop(); this.showForm(false);}.bind(this));
 	},
-	showForm: function()
+	showForm: function(to_edit)
 	{
+		this.update.next('.actions').hide();
+		this.trigger('onShowForm', to_edit);
 	},
-	showPreview: function()
+	showPreview: function(id)
 	{
+		this.trigger('onShowPreview', id);
 	},
-	onSelect: function()
+	selected: function(pair)
 	{
+		if(pair.id > 0)
+		{
+			this.update.update();
+			this.saved(pair.id)
+			this.autocomplete.input.value = pair.value;
+		}
 	},
-	onSave: function()
+	saved: function(id)
 	{
-		alert('a');
+		this.autocomplete.input.value = '';
+		this.input.value = id;
+		this.showPreview(id);
 	}
 });

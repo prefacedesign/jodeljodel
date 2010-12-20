@@ -52,6 +52,10 @@ class BuroOfficeBoyHelper extends AppHelper
 			'onComplete' => 'function(response){%s}',
 			'onFailure' => 'function(response){%s}',
 			'onError' => 'function(code, error){%s}'
+		),
+		'belongsto' => array(
+			'onShowForm' => 'function(to_edit){%s}',
+			'onShowPreview' => 'function(id){%s}'
 		)
 	);
 
@@ -81,9 +85,7 @@ class BuroOfficeBoyHelper extends AppHelper
 		if(!empty($callbacks) && is_array($callbacks))
 			$script .= sprintf('.addCallbacks(%s)', $this->formatCallbacks('autocomplete', $callbacks));
 		
-		if(!$this->Ajax->isAjax())
-			$script = $this->Js->domReady($script);
-		return $script;
+		return $this->addHtmlEmbScript($script);
 	}
 
 
@@ -107,9 +109,7 @@ class BuroOfficeBoyHelper extends AppHelper
 		if(!empty($callbacks) && is_array($callbacks))
 			$script .= sprintf('.addCallbacks(%s)', $this->formatCallbacks('form', $callbacks));
 		
-		if(!$this->Ajax->isAjax())
-			$script = $this->Js->domReady($script);
-		return $script;
+		return $this->addHtmlEmbScript($script);
 	}
 
 
@@ -171,6 +171,39 @@ class BuroOfficeBoyHelper extends AppHelper
 
 
 /**
+ * Creates the javascript counter-part of the belongsTo input
+ *
+ * @access public
+ * @param array $options
+ * @return string The HTML <script> tag
+ */
+	public function belongsTo($options)
+	{
+		$defaults = array('callbacks' => array());
+		extract(am($defaults, $options));
+		
+		$callbacks = $this->formatCallbacks('belongsto', $callbacks);
+		$script = sprintf("new BuroBelongsTo('%s','%s'%s);", $baseID, $autocomplete_baseID, (empty($callbacks) ? '':','.$callbacks));
+		return $this->addHtmlEmbScript($script);
+	}
+
+
+/** 
+ * Function to add the script in HTML
+ *
+ * @access protected
+ * @param string $script The script that will be appended
+ * @return string The pice of code ready for HTML
+ */
+	protected function addHtmlEmbScript($script)
+	{
+		if(!$this->Ajax->isAjax())
+			$script = $this->Js->domReady($script);
+		return $this->Html->scriptBlock($script);
+	}
+
+
+/** 
  * Handles the array of callbacks and converts it to javascript
  *
  * @access protected
