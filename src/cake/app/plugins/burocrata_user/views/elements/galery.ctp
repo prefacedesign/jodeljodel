@@ -8,7 +8,7 @@
 			echo $this->element('galery_form', array('plugin' => 'burocrata_user'));
 		break;
 		
-		case 'burocrata':
+		case 'buro':
 			switch($type[1])
 			{
 				case 'form':

@@ -5,13 +5,11 @@
 	
 	if(!$error)
 	{
-		$object['content'] = $this->element(Inflector::underscore($model_name),
-			array(
-				'plugin' => Inflector::underscore($model_plugin),
-				'data' => $data,
-				'type' => array('burocrata', 'form')
-			)
-		);
+		$class_name = $model_name;
+		if(!empty($model_plugin))
+			$class_name = $model_plugin . '.' . $class_name;
+		
+		$object['content'] = $this->Buro->insertForm($class_name);
 	}
 	
 	echo $this->Js->object($object);

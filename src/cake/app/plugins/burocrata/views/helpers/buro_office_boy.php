@@ -10,6 +10,7 @@
  */
 class BuroOfficeBoyHelper extends AppHelper
 {
+
 /**
  * Other helpers used by OfficeBoy
  * 
@@ -37,11 +38,24 @@ class BuroOfficeBoyHelper extends AppHelper
 		),
 		'autocomplete' => array(
 			'onStart' => 'function(input){%s}',
+			'onShow' => 'function(element, update){%s}',
+			'onHide' => 'function(element, update){%s}',
 			'onSelect' => 'function(input, pair, element){%s}',
 			'onSuccess' => 'function(input, response, json){%s}',
-			'onComplete' => 'function(input, response){%s}',
+			'onUpdate' => 'function(input, response){%s}',
 			'onFailure' => 'function(input, response){%s}',
 			'onError' => 'function(code, error){%s}'
+		),
+		'ajax' => array(
+			'onStart' => 'function(){%s}',
+			'onSuccess' => 'function(response, json){%s}',
+			'onComplete' => 'function(response){%s}',
+			'onFailure' => 'function(response){%s}',
+			'onError' => 'function(code, error){%s}'
+		),
+		'belongsto' => array(
+			'onShowForm' => 'function(to_edit){%s}',
+			'onShowPreview' => 'function(id){%s}'
 		)
 	);
 
@@ -52,7 +66,7 @@ class BuroOfficeBoyHelper extends AppHelper
  * @access public
  * @param string $form_id The form dom ID
  * @param array $options An array that must contains some attributes that defines the current form
- * @return boolean True if the javascript was sucefully generated, false, otherwise
+ * @return string The javascript code generated
  */
 	public function autocomplete($options = array())
 	{
@@ -62,17 +76,16 @@ class BuroOfficeBoyHelper extends AppHelper
 		extract($options);
 		
 		unset($options['url']);
-		unset($options['id_base']);
+		unset($options['baseID']);
 		unset($options['callbacks']);
 		
 		$options = $this->Js->object($options);
-		$script = sprintf("new BuroAutocomplete('%s','%s', %s)", $this->url($url), $id_base, $options);
+		$script = sprintf("new BuroAutocomplete('%s','%s', %s)", $this->url($url), $baseID, $options);
 		
 		if(!empty($callbacks) && is_array($callbacks))
-			$script .= $this->formatCallbacks('autocomplete', $callbacks);
+			$script .= sprintf('.addCallbacks(%s)', $this->formatCallbacks('autocomplete', $callbacks));
 		
-		$this->Js->buffer($script);
-		$this->Js->writeBuffer(array('inline' => false));
+		return $this->addHtmlEmbScript($script);
 	}
 
 
@@ -82,32 +95,122 @@ class BuroOfficeBoyHelper extends AppHelper
  * @access public
  * @param string $form_id The form dom ID
  * @param array $options An array that must contains some attributes that defines the current form
- * @return boolean True if the javascript was sucefully generated, false, otherwise
+ * @return string The javascript code generated
  */
-	public function newForm($form_id, $options)
+	public function newForm($options)
 	{
 		$this->_includeScripts();
 		
 		$options = am(array('callbacks' => array()), $options);
 		extract($options);
 		
-		$script = sprintf("new BuroForm('%s','%s','%s')",$this->url($url), $form_id, $submit);
+		$script = sprintf("new BuroForm('%s','%s')",$this->url($url), $baseID);
 		
 		if(!empty($callbacks) && is_array($callbacks))
-			$script .= $this->formatCallbacks('form', $callbacks);
+			$script .= sprintf('.addCallbacks(%s)', $this->formatCallbacks('form', $callbacks));
 		
-		$this->Js->buffer($script);
-		$this->Js->writeBuffer(array('inline' => false));
+		return $this->addHtmlEmbScript($script);
 	}
 
 
 /**
+ * Create a javascript thats performs a ajax request.
+ *
+ * ### Possible attributes passed
+ *
+ * - `url` - URL. No default.
+ * - `params` - A list of params that will populate the POST data. Defaults to nothing.
+ * - `callbacks` - The list of callbacks. Defaults to nothing.
+ *
+ * @access public
+ * @param array $options
+ * @return string The javascript of a new Ajax call
+ */
+	public function ajaxRequest($options)
+	{
+		$this->_includeScripts();
+		
+		$defaults = array(
+			'url' => false,
+			'params' => array(),
+			'callbacks' => array()
+		);
+		$options = am($defaults, $options);
+		extract($options);
+		unset($options);
+		
+		if(!is_array($params))
+			$params = array($params);
+		
+		$View = ClassRegistry::getObject('View');
+		if(isset($View->viewVars['layout_scheme']))
+			$params['data[_b][layout_scheme]'] = $View->viewVars['layout_scheme'];
+		
+		$url = $this->url($url);
+		$callbacks = $this->formatCallbacks('ajax', $callbacks);
+		$ajax_options = array();
+		
+		foreach($params as $k => $param)
+		{
+			if(is_numeric($k))
+			{
+				$ajax_options['parameters'][] = $param;
+				continue;
+			}
+			
+			if(substr($param,0,1) == '@' && substr($param,-1) == '@')
+				$param = '"+(' . substr($param,1,-1) . ')+"';
+			
+			if(is_string($k))
+				$ajax_options['parameters'][] = $k . '=' . $param;
+		}
+		$ajax_options = '{parameters: "' . implode('&', $ajax_options['parameters']) . '"}';
+		
+		return sprintf("new BuroAjax('%s',%s,%s)", $url, $ajax_options, $callbacks);
+	}
+
+
+/**
+ * Creates the javascript counter-part of the belongsTo input
+ *
+ * @access public
+ * @param array $options
+ * @return string The HTML <script> tag
+ */
+	public function belongsTo($options)
+	{
+		$defaults = array('callbacks' => array());
+		extract(am($defaults, $options));
+		
+		$callbacks = $this->formatCallbacks('belongsto', $callbacks);
+		$script = sprintf("new BuroBelongsTo('%s','%s'%s);", $baseID, $autocomplete_baseID, (empty($callbacks) ? '':','.$callbacks));
+		return $this->addHtmlEmbScript($script);
+	}
+
+
+/** 
+ * Function to add the script in HTML
+ *
+ * @access protected
+ * @param string $script The script that will be appended
+ * @return string The pice of code ready for HTML
+ */
+	protected function addHtmlEmbScript($script)
+	{
+		if(!$this->Ajax->isAjax())
+			$script = $this->Js->domReady($script);
+		return $this->Html->scriptBlock($script);
+	}
+
+
+/** 
  * Handles the array of callbacks and converts it to javascript
  *
  * @access protected
+ * @param string $type Type of interface where the callbacks will be attached
  * @param array $callbacks One associative array that contains all configurable callbacks for the form
  * @return string An javascript object that contains all registred callbacks
- */	
+ */
 	protected function formatCallbacks($type, $callbacks)
 	{
 		if(!is_array($callbacks))
@@ -123,10 +226,11 @@ class BuroOfficeBoyHelper extends AppHelper
 				$script = array($script => null);
 			
 			$js = sprintf($this->callbacks[$type][$callback], $this->_parseScript($script));
+			
 			$out[] = $callback . ':' . $js;
 		}
 		
-		return '.addCallbacks({' . implode(', ', $out) . '})';
+		return '{' . implode(', ', $out) . '}';
 	}
 
 
@@ -155,6 +259,7 @@ class BuroOfficeBoyHelper extends AppHelper
 
 /**
  * Generates the script that resets the content of form
+ * Only works with forms callbacks
  *
  * @access protected
  * @param mixed $script
@@ -168,6 +273,7 @@ class BuroOfficeBoyHelper extends AppHelper
 
 /**
  * Generates the script that locks the content of form
+ * Only works with forms callbacks
  *
  * @access protected
  * @param mixed $script
@@ -181,6 +287,7 @@ class BuroOfficeBoyHelper extends AppHelper
 
 /**
  * Generates the script that locks the content of form
+ * Only works with forms callbacks
  *
  * @access protected
  * @param mixed $script
@@ -193,15 +300,52 @@ class BuroOfficeBoyHelper extends AppHelper
 
 
 /**
- * Generates the script that updates the content of form, based on json response
+ * Generates the script that updates the content of form, based on json response content
  *
+ * ###It may be called in many formats:
+ *
+ *  - `array('contentUpdate')` - updates the form content with the returned content
+ *  - `array('contentUpdate' => 'update')` - same of previous item
+ *  - `array('contentUpdate' => 'replace')` - replaces the form by the returned content
+ *  - `array('contentUpdate' => array('update' => 'my_element_id'))` - updates the element "my_element_id" content with the returned content
+ *  - `array('contentUpdate' => array('replace' => 'my_element_id'))` - replaces the element "my_element_id" by the returned content
+ *
+ * Note that if no element_id was given, is assumed that it is a form callback
+ * 
  * @access protected
  * @param mixed $script
  * @return string The formated script
  */
 	protected function _contentUpdate($script)
 	{
-		return 'form.update(json.content);';
+		if(!is_array($script))
+			$script = array($script);
+		
+		foreach($script as $action => $id)
+		{
+			if(!in_array($action, array('update', 'replace'), true))
+				$action = $id;
+				
+			if($action == 'contentUpdate')
+				$action = $id = 'update';
+			
+			switch($action)
+			{
+				case 'replace':
+				case 'update':
+					if($id == $action)
+						$script = "form.$action(json.content);";
+					else
+						$script = "$('$id').$action(json.content);";
+					break;
+				
+				default:
+					$script = "$('$id').update(json.content);";
+					break;
+			}
+			break;
+		}
+		return $script;
 	}
 
 
@@ -252,40 +396,7 @@ class BuroOfficeBoyHelper extends AppHelper
  */
 	protected function _ajax($options)
 	{
-		$options['bind'] = true;
-		
-		$View = ClassRegistry::getObject('View');
-		if(isset($View->viewVars['layout_scheme']))
-		{
-			$layout_scheme = 'data[layout_scheme]=' . $View->viewVars['layout_scheme'];
-			if(!isset($options['params']))
-				$options['params'] = $layout_scheme;
-			else
-				$options['params'] .= '&'.$layout_scheme;
-		}
-		
-		if(isset($options['params']))
-		{
-			if(!isset($options['with']))
-				$options['with'] = "'".$options['params']."'";
-			else
-				$options['with'] .= '+'."'&".$options['params']."'";
-			
-			unset($options['params']);
-		}
-		
-		if(isset($options['update']))
-		{
-			$update = $options['update'];
-			unset($options['update']);
-			
-			if(!isset($options['complete']))
-				$options['complete'] = '';
-			$complete = "if(request.responseJSON && !request.responseJSON.error) $('$update').update(request.responseJSON.content);";
-			$options['complete'] = $complete . $options['complete'];
-		}
-		
-		return $this->Ajax->remoteFunction($options);
+		return $this->ajaxRequest($options);
 	}
 
 

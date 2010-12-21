@@ -18,7 +18,7 @@ class BuroBurocrataController extends BurocrataAppController
  * @var string
  * @access public
  */
-	public $components = array('Typographer.TypeLayoutSchemePicker');
+	public $components = array('Typographer.TypeLayoutSchemePicker', 'RequestHandler');
 
 
 /**
@@ -58,13 +58,40 @@ class BuroBurocrataController extends BurocrataAppController
 
 
 /**
- * beforeRender callback
+ * Current layout scheme
+ *
+ * @var string
+ * @access protected
+ */
+	protected $layout_scheme = null;
+
+
+/**
+ * Holds some POSTed data
+ *
+ * @var array
+ * @access protected
+ */
+	protected $buroData = array();
+
+
+/**
+ * beforeFilter callback
  *
  * @access public
  */
 	public function beforeFilter()
 	{
-		if(isset($this->data['layout_scheme']))
+		if(isset($this->data['_b']))
+		{
+			$this->buroData = $this->data['_b'];
+			unset($this->data['_b']);
+		}
+		
+		if(isset($this->buroData['baseID']))
+			$this->set('baseID', $this->buroData['baseID']);
+		
+		if(isset($this->buroData['layout_scheme']))
 		{
 			$this->helpers = am($this->helpers,
 				array(
@@ -88,9 +115,21 @@ class BuroBurocrataController extends BurocrataAppController
 					)
 				)
 			);
-			$this->TypeLayoutSchemePicker->pick($this->data['layout_scheme']);
-			unset($this->data['layout_scheme']);
+			$this->layout_scheme = $this->buroData['layout_scheme'];
+			unset($this->buroData['layout_scheme']);
 		}
+	}
+
+
+/**
+ * beforeRender callback
+ *
+ * @access public
+ */
+	public function beforeRender()
+	{
+		if($this->layout_scheme)
+			$this->TypeLayoutSchemePicker->pick($this->layout_scheme);
 	}
 
 
@@ -99,19 +138,15 @@ class BuroBurocrataController extends BurocrataAppController
  * The JSON object returned has 3 attributes:
  * - `error` - is false when everyting went ok, or an frindly string describing the error
  * - `saved` - is false when couldn't saved the data, or the ID of the new entry on database
- * - `content` - i realy don't know, yet, why this is here, but will be used for something
+ * - `content` - The form
  * 
  * @access public
  * @return json An javascript object that contains `error`, `content` and `saved` properties
  */
 	public function save()
 	{
-                
 		$saved = false;
-		$error = false;
-		$content = '';
 		$Model = null;
-		
 		$error = $this->_load($Model);
 		
 		if($error === false)
@@ -122,12 +157,49 @@ class BuroBurocrataController extends BurocrataAppController
 				$saved = $Model->save($this->data) !== false;
 			
 			if($saved)
+			{
 				$saved = $Model->id;
+				$this->data = array();
+			}
 		}
 		
-		$this->set('jsonVars', compact(
-			'saved', 'content', 'error'
-		));
+		$this->set(compact('saved', 'error'));
+	}
+
+
+
+	public function edit()
+	{
+		if(isset($this->buroData['id']))
+			$this->view();
+		else
+			$this->save();
+		
+		$this->render('save');
+	}
+
+
+/**
+ * Return a JSON object containing an already rendered and populated element
+ *
+ * @access public
+ * @return json An javascript object that contains `error` and `content` properties
+ */
+	public function view()
+	{
+		$error = false;
+		$data = array();
+		$Model = null;
+		
+		$error = $this->_load($Model);
+		
+		if($error === false)
+		{
+			$Model->recusrsive = -1;
+			$this->data = $data = $Model->findById($this->buroData['id']);
+		}
+		
+		$this->set(compact('error', 'data'));
 	}
 
 
@@ -149,11 +221,11 @@ class BuroBurocrataController extends BurocrataAppController
 		
 		if($error === false)
 		{
-			$data = $this->data;
+			$data = $this->buroData;
 			
 			// temporary conditions and order
 			// todo: something more elaborated
-			$conditions = $this->postConditions($data, 'LIKE');
+			$conditions = $this->postConditions($data['autocomplete'], 'LIKE');
 			$order = null;
 			
 			if(method_exists($Model, 'findBurocrataAutocomplete'))
@@ -162,36 +234,7 @@ class BuroBurocrataController extends BurocrataAppController
 				$content = $Model->find('list', compact('conditions', 'order'));
 		}
 		
-		if($error === false && empty($content))
-			$content = array('-1' => __('Nothing found.', true));
-		
 		$this->set('jsonVars', compact('error', 'content'));
-	}
-
-
-/**
- * Return a JSON object containing an already rendered and populated element
- *
- * @access public
- * @return json An javascript object that contains `error` and `content` properties
- */
-	public function view()
-	{
-		$error = false;
-		$data = array();
-		$Model = null;
-		
-		$error = $this->_load($Model);
-		
-		if($error === false)
-		{
-			$Model->recusrsive = -1;
-			$data = $Model->findById($this->data['id']);
-		}
-		
-		$this->set('model_name', $this->model_name);
-		$this->set('model_plugin', $this->model_plugin);
-		$this->set(compact('error', 'data'));
 	}
 
 
@@ -217,14 +260,14 @@ class BuroBurocrataController extends BurocrataAppController
 	{
 		$error = false;
 		
-		if(!isset($this->data['request']))
+		if(!isset($this->buroData['request']))
 			$error = __('Request security field not defined', true);
 		
 		if($error === false)
 		{
 			// The counter-part of this code is in BuroBurocrataHelper::_security method
-			@list($model_plugin, $model_alias, $secure) = explode('|', $this->data['request']);
-			unset($this->data['request']);
+			@list($model_plugin, $model_alias, $secure) = explode('|', $this->buroData['request']);
+			unset($this->buroData['request']);
 			
 			$hash = Security::hash($this->here.$model_alias.$model_plugin);
 			$uncip = Security::cipher(pack("H*" , $secure), $hash);
@@ -246,6 +289,10 @@ class BuroBurocrataController extends BurocrataAppController
 		{
 			$this->model_name = $model_alias;
 			$this->model_plugin = $model_plugin;
+			
+			$this->set('model_name', $this->model_name);
+			$this->set('model_plugin', $this->model_plugin);
+			
 			$var = $this->{$model_alias};
 		}
 		
