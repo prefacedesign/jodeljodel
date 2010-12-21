@@ -11,8 +11,9 @@ class CorkCorkHelper extends AppHelper {
 	{
 		if (isset($options['key'])) {
 			$htmlDefault = array ('class' => array('cork'));
+			$BrickLayer = new TypeBricklayerHelper(array());
 
-			$htmlAttributes = _mergeAttributes($htmlAttributes, $htmlDefault);
+			$htmlAttributes = $BrickLayer->_mergeAttributes($htmlAttributes, $htmlDefault);
 			$corkModel = & ClassRegistry::init('Corktile.CorkCorktile');
 
 			/*
@@ -34,13 +35,13 @@ class CorkCorkHelper extends AppHelper {
 			 */
 			$pluginNamelow = $currentCork['CorkCorktile']['type'];
 			$pluginName = Inflector::camelize($pluginNamelow);
-		$contentModel=& ClassRegistry::init($pluginName.'.'.$pluginName.$pluginName);
+			$contentModel=& ClassRegistry::init($pluginName.'.'.$pluginName.$pluginName);
 
-			$dataCork = $contentModel->getCorkContent($currentCork['CorkCorktile']['id_content'], array("html_config" => $html_config));
+			$dataCork = $contentModel->getCorkContent($currentCork['CorkCorktile']['id_content'], $options);
 
 			$View = ClassRegistry::init("View");
 
-			//@TODO: ver a respeito do cache (quanto tempo deixar?)
+			//@TODO: resolver cache, como vai funcionar
 			$resultContent = $View->element($pluginNamelow, array(
 					'plugin' => $pluginName,
 					'type' => array('cork'),
@@ -49,13 +50,14 @@ class CorkCorkHelper extends AppHelper {
 				)
 			);
 
-
+			//@TODO: o que vai no options? (pois o options do tile tem outra função)
 			$result = $View->element('corktile', array(
 					'plugin' => 'corktile',
 					'location' => $currentCork['CorkCorktile']['location'],
 					'description' => $currentCork['CorkCorktile']['description'],
 					'content' => $resultContent,
 					'htmlAttributes' => $htmlAttributes,
+					'options' => array(),
 					'Bl' => $this->Bl
 				)
 			);

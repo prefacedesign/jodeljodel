@@ -34,7 +34,9 @@ $palette = array(
 	'popin_fg'			 => new Color(  0,  0,  0),
 	'textile'			 => new Color( 95, 91, 82),
 	'help_icon'			 => new Color(103, 99,177),
-	'toolbar_content_stream_item' => new Color(255,255,245)
+	'toolbar_content_stream_item' => new Color(255,255,245),
+	'info_box_bg'		=> new Color(213, 229, 255),
+	'info_box_fg'		=> new Color(0, 0, 0)
 );
 
 $unit = new Unit(

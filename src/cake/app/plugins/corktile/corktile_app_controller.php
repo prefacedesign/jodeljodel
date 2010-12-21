@@ -59,6 +59,7 @@ class CorktileAppController extends AppController {
 			);
 			$this->TypeLayoutSchemePicker->pick($this->layout_scheme);
 		}
+		$this->set('user_name', 'Eleonora Cavalcante Albano');
 
 	}
 
