@@ -7,6 +7,7 @@ class CorkCorktilesController extends CorktileAppController {
 
 	function edit($key)
 	{
+
 		$this->CorkCorktile->$key = $key;
 		if (empty($this->data)) {
 			$this->data = $this->CorkCorktile->read();
