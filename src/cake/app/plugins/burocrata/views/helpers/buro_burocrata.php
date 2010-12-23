@@ -44,7 +44,6 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$View = &$this->_getView();
 		$plugin = Inflector::underscore($plugin);
 		$element_name = Inflector::underscore($model_alias);
-		
 		return $View->element($element_name, compact('plugin', 'type'));
 	}
 

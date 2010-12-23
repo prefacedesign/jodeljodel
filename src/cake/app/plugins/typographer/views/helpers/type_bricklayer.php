@@ -45,7 +45,7 @@ class TypeBricklayerHelper extends AppHelper
 	}
 	
 	//@todo Find better placement for this funcion.
-	function _mergeAttributes($atr1, $atr2)
+	public function _mergeAttributes($atr1, $atr2)
 	{
 		if ($atr1 == null)
 			$atr1 = array();

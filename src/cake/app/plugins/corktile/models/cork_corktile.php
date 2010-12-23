@@ -7,13 +7,15 @@
 /*
  * Carregando o arquivo com as configurações padrões
  */
-Configure::load('CorkCorktile.config');
-Configure::read('CorkCorktile.type');
+Configure::load('Corkcorktile.config');
+Configure::read('Corkcorktile.type');
 
-class CorkCorktile extends CorktileAppModel
+class Corkcorktile extends CorktileAppModel
 {
 	var $primaryKey = 'key';
-	var $name = 'CorkCorktile';
+	var $name = 'Corkcorktile';
+
+	var $useTable = 'cork_corktiles';
 
 }
 

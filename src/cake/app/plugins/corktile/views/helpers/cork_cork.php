@@ -1,13 +1,21 @@
 <?php
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 class CorkCorkHelper extends AppHelper {
-	function tile ($html_config = array(), $options = array())
+	public $helpers = array('Html', 'Form', 'Ajax', 'Js' => 'prototype', 'Burocrata.BuroOfficeBoy',
+		'Typographer.*TypeBricklayer' => array(
+			'name' => 'Bl'
+		)
+	);
+
+	function tile ($htmlAttributes = array(), $options = array())
 	{
 		if (isset($options['key'])) {
+			$htmlDefault = array ('class' => array('cork'));
+			$BrickLayer = new TypeBricklayerHelper(array());
+
+			$htmlAttributes = $BrickLayer->_mergeAttributes($htmlAttributes, $htmlDefault);
 			$corkModel = & ClassRegistry::init('Corktile.CorkCorktile');
+
 			/*
 			 *@TODO verificar se retorna null quando não encontra
 			 */
@@ -29,11 +37,11 @@ class CorkCorkHelper extends AppHelper {
 			$pluginName = Inflector::camelize($pluginNamelow);
 			$contentModel=& ClassRegistry::init($pluginName.'.'.$pluginName.$pluginName);
 
-			$dataCork = $contentModel->getCorkContent($currentCork['CorkCorktile']['id_content'], array("html_config" => $html_config));
+			$dataCork = $contentModel->getCorkContent($currentCork['CorkCorktile']['id_content'], $options);
 
 			$View = ClassRegistry::init("View");
 
-			//@TODO: ver a respeito do cache (quanto tempo deixar?)
+			//@TODO: resolver cache, como vai funcionar
 			$resultContent = $View->element($pluginNamelow, array(
 					'plugin' => $pluginName,
 					'type' => array('cork'),
@@ -42,11 +50,15 @@ class CorkCorkHelper extends AppHelper {
 				)
 			);
 
+			//@TODO: o que vai no options? (pois o options do tile tem outra função)
 			$result = $View->element('corktile', array(
 					'plugin' => 'corktile',
 					'location' => $currentCork['CorkCorktile']['location'],
 					'description' => $currentCork['CorkCorktile']['description'],
-					'content' => $resultContent
+					'content' => $resultContent,
+					'htmlAttributes' => $htmlAttributes,
+					'options' => array(),
+					'Bl' => $this->Bl
 				)
 			);
 
