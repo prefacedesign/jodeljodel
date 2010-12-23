@@ -734,10 +734,15 @@ class BuroBurocrataHelper extends XmlTagHelper
  * - `allow` - An array that contains the actions allowed - Defaults to array('create', 'modify', 'relate').
  * - `actions` - An array that defines all the URLs for CRUD actions Defaults to BuroBurocrataController actions.
  * - `callbacks` - An array with possible callbacks with Jodel Callbacks convention.
+ * - `new_item_text` - The string that will be placed into the "Create a new item" link
+ * - `edit_item_text` - The string that will be placed into the "Edit this item" link
  *
  * @access public
  * @param array $options An array with non-defaults values
  * @return string The HTML well formated
+ * @todo actions param implementation
+ * @todo allow param implementation
+ * @todo type param implementation
  * @todo Error handling
  */
 	public function inputBelongsTo($options = array())
@@ -750,7 +755,9 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'url' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'autocomplete'),
 			'type' => 'autocomplete',
 			'allow' => array('create', 'modify', 'relate'),
-			'baseID' => uniqid()
+			'baseID' => uniqid(),
+			'new_item_text' => __('Create a new item', true),
+			'edit_item_text' => __('Belongsto edit related data', true)
 		);
 		$options = am($defaults, $options);
 		extract($options);
@@ -814,7 +821,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out .= $this->inputAutocompleteMessage(
 			array('class' => 'action'),
 			array('escape' => false),
-			$this->Bl->a(array('id' => $link_id_new, 'href' => ''), array(), __('Create a new item', true))
+			$this->Bl->a(array('id' => $link_id_new, 'href' => ''), array(), $options['new_item_text'])
 		);
 		
 		
@@ -831,7 +838,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$this->error(array(), compact('fieldName'))
 		);
 		
-		$links = $this->Bl->a(array('id' => $link_id_edit, 'href' => ''), array(), __('Belongsto edit related data', true));
+		$links = $this->Bl->a(array('id' => $link_id_edit, 'href' => ''), array(), $options['edit_item_text']);
 		
 		$actions_div = $this->Bl->div(
 			array('class' => 'actions', 'style' => 'display:none;'),
@@ -852,10 +859,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'url' => $url_view,
 			'params' => array($this->securityParams($url_view, $plugin, $model), $this->internalParam('id') => '@id@'),
 			'callbacks' => array(
-				'onSuccess' => array(
-					'contentUpdate' => $update,
-					'js' => "$('$update').next('.actions').show();"
-				)
+				'onSuccess' => array('contentUpdate' => $update)
 			)
 		);
 		
@@ -865,7 +869,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 				'url' => $url_edit,
 				'params' => array(
 					$this->securityParams($url_edit, $plugin, $model),
-					$this->internalParam('id') => "@to_edit ? this.autocomplete.pair.id : null@",
+					$this->internalParam('id') => "@to_edit ? BuroClassRegistry.get('$baseID').input.value : null@",
 					$this->internalParam('baseID', $baseID)
 				),
 				'callbacks' => array(

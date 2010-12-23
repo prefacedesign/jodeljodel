@@ -7,14 +7,14 @@ echo $this->Buro->sform(array(),
 			'onStart'	=> array('lockForm'),
 			'onComplete'=> array('unlockForm'),
 			'onSave'    => array('js' => "BuroClassRegistry.get('$baseID').saved(json.saved);"),
-			'onReject'  => array('popup' => 'Existe algum erro de validação.'),
+			'onReject'  => array('contentUpdate', 'popup' => 'Existe algum erro de validação.'),
 			'onError'   => array('js' => "if(code == E_NOT_JSON) alert('Não é json! Não é json!'); else alert(error);"),
 			'onFailure'	=> array('popup' => 'Erro de comunicação com o servidor!')
 		)
 	)
 );
 	echo $this->Bl->input(
-		array('value' => $baseID, 'name' => $this->Buro->internalParam('baseId'), 'type' => 'hidden', )
+		array('value' => $baseID, 'name' => $this->Buro->internalParam('baseID'), 'type' => 'hidden')
 	);
 	echo $this->Buro->input(
 		array(),

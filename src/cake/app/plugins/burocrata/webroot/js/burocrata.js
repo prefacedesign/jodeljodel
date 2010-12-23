@@ -3,7 +3,11 @@ const E_JSON = 2; // JSON tells me the error
 
 
 /**
- * A instance of a Hash without overwrite of values
+ * A instance of a Hash without overwrite of values to keep
+ * a list of instace objects
+ *
+ * @access public
+ * @todo An garbage colletor to free all not instanciated objects
  */
 var BuroClassRegistry = new (Class.create(Hash, {
 	set: function($super, id, obj)
@@ -19,6 +23,8 @@ var BuroClassRegistry = new (Class.create(Hash, {
 /**
  * Abstract class that implements the behaviour of callbacks
  * with the methods `addCallbacks` and `trigger`
+ * 
+ * @access protected
  */
 var BuroCallbackable = Class.create({
 	addCallbacks: function(callbacks)
@@ -62,6 +68,7 @@ var BuroCallbackable = Class.create({
  * - `onReject` function (form, response, json, saved){}
  * - `onSuccess` function (form, response, json){}
  *
+ * @access public
  */
 var BuroForm = Class.create(BuroCallbackable, {
 	initialize: function()
@@ -172,7 +179,8 @@ var BuroForm = Class.create(BuroCallbackable, {
  * - `onError` function (code, error){}
  * - `onSuccess` function (input, response, json){}
  * - `onSelect` function (input, response, json){}
- *
+ * 
+ * @access public
  */
 var BuroAutocomplete = Class.create(BuroCallbackable, {
 	initialize: function(url, id_base, options)
@@ -185,18 +193,20 @@ var BuroAutocomplete = Class.create(BuroCallbackable, {
 		options.onHide = this.onHide.bind(this);
 		
 		
-		Ajax.Autocompleter.prototype.markPrevious = function() {
+		Ajax.Autocompleter.addMethods({
+			markPrevious: function() {
 				if(this.index > 0) this.index--;
 					else this.index = this.entryCount-1;
 				if(this.getEntry(this.index).cumulativeOffset().top < document.viewport.getScrollOffsets().top)
 					this.getEntry(this.index).scrollIntoView(true);
+			},
+			markNext: function() {
+				if(this.index < this.entryCount-1) this.index++;
+					else this.index = 0;
+				if(this.getEntry(this.index).cumulativeOffset().top+this.getEntry(this.index).getHeight() > document.viewport.getScrollOffsets().top+document.viewport.getHeight())
+					this.getEntry(this.index).scrollIntoView(false);
 			}
-		Ajax.Autocomplete.prototype.markNext = function() {
-			if(this.index < this.entryCount-1) this.index++;
-				else this.index = 0;
-			if(this.getEntry(this.index).cumulativeOffset().top+this.getEntry(this.index).getHeight() > document.viewport.getScrollOffsets().top+document.viewport.getHeight())
-				this.getEntry(this.index).scrollIntoView(false);
-		}
+		});
 		
 		
 		this.autocompleter = new Ajax.Autocompleter(id_of_text_field, id_of_div_to_populate, url, options);
@@ -339,7 +349,8 @@ var BuroAutocomplete = Class.create(BuroCallbackable, {
  * - `onFailure` function (response){}
  * - `onError` function (code, error){}
  * - `onSuccess` function (response, json){}
- *
+ * 
+ * @access public
  */
 var BuroAjax = Class.create(BuroCallbackable, {
 	initialize: function(url, options, callbacks)
@@ -388,7 +399,8 @@ var BuroAjax = Class.create(BuroCallbackable, {
  * - `onFailure` function (response){}
  * - `onError` function (code, error){}
  * - `onSuccess` function (response, json){}
- *
+ * 
+ * @access public
  */
 var BuroBelongsTo = Class.create(BuroCallbackable, {
 	initialize: function(id_base, autocompleter_id_base, callbacks)
@@ -404,6 +416,9 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		
 		$('lie'+this.id_base).observe('click', function(ev){ev.stop(); this.showForm(true);}.bind(this));
 		$('lin'+this.id_base).observe('click', function(ev){ev.stop(); this.showForm(false);}.bind(this));
+		
+		if(!this.input.value.empty())
+			this.showPreview(this.input.value);
 	},
 	showForm: function(to_edit)
 	{
@@ -412,6 +427,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 	},
 	showPreview: function(id)
 	{
+		this.update.next('.actions').show();
 		this.trigger('onShowPreview', id);
 	},
 	selected: function(pair)

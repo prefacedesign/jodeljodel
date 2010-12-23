@@ -334,15 +334,18 @@ class BuroOfficeBoyHelper extends AppHelper
 				case 'replace':
 				case 'update':
 					if($id == $action)
-						$script = "form.$action(json.content);";
+						$obj = 'form';
 					else
-						$script = "$('$id').$action(json.content);";
+						$obj = "$('$id')";
 					break;
 				
 				default:
-					$script = "$('$id').update(json.content);";
+					$action = 'update';
+					$obj = "$('$id')";
 					break;
 			}
+			
+			$script = "{$obj}.{$action}(json.content);";
 			break;
 		}
 		return $script;
