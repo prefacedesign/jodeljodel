@@ -1,25 +1,28 @@
 <?php
+	/*
+	 *
+	 */
 
-	class DashDashboardController extends AppController
+	class DashDashboardController extends DashboardAppController
 	{
-		var $uses = null;
-		function admin_index()
-		{
-			$model = ClassRegistry::init(array('class' => 'Dashboard.DashDashboardItem'));
-			$this->set('items', $model->find('all'));
-		}
+		var $name = 'DashDashboard';
+		var $uses = array('Dashboard.DashDashboardItem');
+		var $paginate = array(
+			'DashDashboardItem' => array(
+				'limit' => 30,
+				'contain' => false,
+				'order' => 'DashDashboardItem.modified DESC'
+			)
+		);
 		
-		/*
-			Removes an item from the dashboard
-			@param id			the id of the item in the original model
-			@param model		the alias of the original model
-		*/
-		function admin_removeDashboardItem($id, $modelName) 
+		/* This is the actual dashboard page.
+		 * 
+		 * @todo Enable to select the page where a certain id is located.
+		 */
+		
+		function index()
 		{
-			$dashboard = ClassRegistry::init(array('class' => 'Dashboard.DashDashboardItem'));
-			$dashboard->removeDashItem($id, true);
-			
-			$this->redirect(array('action'=>'index'));
+			$this->data = $this->paginate('DashDashboardItem');
 		}
 	}
 	

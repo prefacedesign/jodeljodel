@@ -358,4 +358,44 @@
 			''
 	));
 	
+	/*$this->Decorator->rule(
+		'td, th', array(
+			'border' => $hg->size(array('u' => 1)) . ' dotted',
+			'margin' => 0,
+			'padding' => $hg->size(array('u' => 2))
+	));
+	
+	$this->Decorator->rule(
+		'td.col_odd', array(
+			'font-weight' => 'bold'
+	));
+	
+	$this->Decorator->rule(
+		'tr.eveline', array(
+			'background' => '#fef'
+	));
+	
+	$this->Decorator->rule(
+		'tr.third td', array(
+			'padding' => '10px'
+	));
+	
+	$this->Decorator->rule(
+		'tr.excentrico td', array(
+			'font-size' => '20px'
+	));
+	
+	$this->Decorator->rule(
+		'th', array(
+			'background' => '#ffaacc'
+	));
+	
+	$this->Decorator->rule(
+		'table', array(
+			'border-spacing' => 0,
+			'border-collapse' => 'collapse'
+	));
+	
+	*/
+	
 ?>

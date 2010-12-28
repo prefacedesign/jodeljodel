@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2010-12-03 17:28-0200\n"
+"POT-Creation-Date: 2010-12-09 12:40-0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,59 +14,71 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:6
-msgid "Now, this document is hidden."
+#: \plugins\backstage\views\back_contents\edit.ctp:5
+msgid "Backstage edit page: Editing a \""
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:6
-msgid "You can publish it or delete it."
+#: \plugins\backstage\views\back_contents\edit.ctp:12
+msgid "Backstage edit page: publish"
 msgstr ""
 
 #: \plugins\backstage\views\back_contents\edit.ctp:13
-msgid "anchorList and"
-msgstr ""
-
-#: \plugins\backstage\views\back_contents\edit.ctp:15
-msgid "english"
-msgstr ""
-
-#: \plugins\backstage\views\back_contents\edit.ctp:16;28
-msgid "portuguese"
+msgid "Now, this document is published. You can %s."
 msgstr ""
 
 #: \plugins\backstage\views\back_contents\edit.ctp:17
-msgid "japanese"
+msgid "Backstage edit page: mark it as draft"
 msgstr ""
 
 #: \plugins\backstage\views\back_contents\edit.ctp:18
-msgid "javanese"
-msgstr ""
-
-#: \plugins\backstage\views\back_contents\edit.ctp:23
-msgid "This %s already has translations for %s."
-msgstr ""
-
-#: \plugins\backstage\views\back_contents\edit.ctp:27
-msgid "backstage edit page: Editing"
-msgstr ""
-
-#: \plugins\backstage\views\back_contents\edit.ctp:28
-msgid " the %s version."
+msgid "Now, this document is hidden. You can %s."
 msgstr ""
 
 #: \plugins\backstage\views\back_contents\edit.ctp:32
-msgid "anchorList or"
+msgid "anchorList and"
 msgstr ""
 
 #: \plugins\backstage\views\back_contents\edit.ctp:34
+msgid "english"
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:35;47
+msgid "portuguese"
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:36
+msgid "japanese"
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:37
+msgid "javanese"
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:42
+msgid "This %s already has translations for %s."
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:46
+msgid "backstage edit page: Editing"
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:47
+msgid " the %s version."
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:51
+msgid "anchorList or"
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:53
 msgid "mark it as ready"
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:35
+#: \plugins\backstage\views\back_contents\edit.ctp:54
 msgid "remove it"
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:40
+#: \plugins\backstage\views\back_contents\edit.ctp:59
 msgid "Version marked as draft. You can %s."
 msgstr ""
 
@@ -212,6 +224,10 @@ msgstr ""
 
 #: \views\pages\home.ctp:77
 msgid "To change the content of this page, edit: %s\n\t\tTo change its layout, edit: %s\n\t\tYou can also add some CSS styles for your pages at: %s"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:2
+msgid "Backstage edit page: Editing a \"Person.PersPerson\""
 msgstr ""
 
 #: \webroot\test.php:88

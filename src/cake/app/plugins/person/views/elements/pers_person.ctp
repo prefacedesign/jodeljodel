@@ -14,7 +14,7 @@ switch ($type[0])
                     echo $buro->sinput(
                         array(),
                         array(
-                                'label' => __('Form - PersPerson name superfield',true),
+								'label' => __('Form - PersPerson name superfield',true),
 								'instructions' => __('Form - PersPerson name superfield - instructions',true),
                                 'type' => 'super_field'
                         )

@@ -118,6 +118,8 @@
  
  App::import('Config', 'Status.config');
  
+//@todo: change the name of the behavior to StaStatus behavior
+ 
 class StatusBehavior extends ModelBehavior 
 {
 
@@ -326,6 +328,7 @@ class StatusBehavior extends ModelBehavior
 	 *			)
 	 *		);
 	 * @access public
+	 * @todo Overwrite could be omitted. Now it demands a overwrite option to be sent.
 	 */
 	function setGlobalActiveStatuses($options = array())
 	{
@@ -338,6 +341,8 @@ class StatusBehavior extends ModelBehavior
 			{
 				$default_config[$index]['active'] = $data['active'];
 				$default_config[$index]['overwrite'] = $data['overwrite'];
+				
+				//@todo Should it overwrite the default options?
 				Configure::write('StatusBehavior.options.'.$index, $default_config[$index]);
 			}
 		}
@@ -358,7 +363,6 @@ class StatusBehavior extends ModelBehavior
 	
 	function beforeFind(&$Model, $queryData)
 	{
-		debug('aqui');
 		$priority_status = false;
 		if (isset($queryData['active_statuses']))
 		{

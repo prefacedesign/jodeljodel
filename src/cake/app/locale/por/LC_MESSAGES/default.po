@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2010-12-03 17:28-0200\n"
-"PO-Revision-Date: 2010-12-03 18:22-0300\n"
+"POT-Creation-Date: 2010-12-09 12:40-0200\n"
+"PO-Revision-Date: 2010-12-09 18:03-0300\n"
 "Last-Translator: Lucas Vignoli Reis <lucas@preface.com.br>\n"
 "Language-Team: Preface Design <preface@preface.com.br>\n"
 "MIME-Version: 1.0\n"
@@ -16,59 +16,72 @@ msgstr ""
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:6
-msgid "Now, this document is hidden."
-msgstr "No momento, este documento está oculto."
+#: \plugins\backstage\views\back_contents\edit.ctp:5
+#, fuzzy
+msgid "Backstage edit page: Editing a \""
+msgstr "Edição"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:6
-msgid "You can publish it or delete it."
-msgstr "Você pode publicá-lo ou excluí-lo."
+#: \plugins\backstage\views\back_contents\edit.ctp:12
+msgid "Backstage edit page: publish"
+msgstr "publicá-lo"
 
 #: \plugins\backstage\views\back_contents\edit.ctp:13
+msgid "Now, this document is published. You can %s."
+msgstr "No momento, este documento está publicado. Você pode %s."
+
+#: \plugins\backstage\views\back_contents\edit.ctp:17
+msgid "Backstage edit page: mark it as draft"
+msgstr "marcá-lo como rascunho"
+
+#: \plugins\backstage\views\back_contents\edit.ctp:18
+msgid "Now, this document is hidden. You can %s."
+msgstr "No momento, este documento está oculto. Você pode %s."
+
+#: \plugins\backstage\views\back_contents\edit.ctp:32
 msgid "anchorList and"
 msgstr " e "
 
-#: \plugins\backstage\views\back_contents\edit.ctp:15
+#: \plugins\backstage\views\back_contents\edit.ctp:34
 msgid "english"
 msgstr "inglês"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:16;28
+#: \plugins\backstage\views\back_contents\edit.ctp:35;47
 msgid "portuguese"
 msgstr "português"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:17
+#: \plugins\backstage\views\back_contents\edit.ctp:36
 msgid "japanese"
 msgstr "japonês"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:18
+#: \plugins\backstage\views\back_contents\edit.ctp:37
 msgid "javanese"
 msgstr "javanês"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:23
+#: \plugins\backstage\views\back_contents\edit.ctp:42
 msgid "This %s already has translations for %s."
 msgstr "Esta %s já tem traduções para %s."
 
-#: \plugins\backstage\views\back_contents\edit.ctp:27
+#: \plugins\backstage\views\back_contents\edit.ctp:46
 msgid "backstage edit page: Editing"
 msgstr "Edição"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:28
+#: \plugins\backstage\views\back_contents\edit.ctp:47
 msgid " the %s version."
 msgstr " da versão em %s."
 
-#: \plugins\backstage\views\back_contents\edit.ctp:32
+#: \plugins\backstage\views\back_contents\edit.ctp:51
 msgid "anchorList or"
 msgstr " ou "
 
-#: \plugins\backstage\views\back_contents\edit.ctp:34
+#: \plugins\backstage\views\back_contents\edit.ctp:53
 msgid "mark it as ready"
 msgstr "declará-la pronta"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:35
+#: \plugins\backstage\views\back_contents\edit.ctp:54
 msgid "remove it"
 msgstr "removê-la"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:40
+#: \plugins\backstage\views\back_contents\edit.ctp:59
 msgid "Version marked as draft. You can %s."
 msgstr "Versão marcada como rascunho. Você pode %s."
 
@@ -219,9 +232,16 @@ msgid ""
 "\t\tYou can also add some CSS styles for your pages at: %s"
 msgstr ""
 
+#: \views\translate_strings\translate_strings.ctp:2
+msgid "Backstage edit page: Editing a \"Person.PersPerson\""
+msgstr "Editando o perfil de uma pessoa"
+
 #: \webroot\test.php:88
 msgid "Debug setting does not allow access to this url."
 msgstr ""
+
+#~ msgid "You can publish it or delete it."
+#~ msgstr "Você pode publicá-lo ou excluí-lo."
 
 #~ msgid "Name"
 #~ msgstr "Nome"

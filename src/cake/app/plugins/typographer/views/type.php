@@ -8,7 +8,7 @@ class TypeView extends View
 		$layout_scheme = $this->viewVars['layout_scheme'];
 		$c_layout_scheme = Inflector::camelize($layout_scheme);
 		
-		$helpers_list = $helpers; 
+		$helpers_list = $helpers;
 		foreach ($helpers_list as $helper => $params)
 		{
 			if (is_string($helper) && strpos($helper,'*') !== false)   //tem que ver se pode mexer assim no índice do foreach, acho que sim

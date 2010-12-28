@@ -24,7 +24,7 @@ class PersPerson extends PersonAppModel {
 		),
 	);
 	
-	var $actsAs = array('Dashboard.DashDashboardable');
+	var $actsAs = array('Dashboard.DashDashboardable', 'Status.Status' => array('publishing_status'));
 	
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
@@ -44,19 +44,32 @@ class PersPerson extends PersonAppModel {
 			'order' => '' 
 		)
 	);*/
-
+		
+		/* Creates a blank row in the table. It is part of the backstage contract.
+         *
+		 */
         function createEmpty()
         {
-            $data = $this->save(array());
+			//@todo Maybe the status behavior should place these defaults?
+			//Or should it be a global default?
+			$data = $this->save(array('publishing_status' => 'draft'));
             $data[$this->name]['id'] = $this->id;
             
             return $data;
         }
         
+		/* Find suited for the burocrata form. Part of the Burocrata/Backstage contract.
+         *
+		 */
+		
         function findBurocrata($id)
         {
             return $this->findById($id);
         }
+		
+		/** Find suited for 
+		 *
+		 */
 		
 		function getDashboardInfo($id)
 		{

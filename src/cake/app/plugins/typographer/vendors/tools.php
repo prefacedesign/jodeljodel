@@ -146,7 +146,8 @@ class Grid
 	
 		$t =  $size['M'] * $this->M_size
 			+ $size['m'] * $this->m_size
-			+ $size['g'] * $this->g_size;
+			+ $size['g'] * $this->g_size
+			+ $size['u'];
 		
 		
 		if ($write_unit)
@@ -170,7 +171,12 @@ class Grid
 		
 		if (isset($size['g']) && ($size['g'] != 0))
 		{
-			$t .= '_' . $size['g'] . 'i';
+			$t .= '_' . $size['g'] . 'g';
+		}
+		
+		if (isset($size['u']) && ($size['u'] != 0))
+		{
+			$t .= '_' . $size['u'] . 'u';
 		}
 		
 		return $t;
