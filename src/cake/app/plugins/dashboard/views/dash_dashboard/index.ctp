@@ -1,82 +1,39 @@
 <?php
-	echo $this->Bl->h1Dry(__('Backstage index page: Page title - Dashboard', true));
+
+	echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
+		echo $this->Bl->h1Dry(__('Backstage index page: Page title - Dashboard', true));
 	
-	/*echo $this->Bl->expandableMenu(array(),
-		array(
-			'title' => __('Backstage index page: Add item',true)),
-			'linkList' => array()
-		;
-	
-	//@todo Create substitute to the default Cake paginator helper. Including perhaps more sofisticated output.
-	
-	echo $this->Paginator->first('<<');
-	echo $this->Paginator->prev('<');
-	echo $this->Paginator->numbers();
-	echo $this->Paginator->next('>');
-	echo $this->Paginator->last('>>');
-	
-	echo $this->Bl->hr(); */
-	
-	// Exemplos de table
-	
-	/*echo $this->Bl->ssmartTable(array(),
-		array(
-			'columns' => array(
-				'odd' => array('class' => 'odd'),
-				'even' => array('class' => 'even'),
-				1 => array(array('class' => 'first_column'), array('escape' => false)),
-				3 => ,
-				'every2of3' => ''
-			),
+		echo $this->Bl->ssmartTable(array('class' => 'dashboard'), array(
+			'automaticColumnNumberHeaderClasses' => true, 
 			'rows' => array(
-				'header' =>
-				2 => array('class' => 'second_row'),
-				'odd' => 
-				'even' =>
-				'footer' =>
-			),
-			'every_cell' => array(
-				array('class' => 'a_cell')
-			),
-			'automatic_row_number_classes' => true,
-			'automatic_row_number_options' => true
-		)
-	); */
-	
-	//echo $this->Bl->ssmartTable(array(), array('columns' => array('odd' => array(array('class' => 'even'),array()))));
-	echo $this->Bl->ssmartTable(array(), array('rows' => array('even' => array('class' => 'eveline'), 3 => array('class' => 'third'), 'every1of3' => array('class' => 'excentrico')),
-					'columns' => array('odd' => array('class' => 'col_odd'))));
-	
-		echo $this->Bl->smartTableRow(array(), array('header' => true), array('eu', 'voce', 'jorge', 'ricardo', 'regina'));
-		echo $this->Bl->smartTableRow(array(), array(), array('eu', 'voce', 'jorge', 'ricardo', 'tatiana'));
-		echo $this->Bl->smartTableRow(array(), array(), array('eu', 'voce', 'jorge', 'ricardo', 'tatiana'));
-		echo $this->Bl->smartTableRow(array(), array(), array('eu', 'voce', array(array('class' => 'jorge'), array('header' => true), 'jorge'), 'ricardo', 'tatiana'));
-		echo $this->Bl->smartTableRow(array(), array(), array('eu', array(array(),array('rowspan' => 3),'jorge'), 'ricardo', 'tatiana','vicente'));
-		echo $this->Bl->smartTableRow(array(), array(), array('eu', 'voce', 'jorge', 'ricardo'));
-		echo $this->Bl->smartTableRow(array(), array(), array('eu', 'voce', 'jorge', 'ricardo'));
-		echo $this->Bl->smartTableRow(array(), array(), array('eu', 'voce', 'jorge', 'ricardo', 'tatiana'));
-		echo $this->Bl->smartTableRow(array(), array(), array('eu', 'voce', 'jorge', 'ricardo', 'tatiana'));
-		echo $this->Bl->smartTableRow(array(), array(), array('eu', array(array(),array('colspan' => 3),'jorge'), 'tatiana'));
+				'every1of3' => array('class' => 'main_info'), 
+				'every2of3' => array('class' => 'extra_info'),
+				'every3of3' => array('class' => 'actions')
+			)
+		));		
+			echo $this->Bl->smartTableHeaderDry(array('Tipo', 'Status', 'Nome', 'InformaÃ§Ã£o extra', 'Criado', 'Editado', 'LÃ­nguas'));
+			echo $this->Bl->smartTableRowDry(array('Evento', 'Publicado','SÃ£o Paulo School on Advanced Studies on Speech Dynamics', 'Quando: 3 a 7 de outubro de 2010', 'Ontem', 'Hoje', 'PT JP'));
+			echo $this->Bl->smartTableRowDry(array(
+				array(array(),array('colspan' => 3),' '), 
+				array(array(),array('colspan' => 4, 'rowspan' => 2),'Descricao: Desmond has a barrow in the marketplace / Molly is the singer in a band / Desmond say to Molly, girl I like you face /And Molly says this as she takes him by the hand / Obladi, oblada, / Life goes on, bra / La la how the life goes on / Obladi, oblada / Life goes on, bra / La la how the life goes on')
+			));
+			echo $this->Bl->smartTableRowDry(array(
+				array(array(),array('colspan' => 3),'Some links')
+			));
+			
+			echo $this->Bl->smartTableRowDry(array('Evento', 'Publicado','SÃ£o Paulo School on Advanced Studies on Speech Dynamics', 'Quando: 3 a 7 de outubro de 2010', 'Ontem', 'Hoje', 'PT JP'));
+			echo $this->Bl->smartTableRowDry(array(
+				array(array(),array('colspan' => 3),' '),
+				array(array(),array('colspan' => 4, 'rowspan' => 2),'Descricao: Desmond has a barrow in the marketplace / Molly is the singer in a band / Desmond say to Molly, girl I like you face /And Molly says this as she takes him by the hand / Obladi, oblada, / Life goes on, bra / La la how the life goes on / Obladi, oblada / Life goes on, bra / La la how the life goes on')
+			));
+			echo $this->Bl->smartTableRowDry(array(
+				array(array(),array('colspan' => 3),'Some links')
+			)); 
+			
+			
+		echo $this->Bl->esmartTable();
 		
-	echo $this->Bl->esmartTable();
-		
-	
-	
-	/*	echo $this->Bl->smartTableHeader(array(
-			'Loucas',
-			array(array(),array(),'Liceu'),
-			'Limeu', 
-			array(array('class' => 'classe'),array('escape' => false), 'content') 
-		));
-		
-		echo $this->Bl->smartTableRow(array('coluna 1', array(array(), array('colspan' => 3), 'celula col 2'));
-		
-		echo $this->Bl->smartTableRows(array(
-			array('ou','e','então','senão'),
-			array('ou','e','então','senão')
-		));
-		
-	*/		
+	echo $this->Bl->ebox();
 
 /*
 	foreach ($items as $item)

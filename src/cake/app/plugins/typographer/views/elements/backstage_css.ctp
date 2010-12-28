@@ -380,44 +380,35 @@
 			'line-height' => $u->t($line_height)
 	));
 	
-	/*$this->Decorator->rule(
-		'td, th', array(
-			'border' => $hg->size(array('u' => 1)) . ' dotted',
-			'margin' => 0,
-			'padding' => $hg->size(array('u' => 2))
-	));
-	
 	$this->Decorator->rule(
-		'td.col_odd', array(
-			'font-weight' => 'bold'
-	));
-	
-	$this->Decorator->rule(
-		'tr.eveline', array(
-			'background' => '#fef'
-	));
-	
-	$this->Decorator->rule(
-		'tr.third td', array(
-			'padding' => '10px'
-	));
-	
-	$this->Decorator->rule(
-		'tr.excentrico td', array(
-			'font-size' => '20px'
-	));
-	
-	$this->Decorator->rule(
-		'th', array(
-			'background' => '#ffaacc'
-	));
-	
-	$this->Decorator->rule(
-		'table', array(
+		'table.dashboard', array(
 			'border-spacing' => 0,
-			'border-collapse' => 'collapse'
+			'border-collapse' => 'collapse',
+			'text-align' => 'left'
 	));
 	
-	*/
+	$this->Decorator->rule(
+		'table.dashboard th', array(
+			'background-color' => $palette['control_box_bg']->write(),
+			'color' => $palette['control_box_fg']->write(),
+			'height' => $vg->size(array('m' => 6))
+	));
+	
+	$this->Decorator->rule(
+		'table.dashboard td, table.dashboard th', array(
+			'padding-left' => $hg->size(array('m'=> 2)),
+			'padding-right' => $hg->size(array('m'=> 2)),
+			'vertical-align' => 'text-top'
+	));
+	
+	$this->Decorator->rule(
+		'table.dashboard td', array(
+			'padding-top' => $hg->size(array('m'=> 2))
+	));
+	
+	$this->Decorator->rule(
+		'table.dashboard th', array(
+			'padding-top' => $hg->size(array('m'=> 1))
+	));
 	
 ?>

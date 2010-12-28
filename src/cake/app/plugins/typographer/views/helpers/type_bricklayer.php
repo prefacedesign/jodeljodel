@@ -334,7 +334,9 @@ class TypeBricklayerHelper extends AppHelper
 	 *					// as it finds a bigger row
 	 *		'currentRow' => //the current row
 	 *		'currentColumn' => //the current column, counted from 2
-	 *		'currentCell'  => // the current cell, counted from 1 
+	 *		'currentCell'  => // the current cell, counted from 1
+	 *		'maxColumn' => // how have we gone in the column count
+	 *		'rowRhythmOffset' => // for cyclic attributes, the given offset (headers use to change this offset)
 	 *		'pileOfRowspans' => array(
 	 *			4 => 3 // means that at column 4, there are yet 3 rows in wich the 4th position should be ignored (no cell)
 	 *		)
@@ -408,7 +410,7 @@ class TypeBricklayerHelper extends AppHelper
 	 *	 	),
 	 *	 	'automaticRowNumberClasses' => true,
 	 *	 	'automaticColumnNumberClasses' => true,
-	 *	 	'automaticColumnNumberHeaderClasses' => true
+	 *	 	'automaticColumnNumberHeaderClasses' => true,
 	 *
 	 *  @param array $htmlAttr The html attributes.
 	 *  @param array $options The special options, format described above
@@ -435,11 +437,13 @@ class TypeBricklayerHelper extends AppHelper
 				= $this->_parseTableColumnRowOptions($rows);
 		
 			
-		$this->tableStatus['nCols'         ] = 0;
-		$this->tableStatus['currentColumn' ] = 1;
-		$this->tableStatus['currentRow'    ] = 1;
-		$this->tableStatus['currentCell'   ] = 1;
-		$this->tableStatus['pileOfRowSpans'] = array();
+		$this->tableStatus['nCols'          ] = 0;
+		$this->tableStatus['currentColumn'  ] = 1;
+		$this->tableStatus['currentRow'     ] = 1;
+		$this->tableStatus['currentCell'    ] = 1;
+		$this->tableStatus['rowRhythmOffset'] = 1;
+		$this->tableStatus['maxColumn'      ] = 1;
+		$this->tableStatus['pileOfRowSpans' ] = array();
 	
 		return $this->stable($htmlAttr, $options);
 	}
@@ -511,21 +515,32 @@ class TypeBricklayerHelper extends AppHelper
 		$settings = array($htmlAttr, $options);
 		$stdSettings = array(array(),array());
 		
-		$this->tableStatus['currentColumn'] = 1;
+		// clearing the pile of row spans for not written tds
+		if (!empty($this->tableStatus['pileOfRowSpans'])) 
+			foreach ($this->tableStatus['pileOfRowSpans'] as $k => $quant)
+				if ($quant > 0 && $k >= $this->tableStatus['currentColumn'])
+					$this->tableStatus['pileOfRowSpans'][$k]--;
+		
+		$this->tableStatus['currentColumn'] = 1;		
 		extract($this->tableSettings);
 		extract($this->tableStatus);
 		
-		if (isset($options['header']) && $options['header'])
+		$isHeader = isset($options['header']) ? $options['header'] : false;
+		
+		if ($isHeader)
+		{
 			$stdSettings = $this->_mergeSettings($stdSettings, array('class' => array('header')));
+			$this->tableStatus['rowRhythmOffset'] = $currentRow;
+		}
 		
 		if (isset($automaticRowNumberClasses) && $automaticRowNumberClasses)
 			$stdSettings = $this->_mergeSettings($stdSettings, array('class' => array('row_'. $currentRow)));
 	
-		if (isset($rowRhythmicSettings))
+		if (isset($rowRhythmicSettings) && !$isHeader)
 		{
 			foreach ($rowRhythmicSettings as $rhythm => $ordinalsSettings)
 			{
-				$currentOrdinality = (($currentRow-1)%$rhythm)+1;
+				$currentOrdinality = (($currentRow - $this->tableStatus['rowRhythmOffset'] - 1)%$rhythm)+1;
 				if (isset($ordinalsSettings[$currentOrdinality]))
 					$stdSettings = $this->_mergeSettings($stdSettings, $ordinalsSettings[$currentOrdinality]);
 			}
@@ -573,6 +588,15 @@ class TypeBricklayerHelper extends AppHelper
 			
 			if (isset($columnSettings[$this->tableStatus['currentColumn']]))
 				$stdColumnSettings = $this->_mergeSettings($stdColumnSettings, $columnSettings[$this->tableStatus['currentColumn']]);
+		
+			if (isset($automaticColumnNumberClasses) && $automaticColumnNumberClasses)
+				$stdColumnSettings = $this->_mergeSettings($stdColumnSettings, array('class' => array('col_'. $this->tableStatus['currentColumn'])));
+			else if (isset($options['header']) 
+					 && $options['header']
+					 && isset($automaticColumnNumberHeaderClasses) 
+					 && $automaticColumnNumberHeaderClasses)
+				$stdColumnSettings = $this->_mergeSettings($stdColumnSettings, array('class' => array('col_'. $this->tableStatus['currentColumn'])));
+
 				
 			list($cellAttr, $cellOptions) = $this->_mergeSettings($stdColumnSettings, array($cellAttr, $cellOptions));
 			
@@ -604,12 +628,22 @@ class TypeBricklayerHelper extends AppHelper
 			if (isset($cellOptions['colspan']))
 				$this->tableStatus['currentColumn'] += $cellOptions['colspan'];
 			else
-				$this->tableStatus['currentColumn']++;			
+				$this->tableStatus['currentColumn']++;
+			
+			if ($this->tableStatus['currentColumn'] - 1 > $this->tableStatus['maxColumn'])
+				$this->tableStatus['maxColumn'] = $this->tableStatus['currentColumn'] - 1;
+			
 			$this->tableStatus['currentCell']++;
 		}
 		$this->tableStatus['currentRow']++;
 		$t .= $this->etr();
 		return $t;
+	}
+	
+	public function smartTableHeader($htmlAttr, $options, $contentCells)
+	{
+		$options['header'] = true;
+		return $this->smartTableRow($htmlAttr, $options, $contentCells);
 	}
 	
 	/** Ends a table with a </table> close tag, and resets tableSettings
