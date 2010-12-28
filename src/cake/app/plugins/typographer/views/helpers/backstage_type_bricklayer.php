@@ -68,6 +68,19 @@ class BackstageTypeBricklayerHelper extends TypeBricklayerHelper
 		return $this->ediv().$this->ediv();
 	}
 
+	function sinfoBox($attr = array(), $options = array())
+	{
+		$attr = $this->_mergeAttributes(array('class' => array('info_box')), $attr);
+
+		return $this->sdiv($attr, $options);
+	}
+
+	function einfoBox()
+	{
+		return $this->ediv();
+	}
+
+
 }
 
 

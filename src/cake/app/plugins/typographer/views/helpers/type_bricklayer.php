@@ -48,7 +48,7 @@ class TypeBricklayerHelper extends AppHelper
 	}
 	
 	//@todo Find better placement for this funcion.
-	function _mergeAttributes($atr1, $atr2)
+	public function _mergeAttributes($atr1, $atr2)
 	{
 		if ($atr1 == null)
 			$atr1 = array();
@@ -211,21 +211,16 @@ class TypeBricklayerHelper extends AppHelper
 	
 	function tag($tag, $attr = null, $options = null, $content = null)
 	{
-		$standard_options = array('escape' => true, 'close_me' => false);
+		$standard_options = array();
+		$standard_options['escape'] = true;
+		$standard_options['close_me'] = empty($content);
+		
 		$options = am($standard_options, $options);
 		extract($options);
-		unset($options['escape']); // não faz sentido passar adiante
+		unset($options['escape']);
 		
-		if ($close_me || empty($content))
-		{
-			$close_me = true;
-			$options['close_me'] = true;
-			
-			if (in_array($tag, TypeBricklayerHelper::$tags_that_need_closing_tag))
-				$close_me = false;
-		}
-		else
-			$close_me = false;
+		if ($close_me && in_array($tag, TypeBricklayerHelper::$tags_that_need_closing_tag))
+			$close_me = $options['close_me'] = false;
 		
 		$t = $this->sTag($tag, $attr, $options);
 		
@@ -632,17 +627,9 @@ class TypeBricklayerHelper extends AppHelper
 		if (substr($n, -3) == 'Dry' || substr($n, -3) == 'Dry')
 		{
 			$n = substr($n, 0, -3);
-			switch(count($args))
-			{
-				case 1:
-					list($content) = $args;
-					return $this->{$n}(null, null, $content);
-				break;
-			
-				default:
-					return $this->{$n}(null, null);
-				break;
-			}
+			array_unshift($args, array());
+			array_unshift($args, array());
+			return $this->dispatchMethod($n, $args);
 		}
 		
 		if (method_exists($this, 's' . $n))
@@ -671,53 +658,18 @@ class TypeBricklayerHelper extends AppHelper
 			return $t;
 		}
 		
-		if (!in_array($n, TypeBricklayerHelper::$tags_that_begin_with_e) 
-			&& !in_array($n, TypeBricklayerHelper::$tags_that_begin_with_s) 
-			&&	preg_match('/(^[se])([A-Za-z]\w*)/', $n, $matches))
+		$just_name = in_array($n, TypeBricklayerHelper::$tags_that_begin_with_e) 
+				  || in_array($n, TypeBricklayerHelper::$tags_that_begin_with_s);
+		
+		if (!$just_name && preg_match('/(^[se])([A-Za-z]\w*)/', $n, $matches))
 		{
-			$tag = $matches[2];
-			{
-				switch(count($args))
-				{
-					case 2:
-						list($attr, $options) = $args;
-						return $this->{$matches[1] . 'tag'}($tag, $attr, $options);
-					break;
-					
-					case 1:
-						list($attr) = $args;
-						return $this->{$matches[1] . 'tag'}($tag, $attr);
-					break;
-					
-					default:
-						return $this->{$matches[1] . 'tag'}($tag);
-					break;
-				}
-			}
+			array_unshift($args, $matches[2]);
+			return $this->dispatchMethod($matches[1] . 'tag', $args);
 		}
 		else //@todo Add check: are these allowed tags?
 		{
-			switch(count($args))
-			{
-				case 3:
-					list($attr, $options, $content) = $args;
-					return $this->tag($n, $attr, $options, $content);
-				break;
-				
-				case 2:
-					list($attr, $options) = $args;
-					return $this->tag($n, $attr, $options);
-				break;
-				
-				case 1:
-					list($attr) = $args;
-					return $this->tag($n, $attr);
-				break;
-				
-				default:
-					return $this->tag($n);
-				break;
-			}
+			array_unshift($args, $n);
+			return $this->dispatchMethod('tag', $args);
 		}
 		//@todo Translate this!
 		trigger_error('PedreiroHelper::'.$n.'(): Não existe este método.');

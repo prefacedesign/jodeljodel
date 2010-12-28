@@ -357,6 +357,28 @@
 		'button', array(
 			''
 	));
+
+	$this->Decorator->rule(
+		'.info_box', array(
+			'background-color' => $palette['info_box_bg']->write(),
+			'color' => $palette['info_box_fg']->write(),
+			'float'	=> 'left',
+			'width' => '100%',
+			'margin-top' => $vg->size(array('g' => 1)),
+			'margin-bottom' => $vg->size(array('g' => 1))
+	));
+
+	$this->Decorator->rule(
+		'.info_box h3', array(
+			'font-size' => $u->t($line_height * 13/18),
+			'line-height' => $u->t($line_height)
+	));
+
+	$this->Decorator->rule(
+		'.info_box p', array(
+			'font-size' => $u->t($line_height * 13/18),
+			'line-height' => $u->t($line_height)
+	));
 	
 	/*$this->Decorator->rule(
 		'td, th', array(

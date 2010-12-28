@@ -2,23 +2,17 @@
 class User extends BurocrataUserAppModel {
 	var $name = 'User';
 	var $displayField = 'name';
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
-	var $hasMany = array(
-		'Galery' => array(
-			'className' => 'Galery',
-			'foreignKey' => 'user_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
+	var $hasMany = array('Galery');
+
+	var $validate = array(
+		'name' => array(
+			'rule' => 'notEmpty',
+			'message' => 'Probably, he or she has a name. What is it?'
+		),
+		'gender' => array(
+			'rule' => array('inList', array('female', 'male'))
 		)
 	);
-
 }
 ?>

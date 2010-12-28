@@ -68,7 +68,7 @@ class XmlTagHelper extends AppHelper
 		
 		if (!$close_me)
 		{
-			if (!$escape)
+			if ($escape)
 				$conteudo = h($conteudo);
 			$t .= $conteudo . $this->etag($tag);
 		}
@@ -78,22 +78,12 @@ class XmlTagHelper extends AppHelper
 	
 	function __call($n, $args)
 	{
-		$n_camelo = Inflector::camelize($n);
-		
 		if (substr($n, -3) == 'Dry')
 		{
-			$n = substr($n, 0, -4);
-			switch(count($args))
-			{
-				case 1:
-					list($conteudo) = $args;
-					return $this->{$n}(null, null, $conteudo);
-				break;
-			
-				default:
-					return $this->{$n}(null, null);
-				break;
-			}
+			$n = substr($n, 0, -3);
+			array_unshift($args, array());
+			array_unshift($args, array());
+			return $this->dispatchMethod($n, $args);
 		}
 		
 		if (method_exists($this, 's' . $n))
@@ -115,7 +105,7 @@ class XmlTagHelper extends AppHelper
 			
 			if (!$close_me)
 			{
-				if(!$escape)
+				if($escape)
 					$conteudo = h($conteudo);
 				$t .= $conteudo . $this->{'e' . $n}($atributos, $opcoes);
 			}

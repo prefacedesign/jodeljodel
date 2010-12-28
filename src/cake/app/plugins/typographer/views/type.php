@@ -11,12 +11,16 @@ class TypeView extends View
 		$helpers_list = $helpers;
 		foreach ($helpers_list as $helper => $params)
 		{
-			if (is_string($helper) && strpos($helper,'*') !== false)   //tem que ver se pode mexer assim no índice do foreach, acho que sim
+			if (is_string($helper) && strpos($helper,'*') !== false)   //tem que ver se pode mexer assim no ï¿½ndice do foreach, acho que sim
 			{
 				$real_helper = str_replace('*', $c_layout_scheme, $helper);
 				$helpers[$real_helper] = $params; //reformula o vetor colocando com o nome verdadeiro e os parametros
 				unset($helpers[$helper]); //desseta a chave que tem o asterisco
 				$helper = $real_helper;
+			}
+			else {
+				unset($helpers[$helper]);
+				$helpers[$helper] = $params;
 			}
 			
 			$res = array_search($helper, $helpers); // tira a string simples se ela existir
@@ -39,7 +43,7 @@ class TypeView extends View
 				if (isset($loaded_helpers[$helper_name]))
 				{
 					$loaded_helpers[$helper['name']] =& $loaded_helpers[$helper_name];
-					if (isset($loaded[$parent])) //se estamos carregando helpers para helpers, temos também que mudar o nome do helper para o helper filho
+					if (isset($loaded[$parent])) //se estamos carregando helpers para helpers, temos tambï¿½m que mudar o nome do helper para o helper filho
 					{
 						$loaded[$parent]->{$helper['name']} =& $loaded_helpers[$helper_name];
 					}

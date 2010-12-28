@@ -211,15 +211,13 @@ Autocompleter.Base = Class.create({
   markPrevious: function() {
     if(this.index > 0) this.index--;
       else this.index = this.entryCount-1;
-	if(this.getEntry(this.index).cumulativeOffset().top < document.viewport.getScrollOffsets().top)
-      this.getEntry(this.index).scrollIntoView(true);
+    this.getEntry(this.index).scrollIntoView(true);
   },
 
   markNext: function() {
     if(this.index < this.entryCount-1) this.index++;
       else this.index = 0;
-	if(this.getEntry(this.index).cumulativeOffset().top+this.getEntry(this.index).getHeight() > document.viewport.getScrollOffsets().top+document.viewport.getHeight())
-	  this.getEntry(this.index).scrollIntoView(false);
+    this.getEntry(this.index).scrollIntoView(false);
   },
 
   getEntry: function(index) {
@@ -266,7 +264,7 @@ Autocompleter.Base = Class.create({
 
   updateChoices: function(choices) {
     if(!this.changed && this.hasFocus) {
-      this.update.update(choices);
+      this.update.innerHTML = choices;
       Element.cleanWhitespace(this.update);
       Element.cleanWhitespace(this.update.down());
 
