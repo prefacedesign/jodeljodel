@@ -115,8 +115,7 @@
  *
  * 
  */
- 
- App::import('Config', 'Status.config');
+ App::import('Config', 'Status.sta_config');
  
 //@todo: change the name of the behavior to StaStatus behavior
  

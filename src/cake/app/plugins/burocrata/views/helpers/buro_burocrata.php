@@ -38,7 +38,6 @@ class BuroBurocrataHelper extends XmlTagHelper
 	public function insertForm($modelClassName, $typeParams = array())
 	{
 		$type= am(BuroBurocrataHelper::$defaultSupertype, 'form', $typeParams);
-		
 		list($plugin, $model_alias) = pluginSplit($modelClassName);
 		
 		$View = &$this->_getView();
@@ -226,6 +225,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$options['close_me'] = false;
 		
 		$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultContainerClass);
+		$htmlAttributes = $this->addClass($htmlAttributes, 'buro_form');
 		$htmlAttributes['id'] = 'frm' . $options['baseID'];
 		
 		if($options['data'])
