@@ -473,27 +473,27 @@
 	
 	$this->Decorator->rule(
 		'table.dashboard th.col_2', array(
-			'width' => $hg->size(array('M' => 1, 'u' => (-$cell_padding_right - $cell_padding_left - 2 * $border_width)))
+			'width' => $hg->size(array('M' => 1, 'u' => (-$cell_padding_right - $cell_padding_left - $border_width)))
 	));
 	
 	$this->Decorator->rule(
 		'table.dashboard th.col_3', array(
-			'width' => $hg->size(array('M' => 4, 'u' => (-$cell_padding_right - $cell_padding_left - 2 * $border_width)))
+			'width' => $hg->size(array('M' => 4, 'u' => (-$cell_padding_right - $cell_padding_left - $border_width)))
 	));
 	
 	$this->Decorator->rule(
 		'table.dashboard th.col_4', array(
-			'width' => $hg->size(array('M' => 3, 'u' => (-$cell_padding_right - $cell_padding_left - 2 * $border_width)))
+			'width' => $hg->size(array('M' => 3, 'u' => (-$cell_padding_right - $cell_padding_left - $border_width)))
 	));
 	
 	$this->Decorator->rule(
 		'table.dashboard th.col_5', array(
-			'width' => $hg->size(array('M' => 1, 'u' => (-$cell_padding_right - $cell_padding_left - 2 * $border_width)))
+			'width' => $hg->size(array('M' => 1, 'u' => (-$cell_padding_right - $cell_padding_left - $border_width)))
 	));
 	
 	$this->Decorator->rule(
 		'table.dashboard th.col_6', array(
-			'width' => $hg->size(array('M' => 1, 'u' => (-$cell_padding_right - $cell_padding_left - 2 * $border_width)))
+			'width' => $hg->size(array('M' => 1, 'u' => (-$cell_padding_right - $cell_padding_left - $border_width)))
 	));
 	
 ?>

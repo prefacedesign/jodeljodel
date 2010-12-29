@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2010-12-09 12:40-0200\n"
+"POT-Creation-Date: 2010-12-29 15:13-0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -18,88 +18,172 @@ msgstr ""
 msgid "Backstage edit page: Editing a \""
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:12
+#: \plugins\backstage\views\back_contents\edit.ctp:23
 msgid "Backstage edit page: publish"
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:13
-msgid "Now, this document is published. You can %s."
+#: \plugins\backstage\views\back_contents\edit.ctp:25;30
+msgid "Backstage edit page: Could change publishing status: communication error."
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:17
-msgid "Backstage edit page: mark it as draft"
-msgstr ""
-
-#: \plugins\backstage\views\back_contents\edit.ctp:18
+#: \plugins\backstage\views\back_contents\edit.ctp:26
 msgid "Now, this document is hidden. You can %s."
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:32
+#: \plugins\backstage\views\back_contents\edit.ctp:28
+msgid "Backstage edit page: mark it as draft"
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:31
+msgid "Now, this document is published. You can %s."
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:55
 msgid "anchorList and"
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:34
+#: \plugins\backstage\views\back_contents\edit.ctp:57
 msgid "english"
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:35;47
+#: \plugins\backstage\views\back_contents\edit.ctp:58;70
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:59
 msgid "portuguese"
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:36
+#: \plugins\backstage\views\back_contents\edit.ctp:59
 msgid "japanese"
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:37
+#: \plugins\backstage\views\back_contents\edit.ctp:60
 msgid "javanese"
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:42
+#: \plugins\backstage\views\back_contents\edit.ctp:65
 msgid "This %s already has translations for %s."
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:46
+#: \plugins\backstage\views\back_contents\edit.ctp:69
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:58
 msgid "backstage edit page: Editing"
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:47
+#: \plugins\backstage\views\back_contents\edit.ctp:70
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:59
 msgid " the %s version."
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:51
+#: \plugins\backstage\views\back_contents\edit.ctp:74
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:63
 msgid "anchorList or"
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:53
+#: \plugins\backstage\views\back_contents\edit.ctp:76
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:65
 msgid "mark it as ready"
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:54
+#: \plugins\backstage\views\back_contents\edit.ctp:77
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:66
 msgid "remove it"
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:59
+#: \plugins\backstage\views\back_contents\edit.ctp:82
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:71
 msgid "Version marked as draft. You can %s."
 msgstr ""
 
-#: \plugins\burocrata\controllers\buro_burocrata_controller.php:103
-msgid "Nothing found."
-msgstr ""
-
-#: \plugins\burocrata\controllers\buro_burocrata_controller.php:144
+#: \plugins\burocrata\controllers\buro_burocrata_controller.php:264
 msgid "Request security field not defined"
 msgstr ""
 
-#: \plugins\burocrata\controllers\buro_burocrata_controller.php:155
+#: \plugins\burocrata\controllers\buro_burocrata_controller.php:275
 msgid "Security hash didn't match."
 msgstr ""
 
-#: \plugins\burocrata\controllers\buro_burocrata_controller.php:165
+#: \plugins\burocrata\controllers\buro_burocrata_controller.php:285
 msgid "Couldn't load model"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:205
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:259
 msgid "Save"
+msgstr ""
+
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:702
+msgid "Nothing found."
+msgstr ""
+
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:758
+msgid "Create a new item"
+msgstr ""
+
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:759
+msgid "Belongsto edit related data"
+msgstr ""
+
+#: \plugins\corktile\controllers\cork_corktiles_controller.php:16
+msgid "Your data are save"
+msgstr ""
+
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:21
+msgid "Localização no Site"
+msgstr ""
+
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:23
+msgid "Descrição"
+msgstr ""
+
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:54
+msgid "Este conteúdo tem apenas uma versão em %s."
+msgstr ""
+
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:94
+msgid "Você pode ainda criar uma versão em %s."
+msgstr ""
+
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:100
+msgid "Nesta coluna você pode %s uma das versões"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:3
+#: \plugins\dashboard\views\dash_dashboard\table_examples.ctp:4
+msgid "Backstage index page: Page title - Dashboard"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:18
+msgid "Dashboard - dashboard header: Type"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:19
+msgid "Dashboard - dashboard header: Status"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:20
+msgid "Dashboard - dashboard header: Name"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:21
+msgid "Dashboard - dashboard header: Extra info"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:22
+msgid "Dashboard - dashboard header: Created"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:23
+msgid "Dashboard - dashboard header: Modified"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:24
+msgid "Dashboard - dashboard header: Translations"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:29
+msgid "Dashboard types: "
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:30
+msgid "Dashboard status: "
 msgstr ""
 
 #: \plugins\person\views\elements\pers_person.ctp:17
@@ -226,8 +310,20 @@ msgstr ""
 msgid "To change the content of this page, edit: %s\n\t\tTo change its layout, edit: %s\n\t\tYou can also add some CSS styles for your pages at: %s"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:2
+#: \views\translate_strings\translate_strings.ctp:4
 msgid "Backstage edit page: Editing a \"Person.PersPerson\""
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:9
+msgid "Dashboard status: published"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:10
+msgid "Dashboard status: draft"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:11
+msgid "Dashboard types: Person"
 msgstr ""
 
 #: \webroot\test.php:88
