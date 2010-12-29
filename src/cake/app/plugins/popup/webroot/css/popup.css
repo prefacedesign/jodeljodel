@@ -1,0 +1,10 @@
+.caixa_popup{border: 2px solid black; background: white; padding: 10px; position: absolute; z-index: 100; width: 400px;}
+.caixa_popup .callbacks{float: right;}
+
+.carregando{background: url(/popup/img/load.gif) no-repeat center center; width: 20px; height: 20px;}
+
+.caixa_popup .carregando{position: absolute; top: 0; right: 0;}
+.caixa_popup .barra_de_progresso{height: 40px; background: #d8d9db; margin-top: 10px;}
+.caixa_popup .enchimento_da_barra{height: 40px; background: #009be8; width: 0;}
+
+.velatura_popup{background: black; position: fixed; width: 100%; height: 100%; z-index: 99; left: 0; top: 0;}
