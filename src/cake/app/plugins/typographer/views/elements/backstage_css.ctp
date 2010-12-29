@@ -380,11 +380,21 @@
 			'line-height' => $u->t($line_height)
 	));
 	
+	/** Some common parameters used in many rules
+	 */
+	$border_width = $hg->size(array('u'=> 1), false);
+	$outer_border = $u->t($border_width) . ' solid ' . $palette['text']->write();
+	$cell_padding_left  = $hg->size(array('m'=> 2),false);
+	$cell_padding_right = $hg->size(array('m'=> 1), false);
+	
 	$this->Decorator->rule(
 		'table.dashboard', array(
 			'border-spacing' => 0,
 			'border-collapse' => 'collapse',
-			'text-align' => 'left'
+			'text-align' => 'left',
+			'border-bottom' => $outer_border,
+			'border-top' => $outer_border,
+			'font-size' => $vg->size(array('u' => ($line_height * 11/18)))
 	));
 	
 	$this->Decorator->rule(
@@ -396,19 +406,94 @@
 	
 	$this->Decorator->rule(
 		'table.dashboard td, table.dashboard th', array(
-			'padding-left' => $hg->size(array('m'=> 2)),
-			'padding-right' => $hg->size(array('m'=> 2)),
-			'vertical-align' => 'text-top'
+			'padding-left' => $u->t($cell_padding_left),
+			'padding-right' => $u->t($cell_padding_right),
+			'padding-bottom' => $vg->size(array('m'=> 1.5)),
+			'vertical-align' => 'text-top',
+			'text-align' => 'left'
+	));
+	
+	$this->Decorator->rule(
+		'table.dashboard tr', array(
+			'border-left' => $outer_border,
+			'border-right' => $outer_border
+	));
+	
+	$this->Decorator->rule(
+		'tr.extra_info, tr.actions', array(
+			'display' => 'none'
+	));
+	
+	$this->Decorator->rule(
+		'tr.expanded.extra_info, tr.expanded.actions', array(
+			'display' => 'table-row'
+	));
+	
+	$this->Decorator->rule(
+		'tr.main_info.expanded', array(
+			'border-top' => $vg->size(array('u'=> 4)) . ' solid ' . $palette['internal_selection']->write()
+	));
+	
+	$this->Decorator->rule(
+		'table.dashboard tr.actions.expanded', array(
+			'border-bottom' => $vg->size(array('u'=> 4)) . ' solid ' . $palette['internal_selection']->write()
+	));
+	
+	$this->Decorator->rule(
+		'table.dashboard tr.expanded', array(
+			'border-left' => $hg->size(array('u'=> 4)) . ' solid ' . $palette['internal_selection']->write(),
+			'border-right' => $hg->size(array('u'=> 4)) . ' solid ' . $palette['internal_selection']->write()
+	));
+	
+	$this->Decorator->rule(
+		'table.dashboard tr.main_info, table.dashboard tr.actions', array(
+			'border-bottom' => $u->t($border_width) . ' dashed ' . $palette['text']->write()
 	));
 	
 	$this->Decorator->rule(
 		'table.dashboard td', array(
-			'padding-top' => $hg->size(array('m'=> 2))
+			'padding-top' => $vg->size(array('m'=> 2))
 	));
 	
 	$this->Decorator->rule(
 		'table.dashboard th', array(
-			'padding-top' => $hg->size(array('m'=> 1))
+			'padding-top' => $vg->size(array('m'=> 1.5)),
+			'border-right' => $u->t($border_width) . ' solid ' . $palette['control_box_fg']->write()
+	));
+	
+	$this->Decorator->rule(
+		'table.dashboard th.last_col', array(
+			'border-right' => $u->t($border_width) . ' solid ' . $palette['text']->write()
+	));
+	
+	$this->Decorator->rule(
+		'table.dashboard th.col_1', array(
+			'width' => $hg->size(array('M' => 1, 'm' => -2, 'u' => (-$cell_padding_right - $cell_padding_left - 2 * $border_width)))
+	));
+	
+	$this->Decorator->rule(
+		'table.dashboard th.col_2', array(
+			'width' => $hg->size(array('M' => 1, 'u' => (-$cell_padding_right - $cell_padding_left - 2 * $border_width)))
+	));
+	
+	$this->Decorator->rule(
+		'table.dashboard th.col_3', array(
+			'width' => $hg->size(array('M' => 4, 'u' => (-$cell_padding_right - $cell_padding_left - 2 * $border_width)))
+	));
+	
+	$this->Decorator->rule(
+		'table.dashboard th.col_4', array(
+			'width' => $hg->size(array('M' => 3, 'u' => (-$cell_padding_right - $cell_padding_left - 2 * $border_width)))
+	));
+	
+	$this->Decorator->rule(
+		'table.dashboard th.col_5', array(
+			'width' => $hg->size(array('M' => 1, 'u' => (-$cell_padding_right - $cell_padding_left - 2 * $border_width)))
+	));
+	
+	$this->Decorator->rule(
+		'table.dashboard th.col_6', array(
+			'width' => $hg->size(array('M' => 1, 'u' => (-$cell_padding_right - $cell_padding_left - 2 * $border_width)))
 	));
 	
 ?>
