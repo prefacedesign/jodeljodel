@@ -82,6 +82,12 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 				sprintf(__('Version marked as draft. You can %s.',true), $tmp));
 
 	echo $this->Bl->econtrolBox();
+	echo $this->Popup->caixaErro('erro',
+		array(
+			'titulo' => 'Erro: houve um problema ao tentar salvar o seu registro',
+			'conteudo' => 'Verifique os campos com problema no formulário.',
+		)
+	);
 	echo $buro->insertForm($fullModelName);
 	
 	

@@ -8,7 +8,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		'Typographer.*TypeBricklayer' => array(
 			'name' => 'Bl',
 			'receive_tools' => true
-		)
+		),
+		'Popup.Popup'
 	);
 
 	public $modelAlias;

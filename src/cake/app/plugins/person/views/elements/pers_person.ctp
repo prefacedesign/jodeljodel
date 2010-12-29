@@ -5,9 +5,16 @@ switch ($type[0])
 		if ($type[1] == 'form')
 		{
 			//debug($fullModelName);
+			//echo $javascript->codeBlock("$('exportar_planilha').observe('click', function(ev){ ev.stop(); abrePopup('planilha'); });");
+			
 			echo $buro->sform(array(), array(
 				'model' => $fullModelName,
-				'writeForm' => false
+				'writeForm' => false,
+				'callbacks' => array(
+					'onReject' => array('js' => '$("content").scrollTo(); abrePopup("erro");', 'contentUpdate' => 'replace')
+					//'onReject' => array('contentUpdate' => 'contentUpdate')
+					//'onReject' => array('js' => 'alert("teste");')
+				)
 			));
 			
 				echo $buro->input(array(),array(
@@ -77,7 +84,8 @@ switch ($type[0])
 					'instructions' => __('Form - PersPerson.cooperation_with_dinafon - instructions',true)
 				));
 			
-				echo $buro->submit(array(), array('label' => 'Salvar'));
+				
+				echo $buro->submitBox(array('label' => 'Salvar'));
 			echo $buro->eform();
 		}
 	break;

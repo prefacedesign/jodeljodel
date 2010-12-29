@@ -35,7 +35,10 @@ class BackContentsController extends BackstageAppController
         if (is_null($id))
         {
             if (method_exists($Model, 'createEmpty'))
+			{
                 $this->data = $Model->createEmpty();
+				$this->redirect('edit/'. $contentPlugin .'/'. $modelName .'/'. $Model->id);
+			}
             else
                 $this->data = null;
         }
