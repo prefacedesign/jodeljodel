@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2010-12-29 15:13-0200\n"
-"PO-Revision-Date: 2010-12-29 15:17-0300\n"
+"PO-Revision-Date: 2010-12-29 15:23-0300\n"
 "Last-Translator: Lucas Vignoli Reis <lucas@preface.com.br>\n"
 "Language-Team: Preface Design <preface@preface.com.br>\n"
 "MIME-Version: 1.0\n"
@@ -183,7 +183,7 @@ msgstr "Línguas"
 
 #: \plugins\dashboard\views\dash_dashboard\index.ctp:29
 msgid "Dashboard types: "
-msgstr ""
+msgstr "type error"
 
 #: \plugins\dashboard\views\dash_dashboard\index.ctp:30
 msgid "Dashboard status: "

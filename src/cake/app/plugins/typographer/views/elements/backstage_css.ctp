@@ -394,6 +394,7 @@
 			'text-align' => 'left',
 			'border-bottom' => $outer_border,
 			'border-top' => $outer_border,
+			'width' => '100%',
 			'font-size' => $vg->size(array('u' => ($line_height * 11/18)))
 	));
 	
