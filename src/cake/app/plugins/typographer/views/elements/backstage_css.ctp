@@ -497,4 +497,85 @@
 			'width' => $hg->size(array('M' => 1, 'u' => (-$cell_padding_right - $cell_padding_left - $border_width)))
 	));
 	
+	$arrow_size = $hg->size(array('m' => 3), false);
+	
+	$this->Decorator->rule(
+		'div.arrow', array(
+			'position' => 'relative'
+	));
+	
+	$this->Decorator->rule(
+		'.arrow a', array(
+			'border' => 0,
+			'position' => 'absolute',
+			'right' => $u->t(-$arrow_size+2),
+			'top' => $vg->size(array('u' => 3)),
+			'width' => $u->t($arrow_size),
+			'height' => $u->t($arrow_size),
+			'background-repeat' => 'no-repeat',
+			'background-color' => 'transparent',
+			'background-image' => "url('". $ig->url(
+				array(
+						'w' => $arrow_size,
+						'h' => $arrow_size,
+						'iw' => 101,
+						'ih' => 101,
+						'base_name' => 'dashboard_arrow',
+						'layers' => array(
+							array(
+								'type' => 'apply_color', 
+								'color' => $palette['bg']
+							),
+							array(
+								'type' => 'tint_image',
+								'path' => '/img/matrixes/dashboard_arrow_down_1.png',
+								'color' => $palette['button_bg']
+							),
+							array(
+								'type' => 'tint_image',
+								'path' => '/img/matrixes/dashboard_arrow_down_2.png',
+								'color' => $palette['text']
+							)
+						)
+					)
+				)	
+				.  "')"
+	));
+	
+	$this->Decorator->rule(
+		'div.arrow a:active, div.arrow a:hover', array(
+			'border' => 0
+	));
+	
+	$this->Decorator->rule(
+		'.expanded .arrow a', array(
+			'background-image' => "url('". $ig->url(
+				array(
+						'w' => $arrow_size,
+						'h' => $arrow_size,
+						'iw' => 101,
+						'ih' => 101,
+						'base_name' => 'dashboard_arrow_up',
+						'layers' => array(
+							array(
+								'type' => 'apply_color', 
+								'color' => $palette['bg']
+							),
+							array(
+								'type' => 'tint_image',
+								'path' => '/img/matrixes/dashboard_arrow_up_1.png',
+								'color' => $palette['button_bg']
+							),
+							array(
+								'type' => 'tint_image',
+								'path' => '/img/matrixes/dashboard_arrow_up_2.png',
+								'color' => $palette['text']
+							)
+						)
+					)
+				)	
+				.  "')"
+	));
+	
+	
 ?>

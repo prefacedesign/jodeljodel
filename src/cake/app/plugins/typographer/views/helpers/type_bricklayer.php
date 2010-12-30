@@ -237,7 +237,8 @@ class TypeBricklayerHelper extends AppHelper
 	
 	function anchor($attr = array(), $options = array(), $name = '')
 	{
-		$attr['href'] = Router::url($options['url']);
+		if (isset($options['url']))
+			$attr['href'] = Router::url($options['url']);
 		
 		return $this->a($attr, $options, $name);
 	}

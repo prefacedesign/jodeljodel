@@ -1,4 +1,6 @@
 <?php
+
+
 echo $bl->sdiv(array('id' => 'main_column'));
 
 	echo $bl->sdiv(array('id' => 'header'));

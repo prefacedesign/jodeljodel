@@ -24,6 +24,11 @@
 		{
 			$this->data = $this->paginate('DashDashboardItem');
 		}
+		
+		function deleteItem($id)
+		{
+			
+		}
 	}
 	
 ?>
