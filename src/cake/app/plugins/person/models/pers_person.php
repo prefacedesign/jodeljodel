@@ -1,7 +1,9 @@
 <?php
 class PersPerson extends PersonAppModel {
 	var $name = 'PersPerson';
-	var $validate = array(
+	var $validate = array();
+	
+	/*var $validate = array(
 		'auth_author_id' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
@@ -22,7 +24,44 @@ class PersPerson extends PersonAppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-	);
+		'surname' => array
+		(
+			'required' => array(
+				'rule' => 'notEmpty',
+				'allowEmpty' => false,
+				'required' => true,
+				//'message' => __("PersPerson validation: surname.", true),
+				'on' => 'update'
+			)
+		)
+	);*/
+	
+	function __construct()
+	{
+		parent::__construct();
+		$this->validate = array(
+			'surname' => array
+			(
+				'required' => array(
+					'rule' => 'notEmpty',
+					'allowEmpty' => false,
+					'required' => true,
+					'message' => __('PersPerson validation: surname.', true),
+					'on' => 'update'
+				)
+			),
+			'name' => array
+			(
+				'required' => array(
+					'rule' => 'notEmpty',
+					'allowEmpty' => false,
+					'required' => true,
+					'message' => __('PersPerson validation: name.', true),
+					'on' => 'update'
+				)
+			)
+		);
+	}
 	
 	var $actsAs = array('Dashboard.DashDashboardable', 'Status.Status' => array('publishing_status'));
 	

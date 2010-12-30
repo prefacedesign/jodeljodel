@@ -4,7 +4,6 @@ App::import('Model','Status.StaNoticia');
 class StaNoticiaTestCase extends CakeTestCase {
     var $fixtures = array('plugin.status.sta_noticia');
 	
-	
 	function testSetStatus() 
 	{
         $this->StaNoticia =& ClassRegistry::init('StaNoticia');

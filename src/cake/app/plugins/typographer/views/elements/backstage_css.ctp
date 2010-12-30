@@ -1,5 +1,91 @@
 <?php //aqui vão as rules de CSS 
 	
+//.caixa_popup{border: 2px solid black; background: white; padding: 10px; position: absolute; z-index: 100; width: 400px;}
+//.caixa_popup .callbacks{float: right;}
+
+//.carregando{background: url(/popup/img/load.gif) no-repeat center center; width: 20px; height: 20px;}
+
+//.caixa_popup .carregando{position: absolute; top: 0; right: 0;}
+//.caixa_popup .barra_de_progresso{height: 40px; background: #d8d9db; margin-top: 10px;}
+//.caixa_popup .enchimento_da_barra{height: 40px; background: #009be8; width: 0;}
+
+//.velatura_popup{background: black; position: fixed; width: 100%; height: 100%; z-index: 99; left: 0; top: 0;}
+
+	$this->Decorator->rule(
+		'.caixa_popup', array(
+			'z-index' => '100',
+			'border' => '2px solid black',
+			'position' => 'absolute',
+			'width' => $vg->size(array('M' => 7, 'g' => -1)),
+			'padding' => $hg->size(array('g' => 1, 'm' => 1)) . ' 0'
+	));
+	
+	$this->Decorator->rule(
+		'.caixa_popup h2', array(
+			'font-size' => $u->t($line_height * 13/18),
+			'font-weight' => 'bold',
+			'text-transform' => 'uppercase',
+			'letter-spacing' => '0.135ex',
+			'margin-bottom' => $vg->size(array('g' => 1))
+	));
+	
+	$this->Decorator->rule(
+		'.caixa_popup callbacks', array(
+			'margin-top' => $vg->size(array('g' => 2))
+	));
+	
+	$this->Decorator->rule(
+		'a.link_button', array(
+			'background-color' => $palette['button_bg']->write(),
+			'height' => $vg->size(array('g' => 1.3)),
+			'border' => '1px solid black !important',
+			'border-radius' => '5px',
+			'-webkit-border-radius' => '5px',
+			'-moz-border-radius' => '5px',
+			'display' => 'block',
+			'float' => 'left',
+			'text-align' => 'center',
+			'padding-top' => $vg->size(array('m' => 1)),
+			'color' => $palette['text']->write(),
+			'margin-right' => $hg->size(array('m' => 2)),
+	));
+	
+	$this->Decorator->rule(
+		'a.link_button:visited', array(
+			'color' => $palette['text']->write(),
+	));
+	
+	$this->Decorator->rule(
+		'a.link_button:hover', array(
+			'background-color' => $palette['hover_button_bg']->write(),
+			'color' => $palette['text']->write(),
+	));
+	
+	$this->Decorator->rule(
+		'a.link_button:active', array(
+			'color' => $palette['bg']->write(),
+			'background-color' => $palette['active_button_bg']->write(),
+	));
+	
+	
+	
+	
+	$this->Decorator->rule(
+		'.caixa_erro', array(
+			'background' => $palette['input_error_bg']->write(),
+	));
+	
+	$this->Decorator->rule(
+		'.velatura_popup', array(
+			'background' => 'black',
+			'position' => 'fixed',
+			'width' => '100%',
+			'height' => '100%',
+			'z-index' => '99',
+			'left' => 0,
+			'top' => 0
+	));
+	
 	$this->Decorator->rule(
 		'.box_container', array(
 			'float' => 'left'
@@ -286,7 +372,7 @@
 	$this->Decorator->rule(
 		'.buro_form div.input', array(
 			'border-top' => $u->t(1) . ' solid ' . $palette['text'] ->write(),
-			'margin-bottom' => $vg->size(array('g' => 2))
+			'padding-bottom' => $vg->size(array('g' => 2))
 	));
 	
 	$this->Decorator->rule(
@@ -356,6 +442,49 @@
 	$this->Decorator->rule(
 		'button', array(
 			''
+	));
+	
+	$this->Decorator->rule(
+		'button.submit.buro', array(
+			'-moz-border-radius'  => '5px',
+			'border-radius' => '5px',
+			'-webkit-border-radius' => '5px',
+			'background-color' => $palette['button_bg']->write(),
+			'color' => $palette['text']->write(),
+			'float' => 'left',
+			'font-style' => 'normal !important',
+			'font-weight' => 'bold',
+			'font-size' => $u->t($line_height * 13/18),
+			'padding-left' => $vg->size(array('m' => 2)),
+			'padding-right' => $vg->size(array('m' => 2)),
+			'text-align' => 'left',
+			'text-transform' => 'uppercase',
+			'height' => $hg->size(array('g' => 1.4)),
+			'margin' => $vg->size(array('m' => 5)) . ' 0 ' . $vg->size(array('m' => 2)) . ' 0',
+			'letter-spacing' => '0.1ex'
+	));
+	
+	$this->Decorator->rule(
+		'.error-message', array(
+			'color' => $palette['error_message']->write(),
+			'font-size' => $u->t($line_height * 11/18),
+			'font-weight' => 'bold',
+			'font-style' => 'italic'
+	));
+	
+	$this->Decorator->rule(
+		'.subinput input.form-error', array(
+			'background-color' => $palette['input_error_bg']->write(),
+			'color' => $palette['input_error_fg']->write(),
+	));
+	$this->Decorator->rule(
+		'.input.error', array(
+			'background-color' => $palette['input_error_bg']->write(),
+	));
+	
+	$this->Decorator->rule(
+		'.error label', array(
+			'color' => $palette['error_message']->write(),
 	));
 
 	$this->Decorator->rule(

@@ -10,11 +10,11 @@ class StaAlunoTestCase extends CakeTestCase {
 		$this->StaAluno =& ClassRegistry::init('StaAluno');
 		$this->StaCategoria =& ClassRegistry::init('StaCategoria');
 		$result = $this->StaCategoria->setActiveStatuses(array('status' => array('ativo')));
-		debug($result);
+		//debug($result);
 		//$result = $this->StaCategoria->find('all');
 		//debug($result);
 		$result = $this->StaAluno->find('all');
-		debug($result);
+		//debug($result);
 		$expected = array(
 			'0' => array(
 				'StaAluno' => array('id' => '1','nome' => 'Paulo', 'categoria_id' => '1'),

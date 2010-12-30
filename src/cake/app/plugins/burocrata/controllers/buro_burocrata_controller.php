@@ -292,6 +292,7 @@ class BuroBurocrataController extends BurocrataAppController
 			
 			$this->set('model_name', $this->model_name);
 			$this->set('model_plugin', $this->model_plugin);
+			$this->set('fullModelName', $model_class_name);
 			
 			$var = $this->{$model_alias};
 		}

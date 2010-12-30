@@ -21,7 +21,8 @@ class BackstageAppController extends AppController
 		),
 		'Burocrata.*BuroBurocrata' => array(
 			'name' => 'Buro'
-		)
+		),
+		'Popup.Popup'
 	);
 	var $layout = 'backstage';
 	

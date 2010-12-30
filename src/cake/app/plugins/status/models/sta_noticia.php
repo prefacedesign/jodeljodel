@@ -15,6 +15,7 @@ class StaNoticia extends StatusAppModel
 		)
 	);
 	*/
+	
 	/*
 	var $actsAs = array(
   		'Status.Status' => array(

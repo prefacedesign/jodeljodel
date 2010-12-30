@@ -20,6 +20,7 @@ $palette = array(
 	'internal_selection' => new Color(103, 99,177),
 	'selection'			 => new Color(214,229,255),
 	'button_bg'			 => new Color(213,255,159),
+	'hover_button_bg'	 => new Color(234,255,207),
 	'active_button_bg'   => new Color(  0,  0,  0),
 	'wrong_tag_bg'		 => new Color(255,223,199),
 	'tag_bg'			 => new Color(229,235,213),
