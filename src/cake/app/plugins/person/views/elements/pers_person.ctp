@@ -3,17 +3,13 @@ switch ($type[0])
 {
 	case 'buro':
 		if ($type[1] == 'form')
-		{
-			//debug($fullModelName);
-			//echo $javascript->codeBlock("$('exportar_planilha').observe('click', function(ev){ ev.stop(); abrePopup('planilha'); });");
-			
+		{	
 			echo $buro->sform(array(), array(
 				'model' => $fullModelName,
 				'writeForm' => false,
 				'callbacks' => array(
-					'onReject' => array('js' => '$("content").scrollTo(); abrePopup("erro");', 'contentUpdate' => 'replace')
-					//'onReject' => array('contentUpdate' => 'contentUpdate')
-					//'onReject' => array('js' => 'alert("teste");')
+					'onReject' => array('js' => '$("content").scrollTo(); showPopup("error");', 'contentUpdate' => 'replace'),
+					'onSave' => array('js' => '$("content").scrollTo(); showPopup("success");'),
 				)
 			));
 			

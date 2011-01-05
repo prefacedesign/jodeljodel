@@ -12,7 +12,7 @@
 //.velatura_popup{background: black; position: fixed; width: 100%; height: 100%; z-index: 99; left: 0; top: 0;}
 
 	$this->Decorator->rule(
-		'.caixa_popup', array(
+		'.box_popup', array(
 			'z-index' => '100',
 			'border' => '2px solid black',
 			'position' => 'absolute',
@@ -21,7 +21,7 @@
 	));
 	
 	$this->Decorator->rule(
-		'.caixa_popup h2', array(
+		'.box_popup h2', array(
 			'font-size' => $u->t($line_height * 13/18),
 			'font-weight' => 'bold',
 			'text-transform' => 'uppercase',
@@ -30,18 +30,26 @@
 	));
 	
 	$this->Decorator->rule(
-		'.caixa_popup callbacks', array(
-			'margin-top' => $vg->size(array('g' => 2))
+		'.box_popup .callbacks', array(
+			'margin-top' => $vg->size(array('g' => 1.5))
+	));
+	$this->Decorator->rule(
+		'.box_popup .callbacks a', array(
+			'padding-left' => $hg->size(array('m' => 2)),
+			'padding-right' => $hg->size(array('m' => 2)),
+			'text-transform' => 'uppercase',
+			'letter-spacing' => '0.13ex',
+			'font-weight' => 'bold'	
 	));
 	
 	$this->Decorator->rule(
 		'a.link_button', array(
 			'background-color' => $palette['button_bg']->write(),
-			'height' => $vg->size(array('g' => 1.3)),
+			'height' => $vg->size(array('g' => 1.2)),
 			'border' => '1px solid black !important',
-			'border-radius' => '5px',
-			'-webkit-border-radius' => '5px',
-			'-moz-border-radius' => '5px',
+			'border-radius' => '7px',
+			'-webkit-border-radius' => '7px',
+			'-moz-border-radius' => '7px',
 			'display' => 'block',
 			'float' => 'left',
 			'text-align' => 'center',
@@ -71,12 +79,17 @@
 	
 	
 	$this->Decorator->rule(
-		'.caixa_erro', array(
-			'background' => $palette['input_error_bg']->write(),
+		'.error_box', array(
+			'background' => $palette['error_popin']->write(),
 	));
 	
 	$this->Decorator->rule(
-		'.velatura_popup', array(
+		'.success_box', array(
+			'background' => $palette['normal_popin']->write(),
+	));
+	
+	$this->Decorator->rule(
+		'.popup_maya_veil', array(
 			'background' => 'black',
 			'position' => 'fixed',
 			'width' => '100%',

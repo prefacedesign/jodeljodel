@@ -211,7 +211,7 @@ class StatusBehavior extends ModelBehavior
 			$data = array();
 			$data[$Model->alias]['id'] = $id;
 			$data[$Model->alias][$this->__settings[$Model->alias][$index]['field']] = $option;
-			if (!$Model->save($data))
+			if (!$Model->save($data, array('validate' => false)))
 				return false;
 		}
 		return true;

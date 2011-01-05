@@ -3,39 +3,6 @@ class PersPerson extends PersonAppModel {
 	var $name = 'PersPerson';
 	var $validate = array();
 	
-	/*var $validate = array(
-		'auth_author_id' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'img_image_id' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'surname' => array
-		(
-			'required' => array(
-				'rule' => 'notEmpty',
-				'allowEmpty' => false,
-				'required' => true,
-				//'message' => __("PersPerson validation: surname.", true),
-				'on' => 'update'
-			)
-		)
-	);*/
-	
 	function __construct()
 	{
 		parent::__construct();
