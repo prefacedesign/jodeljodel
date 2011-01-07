@@ -352,6 +352,14 @@
 	));
 	
 	$this->Decorator->rule(
+		'.control_box .alternative_option',
+		array(
+			'float' => 'left',
+			'margin' => $vg->size(array('m' => 6)) . ' 0 ' . $vg->size(array('m' => 2)) . ' ' . $vg->size(array('m' => 1)),
+		)
+	);
+	
+	$this->Decorator->rule(
 		'.control_box a',
 		array(
 			'color' => $palette['control_box_fg']->write(),
