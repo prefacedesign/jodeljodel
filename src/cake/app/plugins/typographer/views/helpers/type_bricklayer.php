@@ -212,7 +212,7 @@ class TypeBricklayerHelper extends AppHelper
 	function tag($tag, $attr = null, $options = null, $content = null)
 	{
 		$standard_options = array();
-		$standard_options['escape'] = true;
+		$standard_options['escape'] = false;
 		$standard_options['close_me'] = empty($content);
 		
 		$options = am($standard_options, $options);
@@ -226,7 +226,7 @@ class TypeBricklayerHelper extends AppHelper
 		
 		if (!$close_me)
 		{
-			if ($escape)
+			if (isset($options['escape']) && $options['escape'])
 				$content = h($content);
 			$t .= $content . $this->eTag($tag);
 		}
@@ -670,7 +670,7 @@ class TypeBricklayerHelper extends AppHelper
 		if (method_exists($this, 's' . $n))
 		{ //@todo Make a class of it
 			@list($attr, $options, $content) = $args;
-			$standard_options = array('escape' => true, 'close_me' => false);
+			$standard_options = array('escape' => false, 'close_me' => false);
 			$options = am($standard_options, $options);
 			extract($options);
 			

@@ -339,7 +339,7 @@
 	));
 	
 	$this->Decorator->rule(
-		'.control_box a',
+		'.dashboard th a, .control_box a',
 		array(
 			'color' => $palette['control_box_fg']->write(),
 			'border-color' =>  $palette['control_box_fg']->write()
@@ -347,7 +347,7 @@
 	);
 	
 	$this->Decorator->rule(
-		'.control_box a:visited',
+		'.dashboard th a:visited, .control_box a:visited',
 		array(
 			'color' => $palette['control_box_fg']->write(),
 			'border-color' =>  $palette['control_box_fg']->write()			
@@ -355,7 +355,7 @@
 	);
 	
 	$this->Decorator->rule(
-		'.control_box a:hover, .control_box a:active',
+		'.dashboard th a:hover, .dashboard th a:active, .control_box a:hover, .control_box a:active',
 		array(
 			'color' => $palette['control_box_bg']->write(),
 			'background-color' => $palette['control_box_fg']->write(),
@@ -389,6 +389,35 @@
 			'font-size' => $u->t($line_height * 11/18),
 			'font-style' => 'italic',
 			'display'	=> 'block'
+	));
+	
+	$padding_left = $hg->size(array('m' => 0.75), false);
+	$this->Decorator->rule(
+		'.pagination span', array(
+			'display' => 'block',
+			'float' => 'left',
+			'text-align' => 'right',
+			'margin-left' => $hg->size(array('m' => 0.75)),
+			'min-width' => $hg->size(array('m' => 4.5, 'u' => $u->t(-$padding_left))),
+			'padding' => $hg->size(array('m' => 0.5)) . ' ' . $u->t( $padding_left),
+			'border' => $hg->size(array('u' => 1)) . ' solid ' .  $palette['menu_border']->write(),
+			'font-weight' => 'bold'
+	));
+	
+	$this->Decorator->rule(
+		'.pagination span.current', array(
+			'border-color' => $palette['internal_selection']->write(),
+			'background-color' => $palette['internal_selection']->write(),
+			'background-color' => $palette['internal_selection']->write(),
+	));
+	
+	
+	
+	$this->Decorator->rule(
+		'body div.pagination span a, body div.pagination span a:hover, body div.pagination span a:visited, body div.pagination span a:hover', array(
+			'border' => 0,
+			'color' => $palette['text']->write(),
+			'background' => 'transparent'
 	));
 	
 	$border_size = 1;
@@ -527,6 +556,15 @@
 			'font-size' => $vg->size(array('u' => ($line_height * 11/18)))
 	));
 	
+	//First IE specific:
+	if ($browserInfo['name'] == 'Internet Explorer' && $browserInfo['version'] < 9)
+	{
+		$this->Decorator->rule(
+			'table.dashboard', array(
+				'table-layout' => 'fixed',
+		));
+	}
+	
 	$this->Decorator->rule(
 		'table.dashboard th', array(
 			'background-color' => $palette['control_box_bg']->write(),
@@ -626,6 +664,11 @@
 			'width' => $hg->size(array('M' => 1, 'u' => (-$cell_padding_right - $cell_padding_left - $border_width)))
 	));
 	
+	$this->Decorator->rule(
+		'table.dashboard th.col_7', array(
+			'width' => $hg->size(array('M' => 1, 'm' => -2, 'u' => (-$cell_padding_right - $cell_padding_left - 2 * $border_width)))
+	));
+	
 	$arrow_size = $hg->size(array('m' => 3), false);
 	
 	$this->Decorator->rule(
@@ -706,5 +749,30 @@
 				.  "')"
 	));
 	
+	$this->Decorator->rule(
+		'table.dashboard a.link_button', array(
+			'font-size' => $u->t($line_height * 13/18),
+			'padding-left' => $hg->size(array('m' => 1)),
+			'padding-right' => $hg->size(array('m' => 1))
+	));
+	
+	$this->Decorator->rule(
+		'table.dashboard tr.actions td, table.dashboard tr.actions td *', array(
+			'vertical-align' => 'text-bottom'
+	));
+	
+	$this->Decorator->rule(
+		'table.dashboard tr.actions td, table.dashboard tr.actions div', array(
+			'position' => 'relative',
+			'height' => '100%',
+			'bottom' => $hg->size(array('m' => 0.8))
+	)); 
+	
+	$this->Decorator->rule(
+		'table.dashboard th', array(
+			'font-weight' => 'bold',
+			'text-transform' => 'uppercase',
+			'letter-spacing' => '0.135ex'
+	));
 	
 ?>

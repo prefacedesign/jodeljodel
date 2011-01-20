@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2010-12-29 15:13-0200\n"
-"PO-Revision-Date: 2010-12-29 15:23-0300\n"
+"POT-Creation-Date: 2010-12-30 20:50-0200\n"
+"PO-Revision-Date: 2010-12-30 20:58-0300\n"
 "Last-Translator: Lucas Vignoli Reis <lucas@preface.com.br>\n"
 "Language-Team: Preface Design <preface@preface.com.br>\n"
 "MIME-Version: 1.0\n"
@@ -77,21 +77,25 @@ msgid " the %s version."
 msgstr " da versão em %s."
 
 #: \plugins\backstage\views\back_contents\edit.ctp:74
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:19
 #: \plugins\corktile\views\cork_corktiles\edit.ctp:63
 msgid "anchorList or"
 msgstr " ou "
 
 #: \plugins\backstage\views\back_contents\edit.ctp:76
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:21
 #: \plugins\corktile\views\cork_corktiles\edit.ctp:65
 msgid "mark it as ready"
 msgstr "declará-la pronta"
 
 #: \plugins\backstage\views\back_contents\edit.ctp:77
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:22
 #: \plugins\corktile\views\cork_corktiles\edit.ctp:66
 msgid "remove it"
 msgstr "removê-la"
 
 #: \plugins\backstage\views\back_contents\edit.ctp:82
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:27
 #: \plugins\corktile\views\cork_corktiles\edit.ctp:71
 msgid "Version marked as draft. You can %s."
 msgstr "Versão marcada como rascunho. Você pode %s."
@@ -108,19 +112,19 @@ msgstr ""
 msgid "Couldn't load model"
 msgstr "Não foi possível carregar o model."
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:259
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:260
 msgid "Save"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:702
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:703
 msgid "Nothing found."
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:758
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:759
 msgid "Create a new item"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:759
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:760
 msgid "Belongsto edit related data"
 msgstr ""
 
@@ -148,124 +152,149 @@ msgstr ""
 msgid "Nesta coluna você pode %s uma das versões"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:3
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:42
 #: \plugins\dashboard\views\dash_dashboard\table_examples.ctp:4
 msgid "Backstage index page: Page title - Dashboard"
 msgstr "Painel do editor"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:18
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:58
 msgid "Dashboard - dashboard header: Type"
 msgstr "Tipo"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:19
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:59
 msgid "Dashboard - dashboard header: Status"
 msgstr "Status"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:20
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:60
 msgid "Dashboard - dashboard header: Name"
 msgstr "Nome"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:21
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:61
 msgid "Dashboard - dashboard header: Extra info"
 msgstr "Informação extra"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:22
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:62
 msgid "Dashboard - dashboard header: Created"
 msgstr "Criado"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:23
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:63
 msgid "Dashboard - dashboard header: Modified"
 msgstr "Editado"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:24
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:64
 msgid "Dashboard - dashboard header: Translations"
 msgstr "Línguas"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:29
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:76
 msgid "Dashboard types: "
 msgstr "type error"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:30
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:77
 msgid "Dashboard status: "
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:17
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:93
+msgid "Dashboard: Delete content"
+msgstr "Excluir conteúdo"
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:94
+msgid "Dashboard: Hide from public"
+msgstr "Tirar do ar"
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:95
+msgid "Dashboard: See on the page"
+msgstr "Ver na página"
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:96
+msgid "Dashboard: Edit"
+msgstr "Editar"
+
+#: \plugins\person\models\pers_person.php:49
+#, fuzzy
+msgid "PersPerson validation: surname."
+msgstr "Sobrenome"
+
+#: \plugins\person\models\pers_person.php:59
+msgid "PersPerson validation: name."
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:29
 msgid "Form - PersPerson name superfield"
 msgstr "Nome da pessoa"
 
-#: \plugins\person\views\elements\pers_person.ctp:18
+#: \plugins\person\views\elements\pers_person.ctp:30
 msgid "Form - PersPerson name superfield - instructions"
 msgstr " "
 
-#: \plugins\person\views\elements\pers_person.ctp:28
+#: \plugins\person\views\elements\pers_person.ctp:37
 msgid "Form - PersPerson.surname"
 msgstr "Sobrenome"
 
-#: \plugins\person\views\elements\pers_person.ctp:29
+#: \plugins\person\views\elements\pers_person.ctp:38
 msgid "Form - PersPerson.surname - instructions"
 msgstr "Preencha com o sobrenome completo, p.e., para José Carlos Penteado Lima: \"Penteado Lima\""
 
-#: \plugins\person\views\elements\pers_person.ctp:35
+#: \plugins\person\views\elements\pers_person.ctp:44
 msgid "Form - PersPerson.name"
 msgstr "Nome"
 
-#: \plugins\person\views\elements\pers_person.ctp:36
+#: \plugins\person\views\elements\pers_person.ctp:45
 msgid "Form - PersPerson.name - instructions"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
 
-#: \plugins\person\views\elements\pers_person.ctp:42
+#: \plugins\person\views\elements\pers_person.ctp:51
 msgid "Form - PersPerson.reference_name"
 msgstr "Como esta pessoa deve ser citada?"
 
-#: \plugins\person\views\elements\pers_person.ctp:43
+#: \plugins\person\views\elements\pers_person.ctp:52
 msgid "Form - PersPerson.reference_name - instructions"
 msgstr "Por exemplo, para José Carlos Penteado Lima: \"LIMA, J. C. P.\""
 
-#: \plugins\person\views\elements\pers_person.ctp:53
+#: \plugins\person\views\elements\pers_person.ctp:62
 msgid "Form - PersPerson.lattes_link"
 msgstr "Qual é o link para o seu currículo lattes?"
 
-#: \plugins\person\views\elements\pers_person.ctp:54
+#: \plugins\person\views\elements\pers_person.ctp:63
 msgid "Form - PersPerson.lattes_link - instructions"
 msgstr " "
 
-#: \plugins\person\views\elements\pers_person.ctp:60
+#: \plugins\person\views\elements\pers_person.ctp:69
 msgid "Form - PersPerson.research_fields"
 msgstr "Quais são os campos de pesquisa em que atua?"
 
-#: \plugins\person\views\elements\pers_person.ctp:61
+#: \plugins\person\views\elements\pers_person.ctp:70
 msgid "Form - PersPerson.research_fields - instructions"
 msgstr "P. e.: teoria de sistemas dinâmicos, dinâmica fônica."
 
-#: \plugins\person\views\elements\pers_person.ctp:67
+#: \plugins\person\views\elements\pers_person.ctp:76
 msgid "Form - PersPerson.profile"
 msgstr "Perfil"
 
-#: \plugins\person\views\elements\pers_person.ctp:68
+#: \plugins\person\views\elements\pers_person.ctp:77
 msgid "Form - PersPerson.profile - instructions"
 msgstr " "
 
-#: \plugins\person\views\elements\pers_person.ctp:74
+#: \plugins\person\views\elements\pers_person.ctp:83
 msgid "Form - PersPerson.cooperation_with_dinafon"
 msgstr "Como colabora com o Dinafon?"
 
-#: \plugins\person\views\elements\pers_person.ctp:75
+#: \plugins\person\views\elements\pers_person.ctp:84
 msgid "Form - PersPerson.cooperation_with_dinafon - instructions"
 msgstr "Descreva em poucas palavras como que a pessoa participa e/ou colabora com o Dinafon."
 
-#: \plugins\typographer\views\elements\backstage_layout.ctp:7
+#: \plugins\typographer\views\elements\backstage_layout.ctp:9
 msgid "Content management area"
 msgstr "Página administrativa"
 
-#: \plugins\typographer\views\elements\backstage_layout.ctp:12
+#: \plugins\typographer\views\elements\backstage_layout.ctp:14
 msgid "Logout"
 msgstr "Deslogar"
 
-#: \plugins\typographer\views\elements\backstage_layout.ctp:23
+#: \plugins\typographer\views\elements\backstage_layout.ctp:25
 msgid "Powered by Jodel Jodel"
 msgstr "Poderificado por Jodel Jodel"
 
-#: \plugins\typographer\views\elements\backstage_layout.ctp:26
+#: \plugins\typographer\views\elements\backstage_layout.ctp:28
 msgid "This site, alongside its public version, was developed by "
 msgstr "Este sítio, assim como sua versão pública, foi desenvolvido por "
 

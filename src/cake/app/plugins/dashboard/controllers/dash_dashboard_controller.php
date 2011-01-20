@@ -9,9 +9,9 @@
 		var $uses = array('Dashboard.DashDashboardItem');
 		var $paginate = array(
 			'DashDashboardItem' => array(
-				'limit' => 30,
+				'limit' => 5,
 				'contain' => false,
-				'order' => 'DashDashboardItem.modified DESC'
+				'order' => 'modified DESC'
 			)
 		);
 		

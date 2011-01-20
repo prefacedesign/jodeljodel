@@ -40,6 +40,16 @@ $html->scriptBlock("
 
 echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 	echo $this->Bl->h1Dry(__('Backstage index page: Page title - Dashboard', true));
+	
+	echo $this->Bl->sdiv(array('class' => 'pagination'));
+		echo $this->Paginator->first('<<');
+		if ($this->Paginator->hasPrev())
+			echo $this->Paginator->prev('<');	
+		echo $this->Paginator->numbers(array('modulus' => 9, 'separator' => ''));
+		if ($this->Paginator->hasPrev())
+			echo $this->Paginator->prev('>');
+		echo $this->Paginator->last('>>');
+	echo $this->Bl->ediv();
 
 	echo $this->Bl->ssmartTable(array('class' => 'dashboard'), array(
 		'automaticColumnNumberHeaderClasses' => true, 
@@ -55,13 +65,13 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 		)
 	));
 		echo $this->Bl->smartTableHeaderDry(array(
-			__('Dashboard - dashboard header: Type'      	,true), 
-			__('Dashboard - dashboard header: Status'    	,true), 
-			__('Dashboard - dashboard header: Name'      	,true),
-			__('Dashboard - dashboard header: Extra info'	,true),
-			__('Dashboard - dashboard header: Created'	 	,true),
-			__('Dashboard - dashboard header: Modified'	    ,true),
-			__('Dashboard - dashboard header: Translations' ,true),
+			__('Dashboard - dashboard header: Type',true), 
+			$this->Paginator->sort(__('Dashboard - dashboard header: Status',true),'status'), 
+			$this->Paginator->sort(__('Dashboard - dashboard header: Name',true),'name'),
+			__('Dashboard - dashboard header: Extra info',true),
+			$this->Paginator->sort(__('Dashboard - dashboard header: Created',true),'created'),
+			$this->Paginator->sort(__('Dashboard - dashboard header: Modified',true),'modified'),
+			__('Dashboard - dashboard header: Translations',true),
 		));
 		foreach ($this->data as $k => $item)
 		{
@@ -90,10 +100,12 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 				$$('tr.row_". $row_number . " .arrow a')[0].observe('click', function (ev) { ev.stop(); dashToggleExpandableRow(" . $row_number . ");});
 			", array('inline' => true));
 			
-			$links =   $this->Bl->anchor(array('class' => 'link_button'), array('url' => ''), __('Dashboard: Delete content', true))
-					 . $this->Bl->anchor(array('class' => 'link_button'), array('url' => ''), __('Dashboard: Tirar do ar', true))
-					 . $this->Bl->anchor(array('class' => 'link_button'), array('url' => ''), __('Dashboard: Ver na página', true))
-					 . $this->Bl->anchor(array('class' => 'link_button'), array('url' => ''), __('Dashboard: Editar', true));
+			$links = $this->Bl->divDry(
+					   $this->Bl->anchor(array('class' => 'link_button'), array('url' => ''), __('Dashboard: Delete content', true))
+					 . $this->Bl->anchor(array('class' => 'link_button'), array('url' => ''), __('Dashboard: Hide from public', true))
+			//		 . $this->Bl->anchor(array('class' => 'link_button'), array('url' => ''), __('Dashboard: See on the page', true))
+					 . $this->Bl->anchor(array('class' => 'link_button'), array('url' => ''), __('Dashboard: Edit', true))
+			);
 			
 			echo $this->Bl->smartTableRowDry(array(
 				array(array(),array('escape' => false, 'colspan' => 3),$links)

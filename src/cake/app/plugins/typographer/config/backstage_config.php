@@ -1,6 +1,8 @@
 <?php
+App::import('Vendor','Typographer.tools');
+App::import('Vendor','browserdetection');
 
-App::import('Vendors','Typographer.tools');
+$browserInfo = getBrowser();
 
 $palette = array(
 	'text' 	             => new Color(  0,  0,  0),
@@ -90,7 +92,8 @@ Configure::write('Typographer.Backstage.tools',
 						'u'  => $unit,
 						'line_height' => $line_height,
 						'ig' => $image_generator,
-						'palette' => $palette
+						'palette' => $palette,
+						'browserInfo' => $browserInfo
 					)
 				);
 Configure::write('Typographer.Backstage.used_automatic_classes', $used_automatic_classes);
