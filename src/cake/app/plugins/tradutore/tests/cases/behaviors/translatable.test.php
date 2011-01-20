@@ -355,8 +355,10 @@ class TranslatableTestCase extends CakeTestCase
 
         $this->assertFalse(empty($result));
         $this->assertEqual($expected, $result);
-
+		
+		
         $this->Play->Behaviors->attach('Tradutore.Translatable');
+		
     }
 
 
@@ -364,6 +366,7 @@ class TranslatableTestCase extends CakeTestCase
     {
         $expected = Configure::read('Tradutore.defaultLanguage');
         $result = $this->Play->getLanguage();
+		
 
         $this->assertEqual($expected, $result);
 
@@ -371,6 +374,7 @@ class TranslatableTestCase extends CakeTestCase
 
         $expected = 'uk';
         $result = $this->Play->getLanguage();
+
 
         $this->assertEqual($expected, $result);
     }
@@ -380,22 +384,62 @@ class TranslatableTestCase extends CakeTestCase
     {
         $this->Play->setLanguage('en');
         $query = array(
-            'fields' => array('Play.title', 'Play.year'),
+            'fields' => array('Play.id', 'Play.title', 'Play.year'),
             'conditions' => array('Play.id' => 2)
         );
 
         $expected = array(
-            'Play' => array('id' => 2, 'title' => 'King Lear', 'year' => 1605)
+            'Play' => array('id' => 2, 'language' => 'en', 'title' => 'King Lear', 'year' => 1605)
         );
         $result = $this->Play->find('first', $query);
-        
+		//debug($result);
+		//die;
+        $this->assertEqual($expected, $result);
+    }
+	
+	function testMultipleRecordsInSingleLanguageQuery()
+    {
+        $this->Play->setLanguage('en');
+        $query = array(
+            'fields' => array('Play.id', 'Play.title', 'Play.year')
+        );
+		
+		
+        $expected = array(
+			0 => array('Play' => array('id' => 1, 'language' => 'en', 'title' => 'Antony and Cleopatra', 'year' => 1606)),
+			1 => array('Play' => array('id' => 2, 'language' => 'en', 'title' => 'King Lear', 'year' => 1605)),
+			2 => array('Play' => array('id' => 3, 'language' => 'en', 'title' => 'The Comedy of Errors', 'year' => 1589)),
+			3 => array('Play' => array('id' => 4, 'language' => 'en', 'title' => 'The Tragedy of Julius Caesar', 'year' => 1599)),
+			4 => array('Play' => array('id' => 5, 'language' => 'en', 'title' => 'The Tragedy of Hamlet, Prince of Denmark', 'year' => 1600)),
+        );
+
+        $result = $this->Play->find('all', $query);
+        $this->assertEqual($expected, $result);
+    }
+	
+	function testMultipleRecordsInMultipleLanguageQuery()
+    {
+        //$this->Play->setLanguage('en');
+        $query = array(
+            'fields' => array('Play.id', 'Play.title', 'Play.year'),
+			'conditions' => array('Play.language' => array('en', 'uk'))
+        );
+		
+		
+        $expected = array(
+			0 => array('Play' => array('id' => 1, 'language' => 'en', 'title' => 'Antony and Cleopatra', 'year' => 1606)),
+			1 => array('Play' => array('id' => 2, 'language' => 'en', 'title' => 'King Lear', 'year' => 1605)),
+			2 => array('Play' => array('id' => 3, 'language' => 'en', 'title' => 'The Comedy of Errors', 'year' => 1589)),
+			3 => array('Play' => array('id' => 4, 'language' => 'en', 'title' => 'The Tragedy of Julius Caesar', 'year' => 1599)),
+			4 => array('Play' => array('id' => 5, 'language' => 'en', 'title' => 'The Tragedy of Hamlet, Prince of Denmark', 'year' => 1600)),
+        );
+
+        $result = $this->Play->find('all', $query);
+		debug($result);
+		die;
         $this->assertEqual($expected, $result);
     }
 
-
-    function XtestMultiLanguageQuery()
-    {
-    }
 
 }
 

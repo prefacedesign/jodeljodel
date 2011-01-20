@@ -82,12 +82,26 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 				sprintf(__('Version marked as draft. You can %s.',true), $tmp));
 
 	echo $this->Bl->econtrolBox();
-	echo $this->Popup->caixaErro('erro',
+	
+	
+	echo $this->Popup->popup('error',
 		array(
-			'titulo' => 'Erro: houve um problema ao tentar salvar o seu registro',
-			'conteudo' => 'Verifique os campos com problema no formulário.',
+			'type' => 'error',
+			'title' => __('Backstage edit page: Your data cannot be saved.',true),
+			'content' => __('Backstage edit page: Verify the fields marked with an error and try to save again.', true)
 		)
 	);
+	echo $this->Popup->popup('success',
+		array(
+			'type' => 'success',
+			'title' => __('Backstage edit page: Your data has been saved.',true),
+			'content' => __('Backstage edit page: Remember to publish the content to make it visible to everyone.',true),
+			'actions' => array('ok' => 'ok'),
+			'callback' => "if (acao=='ok') window.location = '/dashboard/dash_dashboard';"
+		)
+	);
+	
+	
 	echo $buro->insertForm($fullModelName);
 	
 	

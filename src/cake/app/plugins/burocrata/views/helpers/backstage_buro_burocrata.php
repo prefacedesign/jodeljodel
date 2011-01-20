@@ -27,6 +27,16 @@ class BackstageBuroBurocrataHelper extends BuroBurocrataHelper
 						sprintf(__('Version marked as draft. You can %s.',true), $tmp));
 				
 				echo $this->submit(array(), array('label' => $options['label']));
+				$a = $this->Bl->anchor(array(),array(
+						'url' => array('plugin' => 'dashboard', 'controller' => 'dash_dashboard')
+					),
+					__('Save box: cancel this change.',true)
+				);
+				echo $this->Bl->sp(array('class' => 'alternative_option'), array());
+					echo ', ';
+					echo __('anchorList or',true);
+					echo __($a,false);
+				echo $this->ep();
 				echo $this->Bl->floatBreak();
 			echo $this->Bl->econtrolBox();
 			echo $this->Bl->floatBreak();

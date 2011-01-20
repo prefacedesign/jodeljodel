@@ -5,36 +5,44 @@
 		var $View = null;
 		
 		/**
-		 * erro
+		 * popup
 		 *
-		 * Monta e retorna o element de popup. Essa função recebe um array com os 
-		 * seguintes parâmetros:
-		 *   titulo - (opcional) O título da caixa
-		 *   conteudo - (opcional) O conteúdo da caixa (que poderá ser qq código em HTML)
-		 *   acoes - (opcional) Um array com os links e seus respectivos valores que serão colocados na parte inferior
-		 *   callback - (opcional) Código javascript que receberá o link escolhido
+		 * Create and return the popup element. The array of options accept:
+		 *   type - (required) type of the popup (the options are: error, success)
+		 *   title - (not required) the title
+		 *   content - (not required) the content of the message (accept html code)
+		 *   actions - (not required) an array with the callbacks links 
+		 *   callback - (not required) javascript that recieve the link chosen
 		 *
 		 * @access	public
-		 * @param	string $id O ID do popup pelo qual será chamado
-		 * @param	array $parametros O array com os parâmetros de configuração
+		 * @param	string $id ID who identifies the opup
+		 * @param	array $options array with the options
 		 */
-		function caixaErro($id, $parametros = array())
+		function popup($id, $options = array())
 		{
 			$this->View =& ClassRegistry::getObject('View');
-			$parametros = am(
+			$options = am(
 				array(
-					'titulo' => '',
-					'conteudo' => '',
-					'acoes' => array('ok' => 'Ok'),
+					'type' => '',
+					'title' => '',
+					'content' => '',
+					'actions' => array('ok' => 'Ok'),
 					'callback' => ''
 				),
-				$parametros
+				$options
 			);
-			$parametros['id'] = $id;
-			$parametros['plugin'] = 'popup';
+			$options['id'] = $id;
+			$options['plugin'] = 'popup';
 			
-			return $this->View->element('caixa_erro', $parametros);
+			return $this->View->element('popup', $options);
 		}
+		
+		
+		
+		
+		
+		
+		//@todo: translate to english and test the Progress
 		
 		
 		/**

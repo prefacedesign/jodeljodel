@@ -195,8 +195,8 @@ class TranslatableBehavior extends ModelBehavior
         foreach ($query['fields'] as $i => $queryField) {
             // Search for translatable fields.
             $isTranslatableField = false;
-
             if (in_array($Model->name . '.' . $queryField, $translatableFields) === true) {
+				
                 // Relative translatable field name found on query.
                 $queryField = $Model->name . '.' . $queryField;
                 $isTranslatableField = true;
@@ -220,40 +220,66 @@ class TranslatableBehavior extends ModelBehavior
                 }
             }
         }
-        debug($query);
+        //debug($query);
 
         // Translatable fields are required.
         if (count($translatableFieldsInQuery) > 0) {
             // Include language field in query.
-            array_push($query['fields'], $__settings['languageField']);
+            array_push($query['fields'], $__settings['languageField']['translation']);
 
             // Include language condition.
             // Get translations for default language and current language selected.
-            if (!isset($query['conditions'][$__settings['languageField']])) {
-                $query['conditions'][$__settings['languageField']] = array($settings['language']);
+			//debug($__settings['languageField']['translatable']);
+            if (!isset($query['conditions'][$__settings['languageField']['translation']]) || !isset($query['conditions'][$__settings['languageField']['translatable']])) {
+                $query['conditions'][$__settings['languageField']['translation']] = $settings['language'];
             }
-            array_push($query['conditions'][$__settings['languageField']], $settings['defaultLanguage']);
-            debug($query);
-            die;
+			if (isset($query['conditions'][$__settings['languageField']['translatable']])) {
+				//debug($query['conditions'][$__settings['languageField']['translatable']]);
+                $query['conditions'][$__settings['languageField']['translation']] = $query['conditions'][$__settings['languageField']['translatable']];
+				unset($query['conditions'][$__settings['languageField']['translatable']]);
+            }
+            //array_push($query['conditions'][$__settings['languageField']], $settings['defaultLanguage']);
+            //debug($query);
+            //die;
         }
-        
+		
+		
+		
+        array_push($query['joins'] , $__settings['join']);
+		//debug($query);
+		
         /*debug($Model);*/
 
-        return $query;
+       return $query;
     }
 
     
     function afterFind(&$Model, $results, $primary)
     {
-        /*
+        $__settings = $this->__settings[$Model->name];
+        $settings   = $this->settings[$Model->name];
+		
         foreach ($results as $i => $result) {
-            if (isset($result[$Model->name])) {
-                $results[$i][$Model->alias]['...'] = ...
+			//debug($settings->className);
+			//debug($settings);
+			//debug($__settings);
+			//debug($Model->alias);
+			
+            if (isset($result[$settings['className']])) {
+				//debug($result[$settings['className']]);
+				foreach($result[$settings['className']] as $k => $field)
+				{
+					//debug($field);
+					//debug($k);
+					$results[$i][$Model->alias][$k] = $field;
+				}
             }
+			unset($results[$i][$settings['className']]);
+			
         }
-        */
-        debug($results);
-        die;
+        
+       // debug($results);
+        //die;
 
         return $results;
     }
