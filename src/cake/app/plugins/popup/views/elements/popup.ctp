@@ -37,6 +37,6 @@
 	$list_links = '{'.implode(',', $list_links).'}';
 	
 	echo $javascript->codeBlock("
-		new Popup('$id', $list_links).addCallback(function(acao){ $callback; });
+		new Popup('$id', $list_links).addCallback(function(action){ $callback; });
 	");
 ?>

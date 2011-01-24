@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2010-12-30 20:50-0200\n"
+"POT-Creation-Date: 2011-01-24 09:19-0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -74,7 +74,7 @@ msgid " the %s version."
 msgstr ""
 
 #: \plugins\backstage\views\back_contents\edit.ctp:74
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:19
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:19;37
 #: \plugins\corktile\views\cork_corktiles\edit.ctp:63
 msgid "anchorList or"
 msgstr ""
@@ -97,6 +97,22 @@ msgstr ""
 msgid "Version marked as draft. You can %s."
 msgstr ""
 
+#: \plugins\backstage\views\back_contents\edit.ctp:90
+msgid "Backstage edit page: Your data cannot be saved."
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:91
+msgid "Backstage edit page: Verify the fields marked with an error and try to save again."
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:97
+msgid "Backstage edit page: Your data has been saved."
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:98
+msgid "Backstage edit page: Remember to publish the content to make it visible to everyone."
+msgstr ""
+
 #: \plugins\burocrata\controllers\buro_burocrata_controller.php:264
 msgid "Request security field not defined"
 msgstr ""
@@ -107,6 +123,10 @@ msgstr ""
 
 #: \plugins\burocrata\controllers\buro_burocrata_controller.php:285
 msgid "Couldn't load model"
+msgstr ""
+
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:33
+msgid "Save box: cancel this change."
 msgstr ""
 
 #: \plugins\burocrata\views\helpers\buro_burocrata.php:260
@@ -149,133 +169,201 @@ msgstr ""
 msgid "Nesta coluna você pode %s uma das versões"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:42
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:43
 #: \plugins\dashboard\views\dash_dashboard\table_examples.ctp:4
 msgid "Backstage index page: Page title - Dashboard"
 msgstr ""
 
 #: \plugins\dashboard\views\dash_dashboard\index.ctp:58
+msgid "Dashboard: Add new content:"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:80
+msgid "or"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:81
+msgid "Dashboard: Close item list"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:85
+msgid "Dashboard: Open item list"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:110
+msgid "Dashboard: Notice of marking as draft success - TITLE"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:111
+msgid "Dashboard: Notice of marking as draft success - TEXT"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:118
+msgid "Dashboard: Notice of marking as draft failure - TITLE"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:119
+msgid "Dashboard: Notice of marking as draft failure - TEXT"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:125
+msgid "Dashboard: Notice of publishing success - TITLE"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:126
+msgid "Dashboard: Notice of publishing success - TEXT"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:133
+msgid "Dashboard: Notice of publishing failure - TITLE"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:134
+msgid "Dashboard: Notice of publishing failure - TEXT"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:140
+msgid "Dashboard: Notice of delete success - TITLE"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:141
+msgid "Dashboard: Notice of delete success - TEXT"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:148
+msgid "Dashboard: Notice of delete failure - TITLE"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:149
+msgid "Dashboard: Notice of delete failure - TEXT"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:169
 msgid "Dashboard - dashboard header: Type"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:59
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:170
 msgid "Dashboard - dashboard header: Status"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:60
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:171
 msgid "Dashboard - dashboard header: Name"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:61
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:172
 msgid "Dashboard - dashboard header: Extra info"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:62
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:173
 msgid "Dashboard - dashboard header: Created"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:63
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:174
 msgid "Dashboard - dashboard header: Modified"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:64
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:175
 msgid "Dashboard - dashboard header: Translations"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:76
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:188
 msgid "Dashboard types: "
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:77
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:189
 msgid "Dashboard status: "
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:93
-msgid "Dashboard: Delete content"
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:94
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:205
 msgid "Dashboard: Hide from public"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:95
-msgid "Dashboard: See on the page"
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:219
+msgid "Dashboard: Publish to the great public"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:96
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:234
+msgid "Dashboard: Delete content"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:254
 msgid "Dashboard: Edit"
 msgstr ""
 
-#: \plugins\person\models\pers_person.php:49
+#: \plugins\person\models\pers_person.php:16
 msgid "PersPerson validation: surname."
 msgstr ""
 
-#: \plugins\person\models\pers_person.php:59
+#: \plugins\person\models\pers_person.php:26
 msgid "PersPerson validation: name."
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:29
+#: \plugins\person\views\elements\pers_person.ctp:25
 msgid "Form - PersPerson name superfield"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:30
+#: \plugins\person\views\elements\pers_person.ctp:26
 msgid "Form - PersPerson name superfield - instructions"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:37
+#: \plugins\person\views\elements\pers_person.ctp:33
 msgid "Form - PersPerson.surname"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:38
+#: \plugins\person\views\elements\pers_person.ctp:34
 msgid "Form - PersPerson.surname - instructions"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:44
+#: \plugins\person\views\elements\pers_person.ctp:40
 msgid "Form - PersPerson.name"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:45
+#: \plugins\person\views\elements\pers_person.ctp:41
 msgid "Form - PersPerson.name - instructions"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:51
+#: \plugins\person\views\elements\pers_person.ctp:47
 msgid "Form - PersPerson.reference_name"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:52
+#: \plugins\person\views\elements\pers_person.ctp:48
 msgid "Form - PersPerson.reference_name - instructions"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:62
+#: \plugins\person\views\elements\pers_person.ctp:58
 msgid "Form - PersPerson.lattes_link"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:63
+#: \plugins\person\views\elements\pers_person.ctp:59
 msgid "Form - PersPerson.lattes_link - instructions"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:69
+#: \plugins\person\views\elements\pers_person.ctp:65
 msgid "Form - PersPerson.research_fields"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:70
+#: \plugins\person\views\elements\pers_person.ctp:66
 msgid "Form - PersPerson.research_fields - instructions"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:76
+#: \plugins\person\views\elements\pers_person.ctp:72
 msgid "Form - PersPerson.profile"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:77
+#: \plugins\person\views\elements\pers_person.ctp:73
 msgid "Form - PersPerson.profile - instructions"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:83
+#: \plugins\person\views\elements\pers_person.ctp:79
 msgid "Form - PersPerson.cooperation_with_dinafon"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:84
+#: \plugins\person\views\elements\pers_person.ctp:80
 msgid "Form - PersPerson.cooperation_with_dinafon - instructions"
+msgstr ""
+
+#: \plugins\popup\views\elements\popup.ctp:24
+msgid "Popup plugin "
 msgstr ""
 
 #: \plugins\typographer\views\elements\backstage_layout.ctp:9
@@ -351,7 +439,23 @@ msgid "Dashboard status: draft"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:11
-msgid "Dashboard types: Person"
+msgid "Dashboard types: person"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:12
+msgid "MODULE PersPerson human name"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:13
+msgid "MODULE NewNews human name"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:14
+msgid "Popup plugin success type"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:15
+msgid "Popup plugin notice type"
 msgstr ""
 
 #: \webroot\test.php:88

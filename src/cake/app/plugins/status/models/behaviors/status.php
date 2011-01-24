@@ -330,7 +330,9 @@ class StatusBehavior extends ModelBehavior
 	 * @todo Overwrite could be omitted. Now it demands a overwrite option to be sent.
 	 */
 	function setGlobalActiveStatuses($options = array())
-	{
+	{	
+		//@todo Overwrite the current configurations. NOT the default ones.
+		//@todo Allow for a pile of configurations. FIFO. For one to be able to set it and return to previous configuration.
 		$default_config = Configure::read('StatusBehavior.options');
 		foreach($options as $index => $data)
 		{
@@ -406,13 +408,12 @@ class StatusBehavior extends ModelBehavior
 					$queryData['conditions'][$Model->alias.'.'.$options['field']] = $options['active'];
 			}
 		}
-		
+	
 		if (!empty($sql_conditions))
 			$queryData['conditions'][] = $sql_conditions;
 		if (isset($oldSettings))
 			$this->__settings = $oldSettings;
 		return $queryData;
-		
 	}
 	
 }

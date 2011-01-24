@@ -40,6 +40,38 @@
  * ));
  *
  */
+ 
+ /** Tells JodelJodel about wich modules are installed in the current installation.
+  *  And provides some configuration of these modules.
+  */
+ Configure::write('jj.modules', array(
+		'person' => array(
+			'plugin' => 'person',
+			'prefix' => 'pers',
+			'model' => 'PersPerson',
+			'humanName' => 'MODULE PersPerson human name', //it will be translated
+			'plugged' => array('dashboard','backstage') //the tools it plugs into.
+		),
+		'new' => array(
+			'plugin' => 'new',
+			'prefix' => 'new',
+			'model' => 'NewNew',
+			'humanName' => 'MODULE NewNews human name',
+			'plugged' => array('dashboard','backstage')
+		)
+		/** Template
+		 *
+		'module' => array(
+			'plugin' => 'plugin_name',
+			'prefix' => 'pref',
+			'model' => 'PrefModule'
+			'humanName' => 'MODULE PrefModule human name', //it will be translated
+			'plugged' => array('dashboard', 'backstage', 'corktile', 'content_stream') //the tools it plugs into
+		)
+		*/
+ ));
+ 
+ 
 
 /**
  * As of 1.3, additional rules for the inflector are added below

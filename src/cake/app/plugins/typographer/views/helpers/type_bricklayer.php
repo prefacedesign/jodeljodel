@@ -243,9 +243,9 @@ class TypeBricklayerHelper extends AppHelper
 		return $this->a($attr, $options, $name);
 	}
 	
-	/**
+	/** anchorList
 	 * Make consecutive calls to anchor method.
-	 * All anchors are enclosed within a span tag.
+	 * Everything is enclosed within a span tag.
 	 * 
 	 * @see TypeBricklayerHelper->anchor
 	 * 
@@ -253,15 +253,16 @@ class TypeBricklayerHelper extends AppHelper
 	 * @since  02 Dez. 2010
 	 * @access public
 	 * 
-	 * @param array $attr    HTML attributes of the enclosing span.
-	 * @param array $options One mandatory argument must be passed in $options array: $linkList.
-     *                       It is an array of arrays, each one containing the parameters of anchor method.	 
+	 * @param Array $attr    HTML attributes of the enclosing span.
+	 * @param Array $options One mandatory argument must be passed in $options array: $linkList.
+     *                       It is an array of arrays, each one containing the parameters of anchor method.
+	 *						 Each array has the following structure: ('attr' =>, 'options' =>, 'name')
 	 *                       Two optional arguments can be supplied in $options array: $separator and $lastSeparator.
      *                       $separator is the connector string between items i - 1 and i, with i < n.
 	 *                       $lastSeparator is the connector string between item n - 1 and n.
-	 *                       If not supplied both separators defaults to ', '.
+	 *                       If not supplied both separators defaults to ', '..
+	 *						 
 	 * @param       $content Ignored by this method, the content is created based on $options.
- 	 * @todo Update this help text to the new array structure.
 	 * @return String of HTML tags representing the anchor list.
 	 */
 	function anchorList($attr = array(), $options = array(), $content = null)

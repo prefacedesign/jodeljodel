@@ -42,7 +42,7 @@
 			$dashInfo['id'] = $Model->alias.'@'.$Model->id;	    //creates an ID for the dashboard that is the concatenation of Model and Id inside model
 			
 			$dashboard = ClassRegistry::init(array('class' => 'Dashboard.DashDashboardItem'));		//creates a refference to the dashboard model
-			$dashboard->saveDashItem($dashInfo);		//saves the summary int the dashboard
+			$dashboard->saveDashItem($dashInfo);		//saves the summary into the dashboard
 		}
 		
 		function afterDelete(&$Model)

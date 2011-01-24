@@ -97,7 +97,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 			'title' => __('Backstage edit page: Your data has been saved.',true),
 			'content' => __('Backstage edit page: Remember to publish the content to make it visible to everyone.',true),
 			'actions' => array('ok' => 'ok'),
-			'callback' => "if (acao=='ok') window.location = '/dashboard/dash_dashboard';"
+			'callback' => "if (action=='ok') window.location = '/dashboard/dash_dashboard';"
 		)
 	);
 	

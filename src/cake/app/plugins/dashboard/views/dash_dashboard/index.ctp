@@ -36,21 +36,122 @@ $html->scriptBlock("
 		dashExpandRow(row_number);
 	}
 	
+	
 ", array('inline' => false));
 
 echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 	echo $this->Bl->h1Dry(__('Backstage index page: Page title - Dashboard', true));
 	
-	echo $this->Bl->sdiv(array('class' => 'pagination'));
-		echo $this->Paginator->first('<<');
-		if ($this->Paginator->hasPrev())
-			echo $this->Paginator->prev('<');	
-		echo $this->Paginator->numbers(array('modulus' => 9, 'separator' => ''));
-		if ($this->Paginator->hasPrev())
-			echo $this->Paginator->prev('>');
-		echo $this->Paginator->last('>>');
-	echo $this->Bl->ediv();
-
+	echo $this->Bl->sboxContainer(array('class' => 'dash_toolbox'),array('size' => array('M' => 12, 'g' => -1)));
+		echo $this->Bl->sdiv(array('class' => 'pagination'));
+			echo $this->Paginator->first('<<');
+			if ($this->Paginator->hasPrev())
+				echo $this->Paginator->prev('<');	
+			echo $this->Paginator->numbers(array('modulus' => 9, 'separator' => ''));
+			if ($this->Paginator->hasPrev())
+				echo $this->Paginator->prev('>');
+			echo $this->Paginator->last('>>');
+		echo $this->Bl->ediv();
+		
+		echo $this->Bl->sdiv(array('class' => array('dash_additem')));
+			echo $this->Bl->sdiv(array('class' => 'dash_itemlist'));
+				echo $this->Bl->h3Dry(__('Dashboard: Add new content:', true));
+				$linklist = array();
+				
+				foreach($jjModules as $k => $module)
+				{
+					if (isset($module['plugged']))
+					{
+						if (in_array('dashboard', $module['plugged']))
+						{
+							$linkList[] = $this->Bl->anchor(array(), array('url' => array(
+										'plugin' => 'backstage',
+										'controller' => 'back_contents',
+										'action' => 'edit',
+										$module['plugin'],
+										Inflector::underscore($module['model'])
+									)
+								),
+								__($module['humanName'],true)
+							);
+						}
+					}
+				}
+				echo $this->Text->toList($linkList, ' '.__('or', true).' ');
+				echo $this->Bl->anchor(array('id' => 'close_dash_additem'),array(), __('Dashboard: Close item list',true));
+			echo $this->Bl->ediv();
+		echo $this->Bl->ediv();
+		echo $this->Bl->sdiv(array('class' => array('dash_link_to_additem','expanded')));
+			echo $this->Bl->anchor(array('id' => 'open_dash_additem'),array(),__('Dashboard: Open item list',true));
+		echo $this->Bl->ediv();
+		echo $html->scriptBlock("
+				$('open_dash_additem').observe('click', function (ev) { ev.stop(); dashOpenAdditem();});
+				$('close_dash_additem').observe('click', function (ev) { ev.stop(); dashCloseAdditem();});
+			", array('inline' => true));
+		echo $html->scriptBlock("
+				function dashCloseAdditem()
+				{
+					$$('.dash_link_to_additem')[0].addClassName('expanded');
+					$$('.dash_additem')[0].removeClassName('expanded');
+				}
+				
+				function dashOpenAdditem()
+				{
+					$$('.dash_link_to_additem')[0].removeClassName('expanded');
+					$$('.dash_additem')[0].addClassName('expanded');
+				}", 
+			array('inline' => false)
+		);
+	echo $this->Bl->eboxContainer();
+	
+	// The popups called after success or failure of "Mark as draft" or "Publish"
+	echo $this->Popup->popup('draft_alert_ok', array(
+				'type' => 'notice',
+				'title' => __('Dashboard: Notice of marking as draft success - TITLE',true),
+				'content' => __('Dashboard: Notice of marking as draft success - TEXT',true),
+				'actions' => array('ok' => 'OK'),
+				'callback' => "if (action == 'ok') window.location.reload();"
+			));
+			
+	echo $this->Popup->popup('draft_alert_failure', array(
+				'type' => 'error',
+				'title' => __('Dashboard: Notice of marking as draft failure - TITLE',true),
+				'content' => __('Dashboard: Notice of marking as draft failure - TEXT',true),
+				'actions' => array('ok' => 'OK')
+			));
+			
+	echo $this->Popup->popup('publish_alert_ok', array(
+				'type' => 'notice',
+				'title' => __('Dashboard: Notice of publishing success - TITLE',true),
+				'content' => __('Dashboard: Notice of publishing success - TEXT',true),
+				'actions' => array('ok' => 'OK'),
+				'callback' => "if (action == 'ok') window.location.reload();"
+			));
+			
+	echo $this->Popup->popup('publish_alert_failure', array(
+				'type' => 'error',
+				'title' => __('Dashboard: Notice of publishing failure - TITLE',true),
+				'content' => __('Dashboard: Notice of publishing failure - TEXT',true),
+				'actions' => array('ok' => 'OK')
+			));
+			
+	echo $this->Popup->popup('delete_alert_ok', array(
+				'type' => 'notice',
+				'title' => __('Dashboard: Notice of delete success - TITLE',true),
+				'content' => __('Dashboard: Notice of delete success - TEXT',true),
+				'actions' => array('ok' => 'OK'),
+				'callback' => "if (action == 'ok') window.location.reload();"
+			));
+			
+	echo $this->Popup->popup('delete_alert_failure', array(
+				'type' => 'error',
+				'title' => __('Dashboard: Notice of delete failure - TITLE',true),
+				'content' => __('Dashboard: Notice of delete failure - TEXT',true),
+				'actions' => array('ok' => 'OK')
+			));
+	
+	
+	
 	echo $this->Bl->ssmartTable(array('class' => 'dashboard'), array(
 		'automaticColumnNumberHeaderClasses' => true, 
 		'automaticRowNumberClasses' => true, 
@@ -73,6 +174,8 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 			$this->Paginator->sort(__('Dashboard - dashboard header: Modified',true),'modified'),
 			__('Dashboard - dashboard header: Translations',true),
 		));
+		
+		
 		foreach ($this->data as $k => $item)
 		{
 			$row_number = $k*3 + 2;
@@ -80,15 +183,14 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 			$arrow = $this->Bl->sdiv(array('class' => 'arrow'))
 					 . $this->Bl->anchor(array(), array('url' => ''), ' ')
 					 . $this->Bl->ediv();
-			
-		
+			//echo strtotime($item['DashDashboardItem']['created']));
 			echo $this->Bl->smartTableRowDry(array(
 				__('Dashboard types: ' . $item['DashDashboardItem']['type'], true), 
 				__('Dashboard status: ' . $item['DashDashboardItem']['status'], true),
 				$item['DashDashboardItem']['name'],
 				$item['DashDashboardItem']['info'],
-				$item['DashDashboardItem']['created'],
-				$item['DashDashboardItem']['modified'],
+				strftime("%d/%m/%y", strtotime($item['DashDashboardItem']['created'])),
+				strftime("%d/%m/%y", strtotime($item['DashDashboardItem']['modified'])),
 				array(array(), array('escape' => false), $arrow . $item['DashDashboardItem']['idiom'])
 			));
 	
@@ -100,11 +202,56 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 				$$('tr.row_". $row_number . " .arrow a')[0].observe('click', function (ev) { ev.stop(); dashToggleExpandableRow(" . $row_number . ");});
 			", array('inline' => true));
 			
+			$draftLink = $ajax->link(__('Dashboard: Hide from public', true), 
+				array(
+					'plugin' => 'backstage',
+					'controller' => 'back_contents',
+					'action' => 'set_publishing_status', 
+					$jjModules[$item['DashDashboardItem']['type']]['plugin'],
+					Inflector::underscore($jjModules[$item['DashDashboardItem']['type']]['model']),
+					$item['DashDashboardItem']['dashable_id'], 'draft'
+				), array(
+					'complete' => "if(request.responseJSON.success) {showPopup('draft_alert_ok');} else {showPopup('draft_alert_failure');}",
+					'class' => 'link_button'
+				)
+			);
+			
+			$publishLink = $ajax->link(__('Dashboard: Publish to the great public', true),
+				array(
+					'plugin' => 'backstage', 
+					'controller' => 'back_contents',
+					'action' => 'set_publishing_status',
+					$jjModules[$item['DashDashboardItem']['type']]['plugin'],
+					Inflector::underscore($jjModules[$item['DashDashboardItem']['type']]['model']),
+					$item['DashDashboardItem']['dashable_id'],'published'
+				), array(
+					'complete' => "if(request.responseJSON.success) {showPopup('publish_alert_ok');} else {showPopup('publish_alert_failure');}",
+					'class' => 'link_button'
+				)
+			);
+		
 			$links = $this->Bl->divDry(
-					   $this->Bl->anchor(array('class' => 'link_button'), array('url' => ''), __('Dashboard: Delete content', true))
-					 . $this->Bl->anchor(array('class' => 'link_button'), array('url' => ''), __('Dashboard: Hide from public', true))
-			//		 . $this->Bl->anchor(array('class' => 'link_button'), array('url' => ''), __('Dashboard: See on the page', true))
-					 . $this->Bl->anchor(array('class' => 'link_button'), array('url' => ''), __('Dashboard: Edit', true))
+				   $ajax->link(__('Dashboard: Delete content', true),
+						array(
+							'plugin' => 'dashboard',
+							'controller' => 'dash_dashboard',
+							'action' => 'delete_item',
+							$item['DashDashboardItem']['id']
+						), array(
+							'complete' => "if(request.responseJSON.success) {showPopup('delete_alert_ok');} else {showPopup('delete_alert_failure');}",
+							'class' => 'link_button'
+						)
+					)
+				 . ($item['DashDashboardItem']['status'] == 'published' ? $draftLink : $publishLink)
+		//		 . $this->Bl->anchor(array('class' => 'link_button'), array('url' => ''), __('Dashboard: See on the page', true))
+				 . $this->Bl->anchor(array('class' => 'link_button'), array('url' => array(
+						'plugin' => 'backstage',
+						'controller' => 'back_contents',
+						'action' => 'edit',
+						$jjModules[$item['DashDashboardItem']['type']]['plugin'],
+						Inflector::underscore($jjModules[$item['DashDashboardItem']['type']]['model']),
+						$item['DashDashboardItem']['dashable_id']
+				 )), __('Dashboard: Edit', true))
 			);
 			
 			echo $this->Bl->smartTableRowDry(array(
@@ -113,31 +260,5 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 		}
 	echo $this->Bl->esmartTable();
 echo $this->Bl->ebox();
-
-/*
-foreach ($items as $item)
-{ 
-	//echo $item['DashboardItem']['dashable_model'];
-	echo $item['DashDashboardItem']['type'];
-	echo '<br>';
-	echo $item['DashDashboardItem']['status'];
-	echo '<br>';
-	echo $item['DashDashboardItem']['name'];
-	echo '<br>';
-	//echo $item['DashboardItem']['info'];
-	echo $item['DashDashboardItem']['idiom'];
-	echo '<br>';
-	echo $item['DashDashboardItem']['created'];
-	echo '<br>';
-	echo $item['DashDashboardItem']['modified'];		
-	echo '<br>';
-	
-	echo $html->link('Delete', array('plugin'=>'dashboard', 'controller'=>'DashDashboard', 'action'=>'removeDashboardItem', $item['DashDashboardItem']['id']));
-	
-	echo '<br>';
-	echo '<br>';
-}
-
-*/
 
 ?>

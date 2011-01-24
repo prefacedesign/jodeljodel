@@ -73,7 +73,7 @@ class PersPerson extends PersonAppModel {
             return $this->findById($id);
         }
 		
-		/** Find suited for 
+		/** The data that must be saved into the dashboard. Part of the Dashboard contract.
 		 *
 		 */
 		
@@ -87,16 +87,26 @@ class PersPerson extends PersonAppModel {
 			$dashdata = array(
 				'dashable_id' => $data['PersPerson']['id'],
 				'dashable_model' => $this->name,
-				'type' => 'Person',
+				'type' => 'person',
 				'status' => $data['PersPerson']['publishing_status'],
 				'created' => $data['PersPerson']['created'],
 				'modified' => $data['PersPerson']['modified'], 
 				'name' => $data['PersPerson']['name'] . ' ' . $data['PersPerson']['surname'],
-				'info' => 'Profile: ' . substr($data['PersPerson']['profile'],0, 20) . '...',
+				'info' => 'Profile: ' . substr($data['PersPerson']['profile'], 0, 20) . '...',
 				'idiom' => 'PT'
 			);
 			
 			return $dashdata;
+		}
+		
+		/** When data is deleted from the Dashboard. Part of the Dashboard contract.
+		 *  @todo Maybe we should study how to do it from Backstage contract.
+		 *
+		 */
+		
+		function dashDelete($id)
+		{
+			return $this->delete($id);
 		}
 }
 ?>

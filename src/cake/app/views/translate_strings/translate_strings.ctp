@@ -8,4 +8,8 @@ __('Backstage edit page: Editing a "Person.PersPerson"');
  */
 __('Dashboard status: published');
 __('Dashboard status: draft');
-__('Dashboard types: Person');
+__('Dashboard types: person');
+__('MODULE PersPerson human name');
+__('MODULE NewNews human name');
+__('Popup plugin success type');
+__('Popup plugin notice type');
