@@ -1,6 +1,7 @@
 <?php
 
-class CorktileAppController extends AppController {
+class CorktileAppController extends AppController 
+{
 	var $components = array('Typographer.TypeLayoutSchemePicker');
 	/*var $helpers = array(
 		'Typographer.TypeDecorator' => array(

@@ -42,7 +42,7 @@
 			$dashInfo['id'] = $Model->alias.'@'.$Model->id;	    //creates an ID for the dashboard that is the concatenation of Model and Id inside model
 			
 			$dashboard = ClassRegistry::init(array('class' => 'Dashboard.DashDashboardItem'));		//creates a refference to the dashboard model
-			$dashboard->saveDashItem($dashInfo);		//saves the summary int the dashboard
+			$dashboard->saveDashItem($dashInfo);		//saves the summary into the dashboard
 		}
 		
 		function afterDelete(&$Model)
@@ -55,7 +55,7 @@
 		
 		//@todo This function is completely wrong. It should only update those that need updating, and
 		// 		it should also find entries in the Dashboard that don't have equivalent entries in the table,
-		//		and vice-versa.
+		//		and vice-versa. I.E. the synch should be done based upon the variable names.
 		function synchronizeWithDashboard(&$Model)
 		{
 			$Model->saveAll($Model->find('all')); //saves all the registries (so they are inserted or updated in the dashboards since aftersave is called)

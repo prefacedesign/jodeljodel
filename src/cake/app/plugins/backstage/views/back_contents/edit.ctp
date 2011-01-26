@@ -91,13 +91,13 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 			'content' => __('Backstage edit page: Verify the fields marked with an error and try to save again.', true)
 		)
 	);
-	echo $this->Popup->popup('success',
+	echo $this->Popup->popup('notice',
 		array(
-			'type' => 'success',
+			'type' => 'notice',
 			'title' => __('Backstage edit page: Your data has been saved.',true),
 			'content' => __('Backstage edit page: Remember to publish the content to make it visible to everyone.',true),
 			'actions' => array('ok' => 'ok'),
-			'callback' => "if (acao=='ok') window.location = '/dashboard/dash_dashboard';"
+			'callback' => "if (action=='ok') window.location = '/dashboard/dash_dashboard';"
 		)
 	);
 	

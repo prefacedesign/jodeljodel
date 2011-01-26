@@ -1,10 +1,3 @@
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
-
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-USE `mydb`;
-
 -- -----------------------------------------------------
 -- Table `auth_authors`
 -- -----------------------------------------------------
@@ -254,7 +247,33 @@ CREATE  TABLE IF NOT EXISTS `dash_dashboard_items` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `cork_corktiles`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `cork_corktiles` (
+  `id` VARCHAR(255) NOT NULL ,
+  `type` VARCHAR(128) NULL ,
+  `content_id` VARCHAR(255) NULL ,
+  `title` VARCHAR(255) NULL ,
+  `instructions` TEXT NULL ,
+  `location` TEXT NULL ,
+  `created` DATETIME NULL ,
+  `modified` DATETIME NULL ,
+  `options` TEXT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `k_type` (`type` ASC) ,
+  INDEX `k_content_id` (`content_id` ASC) )
+ENGINE = InnoDB;
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- -----------------------------------------------------
+-- Table `text_text_corks`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `text_text_corks` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `text` TEXT NULL ,
+  `created` DATETIME NULL ,
+  `modified` DATETIME NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+

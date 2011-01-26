@@ -6,10 +6,9 @@ switch ($type[0])
 		{	
 			echo $buro->sform(array(), array(
 				'model' => $fullModelName,
-				'writeForm' => false,
 				'callbacks' => array(
 					'onReject' => array('js' => '$("content").scrollTo(); showPopup("error");', 'contentUpdate' => 'replace'),
-					'onSave' => array('js' => '$("content").scrollTo(); showPopup("success");'),
+					'onSave' => array('js' => '$("content").scrollTo(); showPopup("notice");'),
 				)
 			));
 			

@@ -122,7 +122,7 @@ class ExtractTask extends Shell {
 				$this->out();
 			}
 		}
-
+		
 		if (isset($this->params['output'])) {
 			$this->__output = $this->params['output'];
 		} else {

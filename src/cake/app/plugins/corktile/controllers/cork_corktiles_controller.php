@@ -2,31 +2,29 @@
 class CorkCorktilesController extends CorktileAppController {
 
 	var $name = 'CorkCorktiles';
-	var $helpers = array('Corktile.CorkCork');
-	//var $scaffold;
+	var $helpers = array('Corktile.Cork', 'Text');
+	var $uses = array('Corktile.CorkCorktile');
+	
+	/** Used to make tests. Not the cake standard way.
+	 *
+	 */
+	function cork_test()
+	{
+	}
+	
+	/** 
+	 * Form plugged into the backstage layout. That serves to edit 
+	 * any Corktile.
+	 *  
+	 */
 
 	function edit($key)
 	{
-
-		$this->CorkCorktile->$key = $key;
-		if (empty($this->data)) {
-			$this->data = $this->CorkCorktile->read();
-		} else {
-			if ($this->CorkCorktile->save($this->data)) {
-				$message = __('Your data are save');
-				$this->Session->setFlash($message);
-				$this->redirect(array('action' => 'index'));
-			}
-	}
-
-
+		$this->data = $this->CorkCorktile->getFullData($key);
 		
+		$this->set('contentPlugin', $this->data['ModuleInfo']['plugin']);
+        $this->set('modelName', $this->data['ModuleInfo']['model']);
+        $this->set('fullModelName', Inflector::camelize($this->data['ModuleInfo']['plugin']) . '.' . $this->data['ModuleInfo']['model']);
 	}
-
-	function view()
-	{
-		
-	}
-
 }
 ?>

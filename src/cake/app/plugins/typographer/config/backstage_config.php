@@ -1,6 +1,8 @@
 <?php
+App::import('Vendor','Typographer.tools');
+App::import('Vendor','browserdetection');
 
-App::import('Vendors','Typographer.tools');
+$browserInfo = getBrowser();
 
 $palette = array(
 	'text' 	             => new Color(  0,  0,  0),
@@ -68,6 +70,8 @@ $vertical_grid = &$horizontal_grid;
 
 $line_height = $horizontal_grid->size(array('g' => 1), false);
 
+$letterSpacing = '0.135ex';
+
 $image_generator = new CompoundImage;
 
 $used_automatic_classes = array(
@@ -92,7 +96,9 @@ Configure::write('Typographer.Backstage.tools',
 						'u'  => $unit,
 						'line_height' => $line_height,
 						'ig' => $image_generator,
-						'palette' => $palette
+						'palette' => $palette,
+						'browserInfo' => $browserInfo,
+						'letterSpacing' => $letterSpacing
 					)
 				);
 Configure::write('Typographer.Backstage.used_automatic_classes', $used_automatic_classes);

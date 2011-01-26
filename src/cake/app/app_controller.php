@@ -31,5 +31,11 @@
  * @subpackage    cake.app
  */
 class AppController extends Controller {
-	var $helpers = array('Html', 'Form', 'Javascript', 'Session');	
+	var $helpers = array('Html', 'Form', 'Javascript', 'Session');
+	
+	function beforeFilter()
+	{
+		parent::beforeFilter();		
+		$this->set('jjModules', Configure::read('jj.modules'));
+	}
 }

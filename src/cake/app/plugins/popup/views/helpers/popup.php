@@ -15,7 +15,7 @@
 		 *   callback - (not required) javascript that recieve the link chosen
 		 *
 		 * @access	public
-		 * @param	string $id ID who identifies the opup
+		 * @param	string $id ID who identifies the popup
 		 * @param	array $options array with the options
 		 */
 		function popup($id, $options = array())

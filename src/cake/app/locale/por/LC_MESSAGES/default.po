@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2010-12-09 12:40-0200\n"
-"PO-Revision-Date: 2010-12-09 18:03-0300\n"
+"POT-Creation-Date: 2011-01-24 09:19-0200\n"
+"PO-Revision-Date: 2011-01-24 09:21-0300\n"
 "Last-Translator: Lucas Vignoli Reis <lucas@preface.com.br>\n"
 "Language-Team: Preface Design <preface@preface.com.br>\n"
 "MIME-Version: 1.0\n"
@@ -21,167 +21,367 @@ msgstr ""
 msgid "Backstage edit page: Editing a \""
 msgstr "Edição"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:12
+#: \plugins\backstage\views\back_contents\edit.ctp:23
 msgid "Backstage edit page: publish"
 msgstr "publicá-lo"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:13
-msgid "Now, this document is published. You can %s."
-msgstr "No momento, este documento está publicado. Você pode %s."
+#: \plugins\backstage\views\back_contents\edit.ctp:25;30
+msgid "Backstage edit page: Could change publishing status: communication error."
+msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:17
-msgid "Backstage edit page: mark it as draft"
-msgstr "marcá-lo como rascunho"
-
-#: \plugins\backstage\views\back_contents\edit.ctp:18
+#: \plugins\backstage\views\back_contents\edit.ctp:26
 msgid "Now, this document is hidden. You can %s."
 msgstr "No momento, este documento está oculto. Você pode %s."
 
-#: \plugins\backstage\views\back_contents\edit.ctp:32
+#: \plugins\backstage\views\back_contents\edit.ctp:28
+msgid "Backstage edit page: mark it as draft"
+msgstr "marcá-lo como rascunho"
+
+#: \plugins\backstage\views\back_contents\edit.ctp:31
+msgid "Now, this document is published. You can %s."
+msgstr "No momento, este documento está publicado. Você pode %s."
+
+#: \plugins\backstage\views\back_contents\edit.ctp:55
 msgid "anchorList and"
 msgstr " e "
 
-#: \plugins\backstage\views\back_contents\edit.ctp:34
+#: \plugins\backstage\views\back_contents\edit.ctp:57
 msgid "english"
 msgstr "inglês"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:35;47
+#: \plugins\backstage\views\back_contents\edit.ctp:58;70
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:59
 msgid "portuguese"
 msgstr "português"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:36
+#: \plugins\backstage\views\back_contents\edit.ctp:59
 msgid "japanese"
 msgstr "japonês"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:37
+#: \plugins\backstage\views\back_contents\edit.ctp:60
 msgid "javanese"
 msgstr "javanês"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:42
+#: \plugins\backstage\views\back_contents\edit.ctp:65
 msgid "This %s already has translations for %s."
 msgstr "Esta %s já tem traduções para %s."
 
-#: \plugins\backstage\views\back_contents\edit.ctp:46
+#: \plugins\backstage\views\back_contents\edit.ctp:69
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:58
 msgid "backstage edit page: Editing"
 msgstr "Edição"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:47
+#: \plugins\backstage\views\back_contents\edit.ctp:70
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:59
 msgid " the %s version."
 msgstr " da versão em %s."
 
-#: \plugins\backstage\views\back_contents\edit.ctp:51
+#: \plugins\backstage\views\back_contents\edit.ctp:74
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:19;37
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:63
 msgid "anchorList or"
 msgstr " ou "
 
-#: \plugins\backstage\views\back_contents\edit.ctp:53
+#: \plugins\backstage\views\back_contents\edit.ctp:76
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:21
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:65
 msgid "mark it as ready"
 msgstr "declará-la pronta"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:54
+#: \plugins\backstage\views\back_contents\edit.ctp:77
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:22
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:66
 msgid "remove it"
 msgstr "removê-la"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:59
+#: \plugins\backstage\views\back_contents\edit.ctp:82
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:27
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:71
 msgid "Version marked as draft. You can %s."
 msgstr "Versão marcada como rascunho. Você pode %s."
 
-#: \plugins\burocrata\controllers\buro_burocrata_controller.php:103
-msgid "Nothing found."
-msgstr ""
+#: \plugins\backstage\views\back_contents\edit.ctp:90
+msgid "Backstage edit page: Your data cannot be saved."
+msgstr "Não foi possível salvar os dados com sucesso."
 
-#: \plugins\burocrata\controllers\buro_burocrata_controller.php:144
+#: \plugins\backstage\views\back_contents\edit.ctp:91
+msgid "Backstage edit page: Verify the fields marked with an error and try to save again."
+msgstr "Os campos não obedeceram os critérios. Verifique os campos que estão em vermelho e o seu erro."
+
+#: \plugins\backstage\views\back_contents\edit.ctp:97
+msgid "Backstage edit page: Your data has been saved."
+msgstr "Os dados foram salvos com sucesso."
+
+#: \plugins\backstage\views\back_contents\edit.ctp:98
+msgid "Backstage edit page: Remember to publish the content to make it visible to everyone."
+msgstr "Lembre de publicar o conteúdo para fazê-lo visível ao público."
+
+#: \plugins\burocrata\controllers\buro_burocrata_controller.php:264
 msgid "Request security field not defined"
 msgstr ""
 
-#: \plugins\burocrata\controllers\buro_burocrata_controller.php:155
+#: \plugins\burocrata\controllers\buro_burocrata_controller.php:275
 msgid "Security hash didn't match."
 msgstr ""
 
-#: \plugins\burocrata\controllers\buro_burocrata_controller.php:165
+#: \plugins\burocrata\controllers\buro_burocrata_controller.php:285
 msgid "Couldn't load model"
 msgstr "Não foi possível carregar o model."
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:205
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:33
+msgid "Save box: cancel this change."
+msgstr "cancelar esta alteração"
+
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:260
 msgid "Save"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:17
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:703
+msgid "Nothing found."
+msgstr ""
+
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:759
+msgid "Create a new item"
+msgstr ""
+
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:760
+msgid "Belongsto edit related data"
+msgstr ""
+
+#: \plugins\corktile\controllers\cork_corktiles_controller.php:16
+msgid "Your data are save"
+msgstr ""
+
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:21
+msgid "Localização no Site"
+msgstr ""
+
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:23
+msgid "Descrição"
+msgstr ""
+
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:54
+msgid "Este conteúdo tem apenas uma versão em %s."
+msgstr ""
+
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:94
+msgid "Você pode ainda criar uma versão em %s."
+msgstr ""
+
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:100
+msgid "Nesta coluna você pode %s uma das versões"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:43
+#: \plugins\dashboard\views\dash_dashboard\table_examples.ctp:4
+msgid "Backstage index page: Page title - Dashboard"
+msgstr "Painel do editor"
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:58
+msgid "Dashboard: Add new content:"
+msgstr "Adicione novo conteúdo:"
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:80
+msgid "or"
+msgstr "ou"
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:81
+msgid "Dashboard: Close item list"
+msgstr "Cancelar"
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:85
+msgid "Dashboard: Open item list"
+msgstr "Adicione novo conteúdo"
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:110
+msgid "Dashboard: Notice of marking as draft success - TITLE"
+msgstr "Conteúdo marcado como rascunho"
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:111
+msgid "Dashboard: Notice of marking as draft success - TEXT"
+msgstr "O conteúdo foi marcado como rascunho com sucesso. Esta página será recarregada."
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:118
+msgid "Dashboard: Notice of marking as draft failure - TITLE"
+msgstr "Falha ao marcar como rascunho"
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:119
+msgid "Dashboard: Notice of marking as draft failure - TEXT"
+msgstr "Não foi possível marcar este documento como rascunho. Pode ter havido algum erro de comunicação."
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:125
+msgid "Dashboard: Notice of publishing success - TITLE"
+msgstr "Conteúdo publicado"
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:126
+msgid "Dashboard: Notice of publishing success - TEXT"
+msgstr "O conteúdo foi publicado com sucesso. Esta página será recarregada."
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:133
+msgid "Dashboard: Notice of publishing failure - TITLE"
+msgstr "Falha na publicação"
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:134
+msgid "Dashboard: Notice of publishing failure - TEXT"
+msgstr "Não foi possível publicar este documento. Pode ter havido algum erro de comunicação."
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:140
+msgid "Dashboard: Notice of delete success - TITLE"
+msgstr "Conteúdo excluído"
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:141
+msgid "Dashboard: Notice of delete success - TEXT"
+msgstr "O conteúdo foi excluído com sucesso. Esta página será recarregada."
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:148
+msgid "Dashboard: Notice of delete failure - TITLE"
+msgstr "Falha na exclusão"
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:149
+msgid "Dashboard: Notice of delete failure - TEXT"
+msgstr "Não foi possível excluir este documento. Pode ter havido algum erro de comunicação."
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:169
+msgid "Dashboard - dashboard header: Type"
+msgstr "Tipo"
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:170
+msgid "Dashboard - dashboard header: Status"
+msgstr "Status"
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:171
+msgid "Dashboard - dashboard header: Name"
+msgstr "Nome"
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:172
+msgid "Dashboard - dashboard header: Extra info"
+msgstr "Informação extra"
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:173
+msgid "Dashboard - dashboard header: Created"
+msgstr "Criado"
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:174
+msgid "Dashboard - dashboard header: Modified"
+msgstr "Editado"
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:175
+msgid "Dashboard - dashboard header: Translations"
+msgstr "Línguas"
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:188
+msgid "Dashboard types: "
+msgstr "type error"
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:189
+msgid "Dashboard status: "
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:205
+msgid "Dashboard: Hide from public"
+msgstr "Tirar do ar"
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:219
+msgid "Dashboard: Publish to the great public"
+msgstr "Publicar"
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:234
+msgid "Dashboard: Delete content"
+msgstr "Excluir conteúdo"
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:254
+msgid "Dashboard: Edit"
+msgstr "Editar"
+
+#: \plugins\person\models\pers_person.php:16
+msgid "PersPerson validation: surname."
+msgstr "Erro de validação no sobrenome"
+
+#: \plugins\person\models\pers_person.php:26
+msgid "PersPerson validation: name."
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:25
 msgid "Form - PersPerson name superfield"
 msgstr "Nome da pessoa"
 
-#: \plugins\person\views\elements\pers_person.ctp:18
+#: \plugins\person\views\elements\pers_person.ctp:26
 msgid "Form - PersPerson name superfield - instructions"
 msgstr " "
 
-#: \plugins\person\views\elements\pers_person.ctp:28
+#: \plugins\person\views\elements\pers_person.ctp:33
 msgid "Form - PersPerson.surname"
 msgstr "Sobrenome"
 
-#: \plugins\person\views\elements\pers_person.ctp:29
+#: \plugins\person\views\elements\pers_person.ctp:34
 msgid "Form - PersPerson.surname - instructions"
 msgstr "Preencha com o sobrenome completo, p.e., para José Carlos Penteado Lima: \"Penteado Lima\""
 
-#: \plugins\person\views\elements\pers_person.ctp:35
+#: \plugins\person\views\elements\pers_person.ctp:40
 msgid "Form - PersPerson.name"
 msgstr "Nome"
 
-#: \plugins\person\views\elements\pers_person.ctp:36
+#: \plugins\person\views\elements\pers_person.ctp:41
 msgid "Form - PersPerson.name - instructions"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
 
-#: \plugins\person\views\elements\pers_person.ctp:42
+#: \plugins\person\views\elements\pers_person.ctp:47
 msgid "Form - PersPerson.reference_name"
 msgstr "Como esta pessoa deve ser citada?"
 
-#: \plugins\person\views\elements\pers_person.ctp:43
+#: \plugins\person\views\elements\pers_person.ctp:48
 msgid "Form - PersPerson.reference_name - instructions"
 msgstr "Por exemplo, para José Carlos Penteado Lima: \"LIMA, J. C. P.\""
 
-#: \plugins\person\views\elements\pers_person.ctp:53
+#: \plugins\person\views\elements\pers_person.ctp:58
 msgid "Form - PersPerson.lattes_link"
 msgstr "Qual é o link para o seu currículo lattes?"
 
-#: \plugins\person\views\elements\pers_person.ctp:54
+#: \plugins\person\views\elements\pers_person.ctp:59
 msgid "Form - PersPerson.lattes_link - instructions"
 msgstr " "
 
-#: \plugins\person\views\elements\pers_person.ctp:60
+#: \plugins\person\views\elements\pers_person.ctp:65
 msgid "Form - PersPerson.research_fields"
 msgstr "Quais são os campos de pesquisa em que atua?"
 
-#: \plugins\person\views\elements\pers_person.ctp:61
+#: \plugins\person\views\elements\pers_person.ctp:66
 msgid "Form - PersPerson.research_fields - instructions"
 msgstr "P. e.: teoria de sistemas dinâmicos, dinâmica fônica."
 
-#: \plugins\person\views\elements\pers_person.ctp:67
+#: \plugins\person\views\elements\pers_person.ctp:72
 msgid "Form - PersPerson.profile"
 msgstr "Perfil"
 
-#: \plugins\person\views\elements\pers_person.ctp:68
+#: \plugins\person\views\elements\pers_person.ctp:73
 msgid "Form - PersPerson.profile - instructions"
 msgstr " "
 
-#: \plugins\person\views\elements\pers_person.ctp:74
+#: \plugins\person\views\elements\pers_person.ctp:79
 msgid "Form - PersPerson.cooperation_with_dinafon"
 msgstr "Como colabora com o Dinafon?"
 
-#: \plugins\person\views\elements\pers_person.ctp:75
+#: \plugins\person\views\elements\pers_person.ctp:80
 msgid "Form - PersPerson.cooperation_with_dinafon - instructions"
 msgstr "Descreva em poucas palavras como que a pessoa participa e/ou colabora com o Dinafon."
 
-#: \plugins\typographer\views\elements\backstage_layout.ctp:7
+#: \plugins\popup\views\elements\popup.ctp:24
+msgid "Popup plugin "
+msgstr ""
+
+#: \plugins\typographer\views\elements\backstage_layout.ctp:9
 msgid "Content management area"
 msgstr "Página administrativa"
 
-#: \plugins\typographer\views\elements\backstage_layout.ctp:12
+#: \plugins\typographer\views\elements\backstage_layout.ctp:14
 msgid "Logout"
 msgstr "Deslogar"
 
-#: \plugins\typographer\views\elements\backstage_layout.ctp:23
+#: \plugins\typographer\views\elements\backstage_layout.ctp:25
 msgid "Powered by Jodel Jodel"
 msgstr "Poderificado por Jodel Jodel"
 
-#: \plugins\typographer\views\elements\backstage_layout.ctp:26
+#: \plugins\typographer\views\elements\backstage_layout.ctp:28
 msgid "This site, alongside its public version, was developed by "
 msgstr "Este sítio, assim como sua versão pública, foi desenvolvido por "
 
@@ -232,9 +432,37 @@ msgid ""
 "\t\tYou can also add some CSS styles for your pages at: %s"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:2
+#: \views\translate_strings\translate_strings.ctp:4
 msgid "Backstage edit page: Editing a \"Person.PersPerson\""
 msgstr "Editando o perfil de uma pessoa"
+
+#: \views\translate_strings\translate_strings.ctp:9
+msgid "Dashboard status: published"
+msgstr "publicado"
+
+#: \views\translate_strings\translate_strings.ctp:10
+msgid "Dashboard status: draft"
+msgstr "rascunho"
+
+#: \views\translate_strings\translate_strings.ctp:11
+msgid "Dashboard types: person"
+msgstr "Pessoa"
+
+#: \views\translate_strings\translate_strings.ctp:12
+msgid "MODULE PersPerson human name"
+msgstr "Perfil"
+
+#: \views\translate_strings\translate_strings.ctp:13
+msgid "MODULE NewNews human name"
+msgstr "Notícia."
+
+#: \views\translate_strings\translate_strings.ctp:14
+msgid "Popup plugin success type"
+msgstr " "
+
+#: \views\translate_strings\translate_strings.ctp:15
+msgid "Popup plugin notice type"
+msgstr " "
 
 #: \webroot\test.php:88
 msgid "Debug setting does not allow access to this url."

@@ -9,11 +9,12 @@
 		var $uses = array('Dashboard.DashDashboardItem');
 		var $paginate = array(
 			'DashDashboardItem' => array(
-				'limit' => 30,
+				'limit' => 20,
 				'contain' => false,
-				'order' => 'DashDashboardItem.modified DESC'
+				'order' => 'modified DESC'
 			)
 		);
+		var $helpers = array('Text','Popup.Popup');
 		
 		/* This is the actual dashboard page.
 		 * 
@@ -23,6 +24,16 @@
 		function index()
 		{
 			$this->data = $this->paginate('DashDashboardItem');
+		}
+		
+		function delete_item($id)
+		{
+			$this->view = 'Burocrata.Json';
+		
+			if ($this->DashDashboardItem->deleteItem($id))
+				$this->set('jsonVars', array('success' => true));
+			else
+				$this->set('jsonVars', array('success' => false));
 		}
 	}
 	

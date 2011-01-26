@@ -1,6 +1,7 @@
 <?php
 
-class CorktileAppModel extends AppModel {
+class CorktileAppModel extends AppModel 
+{
 
 }
 
