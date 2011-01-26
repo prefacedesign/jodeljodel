@@ -1,17 +1,17 @@
 <?php
 /* cork_cork Test cases generated on: 2010-12-10 11:12:39 : 1291986819*/
-App::import('Helper', 'Corktile.CorkCork');
+App::import('Helper', 'Corktile.Cork');
 
-class CorkCorkHelperTestCase extends CakeTestCase {
+class CorkHelperTestCase extends CakeTestCase {
 	function startTest()
 	{
-		$this->CorkCork = new CorkCorkHelper();
+		$this->Cork = new CorkHelper();
 	}
 
 	function teste()
 	{
 
-		$html_config = array();
+		$htmlConfig = array();
 		$options = array(
 			'key' => 'outro',
 			'type' => 'text',
@@ -22,7 +22,7 @@ class CorkCorkHelperTestCase extends CakeTestCase {
 		);
 
 
-		$result = $this->CorkCork->tile($html_config, $options);
+		$result = $this->Cork->tile($htmlConfig, $options);
 		echo $result;
 	}
 

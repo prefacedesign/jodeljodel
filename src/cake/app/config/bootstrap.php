@@ -58,6 +58,20 @@
 			'model' => 'NewNew',
 			'humanName' => 'MODULE NewNews human name',
 			'plugged' => array('dashboard','backstage')
+		),
+		'text_cork' => array(
+			'plugin' => 'text_cork',
+			'prefix' => 'text',
+			'model' => 'TextTextCork',
+			'humanName' => 'MODULE TextTextCork human name',
+			'plugged' => array('corktile')
+		),
+		'corktile' => array(
+			'plugin' => 'corktile',
+			'prefix' => 'cork',
+			'model' => 'CorkCorktile',
+			'humanName' => 'MODULE CorkCorkTile human name',
+			'plugged' => array('corktile')
 		)
 		/** Template
 		 *

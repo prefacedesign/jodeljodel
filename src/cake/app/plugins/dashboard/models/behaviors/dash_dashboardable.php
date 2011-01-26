@@ -55,7 +55,7 @@
 		
 		//@todo This function is completely wrong. It should only update those that need updating, and
 		// 		it should also find entries in the Dashboard that don't have equivalent entries in the table,
-		//		and vice-versa.
+		//		and vice-versa. I.E. the synch should be done based upon the variable names.
 		function synchronizeWithDashboard(&$Model)
 		{
 			$Model->saveAll($Model->find('all')); //saves all the registries (so they are inserted or updated in the dashboards since aftersave is called)
