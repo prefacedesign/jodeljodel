@@ -29,7 +29,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 
 
 /**
- * An alias method for the View::element method that enclosures the Jodel coventions
+ * An alias method for the View::element method that encloses the Jodel conventions
  *
  * @access public
  * @param string $modelClassName The model in format Plugin.Model

@@ -9,7 +9,7 @@ class CorkCorktile extends CorktileAppModel
 	 *
 	 *  This method retrieves the data of a corktile. The arguments in the $options
 	 *  array are the same as the tile() function in the CorkHelper. It will get the
-	 *  data if existant, or create and retrieve if not.
+	 *  data if existant, or create it if not.
 	 * 
 	 *  @see Helper CorkHelper->tile
 	 *
@@ -105,6 +105,45 @@ class CorkCorktile extends CorktileAppModel
 		
 		return $Model->getCorkContent($corktileData['CorkCorktile']['content_id']); //Must always retrieve because the Model may have proccessed the data;
 	}
+	
+	/** 
+	 *  Retrieves the whole data associated with a Cork tile. It's meta data,
+	 *  the model's data and info about the module retrieved from the general
+	 *  configuration of modules.
+	 * 
+	 *  @see Model [any cork model]->getCorkContent
+	 *
+     *  @param $key The key to the cork Model.
+	 *  @return Array with meta data ['CorkCorktile'], model's data and the model and plugin info.
+	 */
+	
+	function getFullData($key)
+	{
+		$metaData = $this->findById($key);
+		
+		if (empty($metaData))
+			return false;
+		
+		$typeConfig = Configure::read('jj.modules.' . $metaData['CorkCorktile']['type']);
+		$pluginCamelName =  Inflector::camelize($typeConfig['plugin']);
+		$modelName = $typeConfig['model'];
+		$Model =& ClassRegistry::init($pluginCamelName . '.' . $modelName);
+		
+		$corkContent = $Model->getCorkContent($metaData['CorkCorktile']['content_id']);
+		
+		return am($metaData, $corkContent, array('ModuleInfo' => $typeConfig));
+	}
+	
+	/* Find suited for the burocrata form. Part of the Burocrata/Backstage contract.
+     *
+     */
+		
+	function findBurocrata($id)
+	{
+		return $this->findById($id);
+	}
+		
+	
 }
 
 ?>
