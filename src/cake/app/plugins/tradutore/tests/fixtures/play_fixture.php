@@ -36,6 +36,10 @@ class PlayFixture extends CakeTestFixture
             'key' => 'primary',
             'null' => false
         ),
+		'author_id' => array(
+            'type' => 'integer',
+            'null' => false
+        ),
         'year' => array(
             'type' => 'integer',
             'length' => 4,
@@ -44,11 +48,11 @@ class PlayFixture extends CakeTestFixture
     );
     
     var $records = array(
-        array('id' => 1, 'year' => 1606),  // Antony and Cleopatra
-        array('id' => 2, 'year' => 1605),  // King Lear
-        array('id' => 3, 'year' => 1589),  // The Comedy of Errors
-        array('id' => 4, 'year' => 1599),  // The Tragedy of Julius Caesar
-        array('id' => 5, 'year' => 1600)   // The Tragedy of Hamlet, Prince of Denmark
+        array('id' => 1, 'author_id' => 1, 'year' => 1606),  // Antony and Cleopatra
+        array('id' => 2, 'author_id' => 1, 'year' => 1605),  // King Lear
+        array('id' => 3, 'author_id' => 1, 'year' => 1589),  // The Comedy of Errors
+        array('id' => 4, 'author_id' => 2, 'year' => 1599),  // The Tragedy of Julius Caesar
+        array('id' => 5, 'author_id' => 2, 'year' => 1600)   // The Tragedy of Hamlet, Prince of Denmark
     );
 }
 

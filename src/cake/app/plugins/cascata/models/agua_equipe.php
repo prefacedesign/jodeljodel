@@ -12,6 +12,7 @@ class AguaEquipe extends CascataAppModel
 
     var $actsAs = array('Cascata.AguaCascata');
 
+	
     function afterFind($results, $primary)
     {
         if ($primary) {
@@ -22,9 +23,12 @@ class AguaEquipe extends CascataAppModel
         }
         return $results;
     }
-
+	
+	
+	
     function afterFindCascata($results)
     {
+		
         foreach ($results as $key => $val)
         {
             //caso em que é hasMany, não sei se esse caso eu preciso tratar aqui
@@ -39,6 +43,7 @@ class AguaEquipe extends CascataAppModel
         }
 
         return $results;
+		
     }
 
     function pegaTodas(){

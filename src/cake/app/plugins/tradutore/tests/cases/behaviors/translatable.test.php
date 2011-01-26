@@ -16,6 +16,7 @@
  */
 
 App::import('Model', 'Tradutore.Play');
+App::import('Model', 'Tradutore.Author');
 
 
 /**
@@ -32,11 +33,15 @@ class TranslatableTestCase extends CakeTestCase
 
     var $fixtures = array(
         'plugin.tradutore.play',
-        'plugin.tradutore.play_translation'
+        'plugin.tradutore.play_translation',
+		'plugin.tradutore.author',
+		'plugin.tradutore.author_translation'
     );
 
     var $Play;
     var $PlayTranslation;
+	var $Author;
+	var $AuthorTranslation;
     
     
     function startCase()
@@ -45,13 +50,16 @@ class TranslatableTestCase extends CakeTestCase
 
         $this->Play = ClassRegistry::init('Play');
         $this->PlayTranslation = ClassRegistry::init('PlayTranslation');
+		$this->Author = ClassRegistry::init('Author');
+        $this->AuthorTranslation = ClassRegistry::init('AuthorTranslation');
     }
 
     
+	
     function XtestFixtureSanity()
     {
         $this->Play->Behaviors->detach('Tradutore.Translatable');
-
+		
         // Once test data is created and checked by a human being, use var_export to generate
         // the sanity check array.
         $expected = array (
@@ -352,7 +360,9 @@ class TranslatableTestCase extends CakeTestCase
           ),
         );
         $result = $this->Play->find('all');
-
+		debug($result);
+		die;
+		
         $this->assertFalse(empty($result));
         $this->assertEqual($expected, $result);
 		
@@ -360,8 +370,15 @@ class TranslatableTestCase extends CakeTestCase
         $this->Play->Behaviors->attach('Tradutore.Translatable');
 		
     }
-
-
+	/*
+	function testSingleQueryWithCascade()
+    {
+        $result = $this->Play->find('all');
+		debug($result);
+		die;
+        $this->assertEqual($expected, $result);
+    }*/
+	
     function testGetSetLanguage()
     {
         $expected = Configure::read('Tradutore.defaultLanguage');
@@ -379,25 +396,61 @@ class TranslatableTestCase extends CakeTestCase
         $this->assertEqual($expected, $result);
     }
 
+	
 
-    function testSingleLanguageQuery()
+    function xtestSingleLanguageQuery()
     {
         $this->Play->setLanguage('en');
         $query = array(
-            'fields' => array('Play.id', 'Play.title', 'Play.year'),
+			'fields' => array('Play.id', 'Play.title', 'Play.year'),
+            'conditions' => array('Play.id' => 2)
+        );
+
+        $expected = array(
+            'Play' => array('id' => 2, 'author_id' => 1, 'language' => 'en', 'title' => 'King Lear', 'year' => 1605)
+        );
+        $result = $this->Play->find('first', $query);
+        $this->assertEqual($expected, $result);
+    }
+	
+	function testSingleLanguageQueryWithCascade()
+    {
+        $this->Play->setLanguage('en');
+        $query = array(
+            'fields' => array('Play.id', 'Play.title', 'Play.year', 'Author.name', 'Author.nacionality'),
             'conditions' => array('Play.id' => 2)
         );
 
         $expected = array(
             'Play' => array('id' => 2, 'language' => 'en', 'title' => 'King Lear', 'year' => 1605)
         );
+		//$this->Play->recursive = 2;
         $result = $this->Play->find('first', $query);
-		//debug($result);
-		//die;
+		//$result = $this->Play->find('all', array('fields' => array('Author.name', 'Play.id', 'PlayTranslation.id', 'AuthorTranslation.id'), 'recursive' => 3));
+		//$result = $this->Play->find('all', array('recursive' => 2));
+		
+		/*
+		$result = $this->Play->find('all', array('contain' => array(
+			'PlayTranslation' => array('fields' => array('title')),
+			'Author' => array('fields' => array('name'), 'AuthorTranslation' => array('fields' => array('nacionality'))),
+			'fields' => array('year')
+		)));
+		*/
+		//debug('teste');
+		debug($result);
+		//$this->Author->recursive = 2;
+		
+		//debug($this->Play);
+		//$rs = $this->Play->find('all');
+		//debug($rs);
+		//debug($this->Author);
+		//$rs = $this->Author->find('all');
+		//debug($rs);
+		die;
         $this->assertEqual($expected, $result);
     }
 	
-	function testMultipleRecordsInSingleLanguageQuery()
+	function xtestMultipleRecordsInSingleLanguageQuery()
     {
         $this->Play->setLanguage('en');
         $query = array(
@@ -414,9 +467,13 @@ class TranslatableTestCase extends CakeTestCase
         );
 
         $result = $this->Play->find('all', $query);
+		//debug($result);
+		//die;
         $this->assertEqual($expected, $result);
     }
 	
+	
+	/*
 	function testMultipleRecordsInMultipleLanguageQuery()
     {
         //$this->Play->setLanguage('en');
@@ -439,7 +496,32 @@ class TranslatableTestCase extends CakeTestCase
 		die;
         $this->assertEqual($expected, $result);
     }
+	
+	*/
+	
+	function xtestSaveASimpleRecord()
+    {
+        $this->Play->setLanguage('en');
+		
+        $data = array('Play' => array('title' => 'Antony and Cleopatra', 'year' => 1997, 'opening_excerpt' => 'This is a simple stupid test, lol.'));
 
+        $result = $this->Play->save($data);
+		$this->assertEqual(true, $result);
+    }
+	
+	function xtestSaveAMultipleRecord()
+    {
+        $this->Play->setLanguage('en');
+		
+        $data = array('Play' => array(
+			0 => array('title' => 'Antony and Cleopatra', 'year' => 1997, 'opening_excerpt' => 'This is a second simple stupid test, lol.'),
+			1 => array('title' => 'Me and You', 'year' => 2000, 'language' => 'uk', 'opening_excerpt' => 'I wanna a beer.')
+		));
+		//debug($data);
+
+        $result = $this->Play->saveAll($data['Play']);
+		$this->assertEqual(true, $result);
+    }
 
 }
 

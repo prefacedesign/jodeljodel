@@ -17,6 +17,7 @@
 class PlayTranslation extends AppModel
 {
     var $name = 'PlayTranslation';
+	
 }
 
 ?>
