@@ -3,8 +3,6 @@
 /**
  * Mock object to test Translatable behavior.
  *
- * The fake data is about William Shakespeare's plays.
- *
  * Conventions about translations models:
  * - ...
  * - ...
@@ -14,9 +12,9 @@
  * @subpackage jodeljodel.tradutore.test
  */
 
-class PlayTranslation extends AppModel
+class AuthorTranslation extends AppModel
 {
-    var $name = 'PlayTranslation';
+    var $name = 'AuthorTranslation';
 	
 }
 

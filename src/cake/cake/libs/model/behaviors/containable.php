@@ -120,7 +120,6 @@ class ContainableBehavior extends ModelBehavior {
 		}
 		$containments = $this->containments($Model, $contain);
 		$map = $this->containmentsMap($containments);
-
 		$mandatory = array();
 		foreach ($containments['models'] as $name => $model) {
 			$instance =& $model['instance'];

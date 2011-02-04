@@ -7,12 +7,13 @@ class AguaProfessor extends CascataAppModel
 {
     var $name = 'AguaProfessor';
 
-    var $actsAs = array('Cascata.AguaCascata','Cascata.AguaPessoa');
+    var $actsAs = array('Cascata.AguaCascata', 'Cascata.AguaPessoa');
 
     var $belongsTo = array('Cascata.AguaEquipe');
 
-    //var $hasAndBelongsToMany = array('Cascata.AguaEstudante');
+    var $hasAndBelongsToMany = array('Cascata.AguaEstudante');
 
+	
     function afterFind($results, $primary)
     {
         if ($primary)
@@ -25,7 +26,9 @@ class AguaProfessor extends CascataAppModel
         }
         return $results;
     }
+	
 
+	
     function afterFindCascata($results)
     {
         foreach ($results as $key => $val)
@@ -43,11 +46,11 @@ class AguaProfessor extends CascataAppModel
     }
     
 
-/*    function beforeFind($query)
+    function beforeFind($query)
     {
         $query['conditions'] = array('id = 1');
         return $query;
-   }*/
+	}
 
    function pegaTodos(){
        return $this->find('all');
