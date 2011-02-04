@@ -276,4 +276,3 @@ CREATE  TABLE IF NOT EXISTS `text_text_corks` (
   `modified` DATETIME NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
-

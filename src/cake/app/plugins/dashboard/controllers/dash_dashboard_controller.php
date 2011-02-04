@@ -2,6 +2,8 @@
 	/*
 	 *
 	 */
+	 
+	App::import('Config','DashDashboard.config');
 
 	class DashDashboardController extends DashboardAppController
 	{
@@ -24,6 +26,7 @@
 		function index()
 		{
 			$this->data = $this->paginate('DashDashboardItem');
+			$this->set('itemSettings', Configure::read('Dashboard.item_settings'));
 		}
 		
 		function delete_item($id)

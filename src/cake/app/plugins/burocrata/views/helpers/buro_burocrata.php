@@ -214,8 +214,15 @@ class BuroBurocrataHelper extends XmlTagHelper
 	public function sform($htmlAttributes = array(), $options = array())
 	{
 		$View =& $this->_getView();
+		
+		$url = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'save');
+		if (isset($options['type']))
+		{
+			$url[] = implode('|', $options['type']);
+		}
+		
 		$defaults = array(
-			'url' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'save'),
+			'url' => $url,
 			'writeForm' => false, 
 			'model' => false,
 			'baseID' => uniqid(),

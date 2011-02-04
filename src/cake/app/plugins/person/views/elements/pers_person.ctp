@@ -79,8 +79,7 @@ switch ($type[0])
 					'instructions' => __('Form - PersPerson.cooperation_with_dinafon - instructions',true)
 				));
 			
-				
-				echo $buro->submitBox(array('label' => 'Salvar'));
+				echo $buro->submitBox(array(),array('publishControls' => true));
 			echo $buro->eform();
 		}
 	break;

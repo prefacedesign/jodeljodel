@@ -4,6 +4,11 @@ class CorkCorktile extends CorktileAppModel
 {
 	var $name = 'CorkCorktile';
 	
+	var $actsAs = array(
+		'JjUtils.Encodable' => array('fields' => array('location' => 'serialize', 'options' => 'serialize')),
+		'Dashboard.DashDashboardable' => array()
+	);
+	
 	
 	/** getData
 	 *
@@ -72,8 +77,8 @@ class CorkCorktile extends CorktileAppModel
 				'content_id' => $contentId,
 				'title' => isset($options['title']) ? $options['title'] : Inflector::humanize($options['key']),
 				'instructions' => isset($options['editorsRecommendations']) ? $options['editorsRecommendations'] : '',
-				'location' => json_encode(isset($options['location']) ? $options['location'] : ''),
-				'options' => json_encode(isset($options['options']) ? $options['options'] : '') //@todo Make this a behavior
+				'location' => isset($options['location']) ? $options['location'] : '',
+				'options' => isset($options['options']) ? $options['options'] : '' 
 			));
 			
 			if ($this->save($data) === false)
@@ -92,8 +97,8 @@ class CorkCorktile extends CorktileAppModel
 				'id' => $options['key'],
 				'type' => $options['type'],
 				'title' => isset($options['title']) ? $options['title'] : Inflector::humanize($options['key']),
-				'location' => json_encode(isset($options['location']) ? $options['location'] : ''),
-				'options' => json_encode(isset($options['options']) ? $options['options'] : '') //@todo Make this a behavior
+				'location' => isset($options['location']) ? $options['location'] : '',
+				'options' => isset($options['options']) ? $options['options'] : '' //@todo Make this a behavior
 			));
 			
 			if ($this->save($data) === false)
@@ -141,6 +146,64 @@ class CorkCorktile extends CorktileAppModel
 	function findBurocrata($id)
 	{
 		return $this->findById($id);
+	}
+	
+	/** The data that must be saved into the dashboard. Part of the Dashboard contract.
+	 *
+     */
+		
+	function getDashboardInfo($key)
+	{
+		$data = $this->getFullData($key);
+		
+		if ($data == null)
+			return null;
+		
+		$dashdata = array(
+			'dashable_id'    => $data['CorkCorktile']['id'],
+			'dashable_model' => $this->name,
+			'type'           => 'corktile',
+			'status'         => 'published',
+			'created'        => $data['CorkCorktile']['created'],
+			'modified'       => $data['CorkCorktile']['modified'], 
+			'name'           => $data['CorkCorktile']['title'],
+			'info'           => 'Location: ' . substr($data['CorkCorktile']['location'][0], 0, 20) . '...',
+			'idiom'          => 'PT'
+		);
+		
+		return $dashdata;
+	}
+		
+	/** When data is deleted from the Dashboard. Part of the Dashboard contract.
+	 *  @todo Maybe we should study how to do it from Backstage contract.
+	 *
+	 * For now data from CorkCorktile won't be deletable through the Dashboard.
+	 */
+	
+	function dashDelete($id)
+	{
+		return false;
+	}
+	
+	/** Updates the modified field, given only the cork's id and its type. 
+	 * Used by the CorkAttachable in order to update the container row. It implies 
+	 * that Dashboard will be updated also.
+	 *
+	 * @param $content_id
+	 * @param string $type
+	 * @param string $type
+	 * @return boolean True - success. False - failure.
+	 */
+	
+	function updateModifiedDate($content_id, $type, $modified)
+	{
+		$data = $this->find('first', array('conditions' => compact('content_id','type')));
+		if (empty($data))
+			return false;
+			
+		$result = $this->save(array('CorkCorktile' => array('modified' => $modified, 'id' => $data['CorkCorktile']['id'])));
+
+		return $result === false ? false : true;
 	}
 		
 	

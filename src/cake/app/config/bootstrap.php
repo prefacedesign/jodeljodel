@@ -50,7 +50,7 @@
 			'prefix' => 'pers',
 			'model' => 'PersPerson',
 			'humanName' => 'MODULE PersPerson human name', //it will be translated
-			'plugged' => array('dashboard','backstage') //the tools it plugs into.
+			'plugged' => array('dashboard','backstage') //the tools and functionality it plugs into.
 		),
 		'new' => array(
 			'plugin' => 'new',
@@ -71,7 +71,7 @@
 			'prefix' => 'cork',
 			'model' => 'CorkCorktile',
 			'humanName' => 'MODULE CorkCorkTile human name',
-			'plugged' => array('corktile')
+			'plugged' => array('dashboard', 'backstage')
 		)
 		/** Template
 		 *
