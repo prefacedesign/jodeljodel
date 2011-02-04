@@ -94,3 +94,5 @@
  * Inflector::rules('plural', array('rules' => array(), 'irregular' => array(), 'uninflected' => array()));
  *
  */
+
+require APP . 'plugins/media/config/core.php';
