@@ -22,9 +22,40 @@ class TransferPlusBehavior extends ModelBehavior {
 /**
  * Settings
  * 
- * @var mixed
+ * @access public
+ * @var array
  */
 	public $settings = array();
+
+
+/**
+ * Default settings
+ * 
+ * fieldName
+ *  false - Dont store the original filename
+ *  string - The table field name
+ * 
+ * @access protected
+ * @var array
+ */
+	protected $defaultSettings = array(
+		'fieldName' => 'original_filename'
+	);
+
+
+/**
+ * Merges default settings with provided config and sets default validation options
+ * 
+ * Calls changeFileName method 
+ * 
+ * @param Model $Model
+ * @param array $settings See defaultSettings for configuration options
+ * @return void
+ */
+	public function setup(&$Model, $settings = array())
+	{
+		$this->settings[$Model->alias] = $settings + $this->defaultSettings;
+	}
 
 
 /**
@@ -50,23 +81,26 @@ class TransferPlusBehavior extends ModelBehavior {
  */
 	public function beforeSave(&$Model)
 	{
-		if (!isset($Model->data[$Model->alias]['original_name']))
+		extract($this->settings[$Model->alias]);
+		if (!isset($Model->data[$Model->alias][$fieldName]))
 			$this->changeFileName($Model);
 		return true;
 	}
 
 
 /**
- * Changes the name of file to a uniqID avoiding non ANSI chars on filename.
+ * Changes the name of file to a uniqID avoiding non ANSI chars on filename and filename collisions.
  * 
  * @param Model $Model
  */
 	private function changeFileName(&$Model)
 	{
-		if (!empty($Model->data[$Model->alias]['file']['name'])) {
-			$original_name = $Model->data[$Model->alias]['file']['name'];
-			$Model->data[$Model->alias]['original_name'] = $original_name;
-			$Model->data[$Model->alias]['file']['name'] = uniqid('', true) . '.' . array_pop(explode('.', $original_name));
+		if (!empty($Model->data[$Model->alias]['file']['name']))
+		{
+			extract($this->settings[$Model->alias]);
+			$original_filename = $Model->data[$Model->alias]['file']['name'];
+			$Model->data[$Model->alias][$fieldName] = $original_filename;
+			$Model->data[$Model->alias]['file']['name'] = uniqid('', true) . '.' . array_pop(explode('.', $original_filename));
 		}
 	}
 }
