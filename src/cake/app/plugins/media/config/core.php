@@ -226,21 +226,58 @@ Media_Info::config(array(
  *
  * For more information on available methods see the classes
  * located in `libs/mm/src/Media/Process`.
- *
+ * 
+ * Avaible processes:
+ * - fit/fitInside: Resizes media proportionally keeping both sides within given dimensions.
+ * - fitOutside:Resizes media proportionally keeping _smaller_ side within corresponding dimensions.
+ * - crop: Crops media to provided dimensions.
+ * - zoom/zoomFit: Enlarges media proportionally by factor 2.
+ * - zoomCrop: 
+ * - fitCrop: First resizes media so that it fills out the given dimensions, then cuts off overlapping parts.
+ * - compress:Selects level of compression than compresses the media according to provided value.
+ * - strip: Strips unwanted data from an image.
+ * - colorProfile:
+ * - colorDepth: Changes the color depths (of the channels).
+ * - interlace: Enables or disables interlacing. Formats like PNG, GIF and JPEG support interlacing.
+ * - convert: Converts the media to given MIME type.
+ * 
+ * 
  * @see GeneratorBehavior
  */
 // $sRGB = $mm . DS . 'data' . DS . 'sRGB_IEC61966-2-1_black_scaled.icc';
 
-$s = array('convert' => 'image/png', 'zoomCrop' => array(100, 100));
-$m = array('convert' => 'image/png', 'fitCrop' => array(300, 300));
-$l = array('convert' => 'image/png', 'fit' => array(600, 440));
+// $s = array('convert' => 'image/png', 'zoomCrop' => array(100, 100));
+// $m = array('convert' => 'image/png', 'fitCrop' => array(300, 300));
+// $l = array('convert' => 'image/png', 'fit' => array(600, 440));
 
-Configure::write('Media.filter', array(
-	'audio' => compact('s', 'm'),
-	'document' => compact('s', 'm'),
-	'generic' => array(),
-	'image' => compact('s', 'm', 'l'),
-	'video' => compact('s', 'm')
+
+Configure::write('Media.filter_plus.olimpiada.equipe', array(
+	'image' => array(
+		'sala'  => array('fit' => array(600, 440)),
+		'lista' => array('fitCrop' => array(150, 50))
+	)
 ));
 
+Configure::write('Media.filter_plus.olimpiada.documento', array(
+	'image' => array(
+		'preview' => array('fit' => array(200, 250)),
+		'view'    => array('fit' => array(400, 400)),
+		'lista'   => array('fit' => array(100, 100))
+	)
+));
+
+Configure::write('Media.filter_plus.olimpiada.questoes', array(
+	'image' => array(
+		'preview' => array('fit' => array(200, 250)),
+		'view'    => array('fit' => array(400, 400)),
+		'lista'   => array('fit' => array(100, 100))
+	)
+));
+
+Configure::write('Media.filter_plus.grande_desafio.equipe', array(
+	'image' => array(
+		'sala'  => array('convert' => 'image/png', 'fit' => array(600, 440)),
+		'lista' => array('convert' => 'image/png', 'fit' => array(150, 50))
+	)
+));
 ?>

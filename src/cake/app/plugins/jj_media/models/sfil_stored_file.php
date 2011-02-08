@@ -79,6 +79,14 @@ class SfilStoredFile extends JjMediaAppModel {
 			'createDirectory' => true,
 			'alternativeFile' => 100
 		),
+		'JjMedia.GeneratorPlus' => array(
+			'scopeField' => 'transformation'
+		),
+		'Media.Generator' => array(
+			'baseDirectory' => MEDIA_TRANSFER,
+			'filterDirectory' => MEDIA_FILTER,
+			'createDirectory' => true,
+		),
 		'Media.Coupler' => array(
 			'baseDirectory' => MEDIA_TRANSFER
 		),
