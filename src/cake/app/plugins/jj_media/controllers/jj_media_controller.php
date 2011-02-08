@@ -21,11 +21,41 @@
 class JjMediaController extends JjMediaAppController {
 
 	var $name = 'JjMedia';
-	var $uses = array('JjMedia.SfilStoredFiles');
-
-	function index($sfil_stored_files_id = null)
+	var $view = 'Media';
+	
+	var $uses = array('JjMedia.SfilStoredFile');
+	
+	function index($sfil_stored_files_id = null, $filter = '')
 	{
+		if (!empty($filter))
+		{
+			$filter = explode('|', $filter);
+		}
 		
+		if($sfil_stored_files_id)
+		{
+			$this->SfilStoredFile->contain();
+			$dados = $this->SfilStoredFile->findById($sfil_stored_files_id);
+			
+			if(!empty($dados))
+			{
+				// todo: find the file path using the data 
+				$download = true;
+				$id = $name = $dados['SfilStoredFile']['basename'];
+				$extension = array_pop(explode('.', $id));
+				if (!empty($dados['SfilStoredFile']['original_filename']))
+				{
+					$name = explode('.', $dados['SfilStoredFile']['original_filename']);
+					if (count($name) > 1)
+						array_pop($name);
+					$name = implode('.', $name);
+				}
+				$mimeType = array($extension => $dados['SfilStoredFile']['mime_type']);
+				$path = 'media' . DS . 'transfer' . DS . 'img' . DS;
+				
+				$this->set(compact('id', 'name', 'mimeType', 'download', 'path', 'extension'));
+			}
+		}
 	}
 }
 ?>

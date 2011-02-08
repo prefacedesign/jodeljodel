@@ -34,6 +34,8 @@
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 	
+	Router::connect('/download/*', array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'index'));
+
 /**
  * Here, we are connecting '/css/sheet-layout_scheme.css' to a action called
  * 'sheet' in the 'estilos' controller. This allows us to create dynamic CSS,

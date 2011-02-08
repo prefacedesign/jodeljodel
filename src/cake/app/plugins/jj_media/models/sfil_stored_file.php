@@ -71,6 +71,7 @@ class SfilStoredFile extends JjMediaAppModel {
  * @access public
  */
 	var $actsAs = array(
+		'Containable',
 		'JjMedia.TransferPlus',
 		'Media.Transfer' => array(
 			'trustClient' => false,
