@@ -117,7 +117,7 @@ class GeneratorPlusBehavior extends ModelBehavior {
 /**
  * Callback
  *
- * Create dynamically the filter configure for image
+ * Create dynamically the filter configure for image for the GeneratorBehaviour::afterSave callback
  *
  * @param Model $Model
  * @param boolean $created

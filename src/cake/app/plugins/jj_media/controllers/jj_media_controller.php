@@ -39,8 +39,7 @@ class JjMediaController extends JjMediaAppController {
 		if (!empty($filter) && !empty($file_data['SfilStoredFile']['transformation']))
 			$filter = str_replace('|', '_', $file_data['SfilStoredFile']['transformation']) . '_' . $filter;
 		
-		// todo: find the file path using the data 
-		$download = true;
+		$download = false;
 		$id = $name = $file_data['SfilStoredFile']['basename'];
 		$extension = array_pop(explode('.', $id));
 		if (!empty($file_data['SfilStoredFile']['original_filename']))
@@ -51,7 +50,11 @@ class JjMediaController extends JjMediaAppController {
 			$name = implode('.', $name);
 		}
 		$mimeType = array($extension => $file_data['SfilStoredFile']['mime_type']);
-		$path = 'media' . DS . 'transfer' . DS . 'img' . DS;
+		
+		if (!empty($filter))
+			$path = MEDIA_FILTER . $filter . DS . $file_data['SfilStoredFile']['dirname'] . DS;
+		else
+			$path = MEDIA_TRANSFER . $file_data['SfilStoredFile']['dirname'] . DS;
 		
 		$this->set(compact('id', 'name', 'mimeType', 'download', 'path', 'extension'));
 	}
