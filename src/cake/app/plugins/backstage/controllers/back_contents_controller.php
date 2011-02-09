@@ -65,7 +65,7 @@ class BackContentsController extends BackstageAppController
 	
 	function set_publishing_status($contentPlugin, $modelName, $id, $status)
 	{
-		$this->view = 'Burocrata.Json';
+		$this->view = 'JjUtils.Json';
 	
 		$fullModelName = Inflector::camelize($contentPlugin) . '.' . Inflector::camelize($modelName);
 		$Model =& ClassRegistry::init($fullModelName);

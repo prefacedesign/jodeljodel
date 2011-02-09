@@ -36,7 +36,7 @@ class BuroBurocrataController extends BurocrataAppController
  * @var string
  * @access public
  */
-	public $view = 'Burocrata.Json';
+	public $view = 'JjUtils.Json';
 
 
 /**
