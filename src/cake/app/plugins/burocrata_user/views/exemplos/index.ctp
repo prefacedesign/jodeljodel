@@ -31,7 +31,7 @@
 					'callbacks' => array(
 						'onStart' => array('popup' => 'Começando o upload...'),
 						'onError' => array('popup' => '... vixe, deu erro...'),
-						'onSave' => array('popup' => '... thubiru! ...', 'js' => 'console.log(json);'),
+						'onSave' => array('popup' => '... thubiru! ...'),
 						'onReject' => array('js' => 'alert(json.error)'),
 						'onFailure' => array('popup' => '... não deu certo...'),
 						'onComplete' => array('js' => 'this.again();', 'popup' => '... e acabou.')

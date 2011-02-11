@@ -464,6 +464,14 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 var BuroUpload = Class.create(BuroCallbackable, {
 	initialize: function(id_base, url, field_name, errors)
 	{
+		if (Prototype.Browser.IE)
+		{
+			var ua = navigator.userAgent;
+			var re  = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+			if (re.exec(ua) != null)
+			rv = parseFloat( RegExp.$1 );
+		}
+
 		this._submitted = false;
 		this.id_base = id_base;
 		this.url = url;
@@ -476,17 +484,23 @@ var BuroUpload = Class.create(BuroCallbackable, {
 		this.iframe = new Element('iframe', {
 			name: 'if'+id_base, 
 			id: 'if'+id_base, 
-			onload: "BuroClassRegistry.get('"+this.id_base+"').complete();",
 			src: 'javascript:false;',
 			width: '900'
 		});
+		this.iframe.observe('load', this.complete.bind(this));
 		
 		this.form = new Element('form', {
 			action: this.url,
 			target: this.iframe.name,
-			enctype: 'multipart/form-data',
 			method: 'post'
 		});
+		
+		var upload_enctype = 'multipart/form-data';
+		
+		if (Prototype.Browser.IE && rv == 7)
+			this.form.writeAttribute({encoding: upload_enctype});
+		else
+			this.form.writeAttribute({enctype: upload_enctype});
 		
 		this.div_container = new Element('div')
 			// .setStyle({height: '1px', width: '1px', position: 'absolute', left: '-1000px', overflow: 'hidden'})
