@@ -26,7 +26,7 @@
 // }
 
 
-class SectSectionHandler extends Object {
+class SectSectionHandlerComponent extends Object {
 
 	var $controller;
 	var $pageTitleArray = array();
@@ -47,9 +47,11 @@ class SectSectionHandler extends Object {
 		$this->sectionMap = Configure::read('PageSections.sectionMap');
 		$this->sections = Configure::read('PageSections.sections');
 		
-		$this->_getOurLocation($this->controller->params);
-		$this->_mountPageTitleArray();
 		$this->_insertDefaultsIntoSections();
+		
+		$this->_setOurLocation($this->controller->params);
+		
+		$this->_mountPageTitleArray();
 	}
 	
 	/**
@@ -70,7 +72,7 @@ class SectSectionHandler extends Object {
 	{
 		foreach($newArray as $k => $value)
 		{
-			if ($newArray[$k] === null)
+			if ($value === null)
 				$newArray[$k] == $this->pageTitleArray[$k];
 		}
 		
@@ -84,7 +86,7 @@ class SectSectionHandler extends Object {
 	 */
 	function appendToPageTitleArray($title)
 	{
-		$this->pageTitleArray[] = $title
+		$this->pageTitleArray[] = $title;
 	}
 	
 	/** Uses the 'sections' array to set the pageTitleArray,
@@ -142,14 +144,13 @@ class SectSectionHandler extends Object {
 	{
 		if ($forcedLocation !== null)
 		{
-			$this->ourLocation = $forcedLocation
+			$this->ourLocation = $forcedLocation;
 		}
 		else
 		{
 			$this->ourLocation = array();
 			
-			$sectionMapContext =& $this->sectionMap;			
-			
+			$sectionMapContext =& $this->sectionMap;		
 			while(($sectionIndex = $this->_findTheActionsSection($actionInfo, $sectionMapContext)) !== false)
 			{
 				//in this context $sectionIndex is a number
@@ -172,9 +173,12 @@ class SectSectionHandler extends Object {
 	
 	function _joinLocations($base, $over)
 	{
-		foreach($over as $k => $over)
-			if ($over[$k] === null)
-				$over[$k] == $base[$k];
+		foreach($over as $k => $overItem)
+		{
+			if ($overItem === null)
+				$over[$k] = $base[$k];
+		}
+		
 	
 		return $over;
 	}
@@ -191,9 +195,9 @@ class SectSectionHandler extends Object {
 	
 	function _findTheActionsSection($actionInfo, &$subSectionMap)
 	{
-		foreach ($subSectionMap as $sectionData)
+		foreach ($subSectionMap as $k => $sectionData)
 		{
-			if ($this->_matchAction($actionInfo, $sectionData['rule']))
+			if ($this->_matchActionData($actionInfo, $sectionData['rule']))
 				return $k;
 		}
 		return false;
@@ -203,16 +207,16 @@ class SectSectionHandler extends Object {
 	 * Sees whether the action params fits the matching rule.
 	 * 
 	 * @param array $actionInfo Cake's action parameters.
-	 * @param array $rule How should it be to match?
+	 * @param array $rules How should it be to match?
 	 */
 	
-	function _matchActionData($actionInfo, $rule)
+	function _matchActionData($actionInfo, $rules)
 	{
-		foreach($conditions as $type => $condition)
+		foreach($rules as $type => $rule)
 		{
-			if (!isset($actionInfo))
+			if (!isset($actionInfo[$type]))
 				return false;
-			if($actionInfo[$type] != $condition)
+			if($actionInfo[$type] != $rule)
 				return false;
 		}
 		return true;
@@ -239,7 +243,7 @@ class SectSectionHandler extends Object {
 		foreach ($sectionsContext as $k => $section)
 		{
 			if (!isset($section['linkCaption']))
-				$sectionsContext[$k]['linkCaption'] => Inflector::humanize($k); 
+				$sectionsContext[$k]['linkCaption'] = Inflector::humanize($k); 
 		
 			if (!isset($section['active']))
 				$sectionsContext[$k]['active'] = true;
@@ -261,7 +265,7 @@ class SectSectionHandler extends Object {
 				$sectionsContext[$k]['headerCaption'] = $section['linkCaption'];
 				
 			if (!isset($section['humanName']))
-				$sectionsContext[$k]['humanName'] = $section['humanName'];
+				$sectionsContext[$k]['humanName'] = $section['linkCaption'];
 				
 			if (!isset($section['acos']))
 				$sectionsContext[$k]['acos'] = array($k => array('read'));

@@ -84,7 +84,7 @@ $sections = array(
  		'linkCaption' => __('Section One', true),		
  		'url' => array(
  			'plugin' => 'page_sections',
- 			'controller' => 'test',
+ 			'controller' => 'tests',
  			'action' => 'section_one'
  		),
         'display' => true,
@@ -92,30 +92,44 @@ $sections = array(
 		'pageTitle' => array(null, __('The Section One', true)),
 		'headerCaption' => __('The Section One Header', true),
  		'humanName' => __('The Human Section One name', true),
-		'acos' => array()
+		'acos' => array(),
+		'subSections' => array(
+			'section21' => array(
+				'linkCaption' => 'Section Two.One',
+				'url' => array(
+					'plugin' => 'page_sections',
+					'controller' => 'tests',
+					'action' => 'section_two_one'
+				)
+			)
+		),
  	 ),
 	 'section2' => array(
  		'linkCaption' => __('Section Two', true),		
  		'url' => array(
  			'plugin' => 'page_sections',
- 			'controller' => 'test',
+ 			'controller' => 'tests',
  			'action' => 'section_one'
  		)
  	 )
 );
 	 
-$sectionMaps => array(
+$sectionMap = array(
 	array(
-		'rule' => array('plugin' => 'controller' => 'test_controller', 'action' => 'section_one'),
-		'location' => array('section_one'),
+		'rule' => array('plugin' => 'page_sections', 'controller' => 'tests', 'action' => 'section_one'),
+		'location' => array('section1')
 	),
 	array(
-		'rule' => array('plugin' => 'controller' => 'test_controller', 'action' => 'section_two'),
-		'location' => array('section_two'),
+		'rule' => array('plugin' => 'page_sections',  'controller' => 'tests', 'action' => 'section_two'),
+		'location' => array('section2')
+	),
+	array(
+		'rule' => array('plugin' => 'page_sections',  'controller' => 'tests', 'action' => 'section_two_one'),
+		'location' => array('section2', 'section21')
 	)
 );
 
 Configure::write('PageSections.sections', $sections);
-Configure::write('PageSections.sectionMaps', $sectionMaps);
+Configure::write('PageSections.sectionMap', $sectionMap);
 
 ?>
