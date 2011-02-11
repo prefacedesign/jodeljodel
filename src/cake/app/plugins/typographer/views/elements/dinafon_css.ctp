@@ -9,21 +9,25 @@ $this->Decorator->rule(
 			'vertical-align' => 'baseline',
 			'text-decoration' => 'none',
 			'font-family' => '"Lucida Sans", "Bitstream Vera", sans',
-			'font-size' => $u->t($tam_fonte_padrao),
-			'line-height' => $u->t($entrelinha),
+			'font-size' => $u->t($standard_font_size),
+			'line-height' => $u->t($lineHeight),
 			'border' => 'none'
 	));
 
 
 $this->Decorator->rule(
 		'#logo', array(
-			'margin-top' => $u->t($entrelinha/2)
+			'margin-top' => $u->t($lineHeight/2)
 	));
 
 
+//@todo verificar se o 12M não gera problema
+//(pois ele substitui uma função que não existe mais, a
+//calculaTamanhoTotal) - verificar em todo lugar que tiver:
+//$hg->size(array('M'=>12))
 $this->Decorator->rule(
 		'.coluna_principal', array(
-			'width' => $gh->calculaTamanhoTotal(),
+			'width' => $hg->size(array('M'=>12)),
 			'position' => 'relative',
 			'margin-left' => 'auto',
 			'margin-right' => 'auto'
@@ -31,1232 +35,673 @@ $this->Decorator->rule(
 
 $this->Decorator->rule(
 		'div.coluna_principal .div_extrapolante', array(
-			'width' => $u->t($gh->calculaTamanhoTotal(false) + $gh->calcTam(array('qi' => 2),false)),
-			'margin-left' => $gh->calcTam(array('qi' => -1)),
-			'margin-right' => $gh->calcTam(array('qi' => -1)),
+			'width' => $u->t($hg->size(array('M'=>12)) + $hg->size(array('g'=>2),false)),
+			'margin-left' => $hg->size(array('g'=>-1)),
+			'margin-right' => $hg->size(array('g'=>-1)),
 			'float' => 'left',
 			'position' => 'relative'
 	));
 
 $this->Decorator->rule(
 		'div.coluna_principal .div_intrapolante', array(
-			'width' => $u->t($gh->calculaTamanhoTotal(false) + $gh->calcTam(array('qi' => -2),false)),
-			'margin-left' => $gh->calcTam(array('qi' => 1)),
-			'margin-right' => $gh->calcTam(array('qi' => 1)),
+			'width' => $u->t($hg->size(array('M'=>12)) + $hg->size(array('g'=>-2),false)),
+			'margin-left' => $hg->size(array('g' => 1)),
+			'margin-right' => $hg->size(array('g' => 1)),
 			'float' => 'left',
 			'position' => 'relative'
 	));
 
 $this->Decorator->rule(
 		'#primeiro_cabecalho', array(
-			'height' => $gv->calcTam(array('qM' => 1, 'qi' => 2))
+			'height' => $vg->size(array('M' => 1, 'g' => 2))
 	));
 
 $this->Decorator->rule(
 		'#conteudo', array(
-			'background-color' => $paleta['fundo_conteudo']->escreveCor(),
-			'width' => auto
+			'background-color' => $palette['fundo_conteudo']->write(),
+			'width' => 'auto'
+	));
+
+$this->Decorator->rule(
+		'.caixa', array(
+			'background-color' => $palette['fundo_caixotinho']->write(),
+			'margin-left' => $hg->size(array('g' => 1)),
+			'margin-bottom' => $vg->size(array('g' => 2)),
+			'float' => 'left',
+			'padding-top' => '0'
 	));
 
 
-.caixa
-{
-	background-color: <?php echo $paleta['fundo_caixotinho']->escreveCor(); ?>;
-	margin-left: <?php echo $gh->calcTam(array('qi' => 1));?>;
-	margin-bottom: <?php echo $gv->calcTam(array('qi' => 2));?>;
-	float: left;
-	padding-top: 0;
-}
 
-.caixa.transparente
-{
-	background-color: none;
-	margin-left: <?php echo $gh->calcTam(array('qi' => 1));?>;
-	margin-bottom: 0;
-	float: left;
-}
+$this->Decorator->rule(
+		'.caixa.transparente', array(
+			'background-color' => 'none',
+			'margin-left' => $hg->size(array('g' => 1)),
+			'margin-bottom' => '0',
+			'float' => 'left'
+	));
 
-#conteudo .coluna .caixinha
-{
-	float: left;
-	display: block;
-	margin-left: <?php echo $gh->calcTam(array('qi' => 1));?>;
-	margin-right: 0;
-}
+$this->Decorator->rule(
+		'#conteudo .coluna .caixinha', array(
+			'float' => 'left',
+			'display' => 'block',
+			'margin-left' => $hg->size(array('g' => 1)),
+			'margin-right' => '0'
+	));
 
-#conteudo .coluna .caixinha_2
-{
-	float: left;
-	display: block;
-	margin-left: 0;
-	margin-right: 0;
-}
-
-.noticias_pagina_principal
-{
-	float: left;
-	display: block;
-	margin: 0;
-	width: <?php echo $gh->calcTam(array('qM' => 3, 'qi' => 2, 'qm' => 1));?>;
-}
-
-.publicacoes_pagina_principal
-{
-	float: left;
-	display: block;
-	margin-left: <?php echo $gh->calcTam(array('qi' => 1)); ?>;
-	width: <?php echo $gh->calcTam(array('qM' => 3, 'qi' => 1.8, 'qm' => 1));?>;
-}
-
-.larg_3M_-3i_-1m
-{
-	width: <?php echo $gh->calcTam(array('qM' => 3, 'qi' => -3, 'qm' => -1));?>;
-}
-
-.caixote
-{
-	margin: 0;
-	float: left;
-}
-
-.espacador_vertical
-{
-	margin: 0;
-	float: left;
-	height: <?php echo $gv->calcTam(array('qi' => 1));?>
-}
-
-.espacador_horizontal
-{
-	margin: 0;
-	float: left;
-	clear: both;
-	width: <?php echo $gh->calcTam(array('qi' => 1));?>
-}
-
-<?php
-// caixotes
-
-$tam = array ('qi' => 0);
-
-for ($qM = 1; $qM <= 12; $qM++)
-{
-	$tam['qM'] = $qM;
-	echo _classe_largura($tam, $gh);
-}
-
-// colunas e caixas
-$tam = array ('qi' => -1);
-
-for ($qM = 1; $qM <= 12; $qM++)
-{
-	$tam['qM'] = $qM;
-	echo _classe_largura($tam, $gh);
-}
-
-//espaçadores horizontais
-
-$tam = array();
-for($qi = 1; $qi <= 7; $qi++)
-{
-	$tam['qi'] = $qi;
-	echo _classe_largura($tam, $gh);
-}
-
-//espaçadores verticais
-
-$tam = array();
-for($qi = 1; $qi <= 7; $qi++)
-{
-	$tam['qi'] = $qi;
-	echo _classe_altura($tam, $gv);
-}
-?>
+$this->Decorator->rule(
+		'#conteudo .coluna .caixinha_2', array(
+			'float' => 'left',
+			'display' => 'block',
+			'margin-left' => '0',
+			'margin-right' => '0'
+	));
 
 
+$this->Decorator->rule(
+		'.noticias_pagina_principal', array(
+			'float' => 'left',
+			'display' => 'block',
+			'margin' => '0',
+			'width' => $hg->size(array('M' => 3, 'g' => 2, 'M' => 1))
+	));
 
-.larg_auto {width: auto;}
-
-p {text-indent:   <?php echo $u->t($entrelinha);?>;}
-
-p:first-child {text-indent: 0;}
-
-.paragrafos {margin-bottom: <?php echo $u->t($entrelinha);?>;}
-.coluna ul, .coluna ol {margin-bottom: <?php echo $u->t($entrelinha);?>;}
-.coluna ul ul, .coluna ul ol, .coluna ol ul, .coluna ul ol {margin-bottom: 0;}
-
-
-.coluna h1, .coluna h2, .coluna h3, .coluna h4, .coluna h5, .coluna p, .coluna ul, .coluna ol, .coluna form, .coluna span
-{
-	margin-left: <?php echo $gh->calcTam(array('qi' => 1));?>;
-	margin-right: <?php echo $gh->calcTam(array('qi' => 1));?>;
-}
-
-.coluna p span, .coluna h1 span,.coluna h2 span, .coluna h3 span, .coluna h4 span, .coluna h5 span
-{
-	margin: 0;
-}
+$this->Decorator->rule(
+		'.publicacoes_pagina_principal', array(
+			'float' => 'left',
+			'display' => 'block',
+			'margin-left' => $hg->size(array('g' => 1)),
+			'width' =>  $hg->size(array('M' => 3, 'g' => 1.8, 'M' => 1))
+	));
 
 
-.coluna form
-{
-	margin-bottom: <?php echo $u->t($entrelinha);?>;
-}
+$this->Decorator->rule(
+		'.larg_3M_-3i_-1m', array(
+			'width' => $hg->size(array('M' => 3, 'g' => -3, 'M' => -1))
+	));
 
-.coluna a, .menu_1_lateral a, .menu_lateral a:visited
-{
-	color: <?php echo $paleta['texto']->escreveCor();?>;
-	border-bottom: <?php echo $u->t(2);?> solid <?php echo $paleta['texto_destaque']->escreveCor();?>;
-}
+$this->Decorator->rule(
+		'.caixote', array(
+			'margin' => '0',
+			'float' => 'left'
+	));
 
-.coluna a:visited
-{
-	color: <?php echo $paleta['texto_colorido_rebaixado']->escreveCor();?>;
-}
+$this->Decorator->rule(
+		'.espacador_vertical', array(
+			'margin' => '0',
+			'float' => 'left',
+			'height' => $vg->size(array('g' => 1))
+	));
 
-.coluna a:hover, .coluna a:active, .menu_1_lateral a:hover, .menu_1_lateral a:active
-{
-	border-bottom: <?php echo $u->t(2);?> solid <?php echo $paleta['principal']->escreveCor();?>;
-	background-color: <?php echo $paleta['principal']->escreveCor();?>;
-}
 
-.coluna .texto_pequeno
-{
-	font-size: <?php echo $u->t($tam_fonte_padrao * 11/14); ?>
-}
+$this->Decorator->rule(
+		'.espacador_horizontal', array(
+			'margin' => '0',
+			'float' => 'left',
+			'clear' => 'both',
+			'height' => $vg->size(array('g' => 1))
+	));
 
-.coluna .italico
-{
-	font-style: italic;
-}
 
-.flutuante
-{
-	float: left;
-}
+//<?php
+//// caixotes
+//
+//$tam = array ('g' => 0);
+//
+//for ($qM = 1; $qM <= 12; $qM++)
+//{
+//	$tam['M'] = $qM;
+//	echo _classe_largura($tam, $gh);
+//}
+//
+//// colunas e caixas
+//$tam = array ('g' => -1);
+//
+//for ($qM = 1; $qM <= 12; $qM++)
+//{
+//	$tam['M'] = $qM;
+//	echo _classe_largura($tam, $gh);
+//}
+//
+////espaçadores horizontais
+//
+//$tam = array();
+//for($qi = 1; $qi <= 7; $qi++)
+//{
+//	$tam['g'] = $qi;
+//	echo _classe_largura($tam, $gh);
+//}
+//
+////espaçadores verticais
+//
+//$tam = array();
+//for($qi = 1; $qi <= 7; $qi++)
+//{
+//	$tam['g'] = $qi;
+//	echo _classe_altura($tam, $gv);
+//}
+//acertar esse fecha do php depois
+// ? >
 
-h1, h1 *, h2, h2 *, h3, h3 * {font-family: Georgia, serif;}
+$this->Decorator->rule(
+		'.larg_auto', array(
+			'margin' => 'auto'
+	));
 
-h1, h1 *, h4, h4 *, h5, h5 * {font-weight: 700;}
 
-h1, h1 *
-{
-	color: <?php echo $paleta['principal']->escreveCor(); ?>;
-	display: block;
-	float: left;
-	clear: none;
-	line-height: <?php echo $u->t(30);?>;
-	font-size: <?php echo $u->t(23);?>;
-}
+$this->Decorator->rule(
+		'p', array(
+			'text-indent' => $u->t($lineHeight)
+	));
 
-.coluna h1
-{
-	color: <?php echo $paleta['texto']->escreveCor(); ?>;
-	display: block;
-	float: none;
-	clear: both;
-}
+$this->Decorator->rule(
+		'p:first-child', array(
+			'text-indent' => '0'
+	));
 
-h2, h2 *
-{
-	line-height: <?php echo $u->t(30);?>;
-	font-size: <?php echo $u->t(23);?>;
-	color: <?php echo $paleta['texto_destaque']->escreveCor();?>;
-	font-weight: 500;
-}
+$this->Decorator->rule(
+		'.paragrafos', array(
+			'margin-bottom' => $u->t($lineHeight)
+	));
 
-h3, h3 *
-{
-	line-height: <?php echo $u->t($entrelinha);?>;
-	font-size: <?php echo $u->t(17);?>;
-	font-weight: 500;
-}
+$this->Decorator->rule(
+		'.coluna ul, .coluna ol', array(
+			'margin-bottom' => $u->t($lineHeight)
+	));
 
-h4, h4 *
-{
-	line-height: <?php echo $u->t($entrelinha);?>;
-	font-size: <?php echo $u->t($tam_fonte_padrao);?>;
-	color: <?php echo $paleta['texto_destaque']->escreveCor();?>;
-}
+$this->Decorator->rule(
+		'.coluna ul ul, .coluna ul ol, .coluna ol ul, .coluna ul ol', array(
+			'margin-bottom' => '0'
+	));
 
-h5, h5 *
-{
-	line-height: <?php echo $u->t($entrelinha);?>;
-	font-size: <?php echo $u->t($tam_fonte_padrao);?>;
-}
+$this->Decorator->rule(
+		'.coluna h1, .coluna h2, .coluna h3, .coluna h4, .coluna h5, .coluna p, .coluna ul, .coluna ol, .coluna form, .coluna span', array(
+			'margin-left' => $hg->size(array('g' => 1)),
+			'margin-right' => $hg->size(array('g' => 1))
+	));
 
-ol, ol li {list-style-type: decimal; margin-left: <?php echo $u->t($entrelinha);?>;}
+$this->Decorator->rule(
+		'.coluna p span, .coluna h1 span,.coluna h2 span, .coluna h3 span, .coluna h4 span, .coluna h5 span', array(
+			'margin-left' => 0
+	));
 
-.colorido, .colorido *, span.colorido a
-{
-	color: <?php echo $paleta['texto_destaque']->escreveCor();?>;
-}
+$this->Decorator->rule(
+		'coluna form', array(
+			'margin-bottom' => $u->t($lineHeight)
+	));
 
-.barra_h
-{
+$this->Decorator->rule(
+		'.coluna a, .menu_1_lateral a, .menu_lateral a:visited', array(
+			'color' => $palette['texto']->write(),
+			'border-bottom' => $u->t(2) . 'solid' . $palette['texto_destaque']->write()
+	));
 
-	clear: both;
-	width: auto;
-	display: block;
-	background-repeat: repeat-x;
-}
+$this->Decorator->rule(
+		'.coluna a:visited', array(
+			'color' => $palette['texto_colorido_rebaixado']->write()
+	));
 
-.colorida_branco
-{
-	background-image: url('<?php echo $gerador_imagens_compostas->url(
-					array(
-						'w' => 1600,
-						'h' => 5,
-						'wi' => 1600*4,
-						'hi' => 5*4,
-						'nome_base' => 'barrinha_cor_fundo_cab',
-						'camadas' => array(
-							array('tipo' =>	'aplicar_cor', 'cor' => $paleta['fundo_cabecalho']),
+$this->Decorator->rule(
+		'.coluna a:hover, .coluna a:active, .menu_1_lateral a:hover, .menu_1_lateral a:active', array(
+			'border-bottom' => $u->t(2) . 'solid' . $palette['principal']->write(),
+			'background-color' => $palette['principal']->write()
+	));
+
+$this->Decorator->rule(
+		'.coluna .texto_pequeno', array(
+			'font-size' => $u->t($standard_font_size * 11/14)
+	));
+
+$this->Decorator->rule(
+		'.coluna .italico', array(
+			'font-style' => 'italic'
+	));
+
+$this->Decorator->rule(
+		'.flutuante', array(
+			'float' => 'left'
+	));
+
+$this->Decorator->rule(
+		'h1, h1 *, h2, h2 *, h3, h3 *', array(
+			'font-family' => 'Georgia, serif'
+	));
+
+$this->Decorator->rule(
+		'h1, h1 *, h4, h4 *, h5, h5 * ', array(
+			'font-weight' => '700'
+	));
+
+$this->Decorator->rule(
+		'h1, h1 *', array(
+			'color' => $palette['principal']->write(),
+			'display' => 'block',
+			'float' => 'left',
+			'clear' => 'none',
+			'line-height' => $u->t(30),
+			'font-size' => $u->t(23)
+	));
+
+$this->Decorator->rule(
+		'.coluna h1', array(
+			'color' => $palette['texto']->write(),
+			'display' => 'block',
+			'float' => 'none',
+			'clear' => 'both'
+	));
+
+$this->Decorator->rule(
+		'h2, h2 *', array(
+			'line-height' => $u->t(30),
+			'font-size' => $u->t(23),
+			'color' => $palette['texto_destaque']->write(),
+			'font-weight' => '500'
+	));
+
+$this->Decorator->rule(
+		'h3, h3 *', array(
+			'line-height' => $u->t($lineHeight),
+			'font-size' => $u->t(17),
+			'font-weight' => '500'
+	));
+
+$this->Decorator->rule(
+		'h4, h4 *', array(
+			'line-height' => $u->t($lineHeight),
+			'font-size' => $u->t($standard_font_size),
+			'color' => $palette['texto_destaque']->write()
+	));
+
+$this->Decorator->rule(
+		'h5, h5 *', array(
+			'line-height' => $u->t($lineHeight),
+			'font-size' => $u->t($standard_font_size)
+	));
+
+$this->Decorator->rule(
+		'ol, ol li', array(
+			'list-style-type' => 'decimal',
+			'margin-left' => $u->t($lineHeight)
+	));
+
+$this->Decorator->rule(
+		'.colorido, .colorido *, span.colorido a', array(
+			'color' => $palette['texto_destaque']->write()
+	));
+
+$this->Decorator->rule(
+		'.barra_h', array(
+			'clear' => 'both',
+			'width' => 'auto',
+			'display' => 'block',
+			'background-repeat' => 'repeat-x'
+	));
+
+
+$this->Decorator->rule(
+		'.colorida_branco', array(
+			'background-image' => "url('". $ig->url(
+				array(
+						'w' => '1600',
+						'h' => '5',
+						'iw' => '1600*4',
+						'ih' => '5*4',
+						'base_name' => 'barrinha_cor_fundo_cab',
+						'layers' => array(
 							array(
-*
-{
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	vertical-align: baseline;
-	text-decoration: none;
-	font-family: "Lucida Sans", "Bitstream Vera", sans;
-	font-size: <?php echo $u->t($tam_fonte_padrao);?>;
-	line-height: <?php echo $u->t($entrelinha);?>;
-	border: none;
-}
-
-#logo
-{
-	margin-top: <?php echo $u->t($entrelinha/2);?>;
-}
-
-.coluna_principal
-{
-	width: <?php echo $gh->calculaTamanhoTotal(); ?>;
-	position: relative;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-*
-{
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	vertical-align: baseline;
-	text-decoration: none;
-	font-family: "Lucida Sans", "Bitstream Vera", sans;
-	font-size: <?php echo $u->t($tam_fonte_padrao);?>;
-	line-height: <?php echo $u->t($entrelinha);?>;
-	border: none;
-}
-
-#logo
-{
-	margin-top: <?php echo $u->t($entrelinha/2);?>;
-}
-
-.coluna_principal
-{
-	width: <?php echo $gh->calculaTamanhoTotal(); ?>;
-	position: relative;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-div.coluna_principal .div_extrapolante
-{
-	width: <?php echo $u->t($gh->calculaTamanhoTotal(false) + $gh->calcTam(array('qi' => 2),false)); ?>;
-	margin-left: <?php echo $gh->calcTam(array('qi' => -1));?>;
-	margin-right: <?php echo $gh->calcTam(array('qi' => -1));?>;
-	float: left;
-	position: relative;
-}
-
-div.coluna_principal .div_intrapolante
-{
-	width: <?php echo $u->t($gh->calculaTamanhoTotal(false) + $gh->calcTam(array('qi' => -2),false)); ?>;
-	margin-left: <?php echo $gh->calcTam(array('qi' => 1));?>;
-	margin-right: <?php echo $gh->calcTam(array('qi' => 1));?>;
-	float: left;
-	position: relative;
-}
-
-#primeiro_cabecalho
-{
-	height: <?php echo $gv->calcTam(array('qM' => 1, 'qi' => 2));?>;
-}
-
-#conteudo
-{
-	background-color: <?php echo $paleta['fundo_conteudo']->escreveCor();?>;
-	width: auto;
-}
-
-.caixa
-{
-	background-color: <?php echo $paleta['fundo_caixotinho']->escreveCor(); ?>;
-	margin-left: <?php echo $gh->calcTam(array('qi' => 1));?>;
-	margin-bottom: <?php echo $gv->calcTam(array('qi' => 2));?>;
-	float: left;
-	padding-top: 0;
-}
-
-.caixa.transparente
-{
-	background-color: none;
-	margin-left: <?php echo $gh->calcTam(array('qi' => 1));?>;
-	margin-bottom: 0;
-	float: left;
-}
-
-#conteudo .coluna .caixinha
-{
-	float: left;
-	display: block;
-	margin-left: <?php echo $gh->calcTam(array('qi' => 1));?>;
-	margin-right: 0;
-}
-
-#conteudo .coluna .caixinha_2
-{
-	float: left;
-	display: block;
-	margin-left: 0;
-	margin-right: 0;
-}
-
-.noticias_pagina_principal
-{
-	float: left;
-	display: block;
-	margin: 0;
-	width: <?php echo $gh->calcTam(array('qM' => 3, 'qi' => 2, 'qm' => 1));?>;
-}
-
-.publicacoes_pagina_principal
-{
-	float: left;
-	display: block;
-	margin-left: <?php echo $gh->calcTam(array('qi' => 1)); ?>;
-	width: <?php echo $gh->calcTam(array('qM' => 3, 'qi' => 1.8, 'qm' => 1));?>;
-}
-
-.larg_3M_-3i_-1m
-{
-	width: <?php echo $gh->calcTam(array('qM' => 3, 'qi' => -3, 'qm' => -1));?>;
-}
-
-.caixote
-{
-	margin: 0;
-	float: left;
-}
-
-.espacador_vertical
-{
-	margin: 0;
-	float: left;
-	height: <?php echo $gv->calcTam(array('qi' => 1));?>
-}
-
-.espacador_horizontal
-{
-	margin: 0;
-	float: left;
-	clear: both;
-	width: <?php echo $gh->calcTam(array('qi' => 1));?>
-}
-
-<?php
-// caixotes
-
-$tam = array ('qi' => 0);
-
-for ($qM = 1; $qM <= 12; $qM++)
-{
-	$tam['qM'] = $qM;
-	echo _classe_largura($tam, $gh);
-}
-
-// colunas e caixas
-$tam = array ('qi' => -1);
-
-for ($qM = 1; $qM <= 12; $qM++)
-{
-	$tam['qM'] = $qM;
-	echo _classe_largura($tam, $gh);
-}
-
-//espaçadores horizontais
-
-$tam = array();
-for($qi = 1; $qi <= 7; $qi++)
-{
-	$tam['qi'] = $qi;
-	echo _classe_largura($tam, $gh);
-}
-
-//espaçadores verticais
-
-$tam = array();
-for($qi = 1; $qi <= 7; $qi++)
-{
-	$tam['qi'] = $qi;
-	echo _classe_altura($tam, $gv);
-}
-?>
-
-
-
-.larg_auto {width: auto;}
-
-p {text-indent:   <?php echo $u->t($entrelinha);?>;}
-
-p:first-child {text-indent: 0;}
-
-.paragrafos {margin-bottom: <?php echo $u->t($entrelinha);?>;}
-.coluna ul, .coluna ol {margin-bottom: <?php echo $u->t($entrelinha);?>;}
-.coluna ul ul, .coluna ul ol, .coluna ol ul, .coluna ul ol {margin-bottom: 0;}
-
-
-.coluna h1, .coluna h2, .coluna h3, .coluna h4, .coluna h5, .coluna p, .coluna ul, .coluna ol, .coluna form, .coluna span
-{
-	margin-left: <?php echo $gh->calcTam(array('qi' => 1));?>;
-	margin-right: <?php echo $gh->calcTam(array('qi' => 1));?>;
-}
-
-.coluna p span, .coluna h1 span,.coluna h2 span, .coluna h3 span, .coluna h4 span, .coluna h5 span
-{
-	margin: 0;
-}
-
-
-.coluna form
-{
-	margin-bottom: <?php echo $u->t($entrelinha);?>;
-}
-
-.coluna a, .menu_1_lateral a, .menu_lateral a:visited
-{
-	color: <?php echo $paleta['texto']->escreveCor();?>;
-	border-bottom: <?php echo $u->t(2);?> solid <?php echo $paleta['texto_destaque']->escreveCor();?>;
-}
-
-.coluna a:visited
-{
-	color: <?php echo $paleta['texto_colorido_rebaixado']->escreveCor();?>;
-}
-
-.coluna a:hover, .coluna a:active, .menu_1_lateral a:hover, .menu_1_lateral a:active
-{
-	border-bottom: <?php echo $u->t(2);?> solid <?php echo $paleta['principal']->escreveCor();?>;
-	background-color: <?php echo $paleta['principal']->escreveCor();?>;
-}
-
-.coluna .texto_pequeno
-{
-	font-size: <?php echo $u->t($tam_fonte_padrao * 11/14); ?>
-}
-
-.coluna .italico
-{
-	font-style: italic;
-}
-
-.flutuante
-{
-	float: left;
-}
-
-h1, h1 *, h2, h2 *, h3, h3 * {font-family: Georgia, serif;}
-
-h1, h1 *, h4, h4 *, h5, h5 * {font-weight: 700;}
-
-h1, h1 *
-{
-	color: <?php echo $paleta['principal']->escreveCor(); ?>;
-	display: block;
-	float: left;
-	clear: none;
-	line-height: <?php echo $u->t(30);?>;
-	font-size: <?php echo $u->t(23);?>;
-}
-
-.coluna h1
-{
-	color: <?php echo $paleta['texto']->escreveCor(); ?>;
-	display: block;
-	float: none;
-	clear: both;
-}
-
-h2, h2 *
-{
-	line-height: <?php echo $u->t(30);?>;
-	font-size: <?php echo $u->t(23);?>;
-	color: <?php echo $paleta['texto_destaque']->escreveCor();?>;
-	font-weight: 500;
-}
-
-h3, h3 *
-{
-	line-height: <?php echo $u->t($entrelinha);?>;
-	font-size: <?php echo $u->t(17);?>;
-	font-weight: 500;
-}
-
-h4, h4 *
-{
-	line-height: <?php echo $u->t($entrelinha);?>;
-	font-size: <?php echo $u->t($tam_fonte_padrao);?>;
-	color: <?php echo $paleta['texto_destaque']->escreveCor();?>;
-}
-
-h5, h5 *
-{
-	line-height: <?php echo $u->t($entrelinha);?>;
-	font-size: <?php echo $u->t($tam_fonte_padrao);?>;
-}
-
-ol, ol li {list-style-type: decimal; margin-left: <?php echo $u->t($entrelinha);?>;}
-
-.colorido, .colorido *, span.colorido a
-{
-	color: <?php echo $paleta['texto_destaque']->escreveCor();?>;
-}
-
-.barra_h
-{
-
-	clear: both;
-	width: auto;
-	display: block;
-	background-repeat: repeat-x;
-}
-
-.colorida_branco
-{
-	background-image: url('<?php echo $gerador_imagens_compostas->url(
-					array(
-						'w' => 1600,
-						'h' => 5,
-						'wi' => 1600*4,
-						'hi' => 5*4,
-						'nome_base' => 'barrinha_cor_fundo_cab',
-						'camadas' => array(
-							array('tipo' =>	'aplicar_cor', 'cor' => $paleta['fundo_cabecalho']),
+								'type' => 'aplicar_cor',
+								'color' => $palette['fundo_cabecalho']
+							),
 							array(
-*
-{
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	vertical-align: baseline;
-	text-decoration: none;
-	font-family: "Lucida Sans", "Bitstream Vera", sans;
-	font-size: <?php echo $u->t($tam_fonte_padrao);?>;
-	line-height: <?php echo $u->t($entrelinha);?>;
-	border: none;
-}
-
-#logo
-{
-	margin-top: <?php echo $u->t($entrelinha/2);?>;
-}
-
-.coluna_principal
-{
-	width: <?php echo $gh->calculaTamanhoTotal(); ?>;
-	position: relative;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-div.coluna_principal .div_extrapolante
-{
-	width: <?php echo $u->t($gh->calculaTamanhoTotal(false) + $gh->calcTam(array('qi' => 2),false)); ?>;
-	margin-left: <?php echo $gh->calcTam(array('qi' => -1));?>;
-	margin-right: <?php echo $gh->calcTam(array('qi' => -1));?>;
-	float: left;
-	position: relative;
-}
-
-div.coluna_principal .div_intrapolante
-{
-	width: <?php echo $u->t($gh->calculaTamanhoTotal(false) + $gh->calcTam(array('qi' => -2),false)); ?>;
-	margin-left: <?php echo $gh->calcTam(array('qi' => 1));?>;
-	margin-right: <?php echo $gh->calcTam(array('qi' => 1));?>;
-	float: left;
-	position: relative;
-}
-
-#primeiro_cabecalho
-{
-	height: <?php echo $gv->calcTam(array('qM' => 1, 'qi' => 2));?>;
-}
-
-#conteudo
-{
-	background-color: <?php echo $paleta['fundo_conteudo']->escreveCor();?>;
-	width: auto;
-}
-
-.caixa
-{
-	background-color: <?php echo $paleta['fundo_caixotinho']->escreveCor(); ?>;
-	margin-left: <?php echo $gh->calcTam(array('qi' => 1));?>;
-	margin-bottom: <?php echo $gv->calcTam(array('qi' => 2));?>;
-	float: left;
-	padding-top: 0;
-}
-
-.caixa.transparente
-{
-	background-color: none;
-	margin-left: <?php echo $gh->calcTam(array('qi' => 1));?>;
-	margin-bottom: 0;
-	float: left;
-}
-
-#conteudo .coluna .caixinha
-{
-	float: left;
-	display: block;
-	margin-left: <?php echo $gh->calcTam(array('qi' => 1));?>;
-	margin-right: 0;
-}
-
-#conteudo .coluna .caixinha_2
-{
-	float: left;
-	display: block;
-	margin-left: 0;
-	margin-right: 0;
-}
-
-.noticias_pagina_principal
-{
-	float: left;
-	display: block;
-	margin: 0;
-	width: <?php echo $gh->calcTam(array('qM' => 3, 'qi' => 2, 'qm' => 1));?>;
-}
-
-.publicacoes_pagina_principal
-{
-	float: left;
-	display: block;
-	margin-left: <?php echo $gh->calcTam(array('qi' => 1)); ?>;
-	width: <?php echo $gh->calcTam(array('qM' => 3, 'qi' => 1.8, 'qm' => 1));?>;
-}
-
-.larg_3M_-3i_-1m
-{
-	width: <?php echo $gh->calcTam(array('qM' => 3, 'qi' => -3, 'qm' => -1));?>;
-}
-
-.caixote
-{
-	margin: 0;
-	float: left;
-}
-
-.espacador_vertical
-{
-	margin: 0;
-	float: left;
-	height: <?php echo $gv->calcTam(array('qi' => 1));?>
-}
-
-.espacador_horizontal
-{
-	margin: 0;
-	float: left;
-	clear: both;
-	width: <?php echo $gh->calcTam(array('qi' => 1));?>
-}
-
-<?php
-// caixotes
-
-$tam = array ('qi' => 0);
-
-for ($qM = 1; $qM <= 12; $qM++)
-{
-	$tam['qM'] = $qM;
-	echo _classe_largura($tam, $gh);
-}
-
-// colunas e caixas
-$tam = array ('qi' => -1);
-
-for ($qM = 1; $qM <= 12; $qM++)
-{
-	$tam['qM'] = $qM;
-	echo _classe_largura($tam, $gh);
-}
-
-//espaçadores horizontais
-
-$tam = array();
-for($qi = 1; $qi <= 7; $qi++)
-{
-	$tam['qi'] = $qi;
-	echo _classe_largura($tam, $gh);
-}
-
-//espaçadores verticais
-
-$tam = array();
-for($qi = 1; $qi <= 7; $qi++)
-{
-	$tam['qi'] = $qi;
-	echo _classe_altura($tam, $gv);
-}
-?>
-
-
-
-.larg_auto {width: auto;}
-
-p {text-indent:   <?php echo $u->t($entrelinha);?>;}
-
-p:first-child {text-indent: 0;}
-
-.paragrafos {margin-bottom: <?php echo $u->t($entrelinha);?>;}
-.coluna ul, .coluna ol {margin-bottom: <?php echo $u->t($entrelinha);?>;}
-.coluna ul ul, .coluna ul ol, .coluna ol ul, .coluna ul ol {margin-bottom: 0;}
-
-
-.coluna h1, .coluna h2, .coluna h3, .coluna h4, .coluna h5, .coluna p, .coluna ul, .coluna ol, .coluna form, .coluna span
-{
-	margin-left: <?php echo $gh->calcTam(array('qi' => 1));?>;
-	margin-right: <?php echo $gh->calcTam(array('qi' => 1));?>;
-}
-
-.coluna p span, .coluna h1 span,.coluna h2 span, .coluna h3 span, .coluna h4 span, .coluna h5 span
-{
-	margin: 0;
-}
-
-
-.coluna form
-{
-	margin-bottom: <?php echo $u->t($entrelinha);?>;
-}
-
-.coluna a, .menu_1_lateral a, .menu_lateral a:visited
-{
-	color: <?php echo $paleta['texto']->escreveCor();?>;
-	border-bottom: <?php echo $u->t(2);?> solid <?php echo $paleta['texto_destaque']->escreveCor();?>;
-}
-
-.coluna a:visited
-{
-	color: <?php echo $paleta['texto_colorido_rebaixado']->escreveCor();?>;
-}
-
-.coluna a:hover, .coluna a:active, .menu_1_lateral a:hover, .menu_1_lateral a:active
-{
-	border-bottom: <?php echo $u->t(2);?> solid <?php echo $paleta['principal']->escreveCor();?>;
-	background-color: <?php echo $paleta['principal']->escreveCor();?>;
-}
-
-.coluna .texto_pequeno
-{
-	font-size: <?php echo $u->t($tam_fonte_padrao * 11/14); ?>
-}
-
-.coluna .italico
-{
-	font-style: italic;
-}
-
-.flutuante
-{
-	float: left;
-}
-
-h1, h1 *, h2, h2 *, h3, h3 * {font-family: Georgia, serif;}
-
-h1, h1 *, h4, h4 *, h5, h5 * {font-weight: 700;}
-
-h1, h1 *
-{
-	color: <?php echo $paleta['principal']->escreveCor(); ?>;
-	display: block;
-	float: left;
-	clear: none;
-	line-height: <?php echo $u->t(30);?>;
-	font-size: <?php echo $u->t(23);?>;
-}
-
-.coluna h1
-{
-	color: <?php echo $paleta['texto']->escreveCor(); ?>;
-	display: block;
-	float: none;
-	clear: both;
-}
-
-h2, h2 *
-{
-	line-height: <?php echo $u->t(30);?>;
-	font-size: <?php echo $u->t(23);?>;
-	color: <?php echo $paleta['texto_destaque']->escreveCor();?>;
-	font-weight: 500;
-}
-
-h3, h3 *
-{
-	line-height: <?php echo $u->t($entrelinha);?>;
-	font-size: <?php echo $u->t(17);?>;
-	font-weight: 500;
-}
-
-h4, h4 *
-{
-	line-height: <?php echo $u->t($entrelinha);?>;
-	font-size: <?php echo $u->t($tam_fonte_padrao);?>;
-	color: <?php echo $paleta['texto_destaque']->escreveCor();?>;
-}
-
-h5, h5 *
-{
-	line-height: <?php echo $u->t($entrelinha);?>;
-	font-size: <?php echo $u->t($tam_fonte_padrao);?>;
-}
-
-ol, ol li {list-style-type: decimal; margin-left: <?php echo $u->t($entrelinha);?>;}
-
-.colorido, .colorido *, span.colorido a
-{
-	color: <?php echo $paleta['texto_destaque']->escreveCor();?>;
-}
-
-.barra_h
-{
-
-	clear: both;
-	width: auto;
-	display: block;
-	background-repeat: repeat-x;
-}
-
-.colorida_branco
-{
-	background-image: url('<?php echo $gerador_imagens_compostas->url(
-					array(
-						'w' => 1600,
-						'h' => 5,
-						'wi' => 1600*4,
-						'hi' => 5*4,
-						'nome_base' => 'barrinha_cor_fundo_cab',
-						'camadas' => array(
-							array('tipo' =>	'aplicar_cor', 'cor' => $paleta['fundo_cabecalho']),
-							array(
-								'tipo' =>	'imagem_colorizada',
-								'caminho' => '/img/matrizes/barrinha_vermelha_fundo_cabecalho_fundo_aplicacao.png',
-								'cor' => $paleta['principal']
+								'type' => 'imagem_colorizada',
+								'path' => '/img/matrizes/barrinha_vermelha_fundo_cabecalho_fundo_aplicacao.png',
+								'color' => $palette['principal']
 							)
 						)
 					)
-				);?>');
-	height: <?php echo $u->t(4);?>;
-	margin-bottom: <?php echo $gv->calcTam(array('qi' => 1));?>;
-}
-
-.colorida_branco_cinza
-{
-	background-image: url('<?php
-		echo $gerador_imagens_compostas->url(
-		array(
-			'w' => 1600,
-			'h' => 4,
-			'wi' => 1600*4,
-			'hi' => 4*4,
-			'nome_base' => 'barrinha_topo',
-			'camadas' => array(
-				array('tipo' => 'aplicar_cor', 'cor' => $paleta['fundo_cabecalho']),
-				array(
-					'tipo' =>	'imagem_colorizada',
-					'caminho' => '/img/matrizes/barrinha_barrao_c-principal_f1-fundo_cabecalho_f2-fundo_conteudo.png',
-					'cor' => $paleta['fundo_conteudo']
-				),
-				array(
-					'tipo' => 'imagem_colorizada',
-					'caminho' => '/img/matrizes/barrinha_pont_c-principal_f1-fundo_cabecalho_f2-fundo_conteudo.png',
-					'cor' => $paleta['principal']
 				)
-			)
-		)
-	);
-	?>');
-	height: <?php echo $u->t(4);?>;
-	margin-top: <?php echo $gv->calcTam(array('qi' => 0.5));?>;
-}
+				.  "')",
+			'height' => $u->t(4),
+			'margin-bottom' => $vg->size(array('g' => 1))
+	));
 
-.colorida_cinza_branco {
-	background-image: url('<?php
-		echo $gerador_imagens_compostas->url(
-		array(
-			'w' => 1600,
-			'h' => 6,
-			'wi' => 1600*4,
-			'hi' => 6*4,
-			'nome_base' => 'barrinha_baixo',
-			'camadas' => array(
-				array('tipo' => 'aplicar_cor', 'cor' => $paleta['fundo_cabecalho']),
+
+$this->Decorator->rule(
+		'.colorida_branco_cinza', array(
+			'background-image' => "url('". $ig->url(
 				array(
-					'tipo' =>	'imagem_colorizada',
-					'caminho' => '/img/matrizes/barrinha_barrao_c-principal_f1-fundo_conteudo_f2-fundo_cabecalho.png',
-					'cor' => $paleta['fundo_conteudo']
-				),
-				array(
-					'tipo' => 'imagem_colorizada',
-					'caminho' => '/img/matrizes/barrinha_pont_c-principal_f1-fundo_conteudo_f2-fundo_cabecalho.png',
-					'cor' => $paleta['principal']
-				)
-			)
-		)
-	);
-	?>');
-	height: <?php echo $u->t(5);?>;
-}
-
-.cinza_branco
-{
-	<?php
-	$altura = 5;
-	$cima = floor($entrelinha - 5)/2;
-	$baixo = $entrelinha - 5 - $cima;
-	?>
-	height: <?php echo $u->t($altura);?>;
-	background-image: url('<?php
-		echo $gerador_imagens_compostas->url(
-		array(
-			'w' => 1600,
-			'h' => 5,
-			'wi' => 1600*4,
-			'hi' => 5*4,
-			'nome_base' => 'barrinha_c-fundo_conteudo_f-fundo_caixotinho',
-			'camadas' => array(
-				array('tipo' =>	'aplicar_cor', 'cor' => $paleta['fundo_caixotinho']),
-				array(
-					'tipo' => 'imagem_colorizada',
-					'caminho' => '/img/matrizes/barrinha_c-fundo_conteudo_f-fundo_caixotinho.png',
-					'cor' => $paleta['fundo_conteudo']
-				)
-			)
-		)
-	);
-	?>');
-	margin-bottom: <?php echo $u->t($baixo);?>;
-	margin-top: <?php echo $u->t($cima);?>;
-}
-
-.tracejada_cinza_branco
-{
-	background-image: url('<?php
-		echo $gerador_imagens_compostas->url(
-		array(
-			'w' => 1028,
-			'h' => 3,
-			'wi' => 1028*4,
-			'hi' => 3*4,
-			'nome_base' => 'barrinha_tracejada',
-			'camadas' => array(
-				array('tipo' => 'aplicar_cor', 'cor' => $paleta['fundo_cabecalho']),
-				array(
-					'tipo' =>	'imagem_colorizada',
-					'caminho' => '/img/matrizes/barrinha_tracejada_c-fundo_conteudo_f-fundo_cabecalho.png',
-					'cor' => $paleta['fundo_conteudo']
-				)
-			)
-		)
-	);
-	?>');
-	height:<?php echo $u->t(2);?>;
-	margin-top: <?php echo $gv->calcTam(array('qi' => 0.5));?>;
-	margin-bottom: <?php echo $gv->calcTam(array('qi' => 0.5));?>;
-}
-
-
-.limpador
-{
-	clear: both;
-}
-
-.menu_0 *
-{
-	font-family: Georgia, serif;
-	font-size:  <?php echo $u->t($tam_fonte_padrao * 18/14);?>;
-	line-height: <?php echo $u->t($entrelinha * 30/20);?>;
-}
-
-.menu_0
-{
-	margin-top: <?php echo $gv->calcTam(array('qM' => 1/2));?>;
-}
-
-.menu_0 a
-{
-	color: <?php echo $paleta['texto']->escreveCor(); ?>;
-}
-
-.menu_0 a:hover, .menu_0 a:active, .menu_0 a.selecionado
-{
-	color: <?php echo $paleta['principal']->escreveCor(); ?>;
-}
-
-.menu_1_lateral
-{
-	float: right;
-	margin-top: <?php echo $u->t($entrelinha/3);?>;
-}
-
-.spsassd_menu *, .menu_1 *
-{
-	font-family: Georgia, serif;
-	font-size: <?php echo $u->t(15);?>;
-}
-
-.spsassd_menu a, .menu_1 a {color: <?php echo $paleta['texto']->escreveCor();?>;}
-.spsassd_menu a:hover, .menu_1 a:hover, .menu_1 a.selecionado {color: <?php echo $paleta['texto_destaque']->escreveCor();?>;}
-.spsassd_menu a:active, .menu_1 a:active {color: <?php echo $paleta['texto_destaque']->escreveCor();?>;}
-
-
-.input.text label, .input.textarea label, .input.password label,
-fieldset legend{display: block; font-weight: bold;}
-
-.input.text, .input.password {margin-bottom: <?php echo $gv->calcTam(array('qi' => 1));?>}
-.input.text input, .input.password input, label input
-{
-	background-color: <?php echo $paleta['input_texto']->escreveCor();?>;
-	width: <?php echo $gh->calcTam(array('qM' => 3));?>;
-	height: <?php echo $u->t($entrelinha);?>;
-	line-height: <?php echo $u->t($entrelinha);?>;
-}
-
-.input.textarea{margin-bottom: <?php echo $gv->calcTam(array('qi' => 1));?>}
-
-.input.textarea textarea
-{
-	background-color: <?php echo $paleta['input_texto']->escreveCor();?>;
-	width: <?php echo $gh->calcTam(array('qM' => 3));?>;
-	height: <?php echo $u->t($entrelinha*5);?>;
-}
-
-
-.input.radio{margin-bottom: <?php echo $gv->calcTam(array('qi' => 1));?>;}
-.input.radio label
-{
-	height: <?php echo $u->t($entrelinha);?>;
-	line-height: <?php echo $u->t($entrelinha);?>;
-}
-
-.input.radio input
-{
-	margin-right: <?php echo $gh->calcTam(array('qi' => 0.5));?>;
-}
-
-.submit input
-{
-	width: <?php echo $gh->calcTam(array('qM' => 3));?>;
-	height: <?php echo $u->t($entrelinha*1.5);?>;
-}
-.form-error
-{
-	border: 1px solid <?php echo $paleta['mensagem_erro']->escreveCor();?>;
-}
-
-.error-message
-{
-	color: <?php echo $paleta['mensagem_erro']->escreveCor();?>;
-}
-
-div#excecao p a
-{
-	border: 0;
-	background-color: #FFFFFF;
-}
-
-div#excecao p a:hover, div#excecao p a:active,
-{
-	background-color: #FFFFFF;
-}
-
-#rodape
-{
-	height: <?php echo $gv->calcTam(array('qM' => 5));?>;
-	background-color: <?php echo $paleta['fundo_rodape']->escreveCor();?>;
-}
-
-#rodape p, #rodape a, #rodape b, #rodape *
-{
-	line-height: <?php echo $gv->calcTam(array('qi' => 1.4));?>;
-	font-size: <?php echo $gv->calcTam(array('qi' => 0.9));?>;
-}
-
-#atrator_rodape
-{
-	height: <?php echo $gv->calcTam(array('qM' => 5, 'qi' => -2));?>;
-	width: <?php echo $gh->calcTam(array('qM' => 7));?>;
-	float: left;
-
-	background-image: url('<?php echo $gerador_imagens_compostas->url(
-					array(
-						'w' => 576,
-						'h' => 548,
-						'nome_base' => 'atrator' . $_SESSION['kulepona_n_atrator'],
-						'camadas' => array(
-							array('tipo' =>	'aplicar_cor', 'cor' => $paleta['fundo_cabecalho']),
+						'w' => '1600',
+						'h' => '4',
+						'iw' => '1600*4',
+						'ih' => '4*4',
+						'base_name' => 'barrinha_topo',
+						'layers' => array(
 							array(
-								'tipo' => 'imagem_colorizada',
-								'caminho' => '/img/matrizes/atrator'.$_SESSION['kulepona_n_atrator'].'.png',
-								'cor' => $paleta['atrator']
+								'type' => 'aplicar_cor',
+								'color' => $palette['fundo_cabecalho']
+							),
+							array(
+								'type' => 'imagem_colorizada',
+								'path' => '/img/matrizes/barrinha_barrao_c-principal_f1-fundo_cabecalho_f2-fundo_conteudo.png',
+								'color' => $palette['fundo_conteudo']
+							),
+							array(
+								'type' => 'imagem_colorizada',
+								'path' => '/img/matrizes/barrinha_pont_c-principal_f1-fundo_cabecalho_f2-fundo_conteudo.png',
+								'color' => $palette['principal']
 							)
 						)
 					)
-				);?>');
-	background-repeat: no-repeat;
-	background-position: <?php echo $gh->calcTam(array('qi' => -4)); echo ' ' .  $gv->calcTam(array('qM' => -2));?>;
-}
+				)
+				.  "')",
+			'height' => $u->t(4),
+			'margin-bottom' => $vg->size(array('g' => 0.5))
+	));
 
-#atrator_aleatorio
-{
-	height: <?php echo $gv->calcTam(array('qM' => 4, 'qi' => -4));?>;
-	width: auto;
 
-	background-image: url('<?php
-					$atrator = rand(2,6);
-					echo $gerador_imagens_compostas->url(
-					array(
-						'w' => 576,
-						'h' => 548,
-						'nome_base' => 'atrator' . $atrator,
-						'camadas' => array(
-							array('tipo' =>	'aplicar_cor', 'cor' => $paleta['fundo_cabecalho']),
+$this->Decorator->rule(
+		'.colorida_cinza_branco', array(
+			'background-image' => "url('". $ig->url(
+				array(
+						'w' => '1600',
+						'h' => '6',
+						'iw' => '1600*4',
+						'ih' => '6*4',
+						'base_name' => 'barrinha_baixo',
+						'layers' => array(
 							array(
-								'tipo' => 'imagem_colorizada',
-								'caminho' => '/img/matrizes/atrator'.$atrator.'.png',
-								'cor' => $paleta['atrator']
+								'type' => 'aplicar_cor',
+								'color' => $palette['fundo_cabecalho']
+							),
+							array(
+								'type' => 'imagem_colorizada',
+								'path' => '/img/matrizes/barrinha_barrao_c-principal_f1-fundo_conteudo_f2-fundo_cabecalho.png',
+								'color' => $palette['fundo_conteudo']
+							),
+							array(
+								'type' => 'imagem_colorizada',
+								'path' => '/img/matrizes/barrinha_pont_c-principal_f1-fundo_conteudo_f2-fundo_cabecalho.png',
+								'color' => $palette['principal']
 							)
 						)
 					)
-				);?>');
-	background-repeat: no-repeat;
-	background-position: <?php echo $gh->calcTam(array('qi' => -1));?> <?php echo $gv->calcTam(array('qi' => -4));?>;
-}
+				)
+				.  "')",
+			'height' => $u->t(5)
+	));
 
-.topo_caixa
-{
-	height: <?php echo $u->t($imagem_topo_caixas->altura_max); //seria necessario reconverter aqui no caso de se usar um layout de impressao?>;
-	margin-bottom: <?php echo $gv->calcTam(array('qm' => 1, 'qi' => 0)); ?>;
-}
 
+//@todo verificar se esse trecho ficando fora do Decorator funciona
+$altura = 5;
+$cima = floor($lineHeight - 5)/2;
+$baixo = $lineHeight - 5 - $cima;
+
+
+$this->Decorator->rule(
+		'.cinza_branco', array(
+			'height' => $u->t($altura),
+			'background-image' => "url('". $ig->url(
+				array(
+						'w' => '1600',
+						'h' => '5',
+						'iw' => '1600*4',
+						'ih' => '5*4',
+						'base_name' => 'barrinha_c-fundo_conteudo_f-fundo_caixotinho',
+						'layers' => array(
+							array(
+								'type' => 'aplicar_cor',
+								'color' => $palette['fundo_caixotinho']
+							),
+							array(
+								'type' => 'imagem_colorizada',
+								'path' => '/img/matrizes/barrinha_c-fundo_conteudo_f-fundo_caixotinho.png',
+								'color' => $palette['fundo_conteudo']
+							)
+						)
+					)
+				)
+				.  "')",
+			'margin-bottom' => $u->t($baixo),
+			'margin-top' => $u->t($cima)
+	));
+
+
+$this->Decorator->rule(
+		'.tracejada_cinza_branco', array(
+			'background-image' => "url('". $ig->url(
+				array(
+						'w' => '1028',
+						'h' => '3',
+						'iw' => '1028*4',
+						'ih' => '3*4',
+						'base_name' => 'barrinha_tracejada',
+						'layers' => array(
+							array(
+								'type' => 'aplicar_cor',
+								'color' => $palette['fundo_cabecalho']
+							),
+							array(
+								'type' => 'imagem_colorizada',
+								'path' => '/img/matrizes/barrinha_tracejada_c-fundo_conteudo_f-fundo_cabecalho.png',
+								'color' => $palette['fundo_conteudo']
+							)
+						)
+					)
+				)
+				.  "')",
+				'height' => $u->t(2),
+				'margin-top' => $vg->size(array('g' => 0.5)),
+				'margin-bottom' => $vg->size(array('g' => 0.5))
+	));
+
+
+$this->Decorator->rule(
+		'.limpador', array(
+			'clear' => 'both'
+	));
+
+$this->Decorator->rule(
+		'.menu_0 *', array(
+			'font-family' => 'Georgia, serif',
+			'font-size' => $u->t($standard_font_size * 18/14),
+			'line-height' => $u->t($lineHeight * 30/20)
+	));
+
+$this->Decorator->rule(
+		'.menu_0', array(
+			'margin-top' => $vg->size(array('M' => 1/2))
+	));
+
+$this->Decorator->rule(
+		'.menu_0 a', array(
+			'color' => $paleta['texto']->write()
+	));
+
+$this->Decorator->rule(
+		'.menu_0 a:hover, .menu_0 a:active, .menu_0 a.selecionado', array(
+			'color' => $paleta['principal']->write()
+	));
+
+$this->Decorator->rule(
+		'.menu_1_lateral', array(
+			'float' => 'right',
+			'margin-top' => $u->t($lineHeight/3)
+	));
+
+$this->Decorator->rule(
+		'.spsassd_menu *, .menu_1 *', array(
+			'font-family' => 'Georgia, serif',
+			'font-size' => $u->t(15)
+	));
+
+$this->Decorator->rule(
+		'.spsassd_menu a, .menu_1 a', array(
+			'color' => $paleta['texto']->write()
+	));
+
+$this->Decorator->rule(
+		'.spsassd_menu a:hover, .menu_1 a:hover, .menu_1 a.selecionado', array(
+			'color' => $paleta['texto_destaque']->write()
+	));
+
+$this->Decorator->rule(
+		'.spsassd_menu a:active, .menu_1 a:active', array(
+			'color' => $paleta['texto_destaque']->write()
+	));
+
+$this->Decorator->rule(
+		'.input.text label, .input.textarea label, .input.password label,fieldset legend', array(
+			'display' => 'block',
+			'font-weight' => 'bold'
+	));
+
+$this->Decorator->rule(
+		'.input.text, .input.password', array(
+			'margin-bottom' => $vg->size(array('g' => 1))
+	));
+
+$this->Decorator->rule(
+		'.input.text input, .input.password input, label input', array(
+			'background-color' => $paleta['input_texto']->write(),
+			'width' => $gh->calcTam(array('M' => 3)),
+			'height' => $u->t($lineHeight),
+			'line-height' => $u->t($lineHeight)
+	));
+
+$this->Decorator->rule(
+		'.input.textarea', array(
+			'margin-bottom' => $vg->size(array('g' => 1))
+	));
+
+$this->Decorator->rule(
+		'.input.textarea textarea', array(
+			'background-color' => $paleta['input_texto']->write(),
+			'width' => $gh->calcTam(array('M' => 3)),
+			'height' => $u->t($lineHeight*5)
+	));
+
+$this->Decorator->rule(
+		'.input.radio', array(
+			'margin-bottom' => $vg->size(array('g' => 1))
+	));
+
+$this->Decorator->rule(
+		'.input.radio label', array(
+			'height' => $u->t($lineHeight),
+			'line-height' => $u->t($lineHeight)
+	));
+
+$this->Decorator->rule(
+		'.input.radio input', array(
+			'margin-right' => $gh->calcTam(array('g' => 0.5))
+	));
+
+
+$this->Decorator->rule(
+		'.submit input', array(
+			'width' => $gh->calcTam(array('M' => 3)),
+			'height' => $u->t($lineHeight*1.5)
+	));
+
+$this->Decorator->rule(
+		'.form-error', array(
+			'border' => '1px solid '. $paleta['mensagem_erro']->write()
+	));
+
+$this->Decorator->rule(
+		'.form-error', array(
+			'color' => $paleta['mensagem_erro']->write()
+	));
+
+$this->Decorator->rule(
+		'div#excecao p a', array(
+			'border' => '0',
+			'background-color' => '#FFFFFF'
+	));
+
+$this->Decorator->rule(
+		'div#excecao p a:hover, div#excecao p a:active', array(
+			'background-color' => '#FFFFFF'
+	));
+
+$this->Decorator->rule(
+		'#rodape', array(
+			'height' => $vg->size(array('M' => 5)),
+			'background-color' => $paleta['fundo_rodape']->write()
+	));
+
+
+$this->Decorator->rule(
+		'#rodape p, #rodape a, #rodape b, #rodape *', array(
+			'line-height' => $vg->size(array('g' => 1.4)),
+			'font-size' => $vg->size(array('g' => 0.9))
+	));
+
+//@todo trocar o $_SESSION['kulepona_n_atrator']
+$this->Decorator->rule(
+		'#atrator_rodape', array(
+			'height' => $vg->size(array('M' => 5, 'g' => -2)),
+			'width' => $gh->calcTam(array('M' => 7)),
+			'float' => 'left',
+			'background-image' => "url('". $ig->url(
+				array(
+						'w' => '576',
+						'h' => '548',
+						'base_name' => 'atrator' . $_SESSION['kulepona_n_atrator'],
+						'layers' => array(
+							array(
+								'type' => 'aplicar_cor',
+								'color' => $palette['fundo_cabecalho']
+							),
+							array(
+								'type' => 'imagem_colorizada',
+								'path' => '/img/matrizes/atrator'.$_SESSION['kulepona_n_atrator'].'.png',
+								'color' => $paleta['atrator']
+							)
+						)
+					)
+				)
+				.  "')",
+				'background-repeat' => 'no-repeat',
+				'background-position' => $gh->calcTam(array('g' => -4)) . ' ' .  $vg->size(array('M' => -2))
+	));
+
+//@todo verificar se colocar esse comando aqui é tranquilo
+$atrator = rand(2,6);
+
+$this->Decorator->rule(
+		'#atrator_aleatorio', array(
+			'height' => $vg->size(array('M' => 4, 'g' => -4)),
+			'width' => 'auto',
+			'background-image' => "url('". $ig->url(
+				array(
+						'w' => '576',
+						'h' => '548',
+						'base_name' => 'atrator' . $atrator,
+						'layers' => array(
+							array(
+								'type' => 'aplicar_cor',
+								'color' => $palette['fundo_cabecalho']
+							),
+							array(
+								'type' => 'imagem_colorizada',
+								'path' => '/img/matrizes/atrator'.$atrator.'.png',
+								'color' => $paleta['atrator']
+							)
+						)
+					)
+				)
+				.  "')",
+				'background-repeat' => 'no-repeat',
+				'background-position' => $gh->calcTam(array('g' => -1)) . ' ' .  $vg->size(array('g' => -4))
+	));
+
+
+$this->Decorator->rule(
+		'.topo_caixa', array(
+			'height' => $u->t($imagem_topo_caixas->altura_max), //seria necessario reconverter aqui no caso de se usar um layout de impressao
+			'margin-bottom' => $vg->size(array('M' => 1, 'g' => 0))
+	));
 
 
 ?>
