@@ -27,36 +27,59 @@ class JjMediaController extends JjMediaAppController {
 	
 	function index($sfil_stored_files_id = null, $filter = '')
 	{
-		if(!$sfil_stored_files_id)
-			return;
-		
-		$this->SfilStoredFile->contain();
-		$file_data = $this->SfilStoredFile->findById($sfil_stored_files_id);
-			
-		if(empty($file_data))
-			return;
-
-		if (!empty($filter) && !empty($file_data['SfilStoredFile']['transformation']))
-			$filter = str_replace('|', '_', $file_data['SfilStoredFile']['transformation']) . '_' . $filter;
-		
-		$download = false;
-		$id = $name = $file_data['SfilStoredFile']['basename'];
-		$extension = array_pop(explode('.', $id));
-		if (!empty($file_data['SfilStoredFile']['original_filename']))
+		if(!empty($sfil_stored_files_id))
 		{
-			$name = explode('.', $file_data['SfilStoredFile']['original_filename']);
-			if (count($name) > 1)
-				array_pop($name);
-			$name = implode('.', $name);
+			$this->SfilStoredFile->contain();
+			$file_data = $this->SfilStoredFile->findById($sfil_stored_files_id);
+				
+			if(!empty($file_data))
+			{
+				if (!empty($filter) && !empty($file_data['SfilStoredFile']['transformation']))
+					$filter = $file_data['SfilStoredFile']['transformation'] . '_' . $filter;
+				
+				$download = false;
+				$id = $name = $file_data['SfilStoredFile']['basename'];
+				$extension = array_pop(explode('.', $id));
+				if (!empty($file_data['SfilStoredFile']['original_filename']))
+				{
+					$name = explode('.', $file_data['SfilStoredFile']['original_filename']);
+					if (count($name) > 1)
+						array_pop($name);
+					$name = implode('.', $name);
+				}
+				$mimeType = array($extension => $file_data['SfilStoredFile']['mime_type']);
+				
+				if (!empty($filter)) {
+					$path = MEDIA_FILTER . $filter . DS;
+				} else {
+					$path = MEDIA_TRANSFER;
+				}
+				
+				$path .= $file_data['SfilStoredFile']['dirname'] . DS;
+				
+				$this->set(compact('id', 'name', 'mimeType', 'download', 'path', 'extension'));
+			}
 		}
-		$mimeType = array($extension => $file_data['SfilStoredFile']['mime_type']);
+	}
+	
+	
+	function upload()
+	{
+		$saved = $error = false;
+		$validationErrors = array();
 		
-		if (!empty($filter))
-			$path = MEDIA_FILTER . $filter . DS . $file_data['SfilStoredFile']['dirname'] . DS;
-		else
-			$path = MEDIA_TRANSFER . $file_data['SfilStoredFile']['dirname'] . DS;
+		if (!empty($this->data))
+		{
+			$saved = $this->SfilStoredFile->save($this->data);
+			
+			if ($saved == false)
+				$validationErrors = $this->validateErrors($this->SfilStoredFile);
+			else
+				$saved = $this->SfilStoredFile->id;
+		}
 		
-		$this->set(compact('id', 'name', 'mimeType', 'download', 'path', 'extension'));
+		$this->layout = 'ajax';
+		
+		echo json_encode(compact('error', 'validationErrors', 'saved'));
 	}
 }
-?>

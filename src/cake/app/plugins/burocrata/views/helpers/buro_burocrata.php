@@ -64,6 +64,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'type' => 'text',
 			'fieldName' => null,
 			'label' => null,
+			'error' => null,
 			'options' => array()
 		);
 		$options = am($defaults, $options);
@@ -95,7 +96,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 					unset($options['instructions']);
 				}
 				$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultObjectClass);
-				$inputOptions = am($htmlAttributes, $options['options'], array('label' => false, 'div' => false, 'type' => $options['type']));
+				$inputOptions = am($htmlAttributes, $options['options'], array('label' => false, 'div' => false, 'type' => $options['type'], 'error' => $options['error']));
 				$out .= $this->Form->input($options['fieldName'], $inputOptions);
 				
 				$View = $this->_getView();
@@ -896,6 +897,50 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		return $out;
 	}
-}
 
+
+
+/**
+ * Construct a upload input
+ *
+ * ### Accepted options:
+ *
+ *	- `foreignKey` - The foreignKey of parent model thats will be filled with the new file ID
+ *  - `model` - The alternate model for the stored file (must ba a extended from SfilStoredFile)
+ *  - `callbacks` - An array with possible callbacks with Jodel Callbacks conven-
+ *    tion.
+ *
+ * @access public
+ * @param array $options An array with non-defaults values
+ * @return string The HTML well formated
+ */
+	public function inputUpload($options)
+	{
+		$modelAlias = $this->_readFormAttribute('modelAlias');
+		//todo: trigger error
+		if (!$modelAlias)
+			return 'Can\'t create a upload file that is not inside a buro form.';
+		
+		$file_input_options = $options;
+		unset($file_input_options['options']);
+		
+		$defaults = array(
+			'baseID' => uniqid(),
+			'url' => $this->url(array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'upload')),
+			'foreignKey' => $modelAlias . '.sfil_sored_file_id',
+			'error' => isset($file_input_options['error']) ? $file_input_options['error'] : array()
+		);
+		$options = $options['options'] + $defaults;
+		
+		if (strpos($options['foreignKey'], '.') === false)
+			$options['foreignKey'] = $modelAlias . '.' . $options['foreignKey'];
+		
+		$out = '';
+		$out .= $this->input(array('id' => 'hi' . $options['baseID']), array('type' => 'hidden', 'fieldName' => $options['foreignKey']));
+		$out .= $this->input(array('id' => 'mi' . $options['baseID']), array('type' => 'file', 'fieldName' => 'SfilStoredFile.file') + $file_input_options);
+		$out .= $this->BuroOfficeBoy->upload($options);
+		
+		return $out;
+	}
+}
 

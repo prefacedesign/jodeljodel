@@ -251,14 +251,16 @@ Media_Info::config(array(
 // $l = array('convert' => 'image/png', 'fit' => array(600, 440));
 
 
-Configure::write('Media.filter_plus.olimpiada.equipe', array(
+Configure::write('Media.filter_plus.olimpiada_equipe', array(
+	'fields' => array('Equipe.imagem_id'),
 	'image' => array(
 		'sala'  => array('fit' => array(600, 440)),
 		'lista' => array('fitCrop' => array(150, 50))
 	)
 ));
 
-Configure::write('Media.filter_plus.olimpiada.documento', array(
+Configure::write('Media.filter_plus.olimpiada_documento', array(
+	'fields' => array('Documento.imagem_id'),
 	'image' => array(
 		'preview' => array('fit' => array(200, 250)),
 		'view'    => array('fit' => array(400, 400)),
@@ -266,18 +268,4 @@ Configure::write('Media.filter_plus.olimpiada.documento', array(
 	)
 ));
 
-Configure::write('Media.filter_plus.olimpiada.questoes', array(
-	'image' => array(
-		'preview' => array('fit' => array(200, 250)),
-		'view'    => array('fit' => array(400, 400)),
-		'lista'   => array('fit' => array(100, 100))
-	)
-));
-
-Configure::write('Media.filter_plus.grande_desafio.equipe', array(
-	'image' => array(
-		'sala'  => array('convert' => 'image/png', 'fit' => array(600, 440)),
-		'lista' => array('convert' => 'image/png', 'fit' => array(150, 50))
-	)
-));
 ?>

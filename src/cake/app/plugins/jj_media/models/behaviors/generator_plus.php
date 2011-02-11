@@ -9,6 +9,8 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
+require_once 'Mime/Type.php';
+
 /**
  * Media enhanced plugin
  *
@@ -72,13 +74,17 @@ class GeneratorPlusBehavior extends ModelBehavior {
  * @access public
  * @param Model $Model
  * @param string|boolean $scope The new scope to set
- * @return mixed The new scope set
+ * @return mixed The new scope set or false, if no scope is set
  */
 	public function setScope(&$Model, $scope = false)
 	{
-		if (is_array($scope))
-			$scope = implode('|', $scope);
-		return $this->_scope[$Model->alias] = $scope;
+		if (!empty($scope))
+			return $this->_scope[$Model->alias] = $scope;
+		
+		if (isset($this->_scope[$Model->alias]))
+			unset($this->_scope[$Model->alias]);
+		
+		return false;
 	}
 
 
@@ -91,7 +97,7 @@ class GeneratorPlusBehavior extends ModelBehavior {
  */
 	public function getScope(&$Model)
 	{
-		if (!empty($this->_scope[$Model->alias]));
+		if (!empty($this->_scope[$Model->alias]))
 			return $this->_scope[$Model->alias];
 		return false;
 	}
@@ -117,7 +123,7 @@ class GeneratorPlusBehavior extends ModelBehavior {
 /**
  * Callback
  *
- * Create dynamically the filter configure for image for the GeneratorBehaviour::afterSave callback
+ * Dynamically creates the filter configure for image for the GeneratorBehaviour::afterSave callback
  *
  * @param Model $Model
  * @param boolean $created
@@ -125,17 +131,31 @@ class GeneratorPlusBehavior extends ModelBehavior {
  */
 	public function afterSave(&$Model, $created)
 	{
-		$scope = explode('|', $this->getScope($Model));
-		$filters = Configure::read('Media.filter_plus.'.implode('.', $scope));
-		foreach ($filters as $type => $filter)
+		$filters = array();
+		$types = array_values(Mime_Type::$name);
+		foreach ($types as $type)
+			$filters[$type] = array();
+		
+		$scope = $this->getScope($Model);
+		if (!empty($scope))
 		{
-			foreach ($filter as $filter_name => $filter_instructions)
+			$filters = Configure::read('Media.filter_plus.' . $scope);
+			foreach ($filters as $type => $filter)
 			{
-				$filters[$type][implode('_', $scope) . '_' . $filter_name] = $filter_instructions;
-				unset($filters[$type][$filter_name]);
+				if (!is_array($filter) || !in_array($type, $types)) {
+					unset($filters[$type]);
+					continue;
+				}
+				
+				foreach ($filter as $filter_name => $filter_instructions)
+				{
+					$filters[$type][implode('_', $scope) . '_' . $filter_name] = $filter_instructions;
+					unset($filters[$type][$filter_name]);
+				}
 			}
 		}
-		
 		Configure::write('Media.filter', $filters);
+		
+		return true;
 	}
 }

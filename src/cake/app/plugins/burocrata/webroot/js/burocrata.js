@@ -1,10 +1,11 @@
-const E_NOT_JSON = 1; // Not a JSON response
-const E_JSON = 2; // JSON tells me the error
+var E_NOT_JSON = 1; // Not a JSON response
+var E_JSON = 2; // JSON tells me the error
 
 
 /**
  * A instance of a Hash without overwrite of values to keep
- * a list of instace objects
+ * a list of instace objects used to keep all created classes
+ * during the script.
  *
  * @access public
  * @todo An garbage colletor to free all not instanciated objects
@@ -42,7 +43,7 @@ var BuroCallbackable = Class.create({
 		
 		var callback = arguments[0];
 		var callback_function = this.callbacks.get(callback);
-		if(!callback_function)
+		if(!callback_function || typeof callback_function != 'function')
 			return false;
 		
 		var i,args = new Array();
@@ -444,5 +445,140 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		this.autocomplete.input.value = '';
 		this.input.value = id;
 		this.showPreview(id);
+	}
+});
+
+
+/**
+ * 
+ *
+ * Callbacks:
+ * - `onStart` function (input){}
+ * - `onComplete` function (input){}
+ * - `onFailure` function (input){}
+ * - `onError` function (code, error){}
+ * - `onSuccess` function (input, json){}
+ * 
+ * @access public
+ */
+var BuroUpload = Class.create(BuroCallbackable, {
+	initialize: function(id_base, url, field_name, errors)
+	{
+		if (Prototype.Browser.IE)
+		{
+			var ua = navigator.userAgent;
+			var re  = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+			if (re.exec(ua) != null)
+			rv = parseFloat( RegExp.$1 );
+		}
+
+		this._submitted = false;
+		this.id_base = id_base;
+		this.url = url;
+		this.errors = errors;
+		this.master_input = $('mi'+id_base);
+		this.hidden_input = $('hi'+id_base);
+		
+		BuroClassRegistry.set(this.id_base, this);
+		
+		this.iframe = new Element('iframe', {
+			name: 'if'+id_base, 
+			id: 'if'+id_base, 
+			src: 'javascript:false;',
+			width: '900'
+		});
+		this.iframe.observe('load', this.complete.bind(this));
+		
+		this.form = new Element('form', {
+			action: this.url,
+			target: this.iframe.name,
+			method: 'post'
+		});
+		
+		var upload_enctype = 'multipart/form-data';
+		
+		if (Prototype.Browser.IE && rv == 7)
+			this.form.writeAttribute({encoding: upload_enctype});
+		else
+			this.form.writeAttribute({enctype: upload_enctype});
+		
+		this.div_container = new Element('div')
+			// .setStyle({height: '1px', width: '1px', position: 'absolute', left: '-1000px', overflow: 'hidden'})
+			.insert(this.iframe)
+			.insert(this.form);
+		document.body.appendChild(this.div_container);
+		
+		if(!document.loaded)	document.observe('dom:loaded', this.startObserve.bind(this));
+		else					this.startObserve();
+	},
+	startObserve: function()
+	{
+		this.tmp_input = this.master_input.hide().clone().show();
+		this.tmp_input.observe('change', this.submit.bind(this));
+		this.master_input.insert({after: this.tmp_input});
+	},
+	submit: function()
+	{
+		if (this.tmp_input.value.empty())
+			return;
+		
+		this.hidden_input.value = '';
+		
+		this.trigger('onStart', this.tmp_input);
+		this.form.insert(this.tmp_input).submit();
+		this._submitted = true;
+	},
+	complete: function()
+	{
+		if (!this._submitted)
+			return;
+		
+		var i = this.iframe;
+		if (i.contentDocument) {
+			var d = i.contentDocument;
+		} else if (i.contentWindow) {
+			var d = i.contentWindow.document;
+		} else {
+			var d = window.frames[this.iframe.name].document;
+		}
+		
+		var response = null;
+		if (d.body.innerHTML.isJSON()) {
+			response = this.responseJSON = d.body.innerHTML.evalJSON();
+			if (this.responseJSON.error != false)
+				this.trigger('onError', E_JSON, json.error);
+			else
+				this.trigger('onSuccess', this.tmp_input, this.responseJSON);
+			
+			if (this.responseJSON.saved != false)
+				this.saved();
+			else
+				this.rejected();
+		} else {
+			response = d.body.innerHTML;
+			this.trigger('onError', E_NOT_JSON);
+		}
+		
+		this.trigger('onComplete', this.tmp_input, response);
+	},
+	again: function()
+	{
+		this._submitted = false;
+		this.tmp_input.remove();
+		this.startObserve();
+	},
+	saved: function()
+	{
+		this.hidden_input.value = this.responseJSON.saved;
+		this.trigger('onSave', this.tmp_input, this.responseJSON, this.responseJSON.saved);
+	},
+	rejected: function()
+	{
+		this.hidden_input.value = '';
+		if (this.responseJSON.validationErrors)
+		{
+			this.responseJSON.error = this.errors[$H(this.responseJSON.validationErrors).values()[0]];
+		}
+		this.trigger('onReject', this.tmp_input, this.responseJSON, this.responseJSON.saved);
 	}
 });
