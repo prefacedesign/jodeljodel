@@ -9,9 +9,10 @@ $config = array();
  * 'sections' =>
  * <code>
  * 	$config['sections'] = array(
- * 		'section_name' => array(
+ * 	'section_name' => array(
  *		
  *		// This is the text that will be used in the menu link.
+ *		// DEFAULTS: To humanized section name
  *		'linkCaption' => __('The Section', true),		
  *		
  *		// To were the link points - the section's address
@@ -57,8 +58,8 @@ $config = array();
  *		'subSections' => array(
  *			'other_section_name' => 
  *			'another_section_name' => 			
- *		)
- *	 );
+ * )
+ * );
  * </code>
  *
  * 'sectionMap':
@@ -78,45 +79,43 @@ $config = array();
  */
  
  
- $config['sections'] = array(
- 
-  	'section_name' => array(
- 		'linkCaption' => __('The Section', true),		
+$sections = array( 
+  	'section1' => array(
+ 		'linkCaption' => __('Section One', true),		
  		'url' => array(
- 			'plugin' => 'module',
- 			'controller' => 'controller',
- 			'action' => 'sobre'
+ 			'plugin' => 'page_sections',
+ 			'controller' => 'test',
+ 			'action' => 'section_one'
  		),
- 
         'display' => true,
-		'active' => 'adminTechie', 
-		
- 		'pageTitle' => array(null, __('The title of this section', true)), 
- 		
-		'headerCaption' => __('The Section', true),
-		
- 		'humanName' => __('The Section', true),
- 		'module' => 'SectionModule',
- 		
-		'acos' => array('dinafon_publico' => array('read')),
-        
-		'sectionGroup' => 'this_group' 
- 		'subSections' => array(
- 			'other_section_name' => 
- 			'another_section_name' => 			
+		'active' => true, 
+		'pageTitle' => array(null, __('The Section One', true)),
+		'headerCaption' => __('The Section One Header', true),
+ 		'humanName' => __('The Human Section One name', true),
+		'acos' => array()
+ 	 ),
+	 'section2' => array(
+ 		'linkCaption' => __('Section Two', true),		
+ 		'url' => array(
+ 			'plugin' => 'page_sections',
+ 			'controller' => 'test',
+ 			'action' => 'section_one'
  		)
- 	 );
-	
-	 $config['sectionMap'] => array(
-		array( //an entry in the sectionMap - it provides a match rule the equivalent
-			   //section, and the subRules for matching.
-			'rule' => array('controller' => 'section_controller'),
-			'location' => array('section_name'),
-			'subRules' => array(
-				array(),
-				array(),
-				array(),
-			)
-		)
-	 );
+ 	 )
+);
+	 
+$sectionMaps => array(
+	array(
+		'rule' => array('plugin' => 'controller' => 'test_controller', 'action' => 'section_one'),
+		'location' => array('section_one'),
+	),
+	array(
+		'rule' => array('plugin' => 'controller' => 'test_controller', 'action' => 'section_two'),
+		'location' => array('section_two'),
+	)
+);
+
+Configure::write('PageSections.sections', $sections);
+Configure::write('PageSections.sectionMaps', $sectionMaps);
+
 ?>

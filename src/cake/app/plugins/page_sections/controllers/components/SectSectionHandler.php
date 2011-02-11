@@ -5,25 +5,25 @@
 /** Merges two arrays also in its numeric keys. Instead of appending the
  *  numeric keys.
  */
-function am_numeric_keys($a1, $a2)
-{
-	$aNew = array();
+// function am_numeric_keys($a1, $a2)
+// {
+	// $aNew = array();
 	
-	foreach($a1 as $k => $value)
-	{
-		if (isset($a2[$k]))
-		{
-			$aNew[$k] = $a2[$k];
-			unset($a2[$k]);
-		}
-		else
-			$aNew[$k] = $value;
-	}
+	// foreach($a1 as $k => $value)
+	// {
+		// if (isset($a2[$k]))
+		// {
+			// $aNew[$k] = $a2[$k];
+			// unset($a2[$k]);
+		// }
+		// else
+			// $aNew[$k] = $value;
+	// }
 	
-	$aNew += $a2;
+	// $aNew += $a2;
 	
-	return $aNew;
-}
+	// return $aNew;
+// }
 
 
 class SectSectionHandler extends Object {
@@ -49,6 +49,7 @@ class SectSectionHandler extends Object {
 		
 		$this->_getOurLocation($this->controller->params);
 		$this->_mountPageTitleArray();
+		$this->_insertDefaultsIntoSections();
 	}
 	
 	/**
@@ -152,13 +153,30 @@ class SectSectionHandler extends Object {
 			while(($sectionIndex = $this->_findTheActionsSection($actionInfo, $sectionMapContext)) !== false)
 			{
 				//in this context $sectionIndex is a number
-				$this->ourLocation = am_numeric_keys($this->ourLocation, $sectionMapContext[$sectionIndex]['location']);
+				$this->ourLocation = $this->_joinLocations($this->ourLocation, $sectionMapContext[$sectionIndex]['location']);
 				if (!isset($sectionMapContext[$sectionIndex]['subRules']))
 				    break;
 				else
 					$sectionMapContext =& $sectionMapContext[$sectionIndex]['subRules'];
 			}
 		}
+	}
+	
+	/**
+	 * Merges $over on $base, but does not include keys that aren't in $over.
+	 * The values that will merge are those that are set to null.
+	 *
+	 * @param array $base Base location.
+	 * @param array $over New location (if one value is null uses the base's equivalent position)
+	 */
+	
+	function _joinLocations($base, $over)
+	{
+		foreach($over as $k => $over)
+			if ($over[$k] === null)
+				$over[$k] == $base[$k];
+	
+		return $over;
 	}
 	
 	/**
@@ -209,6 +227,48 @@ class SectSectionHandler extends Object {
 		$this->controller->set('ourLocation', $this->ourLocation);
 		$this->controller->set('pageSections', $this->sections);
 	}
-
+	
+	/**
+	 * Fills the blanks in the sections' configurations.
+	 */
+	function _insertDefaultsIntoSections($sectionsContext = null, $depth = 0)
+	{ 
+		if ($sectionsContext == null)
+			$sectionsContext =& $this->sections;
+	
+		foreach ($sectionsContext as $k => $section)
+		{
+			if (!isset($section['linkCaption']))
+				$sectionsContext[$k]['linkCaption'] => Inflector::humanize($k); 
+		
+			if (!isset($section['active']))
+				$sectionsContext[$k]['active'] = true;
+				
+			if (!isset($section['display']))
+				$sectionsContext[$k]['display'] = true;
+				
+			if (!isset($section['pageTitle']))
+			{
+				$pageTitle = array();
+				for ($i = 0; $i < $depth; $i++)
+					$pageTitle[] = null;
+				$pageTitle[] = $section['linkCaption'];
+				
+				$sectionsContext[$k]['pageTitle'] = $pageTitle;
+			}
+			
+			if (!isset($section['headerCaption']))
+				$sectionsContext[$k]['headerCaption'] = $section['linkCaption'];
+				
+			if (!isset($section['humanName']))
+				$sectionsContext[$k]['humanName'] = $section['humanName'];
+				
+			if (!isset($section['acos']))
+				$sectionsContext[$k]['acos'] = array($k => array('read'));
+			
+			if (isset($section['subSections']))
+				$this->_insertDefaultsIntoSections($sectionsContext[$k]['subSections'], $depth + 1);
+		}
+	}
 }
 ?>
