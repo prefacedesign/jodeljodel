@@ -1,0 +1,53 @@
+Ações possíveis
+
+ver, editar e criar rascunhos, publicar e tirar do ar, editar publicados, apagar
+
+
+read_draft, 
+create_draft, 
+update_draft, 
+delete_draft, 
+publish, 
+draft, 
+create, 
+read, 
+update, 
+delete, 
+critical,
+red_button
+
+
+Árvore de ACOs para o Dinafon:
+
+Perfis
+Publicações
+Notícias
+Eventos
+ Evento X.
+ Evento Y.
+Página Inicial
+Contato
+Users
+Seções ocultas
+Administrativo
+Administrativo técnico
+	Habilitar debug
+	Console
+	Ver páginas ocultas
+
+
+Árvore de AROs para o Dinafon:
+
+Todos os Usuários
+	Simples
+		Anônimo
+	Administrador
+		Leigos
+			Eleonora
+		Técnicos
+			Preface
+			Caluã
+			Daniel
+		
+
+
