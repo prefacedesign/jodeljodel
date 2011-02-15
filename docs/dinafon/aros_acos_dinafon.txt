@@ -1,4 +1,4 @@
-AÁıes possÌveis
+A√ß√µes poss√≠veis
 
 ver, editar e criar rascunhos, publicar e tirar do ar, editar publicados, apagar
 
@@ -17,37 +17,42 @@ critical,
 red_button
 
 
-¡rvore de ACOs para o Dinafon:
+√Årvore de ACOs para o Dinafon:
 
 Perfis
-PublicaÁıes
-NotÌcias
+Publica√ß√µes
+Not√≠cias
 Eventos
  Evento X.
  Evento Y.
-P·gina Inicial
+P√°gina Inicial
 Contato
-Users
-SeÁıes ocultas
+Usu√°rios
+Se√ß√µes ocultas
 Administrativo
-Administrativo tÈcnico
+Administrativo t√©cnico
 	Habilitar debug
 	Console
-	Ver p·ginas ocultas
+	Ver p√°ginas ocultas
 
 
-¡rvore de AROs para o Dinafon:
+√Årvore de AROs para o Dinafon:
 
-Todos os Usu·rios
+Todos os Usu√°rios
 	Simples
-		AnÙnimo
-	Administrador
-		Leigos
+		An√¥nimo
+	Administradores
+		Editores
 			Eleonora
-		TÈcnicos
+		Redatores
+			Mariana
+			S√©rgio Castro
+		T√©cnicos
 			Preface
-			Calu„
+			Calu√£
 			Daniel
+		Superusu√°rios
+			Superuser
 		
 
 
