@@ -41,7 +41,7 @@ class AppController extends Controller {
 	{
 		parent::beforeFilter();		
 		$this->set('jjModules', Configure::read('jj.modules'));
-		//$this->Auth->allow(array('*'));
+		$this->Auth->allow(array('*'));
 	}
 	
 	function isAuthorized()
