@@ -936,7 +936,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$options['foreignKey'] = $modelAlias . '.' . $options['foreignKey'];
 		
 		$out = '';
-		$out .= $this->input(array('id' => 'hi' . $options['baseID']), array('type' => 'hidden', 'fieldName' => $options['foreignKey']));
+		$out .= $this->input(array('id' => 'hi' . $options['baseID']), array('type' => 'hidden', 'fieldName' => $file_input_options['fieldName']));
 		$out .= $this->input(array('id' => 'mi' . $options['baseID']), array('type' => 'file', 'fieldName' => 'SfilStoredFile.file') + $file_input_options);
 		$out .= $this->BuroOfficeBoy->upload($options);
 		

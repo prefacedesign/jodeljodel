@@ -139,19 +139,14 @@ class GeneratorPlusBehavior extends ModelBehavior {
 		$scope = $this->getScope($Model);
 		if (!empty($scope))
 		{
-			$filters = Configure::read('Media.filter_plus.' . $scope);
-			foreach ($filters as $type => $filter)
+			$filter_plus = Configure::read('Media.filter_plus.' . $scope);
+			foreach ($filter_plus as $type => $filter)
 			{
-				if (!is_array($filter) || !in_array($type, $types)) {
-					unset($filters[$type]);
+				if (!is_array($filter) || !in_array($type, $types))
 					continue;
-				}
 				
 				foreach ($filter as $filter_name => $filter_instructions)
-				{
-					$filters[$type][implode('_', $scope) . '_' . $filter_name] = $filter_instructions;
-					unset($filters[$type][$filter_name]);
-				}
+					$filters[$type][$scope . '_' . $filter_name] = $filter_instructions;
 			}
 		}
 		Configure::write('Media.filter', $filters);
