@@ -26,8 +26,8 @@
 					'pixels' => 'Foto muito grande!',
 					'mimeType' => 'Aceitamos somente imagens, ok?'
 				),
+				'fieldName' => 'Equipe.imagem_id',
 				'options' => array(
-					'foreignKey' => 'Equipe.imagem_id',
 					'callbacks' => array(
 						'onStart' => array('popup' => 'Começando o upload...'),
 						'onError' => array('popup' => '... vixe, deu erro...'),

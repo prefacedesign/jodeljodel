@@ -32,10 +32,21 @@
  */
 class AppController extends Controller {
 	var $helpers = array('Html', 'Form', 'Javascript', 'Session');
+	var $components = array('Auth' => array(
+		'userModel' => 'JjUsers.UserUser',
+		'authorize' => 'controller'
+	));
 	
 	function beforeFilter()
 	{
 		parent::beforeFilter();		
 		$this->set('jjModules', Configure::read('jj.modules'));
+		$this->Auth->allow(array('*'));
+	}
+	
+	function isAuthorized()
+	{
+		debug($this->Auth->user());
+		return true;
 	}
 }
