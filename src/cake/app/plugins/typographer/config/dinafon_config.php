@@ -124,9 +124,14 @@ for ($i = 1; $i <= 12; $i++)
 	$used_automatic_classes['width'][] = array('M' => $i, 'g' =>  0);
 }
 
-for ($i = 1; $i <= 4; $i++)
+for ($i = 1; $i <= 7; $i++)
 {
-	$used_automatic_classes['height'][] = array('M' => 0, 'g' => $i);
+	$used_automatic_classes['width'][] = array('g' => $i);
+}
+
+for ($i = 1; $i <= 7; $i++)
+{
+	$used_automatic_classes['height'][] = array('g' => $i);
 }
 
 Configure::write('Typographer.Dinafon.tools',
@@ -138,7 +143,6 @@ Configure::write('Typographer.Dinafon.tools',
 						'ig' => $image_generator,
 						'palette' => $paleta,
 						'browserInfo' => $browserInfo,
-						'letterSpacing' => $letterSpacing,
 						'standardFontSize' => $standard_font_size
 					)
 				);

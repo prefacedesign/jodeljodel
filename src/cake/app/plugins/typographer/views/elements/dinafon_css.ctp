@@ -1,5 +1,6 @@
 <?php
 
+//@todo mudar tudo que for caixa para box (não usar replace, pois tem atributos como topoCaixa)
 //@todo converir font-size e line-height pra ficar correto
 $this->Decorator->rule(
 		'*', array(
@@ -141,47 +142,6 @@ $this->Decorator->rule(
 			'clear' => 'both',
 			'height' => $vg->size(array('g' => 1))
 	));
-
-
-//<?php
-//// caixotes
-//
-//$tam = array ('g' => 0);
-//
-//for ($qM = 1; $qM <= 12; $qM++)
-//{
-//	$tam['M'] = $qM;
-//	echo _classe_largura($tam, $gh);
-//}
-//
-//// colunas e caixas
-//$tam = array ('g' => -1);
-//
-//for ($qM = 1; $qM <= 12; $qM++)
-//{
-//	$tam['M'] = $qM;
-//	echo _classe_largura($tam, $gh);
-//}
-//
-////espaçadores horizontais
-//
-//$tam = array();
-//for($qi = 1; $qi <= 7; $qi++)
-//{
-//	$tam['g'] = $qi;
-//	echo _classe_largura($tam, $gh);
-//}
-//
-////espaçadores verticais
-//
-//$tam = array();
-//for($qi = 1; $qi <= 7; $qi++)
-//{
-//	$tam['g'] = $qi;
-//	echo _classe_altura($tam, $gv);
-//}
-//acertar esse fecha do php depois
-// ? >
 
 $this->Decorator->rule(
 		'.larg_auto', array(
