@@ -27,7 +27,7 @@ echo $this->Bl->shtml(array(
 				'plugin' => 'typographer',
 				'controller' => 'type_stylesheet',
 				'action' => 'style',
-				'backstage'
+				'dinafon'
 			)
 		);
 		echo $this->Decorator->css(

@@ -7,7 +7,6 @@
 						'class' => 'centralizado coluna_principal'));
 				//@todo verificar se pode continuar chamando tamanho
 				echo $bl->scaixa(array(),array('size' => array('M' => 4), 'tipo' => 'transparente'));
-							
 						echo $ig->url(
 							array(
 								'w' => '239',
@@ -144,11 +143,12 @@
 		echo $bl->sdiv(array('class' => array('div_intrapolante')));
 			echo $bl->div(array('id' => 'atrator_rodape'));
 
-			//voltar aqui
+				echo $bl->scoluna(array(),array('size' => array('M' => 3)));
+					echo $bl->espacadorHorizontal(array(),array('size' => array('g' => 1)));
 
-				echo $kulepona->colunaInicio(array('tamanho' => array('qM' => 3)));
-					echo $kulepona->espacadorHorizontal(array('qi' => 1));
-					echo $kulepona->para(
+					echo $bl->para(
+						array(),
+						array(),
 						array(
 							'Dinafon stands for Dinâmica Fônica, speech dynamics, and names a group of phonologists/phoneticians led by Eleonora Albano.<br/>'
 							. $html->link('LAFAPE', 'http://www.lafape.iel.unicamp.br') . ' &ndash; '
@@ -156,7 +156,10 @@
 							. $html->link('Unicamp', 'http://www.unicamp.br')
 						)
 					);
-					echo $kulepona->para(
+
+					echo $bl->para(
+						array(),
+						array(),
 						array(
 							  '<b>e-mail</b>&emsp;albano@unicamp.br <br/>'
 							. '<b>phone</b>&emsp;+55 19 35211532 <br/>'
@@ -169,24 +172,33 @@
 						)
 					);
 
-					echo $kulepona->para(
+					echo $bl->para(
+						array(),
+						array(),
 						array(
 							  'Layout e programação por ' . $html->link('Preface&nbsp;Design', 'http://preface.com.br', array(), null, false)
 						)
 					);
-				echo $kulepona->colunaFim();
-				echo $kulepona->espacadorVertical(array('qi' => 1));
-				echo '<div id="excecao">';
-					echo $kulepona->colunaInicio(array('tamanho' => array('qM' => 1)));
-						echo $kulepona->espacadorHorizontal(array('qi' => 1));
-						echo $kulepona->para(array(
-							$kulepona->link($kulepona->imagem('/img/layout/unicamp.gif'), 'http://www.unicamp.br', array(), null, false)
-						));
-					echo $kulepona->colunaFim();
-				echo '</div>';
+				echo $bl->ecoluna();
 
-		echo '</div>';
-	echo '</div>';
+				echo $bl->espacadorVertical(array(),array('size' => array('g' => 1)));
+				echo $bl->sdiv(array('id' => 'excecao'));
+
+					echo $bl->scoluna(array(),array('size' => array('M' => 1)));
+						echo $bl->espacadorHorizontal(array(),array('size' => array('qi' => 1)));
+						//@todo verificar se o $bl->link funciona
+						
+						echo $bl->para(
+							array(),
+							array(),
+							array(
+								$html->link($bl->imagem(array(),array(),'/img/layout/unicamp.gif'), 'http://www.unicamp.br', array(), null, false)
+						));
+					echo $bl->ecoluna();
+			echo $bl->ediv();
+
+		echo $bl->ediv();
+	echo $bl->ediv();
 
 	$this->Html->scriptBlock("
 		var gaJsHost = ((\"https:\" == document.location.protocol) ? \"https://ssl.\" : \"http://www.\");

@@ -95,7 +95,6 @@ class TypeBricklayerHelper extends AppHelper
 		
 		//falta incorporar ainda um monte de opções possíveis para as caixas
 		//e ainda um monte de coisas
-		
 		if (isset($options['size']))
 		{
 			$this->TypeStyleFactory->widthGenerateClasses(array(0 => $options['size']));

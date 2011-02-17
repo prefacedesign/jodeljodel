@@ -10,7 +10,7 @@ $this->Decorator->rule(
 			'vertical-align' => 'baseline',
 			'text-decoration' => 'none',
 			'font-family' => '"Lucida Sans", "Bitstream Vera", sans',
-			'font-size' => $u->t($standard_font_size),
+			'font-size' => $u->t($standardFontSize),
 			'line-height' => $u->t($lineHeight),
 			'border' => 'none'
 	));
@@ -209,7 +209,7 @@ $this->Decorator->rule(
 
 $this->Decorator->rule(
 		'.coluna .texto_pequeno', array(
-			'font-size' => $u->t($standard_font_size * 11/14)
+			'font-size' => $u->t($standardFontSize * 11/14)
 	));
 
 $this->Decorator->rule(
@@ -268,14 +268,14 @@ $this->Decorator->rule(
 $this->Decorator->rule(
 		'h4, h4 *', array(
 			'line-height' => $u->t($lineHeight),
-			'font-size' => $u->t($standard_font_size),
+			'font-size' => $u->t($standardFontSize),
 			'color' => $palette['texto_destaque']->write()
 	));
 
 $this->Decorator->rule(
 		'h5, h5 *', array(
 			'line-height' => $u->t($lineHeight),
-			'font-size' => $u->t($standard_font_size)
+			'font-size' => $u->t($standardFontSize)
 	));
 
 $this->Decorator->rule(
@@ -463,7 +463,7 @@ $this->Decorator->rule(
 $this->Decorator->rule(
 		'.menu_0 *', array(
 			'font-family' => 'Georgia, serif',
-			'font-size' => $u->t($standard_font_size * 18/14),
+			'font-size' => $u->t($standardFontSize * 18/14),
 			'line-height' => $u->t($lineHeight * 30/20)
 	));
 
@@ -474,12 +474,12 @@ $this->Decorator->rule(
 
 $this->Decorator->rule(
 		'.menu_0 a', array(
-			'color' => $paleta['texto']->write()
+			'color' => $palette['texto']->write()
 	));
 
 $this->Decorator->rule(
 		'.menu_0 a:hover, .menu_0 a:active, .menu_0 a.selecionado', array(
-			'color' => $paleta['principal']->write()
+			'color' => $palette['principal']->write()
 	));
 
 $this->Decorator->rule(
@@ -496,17 +496,17 @@ $this->Decorator->rule(
 
 $this->Decorator->rule(
 		'.spsassd_menu a, .menu_1 a', array(
-			'color' => $paleta['texto']->write()
+			'color' => $palette['texto']->write()
 	));
 
 $this->Decorator->rule(
 		'.spsassd_menu a:hover, .menu_1 a:hover, .menu_1 a.selecionado', array(
-			'color' => $paleta['texto_destaque']->write()
+			'color' => $palette['texto_destaque']->write()
 	));
 
 $this->Decorator->rule(
 		'.spsassd_menu a:active, .menu_1 a:active', array(
-			'color' => $paleta['texto_destaque']->write()
+			'color' => $palette['texto_destaque']->write()
 	));
 
 $this->Decorator->rule(
@@ -522,8 +522,8 @@ $this->Decorator->rule(
 
 $this->Decorator->rule(
 		'.input.text input, .input.password input, label input', array(
-			'background-color' => $paleta['input_texto']->write(),
-			'width' => $gh->calcTam(array('M' => 3)),
+			'background-color' => $palette['input_texto']->write(),
+			'width' => $hg->size(array('M' => 3)),
 			'height' => $u->t($lineHeight),
 			'line-height' => $u->t($lineHeight)
 	));
@@ -535,8 +535,8 @@ $this->Decorator->rule(
 
 $this->Decorator->rule(
 		'.input.textarea textarea', array(
-			'background-color' => $paleta['input_texto']->write(),
-			'width' => $gh->calcTam(array('M' => 3)),
+			'background-color' => $palette['input_texto']->write(),
+			'width' => $hg->size(array('M' => 3)),
 			'height' => $u->t($lineHeight*5)
 	));
 
@@ -553,24 +553,24 @@ $this->Decorator->rule(
 
 $this->Decorator->rule(
 		'.input.radio input', array(
-			'margin-right' => $gh->calcTam(array('g' => 0.5))
+			'margin-right' => $hg->size(array('g' => 0.5))
 	));
 
 
 $this->Decorator->rule(
 		'.submit input', array(
-			'width' => $gh->calcTam(array('M' => 3)),
+			'width' => $hg->size(array('M' => 3)),
 			'height' => $u->t($lineHeight*1.5)
 	));
 
 $this->Decorator->rule(
 		'.form-error', array(
-			'border' => '1px solid '. $paleta['mensagem_erro']->write()
+			'border' => '1px solid '. $palette['mensagem_erro']->write()
 	));
 
 $this->Decorator->rule(
 		'.form-error', array(
-			'color' => $paleta['mensagem_erro']->write()
+			'color' => $palette['mensagem_erro']->write()
 	));
 
 $this->Decorator->rule(
@@ -587,7 +587,7 @@ $this->Decorator->rule(
 $this->Decorator->rule(
 		'#rodape', array(
 			'height' => $vg->size(array('M' => 5)),
-			'background-color' => $paleta['fundo_rodape']->write()
+			'background-color' => $palette['fundo_rodape']->write()
 	));
 
 
@@ -601,7 +601,7 @@ $this->Decorator->rule(
 $this->Decorator->rule(
 		'#atrator_rodape', array(
 			'height' => $vg->size(array('M' => 5, 'g' => -2)),
-			'width' => $gh->calcTam(array('M' => 7)),
+			'width' => $hg->size(array('M' => 7)),
 			'float' => 'left',
 			'background-image' => "url('". $ig->url(
 				array(
@@ -616,14 +616,14 @@ $this->Decorator->rule(
 							array(
 								'type' => 'imagem_colorizada',
 								'path' => '/img/matrizes/atrator'.$_SESSION['kulepona_n_atrator'].'.png',
-								'color' => $paleta['atrator']
+								'color' => $palette['atrator']
 							)
 						)
 					)
 				)
 				.  "')",
 				'background-repeat' => 'no-repeat',
-				'background-position' => $gh->calcTam(array('g' => -4)) . ' ' .  $vg->size(array('M' => -2))
+				'background-position' => $hg->size(array('g' => -4)) . ' ' .  $vg->size(array('M' => -2))
 	));
 
 //@todo verificar se colocar esse comando aqui é tranquilo
@@ -646,14 +646,14 @@ $this->Decorator->rule(
 							array(
 								'type' => 'imagem_colorizada',
 								'path' => '/img/matrizes/atrator'.$atrator.'.png',
-								'color' => $paleta['atrator']
+								'color' => $palette['atrator']
 							)
 						)
 					)
 				)
 				.  "')",
 				'background-repeat' => 'no-repeat',
-				'background-position' => $gh->calcTam(array('g' => -1)) . ' ' .  $vg->size(array('g' => -4))
+				'background-position' => $hg->size(array('g' => -1)) . ' ' .  $vg->size(array('g' => -4))
 	));
 
 

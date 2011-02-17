@@ -13,7 +13,7 @@
 				'receive_tools' => true
 			),
 			'Typographer.*TypeStyleFactory' => array(
-				'name' => 'StyleFactory', 
+				'name' => 'TypeStyleFactory',
 				'receive_automatic_classes' => true, 
 				'receive_tools' => true,
 				'generate_automatic_classes' => false //significa que eu que vou produzir as classes automaticas
@@ -31,6 +31,7 @@
 
 		function beforeRender()
 		{
+			parent::beforeRender();
 			Configure::write('Config.language','por');
 			$this->TypeLayoutSchemePicker->pick('dinafon'); //aten��o que isto sobre-escreve a view escolhida
 		}
