@@ -472,6 +472,7 @@ class CompoundImage extends ImageGenerator
 					imagesavealpha($img, true);
 		
 					imagecopy($img, $img2, 0, 0, 0, 0,  $w,  $h);
+
 					imagedestroy($img2);
 				break;
 				
@@ -493,16 +494,20 @@ class CompoundImage extends ImageGenerator
 							trigger_error ('A imagem é de um tipo não suportado -- ImagemComposta::criaArquivo()');
 							return false;
 					}
-					
+
+
 					imagealphablending($img, true);
 					imagealphablending($img2, true);
 					imagefilter($img2, IMG_FILTER_COLORIZE, $layer['color']->r, $layer['color']->g, $layer['color']->b, 0);
+
 					imagesavealpha($img, true);
 					
 					$x = isset($layer['pos']['x']) ? $layer['pos']['x'] : 0;
 					$y = isset($layer['pos']['y']) ? $layer['pos']['y'] : 0;
 					
 					imagecopy($img, $img2, $x, $y, 0, 0, imagesx($img2), imagesy($img2));
+
+
 					imagedestroy($img2);
 				break;
 			}

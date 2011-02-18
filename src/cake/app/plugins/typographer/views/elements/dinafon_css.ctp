@@ -1,6 +1,6 @@
 <?php
 
-//@todo mudar tudo que for caixa para box (não usar replace, pois tem atributos como topoCaixa)
+//@todo mudar tudo que for caixa para box (n??o usar replace, pois tem atributos como topoCaixa)
 //@todo converir font-size e line-height pra ficar correto
 $this->Decorator->rule(
 		'*', array(
@@ -22,8 +22,8 @@ $this->Decorator->rule(
 	));
 
 
-//@todo verificar se o 12M não gera problema
-//(pois ele substitui uma função que não existe mais, a
+//@todo verificar se o 12M n??o gera problema
+//(pois ele substitui uma fun????o que n??o existe mais, a
 //calculaTamanhoTotal) - verificar em todo lugar que tiver:
 //$hg->size(array('M'=>12))
 $this->Decorator->rule(
@@ -160,7 +160,7 @@ $this->Decorator->rule(
 	));
 
 $this->Decorator->rule(
-		'.paragrafos', array(
+		'.para', array(
 			'margin-bottom' => $u->t($lineHeight)
 	));
 
@@ -193,7 +193,7 @@ $this->Decorator->rule(
 $this->Decorator->rule(
 		'.coluna a, .menu_1_lateral a, .menu_lateral a:visited', array(
 			'color' => $palette['texto']->write(),
-			'border-bottom' => $u->t(2) . 'solid' . $palette['texto_destaque']->write()
+			'border-bottom' => $u->t(2) . ' solid ' . $palette['texto_destaque']->write()
 	));
 
 $this->Decorator->rule(
@@ -302,19 +302,19 @@ $this->Decorator->rule(
 		'.colorida_branco', array(
 			'background-image' => "url('". $ig->url(
 				array(
-						'w' => '1600',
-						'h' => '5',
-						'iw' => '1600*4',
-						'ih' => '5*4',
+						'w' => 1600,
+						'h' => 5,
+						'iw' => 1600*4,
+						'ih' => 5*4,
 						'base_name' => 'barrinha_cor_fundo_cab',
 						'layers' => array(
 							array(
-								'type' => 'aplicar_cor',
+								'type' => 'apply_color',
 								'color' => $palette['fundo_cabecalho']
 							),
 							array(
-								'type' => 'imagem_colorizada',
-								'path' => '/img/matrizes/barrinha_vermelha_fundo_cabecalho_fundo_aplicacao.png',
+								'type' => 'tint_image',
+								'path' => '/img/matrixes/barrinha_vermelha_fundo_cabecalho_fundo_aplicacao.png',
 								'color' => $palette['principal']
 							)
 						)
@@ -330,24 +330,24 @@ $this->Decorator->rule(
 		'.colorida_branco_cinza', array(
 			'background-image' => "url('". $ig->url(
 				array(
-						'w' => '1600',
-						'h' => '4',
-						'iw' => '1600*4',
-						'ih' => '4*4',
+						'w' => 1600,
+						'h' => 4,
+						'iw' => 1600*4,
+						'ih' => 4*4,
 						'base_name' => 'barrinha_topo',
 						'layers' => array(
 							array(
-								'type' => 'aplicar_cor',
+								'type' => 'apply_color',
 								'color' => $palette['fundo_cabecalho']
 							),
 							array(
-								'type' => 'imagem_colorizada',
-								'path' => '/img/matrizes/barrinha_barrao_c-principal_f1-fundo_cabecalho_f2-fundo_conteudo.png',
+								'type' => 'tint_image',
+								'path' => '/img/matrixes/barrinha_barrao_c-principal_f1-fundo_cabecalho_f2-fundo_conteudo.png',
 								'color' => $palette['fundo_conteudo']
 							),
 							array(
-								'type' => 'imagem_colorizada',
-								'path' => '/img/matrizes/barrinha_pont_c-principal_f1-fundo_cabecalho_f2-fundo_conteudo.png',
+								'type' => 'tint_image',
+								'path' => '/img/matrixes/barrinha_pont_c-principal_f1-fundo_cabecalho_f2-fundo_conteudo.png',
 								'color' => $palette['principal']
 							)
 						)
@@ -363,24 +363,24 @@ $this->Decorator->rule(
 		'.colorida_cinza_branco', array(
 			'background-image' => "url('". $ig->url(
 				array(
-						'w' => '1600',
-						'h' => '6',
-						'iw' => '1600*4',
-						'ih' => '6*4',
+						'w' => 1600,
+						'h' => 6,
+						'iw' => 1600*4,
+						'ih' => 6*4,
 						'base_name' => 'barrinha_baixo',
 						'layers' => array(
 							array(
-								'type' => 'aplicar_cor',
+								'type' => 'apply_color',
 								'color' => $palette['fundo_cabecalho']
 							),
 							array(
-								'type' => 'imagem_colorizada',
-								'path' => '/img/matrizes/barrinha_barrao_c-principal_f1-fundo_conteudo_f2-fundo_cabecalho.png',
+								'type' => 'tint_image',
+								'path' => '/img/matrixes/barrinha_barrao_c-principal_f1-fundo_conteudo_f2-fundo_cabecalho.png',
 								'color' => $palette['fundo_conteudo']
 							),
 							array(
-								'type' => 'imagem_colorizada',
-								'path' => '/img/matrizes/barrinha_pont_c-principal_f1-fundo_conteudo_f2-fundo_cabecalho.png',
+								'type' => 'tint_image',
+								'path' => '/img/matrixes/barrinha_pont_c-principal_f1-fundo_conteudo_f2-fundo_cabecalho.png',
 								'color' => $palette['principal']
 							)
 						)
@@ -402,19 +402,19 @@ $this->Decorator->rule(
 			'height' => $u->t($altura),
 			'background-image' => "url('". $ig->url(
 				array(
-						'w' => '1600',
-						'h' => '5',
-						'iw' => '1600*4',
-						'ih' => '5*4',
+						'w' => 1600,
+						'h' => 5,
+						'iw' => 1600*4,
+						'ih' => 5*4,
 						'base_name' => 'barrinha_c-fundo_conteudo_f-fundo_caixotinho',
 						'layers' => array(
 							array(
-								'type' => 'aplicar_cor',
+								'type' => 'apply_color',
 								'color' => $palette['fundo_caixotinho']
 							),
 							array(
-								'type' => 'imagem_colorizada',
-								'path' => '/img/matrizes/barrinha_c-fundo_conteudo_f-fundo_caixotinho.png',
+								'type' => 'tint_image',
+								'path' => '/img/matrixes/barrinha_c-fundo_conteudo_f-fundo_caixotinho.png',
 								'color' => $palette['fundo_conteudo']
 							)
 						)
@@ -430,19 +430,19 @@ $this->Decorator->rule(
 		'.tracejada_cinza_branco', array(
 			'background-image' => "url('". $ig->url(
 				array(
-						'w' => '1028',
-						'h' => '3',
-						'iw' => '1028*4',
-						'ih' => '3*4',
+						'w' => 1028,
+						'h' => 3,
+						'iw' => 1028*4,
+						'ih' => 3*4,
 						'base_name' => 'barrinha_tracejada',
 						'layers' => array(
 							array(
-								'type' => 'aplicar_cor',
+								'type' => 'apply_color',
 								'color' => $palette['fundo_cabecalho']
 							),
 							array(
-								'type' => 'imagem_colorizada',
-								'path' => '/img/matrizes/barrinha_tracejada_c-fundo_conteudo_f-fundo_cabecalho.png',
+								'type' => 'tint_image',
+								'path' => '/img/matrixes/barrinha_tracejada_c-fundo_conteudo_f-fundo_cabecalho.png',
 								'color' => $palette['fundo_conteudo']
 							)
 						)
@@ -456,7 +456,7 @@ $this->Decorator->rule(
 
 
 $this->Decorator->rule(
-		'.limpador', array(
+		'.float_break', array(
 			'clear' => 'both'
 	));
 
@@ -605,17 +605,17 @@ $this->Decorator->rule(
 			'float' => 'left',
 			'background-image' => "url('". $ig->url(
 				array(
-						'w' => '576',
-						'h' => '548',
+						'w' => 576,
+						'h' => 548,
 						'base_name' => 'atrator' . $_SESSION['kulepona_n_atrator'],
 						'layers' => array(
 							array(
-								'type' => 'aplicar_cor',
+								'type' => 'apply_color',
 								'color' => $palette['fundo_cabecalho']
 							),
 							array(
-								'type' => 'imagem_colorizada',
-								'path' => '/img/matrizes/atrator'.$_SESSION['kulepona_n_atrator'].'.png',
+								'type' => 'tint_image',
+								'path' => '/img/matrixes/atrator'.$_SESSION['kulepona_n_atrator'].'.png',
 								'color' => $palette['atrator']
 							)
 						)
@@ -626,7 +626,7 @@ $this->Decorator->rule(
 				'background-position' => $hg->size(array('g' => -4)) . ' ' .  $vg->size(array('M' => -2))
 	));
 
-//@todo verificar se colocar esse comando aqui é tranquilo
+//@todo verificar se colocar esse comando aqui ?? tranquilo
 $atrator = rand(2,6);
 
 $this->Decorator->rule(
@@ -635,17 +635,17 @@ $this->Decorator->rule(
 			'width' => 'auto',
 			'background-image' => "url('". $ig->url(
 				array(
-						'w' => '576',
-						'h' => '548',
+						'w' => 576,
+						'h' => 548,
 						'base_name' => 'atrator' . $atrator,
 						'layers' => array(
 							array(
-								'type' => 'aplicar_cor',
+								'type' => 'apply_color',
 								'color' => $palette['fundo_cabecalho']
 							),
 							array(
-								'type' => 'imagem_colorizada',
-								'path' => '/img/matrizes/atrator'.$atrator.'.png',
+								'type' => 'tint_image',
+								'path' => '/img/matrixes/atrator'.$atrator.'.png',
 								'color' => $palette['atrator']
 							)
 						)
@@ -656,10 +656,10 @@ $this->Decorator->rule(
 				'background-position' => $hg->size(array('g' => -1)) . ' ' .  $vg->size(array('g' => -4))
 	));
 
-
+//@todo acertar essa parte do $imagem_topo_caixas, o valor 100 ? tempor?rio
 $this->Decorator->rule(
 		'.topo_caixa', array(
-			'height' => $u->t($imagem_topo_caixas->altura_max), //seria necessario reconverter aqui no caso de se usar um layout de impressao
+			'height' => 100,//$u->t($imagem_topo_caixas->altura_max), //seria necessario reconverter aqui no caso de se usar um layout de impressao
 			'margin-bottom' => $vg->size(array('M' => 1, 'g' => 0))
 	));
 

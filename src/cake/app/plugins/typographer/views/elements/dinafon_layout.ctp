@@ -7,31 +7,32 @@
 						'class' => 'centralizado coluna_principal'));
 				//@todo verificar se pode continuar chamando tamanho
 				echo $bl->scaixa(array(),array('size' => array('M' => 4), 'tipo' => 'transparente'));
-						echo $ig->url(
+						echo $bl->simagem(array(),array('imgurl' => $ig->url(
 							array(
-								'w' => '239',
-								'h' => '79',
-								'iw' => '239*8',
-								'ih' => '79*8',
+								'w' => 239,
+								'h' => 79,
+								'iw' => 239*8,
+								'ih' => 79*8,
 								'base_name' => 'l_din_'.$session->read('kulepona_n_logo'),
 								'layers' => array(
 									array(
-										'type' => 'aplicar_cor',
+										'type' => 'apply_color',
 										'color' => $palette['fundo_cabecalho']
 									),
 									array(
-										'type' => 'imagem',
-										'path' => '/img/matrizes/logo_dinafon_logotipo.png'
+										'type' => 'image',
+										'path' => '/img/matrixes/logo_dinafon_logotipo.png'
 									),
 									array(
-										'type' => 'imagem_colorizada',
-										'path' => '/img/matrizes/logo_dinafon_simbolo_'.$session->read('kulepona_n_logo').'.png',
+										'type' => 'tint_image',
+										'path' => '/img/matrixes/logo_dinafon_simbolo_'.$session->read('kulepona_n_logo').'.png',
 										'color' => $palette['principal']
 									)
 								)
 							)
 
-						);
+						)));
+						echo $bl->eimagem();
 
 				echo $bl->ecaixa();
 				echo $this->element('menu_site', array('nivel' => 0));
@@ -52,9 +53,9 @@
 						$menu = $this->element('menu', array('plugin' => 'dinafon_iv', 'selecionado' => 'index'));
 					break;
 				}
-				
+
 				echo $bl->barraHorizontal(array('class' => array('colorida_branco')));
-				
+
 				echo $bl->div(
 					array(
 						'class' => array('centralizado','coluna_principal')
@@ -109,9 +110,9 @@
 
 				echo $bl->ediv();
 				echo $bl->floatBreak();
-					
+
 			echo $bl->ediv();
-			
+
 		}
 
 	echo $bl->ediv();
@@ -128,15 +129,15 @@
 				echo $bl->floatBreak();
 			echo $bl->ediv();
 			echo $bl->floatBreak();
-			
+
 
 			echo $bl->espacadorVertical(array(),array('size' => array('g' => 2)));
-			
+
 		echo $bl->ediv();
 		echo $bl->floatBreak();
 
 	echo $bl->ediv();
-	
+
 	echo $bl->barraHorizontal(array('class' => array('colorida_cinza_branco')));
 
 	echo $bl->sdiv(array('class' => array('centralizado','coluna_principal'), 'id' => 'rodape'));
@@ -172,13 +173,9 @@
 						)
 					);
 
-					echo $bl->para(
-						array(),
-						array(),
-						array(
-							  'Layout e programação por ' . $html->link('Preface&nbsp;Design', 'http://preface.com.br', array(), null, false)
-						)
-					);
+					echo $bl->para(array(),array('escape' => false),
+						array('Layout e programação por ' . $bl->a(array('href' => 'http://preface.com.br'),array(), 'Preface&nbsp;Design')));
+						
 				echo $bl->ecoluna();
 
 				echo $bl->espacadorVertical(array(),array('size' => array('g' => 1)));
@@ -187,13 +184,12 @@
 					echo $bl->scoluna(array(),array('size' => array('M' => 1)));
 						echo $bl->espacadorHorizontal(array(),array('size' => array('qi' => 1)));
 						//@todo verificar se o $bl->link funciona
-						
-						echo $bl->para(
-							array(),
-							array(),
-							array(
-								$html->link($bl->imagem(array(),array(),'/img/layout/unicamp.gif'), 'http://www.unicamp.br', array(), null, false)
-						));
+
+						echo $bl->spara();
+								echo $bl->sa(array('href' => 'http://www.unicamp.br'));
+									echo $bl->imagem(array(),array('imgurl' => '/img/layout/unicamp.gif'));
+								echo $bl->ea();
+						echo $bl->epara();
 					echo $bl->ecoluna();
 			echo $bl->ediv();
 
