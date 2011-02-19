@@ -462,7 +462,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
  * @access public
  */
 var BuroUpload = Class.create(BuroCallbackable, {
-	initialize: function(id_base, url, field_name, errors)
+	initialize: function(id_base, url, errors)
 	{
 		if (Prototype.Browser.IE)
 		{
