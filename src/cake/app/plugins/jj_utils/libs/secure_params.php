@@ -49,9 +49,7 @@ class SecureParams {
  */
 	static function secure($param)
 	{
-		if (!is_string($param))
-			return false;
-		
+		$params = (string) $params;
 		$seed = sprintf('%02d', mb_strlen($param));
 		return str_replace(array('=','/', '+'),array('','*', '-'),base64_encode(Security::cipher($param, $seed) . $seed));
 	}
