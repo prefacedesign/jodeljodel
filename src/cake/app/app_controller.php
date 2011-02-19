@@ -32,21 +32,45 @@
  */
 class AppController extends Controller {
 	var $helpers = array('Html', 'Form', 'Javascript', 'Session');
-	var $components = array('Auth' => array(
-		'userModel' => 'JjUsers.UserUser',
-		'authorize' => 'controller'
-	));
+	var $components = array(
+		'PageSections.SectSectionHandler',
+		'Acl',
+		'Auth' => array(
+			'userModel' => 'JjUsers.UserUser',
+			'authorize' => 'controller'
+		)
+	);
 	
 	function beforeFilter()
 	{
 		parent::beforeFilter();		
 		$this->set('jjModules', Configure::read('jj.modules'));
-		$this->Auth->allow(array('*'));
+		//$this->Auth->allow(array('*'));
 	}
 	
 	function isAuthorized()
 	{
-		debug($this->Auth->user());
+		if (!empty($this->SectSectionHandler->thisSection['acos']))
+		{
+			$user = $this->Auth->user();
+			list($userPlugin, $userModel) = pluginSplit($this->Auth->userModel);
+			$user = $user[$userModel];
+			
+			foreach ($this->SectSectionHandler->thisSection['acos'] as $aco => $actions)
+			{
+				if (is_numeric($aco)) //array('aco') -- defaults to array('aco' => 'read')
+				{
+					$aco = $actions;
+					$actions = array('*');
+				}
+				
+				foreach($actions as $action)
+				{
+					if (!$this->Acl->check($user['username'], $aco, $action))
+						return false;
+				}
+			}
+		}
 		return true;
 	}
 }

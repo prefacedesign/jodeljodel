@@ -84,7 +84,7 @@ $sections = array(
  		'linkCaption' => __('Section One', true),		
  		'url' => array(
  			'plugin' => 'page_sections',
- 			'controller' => 'tests',
+ 			'controller' => 'testing',
  			'action' => 'section_one'
  		),
         'display' => true,
@@ -98,17 +98,18 @@ $sections = array(
 				'linkCaption' => 'Section Two.One',
 				'url' => array(
 					'plugin' => 'page_sections',
-					'controller' => 'tests',
+					'controller' => 'testing',
 					'action' => 'section_two_one'
 				)
 			)
 		),
  	 ),
 	 'section2' => array(
- 		'linkCaption' => __('Section Two', true),		
+ 		'linkCaption' => __('Section Two', true),
+		'acos' => array('section2'),
  		'url' => array(
  			'plugin' => 'page_sections',
- 			'controller' => 'tests',
+ 			'controller' => 'testing',
  			'action' => 'section_one'
  		)
  	 )
@@ -116,15 +117,15 @@ $sections = array(
 	 
 $sectionMap = array(
 	array(
-		'rule' => array('plugin' => 'page_sections', 'controller' => 'tests', 'action' => 'section_one'),
+		'rule' => array('plugin' => 'page_sections', 'controller' => 'testing', 'action' => 'section_one'),
 		'location' => array('section1')
 	),
 	array(
-		'rule' => array('plugin' => 'page_sections',  'controller' => 'tests', 'action' => 'section_two'),
+		'rule' => array('plugin' => 'page_sections',  'controller' => 'testing', 'action' => 'section_two'),
 		'location' => array('section2')
 	),
 	array(
-		'rule' => array('plugin' => 'page_sections',  'controller' => 'tests', 'action' => 'section_two_one'),
+		'rule' => array('plugin' => 'page_sections',  'controller' => 'testing', 'action' => 'section_two_one'),
 		'location' => array('section2', 'section21')
 	)
 );

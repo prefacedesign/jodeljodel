@@ -1,31 +1,5 @@
 <?php
 
-// @todo Add ACL handling.
-
-/** Merges two arrays also in its numeric keys. Instead of appending the
- *  numeric keys.
- */
-// function am_numeric_keys($a1, $a2)
-// {
-	// $aNew = array();
-	
-	// foreach($a1 as $k => $value)
-	// {
-		// if (isset($a2[$k]))
-		// {
-			// $aNew[$k] = $a2[$k];
-			// unset($a2[$k]);
-		// }
-		// else
-			// $aNew[$k] = $value;
-	// }
-	
-	// $aNew += $a2;
-	
-	// return $aNew;
-// }
-
-
 class SectSectionHandlerComponent extends Object {
 
 	var $controller;
@@ -33,6 +7,7 @@ class SectSectionHandlerComponent extends Object {
 	var $ourLocation = array();
 	var $sectionMap = array();
 	var $sections = array();
+	var $thisSection = null;
 	
 	/** Gets the controller action params, retrieves the configuration
 	 *  and fetchs the current section and the current pageTitleArray.
@@ -47,11 +22,10 @@ class SectSectionHandlerComponent extends Object {
 		$this->sectionMap = Configure::read('PageSections.sectionMap');
 		$this->sections = Configure::read('PageSections.sections');
 		
-		$this->_insertDefaultsIntoSections();
-		
-		$this->_setOurLocation($this->controller->params);
-		
-		$this->_mountPageTitleArray();
+		$this->_insertDefaultsIntoSections();		
+		$this->_setOurLocation($this->controller->params);		
+		$this->_mountPageTitleArray();		
+		$this->_populateThisSectionOptions();
 	}
 	
 	/**
@@ -130,6 +104,25 @@ class SectSectionHandlerComponent extends Object {
 		return $title;
 	}
 	
+	
+	function _populateThisSectionOptions()
+	{
+		$section =& $this->sections;
+	
+		foreach ($this->ourLocation as $k => $sectionName)
+		{
+			if ($sectionName != null)
+			{
+				$ourSectionName = $sectionName;
+				$section =& $section[$sectionName];
+			}
+		}
+		
+		if (isset($ourSectionName))
+			$this->thisSection = am(array('sectionName' => $sectionName), $section);
+		else
+			$this->thisSection = null;
+	}
 	
 	/**
 	 * Sets the ourLocationArray, using the action parameters and the sectionMap.
@@ -230,6 +223,7 @@ class SectSectionHandlerComponent extends Object {
 		$this->controller->pageTitle = $this->_getPageTitle();
 		$this->controller->set('ourLocation', $this->ourLocation);
 		$this->controller->set('pageSections', $this->sections);
+		$this->controller->set('sectionInfo', $this->thisSection);
 	}
 	
 	/**

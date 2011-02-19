@@ -1,7 +1,7 @@
 <?php
-class TestsController extends PageSectionsAppController {
+class TestingController extends PageSectionsAppController {
 
-	var $name = 'Tests';
+	var $name = 'Testing';
 	var $uses = array();
 	var $components = array('PageSections.SectSectionHandler');
 	
