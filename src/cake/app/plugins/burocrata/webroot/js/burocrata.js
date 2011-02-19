@@ -503,7 +503,7 @@ var BuroUpload = Class.create(BuroCallbackable, {
 			this.form.writeAttribute({enctype: upload_enctype});
 		
 		this.div_container = new Element('div')
-			// .setStyle({height: '1px', width: '1px', position: 'absolute', left: '-1000px', overflow: 'hidden'})
+			.setStyle({height: '1px', width: '1px', position: 'absolute', left: '-100px', overflow: 'hidden'})
 			.insert(this.iframe)
 			.insert(this.form);
 		document.body.appendChild(this.div_container);
@@ -525,7 +525,10 @@ var BuroUpload = Class.create(BuroCallbackable, {
 		this.hidden_input.value = '';
 		
 		this.trigger('onStart', this.tmp_input);
-		this.form.insert(this.tmp_input).submit();
+		this.form
+			.insert(this.tmp_input)
+			.insert(this.hidden_input.clone())
+			.submit();
 		this._submitted = true;
 	},
 	complete: function()
@@ -556,6 +559,7 @@ var BuroUpload = Class.create(BuroCallbackable, {
 				this.rejected();
 		} else {
 			response = d.body.innerHTML;
+			this.responseJSON = false;
 			this.trigger('onError', E_NOT_JSON);
 		}
 		

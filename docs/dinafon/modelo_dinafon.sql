@@ -383,7 +383,7 @@ CREATE  TABLE IF NOT EXISTS `aros` (
   INDEX `k_lft` (`lft` ASC) ,
   INDEX `k_rght` (`rght` ASC) ,
   INDEX `k_alias` (`alias` ASC) ,
-  CONSTRAINT `fk_acos_acos1`
+  CONSTRAINT `fk_aros_aros1`
     FOREIGN KEY (`parent_id` )
     REFERENCES `aros` (`id` )
     ON DELETE NO ACTION

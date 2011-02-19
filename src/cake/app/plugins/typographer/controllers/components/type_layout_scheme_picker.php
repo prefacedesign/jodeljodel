@@ -29,7 +29,7 @@ class TypeLayoutSchemePickerComponent extends Object
 		App::import('Config', 'Typographer.' . $layout_scheme . '_config');		
 		$c_layout_scheme = Inflector::camelize($layout_scheme);
 		
-		//carrega os instrumentos e as configurações deste layout específico
+		//carrega os instrumentos e as configurações deste layout específico/
 		$tools = Configure::read('Typographer.' . $c_layout_scheme . '.tools');
 		$used_automatic_classes = Configure::read('Typographer.' . $c_layout_scheme . '.used_automatic_classes');
 	
