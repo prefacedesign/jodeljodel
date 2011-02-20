@@ -1,5 +1,7 @@
 <?php
 
+App::import('Lib', 'JjUtils.SecureParams');
+
 class BuroBurocrataController extends BurocrataAppController
 {
 
@@ -79,9 +81,12 @@ class BuroBurocrataController extends BurocrataAppController
  * beforeFilter callback
  *
  * @access public
+ * @todo Better user filtering
  */
 	public function beforeFilter()
 	{
+		$this->Auth->allow('*');
+		
 		if(isset($this->data['_b']))
 		{
 			$this->buroData = $this->data['_b'];
@@ -281,19 +286,18 @@ class BuroBurocrataController extends BurocrataAppController
 		
 		if(!isset($this->buroData['request']))
 			$error = __('Request security field not defined', true);
-		
+
 		if($error === false)
 		{
 			// The counter-part of this code is in BuroBurocrataHelper::_security method
-			@list($model_plugin, $model_alias, $secure) = explode('|', $this->buroData['request']);
+			@list($secure, $model_plugin, $model_alias) = SecureParams::unpack($this->buroData['request']);
 			unset($this->buroData['request']);
 			
-			$hash = Security::hash($this->here.$model_alias.$model_plugin);
-			$uncip = Security::cipher(pack("H*" , $secure), $hash);
-			if($uncip != $model_plugin.'.'.$model_alias)
-				$error = __('Security hash didn\'t match.', true);
+			$hash = substr(Security::hash($this->here), -5);
+			if($secure != $hash)
+				$error = __('POST Destination check failed.', true);
 		}
-		
+
 		if($error === false)
 		{
 			$model_class_name = $model_alias;
