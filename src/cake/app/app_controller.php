@@ -33,19 +33,18 @@
 class AppController extends Controller {
 	var $helpers = array('Html', 'Form', 'Javascript', 'Session');
 	var $components = array(
-		'PageSections.SectSectionHandler',
 		'Acl',
 		'Auth' => array(
 			'userModel' => 'JjUsers.UserUser',
 			'authorize' => 'controller'
-		)
+		),
+		'PageSections.SectSectionHandler',
 	);
 	
 	function beforeFilter()
 	{
 		parent::beforeFilter();		
 		$this->set('jjModules', Configure::read('jj.modules'));
-		//$this->Auth->allow(array('*'));
 	}
 	
 	function isAuthorized()

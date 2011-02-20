@@ -1,7 +1,6 @@
 <?php
 
-class SectSectionHandlerComponent extends Object {
-
+class SectSectionHandlerComponent extends Object {	
 	var $controller;
 	var $pageTitleArray = array();
 	var $ourLocation = array();
@@ -35,6 +34,23 @@ class SectSectionHandlerComponent extends Object {
 	{
 		$this->_setTheViewVars();
 	}
+	
+	/**
+	 * Allows/denys access to the action according to the permissions
+	 * set. It only checks wheter it's a public action or controlled
+	 * access action.
+	 */
+	function beforeFilter(&$controller)
+	{
+		if (isset($controller->Auth))
+		{
+			if (empty($this->_thisSection['acos']))
+				$this->Auth->allow($params['action']);
+			else
+				$this->Auth->deny($params['action']);
+		}
+	}
+	 
 	
 	/**
 	 * Adds an array to the existing page title array.
@@ -104,17 +120,29 @@ class SectSectionHandlerComponent extends Object {
 		return $title;
 	}
 	
-	
+	/** Sets $this->_thisSection with the current section options()
+	 * 
+	 * @return string With the pageTitle.
+	 */
 	function _populateThisSectionOptions()
 	{
 		$section =& $this->sections;
 	
+		$theFirst = true;
 		foreach ($this->ourLocation as $k => $sectionName)
 		{
 			if ($sectionName != null)
 			{
 				$ourSectionName = $sectionName;
-				$section =& $section[$sectionName];
+				if ($theFirst)
+				{
+					$section =& $section[$sectionName];
+					$theFirst = false;
+				}
+				else
+				{
+					$section =& $section['subSections'][$sectionName];
+				}
 			}
 		}
 		
@@ -262,7 +290,7 @@ class SectSectionHandlerComponent extends Object {
 				$sectionsContext[$k]['humanName'] = $section['linkCaption'];
 				
 			if (!isset($section['acos']))
-				$sectionsContext[$k]['acos'] = array($k => array('read'));
+				$sectionsContext[$k]['acos'] = array();
 			
 			if (isset($section['subSections']))
 				$this->_insertDefaultsIntoSections($sectionsContext[$k]['subSections'], $depth + 1);

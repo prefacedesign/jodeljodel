@@ -9,8 +9,13 @@ class UserGroup extends JjUsersAppModel {
 		),
 	);
 	
-	var $actsAs = array('Tree');
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
+	var $actsAs = array(
+		'Containable', 
+		'Tree',
+		'Acl' => array('type' => 'requester'),
+		'JjUsers.AddAliasToAcl' => array('type' => 'requester', 'field' => 'alias')
+	);
+	
 
 	var $belongsTo = array(
 		'ParentUserGroup' => array(
@@ -31,6 +36,37 @@ class UserGroup extends JjUsersAppModel {
 			'dependent' => false
 		)
 	);
+	
+	function parentNode()
+	{
+		if (!$this->id && empty($this->data)) 
+			return null;    
+		$data = $this->data;    		
+		if (empty($this->data)) 
+			$data = $this->read();
+		
+		if (empty($data['UserGroup']['parent_id']))
+			return 'root_node';
+		else	
+			return array('UserGroup' => array('id' => $data['UserGroup']['parent_id']));
+	}
+	
+	/*function afterSave($created)
+	{
+		if (isset($this->data['UserGroup']['alias']))
+		{
+			$node = $this->node(array('UserGroup' => array('id' => $this->id)));
+			$Aro = ClassRegistry::init('Aro');
+			$data = array('Aro' => array(
+					'id' => $node[0]['Aro']['id'],
+					'alias' => $this->data['UserGroup']['alias']
+				)
+			);
+			
+			$Aro->create();
+			$Aro->save($data);
+		}
+	}*/
 
 }
 ?>

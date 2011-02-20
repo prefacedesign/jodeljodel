@@ -92,17 +92,7 @@ $sections = array(
 		'pageTitle' => array(null, __('The Section One', true)),
 		'headerCaption' => __('The Section One Header', true),
  		'humanName' => __('The Human Section One name', true),
-		'acos' => array(),
-		'subSections' => array(
-			'section21' => array(
-				'linkCaption' => 'Section Two.One',
-				'url' => array(
-					'plugin' => 'page_sections',
-					'controller' => 'testing',
-					'action' => 'section_two_one'
-				)
-			)
-		),
+		'acos' => array()
  	 ),
 	 'section2' => array(
  		'linkCaption' => __('Section Two', true),
@@ -110,8 +100,19 @@ $sections = array(
  		'url' => array(
  			'plugin' => 'page_sections',
  			'controller' => 'testing',
- 			'action' => 'section_one'
- 		)
+ 			'action' => 'section_two'
+ 		),
+		'subSections' => array(
+			'section21' => array(
+				'linkCaption' => 'Section Two.One',
+				'acos' => array('section21'),
+				'url' => array(
+					'plugin' => 'page_sections',
+					'controller' => 'testing',
+					'action' => 'section_two_one'
+				)
+			)
+		),
  	 )
 );
 	 
