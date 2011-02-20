@@ -1,6 +1,7 @@
 <?php
 
 App::import('Helper', 'Burocrata.XmlTag');
+App::import('Lib', 'JjUtils.SecureParams');
 
 class BuroBurocrataHelper extends XmlTagHelper
 {
@@ -386,9 +387,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function security($url, $modelPlugin, $modelAlias)
 	{
-		$hash = Security::hash($this->url($url).$modelAlias.$modelPlugin);
-		$secure = bin2hex(Security::cipher($modelPlugin.'.'.$modelAlias, $hash));
-		return implode('|', array($modelPlugin, $modelAlias, $secure));
+		return SecureParams::pack(array(substr(Security::hash($this->url($url)), -5), $modelPlugin, $modelAlias), true);
 	}
 
 
@@ -905,14 +904,14 @@ class BuroBurocrataHelper extends XmlTagHelper
  *
  * ### Accepted options:
  *
- *	- `foreignKey` - The foreignKey of parent model thats will be filled with the new file ID
- *  - `model` - The alternate model for the stored file (must ba a extended from SfilStoredFile)
+ *  - `model` - (not working yet) The alternate model for the stored file (must ba a extended from SfilStoredFile)
  *  - `callbacks` - An array with possible callbacks with Jodel Callbacks conven-
  *    tion.
  *
  * @access public
  * @param array $options An array with non-defaults values
  * @return string The HTML well formated
+ * @todo Trigger errors
  */
 	public function inputUpload($options)
 	{
@@ -921,26 +920,59 @@ class BuroBurocrataHelper extends XmlTagHelper
 		if (!$modelAlias)
 			return 'Can\'t create a upload file that is not inside a buro form.';
 		
-		$file_input_options = $options;
+		$file_input_options = array_filter($options);
 		unset($file_input_options['options']);
+		$file_input_options = $file_input_options + array('fieldName' => $modelAlias . '.sfil_sored_file_id');
+		if (strpos($file_input_options['fieldName'], '.') === false)
+			$file_input_options['fieldName'] = $modelAlias . '.' . $file_input_options['fieldName'];
+		
 		
 		$defaults = array(
 			'baseID' => uniqid(),
 			'url' => $this->url(array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'upload')),
-			'foreignKey' => $modelAlias . '.sfil_sored_file_id',
-			'error' => isset($file_input_options['error']) ? $file_input_options['error'] : array()
+			'error' => array()
 		);
-		$options = $options['options'] + $defaults;
+		$officeboy_options = $options['options'] + $defaults;
 		
-		if (strpos($options['foreignKey'], '.') === false)
-			$options['foreignKey'] = $modelAlias . '.' . $options['foreignKey'];
+		if (isset($file_input_options['error']))
+		{
+			$officeboy_options['error'] = $file_input_options['error'];
+			unset($officeboy_options['error']);
+		}
 		
 		$out = '';
-		$out .= $this->input(array('id' => 'hi' . $options['baseID']), array('type' => 'hidden', 'fieldName' => $file_input_options['fieldName']));
-		$out .= $this->input(array('id' => 'mi' . $options['baseID']), array('type' => 'file', 'fieldName' => 'SfilStoredFile.file') + $file_input_options);
-		$out .= $this->BuroOfficeBoy->upload($options);
+		$out .= $this->input(array('id' => 'hi' . $officeboy_options['baseID']), array('type' => 'hidden', 'fieldName' => $file_input_options['fieldName']));
+		$out .= $this->input(array('id' => 'mi' . $officeboy_options['baseID']), array('type' => 'file', 'fieldName' => 'SfilStoredFile.file') + $file_input_options);
+		$out .= $this->BuroOfficeBoy->upload($officeboy_options);
 		
 		return $out;
+	}
+
+
+/**
+ * Construct a upload input that deals only with image files
+ *
+ * ### Accepted options:
+ *
+ *  - `version` - The filter name for the preview image
+ *  - `callbacks` - An array with possible callbacks with Jodel Callbacks conven-
+ *    tion.
+ *
+ * @access public
+ * @param array $options An array with non-defaults values
+ * @return string The HTML well formated
+ */
+	public function inputImage($options)
+	{
+		$defaults = array('version' => 'image_preview');
+		$image_input_options = $options['options'] + $defaults;
+		
+		$imageURL = $this->Bl->imageURL(1, $image_input_options['version']);
+		debug($imageURL);
+		
+		$options['callbacks']['onStart']['js'] = "if(this.image) this.image.remove();";
+		$options['callbacks']['onSave']['js'] = "this.image = new Element('img', {src: $imageURL})";
+		return $this->inputUpload($options);
 	}
 }
 

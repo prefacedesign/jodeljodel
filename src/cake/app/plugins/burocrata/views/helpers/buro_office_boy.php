@@ -216,7 +216,7 @@ class BuroOfficeBoyHelper extends AppHelper
 		else 
 			$error = '{}';
 		
-		$script = sprintf("new BuroUpload('%s', '%s', '%s', %s)", $baseID, $url, $foreignKey, $error);
+		$script = sprintf("new BuroUpload('%s', '%s', %s)", $baseID, $url, $error);
 		if(!empty($callbacks) && is_array($callbacks))
 			$script .= sprintf('.addCallbacks(%s)', $this->formatCallbacks('upload', $callbacks));
 		

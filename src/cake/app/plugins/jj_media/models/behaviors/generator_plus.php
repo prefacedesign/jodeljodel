@@ -10,6 +10,7 @@
  */
 
 require_once 'Mime/Type.php';
+App::import('Config', array('JjMedia.Core'));
 
 /**
  * Media enhanced plugin

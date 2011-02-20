@@ -24,9 +24,15 @@ class BurocrataUserAppController extends AppController
 		)
 	);
 	
+	function beforeFilter()
+	{
+		parent::beforeFilter();
+		$this->Auth->allow('*');
+	}
+	
 	function beforeRender()
 	{
-		$this->TypeLayoutSchemePicker->pick('teste'); //atenção que isto sobre-escreve a view escolhida
+		$this->TypeLayoutSchemePicker->pick('dinafon'); //atenção que isto sobre-escreve a view escolhida
 	}
 }
 
