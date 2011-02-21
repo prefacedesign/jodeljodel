@@ -70,8 +70,8 @@ class JjMediaController extends JjMediaAppController {
 	function index($one = null, $two = null)
 	{
 		$this->view = 'Media';
+		$cache = true; $modified = null; $download = false;
 		
-		$download = false;
 		$packed_parameters = $one;
 		if (!is_null($two))
 		{
@@ -102,6 +102,7 @@ class JjMediaController extends JjMediaAppController {
 					$version = $file_data[$model_alias]['transformation'] . '_' . $version;
 				
 				$id = $name = $file_data[$model_alias]['basename'];
+				$modified = $file_data[$model_alias]['modified'];
 				$extension = array_pop(explode('.', $id));
 				if (!empty($file_data[$model_alias]['original_filename']))
 				{
@@ -120,7 +121,7 @@ class JjMediaController extends JjMediaAppController {
 				
 				$path .= $file_data[$model_alias]['dirname'] . DS;
 				
-				$this->set(compact('id', 'name', 'mimeType', 'download', 'path', 'extension'));
+				$this->set(compact('id', 'name', 'mimeType', 'download', 'path', 'extension', 'cache', 'modified'));
 			}
 		}
 	}

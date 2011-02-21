@@ -60,15 +60,14 @@ class TypeBricklayerHelper extends AppHelper
 	}
 
 /**
- * 
+ * Returns a link for the requested image
  *
  * @access public
  * @param integer $id The file id of the image
  * @param string $version The filter version of image to be displayed
- * @param string $separator A char that will be used to separate the data
  * @return string|boolean The URL that points to the picture or false, if wasn´t possible to create the url.
  */
-	public function imageURL($id = false, $version = '', $separator = ',')
+	public function imageURL($id = false, $version = '')
 	{
 		if (!$id)
 			return false;
@@ -79,6 +78,30 @@ class TypeBricklayerHelper extends AppHelper
 		
 		$url = array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'index', $packed_params);
 		return $this->url($url);
+	}
+
+
+/**
+ * Creates a img tag pointing the specific image, if an ID is provided.
+ * 
+ * @access public
+ * @param $htmlAttributes
+ * @param $options
+ * @return The HTML of <img> tag
+ */
+	public function simg($htmlAttributes = array(), $options = array())
+	{
+		$options = $options + array('id' => null, 'version' => null);
+		$htmlAttributes = $htmlAttributes + array('alt' => '', 'src' => '');
+		$options['close_me'] = true;
+		
+		if (!empty($options['id']))
+		{
+			$htmlAttributes['src'] = $this->imageURL($options['id'], $options['version']);
+			unset($options['version']);
+			unset($options['id']);
+		}
+		return $this->stag('img', $htmlAttributes, $options);
 	}
 
 
