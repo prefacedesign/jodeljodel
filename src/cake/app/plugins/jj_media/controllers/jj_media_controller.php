@@ -10,7 +10,6 @@
  */
 
 App::import('Lib', array('JjUtils.SecureParams'));
-App::import('Config', array('JjMedia.Core'));
 
 /**
  * Media enhanced plugin
@@ -145,9 +144,11 @@ class JjMediaController extends JjMediaAppController {
 		if (!$this->loadModel($model_name))
 			return;
 		
+		list($plugin, $model_name) = pluginSplit($model_name);
+		
 		if (!empty($this->data))
 		{
-			$scope = $this->_findTheScope($this->data);
+			$scope = $this->{$model_name}->findTheScope($this->data);
 			if ($scope)
 				$this->SfilStoredFile->setScope($scope);
 			$saved = $this->SfilStoredFile->save($this->data);
@@ -161,43 +162,5 @@ class JjMediaController extends JjMediaAppController {
 		$this->layout = 'ajax';
 		$this->autoRender = false;
 		echo json_encode(compact('error', 'validationErrors', 'saved'));
-	}
-
-
-/**
- * This method finds on posted data the input name that will receive the id of the uploaded file.
- * Based on its name, this method returns the current scope for get the filters.
- * 
- * @access protected
- * @param array $data The posted data
- * @return string|boolean The scope if found, or false if not
- */
-	protected function _findTheScope($data = array())
-	{
-		if (empty($data) || !is_array($data))
-			return null;
-		
-		$fieldName = false;
-		foreach ($data as $modelName => $modelData)
-		{
-			if ($modelName == 'SfilStoredFile')
-				continue;
-			
-			$fieldName = $modelName . '.' . array_shift(array_keys($modelData));
-			break;
-		}
-		
-		if ($fieldName)
-		{
-			$filters = Configure::read('Media.filter_plus');
-			foreach ($filters as $scope => $filter)
-			{
-				if (!isset($filter['fields']) || !is_array($filter['fields']))
-					continue;
-				if (in_array($fieldName, $filter['fields']))
-					return $scope;
-			}
-		}
-		return null;
 	}
 }
