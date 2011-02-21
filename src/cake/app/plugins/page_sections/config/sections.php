@@ -294,11 +294,11 @@ $sections = array(
 	 
 $sectionMap = array(
 	array(
-		'rule' => array('controller' => 'principal', 'action' => 'index')
-		'location' => array('public_page'),
+		'rule' => array('controller' => 'principal', 'action' => 'index'),
+		'location' => array('public_page')
 	),
 	array(
-		'rule' => array('plugin' => 'news', 'controller' => 'new_news')
+		'rule' => array('plugin' => 'news', 'controller' => 'new_news'),
 		'location' => array('public_page','news'),
 		'subRules' => array(
 			array(
@@ -330,11 +330,11 @@ $sectionMap = array(
 		'location' => array('backstage'),
 		'subRules' => array(
 			array(
-				'rule' => array('controller' => 'dash_dashboard', 'action' => 'index')
+				'rule' => array('controller' => 'dash_dashboard', 'action' => 'index'),
 				'location' => array(null,'dashboard'),
 			),
 			array(
-				'rule' => array('controller' => 'dash_dashboard', 'action' => 'delete_item')
+				'rule' => array('controller' => 'dash_dashboard', 'action' => 'delete_item'),
 				'location' => array(null,'dashboard_delete'),
 			),
 		),
