@@ -79,7 +79,183 @@ $config = array();
  */
  
  
-$sections = array( 
+$sections = array(
+	'public_page' => array(
+		'linkCaption' => __('Sections: public_page linkCaption', true),
+		'url' => array(
+			'plugin' => false,
+			'controller' => 'principal',
+			'action' => 'index'
+		),
+		'display' => false,		
+		'pageTitle' => array(__('Sections: public_page pageTitle',true)),
+		'headerCaption' => __('Sections: public_page pageTitle', true),
+		'humanName' => __('Sections: public_page humanName',true),
+		
+		'subSections' => array(
+			'news' => array(
+				'linkCaption' => __('Sections: news linkCaption', true),
+				'url' => array(
+					'plugin' => 'news',
+					'controller' => 'new_news',
+					'action' => 'index'
+				),
+				'pageTitle' => array(null,__('Sections: news pageTitle',true)),
+				'headerCaption' => __('Sections: news headerCaption', true),
+				'humanName' => __('Sections: news humanName',true),
+				'subSections' => array(
+					'news_index' => array(
+						'linkCaption' => __('Sections: news_index linkCaption', true),
+						'url' => array(
+							'plugin' => 'news',
+							'controller' => 'new_news',
+							'action' => 'index'
+						),
+						'pageTitle' => array(null, null, __('Sections: news_index pageTitle',true)),
+						'headerCaption' => __('Sections: news_index headerCaption', true),
+						'humanName' => __('Sections: news_index humanName',true)
+					),					
+					'news_item' => array(
+						'linkCaption' => __('Sections: * linkCaption', true),
+						'url' => array(
+							'plugin' => 'news',
+							'controller' => 'new_news',
+							'action' => 'view'
+						),
+						'display' => false,
+						'pageTitle' => array(null, null, __('Sections: news_item pageTitle',true)),
+						'headerCaption' => __('Sections: news_item headerCaption', true),
+						'humanName' => __('Sections: news_item humanName',true),
+					),
+				),
+			),
+		),
+	),
+	'backstage' => array(
+		'linkCaption' => __('Sections: backstage linkCaption', true),
+		'url' => array(
+			'plugin' => 'backstage',
+			'controller' => 'back_contents',
+			'action' => 'index'
+		),
+		'acos' => array(
+			'backstage_area' => array('read')
+		),
+		'pageTitle' => array(__('Sections: backstage pageTitle',true)),
+		'headerCaption' => __('Sections: backstage headerCaption', true),
+		'humanName' => __('Sections: backstage humanName',true),
+		'subSections' => array(
+			'login' => array(
+				'linkCaption' => __('Sections: login linkCaption', true),
+				'url' => array(
+					'plugin' => 'JjUsers',
+					'controller' => 'user_users',
+					'action' => 'login'
+				),
+				'acos' => array(),
+				'pageTitle' => array(null, __('Sections: login pageTitle',true)),
+				'headerCaption' => __('Sections: login headerCaption', true),
+				'humanName' => __('Sections: login humanName',true),
+			),
+			'dashboard' => array(
+				'linkCaption' => __('Sections: dashboard linkCaption', true),
+				'url' => array(
+					'plugin' => 'dashboard',
+					'controller' => 'dashboard',
+					'action' => 'index'
+				),
+				'acos' => array('backstage_area' => array('read')),
+				'pageTitle' => array(null, __('Sections: dashboard pageTitle',true)),
+				'headerCaption' => __('Sections: dashboard headerCaption', true),
+				'humanName' => __('Sections: dashboard humanName',true),
+			),
+			'burocrata_save' => array(
+				'linkCaption' => __('Sections: burocrata_save linkCaption', true),
+				'url' => array(
+					'plugin' => 'burocrata',
+					'controller' => 'buro_burocrata',
+					'action' => 'save'
+				),
+				'display' => false,
+				'acos' => array('backstage_area' => array('edit','create')),
+			),
+			'set_publishing_status' => array(
+				'linkCaption' => __('Sections: set_publishing_status linkCaption', true),
+				'url' => array(
+					'plugin' => 'backstage',
+					'controller' => 'back_contents',
+					'action' => 'set_publishing_status'
+				),
+				'display' => false,
+				'acos' => array('backstage_area' => array('publish')),
+			),
+			'dashboard_delete' => array(
+				'linkCaption' => __('Sections: set_publishing_status linkCaption', true),
+				'url' => array(
+					'plugin' => 'dashboard',
+					'controller' => 'dash_dashboard',
+					'action' => 'delete_item'
+				),
+				'display' => false,
+				'acos' => array('backstage_area' => array('delete')),
+			),
+			'corktile_edit' => array(
+				'linkCaption' => __('Sections: corktile_edit linkCaption', true),
+				'url' => array(
+					'plugin' => 'cork',
+					'controller' => 'cork_corktiles',
+					'action' => 'edit'
+				),
+				'display' => false,
+				'acos' => array('backstage_area' => array('edit','create')),
+				'pageTitle' => array(null, __('Sections: corktile_edit pageTitle',true)),
+				'headerCaption' => __('Sections: corktile_edit headerCaption', true),
+				'humanName' => __('Sections: corktile_edit humanName',true),
+			),
+			'edit' => array(
+				'linkCaption' => __('Sections: edit linkCaption', true),
+				'url' => array(
+					'plugin' => 'backstage',
+					'controller' => 'back_contents',
+					'action' => 'edit'
+				),
+				'display' => false,
+				'acos' => array('backstage_area' => array('read')),
+				'pageTitle' => array(null, __('Sections: edit pageTitle',true)),
+				'headerCaption' => __('Sections: edit headerCaption', true),
+				'humanName' => __('Sections: edit humanName',true),
+				'subSections' => array(
+					'news_edit' => array(
+						'linkCaption' => __('Sections: news_edit linkCaption', true),
+						'url' => array(
+							'plugin' => 'backstage',
+							'controller' => 'back_contents',
+							'action' => 'edit',
+							0 => 'person',
+							1 => 'pers_person'
+						),
+						'acos' => array('new_news' => array('edit','read','create')),
+						'pageTitle' => array(null, null, __('Sections: news_edit pageTitle',true)),
+						'headerCaption' => __('Sections: news_edit headerCaption', true),
+						'humanName' => __('Sections: news_edit humanName',true),
+						'subSections' => array(
+							'news_form' => array(
+								'linkCaption' => __('Sections: news_form linkCaption', true),
+								'url' => array(
+									'plugin' => 'burocrata',
+									'controller' => 'buro_burocrata',
+									'action' => 'save',
+									//We need an extra parameter to identify this subSection
+								),
+								'acos' => array('backstage_area' => 'read'),
+								'humanName' => __('Sections: news_form humanName',true),
+							),
+						),
+					),
+				)
+			),
+		),
+	),
   	'section1' => array(
  		'linkCaption' => __('Section One', true),		
  		'url' => array(
@@ -117,6 +293,60 @@ $sections = array(
 );
 	 
 $sectionMap = array(
+	array(
+		'rule' => array('controller' => 'principal', 'action' => 'index')
+		'location' => array('public_page'),
+	),
+	array(
+		'rule' => array('plugin' => 'news', 'controller' => 'new_news')
+		'location' => array('public_page','news'),
+		'subRules' => array(
+			array(
+				'rule' => array('action' => 'index'),
+				'location' => array('public_page','news','news_index'),
+			),
+			array(
+				'rule' => array('action' => 'view'),
+				'location' => array('public_page','news','news_item'),
+			)
+		),
+	),
+	array(
+		'rule' => array('plugin' => 'backstage'),
+		'location' => array('backstage'),
+		'subRules' => array(
+			array(
+				'rule' => array('controller' => 'back_contents', 'action' => 'edit'),
+				'location' => array(null,'edit'),
+			),
+			array(
+				'rule' => array('controller' => 'back_contents', 'action' => 'set_publishing_status'),
+				'location' => array(null,'set_publishing_status'),
+			),
+		),
+	),
+	array(
+		'rule' => array('plugin' => 'dashboard'),
+		'location' => array('backstage'),
+		'subRules' => array(
+			array(
+				'rule' => array('controller' => 'dash_dashboard', 'action' => 'index')
+				'location' => array(null,'dashboard'),
+			),
+			array(
+				'rule' => array('controller' => 'dash_dashboard', 'action' => 'delete_item')
+				'location' => array(null,'dashboard_delete'),
+			),
+		),
+	),
+	array(
+		'rule' => array('plugin' => 'cork', 'controller' => 'cork_corktiles', 'action' => 'edit'),
+		'location' => array('backstage','corktile_edit'),
+	),
+	array(
+		'rule' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'save'),
+		'location' => array('backstage','burocrata_save'),
+	),
 	array(
 		'rule' => array('plugin' => 'page_sections', 'controller' => 'testing', 'action' => 'section_one'),
 		'location' => array('section1')

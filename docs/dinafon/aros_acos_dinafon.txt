@@ -39,20 +39,13 @@ Administrativo técnico
 Árvore de AROs para o Dinafon:
 
 Todos os Usuários
-	Simples
-		Anônimo
 	Administradores
 		Editores
 			Eleonora
 		Redatores
-			Mariana
-			Sérgio Castro
 		Técnicos
-			Preface
-			Caluã
-			Daniel
-		Superusuários
-			Superuser
+			Preface - preface@preface.com.br
+			Lucas - lucas@preface.com.br
+	Superusuários
+		Superuser
 		
-
-
