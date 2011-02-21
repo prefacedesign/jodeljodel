@@ -95,4 +95,5 @@
  *
  */
 
-require APP . 'plugins/media/config/core.php';
+require APP . 'plugins' . DS . 'media' . DS . 'config' . DS . 'core.php';
+require APP . 'plugins' . DS . 'typographer' . DS . 'config' . DS . 'core.php';

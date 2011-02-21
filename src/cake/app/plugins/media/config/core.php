@@ -218,36 +218,4 @@ Media_Info::config(array(
 	// 'video' => array()
 ));
 
-/**
- * Filters and versions
- *
- * For each media type a set of filters keyed by version name is configured.
- * A filter is a set of instructions which are processed by the Media_Process class.
- *
- * For more information on available methods see the classes
- * located in `libs/mm/src/Media/Process`.
- * 
- * Avaible processes:
- * - fit/fitInside: Resizes media proportionally keeping both sides within given dimensions.
- * - fitOutside:Resizes media proportionally keeping _smaller_ side within corresponding dimensions.
- * - crop: Crops media to provided dimensions.
- * - zoom/zoomFit: Enlarges media proportionally by factor 2.
- * - zoomCrop: 
- * - fitCrop: First resizes media so that it fills out the given dimensions, then cuts off overlapping parts.
- * - compress:Selects level of compression than compresses the media according to provided value.
- * - strip: Strips unwanted data from an image.
- * - colorProfile:
- * - colorDepth: Changes the color depths (of the channels).
- * - interlace: Enables or disables interlacing. Formats like PNG, GIF and JPEG support interlacing.
- * - convert: Converts the media to given MIME type.
- * 
- * 
- * @see GeneratorBehavior
- */
-// $sRGB = $mm . DS . 'data' . DS . 'sRGB_IEC61966-2-1_black_scaled.icc';
-
-// $s = array('convert' => 'image/png', 'zoomCrop' => array(100, 100));
-// $m = array('convert' => 'image/png', 'fitCrop' => array(300, 300));
-// $l = array('convert' => 'image/png', 'fit' => array(600, 440));
-
 ?>
