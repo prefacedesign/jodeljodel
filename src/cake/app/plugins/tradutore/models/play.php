@@ -29,15 +29,15 @@ class Play extends AppModel
 {
     var $name = 'Play';
 
-    //var $actsAs = array('Cascata.AguaCascata', 'Tradutore.Translatable');
-	var $actsAs = array('Tradutore.Translatable', 'Containable');
-	var $hasOne = array('PlayTranslation');
+	var $hasOne = array('PlayTranslation', 'Scenario');
+	var $hasMany = array('Image', 'Advertisement');
 	var $belongsTo = array('Author');
-	//var $actsAs = array('Containable');
+	var $hasAndBelongsToMany = array('Tag' => array('with' => 'PlaysTag'));
 
+	var $actsAs = array('Cascata.AguaCascata', 'Tradutore.TradTradutore', 'Containable');
     // Equivalent to:
     // var $actsAs = array(
-    //     'Tradutore.Translatable' => array(
+    //     'Tradutore.TradTradutore' => array(
     //         'className'       => 'PlayTranslation',
     //         'foreignKey'      => 'play_id',
     //         'languageField'   => 'language',

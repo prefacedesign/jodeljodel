@@ -47,7 +47,7 @@ class AuthorTranslationFixture extends CakeTestFixture
         'language' => array(
             'type' => 'string',
             'length' => 10,
-            'default' => 'en',
+            'default' => 'eng',
             'null' => false
         ),
         'nacionality' => array(
@@ -64,44 +64,37 @@ class AuthorTranslationFixture extends CakeTestFixture
             // English
             'id' => 1,
             'author_id' => 1,
-            'language' => 'en',
+            'language' => 'eng',
             'nacionality' => 'English'
         ),
 		array(
-            // Spanish
-            'id' => 2,
-            'author_id' => 1,
-            'language' => 'es',
-            'nacionality' => 'Ingles'
-        ),
-		array(
-            // Portuguese
+            // Ukrainian
             'id' => 3,
             'author_id' => 1,
-            'language' => 'pt',
-            'nacionality' => 'Inglês'
+            'language' => 'ukr',
+            'nacionality' => 'Англійська'
         ),
 		// Italo Calvino
         array(
             // English
             'id' => 4,
             'author_id' => 2,
-            'language' => 'en',
+            'language' => 'eng',
             'nacionality' => 'Italian'
         ),
 		array(
-            // Spanish
-            'id' => 5,
-            'author_id' => 2,
-            'language' => 'es',
-            'nacionality' => 'Italiano'
-        ),
-		array(
-            // Portuguese
+            // Ukrainian
             'id' => 6,
             'author_id' => 2,
-            'language' => 'pt',
-            'nacionality' => 'Italiano'
+            'language' => 'ukr',
+            'nacionality' => 'Італійський'
+        ),
+		array(
+            // German
+            'id' => 7,
+            'author_id' => 2,
+            'language' => 'ger',
+            'nacionality' => 'Italienisch'
         )
     );
 }

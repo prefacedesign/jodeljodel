@@ -15,7 +15,7 @@
 class AuthorTranslation extends AppModel
 {
     var $name = 'AuthorTranslation';
-	
+	var $hasMany = array('Video');
 }
 
 ?>

@@ -96,6 +96,8 @@ class ModelBehavior extends Object {
  * @access public
  */
 	function afterFind(&$model, $results, $primary) { }
+	
+	function afterFindCascata(&$model, $results, $primary = false) { }
 
 /**
  * Before validate callback
@@ -489,7 +491,7 @@ class BehaviorCollection extends Object {
 			$name = $this->_attached[$i];
 			if (in_array($name, $this->_disabled)) {
 				continue;
-			}
+			}			
 			$result = $this->{$name}->dispatchMethod($model, $callback, $params);
 			if ($options['break'] && ($result === $options['breakOn'] || (is_array($options['breakOn']) && in_array($result, $options['breakOn'], true)))) {
 				return $result;
