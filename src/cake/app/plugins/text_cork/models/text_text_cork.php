@@ -1,6 +1,7 @@
 <?php
 class TextTextCork extends TextCorkAppModel
 {
+	var $actsAs = array('Corktile.CorkAttachable' => array('type' => 'text_cork'));
 	/** saveCorkContent
 	 *
 	 *  This function is demanded by the Corktile contract. Basically, it must
@@ -47,6 +48,20 @@ class TextTextCork extends TextCorkAppModel
 	{
 		//@todo Make the right find.
 		return $this->findById($id);	
+	}
+	
+	/** 
+	 *  This function is an optional function of the Burocrata contract. It will be 
+	 *  called by a form of the type ('cork').
+	 *
+	 *  @param $data The data to be saved.
+	 *  @return The same as save's.
+	 */ 
+	
+	function saveBurocrataCork($data)
+	{
+		//@todo Include validation rules here!
+		return $this->save($data);
 	}
 }
 

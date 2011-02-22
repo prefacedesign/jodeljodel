@@ -21,7 +21,10 @@
 	echo $this->Bl->sboxcontainer(array('id' => $id, 'class' => 'box_popup '. $type.'_box' ), array());
 		echo $this->Bl->sbox(array(), array('size' => array('M' => 7, 'g' => -3)));
 			echo $this->Bl->sh2();
-				echo __('Popup plugin ' . $type . ' type',true) . ': ' . $title;
+				$typeTitle = __('Popup plugin ' . $type . ' type',true);				
+				if (!empty($typeTitle) && $typeTitle !== ' ')
+					echo $typeTitle . ': ';
+				echo $title;
 			echo $this->Bl->eh2();
 			echo $this->Bl->sdiv();
 				echo $content;

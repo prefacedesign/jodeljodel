@@ -82,14 +82,28 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `sfil_stored_files` (
   `id` INT NOT NULL AUTO_INCREMENT ,
+  `checksum` VARCHAR(255) NOT NULL ,
+  `dirname` VARCHAR(255) NOT NULL ,
+  `basename` VARCHAR(255) NOT NULL ,
+  `original_filename` VARCHAR(255) NOT NULL ,
+  `mime_type` VARCHAR(255) NOT NULL ,
+  `size` INT NOT NULL ,
+  `width` INT NULL ,
+  `height` INT NULL ,
+  `original_id` INT NULL ,
+  `transformation_version` INT NULL ,
+  `transformation` VARCHAR(255) NULL ,
+  `data` TEXT NULL ,
+  `created` DATETIME NULL ,
+  `modified` DATETIME NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `file_files`
+-- Table `din_files`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `file_files` (
+CREATE  TABLE IF NOT EXISTS `din_files` (
   `id` INT NOT NULL ,
   `sfil_stored_file_id` INT NULL ,
   `type_o_file` ENUM('stored','link') NULL ,
@@ -128,7 +142,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `pap_papers` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `file_file_id` INT NULL ,
+  `din_file_id` INT NULL ,
   `jour_journal_id` INT NULL ,
   `publishing_status` ENUM('published','draft') NULL ,
   `title` TEXT NULL ,
@@ -138,11 +152,11 @@ CREATE  TABLE IF NOT EXISTS `pap_papers` (
   `created` DATETIME NULL ,
   `modified` DATETIME NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `fk_pap_papers_file_files1` (`file_file_id` ASC) ,
+  INDEX `fk_pap_papers_file_files1` (`din_file_id` ASC) ,
   INDEX `fk_pap_papers_jour_journals1` (`jour_journal_id` ASC) ,
   CONSTRAINT `fk_pap_papers_file_files1`
-    FOREIGN KEY (`file_file_id` )
-    REFERENCES `file_files` (`id` )
+    FOREIGN KEY (`din_file_id` )
+    REFERENCES `din_files` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_pap_papers_jour_journals1`
@@ -236,7 +250,7 @@ CREATE  TABLE IF NOT EXISTS `dash_dashboard_items` (
   `id` VARCHAR(255) NOT NULL ,
   `created` DATETIME NULL ,
   `modified` DATETIME NULL ,
-  `dashable_id` INT NULL ,
+  `dashable_id` VARCHAR(255) NULL ,
   `dashable_model` VARCHAR(60) NULL ,
   `status` ENUM('published','draft','removed') NULL ,
   `name` VARCHAR(255) NULL ,
@@ -277,3 +291,135 @@ CREATE  TABLE IF NOT EXISTS `text_text_corks` (
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `user_groups`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `user_groups` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(255) NOT NULL ,
+  `lft` INT NULL ,
+  `rght` INT NULL ,
+  `parent_id` INT NULL ,
+  `created` DATETIME NULL ,
+  `modified` DATETIME NULL ,
+  `alias` VARCHAR(60) NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_user_groups_user_groups1` (`parent_id` ASC) ,
+  INDEX `klft` (`lft` ASC) ,
+  INDEX `kname` (`name` ASC) ,
+  INDEX `krght` (`rght` ASC) ,
+  INDEX `kparent` (`parent_id` ASC) ,
+  CONSTRAINT `fk_user_groups_user_groups1`
+    FOREIGN KEY (`parent_id` )
+    REFERENCES `user_groups` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `user_users`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `user_users` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `user_group_id` INT NOT NULL ,
+  `username` VARCHAR(255) NOT NULL ,
+  `password` VARCHAR(255) NOT NULL ,
+  `surname` VARCHAR(80) NULL ,
+  `name` VARCHAR(80) NULL ,
+  `email` VARCHAR(255) NULL ,
+  `created` DATETIME NULL ,
+  `modified` DATETIME NULL ,
+  PRIMARY KEY (`id`, `user_group_id`) ,
+  INDEX `fk_user_users_user_groups1` (`user_group_id` ASC) ,
+  CONSTRAINT `fk_user_users_user_groups1`
+    FOREIGN KEY (`user_group_id` )
+    REFERENCES `user_groups` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `acos`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `acos` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `parent_id` INT NULL ,
+  `model` VARCHAR(255) NULL ,
+  `foreign_key` VARCHAR(255) NULL ,
+  `alias` VARCHAR(255) NULL ,
+  `lft` INT NULL ,
+  `rght` INT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_acos_acos1` (`parent_id` ASC) ,
+  UNIQUE INDEX `k_foreign` (`model` ASC, `foreign_key` ASC) ,
+  INDEX `k_lft` (`lft` ASC) ,
+  INDEX `k_rght` (`rght` ASC) ,
+  INDEX `k_alias` (`alias` ASC) ,
+  CONSTRAINT `fk_acos_acos1`
+    FOREIGN KEY (`parent_id` )
+    REFERENCES `acos` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `aros`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `aros` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `parent_id` INT NULL ,
+  `model` VARCHAR(255) NULL ,
+  `foreign_key` VARCHAR(255) NULL ,
+  `alias` VARCHAR(255) NULL ,
+  `lft` INT NULL ,
+  `rght` INT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_aros_aros1` (`parent_id` ASC) ,
+  UNIQUE INDEX `k_foreign_1` (`model` ASC, `foreign_key` ASC) ,
+  INDEX `k_lft_1` (`lft` ASC) ,
+  INDEX `k_rght_1` (`rght` ASC) ,
+  INDEX `k_alias_1` (`alias` ASC) ,
+  CONSTRAINT `fk_aros_aros1`
+    FOREIGN KEY (`parent_id` )
+    REFERENCES `aros` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `aros_acos`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `aros_acos` (
+  `aco_id` INT NOT NULL ,
+  `aro_id` INT NOT NULL ,
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `_create` VARCHAR(2) NULL ,
+  `_read` VARCHAR(2) NULL ,
+  `_edit` VARCHAR(2) NULL ,
+  `_delete` VARCHAR(2) NULL ,
+  `_draftread` VARCHAR(2) NULL ,
+  `_draftcreate` VARCHAR(2) NULL ,
+  `_draftedit` VARCHAR(2) NULL ,
+  `_draftdelete` VARCHAR(2) NULL ,
+  `_publish` VARCHAR(2) NULL ,
+  `_critical` VARCHAR(2) NULL ,
+  `_redbutton` VARCHAR(2) NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_acos_has_aros_acos1` (`aco_id` ASC) ,
+  INDEX `fk_acos_has_aros_aros1` (`aro_id` ASC) ,
+  CONSTRAINT `fk_acos_has_aros_acos1`
+    FOREIGN KEY (`aco_id` )
+    REFERENCES `acos` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_acos_has_aros_aros1`
+    FOREIGN KEY (`aro_id` )
+    REFERENCES `aros` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;

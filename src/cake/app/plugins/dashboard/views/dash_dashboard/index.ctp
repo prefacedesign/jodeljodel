@@ -179,11 +179,16 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 		foreach ($this->data as $k => $item)
 		{
 			$row_number = $k*3 + 2;
+			
+			if (isset($itemSettings[$item['DashDashboardItem']['type']]))
+				$curSettings = $itemSettings[$item['DashDashboardItem']['type']];
+			else
+				$curSettings = $itemSettings['default'];
 		
 			$arrow = $this->Bl->sdiv(array('class' => 'arrow'))
 					 . $this->Bl->anchor(array(), array('url' => ''), ' ')
 					 . $this->Bl->ediv();
-			//echo strtotime($item['DashDashboardItem']['created']));
+			
 			echo $this->Bl->smartTableRowDry(array(
 				__('Dashboard types: ' . $item['DashDashboardItem']['type'], true), 
 				__('Dashboard status: ' . $item['DashDashboardItem']['status'], true),
@@ -194,44 +199,54 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 				array(array(), array('escape' => false), $arrow . $item['DashDashboardItem']['idiom'])
 			));
 	
+			//@todo Substitute this with an AJAX call.
 			echo $this->Bl->smartTableRowDry(array(
 				array(array(),array('colspan' => 3),' '), 
-				array(array('id' => 'item_info_$k'),array('colspan' => 4, 'rowspan' => 2), 'Descricao: Desmond has a barrow in the marketplace / Molly is the singer in a band / Desmond say to Molly, girl I like you face /And Molly says this as she takes him by the hand / Obladi, oblada, / Life goes on, bra / La la how the life goes on / Obladi, oblada / Life goes on, bra / La la how the life goes on')
+				array(array('id' => 'item_info_$k'),array('colspan' => 4, 'rowspan' => 2), '')
 			));
+			
+			
 			echo $html->scriptBlock("
 				$$('tr.row_". $row_number . " .arrow a')[0].observe('click', function (ev) { ev.stop(); dashToggleExpandableRow(" . $row_number . ");});
 			", array('inline' => true));
 			
-			$draftLink = $ajax->link(__('Dashboard: Hide from public', true), 
-				array(
-					'plugin' => 'backstage',
-					'controller' => 'back_contents',
-					'action' => 'set_publishing_status', 
-					$jjModules[$item['DashDashboardItem']['type']]['plugin'],
-					Inflector::underscore($jjModules[$item['DashDashboardItem']['type']]['model']),
-					$item['DashDashboardItem']['dashable_id'], 'draft'
-				), array(
-					'complete' => "if(request.responseJSON.success) {showPopup('draft_alert_ok');} else {showPopup('draft_alert_failure');}",
-					'class' => 'link_button'
-				)
-			);
+			//Does this entry has publishing and drafting capabilities?
+			if (in_array('publish_draft',$curSettings['actions']))
+			{
+				$draftLink = $ajax->link(__('Dashboard: Hide from public', true), 			
+					array(
+						'plugin' => 'backstage',
+						'controller' => 'back_contents',
+						'action' => 'set_publishing_status', 
+						$jjModules[$item['DashDashboardItem']['type']]['plugin'],
+						Inflector::underscore($jjModules[$item['DashDashboardItem']['type']]['model']),
+						$item['DashDashboardItem']['dashable_id'], 'draft'
+					), array(
+						'complete' => "if(request.responseJSON.success) {showPopup('draft_alert_ok');} else {showPopup('draft_alert_failure');}",
+						'class' => 'link_button'
+					)
+				);
 			
-			$publishLink = $ajax->link(__('Dashboard: Publish to the great public', true),
-				array(
-					'plugin' => 'backstage', 
-					'controller' => 'back_contents',
-					'action' => 'set_publishing_status',
-					$jjModules[$item['DashDashboardItem']['type']]['plugin'],
-					Inflector::underscore($jjModules[$item['DashDashboardItem']['type']]['model']),
-					$item['DashDashboardItem']['dashable_id'],'published'
-				), array(
-					'complete' => "if(request.responseJSON.success) {showPopup('publish_alert_ok');} else {showPopup('publish_alert_failure');}",
-					'class' => 'link_button'
-				)
-			);
-		
-			$links = $this->Bl->divDry(
-				   $ajax->link(__('Dashboard: Delete content', true),
+				$publishLink = $ajax->link(__('Dashboard: Publish to the great public', true),
+					array(
+						'plugin' => 'backstage', 
+						'controller' => 'back_contents',
+						'action' => 'set_publishing_status',
+						$jjModules[$item['DashDashboardItem']['type']]['plugin'],
+						Inflector::underscore($jjModules[$item['DashDashboardItem']['type']]['model']),
+						$item['DashDashboardItem']['dashable_id'],'published'
+					), array(
+						'complete' => "if(request.responseJSON.success) {showPopup('publish_alert_ok');} else {showPopup('publish_alert_failure');}",
+						'class' => 'link_button'
+					)
+				);
+			}
+			
+			$links = $this->Bl->sdiv();
+			
+			if (in_array('delete', $curSettings['actions']))
+			{
+				$links .= $ajax->link(__('Dashboard: Delete content', true),
 						array(
 							'plugin' => 'dashboard',
 							'controller' => 'dash_dashboard',
@@ -241,18 +256,48 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 							'complete' => "if(request.responseJSON.success) {showPopup('delete_alert_ok');} else {showPopup('delete_alert_failure');}",
 							'class' => 'link_button'
 						)
-					)
-				 . ($item['DashDashboardItem']['status'] == 'published' ? $draftLink : $publishLink)
-		//		 . $this->Bl->anchor(array('class' => 'link_button'), array('url' => ''), __('Dashboard: See on the page', true))
-				 . $this->Bl->anchor(array('class' => 'link_button'), array('url' => array(
-						'plugin' => 'backstage',
-						'controller' => 'back_contents',
-						'action' => 'edit',
-						$jjModules[$item['DashDashboardItem']['type']]['plugin'],
-						Inflector::underscore($jjModules[$item['DashDashboardItem']['type']]['model']),
-						$item['DashDashboardItem']['dashable_id']
-				 )), __('Dashboard: Edit', true))
-			);
+				);
+			}
+			
+			if (in_array('publish_draft', $curSettings['actions']))
+			{
+				 $links .= $item['DashDashboardItem']['status'] == 'published' ? $draftLink : $publishLink;
+			}
+			
+			if (in_array('see_on_page', $curSettings['actions']))
+			{
+				//$this->Bl->anchor(array('class' => 'link_button'), array('url' => ''), __('Dashboard: See on the page', true))
+			}
+			
+			if (in_array('edit', $curSettings['actions']))
+			{
+				 if ($curSettings['edit_version'] == 'backstage')
+				 {
+					 $links .= $this->Bl->anchor(array('class' => 'link_button'), array('url' => array(
+									'plugin' => 'backstage',
+									'controller' => 'back_contents',
+									'action' => 'edit',
+									$jjModules[$item['DashDashboardItem']['type']]['plugin'],
+									Inflector::underscore($jjModules[$item['DashDashboardItem']['type']]['model']),
+									$item['DashDashboardItem']['dashable_id']
+							 )
+						 ), __('Dashboard: Edit', true)
+					 );
+				 }
+				 elseif ($curSettings['edit_version'] == 'corktile')
+				 {
+					 $links .= $this->Bl->anchor(array('class' => 'link_button'), array('url' => array(
+									'plugin' => 'corktile',
+									'controller' => 'cork_corktiles',
+									'action' => 'edit',
+									$item['DashDashboardItem']['dashable_id']
+							 )
+						 ), __('Dashboard: Edit', true)
+					 );
+				}
+			}
+				 
+			$links .= $this->Bl->ediv();
 			
 			echo $this->Bl->smartTableRowDry(array(
 				array(array(),array('escape' => false, 'colspan' => 3),$links)

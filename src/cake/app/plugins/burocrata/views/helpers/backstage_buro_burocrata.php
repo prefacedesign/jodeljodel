@@ -4,17 +4,24 @@ App::import('Helper', 'Burocrata.BuroBurocrata');
 
 class BackstageBuroBurocrataHelper extends BuroBurocrataHelper
 {
-	function submitBox($options = array())
+	function submitBox($htmlAttributes = array(), $options = array())
 	{
-		$htmlAttributes = array();
-		$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultContainerClass);
-		$htmlAttributes = $this->addClass($htmlAttributes, 'input');
-		echo  $this->Bl->sdiv($htmlAttributes,array());
-			if (!isset($options['label']))
-				$options['label'] = 'Save';
+		$defaultHtmlAttr = array(
+			'class' => array('save_box')
+		);
+		$defaultOptions = array(
+			'submitLabel' => __('Save', true),
+			'cancelLabel' => __('Save box: cancel this change.',true),
+			'publishControls' => false,
+			'cancelUrl' => array('plugin' => 'dashboard', 'controller' => 'dash_dashboard')
+		);
+		$htmlAttributes = $this->_mergeAttributes($defaultHtmlAttr, $htmlAttributes);
+		$options = am($defaultOptions, $options);
+	
+		echo $this->Bl->scontrolBox($htmlAttributes);
 
-			echo $this->Bl->scontrolBox();
-
+			if ($options['publishControls'])
+			{
 				$tmp = $this->Bl->anchorList(array(),array(
 						'lastSeparator' => __('anchorList or', true),
 						'linkList' => array(
@@ -25,23 +32,16 @@ class BackstageBuroBurocrataHelper extends BuroBurocrataHelper
 				);
 				echo $this->Bl->p(array('class' => 'small_text'), array('escape' => false),
 						sprintf(__('Version marked as draft. You can %s.',true), $tmp));
-				
-				echo $this->submit(array(), array('label' => $options['label']));
-				$a = $this->Bl->anchor(array(),array(
-						'url' => array('plugin' => 'dashboard', 'controller' => 'dash_dashboard')
-					),
-					__('Save box: cancel this change.',true)
-				);
-				echo $this->Bl->sp(array('class' => 'alternative_option'), array());
-					echo ', ';
-					echo __('anchorList or',true);
-					echo __($a,false);
-				echo $this->ep();
-				echo $this->Bl->floatBreak();
-			echo $this->Bl->econtrolBox();
+			}	
+			echo $this->submit(array(), array('label' => $options['submitLabel']));
+			
+			echo $this->Bl->sp(array('class' => 'alternative_option'), array());
+				echo ', ';
+				echo __('anchorList or',true);
+				echo $this->Bl->anchor(array(),array('url' => $options['cancelUrl']),$options['cancelLabel']);
+			echo $this->ep();
 			echo $this->Bl->floatBreak();
-		echo  $this->Bl->ediv();
-		
+		echo $this->Bl->econtrolBox();
 	}
 }
 

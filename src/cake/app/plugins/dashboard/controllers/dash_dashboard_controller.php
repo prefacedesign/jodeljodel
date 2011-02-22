@@ -2,6 +2,8 @@
 	/*
 	 *
 	 */
+	 
+	App::import('Config','DashDashboard.config');
 
 	class DashDashboardController extends DashboardAppController
 	{
@@ -24,11 +26,12 @@
 		function index()
 		{
 			$this->data = $this->paginate('DashDashboardItem');
+			$this->set('itemSettings', Configure::read('Dashboard.item_settings'));
 		}
 		
 		function delete_item($id)
 		{
-			$this->view = 'Burocrata.Json';
+			$this->view = 'JjUtils.Json';
 		
 			if ($this->DashDashboardItem->deleteItem($id))
 				$this->set('jsonVars', array('success' => true));

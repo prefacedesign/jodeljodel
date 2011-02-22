@@ -1,6 +1,7 @@
 <?php
 
 App::import('Helper', 'Burocrata.XmlTag');
+App::import('Lib', 'JjUtils.SecureParams');
 
 class BuroBurocrataHelper extends XmlTagHelper
 {
@@ -64,6 +65,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'type' => 'text',
 			'fieldName' => null,
 			'label' => null,
+			'error' => null,
 			'options' => array()
 		);
 		$options = am($defaults, $options);
@@ -95,7 +97,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 					unset($options['instructions']);
 				}
 				$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultObjectClass);
-				$inputOptions = am($htmlAttributes, $options['options'], array('label' => false, 'div' => false, 'type' => $options['type']));
+				$inputOptions = am($htmlAttributes, $options['options'], array('label' => false, 'div' => false, 'type' => $options['type'], 'error' => $options['error']));
 				$out .= $this->Form->input($options['fieldName'], $inputOptions);
 				
 				$View = $this->_getView();
@@ -214,8 +216,15 @@ class BuroBurocrataHelper extends XmlTagHelper
 	public function sform($htmlAttributes = array(), $options = array())
 	{
 		$View =& $this->_getView();
+		
+		$url = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'save');
+		if (isset($options['type']))
+		{
+			$url[] = implode('|', $options['type']);
+		}
+		
 		$defaults = array(
-			'url' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'save'),
+			'url' => $url,
 			'writeForm' => false, 
 			'model' => false,
 			'baseID' => uniqid(),
@@ -378,9 +387,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function security($url, $modelPlugin, $modelAlias)
 	{
-		$hash = Security::hash($this->url($url).$modelAlias.$modelPlugin);
-		$secure = bin2hex(Security::cipher($modelPlugin.'.'.$modelAlias, $hash));
-		return implode('|', array($modelPlugin, $modelAlias, $secure));
+		return SecureParams::pack(array(substr(Security::hash($this->url($url)), -5), $modelPlugin, $modelAlias), true);
 	}
 
 
@@ -889,6 +896,83 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		return $out;
 	}
-}
 
+
+
+/**
+ * Construct a upload input
+ *
+ * ### Accepted options:
+ *
+ *  - `model` - (not working yet) The alternate model for the stored file (must ba a extended from SfilStoredFile)
+ *  - `callbacks` - An array with possible callbacks with Jodel Callbacks conven-
+ *    tion.
+ *
+ * @access public
+ * @param array $options An array with non-defaults values
+ * @return string The HTML well formated
+ * @todo Trigger errors
+ */
+	public function inputUpload($options)
+	{
+		$modelAlias = $this->_readFormAttribute('modelAlias');
+		//todo: trigger error
+		if (!$modelAlias)
+			return 'Can\'t create a upload file that is not inside a buro form.';
+		
+		$file_input_options = array_filter($options);
+		unset($file_input_options['options']);
+		$file_input_options = $file_input_options + array('fieldName' => $modelAlias . '.sfil_sored_file_id');
+		if (strpos($file_input_options['fieldName'], '.') === false)
+			$file_input_options['fieldName'] = $modelAlias . '.' . $file_input_options['fieldName'];
+		
+		
+		$defaults = array(
+			'baseID' => uniqid(),
+			'url' => $this->url(array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'upload')),
+			'error' => array()
+		);
+		$officeboy_options = $options['options'] + $defaults;
+		
+		if (isset($file_input_options['error']))
+		{
+			$officeboy_options['error'] = $file_input_options['error'];
+			unset($officeboy_options['error']);
+		}
+		
+		$out = '';
+		$out .= $this->input(array('id' => 'hi' . $officeboy_options['baseID']), array('type' => 'hidden', 'fieldName' => $file_input_options['fieldName']));
+		$out .= $this->input(array('id' => 'mi' . $officeboy_options['baseID']), array('type' => 'file', 'fieldName' => 'SfilStoredFile.file') + $file_input_options);
+		$out .= $this->BuroOfficeBoy->upload($officeboy_options);
+		
+		return $out;
+	}
+
+
+/**
+ * Construct a upload input that deals only with image files
+ *
+ * ### Accepted options:
+ *
+ *  - `version` - The filter name for the preview image
+ *  - `callbacks` - An array with possible callbacks with Jodel Callbacks conven-
+ *    tion.
+ *
+ * @access public
+ * @param array $options An array with non-defaults values
+ * @return string The HTML well formated
+ */
+	public function inputImage($options)
+	{
+		$defaults = array('version' => 'image_preview');
+		$image_input_options = $options['options'] + $defaults;
+		
+		$imageURL = $this->Bl->imageURL(1, $image_input_options['version']);
+		debug($imageURL);
+		
+		$options['callbacks']['onStart']['js'] = "if(this.image) this.image.remove();";
+		$options['callbacks']['onSave']['js'] = "this.image = new Element('img', {src: $imageURL})";
+		return $this->inputUpload($options);
+	}
+}
 

@@ -56,6 +56,14 @@ class BuroOfficeBoyHelper extends AppHelper
 		'belongsto' => array(
 			'onShowForm' => 'function(to_edit){%s}',
 			'onShowPreview' => 'function(id){%s}'
+		),
+		'upload' => array(
+			'onStart' => 'function(input){%s}',
+			'onSave' => 'function(input, json, saved){%s}',
+			'onReject' => 'function(input, json, saved){%s}',
+			'onSuccess' => 'function(input, json){%s}',
+			'onFailure' => 'function(input, json){%s}',
+			'onComplete' => 'function(input, response){%s}'
 		)
 	);
 
@@ -184,6 +192,34 @@ class BuroOfficeBoyHelper extends AppHelper
 		
 		$callbacks = $this->formatCallbacks('belongsto', $callbacks);
 		$script = sprintf("new BuroBelongsTo('%s','%s'%s);", $baseID, $autocomplete_baseID, (empty($callbacks) ? '':','.$callbacks));
+		return $this->addHtmlEmbScript($script);
+	}
+
+
+/**
+ * Creates the javascript for upload input
+ * 
+ * @access public
+ * @param array $options
+ * @return string The HTML <script> tag
+ */
+	public function upload($options)
+	{
+		$this->_includeScripts();
+		
+		$defaults = array('callbacks' => array(), 'baseID' => uniqid(), 'url' => '', 'error' => array());
+		extract(am($defaults, $options));
+		unset($defaults);
+		
+		if (!empty($error))
+			$error = $this->Js->object($error);
+		else 
+			$error = '{}';
+		
+		$script = sprintf("new BuroUpload('%s', '%s', %s)", $baseID, $url, $error);
+		if(!empty($callbacks) && is_array($callbacks))
+			$script .= sprintf('.addCallbacks(%s)', $this->formatCallbacks('upload', $callbacks));
+		
 		return $this->addHtmlEmbScript($script);
 	}
 

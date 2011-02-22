@@ -33,7 +33,13 @@
  * ...and connect the rest of 'Pages' controller's urls.
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
-	
+
+/**
+ * Connecting '/dl' for forcing download of upload files and '/vw' for just viewing
+ */
+	Router::connect('/dl/*', array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'index', '1'));
+	Router::connect('/vw/*', array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'index'));
+
 /**
  * Here, we are connecting '/css/sheet-layout_scheme.css' to a action called
  * 'sheet' in the 'estilos' controller. This allows us to create dynamic CSS,

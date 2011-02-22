@@ -2,7 +2,7 @@
 class ExemplosController extends BurocrataUserAppController {
 
 	var $name = 'Exemplos';
-	var $uses = array('BurocrataUser.Galery');
+	var $uses = array('JjMedia.SfilStoredFile');
 	
 	function index()
 	{

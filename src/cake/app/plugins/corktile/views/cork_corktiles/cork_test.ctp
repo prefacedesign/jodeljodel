@@ -5,12 +5,12 @@
 	echo $this->Bl->sdiv();
 		$html_config = array();
 		$options = array(
-			'key' => 'chave_mirabolante',
+			'key' => 'another_strange_key',
 			'type' => 'text_cork',
 			'title' => 'esse é o titulo',
-			'location' => array('aqui a localização'),
+			'location' => array('Sobre','História do Museu'),
 			'defaultContent' => array('TextTextCork' =>
-				array('text' => 'Obladi oblada, lalalala')
+				array('text' => "This content hasn't been written yet")
 			),
 			'editorsRecommendations' => 'aqui uma breve descrição',
 			'options' => array('textile' => true, 'convert_links' => true)

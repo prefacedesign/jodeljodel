@@ -13,6 +13,7 @@
 			{
 				echo $buro->sform(array(), array(
 					'model' => $fullModelName,
+					'type' => array('cork'),
 					'callbacks' => array(
 						'onReject' => array('js' => '$("content").scrollTo(); showPopup("error");', 'contentUpdate' => 'replace'),
 						'onSave' => array('js' => '$("content").scrollTo(); showPopup("notice");'),
@@ -31,7 +32,7 @@
 						'instructions' => __('Cork Form - TextTextCork.text - instructions',true)
 					));				
 					//@todo Customize submitBox.
-					echo $buro->submitBox(array('label' => 'Salvar'));
+					echo $buro->submitBox(array(), array('publishControls' => false));
 				echo $buro->eform();
 			}
 		break;

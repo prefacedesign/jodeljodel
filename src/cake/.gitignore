@@ -11,3 +11,6 @@
 
 # Excluding cake console temporary folder from repo
 /cake/console/templates/skel/tmp
+
+# Media directory
+/app/webroot/media
