@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-01-24 09:19-0200\n"
+"POT-Creation-Date: 2011-02-23 11:59-0300\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,451 +14,840 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:5
+#: /plugins/backstage/views/back_contents/edit.ctp:5
 msgid "Backstage edit page: Editing a \""
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:23
+#: /plugins/backstage/views/back_contents/edit.ctp:23
 msgid "Backstage edit page: publish"
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:25;30
+#: /plugins/backstage/views/back_contents/edit.ctp:25;30
 msgid "Backstage edit page: Could change publishing status: communication error."
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:26
+#: /plugins/backstage/views/back_contents/edit.ctp:26
 msgid "Now, this document is hidden. You can %s."
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:28
+#: /plugins/backstage/views/back_contents/edit.ctp:28
 msgid "Backstage edit page: mark it as draft"
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:31
+#: /plugins/backstage/views/back_contents/edit.ctp:31
 msgid "Now, this document is published. You can %s."
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:55
+#: /plugins/backstage/views/back_contents/edit.ctp:55
+#: /plugins/corktile/views/cork_corktiles/edit.ctp:19
 msgid "anchorList and"
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:57
+#: /plugins/backstage/views/back_contents/edit.ctp:57
+#: /plugins/corktile/views/cork_corktiles/edit.ctp:21
 msgid "english"
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:58;70
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:59
+#: /plugins/backstage/views/back_contents/edit.ctp:58;70
+#: /plugins/corktile/views/cork_corktiles/edit.ctp:22;35
 msgid "portuguese"
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:59
+#: /plugins/backstage/views/back_contents/edit.ctp:59
+#: /plugins/corktile/views/cork_corktiles/edit.ctp:23
 msgid "japanese"
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:60
+#: /plugins/backstage/views/back_contents/edit.ctp:60
+#: /plugins/corktile/views/cork_corktiles/edit.ctp:24
 msgid "javanese"
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:65
+#: /plugins/backstage/views/back_contents/edit.ctp:65
+#: /plugins/corktile/views/cork_corktiles/edit.ctp:29
 msgid "This %s already has translations for %s."
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:69
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:58
+#: /plugins/backstage/views/back_contents/edit.ctp:69
+#: /plugins/corktile/views/cork_corktiles/edit.ctp:34
 msgid "backstage edit page: Editing"
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:70
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:59
+#: /plugins/backstage/views/back_contents/edit.ctp:70
+#: /plugins/corktile/views/cork_corktiles/edit.ctp:35
 msgid " the %s version."
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:74
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:19;37
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:63
+#: /plugins/backstage/views/back_contents/edit.ctp:74
+#: /plugins/burocrata/views/helpers/backstage_buro_burocrata.php:26;40
 msgid "anchorList or"
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:76
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:21
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:65
+#: /plugins/backstage/views/back_contents/edit.ctp:76
+#: /plugins/burocrata/views/helpers/backstage_buro_burocrata.php:28
 msgid "mark it as ready"
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:77
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:22
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:66
+#: /plugins/backstage/views/back_contents/edit.ctp:77
+#: /plugins/burocrata/views/helpers/backstage_buro_burocrata.php:29
 msgid "remove it"
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:82
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:27
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:71
+#: /plugins/backstage/views/back_contents/edit.ctp:82
+#: /plugins/burocrata/views/helpers/backstage_buro_burocrata.php:34
 msgid "Version marked as draft. You can %s."
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:90
-msgid "Backstage edit page: Your data cannot be saved."
+#: /plugins/backstage/views/back_contents/edit.ctp:90
+msgid "Backstage edit page: Your data cannot be saved - TITLE."
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:91
-msgid "Backstage edit page: Verify the fields marked with an error and try to save again."
+#: /plugins/backstage/views/back_contents/edit.ctp:91
+msgid "Backstage edit page: Your data cannot be saved - TEXT."
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:97
-msgid "Backstage edit page: Your data has been saved."
+#: /plugins/backstage/views/back_contents/edit.ctp:97
+msgid "Backstage edit page: Your data has been saved - TITLE."
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:98
-msgid "Backstage edit page: Remember to publish the content to make it visible to everyone."
+#: /plugins/backstage/views/back_contents/edit.ctp:98
+msgid "Backstage edit page: Your data has been saved - TEXT."
 msgstr ""
 
-#: \plugins\burocrata\controllers\buro_burocrata_controller.php:264
+#: /plugins/burocrata/controllers/buro_burocrata_controller.php:289
 msgid "Request security field not defined"
 msgstr ""
 
-#: \plugins\burocrata\controllers\buro_burocrata_controller.php:275
-msgid "Security hash didn't match."
+#: /plugins/burocrata/controllers/buro_burocrata_controller.php:299
+msgid "POST Destination check failed."
 msgstr ""
 
-#: \plugins\burocrata\controllers\buro_burocrata_controller.php:285
+#: /plugins/burocrata/controllers/buro_burocrata_controller.php:309
 msgid "Couldn't load model"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:33
-msgid "Save box: cancel this change."
-msgstr ""
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:260
+#: /plugins/burocrata/views/helpers/backstage_buro_burocrata.php:13
 msgid "Save"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:703
-msgid "Nothing found."
+#: /plugins/burocrata/views/helpers/backstage_buro_burocrata.php:14
+msgid "Save box: cancel this change."
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:759
-msgid "Create a new item"
+#: /plugins/burocrata/views/helpers/buro_burocrata.php:269
+msgid "Burorata: default save button"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:760
-msgid "Belongsto edit related data"
+#: /plugins/burocrata/views/helpers/buro_burocrata.php:733
+msgid "Burocrata: nothing found on autocomplete."
 msgstr ""
 
-#: \plugins\corktile\controllers\cork_corktiles_controller.php:16
-msgid "Your data are save"
+#: /plugins/burocrata/views/helpers/buro_burocrata.php:789
+msgid "Burocrata: create a new belongsto item"
 msgstr ""
 
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:21
-msgid "Localização no Site"
+#: /plugins/burocrata/views/helpers/buro_burocrata.php:790
+msgid "Burocrata: belongsto edit related data"
 msgstr ""
 
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:23
-msgid "Descrição"
+#: /plugins/burocrata/views/helpers/buro_burocrata.php:1016
+msgid "Burocrata::inputUpload - Change file"
 msgstr ""
 
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:54
-msgid "Este conteúdo tem apenas uma versão em %s."
+#: /plugins/burocrata/views/helpers/buro_burocrata.php:1037
+msgid "Burocrata::inputUpload - Arquivo: "
 msgstr ""
 
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:94
-msgid "Você pode ainda criar uma versão em %s."
+#: /plugins/corktile/models/cork_corktile.php:70
+msgid "CorkCorktile Model: Could not save the CorkContent"
 msgstr ""
 
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:100
-msgid "Nesta coluna você pode %s uma das versões"
+#: /plugins/corktile/models/cork_corktile.php:86
+msgid "CorkCorktile Model: Could not save the Cork meta data"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:43
-#: \plugins\dashboard\views\dash_dashboard\table_examples.ctp:4
+#: /plugins/corktile/models/cork_corktile.php:106
+msgid "CorkCorktile Model: Could not update the Cork meta data"
+msgstr ""
+
+#: /plugins/corktile/views/cork_corktiles/edit.ctp:4
+msgid "Corktile edit page: Editing a fixed content"
+msgstr ""
+
+#: /plugins/corktile/views/cork_corktiles/edit.ctp:39
+msgid "Corktile: The edition to these contents will be automatically updated to the page where it appears."
+msgstr ""
+
+#: /plugins/corktile/views/cork_corktiles/edit.ctp:46
+msgid "Corktile edit page: Your data cannot be saved - TITLE."
+msgstr ""
+
+#: /plugins/corktile/views/cork_corktiles/edit.ctp:47
+msgid "Corktile edit page: Your data cannot be saved - TEXT."
+msgstr ""
+
+#: /plugins/corktile/views/cork_corktiles/edit.ctp:53
+msgid "Corktile edit page: Your data has been saved - TITLE."
+msgstr ""
+
+#: /plugins/corktile/views/cork_corktiles/edit.ctp:54
+msgid "Corktile edit page: Your data has been saved - TEXT."
+msgstr ""
+
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:43
+#: /plugins/dashboard/views/dash_dashboard/table_examples.ctp:4
 msgid "Backstage index page: Page title - Dashboard"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:58
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:58
 msgid "Dashboard: Add new content:"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:80
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:80
 msgid "or"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:81
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:81
 msgid "Dashboard: Close item list"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:85
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:85
 msgid "Dashboard: Open item list"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:110
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:110
 msgid "Dashboard: Notice of marking as draft success - TITLE"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:111
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:111
 msgid "Dashboard: Notice of marking as draft success - TEXT"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:118
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:118
 msgid "Dashboard: Notice of marking as draft failure - TITLE"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:119
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:119
 msgid "Dashboard: Notice of marking as draft failure - TEXT"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:125
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:125
 msgid "Dashboard: Notice of publishing success - TITLE"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:126
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:126
 msgid "Dashboard: Notice of publishing success - TEXT"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:133
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:133
 msgid "Dashboard: Notice of publishing failure - TITLE"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:134
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:134
 msgid "Dashboard: Notice of publishing failure - TEXT"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:140
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:140
 msgid "Dashboard: Notice of delete success - TITLE"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:141
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:141
 msgid "Dashboard: Notice of delete success - TEXT"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:148
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:148
 msgid "Dashboard: Notice of delete failure - TITLE"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:149
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:149
 msgid "Dashboard: Notice of delete failure - TEXT"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:169
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:169
 msgid "Dashboard - dashboard header: Type"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:170
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:170
 msgid "Dashboard - dashboard header: Status"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:171
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:171
 msgid "Dashboard - dashboard header: Name"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:172
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:172
 msgid "Dashboard - dashboard header: Extra info"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:173
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:173
 msgid "Dashboard - dashboard header: Created"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:174
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:174
 msgid "Dashboard - dashboard header: Modified"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:175
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:175
 msgid "Dashboard - dashboard header: Translations"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:188
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:193
 msgid "Dashboard types: "
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:189
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:194
 msgid "Dashboard status: "
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:205
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:216
 msgid "Dashboard: Hide from public"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:219
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:230
 msgid "Dashboard: Publish to the great public"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:234
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:249
 msgid "Dashboard: Delete content"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:254
+#: /plugins/dashboard/views/dash_dashboard/index.ctp:284;295
 msgid "Dashboard: Edit"
 msgstr ""
 
-#: \plugins\person\models\pers_person.php:16
+#: /plugins/jj_utils/vendors/shells/jj_console.php:13
+msgid "JjConsoleShell::main What is the command to execute? Say \"quit\" to exit, \"help\" to achieve help."
+msgstr ""
+
+#: /plugins/jj_utils/vendors/shells/jj_console.php:38
+msgid "This is the help"
+msgstr ""
+
+#: /plugins/media/vendors/shells/media.php:94
+msgid "What would you like to do?"
+msgstr ""
+
+#: /plugins/media/views/elements/attachments.ctp:59
+msgid "%s"
+msgstr ""
+
+#: /plugins/media/views/elements/attachments.ctp:70
+msgid "File"
+msgstr ""
+
+#: /plugins/media/views/elements/attachments.ctp:73
+msgid "An error occured while transferring the file."
+msgstr ""
+
+#: /plugins/media/views/elements/attachments.ctp:74
+msgid "The file is invalid."
+msgstr ""
+
+#: /plugins/media/views/elements/attachments.ctp:75
+msgid "The file cannot be processed."
+msgstr ""
+
+#: /plugins/media/views/elements/attachments.ctp:76
+msgid "The file cannot be transferred from or to location."
+msgstr ""
+
+#: /plugins/media/views/elements/attachments.ctp:77
+msgid "Executable files cannot be uploaded."
+msgstr ""
+
+#: /plugins/media/views/elements/attachments.ctp:78;79
+msgid "The file is too large."
+msgstr ""
+
+#: /plugins/media/views/elements/attachments.ctp:80
+msgid "The file has the wrong extension."
+msgstr ""
+
+#: /plugins/media/views/elements/attachments.ctp:81
+msgid "The file has the wrong MIME type."
+msgstr ""
+
+#: /plugins/media/views/elements/attachments.ctp:84
+msgid "Textual replacement"
+msgstr ""
+
+#: /plugins/media/views/elements/attachments.ctp:86
+msgid "A textual replacement must be provided."
+msgstr ""
+
+#: /plugins/media/views/elements/attachments.ctp:129
+msgid "Release"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:84
+msgid "Sections: public_page linkCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:91;92
+msgid "Sections: public_page pageTitle"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:93
+msgid "Sections: public_page humanName"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:97
+msgid "Sections: about linkCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:103
+msgid "Sections: about pageTitle"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:104
+msgid "Sections: about headerCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:105
+msgid "Sections: about humanName"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:108
+msgid "Sections: contact linkCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:114
+msgid "Sections: contact pageTitle"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:115
+msgid "Sections: contact headerCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:116
+msgid "Sections: contact humanName"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:119
+msgid "Sections: papers linkCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:125
+msgid "Sections: papers pageTitle"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:126
+msgid "Sections: papers headerCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:127
+msgid "Sections: papers humanName"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:130
+msgid "Sections: events linkCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:136
+msgid "Sections: events pageTitle"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:137
+msgid "Sections: events headerCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:138
+msgid "Sections: events humanName"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:141
+msgid "Sections: news linkCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:147
+msgid "Sections: news pageTitle"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:148
+msgid "Sections: news headerCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:149
+msgid "Sections: news humanName"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:152
+msgid "Sections: news_index linkCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:158
+msgid "Sections: news_index pageTitle"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:159
+msgid "Sections: news_index headerCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:160
+msgid "Sections: news_index humanName"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:163
+msgid "Sections: * linkCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:170
+msgid "Sections: news_item pageTitle"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:171
+msgid "Sections: news_item headerCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:172
+msgid "Sections: news_item humanName"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:179
+msgid "Sections: backstage linkCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:188
+msgid "Sections: backstage pageTitle"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:189
+msgid "Sections: backstage headerCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:190
+msgid "Sections: backstage humanName"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:193
+msgid "Sections: login linkCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:200
+msgid "Sections: login pageTitle"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:201
+msgid "Sections: login headerCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:202
+msgid "Sections: login humanName"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:205
+msgid "Sections: dashboard linkCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:212
+msgid "Sections: dashboard pageTitle"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:213
+msgid "Sections: dashboard headerCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:214
+msgid "Sections: dashboard humanName"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:217
+msgid "Sections: burocrata_save linkCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:227;237
+msgid "Sections: set_publishing_status linkCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:247
+msgid "Sections: corktile_edit linkCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:255
+msgid "Sections: corktile_edit pageTitle"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:256
+msgid "Sections: corktile_edit headerCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:257
+msgid "Sections: corktile_edit humanName"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:260
+msgid "Sections: edit linkCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:268
+msgid "Sections: edit pageTitle"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:269
+msgid "Sections: edit headerCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:270
+msgid "Sections: edit humanName"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:273
+msgid "Sections: news_edit linkCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:282
+msgid "Sections: news_edit pageTitle"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:283
+msgid "Sections: news_edit headerCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:284
+msgid "Sections: news_edit humanName"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:287
+msgid "Sections: news_form linkCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:295
+msgid "Sections: news_form humanName"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:304
+msgid "Section One"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:312
+msgid "The Section One"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:313
+msgid "The Section One Header"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:314
+msgid "The Human Section One name"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:318
+msgid "Section Two"
+msgstr ""
+
+#: /plugins/person/models/pers_person.php:16
 msgid "PersPerson validation: surname."
 msgstr ""
 
-#: \plugins\person\models\pers_person.php:26
+#: /plugins/person/models/pers_person.php:26
 msgid "PersPerson validation: name."
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:25
+#: /plugins/person/views/elements/pers_person.ctp:24
 msgid "Form - PersPerson name superfield"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:26
+#: /plugins/person/views/elements/pers_person.ctp:25
 msgid "Form - PersPerson name superfield - instructions"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:33
+#: /plugins/person/views/elements/pers_person.ctp:32
 msgid "Form - PersPerson.surname"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:34
+#: /plugins/person/views/elements/pers_person.ctp:33
 msgid "Form - PersPerson.surname - instructions"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:40
+#: /plugins/person/views/elements/pers_person.ctp:39
 msgid "Form - PersPerson.name"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:41
+#: /plugins/person/views/elements/pers_person.ctp:40
 msgid "Form - PersPerson.name - instructions"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:47
+#: /plugins/person/views/elements/pers_person.ctp:46
 msgid "Form - PersPerson.reference_name"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:48
+#: /plugins/person/views/elements/pers_person.ctp:47
 msgid "Form - PersPerson.reference_name - instructions"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:58
+#: /plugins/person/views/elements/pers_person.ctp:57
 msgid "Form - PersPerson.lattes_link"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:59
+#: /plugins/person/views/elements/pers_person.ctp:58
 msgid "Form - PersPerson.lattes_link - instructions"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:65
+#: /plugins/person/views/elements/pers_person.ctp:64
 msgid "Form - PersPerson.research_fields"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:66
+#: /plugins/person/views/elements/pers_person.ctp:65
 msgid "Form - PersPerson.research_fields - instructions"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:72
+#: /plugins/person/views/elements/pers_person.ctp:71
 msgid "Form - PersPerson.profile"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:73
+#: /plugins/person/views/elements/pers_person.ctp:72
 msgid "Form - PersPerson.profile - instructions"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:79
+#: /plugins/person/views/elements/pers_person.ctp:78
 msgid "Form - PersPerson.cooperation_with_dinafon"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:80
+#: /plugins/person/views/elements/pers_person.ctp:79
 msgid "Form - PersPerson.cooperation_with_dinafon - instructions"
 msgstr ""
 
-#: \plugins\popup\views\elements\popup.ctp:24
+#: /plugins/popup/views/elements/popup.ctp:24
 msgid "Popup plugin "
 msgstr ""
 
-#: \plugins\typographer\views\elements\backstage_layout.ctp:9
+#: /plugins/text_cork/models/text_text_cork.php:26
+msgid "TextTextCork Model: This text hasn't been written yet. It's up to the site content editor to write it."
+msgstr ""
+
+#: /plugins/text_cork/views/elements/text_text_cork.ctp:31
+msgid "Cork Form - TextTextCork.text"
+msgstr ""
+
+#: /plugins/text_cork/views/elements/text_text_cork.ctp:32
+msgid "Cork Form - TextTextCork.text - instructions"
+msgstr ""
+
+#: /plugins/typographer/views/elements/backstage_layout.ctp:9
 msgid "Content management area"
 msgstr ""
 
-#: \plugins\typographer\views\elements\backstage_layout.ctp:14
+#: /plugins/typographer/views/elements/backstage_layout.ctp:14
 msgid "Logout"
 msgstr ""
 
-#: \plugins\typographer\views\elements\backstage_layout.ctp:25
+#: /plugins/typographer/views/elements/backstage_layout.ctp:25
 msgid "Powered by Jodel Jodel"
 msgstr ""
 
-#: \plugins\typographer\views\elements\backstage_layout.ctp:28
+#: /plugins/typographer/views/elements/backstage_layout.ctp:28
 msgid "This site, alongside its public version, was developed by "
 msgstr ""
 
-#: \views\pages\home.ctp:12
+#: /plugins/typographer/views/elements/dinafon_layout.ctp:154
+msgid "Dinafon layout: short description about Dinafon"
+msgstr ""
+
+#: /views/pages/home.ctp:12
 msgid "Your tmp directory is writable."
 msgstr ""
 
-#: \views\pages\home.ctp:16
+#: /views/pages/home.ctp:16
 msgid "Your tmp directory is NOT writable."
 msgstr ""
 
-#: \views\pages\home.ctp:26
+#: /views/pages/home.ctp:26
 msgid "The %s is being used for caching. To change the config edit APP/config/core.php "
 msgstr ""
 
-#: \views\pages\home.ctp:30
+#: /views/pages/home.ctp:30
 msgid "Your cache is NOT working. Please check the settings in APP/config/core.php"
 msgstr ""
 
-#: \views\pages\home.ctp:40
+#: /views/pages/home.ctp:40
 msgid "Your database configuration file is present."
 msgstr ""
 
-#: \views\pages\home.ctp:45
+#: /views/pages/home.ctp:45
 msgid "Your database configuration file is NOT present."
 msgstr ""
 
-#: \views\pages\home.ctp:47
+#: /views/pages/home.ctp:47
 msgid "Rename config/database.php.default to config/database.php"
 msgstr ""
 
-#: \views\pages\home.ctp:64
+#: /views/pages/home.ctp:64
 msgid "Cake is able to connect to the database."
 msgstr ""
 
-#: \views\pages\home.ctp:68
+#: /views/pages/home.ctp:68
 msgid "Cake is NOT able to connect to the database."
 msgstr ""
 
-#: \views\pages\home.ctp:74
+#: /views/pages/home.ctp:74
 msgid "Editing this Page"
 msgstr ""
 
-#: \views\pages\home.ctp:77
+#: /views/pages/home.ctp:77
 msgid "To change the content of this page, edit: %s\n\t\tTo change its layout, edit: %s\n\t\tYou can also add some CSS styles for your pages at: %s"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:4
+#: /views/translate_strings/translate_strings.ctp:4
 msgid "Backstage edit page: Editing a \"Person.PersPerson\""
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:9
+#: /views/translate_strings/translate_strings.ctp:9
 msgid "Dashboard status: published"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:10
+#: /views/translate_strings/translate_strings.ctp:10
 msgid "Dashboard status: draft"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:11
+#: /views/translate_strings/translate_strings.ctp:11
 msgid "Dashboard types: person"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:12
+#: /views/translate_strings/translate_strings.ctp:12
 msgid "MODULE PersPerson human name"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:13
+#: /views/translate_strings/translate_strings.ctp:13
 msgid "MODULE NewNews human name"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:14
+#: /views/translate_strings/translate_strings.ctp:14
 msgid "Popup plugin success type"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:15
+#: /views/translate_strings/translate_strings.ctp:15
 msgid "Popup plugin notice type"
 msgstr ""
 
-#: \webroot\test.php:88
+#: /webroot/test.php:88
 msgid "Debug setting does not allow access to this url."
+msgstr ""
+
+#: /plugins/utils/controllers/components/archive.php:156
+msgid "No %s found for that date range"
+msgstr ""
+
+#: /plugins/utils/controllers/components/form_preserver.php:77
+msgid "Your form data is preserved you'll be redirected to it after login."
+msgstr ""
+
+#: /plugins/utils/models/behaviors/csv_import.php:142
+msgid "%s for Row %d failed to save."
+msgstr ""
+
+#: /plugins/utils/models/behaviors/toggleable.php:48
+msgid "You need to define at least one field to be toggleable."
+msgstr ""
+
+#: /plugins/utils/models/behaviors/toggleable.php:69
+msgid "The field %s is not in the list of toggleable fields."
+msgstr ""
+
+#: /plugins/utils/models/behaviors/toggleable.php:73
+msgid "The field %s does not have two toggleable states defined."
+msgstr ""
+
+#: /plugins/utils/models/behaviors/toggleable.php:93
+msgid "Invalid record"
 msgstr ""
 

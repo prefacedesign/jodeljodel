@@ -34,11 +34,11 @@ class AppController extends Controller {
 	var $helpers = array('Html', 'Form', 'Javascript', 'Session');
 	var $components = array(
 		'Acl',
+		'PageSections.SectSectionHandler',
 		'Auth' => array(
 			'userModel' => 'JjUsers.UserUser',
 			'authorize' => 'controller'
-		),
-		'PageSections.SectSectionHandler',
+		)
 	);
 	
 	function beforeFilter()

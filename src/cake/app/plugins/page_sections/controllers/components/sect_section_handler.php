@@ -40,14 +40,14 @@ class SectSectionHandlerComponent extends Object {
 	 * set. It only checks wheter it's a public action or controlled
 	 * access action.
 	 */
-	function beforeFilter(&$controller)
+	function startup(&$controller)
 	{
 		if (isset($controller->Auth))
 		{
-			if (empty($this->_thisSection['acos']))
-				$this->Auth->allow($params['action']);
+			if (empty($this->thisSection['acos']))
+				$controller->Auth->allow($controller->params['action']);
 			else
-				$this->Auth->deny($params['action']);
+				$controller->Auth->deny($controller->params['action']);
 		}
 	}
 	 
