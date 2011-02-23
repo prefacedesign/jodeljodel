@@ -29,6 +29,12 @@
 		);
 		var $layout = 'dinafon';
 
+		function beforeFilter()
+		{
+			parent::beforeFilter();
+			$this->Auth->allow('index');
+		}
+
 		function beforeRender()
 		{
 			parent::beforeRender();

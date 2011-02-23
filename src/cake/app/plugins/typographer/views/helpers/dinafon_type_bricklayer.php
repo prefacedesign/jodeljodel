@@ -22,6 +22,8 @@ class DinafonTypeBricklayerHelper extends TypeBricklayerHelper
 		//
 		$options = am(array('size' => array('g' => -1)), $options);
 
+		$attr = $this->_mergeAttributes(array('class' => array('caixa')), $attr);
+
 		if (isset($options['tipo']) && ($options['tipo'] == 'transparente')){
 			$attr = $this->_mergeAttributes(array('class' => array('transparente')), $attr);
 			unset ($options['tipo']);
@@ -127,6 +129,17 @@ class DinafonTypeBricklayerHelper extends TypeBricklayerHelper
 		return $this->eimg();
 	}
 
+
+	function scaixote($attr = array(), $options = array())
+	{
+		$attr = $this->_mergeAttributes(array('class' => array('caixote')), $attr);
+		return $this->sbox($attr,$options);
+	}
+
+	function ecaixote()
+	{
+		return $this->ebox();
+	}
 
 }
 ?>

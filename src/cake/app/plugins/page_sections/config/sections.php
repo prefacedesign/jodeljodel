@@ -93,6 +93,50 @@ $sections = array(
 		'humanName' => __('Sections: public_page humanName',true),
 		
 		'subSections' => array(
+			'about' => array(
+				'linkCaption' => __('Sections: about linkCaption', true),
+				'url' => array(
+					'plugin' => false,
+					'controller' => 'principal',
+					'action' => 'about'
+				),
+				'pageTitle' => array(null,__('Sections: about pageTitle',true)),
+				'headerCaption' => __('Sections: about headerCaption', true),
+				'humanName' => __('Sections: about humanName',true)
+			),
+			'contact' => array(
+				'linkCaption' => __('Sections: contact linkCaption', true),
+				'url' => array(
+					'plugin' => false,
+					'controller' => 'principal',
+					'action' => 'contact'
+				),
+				'pageTitle' => array(null,__('Sections: contact pageTitle',true)),
+				'headerCaption' => __('Sections: contact headerCaption', true),
+				'humanName' => __('Sections: contact humanName',true)
+			),
+			'papers' => array(
+				'linkCaption' => __('Sections: papers linkCaption', true),
+				'url' => array(
+					'plugin' => 'papers',
+					'controller' => 'pap_papers',
+					'action' => 'index'
+				),
+				'pageTitle' => array(null,__('Sections: papers pageTitle',true)),
+				'headerCaption' => __('Sections: papers headerCaption', true),
+				'humanName' => __('Sections: papers humanName',true)
+			),
+			'events' => array(
+				'linkCaption' => __('Sections: events linkCaption', true),
+				'url' => array(
+					'plugin' => 'events',
+					'controller' => 'eve_events',
+					'action' => 'index'
+				),
+				'pageTitle' => array(null,__('Sections: events pageTitle',true)),
+				'headerCaption' => __('Sections: events headerCaption', true),
+				'humanName' => __('Sections: events humanName',true)
+			),
 			'news' => array(
 				'linkCaption' => __('Sections: news linkCaption', true),
 				'url' => array(

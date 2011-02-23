@@ -18,7 +18,15 @@ class TypeStylesheetController extends TypographerAppController
 			'generate_automatic_classes' => true //significa que eu que vou produzir as classes automaticas
 		)
 	);
-	
+
+	function  beforeFilter() {
+		parent::beforeFilter();
+
+		if (isset($this->Auth))
+		{
+			$this->Auth->allow('*');
+		}
+	}
 	
 	var $components = array('Typographer.TypeLayoutSchemePicker');
 	var $uses = array();
@@ -30,7 +38,7 @@ class TypeStylesheetController extends TypographerAppController
 	
 	function beforeRender()
 	{
-		//faz nada - isto é para evitar o afterFilter do pai, que não tem nada a ver por aqui.
+		//faz nada - isto ï¿½ para evitar o afterFilter do pai, que nï¿½o tem nada a ver por aqui.
 	}
 }
 ?>

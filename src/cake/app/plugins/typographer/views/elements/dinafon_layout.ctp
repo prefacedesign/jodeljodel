@@ -151,7 +151,7 @@
 						array(),
 						array(),
 						array(
-							'Dinafon stands for Dinâmica Fônica, speech dynamics, and names a group of phonologists/phoneticians led by Eleonora Albano.<br/>'
+							__('Dinafon layout: short description about Dinafon',true) . $this->Bl->brDry()
 							. $html->link('LAFAPE', 'http://www.lafape.iel.unicamp.br') . ' &ndash; '
 							. $html->link('IEL', 'http://www.iel.unicamp.br') . ' &ndash; '
 							. $html->link('Unicamp', 'http://www.unicamp.br')
