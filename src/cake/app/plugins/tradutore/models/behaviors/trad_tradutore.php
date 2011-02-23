@@ -36,6 +36,8 @@ class TradTradutoreBehavior extends ModelBehavior
 	
 	static $currentLanguage;
 	static $languageStack = array();
+	
+	var $hasSetLanguage = 0;
 
     function __setupUserSettings(&$Model, $settings)
     {
@@ -176,6 +178,7 @@ class TradTradutoreBehavior extends ModelBehavior
 		//debug(self::$languageStack);
 		array_push(self::$languageStack, self::$currentLanguage);
 		self::$currentLanguage = $lang;
+		//debug(self::$currentLanguage);
 	}
 	
 	static function returnToPreviousGlobalLanguage()
@@ -252,32 +255,35 @@ class TradTradutoreBehavior extends ModelBehavior
 
 			// Search for translatable fields and language field in query.
 			// If required they must be included in fields list.
-			foreach ($query['fields'] as $i => $queryField) 
+			if(isset($query['fields']))
 			{
-				// Search for translatable fields.
-				$isTranslatableField = false;
-				if (in_array($Model->name . '.' . $queryField, $translatableFields) === true) 
-				{	
-					// Relative translatable field name found on query.
-					$queryField = $Model->name . '.' . $queryField;
-					$isTranslatableField = true;
-				} 
-				else 
+				foreach ($query['fields'] as $i => $queryField) 
 				{
-					if (in_array($queryField, $translatableFields) === true) 
-					{
-						// Absolute translatable field name found on query.
+					// Search for translatable fields.
+					$isTranslatableField = false;
+					if (in_array($Model->name . '.' . $queryField, $translatableFields) === true) 
+					{	
+						// Relative translatable field name found on query.
+						$queryField = $Model->name . '.' . $queryField;
 						$isTranslatableField = true;
+					} 
+					else 
+					{
+						if (in_array($queryField, $translatableFields) === true) 
+						{
+							// Absolute translatable field name found on query.
+							$isTranslatableField = true;
+						}
 					}
-				}
 
-				// Replace translatable field name by translation field name.
-				if ($isTranslatableField) 
-				{
-					$queryField          = str_replace($Model->name . '.', $settings['className'] . '.', $queryField);
-					$query['fields'][$i] = $queryField;
-					array_push($translatableFieldsInQuery, $queryField);
-				} 
+					// Replace translatable field name by translation field name.
+					if ($isTranslatableField) 
+					{
+						$queryField          = str_replace($Model->name . '.', $settings['className'] . '.', $queryField);
+						$query['fields'][$i] = $queryField;
+						array_push($translatableFieldsInQuery, $queryField);
+					} 
+				}
 			}
 			
 			if (count($translatableFieldsInQuery) > 0) 
@@ -375,12 +381,15 @@ class TradTradutoreBehavior extends ModelBehavior
 				}
 				
 				$c[$child['className']] = array();
-				foreach ($query['fields'] as $k => $field)
+				if (isset($query['fields']))
 				{
-					$f = explode('.', $field);
-					$model_child = $f[0];
-					if ($model_child == $child['className'])
-						$c[$child['className']]['fields'][] = $field;
+					foreach ($query['fields'] as $k => $field)
+					{
+						$f = explode('.', $field);
+						$model_child = $f[0];
+						if ($model_child == $child['className'])
+							$c[$child['className']]['fields'][] = $field;
+					}
 				}
 
 				if (isset($setts))
@@ -562,8 +571,17 @@ class TradTradutoreBehavior extends ModelBehavior
     {
 		$__settings = $this->__settings[$Model->name];
         $settings   = $this->settings[$Model->name];
-		if ($settings['language'])
+		//debug($query);
+		if (isset($query['language']))
+		{
 			$this->setLanguage($Model, $settings['language']);
+			$this->hasSetLanguage++;
+		}
+		
+		if (!(isset($query['emptyTranslation']) && $query['emptyTranslation'] == true))
+		{
+			$query['conditions']['NOT']['language'] = 'IS NOT NULL'; 
+		}
 		
 		
 		//debug($query['contain']);
@@ -577,16 +595,21 @@ class TradTradutoreBehavior extends ModelBehavior
 		//debug($query);
 		//die;
 		
-		
-		if (!empty($Model->hasOne[$settings['className']]))
+		if (isset($settings['className']))
 		{
-			$c[$settings['className']] = array();
-			foreach ($query['fields'] as $k => $field)
+			if (!empty($Model->hasOne[$settings['className']]))
 			{
-				$f = explode('.', $field);
-				$model_child = $f[0];
-				if ($model_child == $settings['className'])
-					$c[$settings['className']]['fields'][] = $field;
+				$c[$settings['className']] = array();
+				if (isset($query['fields']))
+				{
+					foreach ($query['fields'] as $k => $field)
+					{
+						$f = explode('.', $field);
+						$model_child = $f[0];
+						if ($model_child == $settings['className'])
+							$c[$settings['className']]['fields'][] = $field;
+					}
+				}
 			}
 		}
 		//debug($Model->hasMany);
@@ -610,13 +633,15 @@ class TradTradutoreBehavior extends ModelBehavior
 			}
 		}
 		
-		
-		foreach ($query['fields'] as $k => $field)
+		if (isset($query['fields']))
 		{
-			$f = explode('.', $field);
-			$model_child = $f[0];
-			if ($model_child == $Model->alias)
-				trigger_error('The fields to the root Model will be ignorated. Ever field will be returned.', E_USER_WARNING);
+			foreach ($query['fields'] as $k => $field)
+			{
+				$f = explode('.', $field);
+				$model_child = $f[0];
+				if ($model_child == $Model->alias)
+					trigger_error('The fields to the root Model will be ignorated. Ever field will be returned.', E_USER_WARNING);
+			}
 		}
 		
 		
@@ -638,7 +663,11 @@ class TradTradutoreBehavior extends ModelBehavior
         $__settings = $this->__settings[$Model->name];
         $settings   = $this->settings[$Model->name];
 		
-		$this->returnToPreviousGlobalLanguage();
+		if ($this->hasSetLanguage > 0)
+		{
+			$this->returnToPreviousGlobalLanguage();
+			$this->hasSetLanguage--;
+		}
 		
 		foreach ($results as $i => $result) 
 		{
@@ -767,7 +796,7 @@ class TradTradutoreBehavior extends ModelBehavior
 		$lang = $lang[1];
 		
 		if (!isset($Model->data[$Model->name][$lang])) 
-			$Model->data[$settings['className']][$lang] = $settings['language'];
+			$Model->data[$settings['className']][$lang] = self::$currentLanguage;
 		else
 			$Model->data[$settings['className']][$lang] = $Model->data[$Model->name][$lang];
 		

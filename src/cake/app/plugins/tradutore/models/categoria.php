@@ -28,8 +28,9 @@
 class Categoria extends AppModel
 {
     var $name = 'Categoria';
+	var $useDbConfig = "jodelteste";
 
-	var $hasOne = array('CategoriaTranslation');
+	var $hasOne = array('Tradutore.CategoriaTranslation');
 	var $actsAs = array('Cascata.AguaCascata', 'Tradutore.TradTradutore', 'Containable');
 	
 	//var $actsAs = array('Tradutore.TradTradutore');

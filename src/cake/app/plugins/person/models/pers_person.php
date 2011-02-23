@@ -30,7 +30,8 @@ class PersPerson extends PersonAppModel {
 		);
 	}
 	
-	var $actsAs = array('Dashboard.DashDashboardable', 'Status.Status' => array('publishing_status'));
+	var $actsAs = array('Cascata.AguaCascata', 'Tradutore.TradTradutore', 'Containable', 'Dashboard.DashDashboardable', 'Status.Status' => array('publishing_status'));
+	var $hasOne = array('PersPersonTranslation');
 	
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 

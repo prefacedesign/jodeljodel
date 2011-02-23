@@ -38,7 +38,8 @@ class AppController extends Controller {
 		'Auth' => array(
 			'userModel' => 'JjUsers.UserUser',
 			'authorize' => 'controller'
-		)
+		),
+		'Tradutore.TradLanguageSelector'
 	);
 	
 	function beforeFilter()
