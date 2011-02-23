@@ -43,16 +43,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 	echo $this->Bl->h1Dry(__('Backstage index page: Page title - Dashboard', true));
 	
 	echo $this->Bl->sboxContainer(array('class' => 'dash_toolbox'),array('size' => array('M' => 12, 'g' => -1)));
-		echo $this->Bl->sdiv(array('class' => 'pagination'));
-			echo $this->Paginator->first('<<');
-			if ($this->Paginator->hasPrev())
-				echo $this->Paginator->prev('<');	
-			echo $this->Paginator->numbers(array('modulus' => 9, 'separator' => ''));
-			if ($this->Paginator->hasPrev())
-				echo $this->Paginator->prev('>');
-			echo $this->Paginator->last('>>');
-		echo $this->Bl->ediv();
-		
+				
 		echo $this->Bl->sdiv(array('class' => array('dash_additem')));
 			echo $this->Bl->sdiv(array('class' => 'dash_itemlist'));
 				echo $this->Bl->h3Dry(__('Dashboard: Add new content:', true));
@@ -81,6 +72,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 				echo $this->Bl->anchor(array('id' => 'close_dash_additem'),array(), __('Dashboard: Close item list',true));
 			echo $this->Bl->ediv();
 		echo $this->Bl->ediv();
+		
 		echo $this->Bl->sdiv(array('class' => array('dash_link_to_additem','expanded')));
 			echo $this->Bl->anchor(array('id' => 'open_dash_additem'),array(),__('Dashboard: Open item list',true));
 		echo $this->Bl->ediv();
@@ -102,6 +94,17 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 				}", 
 			array('inline' => false)
 		);
+		
+		echo $this->Bl->sdiv(array('class' => 'pagination'));
+			echo $this->Paginator->first('<<');
+			if ($this->Paginator->hasPrev())
+				echo $this->Paginator->prev('<');	
+			echo $this->Paginator->numbers(array('modulus' => 9, 'separator' => ''));
+			if ($this->Paginator->hasPrev())
+				echo $this->Paginator->prev('>');
+			echo $this->Paginator->last('>>');
+		echo $this->Bl->ediv();
+		
 	echo $this->Bl->eboxContainer();
 	
 	// The popups called after success or failure of "Mark as draft" or "Publish"

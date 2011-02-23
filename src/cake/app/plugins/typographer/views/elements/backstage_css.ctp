@@ -1,16 +1,27 @@
 <?php
 
-	$box_shadow = '0 0 '.$vg->size(array('u' => 5)).' '. $vg->size(array('u' => -2)). ' ' . $palette['text']->write();
+	$box_shadow = '0 '.$vg->size(array('u' => 3)).' '. $vg->size(array('u' => 10)). ' ' . $palette['popin_shadow']->write();
 	$this->Decorator->rule(
 		'.box_popup', array(
 			'z-index' => '100',
-			'border' => '2px solid black',
+			'border' => '1px solid white',
 			'position' => 'absolute',
+			'background' => 'white',
 			'width' => $vg->size(array('M' => 7, 'g' => -1)),
 			'padding' => $hg->size(array('g' => 1)) . ' 0',
 			'box-shadow' => $box_shadow,
 			'-webkit-box-shadow' => $box_shadow,
 			'-moz-box-shadow' => $box_shadow
+	));
+	
+	$this->Decorator->rule(
+		'.error_box', array(
+			'background' => $palette['error_popin']->write(),
+	));
+	
+	$this->Decorator->rule(
+		'.success_box, .notice_box, .form_box', array(
+			'background' => $palette['normal_popin']->write(),
 	));
 	
 	$this->Decorator->rule(
@@ -26,27 +37,28 @@
 		'.box_popup .callbacks', array(
 			'margin-top' => $vg->size(array('g' => 1.5))
 	));
+	
 	$this->Decorator->rule(
 		'.box_popup .callbacks a', array(
 			'padding-left' => $hg->size(array('m' => 2)),
 			'padding-right' => $hg->size(array('m' => 2)),
 			'text-transform' => 'uppercase',
 			'letter-spacing' => $letterSpacing,
-			'font-weight' => 'bold'	
+			'font-weight' => 'bold'
 	));
 	
 	$this->Decorator->rule(
 		'a.link_button', array(
 			'background-color' => $palette['button_bg']->write(),
-			'height' => $vg->size(array('g' => 1.2)),
+			'height' => $vg->size(array('m' => 6)),
+			'line-height' => $vg->size(array('m' => 6)),
 			'border' => '1px solid black !important',
-			'border-radius' => '7px',
-			'-webkit-border-radius' => '7px',
-			'-moz-border-radius' => '7px',
+			'border-radius' => '5px',
+			'-webkit-border-radius' => '5px',
+			'-moz-border-radius' => '5px',
 			'display' => 'block',
 			'float' => 'left',
 			'text-align' => 'center',
-			'padding-top' => $vg->size(array('m' => 1)),
 			'color' => $palette['text']->write(),
 			'margin-right' => $hg->size(array('m' => 2)),
 	));
@@ -68,18 +80,6 @@
 			'background-color' => $palette['active_button_bg']->write(),
 	));
 	
-	
-	
-	
-	$this->Decorator->rule(
-		'.error_box', array(
-			'background' => $palette['error_popin']->write(),
-	));
-	
-	$this->Decorator->rule(
-		'.success_box, .notice_box', array(
-			'background' => $palette['normal_popin']->write(),
-	));
 	
 	$this->Decorator->rule(
 		'.popup_maya_veil', array(
@@ -117,7 +117,7 @@
 			'margin' => '0',
 			'padding' => '0',
 			'text-decoration' => 'none',
-			'font-family' => '"Lucida Sans", "Bitstream Vera Sans"'
+			'font-family' => '"Lucida Sans", "Lucida Sans Std", "Bitstream Vera Sans", sans-serif'
 		)
 	);
 	
@@ -161,6 +161,7 @@
 			'border-top' => '0',
 			'width' => $hg->size(array('M' => 12, 'g' => 1)),
 			'margin' => 'auto',
+			'margin-bottom' => $hg->size(array('g' => 1)),
 			'box-shadow' => $box_shadow,
 			'-webkit-box-shadow' => $box_shadow,
 			'-moz-box-shadow' => $box_shadow
@@ -443,20 +444,19 @@
 	
 	$this->Decorator->rule(
 		'div.dash_additem', array(
-			'position' => 'relative',
-			'float' => 'left',
+			'position' => 'absolute',
 			'height' => $vg->size(array('m' => 6)),
 			'width' => $hg->size(array('M' => 12, 'g' => 1)),
-			'left' => $hg->size(array('g' => -1)),
-			'top' =>  $vg->size(array('m' => -6)),
+			'margin-left' => $hg->size(array('g' => -1)),
 			'background' => $palette['selection']->write()
 	));
 	
 	$this->Decorator->rule(
 		'#close_dash_additem', array(
 			'display' => 'block',
-			'float' => 'right',
-			'margin-right' => $hg->size(array('g' => 1)),
+			'position' => 'absolute',
+			'top' => $vg->size(array('m' => 1)),
+			'right' => $hg->size(array('g' => 1)),
 	));
 	
 	$this->Decorator->rule(
@@ -472,7 +472,8 @@
 	$this->Decorator->rule(
 		'.dash_link_to_additem', array(
 			'padding-top' => $hg->size(array('m' => 1, 'u' => -1)),
-			'font-weight' => 700
+			'font-weight' => 700,
+			'float' => 'left'
 	));
 	
 	$this->Decorator->rule(
