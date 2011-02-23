@@ -18,6 +18,7 @@ require_once 'Mime/Type.php';
  *
  * @package jj_media
  * @subpackage jj_media.models.behaviors
+ * @todo Figure some way to work with Generator::make from media plugin
  */
 class GeneratorPlusBehavior extends ModelBehavior {
 
@@ -149,8 +150,7 @@ class GeneratorPlusBehavior extends ModelBehavior {
 
 /**
  * Callback
- *
- * Dynamically creates the filter configure for image for the GeneratorBehaviour::afterSave callback
+ * Calls the createGeneratorConfigure method, for populate the `Media.filter` configure
  *
  * @param Model $Model
  * @param boolean $created
@@ -158,14 +158,70 @@ class GeneratorPlusBehavior extends ModelBehavior {
  */
 	public function afterSave(&$Model, $created)
 	{
+		$scope = $this->getScope($Model);
+		$this->createGeneratorConfigure($Model, $scope);
+		return true;
+	}
+
+
+/**
+ * Callback
+ * Populates the $Model->data with the current register that will be deleted
+ * for the callback afterDelete
+ * 
+ * @access public
+ */
+	public function beforeDelete(&$Model, $cascade)
+	{
+		$Model->read();
+		return true;
+	}
+
+
+/**
+ * Callback
+ * Calls createGeneratorConfigure to populate the Media.filter configure and
+ * uses that configuation for unlink the filtered files.
+ * 
+ * @access public
+ */
+	public function afterDelete(&$Model)
+	{
+		if (empty($Model->data[$Model->alias]['transformation']))
+			return;
+			
+		$scope = $Model->data[$Model->alias]['transformation'];
+		$this->createGeneratorConfigure($Model, $scope);
+		
+		$filename = $Model->data[$Model->alias]['basename'];
+		
+		$filters = Configure::read('Media.filter');
+		foreach ($filters as $type => $filter)
+		{
+			if (empty($filter) || !is_array($filter))
+				continue;
+			
+			$versions = array_keys($filter);
+			foreach ($versions as $version)
+				@unlink(MEDIA_FILTER . $version . DS . $Model->data[$Model->alias]['dirname'] . DS . $filename);
+		}
+	}
+
+
+/**
+ * Dynamically creates the filter configure for image for the GeneratorBehaviour::afterSave callback
+ * 
+ * @access public
+ */
+	public function createGeneratorConfigure(&$Model, $scope)
+	{
+		$this->loadConfigure();
+		
 		$filters = array();
 		$types = array_values(Mime_Type::$name);
 		foreach ($types as $type)
 			$filters[$type] = array();
 		
-		$this->loadConfigure();
-		
-		$scope = $this->getScope($Model);
 		if (!empty($scope))
 		{
 			$filter_plus = Configure::read('Media.filter_plus.' . $scope);
@@ -179,8 +235,6 @@ class GeneratorPlusBehavior extends ModelBehavior {
 			}
 		}
 		Configure::write('Media.filter', $filters);
-		
-		return true;
 	}
 
 
