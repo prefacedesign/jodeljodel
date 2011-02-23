@@ -1,7 +1,7 @@
 // Global hash to save the popups
 var Popups = {
 	available_popups: $H(),
-	open_popup: false,
+	open_popup: false
 }
 
 
