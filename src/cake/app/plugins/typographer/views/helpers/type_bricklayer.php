@@ -60,14 +60,28 @@ class TypeBricklayerHelper extends AppHelper
 	}
 
 /**
- * Returns a link for the requested image
+ * Just an alias for fileURL
  *
  * @access public
  * @param integer $id The file id of the image
  * @param string $version The filter version of image to be displayed
  * @return string|boolean The URL that points to the picture or false, if wasn´t possible to create the url.
  */
-	public function imageURL($id = false, $version = '')
+	public function imageURL($id, $version = '')
+	{
+		return $this->fileURL($id, $version);
+	}
+
+
+/**
+ * Returns a link for the requested image
+ * 
+ * @access public
+ * @param integer $id The file id of the image
+ * @param string $version The filter version of image to be displayed
+ * @return string|boolean The URL that points to the picture or false, if wasn´t possible to create the url.
+ */
+	public function fileURL($id, $version = '')
 	{
 		if (!$id)
 			return false;
