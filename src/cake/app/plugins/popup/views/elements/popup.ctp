@@ -3,8 +3,8 @@
 	$box_links = array();
 	$caixa_scripts = array();
 	
-	$javascript->link('/js/prototype', false);
-	$javascript->link('/popup/js/popup', false);
+	$this->Html->script('prototype', array('inline' => false));
+	$this->Html->script('/popup/js/popup', array('inline' => false));
 	
 	$links_callbacks = array();
 	$list_links = array();
@@ -39,7 +39,6 @@
 	
 	$list_links = '{'.implode(',', $list_links).'}';
 	
-	echo $javascript->codeBlock("
+	echo $this->Html->scriptBlock("
 		new Popup('$id', $list_links).addCallback(function(action){ $callback; });
 	");
-?>

@@ -1,5 +1,5 @@
 // Global hash to save the popups
-window.popups = {
+var Popups = {
 	available_popups: $H(),
 	open_popup: false,
 }
@@ -7,21 +7,21 @@ window.popups = {
 
 function showPopup(id)
 {
-	var popup = window.popups.available_popups.get(id);
+	var popup = Popups.available_popups.get(id);
 	if(popup)
 		popup.open();
 }
 
 function closePopup(id)
 {
-	var popup = window.popups.available_popups.get(id);
+	var popup = Popups.available_popups.get(id);
 	if(popup)
 		popup.close();
 }
 
 function cancelProgress(id, url)
 {
-	var popup = window.popups.available_popups.get(id);
+	var popup = Popups.available_popups.get(id);
 	if(popup && popup.call_progress)
 		popup.call_progress.cancel(url);
 }
@@ -48,17 +48,17 @@ var Popup = Class.create({
 			}.bind([this,action]));
 		}.bind(this));
 		
-		window.popups.available_popups.set(this.id, this);
+		Popups.available_popups.set(this.id, this);
 		
 		this.divCont.fire('popup:registered');
 	},
 	open: function()
 	{
-		if(window.popups.open_popup !== false)
-			closePopup(window.popups.open_popup);
+		if(Popups.open_popup !== false)
+			closePopup(Popups.open_popup);
 		
-		window.popups.open_popup = this.id;
-		document.body.insert(new Element('div',{className: 'popup_maya_veil'}).setOpacity(0.65));
+		Popups.open_popup = this.id;
+		document.body.insert(new Element('div',{className: 'popup_maya_veil'}).setOpacity(0.45));
 		this.divCont.show();
 		this.divCont.setStyle({
 			top: document.viewport.getScrollOffsets().top + (document.viewport.getHeight()/2-this.divCont.getHeight()/2)+'px',
@@ -68,7 +68,7 @@ var Popup = Class.create({
 	},
 	close: function()
 	{
-		window.popups.open_popup = false;
+		Popups.open_popup = false;
 		$$('.popup_maya_veil').each(Element.remove);
 		this.divCont.hide();
 		this.divCont.fire('popup:closed');
@@ -89,7 +89,7 @@ var ProgressPopup = Class.create({
 	initialize: function(url, popup_id)
 	{
 		this.popup_id = popup_id;
-		this.popup = window.popups.available_popups.get(this.popup_id);
+		this.popup = Popups.available_popups.get(this.popup_id);
 		this.popup.call_progress = this;
 		
 		this.can_continue = true;
