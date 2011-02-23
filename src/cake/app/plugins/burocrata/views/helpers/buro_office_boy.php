@@ -227,11 +227,11 @@ class BuroOfficeBoyHelper extends AppHelper
 /** 
  * Function to add the script in HTML
  *
- * @access protected
+ * @access public
  * @param string $script The script that will be appended
  * @return string The pice of code ready for HTML
  */
-	protected function addHtmlEmbScript($script)
+	public function addHtmlEmbScript($script)
 	{
 		if(!$this->Ajax->isAjax())
 			$script = $this->Js->domReady($script);
