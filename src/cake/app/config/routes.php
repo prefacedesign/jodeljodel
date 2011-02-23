@@ -61,9 +61,15 @@
 	//Router::connect('/teste/:controller/:action/*', array('plugin' => 'tradutore'));
 	
 	
+	
 	Router::connect('/:language/:plugin/:controller/:action/*',
 		array(),
-		array('plugin' => 'tradutore', 'language' => '[a-z]{3}')
+		array('language' => '[a-z]{3}')
+	);
+	
+	Router::connect('/:language/:controller/:action/*',
+		array(),
+		array('language' => '[a-z]{3}')
 	);
 	
 	//ou

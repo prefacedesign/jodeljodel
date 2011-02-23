@@ -2,7 +2,7 @@
 
 class BackstageAppController extends AppController 
 {
-	var $components = array('Typographer.TypeLayoutSchemePicker');
+	var $components = array('Typographer.TypeLayoutSchemePicker', 'Tradutore.TradLanguageSelector');
 	var $helpers = array(
 		'Typographer.TypeDecorator' => array(
 			'name' => 'Decorator',
@@ -28,10 +28,12 @@ class BackstageAppController extends AppController
 	
 	function beforeRender()
 	{
-		Configure::write('Config.language','por');
 		$this->set('user_name', 'Eleonora Cavalcante Albano');
-		$this->TypeLayoutSchemePicker->pick('backstage'); //atenção que isto sobre-escreve a view escolhida
+		$this->TypeLayoutSchemePicker->pick('backstage'); //atenção que isto sobre-escreve a view escolhida	
+		$this->TradLanguageSelector->setInterfaceLanguage(Configure::read('Tradutore.mainLanguage'));
 	}
+	
+	
 }
 
 ?>

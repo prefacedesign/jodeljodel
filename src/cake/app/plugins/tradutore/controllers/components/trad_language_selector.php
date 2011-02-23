@@ -9,6 +9,7 @@ class TradLanguageSelectorComponent extends Object
 			$lang = $controller->params['language'];
 		else
 			$lang = '';
+		//debug($lang);
 		if ($lang) 
 		{
 			$languages = Configure::read('Tradutore.languages');
@@ -30,9 +31,23 @@ class TradLanguageSelectorComponent extends Object
    
     function setLanguage($lang = null)
     {
-		debug($lang);
+		//debug($lang);
+        $this->setInterfaceLanguage($lang);
+		$this->setModelLanguage($lang);
+	}
+	
+	function setInterfaceLanguage($lang = null)
+    {
+		//debug('teste');
+		//debug($lang);
+        Configure::write('Config.language', $lang);
+	}
+	
+	
+	function setModelLanguage($lang = null)
+    {
+		App::import('Behavior','Tradutore.TradTradutore');
         TradTradutoreBehavior::setGlobalLanguage($lang);
-        Configure::write('language', $lang);
 	}
 }
 ?>

@@ -38,7 +38,8 @@
 		function beforeRender()
 		{
 			parent::beforeRender();
-			Configure::write('Config.language','por');
+			//Configure::write('Config.language','por');
+			//debug(Configure::read('Config.language'));
 			$this->TypeLayoutSchemePicker->pick('dinafon'); //aten��o que isto sobre-escreve a view escolhida
 		}
 
