@@ -29,9 +29,9 @@
  * @subpackage jodeljodel.tradutore.test
  */
 
-class AuthorTranslationFixture extends CakeTestFixture
+class VideoFixture extends CakeTestFixture
 {
-    var $name = 'AuthorTranslation';
+    var $name = 'Video';
 
     var $fields = array(
         'id' => array(
@@ -39,63 +39,39 @@ class AuthorTranslationFixture extends CakeTestFixture
             'key' => 'primary',
             'null' => false
         ),
-        'author_id' => array(
+        'author_translation_id' => array(
             'type' => 'integer',
-            'null' => false
+            'null' => true
         ),
 		// Conforming ISO-639-1 language codes.
-        'language' => array(
+        'file' => array(
             'type' => 'string',
-            'length' => 10,
-            'default' => 'eng',
-            'null' => false
-        ),
-        'nacionality' => array(
-            'type' => 'string',
-            'length' => 80,
-            'default' => '',
+            'length' => 255,
             'null' => false
         )
     );
     
     var $records = array(
-        // Shakespeare
         array(
-            // English
             'id' => 1,
-            'author_id' => 1,
-            'language' => 'eng',
-            'nacionality' => 'English'
+            'author_translation_id' => 1,
+            'file' => 'Shakespeare life.avi'
         ),
 		array(
-            // Ukrainian
+            'id' => 2,
+			'author_translation_id' => 3,
+            'file' => 'Шекспір життя.avi'
+        ),
+		array(
             'id' => 3,
-            'author_id' => 1,
-            'language' => 'ukr',
-            'nacionality' => 'Англійська'
+			'author_translation_id' => 4,
+            'file' => 'Italo Calvino life.avi'
         ),
-		// Italo Calvino
-        array(
-            // English
+		array(
             'id' => 4,
-            'author_id' => 2,
-            'language' => 'eng',
-            'nacionality' => 'Italian'
+			'author_translation_id' => 6,
+            'file' => 'Італо Кальвіно життя.avi'
         ),
-		array(
-            // Ukrainian
-            'id' => 6,
-            'author_id' => 2,
-            'language' => 'ukr',
-            'nacionality' => 'Італійський'
-        ),
-		array(
-            // German
-            'id' => 7,
-            'author_id' => 2,
-            'language' => 'ger',
-            'nacionality' => 'Italienisch'
-        )
     );
 }
 

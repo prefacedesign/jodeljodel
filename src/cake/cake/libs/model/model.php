@@ -2936,6 +2936,10 @@ class Model extends Overloadable {
 	function afterFind($results, $primary = false) {
 		return $results;
 	}
+	
+	function afterFindCascata($results, $primary = false) {
+		return $results;
+	}
 
 /**
  * Called before each save operation, after validation. Return a non-true result

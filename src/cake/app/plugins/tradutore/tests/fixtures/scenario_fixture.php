@@ -29,9 +29,9 @@
  * @subpackage jodeljodel.tradutore.test
  */
 
-class AuthorTranslationFixture extends CakeTestFixture
+class ScenarioFixture extends CakeTestFixture
 {
-    var $name = 'AuthorTranslation';
+    var $name = 'Scenario';
 
     var $fields = array(
         'id' => array(
@@ -39,62 +39,46 @@ class AuthorTranslationFixture extends CakeTestFixture
             'key' => 'primary',
             'null' => false
         ),
-        'author_id' => array(
+        'play_id' => array(
             'type' => 'integer',
             'null' => false
         ),
-		// Conforming ISO-639-1 language codes.
-        'language' => array(
-            'type' => 'string',
-            'length' => 10,
-            'default' => 'eng',
-            'null' => false
-        ),
-        'nacionality' => array(
-            'type' => 'string',
-            'length' => 80,
-            'default' => '',
+		'number_of_objects' => array(
+            'type' => 'integer',
             'null' => false
         )
     );
     
     var $records = array(
-        // Shakespeare
+        // Antony and Cleopatra
         array(
-            // English
             'id' => 1,
-            'author_id' => 1,
-            'language' => 'eng',
-            'nacionality' => 'English'
-        ),
-		array(
-            // Ukrainian
-            'id' => 3,
-            'author_id' => 1,
-            'language' => 'ukr',
-            'nacionality' => 'Англійська'
-        ),
-		// Italo Calvino
+            'play_id' => 1,
+            'number_of_objects' => 70,
+		),
+        // King Lear
         array(
-            // English
+            'id' => 2,
+            'play_id' => 2,
+            'number_of_objects' => 120
+        ),
+        // The Comedy of Errors
+        array(
+            'id' => 3,
+            'play_id' => 3,
+            'number_of_objects' => 1456
+        ),
+        // The Tragedy of Julius Caesar
+        array(
             'id' => 4,
-            'author_id' => 2,
-            'language' => 'eng',
-            'nacionality' => 'Italian'
+            'play_id' => 4,
+            'number_of_objects' => 2
         ),
-		array(
-            // Ukrainian
-            'id' => 6,
-            'author_id' => 2,
-            'language' => 'ukr',
-            'nacionality' => 'Італійський'
-        ),
-		array(
-            // German
-            'id' => 7,
-            'author_id' => 2,
-            'language' => 'ger',
-            'nacionality' => 'Italienisch'
+        // The Tragedy of Hamlet, Prince of Denmark
+        array(
+            'id' => 5,
+            'play_id' => 5,
+            'number_of_objects' => 200
         )
     );
 }

@@ -303,7 +303,7 @@ CREATE  TABLE IF NOT EXISTS `user_groups` (
   `parent_id` INT NULL ,
   `created` DATETIME NULL ,
   `modified` DATETIME NULL ,
-  `slug` VARCHAR(60) NULL ,
+  `alias` VARCHAR(60) NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_user_groups_user_groups1` (`parent_id` ASC) ,
   INDEX `klft` (`lft` ASC) ,
@@ -354,7 +354,7 @@ CREATE  TABLE IF NOT EXISTS `acos` (
   `rght` INT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_acos_acos1` (`parent_id` ASC) ,
-  UNIQUE INDEX `k_foreign` (`parent_id` ASC, `model` ASC) ,
+  UNIQUE INDEX `k_foreign` (`model` ASC, `foreign_key` ASC) ,
   INDEX `k_lft` (`lft` ASC) ,
   INDEX `k_rght` (`rght` ASC) ,
   INDEX `k_alias` (`alias` ASC) ,
@@ -378,11 +378,11 @@ CREATE  TABLE IF NOT EXISTS `aros` (
   `lft` INT NULL ,
   `rght` INT NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `fk_acos_acos1` (`parent_id` ASC) ,
-  UNIQUE INDEX `k_foreign` (`parent_id` ASC, `model` ASC) ,
-  INDEX `k_lft` (`lft` ASC) ,
-  INDEX `k_rght` (`rght` ASC) ,
-  INDEX `k_alias` (`alias` ASC) ,
+  INDEX `fk_aros_aros1` (`parent_id` ASC) ,
+  UNIQUE INDEX `k_foreign_1` (`model` ASC, `foreign_key` ASC) ,
+  INDEX `k_lft_1` (`lft` ASC) ,
+  INDEX `k_rght_1` (`rght` ASC) ,
+  INDEX `k_alias_1` (`alias` ASC) ,
   CONSTRAINT `fk_aros_aros1`
     FOREIGN KEY (`parent_id` )
     REFERENCES `aros` (`id` )
@@ -423,4 +423,3 @@ CREATE  TABLE IF NOT EXISTS `aros_acos` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-

@@ -25,25 +25,14 @@
  * @subpackage jodeljodel.tradutore.test
  */
 
-class Play extends AppModel
+class Bioinfo extends AppModel
 {
-    var $name = 'Play';
+    var $name = 'Bioinfo';
 
-	var $hasOne = array('PlayTranslation', 'Scenario');
-	var $hasMany = array('Image', 'Advertisement');
 	var $belongsTo = array('Author');
-	var $hasAndBelongsToMany = array('Tag' => array('with' => 'PlaysTag'));
-
+	var $hasOne = array('BioinfoTranslation');
+	
 	var $actsAs = array('Cascata.AguaCascata', 'Tradutore.TradTradutore', 'Containable');
-    // Equivalent to:
-    // var $actsAs = array(
-    //     'Tradutore.TradTradutore' => array(
-    //         'className'       => 'PlayTranslation',
-    //         'foreignKey'      => 'play_id',
-    //         'languageField'   => 'language',
-    //         'defaultLanguage' => 'en'
-    //     )
-    // );
 	
 }
 

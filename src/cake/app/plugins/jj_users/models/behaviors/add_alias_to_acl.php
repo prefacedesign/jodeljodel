@@ -32,7 +32,6 @@ class AddAliasToAclBehavior extends ModelBehavior
 	 
 	function afterSave(&$model, $created)
 	{
-		debug($model->data);
 		if (isset($model->data[$model->alias][$this->settings[$model->alias]['field']]))
 		{
 			$node = $model->node(array($model->alias => array('id' => $model->id)));

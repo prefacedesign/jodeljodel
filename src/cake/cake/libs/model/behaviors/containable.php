@@ -155,6 +155,7 @@ class ContainableBehavior extends ModelBehavior {
 						if (isset($model['keep'][$assoc]) && !empty($model['keep'][$assoc])) {
 							if (isset($model['keep'][$assoc]['fields'])) {
 								$model['keep'][$assoc]['fields'] = $this->fieldDependencies($containments['models'][$assoc]['instance'], $map, $model['keep'][$assoc]['fields']);
+								//debug($model);
 							}
 							if (!$reset && empty($instance->__backOriginalAssociation)) {
 								$instance->__backOriginalAssociation = $backupBindings;
@@ -181,7 +182,6 @@ class ContainableBehavior extends ModelBehavior {
 		if (!$autoFields) {
 			return $query;
 		}
-
 		$query['fields'] = (array)$query['fields'];
 		foreach (array('hasOne', 'belongsTo') as $type) {
 			if (!empty($Model->{$type})) {
@@ -215,6 +215,7 @@ class ContainableBehavior extends ModelBehavior {
 			}
 		}
 		$query['fields'] = array_unique($query['fields']);
+		debug($query);
 		return $query;
 	}
 

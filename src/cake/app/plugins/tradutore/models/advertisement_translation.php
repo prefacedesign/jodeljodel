@@ -12,10 +12,9 @@
  * @subpackage jodeljodel.tradutore.test
  */
 
-class AuthorTranslation extends AppModel
+class AdvertisementTranslation extends AppModel
 {
-    var $name = 'AuthorTranslation';
-	var $hasMany = array('Video');
+    var $name = 'AdvertisementTranslation';
 }
 
 ?>

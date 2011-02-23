@@ -12,7 +12,8 @@ class AguaCascataBehavior extends ModelBehavior {
         //aciona o afterFindCascata do Model filho do Model em questão (que vieram nos resultados)
         //ou seja, chamar o triggerModelCallback para cada filho do Model
         //triggerModelCallback(...)
-		//debug($Model);
+		//debug($Model->alias);
+		//debug($Model->alias);
         $results = $this->triggerModelCallback($Model, 'afterFindCascata', array($results,false),array('modParams' => true));
         return($results);
     }
@@ -131,23 +132,32 @@ class AguaCascataBehavior extends ModelBehavior {
     }
 
     //TODO: verificar se os filhos não vem num formato diferente (assim como no Cascata.afterFindCascata
-    function triggerModelCallback(&$Model,$callback,$params,$options)
+    function triggerModelCallback(&$Model, $callback, $params, $options)
     {
 		//debug('oba');
 		//debug($Model);
+		
+		//debug($Model->alias);
+		//debug($params);
+		//debug($options);
+		//die;
+		
         $filhos = array();
-        foreach($Model->hasOne as $filho)
+        
+		foreach($Model->hasOne as $filho)
         {
             //só desce nos filhos se estiver nos results
             if(isset($params[0][0][$filho['className']]))
                 $filhos[] = $filho['className'];
         }
+		
         foreach($Model->hasMany as $filho)
         {
             //só desce nos filhos se estiver nos results
             if(isset($params[0][0][$filho['className']]))
                 $filhos[] = $filho['className'];
         }
+		
         foreach($Model->belongsTo as $filho)
         {
 			//debug($filho);
@@ -155,17 +165,19 @@ class AguaCascataBehavior extends ModelBehavior {
             if(isset($params[0][0][$filho['className']]))
                 $filhos[] = $filho['className'];
         }
-        foreach($Model->hasAndBelongsToMany as $filho)
+        
+		foreach($Model->hasAndBelongsToMany as $filho)
         {
             //só desce nos filhos se estiver nos results
             if(isset($params[0][0][$filho['className']]))
                 $filhos[] = $filho['className'];
         }
-        if (empty($filhos)) {
+        
+		if (empty($filhos)) {
             return true;
 		}
 
-        debug($filhos);
+        //debug($filhos);
 		//$options = array_merge(array('break' => false, 'breakOn' => array(null, false), 'modParams' => true), $options);
 		$count = count($filhos);
 		$count_results = count($params[0]);
@@ -185,18 +197,22 @@ class AguaCascataBehavior extends ModelBehavior {
 					if (isset($data[0][$name])) {
 						$params[0][$j][$name] = $data[0][$name];
 					}
-					debug($name);
-					debug($data);
+					//debug($name);
+					//debug($data);
 
 					if (isset($Model->{$name}) && is_object($Model->{$name})) {
 						//PASSO2: disparar callback dos models filhos
-						$data= $Model->{$name}->dispatchMethod($callback, array(array(array($name => $params[0][$j][$name]) ) ) );
+						//debug($callback);
+						//if (method_exists($Model->{$name}->{$callback}))
+						{
+							$data= $Model->{$name}->dispatchMethod($callback, array(array(array($name => $params[0][$j][$name]))));
+						}
 					}
 					if (isset($data[0][$name])) {
 						$params[0][$j][$name] = $data[0][$name];
 					}
-					debug($data);
-					debug($params);
+					//debug($data);
+					//debug($params);
 				}
 			}
 		}

@@ -13,13 +13,12 @@
  * @subpackage jodeljodel.tradutore.test
  */
 
-class Author extends AppModel
+class Advertisement extends AppModel
 {
-    var $name = 'Author';
+    var $name = 'Advertisement';
 	var $actsAs = array('Cascata.AguaCascata', 'Tradutore.TradTradutore', 'Containable');
-	var $hasOne = array('AuthorTranslation');
-	var $hasMany = array('Image', 'Bioinfo');
-	
+	var $hasOne = array('AdvertisementTranslation');
+	var $belongsTo = array('Play');
 }
 
 ?>

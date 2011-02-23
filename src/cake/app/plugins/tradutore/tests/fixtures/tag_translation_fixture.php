@@ -29,9 +29,9 @@
  * @subpackage jodeljodel.tradutore.test
  */
 
-class AuthorTranslationFixture extends CakeTestFixture
+class TagTranslationFixture extends CakeTestFixture
 {
-    var $name = 'AuthorTranslation';
+    var $name = 'TagTranslation';
 
     var $fields = array(
         'id' => array(
@@ -39,7 +39,7 @@ class AuthorTranslationFixture extends CakeTestFixture
             'key' => 'primary',
             'null' => false
         ),
-        'author_id' => array(
+        'tag_id' => array(
             'type' => 'integer',
             'null' => false
         ),
@@ -50,7 +50,7 @@ class AuthorTranslationFixture extends CakeTestFixture
             'default' => 'eng',
             'null' => false
         ),
-        'nacionality' => array(
+        'tag' => array(
             'type' => 'string',
             'length' => 80,
             'default' => '',
@@ -59,42 +59,82 @@ class AuthorTranslationFixture extends CakeTestFixture
     );
     
     var $records = array(
-        // Shakespeare
         array(
             // English
             'id' => 1,
-            'author_id' => 1,
+            'tag_id' => 1,
             'language' => 'eng',
-            'nacionality' => 'English'
+            'tag' => 'cool'
         ),
 		array(
             // Ukrainian
-            'id' => 3,
-            'author_id' => 1,
+            'id' => 2,
+            'tag_id' => 1,
             'language' => 'ukr',
-            'nacionality' => 'Англійська'
+            'tag' => 'прохолодно'
         ),
-		// Italo Calvino
         array(
             // English
-            'id' => 4,
-            'author_id' => 2,
+            'id' => 3,
+            'tag_id' => 2,
             'language' => 'eng',
-            'nacionality' => 'Italian'
+            'tag' => 'beautiful'
         ),
 		array(
             // Ukrainian
-            'id' => 6,
-            'author_id' => 2,
+            'id' => 4,
+            'tag_id' => 2,
             'language' => 'ukr',
-            'nacionality' => 'Італійський'
+            'tag' => 'красивий'
         ),
 		array(
             // German
-            'id' => 7,
-            'author_id' => 2,
+            'id' => 5,
+            'tag_id' => 2,
             'language' => 'ger',
-            'nacionality' => 'Italienisch'
+            'tag' => 'schön'
+        ),
+		array(
+            // English
+            'id' => 6,
+            'tag_id' => 3,
+            'language' => 'eng',
+            'tag' => 'horrendous'
+        ),
+		array(
+            // Ukrainian
+            'id' => 7,
+            'tag_id' => 3,
+            'language' => 'ukr',
+            'tag' => 'жахливий'
+        ),
+		array(
+            // German
+            'id' => 8,
+            'tag_id' => 3,
+            'language' => 'ger',
+            'tag' => 'entsetzlich'
+        ),
+		array(
+            // English
+            'id' => 9,
+            'tag_id' => 4,
+            'language' => 'eng',
+            'tag' => 'fabulous'
+        ),
+		array(
+            // Ukrainian
+            'id' => 10,
+            'tag_id' => 4,
+            'language' => 'ukr',
+            'tag' => 'нечуваний'
+        ),
+		array(
+            // German
+            'id' => 11,
+            'tag_id' => 4,
+            'language' => 'ger',
+            'tag' => 'fabelhaft'
         )
     );
 }
