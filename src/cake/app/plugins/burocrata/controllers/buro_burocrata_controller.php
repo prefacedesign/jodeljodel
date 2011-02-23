@@ -85,6 +85,7 @@ class BuroBurocrataController extends BurocrataAppController
  */
 	public function beforeFilter()
 	{
+		parent::beforeFilter();
 		$this->Auth->allow('*');
 		
 		if(isset($this->data['_b']))

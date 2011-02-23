@@ -3,38 +3,37 @@
 
 	echo $this->Buro->sform(array('class' => 'azul'), // Parâmetros HTML
 		array(
-			// 'url' => array('action' => 'recebedor'), // Action que vai receber o POST
-			'model' => 'BurocrataUser.Galery', // Somente o Model pai, assim como no FormHelper::create
+			'model' => 'Person.PersPerson', // Somente o Model pai, assim como no FormHelper::create
 			'callbacks' => array(
 				'onStart'	=> array('lockForm'),
 				'onComplete'=> array('unlockForm'),
 				'onSuccess' => array('contentUpdate' => 'replace'),
 				'onSave'    => array('popup' => 'Salvou a gabaça'),
-				// 'onReject'  => array('popup' => 'Existe algum erro de validação.'),
 				'onError'   => array('js' => "if(code == E_NOT_JSON) alert('Não é json! Não é json!'); else alert(error);"),
 				'onFailure'	=> array('popup' => 'Erro de comunicação com o servidor!')
 			)
 		)
 	);
-	
+		// echo $this->Bl->img(array('class' => 'teste', 'alt' => 'img8'), array('id' => 8, 'version' => 'sala'));
 		echo $this->Buro->input(array(), 
 			array(
 				'type' => 'upload',
-				'label' => 'Faça seu upload de arquivo',
+				'label' => 'Faça seu upload de imagem',
 				'error' => array(
 					'size' => 'Arquivo muito grande!',
 					'pixels' => 'Foto muito grande!',
 					'mimeType' => 'Aceitamos somente imagens, ok?'
 				),
-				'fieldName' => 'Equipe.imagem_id',
+				'fieldName' => 'PersPerson.sfil_storage_file_id',
 				'options' => array(
+					// 'version' => 'people',
 					'callbacks' => array(
 						'onStart' => array('popup' => 'Começando o upload...'),
-						'onError' => array('popup' => '... vixe, deu erro...'),
-						'onSave' => array('popup' => '... thubiru! ...'),
-						'onReject' => array('js' => 'alert(json.error)'),
-						'onFailure' => array('popup' => '... não deu certo...'),
-						'onComplete' => array('js' => 'this.again();', 'popup' => '... e acabou.')
+						// 'onError' => array('popup' => '... vixe, deu erro...'),
+						// 'onSave' => array('popup' => '... thubiru! ...'),
+						// 'onReject' => array('js' => 'alert(json.error)'),
+						// 'onFailure' => array('popup' => '... não deu certo...'),
+						// 'onComplete' => array( 'popup' => '... e acabou.')
 					)
 				)
 			)

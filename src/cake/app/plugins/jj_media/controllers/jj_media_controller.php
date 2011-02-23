@@ -16,8 +16,8 @@ App::import('Lib', array('JjUtils.SecureParams'));
  *
  * Media JjMediaController
  *
- * @package jj_media
- * @subpackage jj_media.controllers
+ * @package jj_bedia
+ * @subpackage jj_bedia.controllers
  */
 class JjMediaController extends JjMediaAppController {
 /**
@@ -39,7 +39,26 @@ class JjMediaController extends JjMediaAppController {
 
 
 /**
+ * List of components
+ *
+ * @var string
+ * @access public
+ */
+	public $components = array('Typographer.TypeLayoutSchemePicker', 'RequestHandler');
+
+
+/**
+ * Current layout scheme
+ *
+ * @var string
+ * @access protected
+ */
+	protected $layout_scheme = null;
+
+
+/**
  * beforeFilter callback for allow anyone to have access
+ * And properly load the bricklayer helper
  * 
  * @access public
  * @todo Better user filtering
@@ -48,6 +67,49 @@ class JjMediaController extends JjMediaAppController {
 	{
 		parent::beforeFilter();
 		$this->Auth->allow('*');
+		
+		if(isset($this->data['_b']))
+		{
+			$this->buroData = $this->data['_b'];
+			unset($this->data['_b']);
+		}
+		
+		if(isset($this->buroData['layout_scheme']))
+		{
+			$this->helpers = am($this->helpers,
+				array(
+					'Typographer.TypeDecorator' => array(
+						'name' => 'decorator',
+						'compact' => false,
+						'receive_tools' => true
+					),
+					'Typographer.*TypeStyleFactory' => array(
+						'name' => 'styleFactory', 
+						'receive_automatic_classes' => true, 
+						'receive_tools' => true,
+						'generate_automatic_classes' => false
+					),
+					'Typographer.*TypeBricklayer' => array(
+						'name' => 'Bl',
+						'receive_tools' => true,
+					)
+				)
+			);
+			$this->layout_scheme = $this->buroData['layout_scheme'];
+			unset($this->buroData['layout_scheme']);
+		}
+	}
+
+
+/**
+ * beforeRender callback
+ *
+ * @access public
+ */
+	public function beforeRender()
+	{
+		if($this->layout_scheme)
+			$this->TypeLayoutSchemePicker->pick($this->layout_scheme);
 	}
 
 
@@ -58,11 +120,13 @@ class JjMediaController extends JjMediaAppController {
  * If one needs to download only, than the url must be index/1/id,filter,checksum
  * else, the url must be like index/id,filter,checksum
  * 
- * Probably, those URLs will be masked by a Router config
+ * ### This URL is routed:
+ * - `/vw/id,filter,checksum` routes to `index/1/id,filter,checksum` (force download)
+ * - `/dl/id,filter,checksum` routes to `index/id,filter,checksum`
  * 
  * @access public
  * @param mixed $one Could be a string containing the packed parameters
- *                   or a int that will be converted to boolean
+ *                   or a int that will be converted to boolean to especify if force download or not
  * @param mixed $two If $one parameter is a boolean, this param receive the 
  *                   packed parameters
  */
@@ -138,29 +202,45 @@ class JjMediaController extends JjMediaAppController {
 	function upload()
 	{
 		$saved = $error = false;
+		$filename = '';
 		$validationErrors = array();
 		
-		$model_name = 'JjMedia.SfilStoredFile';
+		$version = $fieldName = $model_name = null;
+		
+		if (!empty($this->buroData['data']))
+			list($version, $fieldName, $model_name) = SecureParams::unpack($this->buroData['data']);
+		
+		if (is_null($version) || is_null($fieldName) || is_null($model_name))
+			return;
+		
 		if (!$this->loadModel($model_name))
 			return;
 		
 		list($plugin, $model_name) = pluginSplit($model_name);
+		$model_alias = $this->{$model_name}->alias;
 		
 		if (!empty($this->data))
 		{
-			$scope = $this->{$model_name}->findTheScope($this->data);
+			$scope = $this->{$model_name}->findTheScope($fieldName);
 			if ($scope)
-				$this->SfilStoredFile->setScope($scope);
-			$saved = $this->SfilStoredFile->save($this->data);
+				$this->{$model_name}->setScope($scope);
+			$saved = $this->{$model_name}->save($this->data);
 			
 			if ($saved == false)
-				$validationErrors = $this->validateErrors($this->SfilStoredFile);
+				$validationErrors = $this->validateErrors($this->{$model_name});
 			else
-				$saved = $this->SfilStoredFile->id;
+				$saved = $this->{$model_name}->id;
+			
+			if ($saved)
+			{
+				$filename = $this->data[$model_alias]['file']['name'];
+				list($fieldModelName, $fieldName) = pluginSplit($fieldName);
+				if (!empty($this->data[$fieldModelName][$fieldName]))
+					$this->{$model_name}->delete($this->data[$fieldModelName][$fieldName]);
+			}
 		}
 		
 		$this->layout = 'ajax';
-		$this->autoRender = false;
-		echo json_encode(compact('error', 'validationErrors', 'saved'));
+		$this->set(compact('error', 'validationErrors', 'saved', 'version', 'filename'));
 	}
 }

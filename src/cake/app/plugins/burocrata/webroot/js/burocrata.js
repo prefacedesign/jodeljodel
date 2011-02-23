@@ -476,16 +476,15 @@ var BuroUpload = Class.create(BuroCallbackable, {
 		this.id_base = id_base;
 		this.url = url;
 		this.errors = errors;
-		this.master_input = $('mi'+id_base);
-		this.hidden_input = $('hi'+id_base);
 		
 		BuroClassRegistry.set(this.id_base, this);
 		
 		this.iframe = new Element('iframe', {
-			name: 'if'+id_base, 
-			id: 'if'+id_base, 
+			name: 'if'+this.id_base, 
+			id: 'if'+this.id_base, 
 			src: 'javascript:false;',
-			width: '900'
+			width: '900',
+			height: '900'
 		});
 		this.iframe.observe('load', this.complete.bind(this));
 		
@@ -513,6 +512,10 @@ var BuroUpload = Class.create(BuroCallbackable, {
 	},
 	startObserve: function()
 	{
+		this.master_input = $('mi'+this.id_base);
+		this.hidden_input = $('hi'+this.id_base);
+		this.div_hidden = $('div'+this.id_base);
+		
 		this.tmp_input = this.master_input.hide().clone().show();
 		this.tmp_input.observe('change', this.submit.bind(this));
 		this.master_input.insert({after: this.tmp_input});
@@ -522,13 +525,13 @@ var BuroUpload = Class.create(BuroCallbackable, {
 		if (this.tmp_input.value.empty())
 			return;
 		
-		this.hidden_input.value = '';
-		
 		this.trigger('onStart', this.tmp_input);
-		this.form
-			.insert(this.tmp_input)
-			.insert(this.hidden_input.clone())
-			.submit();
+		this.div_hidden.select('input[type=hidden]').each(function(input)
+		{
+			this.form.insert(input.clone());
+		}.bind(this));
+		
+		this.form.insert(this.tmp_input).submit();
 		this._submitted = true;
 	},
 	complete: function()
@@ -568,7 +571,7 @@ var BuroUpload = Class.create(BuroCallbackable, {
 	again: function()
 	{
 		this._submitted = false;
-		this.tmp_input.remove();
+		this.form.update();
 		this.startObserve();
 	},
 	saved: function()

@@ -266,7 +266,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$out .= $View->element(Inflector::underscore($this->modelAlias), $elementOptions);
 			
 			if(!$this->_readFormAttribute('submit'))
-				$out .= $this->submit(array(), array('label' => __('Save', true)));
+				$out .= $this->submit(array(), array('label' => __('Burorata: default save button', true)));
 		}
 		return $out;
 	}
@@ -440,7 +440,6 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function eform()
 	{
-		$View = $this->_getView();
 		$out = '';
 		
 		$modelAlias = $this->_readFormAttribute('modelAlias');
@@ -454,12 +453,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 				'value' => $this->security($url, $modelPlugin, $modelAlias),
 				), array('close_me' => true)
 			);
-		$out .= $this->Bl->sinput(array(
-			'type' => 'hidden',
-			'name' => $this->internalParam('layout_scheme'),
-			'value' => $View->viewVars['layout_scheme'],
-			), array('close_me' => true)
-		);
+		$out .= $this->inputLayoutScheme();
 		$out .= $this->Bl->ediv();
 		$out .= $this->BuroOfficeBoy->newForm($this->_readFormAttributes());
 		
@@ -467,6 +461,35 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$this->Form->end();
 		
 		return $out;
+	}
+
+
+/**
+ * Creates a hidden input that transports the current layout_scheme
+ * There is no options for this function.
+ * 
+ * @access public
+ * @param array $htmlAttributes
+ * @param array $options
+ * @return string The HTML of <input> tag
+ */
+	public function sinputLayoutScheme($htmlAttributes = array(), $options = array())
+	{
+		$View = $this->_getView();
+		
+		$htmlDefaults = array(
+			'type' => 'hidden',
+			'name' => $this->internalParam('layout_scheme'),
+			'value' => $View->viewVars['layout_scheme'],
+		);
+		$htmlAttributes = (empty($htmlAttributes) ? array() : $htmlAttributes) + $htmlDefaults;
+		unset ($htmlDefaults);
+		
+		$defaults = array('close_me' => true);
+		$options = (empty($options) ? array() : $options) + $defaults;
+		unset ($defaults);
+		
+		return $this->Bl->sinput($htmlAttributes, $options);
 	}
 
 
@@ -707,7 +730,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out .= $this->inputAutocompleteMessage(
 			array('class' => 'nothing_found'),
 			array(),
-			__('Nothing found.', true)
+			__('Burocrata: nothing found on autocomplete.', true)
 		);
 		$out .= $this->BuroOfficeBoy->autocomplete($autocomplete_options);
 		
@@ -763,8 +786,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'type' => 'autocomplete',
 			'allow' => array('create', 'modify', 'relate'),
 			'baseID' => uniqid(),
-			'new_item_text' => __('Create a new item', true),
-			'edit_item_text' => __('Belongsto edit related data', true)
+			'new_item_text' => __('Burocrata: create a new belongsto item', true),
+			'edit_item_text' => __('Burocrata: belongsto edit related data', true)
 		);
 		$options = am($defaults, $options);
 		extract($options);
@@ -898,22 +921,15 @@ class BuroBurocrataHelper extends XmlTagHelper
 	}
 
 
-
 /**
- * Construct a upload input
- *
- * ### Accepted options:
- *
- *  - `model` - (not working yet) The alternate model for the stored file (must ba a extended from SfilStoredFile)
- *  - `callbacks` - An array with possible callbacks with Jodel Callbacks conven-
- *    tion.
- *
- * @access public
- * @param array $options An array with non-defaults values
- * @return string The HTML well formated
- * @todo Trigger errors
+ * Parses the upload parameters and return them for the file input
+ * 
+ * @access protected
+ * @param array The array of input configuration, passed on helper method
+ * @return array An array containing two keys: `gen_options`, that will contain all general options
+ *               and `file_input_options` that will contain options just for the input field
  */
-	public function inputUpload($options)
+	protected function _uploadParams($options)
 	{
 		$modelAlias = $this->_readFormAttribute('modelAlias');
 		//todo: trigger error
@@ -926,24 +942,105 @@ class BuroBurocrataHelper extends XmlTagHelper
 		if (strpos($file_input_options['fieldName'], '.') === false)
 			$file_input_options['fieldName'] = $modelAlias . '.' . $file_input_options['fieldName'];
 		
-		
 		$defaults = array(
 			'baseID' => uniqid(),
 			'url' => $this->url(array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'upload')),
-			'error' => array()
+			'error' => array(),
+			'version' => '',
+			'model' => 'JjMedia.SfilStoredFile'
 		);
-		$officeboy_options = $options['options'] + $defaults;
+		$gen_options = $options['options'] + $defaults;
 		
 		if (isset($file_input_options['error']))
 		{
-			$officeboy_options['error'] = $file_input_options['error'];
-			unset($officeboy_options['error']);
+			$gen_options['error'] = $file_input_options['error'];
+			unset($file_input_options['error']);
 		}
 		
+		return compact('gen_options', 'file_input_options');
+	}
+
+
+/**
+ * Construct a upload input that will populate the fieldName given with the file database ID
+ *
+ * ### Accepted options:
+ *
+ *  - `model` - The alternate model for the stored file (must be a model extended from SfilStoredFile)
+ *  - `callbacks` - An array with possible callbacks with Jodel Callbacks conven-
+ *    tion.
+ *  - `version`: The version of file that will be returned as URL for preview purposes (avaible on onSave callback)
+ *  - `error`: A list of possible errors and its texts to be passed for onReject callback
+ *
+ * @access public
+ * @param array $options An array with non-defaults values
+ * @return string The HTML well formated
+ * @todo Trigger errors
+ */
+	protected function _upload($gen_options, $file_input_options)
+	{
+		$packed = SecureParams::pack(array($gen_options['version'], $file_input_options['fieldName'], $gen_options['model']));
+		
 		$out = '';
-		$out .= $this->input(array('id' => 'hi' . $officeboy_options['baseID']), array('type' => 'hidden', 'fieldName' => $file_input_options['fieldName']));
-		$out .= $this->input(array('id' => 'mi' . $officeboy_options['baseID']), array('type' => 'file', 'fieldName' => 'SfilStoredFile.file') + $file_input_options);
-		$out .= $this->BuroOfficeBoy->upload($officeboy_options);
+		
+		// Inputs for POST
+		$out .= $this->Bl->sdiv(array('id' => 'div' . $gen_options['baseID']));
+			$out .= $this->inputLayoutScheme();
+			$out .= $this->input(array('value' => $packed, 'name' => $this->internalParam('data')), array('type' => 'hidden'));
+			$out .= $this->input(array('id' => 'hi' . $gen_options['baseID']), array('type' => 'hidden', 'fieldName' => $file_input_options['fieldName']));
+			$out .= $this->input(array('id' => 'mi' . $gen_options['baseID']), array('type' => 'file', 'fieldName' => 'SfilStoredFile.file') + $file_input_options);
+		$out .= $this->Bl->ediv();
+		
+		// JS class
+		$out .= $this->BuroOfficeBoy->upload($gen_options);
+		
+		return $out;
+	}
+
+
+/**
+ * Creates a input for general files, using the general _upload() method
+ * For more details, see _upload()
+ * This method has one more option:
+ *  - `change_file_text` - Text of link for change the file
+ * 
+ * @access public
+ * @param array $options Array of options {@see _upload()}
+ * @see _upload()
+ */
+	public function inputUpload($options)
+	{
+		extract($this->_uploadParams($options));
+		
+		if (empty($gen_options['change_file_text']))
+			$gen_options['change_file_text'] = __('Burocrata::inputUpload - Change file', true);
+		
+		$ids = array('act', 'prv', 'lnk', 'chg');
+		foreach ($ids as $id)
+			${$id.'_id'} = $id . $gen_options['baseID'];
+		
+		$out = '';
+		
+		if (empty($gen_options['callbacks']['onSave']['js']))
+			$gen_options['callbacks']['onSave']['js'] = '';
+		$gen_options['callbacks']['onSave']['js'] .= "$('{$lnk_id}').update(json.filename).writeAttribute({href: json.url}); $('{$act_id}').show(); $('{$prv_id}').show();";
+		
+		
+		$script  = "$('{$act_id}').hide(); $('{$prv_id}').hide();";
+		$script .= "$('{$chg_id}').observe('click', function(ev){ev.stop(); BuroClassRegistry.get('{$gen_options['baseID']}').again(); $('{$act_id}').hide(); $('{$prv_id}').hide();});";
+		$out .= $this->BuroOfficeBoy->addHtmlEmbScript($script);
+		
+		$out .= $this->_upload($gen_options, $file_input_options);
+		
+		// Div for previews
+		$out .= $this->Bl->sdiv(array('id' => $prv_id));
+			$out .= $this->Bl->pDry(__('Burocrata::inputUpload - Arquivo: ', true) . $this->Bl->a(array('id' => $lnk_id)));
+		$out .= $this->Bl->ediv();
+		
+		// Div for actions ID must be `'act' . $gen_options['baseID']`
+		$out .= $this->Bl->sdiv(array('id' => $act_id));
+			$out .= $this->Bl->a(array('href' => '#', 'id' => $chg_id), array(), $gen_options['change_file_text']);
+		$out .= $this->Bl->ediv();
 		
 		return $out;
 	}
@@ -964,11 +1061,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function inputImage($options)
 	{
-		$defaults = array('version' => 'image_preview');
-		$image_input_options = $options['options'] + $defaults;
-		
-		$imageURL = $this->Bl->imageURL(1, $image_input_options['version']);
-		debug($imageURL);
+		extract($this->_uploadParams($options));
 		
 		$options['callbacks']['onStart']['js'] = "if(this.image) this.image.remove();";
 		$options['callbacks']['onSave']['js'] = "this.image = new Element('img', {src: $imageURL})";

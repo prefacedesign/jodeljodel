@@ -108,36 +108,23 @@ class GeneratorPlusBehavior extends ModelBehavior {
  * Based on its name, this method returns the current scope for get the filters.
  * 
  * @access public
- * @param array $data The posted data
+ * @param string $fieldName The field name of related model foreign key
  * @return string|boolean The scope if found, or false if not
  */
-	public function findTheScope(&$Model, $data = array())
+	public function findTheScope(&$Model, $fieldName)
 	{
-		if (empty($data) || !is_array($data))
+		if (empty($fieldName))
 			return false;
 		
-		$fieldName = false;
-		foreach ($data as $modelName => $modelData)
-		{
-			if ($modelName == 'SfilStoredFile')
-				continue;
-			
-			$fieldName = $modelName . '.' . array_shift(array_keys($modelData));
-			break;
-		}
+		$this->loadConfigure();
+		$filters = Configure::read('Media.filter_plus');
 		
-		if ($fieldName)
+		foreach ($filters as $scope => $filter)
 		{
-			$this->loadConfigure();
-			$filters = Configure::read('Media.filter_plus');
-			
-			foreach ($filters as $scope => $filter)
-			{
-				if (!isset($filter['fields']) || !is_array($filter['fields']))
-					continue;
-				if (in_array($fieldName, $filter['fields']))
-					return $scope;
-			}
+			if (!isset($filter['fields']) || !is_array($filter['fields']))
+				continue;
+			if (in_array($fieldName, $filter['fields']))
+				return $scope;
 		}
 		return null;
 	}
