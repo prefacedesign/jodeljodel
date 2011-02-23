@@ -5,7 +5,7 @@ class BurocrataUserAppController extends AppController
 	var $components = array('Typographer.TypeLayoutSchemePicker');
 	var $helpers = array(
 		'Typographer.TypeDecorator' => array(
-			'name' => 'decorator',
+			'name' => 'Decorator',
 			'compact' => false,
 			'receive_tools' => true
 		),
@@ -21,8 +21,11 @@ class BurocrataUserAppController extends AppController
 		),
 		'Burocrata.*BuroBurocrata' => array(
 			'name' => 'Buro'
-		)
+		),
+		'Popup.Popup'
 	);
+	
+	var $layout = 'backstage';
 	
 	function beforeFilter()
 	{
@@ -32,7 +35,7 @@ class BurocrataUserAppController extends AppController
 	
 	function beforeRender()
 	{
-		$this->TypeLayoutSchemePicker->pick('dinafon'); //atenção que isto sobre-escreve a view escolhida
+		$this->TypeLayoutSchemePicker->pick('backstage'); //atenção que isto sobre-escreve a view escolhida
 	}
 }
 
