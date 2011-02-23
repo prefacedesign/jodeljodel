@@ -7,7 +7,20 @@ class CategoriasController extends AppController
 	
 	function index()
 	{
-		debug('teste');
+		//debug($this->Categoria->getLanguage());
+		$data = array('Categoria' => array(
+			'id' => 1,
+			'cat' => 'guddens'
+		));
+		//$this->Categoria->setLanguage('ger');
+		//$this->Categoria->save($data);
+		$dados = $this->Categoria->find('all', array('language' => 'eng'));
+		debug($dados);
+		$dados = $this->Categoria->find('all');
+		debug($dados);
+		$dados = $this->Categoria->find('all', array('emptyTranslation' => true));
+		debug($dados);
+		//debug('teste');
 		die;
 	}
 }

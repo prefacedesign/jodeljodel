@@ -28,6 +28,7 @@
 class CategoriaTranslation extends AppModel
 {
     var $name = 'CategoriaTranslation';
+	var $useDbConfig = "jodelteste";
 	
 }
 

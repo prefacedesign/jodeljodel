@@ -36,6 +36,8 @@ class TradTradutoreBehavior extends ModelBehavior
 	
 	static $currentLanguage;
 	static $languageStack = array();
+	
+	var $hasSetLanguage = 0;
 
     function __setupUserSettings(&$Model, $settings)
     {
@@ -176,6 +178,7 @@ class TradTradutoreBehavior extends ModelBehavior
 		//debug(self::$languageStack);
 		array_push(self::$languageStack, self::$currentLanguage);
 		self::$currentLanguage = $lang;
+		debug(self::$currentLanguage);
 	}
 	
 	static function returnToPreviousGlobalLanguage()
@@ -562,8 +565,17 @@ class TradTradutoreBehavior extends ModelBehavior
     {
 		$__settings = $this->__settings[$Model->name];
         $settings   = $this->settings[$Model->name];
-		if ($settings['language'])
+		//debug($query);
+		if (isset($query['language']))
+		{
 			$this->setLanguage($Model, $settings['language']);
+			$this->hasSetLanguage++;
+		}
+		
+		if (!(isset($query['emptyTranslation']) && $query['emptyTranslation'] == true))
+		{
+			$query['conditions']['NOT']['language'] = 'IS NOT NULL'; 
+		}
 		
 		
 		//debug($query['contain']);
@@ -638,7 +650,11 @@ class TradTradutoreBehavior extends ModelBehavior
         $__settings = $this->__settings[$Model->name];
         $settings   = $this->settings[$Model->name];
 		
-		$this->returnToPreviousGlobalLanguage();
+		if ($this->hasSetLanguage > 0)
+		{
+			$this->returnToPreviousGlobalLanguage();
+			$this->hasSetLanguage--;
+		}
 		
 		foreach ($results as $i => $result) 
 		{
@@ -767,7 +783,7 @@ class TradTradutoreBehavior extends ModelBehavior
 		$lang = $lang[1];
 		
 		if (!isset($Model->data[$Model->name][$lang])) 
-			$Model->data[$settings['className']][$lang] = $settings['language'];
+			$Model->data[$settings['className']][$lang] = self::$currentLanguage;
 		else
 			$Model->data[$settings['className']][$lang] = $Model->data[$Model->name][$lang];
 		
