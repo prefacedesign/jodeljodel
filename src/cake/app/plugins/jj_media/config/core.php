@@ -38,7 +38,7 @@ Configure::write('Media.filter_plus.people', array(
 			),
 			'convert' => 'image/jpeg'
 		),
-		'backstage_preview' => array('fitCrop' => array(150, 50)),
+		'backstage_preview' => array('fitCrop' => array(100, 90)),
 		'backstage_list' => array('fitCrop' => array(150, 50))
 	)
 ));

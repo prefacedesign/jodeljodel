@@ -568,8 +568,10 @@ var BuroUpload = Class.create(BuroCallbackable, {
 		
 		this.trigger('onComplete', this.tmp_input, response);
 	},
-	again: function()
+	again: function(reset_id)
 	{
+		if (reset_id == true)
+			this.hidden_input.value = '';
 		this._submitted = false;
 		this.form.update();
 		this.startObserve();

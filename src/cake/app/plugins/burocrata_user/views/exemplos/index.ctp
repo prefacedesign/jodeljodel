@@ -14,10 +14,10 @@
 			)
 		)
 	);
-		// echo $this->Bl->img(array('class' => 'teste', 'alt' => 'img8'), array('id' => 8, 'version' => 'sala'));
+
 		echo $this->Buro->input(array(), 
 			array(
-				'type' => 'upload',
+				'type' => 'image',
 				'label' => 'Faça seu upload de imagem',
 				'error' => array(
 					'size' => 'Arquivo muito grande!',
@@ -26,15 +26,11 @@
 				),
 				'fieldName' => 'PersPerson.sfil_storage_file_id',
 				'options' => array(
-					// 'version' => 'people',
+					'version' => 'backstage_preview',
 					'callbacks' => array(
-						'onStart' => array('popup' => 'Começando o upload...'),
-						// 'onError' => array('popup' => '... vixe, deu erro...'),
-						// 'onSave' => array('popup' => '... thubiru! ...'),
-						// 'onReject' => array('js' => 'alert(json.error)'),
-						// 'onFailure' => array('popup' => '... não deu certo...'),
-						// 'onComplete' => array( 'popup' => '... e acabou.')
-					)
+						'onStart' => array('popup' => 'Começando o upload...')
+					),
+					// 'change_file_text' => 'Mudar esse arquivo'
 				)
 			)
 		);

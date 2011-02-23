@@ -1006,6 +1006,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  * 
  * @access public
  * @param array $options Array of options {@see _upload()}
+ * @return string The HTML of the input
  * @see _upload()
  */
 	public function inputUpload($options)
@@ -1047,25 +1048,57 @@ class BuroBurocrataHelper extends XmlTagHelper
 
 
 /**
- * Construct a upload input that deals only with image files
- *
- * ### Accepted options:
- *
- *  - `version` - The filter name for the preview image
- *  - `callbacks` - An array with possible callbacks with Jodel Callbacks conven-
- *    tion.
- *
+ * Creates a input for general files, using the general _upload() method
+ * For more details, see _upload()
+ * This method has one more option:
+ *  - `change_file_text` - Text of link for change the file
+ *  - `remove_file_text` - Text of link for change the file
+ * 
  * @access public
- * @param array $options An array with non-defaults values
- * @return string The HTML well formated
+ * @param array $options Array of options {@see _upload()}
+ * @return string The HTML of the input
+ * @see _upload()
  */
 	public function inputImage($options)
 	{
 		extract($this->_uploadParams($options));
 		
-		$options['callbacks']['onStart']['js'] = "if(this.image) this.image.remove();";
-		$options['callbacks']['onSave']['js'] = "this.image = new Element('img', {src: $imageURL})";
-		return $this->inputUpload($options);
+		if (empty($gen_options['change_file_text']))
+			$gen_options['change_file_text'] = __('Burocrata::inputImage - Change image', true);
+		if (empty($gen_options['remove_file_text']))
+			$gen_options['remove_file_text'] = __('Burocrata::inputImage - Remove  image', true);
+		
+		$ids = array('act', 'prv', 'img', 'chg', 'rmv');
+		foreach ($ids as $id)
+			${$id.'_id'} = $id . $gen_options['baseID'];
+		
+		$out = '';
+		
+		if (empty($gen_options['callbacks']['onSave']['js']))
+			$gen_options['callbacks']['onSave']['js'] = '';
+		$gen_options['callbacks']['onSave']['js'] .= "$('{$img_id}').src = ''; $('{$img_id}').writeAttribute({src: json.url, alt: json.filename}); $('{$act_id}').show(); $('{$prv_id}').show();";
+		
+		
+		$script  = "$('{$act_id}').hide(); $('{$prv_id}').hide();";
+		$script .= "$('{$chg_id}').observe('click', function(ev){ev.stop(); BuroClassRegistry.get('{$gen_options['baseID']}').again(); $('{$act_id}').hide(); $('{$prv_id}').hide();});";
+		$script .= "$('{$rmv_id}').observe('click', function(ev){ev.stop(); BuroClassRegistry.get('{$gen_options['baseID']}').again(true); $('{$act_id}').hide(); $('{$prv_id}').hide();});";
+		$out .= $this->BuroOfficeBoy->addHtmlEmbScript($script);
+		
+		$out .= $this->_upload($gen_options, $file_input_options);
+		
+		// Div for previews
+		$out .= $this->Bl->sdiv(array('id' => $prv_id));
+			$out .= $this->Bl->img(array('id' => $img_id, 'alt' => ''));
+		$out .= $this->Bl->ediv();
+		
+		// Div for actions ID must be `'act' . $gen_options['baseID']`
+		$out .= $this->Bl->sdiv(array('id' => $act_id));
+			$change_link = $this->Bl->a(array('href' => '#', 'id' => $chg_id), array(), $gen_options['change_file_text']);
+			$remove_link = $this->Bl->a(array('href' => '#', 'id' => $rmv_id), array(), $gen_options['remove_file_text']);
+			$out .= $this->Bl->pDry($change_link . __('Burocrata::inputImage - or ', true) . $remove_link);
+		$out .= $this->Bl->ediv();
+		
+		return $out;
 	}
 }
 
