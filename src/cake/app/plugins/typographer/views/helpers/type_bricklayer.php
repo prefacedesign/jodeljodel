@@ -178,7 +178,9 @@ class TypeBricklayerHelper extends AppHelper
 		$own_attr = array(
 			'class' => array('float_break')
 		);
+
 		
+
 		if (isset($options['height']))
 		{
 			$this->TypeStyleFactory->heightGenerateClasses(array(0 => $options['height']));
@@ -196,7 +198,7 @@ class TypeBricklayerHelper extends AppHelper
 		}
 		
 		$attr = $this->_mergeAttributes($attr, $own_attr);
-		
+
 		return $this->div($attr, $options, ' ');
 	}
 	
