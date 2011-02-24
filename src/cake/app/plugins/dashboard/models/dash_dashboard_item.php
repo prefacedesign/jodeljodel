@@ -1,91 +1,113 @@
 <?php
-	/*
-	 * @todo Revamp data structure.
-	 * @todo Introduce tag copying.
-	 * @todo Use loadModel instead of ClassRegistry.
-	 * @todo Use only 'type' => 'person' instead of storing the name of the Cake Models'
-	 */
+/**
+ * @todo Revamp data structure.
+ * @todo Introduce tag copying.
+ * @todo Use loadModel instead of ClassRegistry.
+ * @todo Use only 'type' => 'person' instead of storing the name of the Cake Models'
+ */
+
+/**
+ * A model for the dash_dashboard_items table
+ * Each DashDashboardItem is a summary of a dashable Model
+*/
+class DashDashboardItem extends AppModel
+{
+/**
+ * Model name
+ * 
+ * @var string
+ * @access public
+ */
+	var $name = 'DashDashboardItem';
 	
-	/*
-	 * A model for the dash_dashboard_items table
-	 * Each DashDashboardItem is a summary of a dashable Model
-	*/
-	class DashDashboardItem extends AppModel
+/**
+ * Inserts or updates one item in the dashboard
+ *
+ * @param array $data The default array that describes the dash_dashboard_items table
+ * @param boolean $updateDashable If true, updates the original model table, otherwise only updates the dashboard table
+ *                                This parameter is used to prevend infinite loops
+ * @todo This function doesn't make any sense.
+ */
+	function saveDashItem($data, $updateDashable = false)
 	{
-		var $name = 'DashDashboardItem';
+		$this->save($data);
 		
-		/*
-		Inserts or updates one item in the dashboard
-		@param data 						The default array that describes the dash_dashboard_items table
-		@param updateDashable		if true, updates the original model table, otherwise only updates the dashboard table
-													This parameter is used to prevend infinite loops
-		@todo This function doesn't make any sense.
-		*/
-		function saveDashItem($data, $updateDashable = false)
+		if($updateDashable)
 		{
-			$this->save($data);
-			
-			if($updateDashable)
-			{
-				$dashableModel = ClassRegistry::init(array('class' =>  $data['Model']));
-				$dashableModel->updateFromDashInfo($data);
-			}
+			$dashableModel = ClassRegistry::init(array('class' =>  $data['Model']));
+			$dashableModel->updateFromDashInfo($data);
 		}
+	}
+
+	
+/*
+ * Deletes an item from the dashboard and
+ *
+ * @param strgin $id The dashboard_item id  ('Modelname@ID.     ex: 'Event@32)
+ * @param updateDashable if true, updates the original model table, otherwise only updates the dashboard table
+ * 											This parameter is used to prevend infinite loops
+ * @todo Analyze wheter this function is deprecated.
+ */
+	function removeDashItem($id, $updateDashable = false)
+	{
+		$this->delete($id);
 		
-		/*
-		Deletes an item from the dashboard and
-		@param id 	The dashboard_item id  ('Modelname@ID.     ex: 'Event@32)
-		@param updateDashable if true, updates the original model table, otherwise only updates the dashboard table
-													This parameter is used to prevend infinite loops
-		@todo Analyze wheter this function is deprecated.
-		*/
-		function removeDashItem($id, $updateDashable = false)
+		if($updateDashable)
 		{
-			$this->delete($id);
+			@list($model, $id) = explode('@', $id);
 			
-			if($updateDashable)
-			{
-				$data = explode('@', $id);
-				$model = $data[0]; //@todo 
-				$id = $data[1];
-				$dashableModel =  ClassRegistry::init(array('class' =>  $model));
-				$dashableModel->delete($id);
-			}
-		}
-		
-		/** deleteItem($id)
-		 *  Deletes a item from the table, by deleting the original item. As everything 
-		 *  is synchronized it should also delete the Dashboard entry.
-		 *
-		 *  @param $id The item's id in dashboard.
-		 *	@return boolean True if succesful, false if otherwise.
-		 */
-		function deleteItem($id)
-		{
-			$item = $this->find('first', array(
-				'conditions' => array('id' => $id),
-				'fields' => array('DashDashboardItem.dashable_id', 'DashDashboardItem.type')
-			));
+			if (empty($model) || empty($id))
+				return false;
 			
-			$module = Configure::read('jj.modules.' . $item['DashDashboardItem']['type']);	
-			$dashableModel = ClassRegistry::init(Inflector::camelize($module['plugin']).'.'.$module['model'],'Model');
-			return $dashableModel->dashDelete($item['DashDashboardItem']['dashable_id']);
+			$dashableModel = ClassRegistry::init(array('class' =>  $model));
+			$dashableModel->delete($id);
 		}
+	}
+
+
+/**
+ * Deletes a item from the table, by deleting the original item. As everything 
+ * is synchronized it should also delete the Dashboard entry.
+ *
+ * @access public
+ * @param string $id The item's id in dashboard (`Modelname@ID`   ex: `Event@32`)
+ * @return boolean True if succesful, false if otherwise.
+ */
+	function deleteItem($id)
+	{
+		$item = $this->find('first', array(
+			'conditions' => array('id' => $id),
+			'fields' => array('DashDashboardItem.dashable_id', 'DashDashboardItem.type')
+		));
 		
-		//Removes from the dashboard table all the items that don't exist in the orignal model
-		function synchronizeWithItems()
+		if (empty($item['DashDashboardItem']['type']) || empty($item['DashDashboardItem']['dashable_id']))
+			return false;
+		
+		$module = Configure::read('jj.modules.' . $item['DashDashboardItem']['type']);	
+		$dashableModel = ClassRegistry::init(Inflector::camelize($module['plugin']).'.'.$module['model'], 'Model');
+		
+		if (method_exists($dashableModel, 'dashDelete'))
+			$return = $dashableModel->dashDelete($item['DashDashboardItem']['dashable_id']);
+		else
+			$return = $dashableModel->delete($item['DashDashboardItem']['dashable_id']);
+		
+		return $return;
+	}
+	
+	//Removes from the dashboard table all the items that don't exist in the orignal model
+	function synchronizeWithItems()
+	{
+		$items = $this->find('all');
+		foreach($items as $item)
 		{
-			$items = $this->find('all');
-			foreach($items as $item)
+			$model = ClassRegistry::init(array('class' => $item['DashboardItem']['dashable_model']));
+			$dashable = $model->findById($item['DashboardItem']['dashable_id']);
+			if(empty($dashable))
 			{
-				$model = ClassRegistry::init(array('class' => $item['DashboardItem']['dashable_model']));
-				$dashable = $model->findById($item['DashboardItem']['dashable_id']);
-				if(empty($dashable))
-				{
-					$this->remove($item);
-				}
+				$this->remove($item);
 			}
 		}
 	}
+}
 
 ?>
