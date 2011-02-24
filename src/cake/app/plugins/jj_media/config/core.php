@@ -28,7 +28,7 @@
  */
 
 Configure::write('Media.filter_plus.people', array(
-	'fields' => array('PersPerson.sfil_storage_file_id'),
+	'fields' => array('PersPerson.img_id'),
 	'image' => array(
 		'preview'  => array('fit' => array(600, 440)),
 		'event_page' => array(
@@ -38,7 +38,12 @@ Configure::write('Media.filter_plus.people', array(
 			),
 			'convert' => 'image/jpeg'
 		),
-		'backstage_preview' => array('fitCrop' => array(100, 90)),
+		'backstage_preview' => array(
+			'fitCrop' => array(
+				$dinafonTools['hg']->size(array('M' => 4, 'g' => -1), false),
+				$dinafonTools['vg']->size(array('M' => 4, 'g' => -1), false)
+			)
+		),
 		'backstage_list' => array('fitCrop' => array(150, 50))
 	)
 ));

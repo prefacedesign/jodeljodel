@@ -52,7 +52,16 @@ switch ($type[0])
 					));
 
                 echo $buro->einput();
-
+				
+				/*
+				echo $buro->input(array(),array(
+					'type' => 'image',
+					'fieldName' => 'img_id',
+					'label' => __('Form - PersPerson.img_id',true),
+					'instructions' => __('Form - PersPerson.img_id - instructions',true),
+					'options' => array('version' => 'backstage_preview')
+				));
+				*/
 				echo $buro->input(array(),array(
 					'type' => 'text',
 					'fieldName' => 'position',
@@ -73,6 +82,8 @@ switch ($type[0])
 					'label' => __('Form - PersPerson.research_fields',true),
 					'instructions' => __('Form - PersPerson.research_fields - instructions',true)
 				));
+				
+				
 
 				echo $buro->input(array(),array(
 					'type' => 'textarea',
@@ -157,8 +168,15 @@ switch ($type[0])
 				
 				echo $buro->einput();
 				
-			
-				echo $buro->submitBox(array(),array('publishControls' => true));
+				echo $buro->input(array(),array(
+					'type' => 'image',
+					'fieldName' => 'img_id',
+					'label' => __('Form - PersPerson.img_id',true),
+					'instructions' => __('Form - PersPerson.img_id - instructions',true),
+					'options' => array('version' => 'backstage_preview')
+				));
+				
+				echo $buro->submitBox(array(),array('publishControls' => false));
 			echo $buro->eform();
 		}
 	break;

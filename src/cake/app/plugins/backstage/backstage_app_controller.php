@@ -31,6 +31,8 @@ class BackstageAppController extends AppController
 		$this->set('user_name', 'Eleonora Cavalcante Albano');
 		$this->TypeLayoutSchemePicker->pick('backstage'); //atenção que isto sobre-escreve a view escolhida	
 		$this->TradLanguageSelector->setInterfaceLanguage(Configure::read('Tradutore.mainLanguage'));
+		//debug(Configure::read('Config.language'));
+		//debug(TradLanguageSelector);
 	}
 	
 	

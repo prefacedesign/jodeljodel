@@ -949,8 +949,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'version' => '',
 			'model' => 'JjMedia.SfilStoredFile'
 		);
+		//debug($options);
 		$gen_options = $options['options'] + $defaults;
-		
+		//debug($gen_options);
+		//die;
+
+	
 		if (isset($file_input_options['error']))
 		{
 			$gen_options['error'] = $file_input_options['error'];
