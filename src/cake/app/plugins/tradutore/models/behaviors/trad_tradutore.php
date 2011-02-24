@@ -53,7 +53,7 @@ class TradTradutoreBehavior extends ModelBehavior
         $this->settings[$Model->name] = array_merge($this->settings[$Model->name], (array)$settings);
 
         // On post setup time, the current language for model is the default language.
-        $this->settings[$Model->name]['language'] = $this->settings[$Model->name]['defaultLanguage'];
+        //$this->settings[$Model->name]['language'] = $this->settings[$Model->name]['defaultLanguage'];
     }
     
 
@@ -183,6 +183,7 @@ class TradTradutoreBehavior extends ModelBehavior
 	
 	static function returnToPreviousGlobalLanguage()
 	{
+		//debug('teste');
 		self::$currentLanguage = array_pop(self::$languageStack);
 	}
 
@@ -191,6 +192,21 @@ class TradTradutoreBehavior extends ModelBehavior
     {
         assert('isset($this->__settings[$Model->name])');
         return $this->settings[$Model->name]['language'];
+    }
+	
+	function getLanguages(&$Model, $id)
+    {
+		extract($this->settings[$Model->name]);
+        $data = $Model->{$className}->find(
+			'list', 
+			array(
+				'conditions' => array(
+					$foreignKey => $id
+				),
+				'fields' => array($languageField)
+			)
+		);
+		return($data);
     }
 
 
@@ -310,58 +326,66 @@ class TradTradutoreBehavior extends ModelBehavior
 				$this->already_done[] = $child['className'];
 				$query = $this->__createQuery($Model->{$child['className']}, $query, self::$currentLanguage);
 				
-				$__setts = $Model->Behaviors->TradTradutore->__settings[$child['className']];
-				$setts   = $Model->Behaviors->TradTradutore->settings[$child['className']];
-				
-				$c[$child['className']] = array();
-				foreach ($query['fields'] as $k => $field)
+				if (isset($Model->Behaviors->TradTradutore->__settings[$child['className']]))
 				{
-					$f = explode('.', $field);
-					$model_child = $f[0];
-					if ($model_child == $child['className'])
-						$c[$child['className']]['fields'][] = $field;
+					$__setts = $Model->Behaviors->TradTradutore->__settings[$child['className']];
+					$setts   = $Model->Behaviors->TradTradutore->settings[$child['className']];
 				}
-
-				if (!empty($Model->{$child['className']}->hasOne[$setts['className']]))
+				$c[$child['className']] = array();
+				if (isset($query['fields']))
 				{
-					
-					$c[$child['className']][$setts['className']] = array();
-					$Model->{$child['className']}->hasOne[$setts['className']]['className'] = $setts['className'];
-					$Model->{$child['className']}->hasOne[$setts['className']]['foreignKey'] = $setts['foreignKey'];
-					$Model->{$child['className']}->hasOne[$setts['className']]['conditions'] = $__setts['languageField']['translation'] . ' = "' . self::$currentLanguage. '"';
 					foreach ($query['fields'] as $k => $field)
 					{
 						$f = explode('.', $field);
 						$model_child = $f[0];
-						if ($model_child == $Model->{$child['className']}->hasOne[$setts['className']]['className'])
-							$c[$child['className']][$setts['className']]['fields'][] = $field;
+						if ($model_child == $child['className'])
+							$c[$child['className']]['fields'][] = $field;
 					}
-					if (!empty($c[$child['className']][$setts['className']]))
+				}
+				
+				if (isset($setts['className']))
+				{
+					if (!empty($Model->{$child['className']}->hasOne[$setts['className']]))
 					{
-						if (isset($query['contain'] ))
-						{
-							$query['contain'] = array_merge_recursive($query['contain'], $c);
-						}
-						else
-						{
-							$query['contain'] = $c;
-						}
-					}
-					else
-						unset($c[$child['className']][$setts['className']]);
 						
-					if (!empty($c[$child['className']]))
-					{
-						if (isset($query['contain'] ))
+						$c[$child['className']][$setts['className']] = array();
+						$Model->{$child['className']}->hasOne[$setts['className']]['className'] = $setts['className'];
+						$Model->{$child['className']}->hasOne[$setts['className']]['foreignKey'] = $setts['foreignKey'];
+						$Model->{$child['className']}->hasOne[$setts['className']]['conditions'] = $__setts['languageField']['translation'] . ' = "' . self::$currentLanguage. '"';
+						foreach ($query['fields'] as $k => $field)
 						{
-							$query['contain'] = array_merge_recursive($query['contain'], $c);
+							$f = explode('.', $field);
+							$model_child = $f[0];
+							if ($model_child == $Model->{$child['className']}->hasOne[$setts['className']]['className'])
+								$c[$child['className']][$setts['className']]['fields'][] = $field;
+						}
+						if (!empty($c[$child['className']][$setts['className']]))
+						{
+							if (isset($query['contain'] ))
+							{
+								$query['contain'] = array_merge_recursive($query['contain'], $c);
+							}
+							else
+							{
+								$query['contain'] = $c;
+							}
 						}
 						else
+							unset($c[$child['className']][$setts['className']]);
+							
+						if (!empty($c[$child['className']]))
 						{
-							$query['contain'] = $c;
+							if (isset($query['contain'] ))
+							{
+								$query['contain'] = array_merge_recursive($query['contain'], $c);
+							}
+							else
+							{
+								$query['contain'] = $c;
+							}
 						}
 					}
-				}		
+				}
 			}
 		}
 		
@@ -733,6 +757,7 @@ class TradTradutoreBehavior extends ModelBehavior
 	
 	function beforeSave(&$Model)
     {	
+		//debug('before save');
         $__settings = $this->__settings[$Model->name];
         $settings   = $this->settings[$Model->name];
 		
@@ -784,6 +809,8 @@ class TradTradutoreBehavior extends ModelBehavior
 	
 	function afterSave(&$Model, $created)
 	{		
+		//debug('after save');
+		
 		$__settings = $this->__settings[$Model->name];
         $settings   = $this->settings[$Model->name];
 		
@@ -794,12 +821,14 @@ class TradTradutoreBehavior extends ModelBehavior
 		
 		$lang = explode('.', $__settings['languageField']['translation']);
 		$lang = $lang[1];
-		
+		//debug($lang);
+		//debug($Model->data);
+		//debug(self::$currentLanguage);
 		if (!isset($Model->data[$Model->name][$lang])) 
 			$Model->data[$settings['className']][$lang] = self::$currentLanguage;
 		else
 			$Model->data[$settings['className']][$lang] = $Model->data[$Model->name][$lang];
-		
+		//debug($Model->data);
 		
 		
 		$this->Translate = & ClassRegistry::init($settings['className']);

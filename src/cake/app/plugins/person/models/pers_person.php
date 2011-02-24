@@ -6,6 +6,7 @@ class PersPerson extends PersonAppModel {
 	function __construct()
 	{
 		parent::__construct();
+		/*
 		$this->validate = array(
 			'surname' => array
 			(
@@ -28,6 +29,7 @@ class PersPerson extends PersonAppModel {
 				)
 			)
 		);
+		*/
 	}
 	
 	var $actsAs = array('Cascata.AguaCascata', 'Tradutore.TradTradutore', 'Containable', 'Dashboard.DashDashboardable', 'Status.Status' => array('publishing_status'));
@@ -35,22 +37,15 @@ class PersPerson extends PersonAppModel {
 	
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
-	/*var $belongsTo = array(
+	var $belongsTo = array(
 		'AuthAuthor' => array(
 			'className' => 'AuthAuthor',
 			'foreignKey' => 'auth_author_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
-		),
-		'ImgImage' => array(
-			'className' => 'ImgImage',
-			'foreignKey' => 'img_image_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => '' 
 		)
-	);*/
+	);
 		
 		/* Creates a blank row in the table. It is part of the backstage contract.
          *
@@ -59,9 +54,14 @@ class PersPerson extends PersonAppModel {
         {
 			//@todo Maybe the status behavior should place these defaults?
 			//Or should it be a global default?
-			$data = $this->save(array('publishing_status' => 'draft'));
-            $data[$this->name]['id'] = $this->id;
-            
+			//$dataAuthor = $this->save(array());
+			//debug(array($this->alias => array('publishing_status' => 'draft'), 'AuthAuthor' => array()));
+			$data = $this->saveAll(array($this->alias => array('publishing_status' => 'draft'), 'AuthAuthor' => array('name' => '')));
+			$data = $this->find('first', array('conditions' => array($this->alias.'.id' => $this->id), 'contain' => array('AuthAuthor')));
+            //$data[$this->alias]['id'] = $this->id;
+            debug($data);
+			//die;
+			
             return $data;
         }
         
@@ -71,7 +71,21 @@ class PersPerson extends PersonAppModel {
 		
         function findBurocrata($id)
         {
-            return $this->findById($id);
+            $data = $this->find('first', array('emptyTranslation' => true, 'conditions' => array($this->alias.'.id' => $id), 'contain' => array('AuthAuthor')));
+			$data['PersPerson']['languages'] = $this->getLanguages($id);
+			return $data;
+        }
+		
+		
+		function saveBurocrata($data)
+        {
+			if ($this->saveAll($data) !== false)
+				return true;
+			else
+				return false;
+			//debug($this->findById($this->id));
+            //debug($data);
+			//die;
         }
 		
 		/** The data that must be saved into the dashboard. Part of the Dashboard contract.
@@ -80,8 +94,8 @@ class PersPerson extends PersonAppModel {
 		
 		function getDashboardInfo($id)
 		{
-			$data = $this->findById($id);
-			
+			$data = $this->find('first', array('conditions' => array($this->alias.'.id' => $id), 'contain' => array('AuthAuthor')));
+			//debug('teste');
 			if ($data == null)
 				return null;
 			
@@ -92,7 +106,7 @@ class PersPerson extends PersonAppModel {
 				'status' => $data['PersPerson']['publishing_status'],
 				'created' => $data['PersPerson']['created'],
 				'modified' => $data['PersPerson']['modified'], 
-				'name' => $data['PersPerson']['name'] . ' ' . $data['PersPerson']['surname'],
+				'name' => $data['AuthAuthor']['name'] . ' ' . $data['AuthAuthor']['surname'],
 				'info' => 'Profile: ' . substr($data['PersPerson']['profile'], 0, 20) . '...',
 				'idiom' => 'PT'
 			);
