@@ -7,7 +7,7 @@
 				echo $this->Bl->h4(array(),array(),'June 7 through June 11');
 
 				echo $this->Bl->h5(array(),array(),
-					$this->Bl->anchor(array('url' => array('plugin' => 'spsassd', 'controller' => 'spsassd')),array(),'São Paulo School of Advanced Studies in Speech Dynamics' )
+					$this->Bl->anchor(array(),array('url' => array('plugin' => 'spsassd', 'controller' => 'spsassd')),'São Paulo School of Advanced Studies in Speech Dynamics' )
 				);
 
 				echo $this->Bl->para(array(),array(),array('The São Paulo School of Advanced Studies in Speech Dynamics (SPSASSD) is a 5-day event designed to foster speech research in Brazil by promoting dialogue between international and national experts and offering opportunities to talented students from all over the world.'));
@@ -27,7 +27,7 @@
 							echo $this->element('noticia', array ('tipo' => 'linha_link', 'dados' => $noticia));
 						}
 						echo $this->Bl->brDry();
-						echo $this->Bl->span(array(), array('escape' => true), $this->Bl->anchor(array('url' => array('controller' => 'noticias')),array(),'Ver mais notícias'));
+						echo $this->Bl->span(array(), array('escape' => true), $this->Bl->anchor(array(),array('url' => array('controller' => 'noticias')),'Ver mais notícias'));
 						echo $this->Bl->brDry();
 						echo $this->Bl->brDry();
 					}
@@ -40,7 +40,7 @@
 						echo $this->element('publicacao', array ('tipo' => 'preview', 'dados' => $publicacoes[0]));
 
 						echo $this->Bl->brDry();
-						echo $this->Bl->span(array(), array('escape' => true), $this->Bl->anchor(array('url' => array('controller' => 'publicacoes')), array(),'Ver mais publicações do Dinafon'));
+						echo $this->Bl->span(array(), array('escape' => true), $this->Bl->anchor(array(),array('url' => array('controller' => 'publicacoes')),'Ver mais publicações do Dinafon'));
 						echo $this->Bl->brDry();
 						echo $this->Bl->brDry();
 					}
@@ -57,7 +57,7 @@
 
 				echo $this->Bl->para(array(),array(),array($sobre_dinafon_pequeno));
 
-				echo $this->Bl->span(array(), array('escape' => true), $this->Bl->anchor(array('url' => array('controller' => 'principal', 'action' => 'sobre')), array(), 'Mais sobre o Dinafon'));
+				echo $this->Bl->span(array(), array('escape' => true), $this->Bl->anchor(array(),array('url' => array('controller' => 'principal', 'action' => 'sobre')), 'Mais sobre o Dinafon'));
 				echo $this->Bl->sdiv(array('id' => 'atrator_aleatorio'));
 				echo $this->Bl->ediv();
 

@@ -28,7 +28,7 @@ $this->Decorator->rule(
 //$hg->size(array('M'=>12))
 $this->Decorator->rule(
 		'.coluna_principal', array(
-			'width' => $hg->size(array('M'=>12)),
+			'width' => $hg->size(array('M'=>12, 'g' => -1)),
 			'position' => 'relative',
 			'margin-left' => 'auto',
 			'margin-right' => 'auto'

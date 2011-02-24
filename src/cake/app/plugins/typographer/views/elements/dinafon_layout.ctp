@@ -75,7 +75,7 @@
 
 				echo $bl->div(
 					array(
-						'class' => array('centralizado coluna_principal')
+						'class' => array('centralizado','coluna_principal')
 					),
 					array(),
 					$bl->div(
@@ -124,7 +124,7 @@
 		echo $bl->floatBreak(array(),array('height' => array('g' => 2)));
 
 		echo $bl->sdiv(array('class' => array('centralizado','coluna_principal')));
-			echo $bl->sdiv(array('class' => array('div_intrapolante')));
+			echo $bl->sdiv(array('class' => array('div_extrapolante')));
 				echo $content_for_layout;
 				echo $bl->floatBreak();
 			echo $bl->ediv();

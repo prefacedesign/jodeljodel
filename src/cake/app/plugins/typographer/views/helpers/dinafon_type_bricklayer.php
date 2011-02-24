@@ -143,5 +143,22 @@ class DinafonTypeBricklayerHelper extends TypeBricklayerHelper
 		return $this->ebox();
 	}
 
+
+	function h2($attr = array(), $options = array(), $content = '')
+	{
+
+		$t = parent::h2($attr,$options, $content);
+		$t.= $this->barraHorizontal(array('class' => 'cinza_branco') );
+		return $t;
+	}
+
+	function h3($attr = array(), $options = array(), $content = '')
+	{
+
+		$t = parent::h3($attr,$options, $content);
+		$t.= $this->barraHorizontal(array('class' => 'cinza_branco') );
+		return $t;
+	}
+
 }
 ?>

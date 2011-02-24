@@ -5,7 +5,7 @@
 		case 'preview':
 			echo $this->Bl->span(array('class' => 'texto_pequeno'),array(), br_strftime('%d de %B', strtotime($dados['data'])));
 
-			echo $this->Bl->h4(array(),array(),$this->Bl->anchor(array('url' => array('controller' => 'noticias', 'action' => 'ver', $dados['id'])),array(),$dados['titulo']) );
+			echo $this->Bl->h4(array(),array(),$this->Bl->anchor(array(),array('url' => array('controller' => 'noticias', 'action' => 'ver', $dados['id'])),$dados['titulo']) );
 
 			$explodido = explode(' ', $dados['texto'][0], 30);
 			if (isset($explodido[29]))
@@ -44,6 +44,7 @@
 			echo $this->Bl->span(array('class' => array('caixinha_2', 'w_3M_-3g_-1m')),
 					array('escape' => true),
 					$this->Bl->anchor(
+							array(),
 							array(
 								'url' => array(
 									'controller' => 'noticias',
@@ -51,7 +52,6 @@
 									$dados['id']
 								)
 							),
-							array(),
 							$dados['titulo']
 					)
 

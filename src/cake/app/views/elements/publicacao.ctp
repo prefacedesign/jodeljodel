@@ -12,7 +12,7 @@
 				implode(', ', $dados['autores'])
 			);
 
-			echo $this->Bl->h4(array(),array(),$this->Bl->anchor(array('url' => array('controller' => 'publicacoes', 'action' => 'ver', $dados['id'])),array(),$dados['titulo']));
+			echo $this->Bl->h4(array(),array(),$this->Bl->anchor(array(),array('url' => array('controller' => 'publicacoes', 'action' => 'ver', $dados['id'])),$dados['titulo']));
 
 			$explodido = explode(' ', $dados['resumo'][0], 40);
 			if (isset($explodido[39]))
@@ -45,7 +45,7 @@
 			$links = '';
 			if (isset($dados['arquivo']))
 			{
-				$links .= $this->Bl->anchor(array('url' => '/arquivos/' . $dados['arquivo'] ),array(),'Artigo para download')
+				$links .= $this->Bl->anchor(array(),array('url' => '/arquivos/' . $dados['arquivo'] ),'Artigo para download')
 						. $this->Bl->brDry();
 
 			}
