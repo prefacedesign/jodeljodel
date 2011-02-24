@@ -48,6 +48,13 @@ class AppController extends Controller {
 		$this->set('jjModules', Configure::read('jj.modules'));
 	}
 	
+	function beforeRender()
+	{
+		parent::beforeRender();		
+		$userData = $this->Auth->user();
+		$this->set('userData',$userData['UserUser']);
+	}
+	
 	function isAuthorized()
 	{
 		if (!empty($this->SectSectionHandler->thisSection['acos']))

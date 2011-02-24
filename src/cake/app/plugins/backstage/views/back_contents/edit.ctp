@@ -63,14 +63,35 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 		
 		echo $this->Bl->p(array('class' => 'small_text'), array('escape' => false),
 			sprintf (__('This %s already has translations for %s.',true), 'article', $tmp));
+			
+		echo $this->Bl->brDry();
+			
+		$missingLanguages =	array_diff(Configure::read('Tradutore.languages'), $this->data[$modelName]['languages']);
+		
+		if (!empty($missingLanguages))
+		{
+			$linkList = array();
+			foreach($missingLanguages as $lang)
+			{
+				$linkList[] = array('name' => __('Language name: '.$lang, true), 'url' => Router::url(am(array('language' => $lang), $this->params['pass'])));
+			}
+			echo $this->Bl->p(
+				array('class' => 'small_text'), 
+				array('escape' => false),
+				sprintf (
+					__('Backstage edit page: If you want you can create a version for %s',true),
+					$this->Bl->anchorList(array(),array('lastSeparator' => __('anchorList or', true), 'linkList' => $linkList))
+				)
+			);
+		}		
 	}
-	if (isset($this->data[$modelName]['language']))
+	if ($this->Session->check('Tradutore.currentLanguage'))
 	{
 		echo $this->Bl->scontrolBox();
 			
 			echo $this->Bl->h3(array(), array('escape' => false), $this->Bl->spanDry(
 				__('backstage edit page: Editing', true))
-				.  sprintf(__(' the %s version.',true),__('Language name: '.$this->data[$modelName]['language'],true))
+				.  sprintf(__(' the %s version.',true),__('Language name: '.$this->Session->read('Tradutore.currentLanguage'),true))
 			);
 
 			$tmp = $this->Bl->anchorList(array(),array(

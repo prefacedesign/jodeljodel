@@ -20,6 +20,14 @@ class DashDashboardItem extends AppModel
  */
 	var $name = 'DashDashboardItem';
 	
+	var $actsAs = array(
+		'JjUtils.Encodable' => array(
+			'fields' => array(
+				'idiom' => 'serialize'
+			)
+		)
+	);
+	
 /**
  * Inserts or updates one item in the dashboard
  *

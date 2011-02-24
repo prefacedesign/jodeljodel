@@ -32,7 +32,13 @@ class PersPerson extends PersonAppModel {
 		*/
 	}
 	
-	var $actsAs = array('Cascata.AguaCascata', 'Tradutore.TradTradutore', 'Containable', 'Dashboard.DashDashboardable', 'Status.Status' => array('publishing_status'));
+	var $actsAs = array(
+		'Cascata.AguaCascata', 
+		'Tradutore.TradTradutore', 
+		'Containable', 
+		'Dashboard.DashDashboardable', 
+		'Status.Status' => array('publishing_status')
+	);
 	var $hasOne = array('PersPersonTranslation');
 	
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
@@ -94,8 +100,14 @@ class PersPerson extends PersonAppModel {
 		
 		function getDashboardInfo($id)
 		{
-			$data = $this->find('first', array('conditions' => array($this->alias.'.id' => $id), 'contain' => array('AuthAuthor')));
-			//debug('teste');
+			$mainLanguage = Configure::read('Tradutore.mainLanguage');
+			$data = $this->find('first', array(
+				'language' => $mainLanguage, 
+				'conditions' => array(
+					$this->alias.'.id' => $id
+				), 
+				'contain' => array('AuthAuthor')
+			));
 			if ($data == null)
 				return null;
 			
@@ -107,8 +119,8 @@ class PersPerson extends PersonAppModel {
 				'created' => $data['PersPerson']['created'],
 				'modified' => $data['PersPerson']['modified'], 
 				'name' => $data['AuthAuthor']['name'] . ' ' . $data['AuthAuthor']['surname'],
-				'info' => 'Profile: ' . substr($data['PersPerson']['profile'], 0, 20) . '...',
-				'idiom' => 'PT'
+				'info' => 'Profile: ' . substr($data['PersPerson']['profile'], 0, 30) . '...',
+				'idiom' => $this->getLanguages($id)
 			);
 			
 			return $dashdata;

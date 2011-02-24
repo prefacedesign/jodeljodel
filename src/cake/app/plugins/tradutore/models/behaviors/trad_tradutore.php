@@ -598,7 +598,7 @@ class TradTradutoreBehavior extends ModelBehavior
 		//debug($query);
 		if (isset($query['language']))
 		{
-			$this->setLanguage($Model, $settings['language']);
+			$this->setLanguage($Model, $query['language']);
 			$this->hasSetLanguage++;
 		}
 		
