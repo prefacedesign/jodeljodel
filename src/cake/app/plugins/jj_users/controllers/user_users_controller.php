@@ -11,7 +11,6 @@ class UserUsersController extends JjUsersAppController {
 	function logout()
 	{
 		$this->redirect($this->Auth->logout());
-		
 	}
 }
 ?>

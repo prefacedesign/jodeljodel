@@ -28,7 +28,7 @@ class BackstageAppController extends AppController
 	
 	function beforeRender()
 	{
-		$this->set('user_name', 'Eleonora Cavalcante Albano');
+		parent::beforeRender();
 		$this->TypeLayoutSchemePicker->pick('backstage'); //atenção que isto sobre-escreve a view escolhida	
 		$this->TradLanguageSelector->setInterfaceLanguage(Configure::read('Tradutore.mainLanguage'));
 		//debug(Configure::read('Config.language'));
