@@ -22,25 +22,27 @@
 		break;
 
 		case 1:
-			echo $kulepona->barraHorizontal('colorida_branco');
-			echo $kulepona->iTag('div', array('class' => array('centralizado','coluna_principal')));
-				echo $kulepona->iTag('div', array('class' => array('div_intrapolante')));
-					echo $kulepona->tag('h1', array(), array(), $menus_secoes[$onde_estamos[0]]['titulo_cabecalho']);
-					if(isset($menus_secoes[$onde_estamos[0]]['sub_secoes']['tipo'])
-						&& $menus_secoes[$onde_estamos[0]]['sub_secoes']['tipo'] == 'lateral')
-					{
-						echo $this->element('menu_site', array('nivel' => 2, 'tipo' => 'lateral'));
-					}
-				echo $kulepona->fTag('div');
-			echo $kulepona->fTag('div');
-			echo $kulepona->limpador();
+			echo $this->Bl->barraHorizontal(array('class' => array('colorida_branco')));
+			echo $this->Bl->sdiv(array('class' => array('centralizado','coluna_principal')));
+				echo $this->Bl->sdiv(array('class' => array('div_intrapolante')));
+				//@TODO change this next 3 (or 4) lines
+//					echo $this->Bl->h1(array(),array(),$menus_secoes[$onde_estamos[0]]['titulo_cabecalho']);
+//					if(isset($menus_secoes[$onde_estamos[0]]['sub_secoes']['tipo'])
+//						&& $menus_secoes[$onde_estamos[0]]['sub_secoes']['tipo'] == 'lateral')
+//					{
+//						echo $this->element('menu_site', array('nivel' => 2, 'tipo' => 'lateral'));
+//					}
+				echo $this->Bl->ediv();
+			echo $this->Bl->ediv();
 
-			if (  isset($menus_secoes[$onde_estamos[0]]['sub_secoes'])
-			   && !(isset($menus_secoes[$onde_estamos[0]]['sub_secoes']['tipo'])
-					&& $menus_secoes[$onde_estamos[0]]['sub_secoes']['tipo'] == 'lateral'))
-			{
-				echo $this->element('menu_site', array('nivel' => 2, 'tipo' => 'normal'));
-			}
+			echo $this->Bl->floatBreak();
+
+//			if (  isset($menus_secoes[$onde_estamos[0]]['sub_secoes'])
+//			   && !(isset($menus_secoes[$onde_estamos[0]]['sub_secoes']['tipo'])
+//					&& $menus_secoes[$onde_estamos[0]]['sub_secoes']['tipo'] == 'lateral'))
+//			{
+//				echo $this->element('menu_site', array('nivel' => 2, 'tipo' => 'normal'));
+//			}
 		break;
 
 		case 2:

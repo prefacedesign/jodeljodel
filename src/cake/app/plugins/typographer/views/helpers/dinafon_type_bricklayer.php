@@ -20,7 +20,7 @@ class DinafonTypeBricklayerHelper extends TypeBricklayerHelper
 		//definir i -1
 		//quando for transparente, chamar o sbox com transparent
 		//
-		$options = am(array('size' => array('g' => -1)), $options);
+		$options['size'] = am($options['size'],array('g' => -1));
 
 		$attr = $this->_mergeAttributes(array('class' => array('caixa')), $attr);
 
@@ -28,6 +28,8 @@ class DinafonTypeBricklayerHelper extends TypeBricklayerHelper
 			$attr = $this->_mergeAttributes(array('class' => array('transparente')), $attr);
 			unset ($options['tipo']);
 		}
+		
+
 		return $this->sbox($attr,$options);  //'<div class="topo_caixa '. $classe_largura . ' ' . _classe_estilo_topo_caixa($tamanho['qM']) . '"></div>';
 
 	}

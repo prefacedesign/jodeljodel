@@ -104,7 +104,7 @@ $this->Decorator->rule(
 			'float' => 'left',
 			'display' => 'block',
 			'margin' => '0',
-			'width' => $hg->size(array('M' => 3, 'g' => 2, 'M' => 1))
+			'width' => $hg->size(array('M' => 3, 'g' => 2, 'm' => 1))
 	));
 
 $this->Decorator->rule(
@@ -112,13 +112,13 @@ $this->Decorator->rule(
 			'float' => 'left',
 			'display' => 'block',
 			'margin-left' => $hg->size(array('g' => 1)),
-			'width' =>  $hg->size(array('M' => 3, 'g' => 1.8, 'M' => 1))
+			'width' =>  $hg->size(array('M' => 3, 'g' => 1.8, 'm' => 1))
 	));
 
 
 $this->Decorator->rule(
 		'.larg_3M_-3i_-1m', array(
-			'width' => $hg->size(array('M' => 3, 'g' => -3, 'M' => -1))
+			'width' => $hg->size(array('M' => 3, 'g' => -3, 'm' => -1))
 	));
 
 $this->Decorator->rule(
@@ -469,7 +469,7 @@ $this->Decorator->rule(
 
 $this->Decorator->rule(
 		'.menu_0', array(
-			'margin-top' => $vg->size(array('M' => 1/2))
+			'margin-top' => $vg->size(array('M' => 29/82))
 	));
 
 $this->Decorator->rule(

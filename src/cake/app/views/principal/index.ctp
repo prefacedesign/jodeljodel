@@ -1,20 +1,23 @@
 <?php
-	echo $kulepona->caixoteInicio(array('tamanho' => array('qM' => 7)));
-		echo $kulepona->caixaInicio(array('tamanho' => array('qM' => 7)));
-			echo $kulepona->colunaInicio();
+	echo $this->Bl->scaixote(array(),array('size' => array('M' => 7)));
+		echo $this->Bl->scaixa(array(),array('size' => array('M' => 7)));
+			echo $this->Bl->scoluna();
+				echo $this->Bl->h2(array(),array(),'Eventos');
 
-				echo $kulepona->h2('Eventos');
+				echo $this->Bl->h4(array(),array(),'June 7 through June 11');
 
-				echo $kulepona->h4('June 7 through June 11');
-				echo $kulepona->h5($kulepona->link('S?o Paulo School of Advanced Studies in Speech Dynamics', array('plugin' => 'spsassd', 'controller' => 'spsassd')));
-				echo $kulepona->para('The S?o Paulo School of Advanced Studies in Speech Dynamics (SPSASSD) is a 5-day event designed to foster speech research in Brazil by promoting dialogue between international and national experts and offering opportunities to talented students from all over the world.');
+				echo $this->Bl->h5(array(),array(),
+					$this->Bl->anchor(array('url' => array('plugin' => 'spsassd', 'controller' => 'spsassd')),array(),'São Paulo School of Advanced Studies in Speech Dynamics' )
+				);
 
-				echo $kulepona->limpador();
+				echo $this->Bl->para(array(),array(),array('The São Paulo School of Advanced Studies in Speech Dynamics (SPSASSD) is a 5-day event designed to foster speech research in Brazil by promoting dialogue between international and national experts and offering opportunities to talented students from all over the world.'));
+				
+				echo $this->Bl->floatBreak();
 
-				echo $kulepona->iTag('div', array('class' => 'noticias_pagina_principal'));
+				echo $this->Bl->sdiv(array('class' => 'noticias_pagina_principal'));
 					if (isset($noticias))
 					{
-						echo $kulepona->h2('Not?cias');
+						echo $this->Bl->h2(array(),array(),'Notícias');
 						echo $this->element('noticia', array ('tipo' => 'preview', 'dados' => $noticias[0]));
 
 						unset($noticias[0]);
@@ -23,40 +26,42 @@
 						{
 							echo $this->element('noticia', array ('tipo' => 'linha_link', 'dados' => $noticia));
 						}
-						echo $kulepona->tag('br');
-						echo $kulepona->tag('span',array(), array('escape' => true), $kulepona->link('Ver mais not?cias', array('controller' => 'noticias')));
-						echo $kulepona->tag('br');
-						echo $kulepona->tag('br');
+						echo $this->Bl->brDry();
+						echo $this->Bl->span(array(), array('escape' => true), $this->Bl->anchor(array('url' => array('controller' => 'noticias')),array(),'Ver mais notícias'));
+						echo $this->Bl->brDry();
+						echo $this->Bl->brDry();
 					}
-				echo $kulepona->fTag('div');
+				echo $this->Bl->ediv();
 
-				echo $kulepona->iTag('div', array('class' => 'publicacoes_pagina_principal'));
+				echo $this->Bl->sdiv(array('class' => 'publicacoes_pagina_principal'));
 					if (isset($publicacoes))
 					{
-						echo $kulepona->h2('Publica??es');
+						echo $this->Bl->h2(array(),array(),'Publicações');
 						echo $this->element('publicacao', array ('tipo' => 'preview', 'dados' => $publicacoes[0]));
 
-						echo $kulepona->tag('br');
-						echo $kulepona->tag('span',array(), array('escape' => true), $kulepona->link('Ver mais publica??es do Dinafon', array('controller' => 'publicacoes')));
-						echo $kulepona->tag('br');
-						echo $kulepona->tag('br');
+						echo $this->Bl->brDry();
+						echo $this->Bl->span(array(), array('escape' => true), $this->Bl->anchor(array('url' => array('controller' => 'publicacoes')), array(),'Ver mais publicações do Dinafon'));
+						echo $this->Bl->brDry();
+						echo $this->Bl->brDry();
 					}
-				echo $kulepona->fTag('div');
-			echo $kulepona->colunaFim();
-		echo $kulepona->caixaFim();
-	echo $kulepona->caixoteFim();
+				echo $this->Bl->ediv();
+			echo $this->Bl->ecoluna();
+		echo $this->Bl->ecaixa();
+	echo $this->Bl->ecaixote();
 
-	echo $kulepona->caixoteInicio(array('tamanho' => array('qM' => 5)));
-		echo $kulepona->caixaInicio(array('tamanho' => array('qM' => 5)));
-			echo $kulepona->colunaInicio();
+	echo $this->Bl->scaixote(array(),array('size' => array('M' => 5)));
+		echo $this->Bl->scaixa(array(),array('size' => array('M' => 5)));
+			echo $this->Bl->scoluna();
 
-				echo $kulepona->h2('O grupo de pesquisa');
-				echo $kulepona->para(array($sobre_dinafon_pequeno));
-				echo $kulepona->tag('span',array(), array('escape' => true), $kulepona->link('Mais sobre o Dinafon', array('controller' => 'principal', 'action' => 'sobre')));
-				echo $kulepona->iTag('div',array('id' => 'atrator_aleatorio'));
-				echo $kulepona->fTag('div');
+				echo $this->Bl->h2(array(),array(),'O grupo de pesquisa');
 
-			echo $kulepona->colunaFim();
-		echo $kulepona->caixaFim();
-	echo $kulepona->caixoteFim();
+				echo $this->Bl->para(array(),array(),array($sobre_dinafon_pequeno));
+
+				echo $this->Bl->span(array(), array('escape' => true), $this->Bl->anchor(array('url' => array('controller' => 'principal', 'action' => 'sobre')), array(), 'Mais sobre o Dinafon'));
+				echo $this->Bl->sdiv(array('id' => 'atrator_aleatorio'));
+				echo $this->Bl->ediv();
+
+			echo $this->Bl->ecoluna();
+		echo $this->Bl->ecaixa();
+	echo $this->Bl->ecaixote();
 ?>
