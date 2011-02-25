@@ -66,12 +66,13 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'fieldName' => null,
 			'label' => null,
 			'error' => null,
-			'options' => array()
+			'options' => array(),
+			'required' => false
 		);
 		$options = am($defaults, $options);
 		$options['close_me'] = false;
 		
-		if($options['type'] == 'super_field')
+		if ($options['type'] == 'super_field')
 		{
 			$out .= $this->ssuperfield($htmlAttributes, $options);
 		}
@@ -83,16 +84,22 @@ class BuroBurocrataHelper extends XmlTagHelper
 			
 			$this->_nestedInput = false;
 			
-			if($options['type'] != 'hidden' && $container !== false)
+			if ($options['type'] != 'hidden' && $container !== false)
 				$out .= $this->sinputcontainer($container, $options);
 			
-			if(method_exists($this->Form, $options['type']))
+			if (method_exists($this->Form, $options['type']))
 			{
-				if($options['type'] != 'hidden')
-					$out .= $this->label(array(), $options, $options['label']);
+				if ($options['type'] != 'hidden' && $options['label'] !== false)
+				{
+					$labelHtmlAttributes = array();
+					if (!empty($htmlAttributes['id']))
+						$labelHtmlAttributes['for'] = $htmlAttributes['id'];
+					$out .= $this->label($labelHtmlAttributes, $options, $options['label']);
+					unset($labelHtmlAttributes);
+				}
 				unset($options['label']);
 				
-				if(isset($options['instructions'])) {
+				if (isset($options['instructions'])) {
 					$out .= $this->instructions(array(),array(),$options['instructions']);
 					unset($options['instructions']);
 				}
@@ -106,10 +113,11 @@ class BuroBurocrataHelper extends XmlTagHelper
 			}
 			else
 			{
+				$options['_htmlAttributes'] = $htmlAttributes;
 				$out .= $this->{Inflector::variable('input'.$options['type'])}($options);
 			}
 			
-			if($options['type'] != 'hidden' && $container !== false)
+			if ($options['type'] != 'hidden' && $container !== false)
 				$out .= $this->einputcontainer();
 		}
 		return $out;
@@ -124,7 +132,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function einput()
 	{
-		if($this->_nestedInput)
+		if ($this->_nestedInput)
 			return $this->esuperfield();
 			
 		$this->_nestedInput = --$this->_nestedOrder > 0;
@@ -142,7 +150,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function label($htmlAttributes = array(), $options = array(), $text = null)
 	{
-		if(isset($options['fieldName'])) {
+		if (isset($options['fieldName'])) {
 			$fieldName = $options['fieldName'];
 		} else {
 			$View =& $this->_getView();
@@ -238,9 +246,9 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$htmlAttributes = $this->addClass($htmlAttributes, 'buro_form');
 		$htmlAttributes['id'] = 'frm' . $options['baseID'];
 		
-		if($options['data'])
+		if ($options['data'])
 			$this->_data = $options['data'];
-		elseif($View->data)
+		elseif ($View->data)
 			$this->_data = $View->data;
 		
 		list($this->modelPlugin, $this->modelAlias) = pluginSplit($options['model']);
@@ -255,18 +263,18 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$this->Form->create($this->modelAlias, array('url' => $options['url']));
 		
 		$out = $this->Bl->sdiv($htmlAttributes);
-		if($options['writeForm'] == true)
+		if ($options['writeForm'] == true)
 		{
 			$elementOptions = array('type' => am(BuroBurocrataHelper::$defaultSupertype, 'form'));
-			if($this->modelPlugin)
+			if ($this->modelPlugin)
 				$elementOptions['plugin'] = $this->modelPlugin;
-			if($this->_data)
+			if ($this->_data)
 				$elementOptions['data'] = $this->_data;
 				
 			$out .= $View->element(Inflector::underscore($this->modelAlias), $elementOptions);
 			
-			if(!$this->_readFormAttribute('submit'))
-				$out .= $this->submit(array(), array('label' => __('Burorata: default save button', true)));
+			if (!$this->_readFormAttribute('submit'))
+				$out .= $this->submit(array(), array('label' => __('Burocrata: default save button', true)));
 		}
 		return $out;
 	}
@@ -284,9 +292,9 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$this->_nestedForm[] = $id;
 		$map =& $this->_formMap;
 		foreach($this->_nestedForm as $form_id) {
-			if(!isset($map[$form_id]))
+			if (!isset($map[$form_id]))
 				$map[$form_id]= array();
-			if(!isset($map[$form_id]['subforms']))
+			if (!isset($map[$form_id]['subforms']))
 				$map[$form_id] = array('subforms' => array(), 'inputs' => array());
 			else
 				$map =& $map[$form_id]['subforms'];
@@ -308,8 +316,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$map =& $this->_formMap;
 		foreach($this->_nestedForm as $form_id)
 		{
-			if(isset($map[$form_id])) {
-				if($append && isset($map[$form_id][$attribute])) {
+			if (isset($map[$form_id])) {
+				if ($append && isset($map[$form_id][$attribute])) {
 					$map[$form_id][$attribute] = am($map[$form_id][$attribute], array($value));
 				} else {
 					$map[$form_id][$attribute] = $value;
@@ -333,9 +341,9 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$map =& $this->_formMap;
 		foreach($this->_nestedForm as $form_id)
 		{
-			if(isset($map[$form_id])) {
+			if (isset($map[$form_id])) {
 				return $map[$form_id];
-			} elseif(!isset($map[$form_id]['subforms'])) {
+			} elseif (!isset($map[$form_id]['subforms'])) {
 				return null;
 			} else {
 				$map =& $map[$form_id]['subforms'];
@@ -354,7 +362,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 	protected function _readFormAttribute($attribute)
 	{
 		$attributes = $this->_readFormAttributes();
-		if(isset($attributes[$attribute]))
+		if (isset($attributes[$attribute]))
 			return $attributes[$attribute];
 		return null;
 	}
@@ -368,7 +376,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	protected function _getView()
 	{
-		if(!$this->View)
+		if (!$this->View)
 			return $this->View = &ClassRegistry::getObject('view');
 		
 		return $this->View;
@@ -417,15 +425,15 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function internalParam($paramName, $value = false)
 	{
-		if(!is_array($paramName))
+		if (!is_array($paramName))
 			$paramName = explode('.', $paramName);
 		
-		if(!count($paramName))
+		if (!count($paramName))
 			return '';
 		
 		$i_param = 'data[_b][' . implode('][', $paramName) . ']';
 		
-		if($value !== false)
+		if ($value !== false)
 			$i_param .= '='.$value;
 		
 		return $i_param;
@@ -446,7 +454,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$modelPlugin = $this->_readFormAttribute('modelPlugin');
 		$url = $this->_readFormAttribute('url');
 		
-		if(!empty($modelAlias))
+		if (!empty($modelAlias))
 			$out .= $this->Bl->sinput(array(
 				'type' => 'hidden',
 				'name' => $this->internalParam('request'),
@@ -554,7 +562,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		extract($options);
 		
 		$out = $this->Bl->sdiv($htmlAttributes);
-		if(isset($label))
+		if (isset($label))
 			$out .= $this->Bl->h6(array(),array('escape' => false), $label);
 			
 		if (isset($instructions))
@@ -621,7 +629,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 	public function sinputcontainer($htmlAttributes = array(), $options = array())
 	{
 		$defaults = array();
-		if($this->_nestedOrder > 0)
+		if ($this->_nestedOrder > 0)
 			$defaults['class'] = 'subinput'; //@todo Make the prefix automatic;
 		else
 			$defaults['class'] = 'input';
@@ -629,10 +637,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$htmlAttributes = am($defaults, $htmlAttributes);
 		$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultContainerClass);
 		
-		if(isset($options['fieldName']))
+		if (isset($options['fieldName']))
 		{
 			$isFieldError = $this->Form->isFieldError($options['fieldName']);
-			if($isFieldError)
+			if ($isFieldError)
 				$htmlAttributes = $this->addClass($htmlAttributes, 'error');
 		}
 		
@@ -671,7 +679,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 	public function inputAutocomplete($options = array())
 	{
 		$View = $this->_getView();
-		if(!isset($options['options']['model']) && !isset($options['options']['url']))
+		if (!isset($options['options']['model']) && !isset($options['options']['url']))
 		{
 			// error (`url` or `model` must be set)
 			return false;
@@ -689,16 +697,16 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$parameters[] = $this->internalParam('layout_scheme', $View->viewVars['layout_scheme']);
 		
-		if($autocomplete_options['model'])
+		if ($autocomplete_options['model'])
 		{
 			list($modelPlugin, $modelAlias) = pluginSplit($autocomplete_options['model']);
 			$parameters[] = $this->securityParams($autocomplete_options['url'], $modelPlugin, $modelAlias);
 		}
 		
-		if(!empty($modelAlias) && !isset($options['options']['url']) && (!isset($options['fieldName']) || empty($options['fieldName'])))
+		if (!empty($modelAlias) && !isset($options['options']['url']) && (!isset($options['fieldName']) || empty($options['fieldName'])))
 		{
 			$class_name = $modelAlias;
-			if(!empty($modelPlugin))
+			if (!empty($modelPlugin))
 				$class_name = $modelPlugin . '.' . $class_name;
 				
 			$Model =& ClassRegistry::init($class_name);
@@ -793,25 +801,25 @@ class BuroBurocrataHelper extends XmlTagHelper
 		extract($options);
 		
 		list($plugin, $model) = pluginSplit($model);
-		if(!$assocName && !empty($model))
+		if (!$assocName && !empty($model))
 			$assocName = $model;
 		
 		// TODO: Trigger error `related model not set`
-		if(!$assocName) return 'related model not set'; 
+		if (!$assocName) return 'related model not set'; 
 		unset($options['assocName']);
 		unset($options['type']);
 		
 		// TODO: Trigger error `parent model not found`
 		$parent_model = $this->modelAlias;
 		$ParentModel =& ClassRegistry::init($this->modelPlugin . '.' . $parent_model);
-		if(!$ParentModel) return 'parent model not found';
+		if (!$ParentModel) return 'parent model not found';
 		
 		// TODO: Trigger error `not a belongsTo related model`
-		if(!isset($ParentModel->belongsTo[$assocName])) return 'not a belongsTo related model';
+		if (!isset($ParentModel->belongsTo[$assocName])) return 'not a belongsTo related model';
 		$fieldName = implode('.', array($parent_model, $ParentModel->belongsTo[$assocName]['foreignKey']));
 		
 		$model_class_name = $model;
-		if($plugin)
+		if ($plugin)
 			$model_class_name = $plugin . '.' . $model_class_name;
 		
 		// END OF PARSING PARAMS
@@ -840,7 +848,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			)
 		);
 		
-		if(isset($options['queryField']))
+		if (isset($options['queryField']))
 			$options['fieldName'] = $options['queryField'];
 		
 		$out .= $this->inputAutocomplete(am($input_options, $autocomplete_options));
@@ -1099,6 +1107,86 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out .= $this->Bl->ediv();
 		
 		return $out;
+	}
+
+
+/**
+ * Renders a input with shortcuts to the four most common textile syntax 
+ * (bold, italic, link, image and link for a file)
+ * 
+ * @access public
+ * @param array $options
+ * @return string The HTML and the Js
+ */
+	public function inputTextile($options)
+	{
+		$baseID = uniqid();
+		$options = array('type' => 'textarea') + $options + array('baseID' => $baseID);
+		
+		$ids = array('npt','link','file','prev','lbold', 'lital','llink','limg', 'lfile', 'lprev');
+		foreach ($ids as $id)
+			${$id.'_id'} = $id . $options['baseID'];
+		
+		$htmlAttributes = array('container' => false, 'id' => $npt_id) + $options['_htmlAttributes'];
+		unset($options['_htmlAttributes']);
+		
+		
+		$out = '';
+		$out .= $this->label(array('for' => $npt_id), $options, $options['label']);
+		$options['label'] = false;
+		
+		$out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile bold_textile', 'id' => $lbold_id), array(), __('Burocrata::inputTextile - Add bold', true));
+		$out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile ital_textile', 'id' => $lital_id), array(), __('Burocrata::inputTextile - Add Italic', true));
+		$out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile link_textile', 'id' => $llink_id), array(), __('Burocrata::inputTextile - Add link', true));
+		$out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile img_textile', 'id' => $limg_id), array(), __('Burocrata::inputTextile - Add Img', true));
+		$out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile file_textile', 'id' => $lfile_id), array(), __('Burocrata::inputTextile - Add file', true));
+		$out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile prev_textile', 'id' => $lprev_id), array(), __('Burocrata::inputTextile - Preview', true));
+		$out .= $this->Bl->floatBreak();
+		
+		// popup de link
+		$out .= $this->_popupLink($link_id, $options);
+		$out .= $this->Popup->popup($file_id, array('type' => 'form'));
+		$out .= $this->Popup->popup($prev_id, array('type' => 'notice'));
+		
+		$out .= $this->input($htmlAttributes, $options);
+		
+		$out .= $this->BuroOfficeBoy->textile($options);
+		return $out;
+	}
+
+
+/**
+ * Creates a popup for the Textile input "Add link" button.
+ * 
+ * @access protected
+ * @param string $id The DOM ID for the popup (will be used on Popup helper)
+ * @param string $options The array of input options 
+ * @return string The HTML and the JS of this popup
+ */
+	protected function _popupLink($id, $options)
+	{
+		$popup_link_txt = array(
+			'instructions'	=> __('Burocrata::_popupLink - Instructions for link', true),
+			'label_text'	=> __('Burocrata::_popupLink - What is the text for this link', true),
+			// 'label_title'	=> __('Burocrata::_popupLink - What is the optional title for this link', true),
+			'label_link'	=> __('Burocrata::_popupLink - What is the URL of this link', true),
+			'title' 		=> __('Burocrata::_popupLink - Title of link popup', true)
+		);
+		
+		$itlink = 'itlink' . $options['baseID'];
+		// $iclink = 'iclink' . $options['baseID'];
+		$iulink = 'iulink' . $options['baseID'];
+		
+		$popup_config['type'] = 'form';
+		$popup_config['title'] = $popup_link_txt['title'];
+		$popup_config['callback'] = "BuroClassRegistry.get('{$options['baseID']}').insertLink($('$itlink').value, $('$iulink').value)";
+		$popup_config['content'] = '';
+		$popup_config['content'] .= $this->Bl->pDry($popup_link_txt['instructions']);
+		$popup_config['content'] .= $this->input(array('container' => false, 'id' => $itlink), array('required' => true, 'label' => $popup_link_txt['label_text']));
+		// $popup_config['content'] .= $this->input(array('container' => false, 'id' => $iclink), array('required' => false, 'label' => $popup_link_txt['label_title']));
+		$popup_config['content'] .= $this->input(array('container' => false, 'id' => $iulink), array('required' => true, 'label' => $popup_link_txt['label_link']));
+		
+		return $this->Popup->popup($id, $popup_config);
 	}
 }
 

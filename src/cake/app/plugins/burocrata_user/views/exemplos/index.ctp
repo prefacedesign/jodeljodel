@@ -1,22 +1,44 @@
 <?php
-	echo $this->Popup->popup('teste', array('type' => 'success'));
-	echo $this->Popup->popup('teste2', array('type' => 'error'));
+	// $popups = array('success', 'error', 'notice', 'form');
+	
+	// $content = array_flip($popups);
+	
+	// foreach ($popups as $popup_type)
+	// {
+		// echo $this->Popup->popup($popup_type, array(
+			// 'type' => $popup_type,
+			// 'content' => $content[$popup_type],
+			// 'title' => 'Titulo do '.$popup_type
+		// ));
+		// echo $this->Bl->a(array('href' => '', 'onclick' => "showPopup('$popup_type'); return false;"), array(), $popup_type);
+		// echo $this->Bl->br();
+		// echo $this->Bl->br();
+	// }
 
+	
 	// echo $this->Buro->insertForm('BurocrataUser.Galery', 'teste');	
 
-	// echo $this->Buro->sform(array('class' => 'azul'), // Parâmetros HTML
-		// array(
-			// 'model' => 'Person.PersPerson', // Somente o Model pai, assim como no FormHelper::create
-			// 'callbacks' => array(
-				// 'onStart'	=> array('lockForm'),
-				// 'onComplete'=> array('unlockForm'),
-				// 'onSuccess' => array('contentUpdate' => 'replace'),
-				// 'onSave'    => array('popup' => 'Salvou a gabaça'),
-				// 'onError'   => array('js' => "if(code == E_NOT_JSON) alert('Não é json! Não é json!'); else alert(error);"),
-				// 'onFailure'	=> array('popup' => 'Erro de comunicação com o servidor!')
-			// )
-		// )
-	// );
+	echo $this->Buro->sform(array('class' => 'azul'), // Parâmetros HTML
+		array(
+			'model' => 'Person.PersPerson', // Somente o Model pai, assim como no FormHelper::create
+			'callbacks' => array(
+				'onStart'	=> array('lockForm'),
+				'onComplete'=> array('unlockForm'),
+				'onSuccess' => array('contentUpdate' => 'replace'),
+				'onSave'    => array('popup' => 'Salvou a gabaça'),
+				'onError'   => array('js' => "if(code == E_NOT_JSON) alert('Não é json! Não é json!'); else alert(error);"),
+				'onFailure'	=> array('popup' => 'Erro de comunicação com o servidor!')
+			)
+		)
+	);
+		echo $this->Buro->input(array(), array('type' => 'textarea', 'fieldName' => 'adsas'));
+		echo $this->Buro->input(array('id' => 'meu_textile'),
+			array(
+				'type' => 'textile',
+				'label' => 'Um input de textile',
+				'fieldName' => 'about'
+			)
+		);
 
 		// echo $this->Buro->input(array(), 
 			// array(
@@ -37,9 +59,9 @@
 				// )
 			// )
 		// );
-		// echo $this->Buro->submit();
+		echo $this->Buro->submit();
 	
-	// echo $this->Buro->eform();
+	echo $this->Buro->eform();
 
 /* 
 	An autocomplete input
