@@ -224,6 +224,25 @@ class BuroOfficeBoyHelper extends AppHelper
 	}
 
 
+/**
+ * Creates the javascript for textile input
+ * 
+ * @access public
+ * @param array $options
+ * @return string The HTML <script> tag
+ */
+	public function textile($options)
+	{	
+		$this->_includeScripts();
+		$defaults = array('callbacks' => array(), 'baseID' => uniqid());
+		extract(am($defaults, $options));
+		
+		$script = sprintf("new BuroTextile('%s')", $baseID);
+		
+		return $this->addHtmlEmbScript($script);
+	}
+
+
 /** 
  * Function to add the script in HTML
  *

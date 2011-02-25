@@ -591,3 +591,136 @@ var BuroUpload = Class.create(BuroCallbackable, {
 		this.trigger('onReject', this.tmp_input, this.responseJSON, this.responseJSON.saved);
 	}
 });
+
+
+/**
+ * 
+ * 
+ * @access public
+ */
+var BuroTextile = Class.create(BuroCallbackable, {
+	initialize: function(id_base)
+	{
+		BuroClassRegistry.set(id_base, this);
+		
+		this.selection = {};
+		this.with_focus = false;
+		this.timeout = false;
+		
+		this.id_base = id_base;
+		this.input = $('npt'+this.id_base);
+		this.links = {};
+		var ids = ['link','bold','ital','file','img']
+		for (var i = 0; i < ids.length; i++)
+			this.links[ids[i]] = $('l'+ids[i]+this.id_base);
+		
+		this.links['bold'].observe('click', this.insertBold.bind(this));
+		this.links['ital'].observe('click', this.insertItalic.bind(this));
+		this.links['link'].observe('click', this.openLinkDialog.bind(this));
+		
+		this.input.observe('focus', this.focus.bind(this));
+		this.input.observe('blur', this.blur.bind(this));
+	},
+	focus: function(ev)
+	{
+		if (this.timeout)
+			window.clearTimeout(this.timeout);
+		this.with_focus = true;
+	},
+	blur: function(ev)
+	{
+		this.timeout = window.setTimeout(function(){this.timeout = false; this.with_focus = false;}.bind(this), 1000);
+	},
+	openLinkDialog: function(ev)
+	{
+		ev.stop();
+		$('itlink'+this.id_base).value = '';
+		$('iulink'+this.id_base).value = '';
+		var selection = this.getSelection(this.input);
+		if (selection.start != selection.end)
+			$('itlink'+this.id_base).value = this.input.value.substring(selection.start, selection.end);
+		showPopup('link'+this.id_base);
+	},
+	insertLink: function(text, title, url)
+	{
+		if (!url.match(/^\w+:\/\//i))
+			url = 'http://' + url;
+		url = encodeURI(url);
+		this.insert('"'+title+'":'+url);
+	},
+	insertBold: function(ev)
+	{
+		ev.stop();
+		if (!this.with_focus) return;
+		this.insertToken('*');
+	},
+	insertItalic: function(ev)
+	{
+		ev.stop();
+		if (!this.with_focus) return;
+		this.insertToken('_');
+	},
+	insertToken: function(token)
+	{
+		var scrollTmp = this.input.scrollTop;
+		var selection = this.getSelection(this.input);
+		var textBefore = this.input.value.substring(0, selection.start);
+		var selectedText = this.input.value.substring(selection.start, selection.end);
+		var textAfter = this.input.value.substring(selection.end, this.input.value.length);
+		
+		if(!selectedText.blank())
+			selectedText = selectedText.replace(/(^[\s\n\t\r]*)([^\t\n\r]*[^\s\t\n\r])([\s\b\t\r]*$)/gim, '$1'+token+'$2'+token+'$3');
+		
+		this.insert(selectedText);
+		this.input.scrollTop = scrollTmp;
+	},
+	insert: function(text)
+	{
+		var selection = this.getSelection(this.input);
+		var textBefore = this.input.value.substring(0, selection.start);
+		var textAfter = this.input.value.substring(selection.end, this.input.value.length);
+		this.input.value = textBefore+text+textAfter;
+		this.setSelection(this.input, selection.start, selection.start+text.length);
+	},
+	getSelection: function(input)
+	{
+		if (!this.with_focus)
+		{
+			if (this.selection.start || this.selection.end)
+				return this.selection;
+			else
+				return {start:this.input.value.length, end:this.input.value.length};
+		}
+			
+		var start, end;
+		if (document.selection) //IE
+		{
+			selected_text = document.selection.createRange().text;
+			start = input.value.indexOf(selected_text);
+			if (start != -1)
+				end = start + selected_text.length;
+		}
+		else if (input.selectionEnd || input.selectionStart) //FF
+		{
+			start = input.selectionStart;
+			end = input.selectionEnd;
+		}
+		return this.selection = {start:start, end:end};
+	},
+	setSelection: function(input, start, end)
+	{
+		if(input.setSelectionRange)
+		{
+			input.focus();
+			input.setSelectionRange(start,end);
+		}
+		else if (input.createTextRange)
+		{
+			var range = input.createTextRange();
+			range.collapse(true);
+			range.moveStart('character', start);
+			range.moveEnd('character', end);
+			range.select();
+		}
+	}
+});
