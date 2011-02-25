@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2011-02-25 11:47-0300\n"
-"PO-Revision-Date: 2011-02-25 15:39-0300\n"
+"PO-Revision-Date: 2011-02-25 15:45-0300\n"
 "Last-Translator: Lucas Vignoli Reis <lucas@preface.com.br>\n"
 "Language-Team: Preface Design <preface@preface.com.br>\n"
 "MIME-Version: 1.0\n"
@@ -153,11 +153,11 @@ msgstr "Troque a imagem"
 
 #: \plugins\burocrata\views\helpers\buro_burocrata.php:1073
 msgid "Burocrata::inputImage - Remove  image"
-msgstr "Remover a imagem"
+msgstr "remova a imagem"
 
 #: \plugins\burocrata\views\helpers\buro_burocrata.php:1102
 msgid "Burocrata::inputImage - or "
-msgstr "ou"
+msgstr " ou "
 
 #: \plugins\corktile\models\cork_corktile.php:70
 msgid "CorkCorktile Model: Could not save the CorkContent"

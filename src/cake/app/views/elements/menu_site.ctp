@@ -22,13 +22,15 @@
 		break;
 
 		case 1:
+			$sectionsContext = $pageSections[$ourLocation[0]]['subSections'][$ourLocation[1]];
+			
 			echo $this->Bl->barraHorizontal(array('class' => array('colorida_branco')));
 			echo $this->Bl->sdiv(array('class' => array('centralizado','coluna_principal')));
 				echo $this->Bl->sdiv(array('class' => array('div_intrapolante')));
 				//@TODO change this next 3 (or 4) lines
-					echo $this->Bl->h1(array(),array(),$pageSections[$ourLocation[0]]['humanName']);
-					if(isset($pageSections[$ourLocation[0]]['subSections']['type'])
-						&& $pageSections[$ourLocation[0]]['subSections']['type'] == 'lateral')
+					echo $this->Bl->h1(array(),array(), $sectionsContext['headerCaption']);
+					if(isset($sectionsContext['dinafonSubSectionsMenuType'])
+						&& $sectionsContext['dinafonSubSectionsMenuType'] == 'lateral')
 					{
 						echo $this->element('menu_site', array('nivel' => 2, 'tipo' => 'lateral'));
 					}
@@ -37,9 +39,9 @@
 
 			echo $this->Bl->floatBreak();
 
-			if (  isset($pageSections[$ourLocation[0]]['subSections'])
-			   && !(isset($pageSections[$ourLocation[0]]['subSections']['type'])
-					&& $pageSections[$ourLocation[0]]['subSections']['type'] == 'lateral'))
+			if (  isset($sectionsContext['subSections'])
+			   && !(isset($sectionsContext['dinafonSubSectionsMenuType'])
+					&& $sectionsContext['dinafonSubSectionsMenuType'] == 'lateral'))
 			{
 				echo $this->element('menu_site', array('nivel' => 2, 'tipo' => 'normal'));
 			}
@@ -48,11 +50,13 @@
 		case 2:
 			if ($tipo == 'normal')
 			{
+				$sectionsContext = $pageSections[$ourLocation[0]]['subSections'][$ourLocation[1]];
+				
 				echo $this->Bl->barraHorizontal(array('class' => array('tracejada_cinza_branco')));
 				echo $this->Bl->sdiv(array('class' => array('centralizado','coluna_principal')));
 					echo $this->Bl->sdiv(array('class' => array('div_intrapolante','menu_1')));
 						$links_html = array();
-						foreach($pageSections[$ourLocation[0]]['subSections'] as $secao => $dados_secao)
+						foreach($sectionsContext['subSections'] as $secao => $dados_secao)
 						{
 							$atributos = array();
 							if ($ourLocation[1] == $secao)

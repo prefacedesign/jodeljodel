@@ -220,7 +220,6 @@ class TypeBricklayerHelper extends AppHelper
 	
 	function para($attr = array(), $options = array(), $paras)
 	{
-		//para onde passamos os atributos e opcoes passados? -- posso aceitar opcoes individuais, e opcoes generalizadas
 		$t = $this->spara($attr, $options);
 		
 		foreach($paras as $para)
@@ -232,7 +231,7 @@ class TypeBricklayerHelper extends AppHelper
 				$t .= $para;
 			$t .= $this->ep();
 		}
-		
+	
 		$t .= $this->epara();
 		return $t;
 	}
