@@ -20,7 +20,7 @@ class DinafonTypeBricklayerHelper extends TypeBricklayerHelper
 		//definir i -1
 		//quando for transparente, chamar o sbox com transparent
 		//
-		$options = am(array('size' => array('g' => -1)), $options);
+		$options['size'] = am($options['size'],array('g' => -1));
 
 		$attr = $this->_mergeAttributes(array('class' => array('caixa')), $attr);
 
@@ -28,6 +28,8 @@ class DinafonTypeBricklayerHelper extends TypeBricklayerHelper
 			$attr = $this->_mergeAttributes(array('class' => array('transparente')), $attr);
 			unset ($options['tipo']);
 		}
+		
+
 		return $this->sbox($attr,$options);  //'<div class="topo_caixa '. $classe_largura . ' ' . _classe_estilo_topo_caixa($tamanho['qM']) . '"></div>';
 
 	}
@@ -139,6 +141,33 @@ class DinafonTypeBricklayerHelper extends TypeBricklayerHelper
 	function ecaixote()
 	{
 		return $this->ebox();
+	}
+
+
+	function h2($attr = array(), $options = array(), $content = '')
+	{
+
+		$t = parent::h2($attr,$options, $content);
+		$t.= $this->barraHorizontal(array('class' => 'cinza_branco') );
+		return $t;
+	}
+
+	function h3($attr = array(), $options = array(), $content = '')
+	{
+
+		$t = parent::h3($attr,$options, $content);
+		$t.= $this->barraHorizontal(array('class' => 'cinza_branco') );
+		return $t;
+	}
+
+	function espacoM ()
+	{
+		return '&emsp;';
+	}
+
+	function espacoN ()
+	{
+		return '&ensp;';
 	}
 
 }

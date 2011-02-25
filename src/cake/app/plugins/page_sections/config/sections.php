@@ -91,7 +91,6 @@ $sections = array(
 		'pageTitle' => array(__('Sections: public_page pageTitle',true)),
 		'headerCaption' => __('Sections: public_page pageTitle', true),
 		'humanName' => __('Sections: public_page humanName',true),
-		
 		'subSections' => array(
 			'about' => array(
 				'linkCaption' => __('Sections: about linkCaption', true),
@@ -102,7 +101,34 @@ $sections = array(
 				),
 				'pageTitle' => array(null,__('Sections: about pageTitle',true)),
 				'headerCaption' => __('Sections: about headerCaption', true),
-				'humanName' => __('Sections: about humanName',true)
+				'humanName' => __('Sections: about humanName',true),
+				//inseri esse pra ver se funcionava o sub-menu do about (fedel)
+				'dinafonSubSectionsMenuType' => 'normal',
+				'subSections' => array(
+					'about_dinafon' => array(
+						'linkCaption' => __('Sections: about_dinafon linkCaption', true),
+						'url' => array(
+							'plugin' => false,
+							'controller' => 'principal',
+							'action' => 'about'
+						),
+						'pageTitle' => array(null, null, __('Sections: about_dinafon pageTitle',true)),
+						'headerCaption' => __('Sections: about_dinafon headerCaption', true),
+						'humanName' => __('Sections: about_dinafon humanName',true)
+					),
+					'about_people' => array(
+						'linkCaption' => __('Sections: about_people linkCaption', true),
+						'url' => array(
+							'plugin' => false,
+							'controller' => 'people',
+							'action' => 'index'
+						),
+						'pageTitle' => array(null, null, __('Sections: about_people pageTitle',true)),
+						'headerCaption' => __('Sections: about_people headerCaption', true),
+						'humanName' => __('Sections: about_people humanName',true),
+					),
+
+				)
 			),
 			'contact' => array(
 				'linkCaption' => __('Sections: contact linkCaption', true),
@@ -340,6 +366,20 @@ $sectionMap = array(
 	array(
 		'rule' => array('controller' => 'principal', 'action' => 'index'),
 		'location' => array('public_page')
+	),
+	array(
+		'rule' => array('controller' => 'principal', 'action' => 'about'),
+		'location' => array('public_page', 'about'),
+		'subRules' => array(
+			array(
+				'rule' => array('controller' => 'principal', 'action' => 'about'),
+				'location' => array('public_page', 'about', 'about_dinafon')
+			),
+		)
+	),
+	array(
+		'rule' => array('controller' => 'people', 'action' => 'index'),
+		'location' => array('public_page','dinafon','people')
 	),
 	array(
 		'rule' => array('plugin' => 'news', 'controller' => 'new_news'),

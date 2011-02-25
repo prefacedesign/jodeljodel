@@ -28,7 +28,7 @@ $this->Decorator->rule(
 //$hg->size(array('M'=>12))
 $this->Decorator->rule(
 		'.coluna_principal', array(
-			'width' => $hg->size(array('M'=>12)),
+			'width' => $hg->size(array('M'=>12, 'g' => -1)),
 			'position' => 'relative',
 			'margin-left' => 'auto',
 			'margin-right' => 'auto'
@@ -104,7 +104,7 @@ $this->Decorator->rule(
 			'float' => 'left',
 			'display' => 'block',
 			'margin' => '0',
-			'width' => $hg->size(array('M' => 3, 'g' => 2, 'M' => 1))
+			'width' => $hg->size(array('M' => 3, 'g' => 2, 'm' => 1))
 	));
 
 $this->Decorator->rule(
@@ -112,13 +112,13 @@ $this->Decorator->rule(
 			'float' => 'left',
 			'display' => 'block',
 			'margin-left' => $hg->size(array('g' => 1)),
-			'width' =>  $hg->size(array('M' => 3, 'g' => 1.8, 'M' => 1))
+			'width' =>  $hg->size(array('M' => 3, 'g' => 1.8, 'm' => 1))
 	));
 
 
 $this->Decorator->rule(
 		'.larg_3M_-3i_-1m', array(
-			'width' => $hg->size(array('M' => 3, 'g' => -3, 'M' => -1))
+			'width' => $hg->size(array('M' => 3, 'g' => -3, 'm' => -1))
 	));
 
 $this->Decorator->rule(
@@ -355,43 +355,42 @@ $this->Decorator->rule(
 				)
 				.  "')",
 			'height' => $u->t(4),
-			'margin-bottom' => $vg->size(array('g' => 0.5))
+			'margin-top' => $vg->size(array('g' => 0.5))
 	));
 
 
 $this->Decorator->rule(
-		'.colorida_cinza_branco', array(
-			'background-image' => "url('". $ig->url(
-				array(
-						'w' => 1600,
-						'h' => 6,
-						'iw' => 1600*4,
-						'ih' => 6*4,
-						'base_name' => 'barrinha_baixo',
-						'layers' => array(
-							array(
-								'type' => 'apply_color',
-								'color' => $palette['fundo_cabecalho']
-							),
-							array(
-								'type' => 'tint_image',
-								'path' => '/img/matrixes/barrinha_barrao_c-principal_f1-fundo_conteudo_f2-fundo_cabecalho.png',
-								'color' => $palette['fundo_conteudo']
-							),
-							array(
-								'type' => 'tint_image',
-								'path' => '/img/matrixes/barrinha_pont_c-principal_f1-fundo_conteudo_f2-fundo_cabecalho.png',
-								'color' => $palette['principal']
-							)
+	'.colorida_cinza_branco', array(
+		'background-image' => "url('". $ig->url(
+			array(
+					'w' => 1600,
+					'h' => 6,
+					'iw' => 1600*4,
+					'ih' => 6*4,
+					'base_name' => 'barrinha_baixo',
+					'layers' => array(
+						array(
+							'type' => 'apply_color',
+							'color' => $palette['fundo_cabecalho']
+						),
+						array(
+							'type' => 'tint_image',
+							'path' => '/img/matrixes/barrinha_barrao_c-principal_f1-fundo_conteudo_f2-fundo_cabecalho.png',
+							'color' => $palette['fundo_conteudo']
+						),
+						array(
+							'type' => 'tint_image',
+							'path' => '/img/matrixes/barrinha_pont_c-principal_f1-fundo_conteudo_f2-fundo_cabecalho.png',
+							'color' => $palette['principal']
 						)
 					)
 				)
-				.  "')",
-			'height' => $u->t(5)
-	));
+			)
+			.  "')",
+		'height' => $u->t(5)
+));
 
 
-//@todo verificar se esse trecho ficando fora do Decorator funciona
 $altura = 5;
 $cima = floor($lineHeight - 5)/2;
 $baixo = $lineHeight - 5 - $cima;
@@ -469,7 +468,7 @@ $this->Decorator->rule(
 
 $this->Decorator->rule(
 		'.menu_0', array(
-			'margin-top' => $vg->size(array('M' => 1/2))
+			'margin-top' => $vg->size(array('M' => 29/82))
 	));
 
 $this->Decorator->rule(
@@ -626,7 +625,6 @@ $this->Decorator->rule(
 				'background-position' => $hg->size(array('g' => -4)) . ' ' .  $vg->size(array('M' => -2))
 	));
 
-//@todo verificar se colocar esse comando aqui ?? tranquilo
 $atrator = rand(2,6);
 
 $this->Decorator->rule(

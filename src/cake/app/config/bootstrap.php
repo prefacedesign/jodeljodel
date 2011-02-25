@@ -54,9 +54,9 @@
 		),
 		'new' => array(
 			'plugin' => 'new',
-			'prefix' => 'new',
-			'model' => 'NewNew',
-			'humanName' => 'MODULE NewNews human name',
+			'prefix' => 'news',
+			'model' => 'NewsNew',
+			'humanName' => 'MODULE NewsNew human name',
 			'plugged' => array('dashboard','backstage')
 		),
 		'text_cork' => array(
@@ -97,3 +97,25 @@
 
 require APP . 'plugins' . DS . 'media' . DS . 'config' . DS . 'core.php';
 require APP . 'plugins' . DS . 'typographer' . DS . 'config' . DS . 'core.php';
+
+function br_strftime($formato, $tempo)
+{
+	$meses = array(
+		1 => 'Janeiro',
+		2 => 'Fevereiro',
+		3 => 'Mar�o',
+		4 => 'Abril',
+		5 => 'Maio',
+		6 => 'Junho',
+		7 => 'Julho',
+		8 => 'Agosto',
+		9 => 'Setembro',
+		10 => 'Outubro',
+		11 => 'Novembro',
+		12 => 'Dezembro'
+	);
+
+	$data = getdate($tempo);
+	return strftime(str_replace('%B',$meses[$data['mon']], $formato), $tempo);
+}
+

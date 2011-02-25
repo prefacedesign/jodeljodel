@@ -39,12 +39,16 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function insertForm($modelClassName, $typeParams = array())
 	{
+		//debug($modelClassName);
+		//debug($typeParams);
 		$type= am(BuroBurocrataHelper::$defaultSupertype, 'form', $typeParams);
 		list($plugin, $model_alias) = pluginSplit($modelClassName);
 		
 		$View = &$this->_getView();
 		$plugin = Inflector::underscore($plugin);
 		$element_name = Inflector::underscore($model_alias);
+		//debug($model_alias);
+		//debug($element_name);
 		return $View->element($element_name, compact('plugin', 'type'));
 	}
 
@@ -957,8 +961,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'version' => '',
 			'model' => 'JjMedia.SfilStoredFile'
 		);
+		//debug($options);
 		$gen_options = $options['options'] + $defaults;
-		
+		//debug($gen_options);
+		//die;
+
+	
 		if (isset($file_input_options['error']))
 		{
 			$gen_options['error'] = $file_input_options['error'];

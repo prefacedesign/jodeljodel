@@ -3,6 +3,9 @@ App::import('Config','Tradutore.languages');
 
 class TradLanguageSelectorComponent extends Object
 {
+	var $components = array('Session');
+	
+	
     function startup(&$controller)
     {
 		if (isset($controller->params['language']))
@@ -10,23 +13,27 @@ class TradLanguageSelectorComponent extends Object
 		else
 			$lang = '';
 		//debug($lang);
-		if ($lang) 
+		if (!empty($lang))
 		{
+			
 			$languages = Configure::read('Tradutore.languages');
+			//debug($languages);
 			if (in_array($lang, $languages)) {
 				$this->setLanguage($lang);
-			}
-			else
-			{
-				$main_language = Configure::read('Tradutore.mainLanguage');
-				$this->setLanguage($main_language);
+				//debug($lang);
+				$this->Session->write('Tradutore.currentLanguage', $lang);
+				return true;
 			}
 		}
-		else
+		if (!$this->Session->check('Tradutore.currentLanguage'))
 		{
 			$main_language = Configure::read('Tradutore.mainLanguage');
 			$this->setLanguage($main_language);
+			$this->Session->write('Tradutore.currentLanguage', $main_language);
 		}
+		else
+			$this->setLanguage($this->Session->read('Tradutore.currentLanguage'));
+		
 	}
    
     function setLanguage($lang = null)
@@ -48,6 +55,7 @@ class TradLanguageSelectorComponent extends Object
     {
 		App::import('Behavior','Tradutore.TradTradutore');
         TradTradutoreBehavior::setGlobalLanguage($lang);
+		//debug($lang);
 	}
 }
 ?>

@@ -191,6 +191,14 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 			$arrow = $this->Bl->sdiv(array('class' => 'arrow'))
 					 . $this->Bl->anchor(array(), array('url' => ''), ' ')
 					 . $this->Bl->ediv();
+					 
+			$languageStr = '';
+			
+			if (is_array($item['DashDashboardItem']['idiom']))
+			{
+				foreach ($item['DashDashboardItem']['idiom'] as $lang)
+					$languageStr .= __('Dashboard language abrev.: '. $lang, true) . ' ';
+			}
 			
 			echo $this->Bl->smartTableRowDry(array(
 				__('Dashboard types: ' . $item['DashDashboardItem']['type'], true), 
@@ -199,7 +207,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 				$item['DashDashboardItem']['info'],
 				strftime("%d/%m/%y", strtotime($item['DashDashboardItem']['created'])),
 				strftime("%d/%m/%y", strtotime($item['DashDashboardItem']['modified'])),
-				array(array(), array('escape' => false), $arrow . $item['DashDashboardItem']['idiom'])
+				array(array(), array('escape' => false), $arrow . $languageStr)
 			));
 	
 			//@todo Substitute this with an AJAX call.

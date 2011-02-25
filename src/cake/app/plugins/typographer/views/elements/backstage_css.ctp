@@ -14,6 +14,11 @@
 			'-moz-box-shadow' => $box_shadow
 	));
 	
+	
+
+	
+	
+	
 	$this->Decorator->rule(
 		'.error_box', array(
 			'background' => $palette['error_popin']->write(),
@@ -569,6 +574,15 @@
 	$this->Decorator->rule(
 		'.buro_form input[type="text"]', array(
 			'height' => $u->t($vg->size(array('g' => 1.5),false) - 2*$border_size - $padding_top)
+	));
+	
+	$this->Decorator->rule(
+		'select.buro', array(
+			'border' => $u->t($border_size) . ' solid ' .  $palette['input_borders']->write(),
+			'height' => $u->t($vg->size(array('g' => 1.5),false) - 2*$border_size),
+			'padding-left' => $u->t($padding_size),
+			'width' => $hg->size(array('M' => 2, 'g' => -1, 'u' => -$padding_size-2*$border_size)),
+			'margin-right' => $hg->size(array('g' => 1))
 	));
 	
 	$this->Decorator->rule(

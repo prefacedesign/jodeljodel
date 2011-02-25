@@ -1,6 +1,4 @@
 <?php
-
-
 echo $bl->sdiv(array('id' => 'main_column'));
 
 	echo $bl->sdiv(array('id' => 'header'));
@@ -10,8 +8,17 @@ echo $bl->sdiv(array('id' => 'main_column'));
 			);
 		echo $bl->ebox();		
 		echo $bl->sdiv(array('id' => 'user_area'));
-			echo $bl->pDry($user_name);
-			echo $bl->a(array('href' => array('/')), array(), __('Logout', true));
+			echo $bl->pDry($userData['name']);
+			echo $bl->anchor(array(), 
+				array(
+					'url' => array(
+						'plugin' => 'jj_users', 
+						'controller' => 'user_users', 
+						'action' => 'logout'
+					)
+				), 
+				__('Logout', true)
+			);
 		echo $bl->ediv();
 	echo $bl->ediv();
 	

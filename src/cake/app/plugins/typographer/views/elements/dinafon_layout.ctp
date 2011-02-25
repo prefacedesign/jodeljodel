@@ -3,11 +3,11 @@
 		if ($this->params['action'] != 'admin_index')
 		{
 			echo $bl->sdiv(array(
-						'id'=>'cabecalho',
+						'id'=>'primeiro_cabecalho',
 						'class' => 'centralizado coluna_principal'));
 				//@todo verificar se pode continuar chamando tamanho
 				echo $bl->scaixa(array(),array('size' => array('M' => 4), 'tipo' => 'transparente'));
-						echo $bl->simagem(array(),array('imgurl' => $ig->url(
+						echo $bl->simagem(array('id' => 'logo'),array('imgurl' => $ig->url(
 							array(
 								'w' => 239,
 								'h' => 79,
@@ -75,7 +75,7 @@
 
 				echo $bl->div(
 					array(
-						'class' => array('centralizado coluna_principal')
+						'class' => array('centralizado','coluna_principal')
 					),
 					array(),
 					$bl->div(
@@ -86,8 +86,8 @@
 				);
 			}
 			else
-			{
-				if (isset($onde_estamos[0])) //se existe o sub-nível 2
+			{ 
+				if (isset($ourLocation[1])) //se existe o sub-nível 2
 				{
 					echo $this->element('menu_site', array('nivel' => 1));
 				}
@@ -119,12 +119,12 @@
 
 	echo $bl->barraHorizontal(array('class' => array('colorida_branco_cinza')));
 
-	echo $bl->sdiv(array('id' => array('conteudo')));
+	echo $bl->sdiv(array('id' => 'conteudo'));
 		//@todo verificar se esse g => 2 está correto, se não precisa ir em tamanho
-		echo $bl->floatBreak(array(),array('g' => 2));
+		echo $bl->floatBreak(array(),array('height' => array('g' => 2)));
 
 		echo $bl->sdiv(array('class' => array('centralizado','coluna_principal')));
-			echo $bl->sdiv(array('class' => array('div_intrapolante')));
+			echo $bl->sdiv(array('class' => array('div_extrapolante')));
 				echo $content_for_layout;
 				echo $bl->floatBreak();
 			echo $bl->ediv();

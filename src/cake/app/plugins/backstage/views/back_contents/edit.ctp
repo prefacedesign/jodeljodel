@@ -51,37 +51,64 @@ echo $this->Bl->ebox();
 
 echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 	//@todo Really use the Tradutore tool.
-	$tmp = $this->Bl->anchorList(array(),array(
-			'lastSeparator' => __('anchorList and', true),
-			'linkList' => array(
-				array('name' => __('english',true), 'url' => "www.google.com.br"),
-				array('name' => __('portuguese',true), 'url' => "www.google.com.br"),
-				array('name' => __('japanese',true), 'url' => "www.google.com.br"),
-				array('name' => __('javanese',true), 'url' => "www.google.com.br")
-			)
-		)
-	);
-	echo $this->Bl->p(array('class' => 'small_text'), array('escape' => false),
-		sprintf (__('This %s already has translations for %s.',true), 'article', $tmp));
-
-	echo $this->Bl->scontrolBox();
-		echo $this->Bl->h3(array(), array('escape' => false), $this->Bl->spanDry(
-			__('backstage edit page: Editing', true))
-			.  sprintf(__(' the %s version.',true),__('portuguese',true))
-		);
-
-		$tmp = $this->Bl->anchorList(array(),array(
-				'lastSeparator' => __('anchorList or', true),
-				'linkList' => array(
-					array('name' => __('mark it as ready',true), 'url' => "www.google.com.br"),
-					array('name' => __('remove it',true), 'url' => "www.google.com.br")
-				)
-			)
-		);
+	//debug($this->params);
+	if (isset($this->data[$modelName]['languages']))
+	{
+		$linkList = array();
+		foreach($this->data[$modelName]['languages'] as $lang)
+		{
+			$linkList[] = array('name' => __('Language name: '.$lang, true), 'url' => Router::url(am(array('language' => $lang), $this->params['pass'])));
+		}
+		$tmp = $this->Bl->anchorList(array(),array('lastSeparator' => __('anchorList and', true), 'linkList' => $linkList));	
+		
 		echo $this->Bl->p(array('class' => 'small_text'), array('escape' => false),
-				sprintf(__('Version marked as draft. You can %s.',true), $tmp));
+			sprintf (__('This content already has translations for %s.',true), $tmp));
+			
+		echo $this->Bl->brDry();
+			
+		$missingLanguages =	array_diff(Configure::read('Tradutore.languages'), $this->data[$modelName]['languages']);
+		
+		if (!empty($missingLanguages))
+		{
+			$linkList = array();
+			foreach($missingLanguages as $lang)
+			{
+				$linkList[] = array('name' => __('Language name: '.$lang, true), 'url' => Router::url(am(array('language' => $lang), $this->params['pass'])));
+			}
+			echo $this->Bl->p(
+				array('class' => 'small_text'), 
+				array('escape' => false),
+				sprintf (
+					__('Backstage edit page: If you want you can create a version for %s',true),
+					$this->Bl->anchorList(array(),array('lastSeparator' => __('anchorList or', true), 'linkList' => $linkList))
+				)
+			);
+		}		
+	}
+	if ($this->Session->check('Tradutore.currentLanguage'))
+	{
+		echo $this->Bl->scontrolBox();
+			
+			echo $this->Bl->h3(array(), array('escape' => false), $this->Bl->spanDry(
+				__('backstage edit page: Editing', true))
+				.  sprintf(__(' the %s version.',true),__('Language name: '.$this->Session->read('Tradutore.currentLanguage'),true))
+			);
 
-	echo $this->Bl->econtrolBox();
+			$tmp = $this->Bl->anchorList(array(),array(
+					'lastSeparator' => __('anchorList or', true),
+					'linkList' => array(
+						array('name' => __('mark it as ready',true), 'url' => "www.google.com.br"),
+						array('name' => __('remove it',true), 'url' => "www.google.com.br")
+					)
+				)
+			);
+			/*
+			echo $this->Bl->p(array('class' => 'small_text'), array('escape' => false),
+					sprintf(__('Version marked as draft. You can %s.',true), $tmp));
+			*/
+			
+		echo $this->Bl->econtrolBox();
+	}
 	
 	
 	echo $this->Popup->popup('error',
