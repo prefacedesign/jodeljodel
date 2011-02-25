@@ -52,6 +52,17 @@
 			'font-weight' => 'bold'
 	));
 	
+	// form popup
+	$this->Decorator->rule(
+		'.box_popup.form_box p', array('margin-bottom' => $vg->size(array('g' => 1))));
+	$this->Decorator->rule(
+		'.box_popup.form_box label', array('text-transform' => 'none',));
+	$this->Decorator->rule(
+		'.box_popup.form_box input', array('margin-bottom' => $vg->size(array('g' => 1))));
+	$this->Decorator->rule(
+		'.box_popup.form_box .callbacks', array('margin-top' => $vg->size(array('g' => 0.5))));
+		
+	
 	$this->Decorator->rule(
 		'a.link_button', array(
 			'background-color' => $palette['button_bg']->write(),
@@ -84,6 +95,32 @@
 			'color' => $palette['bg']->write(),
 			'background-color' => $palette['active_button_bg']->write(),
 	));
+	
+	
+	// Textile input
+	$this->Decorator->rule(
+		'a.link_button.buro_textile', array(
+			'width' => $hg->size(array('M' => 1)),
+			'height' => $vg->size(array('g' => 1)),
+			'line-height' => $vg->size(array('g' => 1)),
+			'overflow' => 'hidden'
+	));
+	
+	$this->Decorator->rule(
+		'a.link_button.buro_textile.bold_textile', array(
+			'font-weight' => 'bold'
+	));
+	
+	$this->Decorator->rule(
+		'a.link_button.buro_textile.ital_textile', array(
+			'font-style' => 'italic'
+	));
+	
+	$this->Decorator->rule(
+		'a.link_button.buro_textile.link_textile, a.link_button.buro_textile.file_textile', array(
+			'text-decoration' => 'underline'
+	));
+	
 	
 	
 	$this->Decorator->rule(

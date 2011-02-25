@@ -1,8 +1,5 @@
 <?php
 
-	$box_links = array();
-	$caixa_scripts = array();
-	
 	$this->Html->script('prototype', array('inline' => false));
 	$this->Html->script('/popup/js/popup', array('inline' => false));
 	
@@ -13,19 +10,26 @@
 		foreach($actions as $box_action => $box_link)
 		{
 			$box_link_id = uniqid('link_');
-			$links_callbacks[] = $html->link($box_link, $this->here, array('id' => $box_link_id, 'class' => 'link_button'));
+			$box_link_class = 'link_button';
+			$links_callbacks[] = $this->Bl->a(
+				array('id' => $box_link_id, 'class' => $box_link_class, 'href' => $this->here),
+				array(),
+				$box_link
+			);
 			$list_links[] = '"'.$box_action.'":"'.$box_link_id.'"';
 		}
 	}
 	
+	$typeTitle = trim(__('Popup plugin ' . $type . ' type',true));
+	if (!empty($typeTitle))
+		$title = $typeTitle . ': ' . $title;
+	
+	if (empty($title))
+		$title .= ' ';
+	
 	echo $this->Bl->sboxcontainer(array('id' => $id, 'class' => 'box_popup '. $type.'_box' ), array());
 		echo $this->Bl->sbox(array(), array('size' => array('M' => 7, 'g' => -3)));
-			echo $this->Bl->sh2();
-				$typeTitle = __('Popup plugin ' . $type . ' type',true);				
-				if (!empty($typeTitle) && $typeTitle !== ' ')
-					echo $typeTitle . ': ';
-				echo $title;
-			echo $this->Bl->eh2();
+			echo $this->Bl->h2Dry($title);
 			echo $this->Bl->sdiv();
 				echo $content;
 			echo $this->Bl->ediv();

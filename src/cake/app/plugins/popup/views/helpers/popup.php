@@ -1,8 +1,24 @@
 <?php
+
+/**
+ * Popup helper.
+ *
+ * Creates the HTML and the Javascript for firing popups on the page
+ *
+ * @package       jodel
+ * @subpackage    jodel.popup.view.helpers
+ */
 class PopupHelper extends AppHelper
 {
+
+/**
+ * List of used helpers
+ * 
+ * @var array
+ * @access public
+ */
 	var $helpers = array('Html', 'Ajax', 'Javascript');
-	var $View = null;
+
 	
 /**
  * Create and return the popup element. The array of options accept:
@@ -19,7 +35,6 @@ class PopupHelper extends AppHelper
  */
 	function popup($id, $options = array())
 	{
-		$this->View =& ClassRegistry::getObject('View');
 		$options = am(
 			array(
 				'type' => 'notice',
@@ -33,10 +48,40 @@ class PopupHelper extends AppHelper
 		$options['id'] = $id;
 		$options['plugin'] = 'popup';
 		
-		return $this->View->element('popup', $options);
+		$method = '_'.$options['type'];
+		if (method_exists($this, $method))
+			return call_user_func(array($this, $method), $options);
+		
+		return $this->_popup($options);
 	}
-	
-	
+
+
+/**
+ * Creates a popup for data insertion. This method overwrites the action links,
+ * to the classic OK oe cancel.
+ * 
+ * @access protected
+ * @param array $options
+ * @return string The element rendered
+ */
+	protected function _form($options)
+	{
+		return $this->_popup($options);
+	}
+
+
+/**
+ * Call the popup element
+ * 
+ * @access protected
+ * @param array $options
+ * @return string The element rendered
+ */
+	protected function _popup($options)
+	{
+		$View =& ClassRegistry::getObject('View');
+		return $View->element('popup', $options);
+	}
 	
 	
 	
