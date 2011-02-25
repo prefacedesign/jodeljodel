@@ -102,7 +102,33 @@ $sections = array(
 				),
 				'pageTitle' => array(null,__('Sections: about pageTitle',true)),
 				'headerCaption' => __('Sections: about headerCaption', true),
-				'humanName' => __('Sections: about humanName',true)
+				'humanName' => __('Sections: about humanName',true),
+				//inseri esse pra ver se funcionava o sub-menu do about (fedel)
+				'subSections' => array(
+					'about_dinafon' => array(
+						'linkCaption' => __('Sections: about_dinafon linkCaption', true),
+						'url' => array(
+							'plugin' => false,
+							'controller' => 'principal',
+							'action' => 'about'
+						),
+						'pageTitle' => array(null, null, __('Sections: about_dinafon pageTitle',true)),
+						'headerCaption' => __('Sections: about_dinafon headerCaption', true),
+						'humanName' => __('Sections: about_dinafon humanName',true)
+					),
+					'about_people' => array(
+						'linkCaption' => __('Sections: about_people linkCaption', true),
+						'url' => array(
+							'plugin' => false,
+							'controller' => 'people',
+							'action' => 'index'
+						),
+						'pageTitle' => array(null, null, __('Sections: about_people pageTitle',true)),
+						'headerCaption' => __('Sections: about_people headerCaption', true),
+						'humanName' => __('Sections: about_people humanName',true),
+					),
+
+				)
 			),
 			'contact' => array(
 				'linkCaption' => __('Sections: contact linkCaption', true),
@@ -340,6 +366,25 @@ $sectionMap = array(
 	array(
 		'rule' => array('controller' => 'principal', 'action' => 'index'),
 		'location' => array('public_page')
+	),
+	//adicionei essa regra pra fazer o ourLocation do about funcionar (fedel)
+	//@TODO verify if is ok
+	array(
+		'rule' => array('controller' => 'principal', 'action' => 'about'),
+		'location' => array('public_page'),
+		//inserindo as subrules, mas não sie bem como definir o location
+		//@TODO verify if is ok
+		'subRules' => array(
+			array(
+				'rule' => array('controller' => 'principal', 'action' => 'about'),
+				'location' => array('public_page','about_dinafon')
+			),
+
+		)
+	),
+	array(
+		'rule' => array('controller' => 'people', 'action' => 'index'),
+		'location' => array('public_page','dinafon','people')
 	),
 	array(
 		'rule' => array('plugin' => 'news', 'controller' => 'new_news'),

@@ -160,5 +160,15 @@ class DinafonTypeBricklayerHelper extends TypeBricklayerHelper
 		return $t;
 	}
 
+	function espacoM ()
+	{
+		return '&emsp;';
+	}
+
+	function espacoN ()
+	{
+		return '&ensp;';
+	}
+
 }
 ?>

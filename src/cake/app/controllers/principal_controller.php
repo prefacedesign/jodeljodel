@@ -72,7 +72,7 @@
 			$this->set('publicacoes', $publicacoes);
 		}
 		
-		function sobre()
+		function about()
 		{
 			Configure::load('bd_textos');
 			Configure::load('bd_pessoas');

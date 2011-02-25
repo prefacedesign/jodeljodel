@@ -26,63 +26,62 @@
 			echo $this->Bl->sdiv(array('class' => array('centralizado','coluna_principal')));
 				echo $this->Bl->sdiv(array('class' => array('div_intrapolante')));
 				//@TODO change this next 3 (or 4) lines
-//					echo $this->Bl->h1(array(),array(),$menus_secoes[$onde_estamos[0]]['titulo_cabecalho']);
-//					if(isset($menus_secoes[$onde_estamos[0]]['sub_secoes']['tipo'])
-//						&& $menus_secoes[$onde_estamos[0]]['sub_secoes']['tipo'] == 'lateral')
-//					{
-//						echo $this->element('menu_site', array('nivel' => 2, 'tipo' => 'lateral'));
-//					}
+					echo $this->Bl->h1(array(),array(),$pageSections[$ourLocation[0]]['humanName']);
+					if(isset($pageSections[$ourLocation[0]]['subSections']['type'])
+						&& $pageSections[$ourLocation[0]]['subSections']['type'] == 'lateral')
+					{
+						echo $this->element('menu_site', array('nivel' => 2, 'tipo' => 'lateral'));
+					}
 				echo $this->Bl->ediv();
 			echo $this->Bl->ediv();
 
 			echo $this->Bl->floatBreak();
 
-//			if (  isset($menus_secoes[$onde_estamos[0]]['sub_secoes'])
-//			   && !(isset($menus_secoes[$onde_estamos[0]]['sub_secoes']['tipo'])
-//					&& $menus_secoes[$onde_estamos[0]]['sub_secoes']['tipo'] == 'lateral'))
-//			{
-//				echo $this->element('menu_site', array('nivel' => 2, 'tipo' => 'normal'));
-//			}
+			if (  isset($pageSections[$ourLocation[0]]['subSections'])
+			   && !(isset($pageSections[$ourLocation[0]]['subSections']['type'])
+					&& $pageSections[$ourLocation[0]]['subSections']['type'] == 'lateral'))
+			{
+				echo $this->element('menu_site', array('nivel' => 2, 'tipo' => 'normal'));
+			}
 		break;
 
 		case 2:
 			if ($tipo == 'normal')
 			{
-				echo $kulepona->barraHorizontal('tracejada_cinza_branco');
-				echo $kulepona->iTag('div', array('class' => array('centralizado','coluna_principal')));
-					echo $kulepona->iTag('div', array('class' => array('div_intrapolante', 'menu_1')));
-
+				echo $this->Bl->barraHorizontal(array('class' => array('tracejada_cinza_branco')));
+				echo $this->Bl->sdiv(array('class' => array('centralizado','coluna_principal')));
+					echo $this->Bl->sdiv(array('class' => array('div_intrapolante','menu_1')));
 						$links_html = array();
-						foreach($menus_secoes[$onde_estamos[0]]['sub_secoes'] as $secao => $dados_secao)
+						foreach($pageSections[$ourLocation[0]]['subSections'] as $secao => $dados_secao)
 						{
 							$atributos = array();
-							if ($onde_estamos[1] == $secao)
+							if ($ourLocation[1] == $secao)
 							{
 								$atributos = array_merge_recursive($atributos, array('class' => 'selecionado'));
 							}
-							$links_html[] = $kulepona->link($dados_secao['titulo_link'], $dados_secao['link'], $atributos);
+							$links_html[] = $this->Bl->anchor($atributos,array('url' => $dados_secao['url']), $dados_secao['linkCaption']);
 						}
-						echo implode($kulepona->espacoM(), $links_html);
-					echo $kulepona->fTag('div');
-				echo $kulepona->fTag('div');
-				echo $kulepona->limpador();
+						echo implode($this->Bl->espacoM(), $links_html);
+					echo $this->Bl->ediv();
+				echo $this->Bl->ediv();
+				echo $this->Bl->floatBreak();
 			}
 			if ($tipo == 'lateral')
 			{
 				$links_html = array();
-				foreach($menus_secoes[$onde_estamos[0]]['sub_secoes'] as $secao => $dados_secao)
+				foreach($pageSections[$ourLocation[0]]['subSections'] as $secao => $dados_secao)
 				{
-					if (($onde_estamos[1] != $secao) && ($secao != 'tipo'))
+					if (($ourLocation[1] != $secao) && ($secao != 'tipo'))
 					{
-						$links_html[] = $kulepona->link($dados_secao['titulo_link'], $dados_secao['link']);
+						$links_html[] = $this->Bl->anchor(array(),array('url' => $dados_secao['url']), $dados_secao['linkCaption']);
 					}
 				}
 
 				if (!empty($links_html))
 				{
-					echo $kulepona->iTag('div', array('class' => array('menu_1_lateral')));
-							echo implode($kulepona->espacoM(), $links_html);
-					echo $kulepona->fTag('div');
+					echo $this->Bl->sdiv(array('class' => array('menu_1_lateral')));
+							echo implode($this->Bl->espacoM(), $links_html);
+					echo $this->Bl->ediv();
 				}
 			}
 		break;

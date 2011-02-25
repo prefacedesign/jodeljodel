@@ -171,7 +171,7 @@ class SectSectionHandlerComponent extends Object {
 		{
 			$this->ourLocation = array();
 			
-			$sectionMapContext =& $this->sectionMap;		
+			$sectionMapContext =& $this->sectionMap;
 			while(($sectionIndex = $this->_findTheActionsSection($actionInfo, $sectionMapContext)) !== false)
 			{
 				//in this context $sectionIndex is a number

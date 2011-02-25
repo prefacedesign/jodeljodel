@@ -57,7 +57,7 @@
 
 				echo $this->Bl->para(array(),array(),array($sobre_dinafon_pequeno));
 
-				echo $this->Bl->span(array(), array('escape' => true), $this->Bl->anchor(array(),array('url' => array('controller' => 'principal', 'action' => 'sobre')), 'Mais sobre o Dinafon'));
+				echo $this->Bl->span(array(), array('escape' => true), $this->Bl->anchor(array(),array('url' => array('controller' => 'principal', 'action' => 'about')), 'Mais sobre o Dinafon'));
 				echo $this->Bl->sdiv(array('id' => 'atrator_aleatorio'));
 				echo $this->Bl->ediv();
 

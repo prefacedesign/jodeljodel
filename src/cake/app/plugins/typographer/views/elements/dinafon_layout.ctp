@@ -86,8 +86,8 @@
 				);
 			}
 			else
-			{
-				if (isset($onde_estamos[0])) //se existe o sub-nível 2
+			{ 
+				if (isset($ourLocation[1])) //se existe o sub-nível 2
 				{
 					echo $this->element('menu_site', array('nivel' => 1));
 				}
