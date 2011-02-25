@@ -40,12 +40,12 @@ var Popup = Class.create({
 		{
 			var action = pair.key;
 			var link_id = pair.value;
-			$(link_id).observe('click', function(ev)
+			$(link_id).observe('click', function(ev, action)
 			{
 				ev.stop();
-				this[0].close();
-				this[0].callback(this[1]);
-			}.bind([this,action]));
+				this.close();
+				this.callback(action);
+			}.bindAsEventListener(this,action));
 		}.bind(this));
 		
 		Popups.available_popups.set(this.id, this);
