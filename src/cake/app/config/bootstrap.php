@@ -54,9 +54,9 @@
 		),
 		'new' => array(
 			'plugin' => 'new',
-			'prefix' => 'new',
-			'model' => 'NewNew',
-			'humanName' => 'MODULE NewNews human name',
+			'prefix' => 'news',
+			'model' => 'NewsNew',
+			'humanName' => 'MODULE NewsNew human name',
 			'plugged' => array('dashboard','backstage')
 		),
 		'text_cork' => array(
