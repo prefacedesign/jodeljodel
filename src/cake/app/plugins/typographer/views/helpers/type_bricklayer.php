@@ -340,6 +340,8 @@ class TypeBricklayerHelper extends AppHelper
 		
 		foreach($linkList as $key => $link)
 		{
+			
+		
 			$curAttr = array();
 			if (isset($link['attr']))
 				$curAttr = $link['attr'];

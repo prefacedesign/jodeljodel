@@ -62,7 +62,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 		$tmp = $this->Bl->anchorList(array(),array('lastSeparator' => __('anchorList and', true), 'linkList' => $linkList));	
 		
 		echo $this->Bl->p(array('class' => 'small_text'), array('escape' => false),
-			sprintf (__('This %s already has translations for %s.',true), 'article', $tmp));
+			sprintf (__('This content already has translations for %s.',true), $tmp));
 			
 		echo $this->Bl->brDry();
 			

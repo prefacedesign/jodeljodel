@@ -197,7 +197,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 			if (is_array($item['DashDashboardItem']['idiom']))
 			{
 				foreach ($item['DashDashboardItem']['idiom'] as $lang)
-					$languageStr .= __('Dashboard language abrev.: ', true). $lang;
+					$languageStr .= __('Dashboard language abrev.: '. $lang, true) . ' ';
 			}
 			
 			echo $this->Bl->smartTableRowDry(array(
