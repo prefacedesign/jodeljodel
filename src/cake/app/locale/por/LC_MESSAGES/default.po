@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2011-02-25 11:47-0300\n"
-"PO-Revision-Date: 2011-02-25 12:45-0300\n"
+"PO-Revision-Date: 2011-02-25 15:39-0300\n"
 "Last-Translator: Lucas Vignoli Reis <lucas@preface.com.br>\n"
 "Language-Team: Preface Design <preface@preface.com.br>\n"
 "MIME-Version: 1.0\n"
@@ -51,9 +51,8 @@ msgid "anchorList and"
 msgstr " e "
 
 #: \plugins\backstage\views\back_contents\edit.ctp:65
-#, fuzzy
 msgid "This content already has translations for %s."
-msgstr "Este conteúdo já tem traduções para %s."
+msgstr "Este conteúdo já tem traduções para %s. "
 
 #: \plugins\backstage\views\back_contents\edit.ctp:82
 msgid "Backstage edit page: If you want you can create a version for %s"
