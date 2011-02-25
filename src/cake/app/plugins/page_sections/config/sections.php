@@ -91,7 +91,6 @@ $sections = array(
 		'pageTitle' => array(__('Sections: public_page pageTitle',true)),
 		'headerCaption' => __('Sections: public_page pageTitle', true),
 		'humanName' => __('Sections: public_page humanName',true),
-		
 		'subSections' => array(
 			'about' => array(
 				'linkCaption' => __('Sections: about linkCaption', true),
@@ -104,6 +103,7 @@ $sections = array(
 				'headerCaption' => __('Sections: about headerCaption', true),
 				'humanName' => __('Sections: about humanName',true),
 				//inseri esse pra ver se funcionava o sub-menu do about (fedel)
+				'dinafonSubSectionsMenuType' => 'normal',
 				'subSections' => array(
 					'about_dinafon' => array(
 						'linkCaption' => __('Sections: about_dinafon linkCaption', true),
@@ -367,19 +367,14 @@ $sectionMap = array(
 		'rule' => array('controller' => 'principal', 'action' => 'index'),
 		'location' => array('public_page')
 	),
-	//adicionei essa regra pra fazer o ourLocation do about funcionar (fedel)
-	//@TODO verify if is ok
 	array(
 		'rule' => array('controller' => 'principal', 'action' => 'about'),
-		'location' => array('public_page'),
-		//inserindo as subrules, mas não sie bem como definir o location
-		//@TODO verify if is ok
+		'location' => array('public_page', 'about'),
 		'subRules' => array(
 			array(
 				'rule' => array('controller' => 'principal', 'action' => 'about'),
-				'location' => array('public_page','about_dinafon')
+				'location' => array('public_page', 'about', 'about_dinafon')
 			),
-
 		)
 	),
 	array(

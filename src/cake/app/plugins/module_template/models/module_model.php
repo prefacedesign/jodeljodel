@@ -6,7 +6,7 @@ class PrefModule extends ModuleAppModel {
 	function __construct()
 	{
 		parent::__construct();
-		/* Validation has to come here I don't know why! */
+		/* Validation has to come here because otherwise we can't use __() function for translation! */
 		$this->validate = array(
 		);
 	}
