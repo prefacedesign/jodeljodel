@@ -68,7 +68,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'label' => null,
 			'error' => null,
 			'options' => array(),
-			'required' => false
+			'required' => false,
+			'container' => true
 		);
 		$options = am($defaults, $options);
 		$options['close_me'] = false;
@@ -79,14 +80,13 @@ class BuroBurocrataHelper extends XmlTagHelper
 		}
 		else
 		{
-			$htmlAttributes = am(array('container' => array()), $htmlAttributes);
-			$container = $htmlAttributes['container'];
-			unset($htmlAttributes['container']);
+			$container = $options['container'];
+			unset($options['container']);
 			
 			$this->_nestedInput = false;
 			
 			if ($options['type'] != 'hidden' && $container !== false)
-				$out .= $this->sinputcontainer($container, $options);
+				$out .= $this->sinputcontainer(is_array($container) ? $container : array(), $options);
 			
 			if (method_exists($this->Form, $options['type']))
 			{
@@ -723,13 +723,18 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out = $this->input(
 			array(
 				'class' => 'autocomplete',
-				'id' => 'input'.$autocomplete_options['baseID'],
-				'container' => false
+				'id' => 'input'.$autocomplete_options['baseID']
 			),
-			am($options, array(
-				'type' => 'text',
-				'fieldName' => $options['fieldName']
-			))
+			am(
+				array(
+					'container' => false
+				),
+				$options,
+				array(
+					'type' => 'text',
+					'fieldName' => $options['fieldName']
+				)
+			)
 		);
 		
 		$out .= $this->Bl->div(
@@ -1123,13 +1128,13 @@ class BuroBurocrataHelper extends XmlTagHelper
 	public function inputTextile($options)
 	{
 		$baseID = uniqid();
-		$options = array('type' => 'textarea') + $options + array('baseID' => $baseID);
+		$options = array('type' => 'textarea', 'container' => false) + $options + array('baseID' => $baseID);
 		
 		$ids = array('npt','link','llink','title','ltitle','file','prev','lbold', 'lital','limg', 'lfile', 'lprev');
 		foreach ($ids as $id)
 			${$id.'_id'} = $id . $options['baseID'];
 		
-		$htmlAttributes = array('container' => false, 'id' => $npt_id) + $options['_htmlAttributes'];
+		$htmlAttributes = array('id' => $npt_id) + $options['_htmlAttributes'];
 		unset($options['_htmlAttributes']);
 		
 		
@@ -1202,8 +1207,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$popup_config['callback'] = "BuroClassRegistry.get('{$options['baseID']}').insertLink($('$itlink').value, null, $('$iulink').value)";
 		$popup_config['content'] = '';
 		$popup_config['content'] .= $this->Bl->pDry($popup_link_txt['instructions']);
-		$popup_config['content'] .= $this->input(array('container' => false, 'id' => $itlink), array('required' => true, 'label' => $popup_link_txt['label_text']));
-		$popup_config['content'] .= $this->input(array('container' => false, 'id' => $iulink), array('required' => true, 'label' => $popup_link_txt['label_link']));
+		$popup_config['content'] .= $this->input(array('id' => $itlink), array('container' => false, 'required' => true, 'label' => $popup_link_txt['label_text']));
+		$popup_config['content'] .= $this->input(array('id' => $iulink), array('container' => false, 'required' => true, 'label' => $popup_link_txt['label_link']));
 		
 		return $this->Popup->popup($id, $popup_config);
 	}
@@ -1237,17 +1242,18 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$popup_config['content'] = '';
 		$popup_config['content'] .= $this->Bl->pDry($popup_title_txt['instructions']);
 		$popup_config['content'] .= $this->input(
-			array('container' => false, 'id' => $iilink),
+			array('id' => $iilink),
 			array(
 				'required' => true,
+				'container' => false,
 				'type' => 'select', 
 				'options' => array('options' => array('h2' => $popup_title_txt['label_type_tit'], 'h3' => $popup_title_txt['label_type_sub'])),
 				'label' => $popup_title_txt['label_type']
 			)
 		);
 		$popup_config['content'] .= $this->input(
-			array('container' => false, 'id' => $ixlink),
-			array('required' => true, 'label' => $popup_title_txt['label_text'])
+			array('id' => $ixlink),
+			array('container' => false, 'required' => true, 'label' => $popup_title_txt['label_text'])
 		);
 		
 		return $this->Popup->popup($id, $popup_config);

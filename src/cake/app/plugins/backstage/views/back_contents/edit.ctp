@@ -118,13 +118,14 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 			'content' => __('Backstage edit page: Your data cannot be saved - TEXT.', true)
 		)
 	);
+	$dashboard_url = $this->Html->url(array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'index'));
 	echo $this->Popup->popup('notice',
 		array(
 			'type' => 'notice',
 			'title' => __('Backstage edit page: Your data has been saved - TITLE.',true),
 			'content' => __('Backstage edit page: Your data has been saved - TEXT.',true),
 			'actions' => array('ok' => 'ok'),
-			'callback' => "if (action=='ok') window.location = '/dashboard/dash_dashboard';"
+			'callback' => "if (action=='ok') window.location = '$dashboard_url';"
 		)
 	);
 	
