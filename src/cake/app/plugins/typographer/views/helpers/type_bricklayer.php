@@ -63,7 +63,13 @@ class TypeBricklayerHelper extends AppHelper
 	static $tags_that_begin_with_s = array(
 		'samp','script','select','small','span','strong','style'
 	);
-	
+
+/**
+ * Helpers
+ * 
+ * @access public
+ * @var array
+ */
 	var $helpers = array(
 		'Typographer.*TypeStyleFactory' => array(
 			'name' => 'TypeStyleFactory'
@@ -305,7 +311,7 @@ class TypeBricklayerHelper extends AppHelper
 
 	function etag($tag)
 	{
-		return '</'.$tag.'>' . (in_array($tag, TypeBricklayerHelper::$tags_without_space_after) ? '' : "\n");
+		return '</'.$tag.'>' . (in_array($tag, self::$tags_without_space_after) ? '' : "\n");
 	}
 	
 	function tag($tag, $attr = null, $options = null, $content = null)
@@ -318,16 +324,16 @@ class TypeBricklayerHelper extends AppHelper
 		extract($options);
 		unset($options['escape']);
 		
-		if ($close_me && in_array($tag, TypeBricklayerHelper::$tags_that_need_closing_tag))
+		if ($close_me && in_array($tag, self::$tags_that_need_closing_tag))
 			$close_me = $options['close_me'] = false;
 		
-		$t = $this->sTag($tag, $attr, $options);
+		$t = $this->stag($tag, $attr, $options);
 		
 		if (!$close_me)
 		{
 			if (isset($options['escape']) && $options['escape'])
 				$content = h($content);
-			$t .= $content . $this->eTag($tag);
+			$t .= $content . $this->etag($tag);
 		}
 		
 		return $t;
@@ -760,7 +766,7 @@ class TypeBricklayerHelper extends AppHelper
 	} */
 	
 	function __call($n, $args)
-	{	
+	{
 		if (substr($n, -3) == 'Dry' || substr($n, -3) == 'Dry')
 		{
 			$n = substr($n, 0, -3);
@@ -774,15 +780,13 @@ class TypeBricklayerHelper extends AppHelper
 			@list($attr, $options, $content) = $args;
 			$standard_options = array('escape' => false, 'close_me' => false);
 			$options = am($standard_options, $options);
-			extract($options);
 			
-			if ($close_me || empty($content))
-			{
-				$close_me = true;
+			if (empty($content) && !in_array($n, self::$tags_that_need_closing_tag))
 				$options['close_me'] = true;
-			}
 			else
-				$close_me = false;
+				$options['close_me'] = false;
+
+			extract($options);
 				
 			$t = $this->{'s' . $n}($attr, $options);
 			
@@ -790,13 +794,13 @@ class TypeBricklayerHelper extends AppHelper
 			{
 				if($escape)
 					$content = h($content);
-				$t .= $content . $this->{'e' . $n}($attr, $options);
+				$t .= $content . $this->{'e' . $n}();
 			}
 			return $t;
 		}
 		
-		$just_name = in_array($n, TypeBricklayerHelper::$tags_that_begin_with_e) 
-				  || in_array($n, TypeBricklayerHelper::$tags_that_begin_with_s);
+		$just_name = in_array($n, self::$tags_that_begin_with_e) 
+				  || in_array($n, self::$tags_that_begin_with_s);
 		
 		if (!$just_name && preg_match('/(^[se])([A-Za-z]\w*)/', $n, $matches))
 		{
