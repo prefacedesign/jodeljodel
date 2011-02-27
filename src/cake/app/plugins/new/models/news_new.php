@@ -15,20 +15,36 @@ class NewsNew extends NewAppModel {
 					'rule' => 'notEmpty',
 					'allowEmpty' => false,
 					'required' => true,
-					'message' => __('PersPerson validation: surname.', true),
-					'on' => 'update'
+					'message' => __('NewsNew validation: auth_author_id.', true),
 				)
 			),
-			'name' => array
+			'title' => array
 			(
 				'required' => array(
-					'rule' => 'notEmpty',
+					'rule' => array('maxLength', 255),
 					'allowEmpty' => false,
 					'required' => true,
-					'message' => __('PersPerson validation: name.', true),
-					'on' => 'update'
+					'message' => __('NewsNew validation: title required, maxlength 255.', true),
 				)
-			)
+			),
+			'abstract' => array
+			(
+				'required' => array(
+					'rule' => array('between', 50, 350),
+					'allowEmpty' => false,
+					'required' => true,
+					'message' => __('NewsNew validation: abstract required, between 50 350.', true),
+				)
+			),
+			'content' => array
+			(
+				'required' => array(
+					'rule' => array('between', 100, 6000),
+					'allowEmpty' => false,
+					'required' => true,
+					'message' => __('NewsNew validation: content required, between 100 6000.', true),
+				)
+			),
 		);
 		
 	}
@@ -44,7 +60,7 @@ class NewsNew extends NewAppModel {
 	
 	var $belongsTo = array(
 		'AuthAuthor' => array(
-			'className' => 'AuthAuthor',
+			'className' => 'Author.AuthAuthor',
 			'foreignKey' => 'auth_author_id',
 			'conditions' => '',
 			'fields' => '',
@@ -52,7 +68,7 @@ class NewsNew extends NewAppModel {
 		)
 	);
 
-	var $hasOne = array('NewsNewTranslation');
+	var $hasOne = array('NewsNewTranslation' => array('className' => 'New.NewsNewTranslation'));
 	
 	
 	
@@ -63,7 +79,7 @@ class NewsNew extends NewAppModel {
 	{
 		//@todo Maybe the status behavior should place these defaults?
 		//Or should it be a global default?
-		$data = $this->saveAll(array($this->alias => array('publishing_status' => 'draft')));
+		$data = $this->saveAll(array($this->alias => array('publishing_status' => 'draft')), array('validate' => false));
 		$data = $this->find('first', array('conditions' => array($this->alias.'.id' => $this->id), 'contain' => array('AuthAuthor')));
 		
 		return $data;
@@ -83,7 +99,9 @@ class NewsNew extends NewAppModel {
 	
 	function saveBurocrata($data)
 	{
-		if ($this->saveAll($data) !== false)
+		//debug($data);
+		//die;
+		if ($this->saveAll($data))
 			return true;
 		else
 			return false;

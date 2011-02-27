@@ -23,7 +23,7 @@ class PersPerson extends PersonAppModel {
 					'rule' => array('maxLength', 300),
 					'allowEmpty' => false,
 					'required' => true,
-					'message' => __('PersPerson validation: research_fields.', true),
+					'message' => __('PersPerson validation: research_fields required, maxlength 300.', true),
 				)
 			),
 			'profile' => array
@@ -32,7 +32,7 @@ class PersPerson extends PersonAppModel {
 					'rule' => array('between', 100, 600),
 					'allowEmpty' => false,
 					'required' => true,
-					'message' => __('PersPerson validation: profile.', true),
+					'message' => __('PersPerson validation: profile required, between 100 600.', true),
 				)
 			),
 			'cooperation_with_dinafon' => array
@@ -41,7 +41,7 @@ class PersPerson extends PersonAppModel {
 					'rule' => array('between', 100, 400),
 					'allowEmpty' => false,
 					'required' => true,
-					'message' => __('PersPerson validation: cooperation_with_dinafon.', true),
+					'message' => __('PersPerson validation: cooperation_with_dinafon required, between 100 400.', true),
 				)
 			),
 			'position' => array
@@ -50,7 +50,7 @@ class PersPerson extends PersonAppModel {
 					'rule' => array('maxLength', 150),
 					'allowEmpty' => false,
 					'required' => true,
-					'message' => __('PersPerson validation: position.', true),
+					'message' => __('PersPerson validation: position required, maxlength 150.', true),
 				)
 			),
 		);
@@ -64,7 +64,7 @@ class PersPerson extends PersonAppModel {
 		'Dashboard.DashDashboardable', 
 		'Status.Status' => array('publishing_status')
 	);
-	var $hasOne = array('PersPersonTranslation');
+	var $hasOne = array('PersPersonTranslation' => array('className' => 'Person.PersPersonTranslation'));
 	
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 

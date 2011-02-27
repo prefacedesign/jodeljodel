@@ -646,7 +646,7 @@
 	));
 	
 	$this->Decorator->rule(
-		'.subinput input.form-error', array(
+		'.subinput input.form-error, .subinput textarea.form-error', array(
 			'background-color' => $palette['input_error_bg']->write(),
 			'color' => $palette['input_error_fg']->write(),
 	));

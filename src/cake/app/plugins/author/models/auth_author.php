@@ -41,7 +41,7 @@ class AuthAuthor extends AuthorAppModel {
 	
 	var $hasMany = array(
 		'NewsNews' => array(
-			'className' => 'NewsNews',
+			'className' => 'New.NewsNews',
 			'foreignKey' => 'auth_author_id',
 			'dependent' => false,
 			'conditions' => '',
@@ -54,7 +54,7 @@ class AuthAuthor extends AuthorAppModel {
 			'counterQuery' => ''
 		),
 		'PersPerson' => array(
-			'className' => 'PersPerson',
+			'className' => 'Person.PersPerson',
 			'foreignKey' => 'auth_author_id',
 			'dependent' => false,
 			'conditions' => '',
