@@ -1125,7 +1125,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$baseID = uniqid();
 		$options = array('type' => 'textarea') + $options + array('baseID' => $baseID);
 		
-		$ids = array('npt','link','file','prev','lbold', 'lital','llink','limg', 'lfile', 'lprev');
+		$ids = array('npt','link','llink','title','ltitle','file','prev','lbold', 'lital','limg', 'lfile', 'lprev');
 		foreach ($ids as $id)
 			${$id.'_id'} = $id . $options['baseID'];
 		
@@ -1137,22 +1137,41 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out .= $this->label(array('for' => $npt_id), $options, $options['label']);
 		$options['label'] = false;
 		
+		// Buttons
 		$out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile bold_textile', 'id' => $lbold_id), array(), __('Burocrata::inputTextile - Add bold', true));
 		$out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile ital_textile', 'id' => $lital_id), array(), __('Burocrata::inputTextile - Add Italic', true));
 		$out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile link_textile', 'id' => $llink_id), array(), __('Burocrata::inputTextile - Add link', true));
+		$out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile title_textile', 'id' => $ltitle_id), array(), __('Burocrata::inputTextile - Add title', true));
 		$out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile img_textile', 'id' => $limg_id), array(), __('Burocrata::inputTextile - Add Img', true));
 		$out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile file_textile', 'id' => $lfile_id), array(), __('Burocrata::inputTextile - Add file', true));
 		$out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile prev_textile', 'id' => $lprev_id), array(), __('Burocrata::inputTextile - Preview', true));
 		$out .= $this->Bl->floatBreak();
 		
-		// popup de link
-		$out .= $this->_popupLink($link_id, $options);
+		// Popups
+		$out .= $this->_popupTextileLink($link_id, $options);
+		$out .= $this->_popupTextileTitle($title_id, $options);
 		$out .= $this->Popup->popup($file_id, array('type' => 'form'));
-		$out .= $this->Popup->popup($prev_id, array('type' => 'notice'));
+		$out .= $this->_popupTextilePreview($prev_id, $options);
 		
+		// Textarea input
 		$out .= $this->input($htmlAttributes, $options);
 		
+		// Some Javascript
 		$out .= $this->BuroOfficeBoy->textile($options);
+		$ajax_options = array(
+			'url' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'textile_preview'),
+			'params' => array('data[text]' => "@encodeURIComponent($('{$npt_id}').value)@"),
+			'callbacks' => array(
+				'onSuccess' => array(
+					'contentUpdate' => array('update' => 'div' . $options['baseID']),
+					'js' => "showPopup('{$prev_id}')"
+				)
+			)
+		);
+		$out .= $this->BuroOfficeBoy->addHtmlEmbScript(
+			$this->Js->get('#'.$lprev_id)->event('click', $this->BuroOfficeBoy->ajaxRequest($ajax_options), array('buffer' => false))
+		);
+		
 		return $out;
 	}
 
@@ -1165,14 +1184,13 @@ class BuroBurocrataHelper extends XmlTagHelper
  * @param string $options The array of input options 
  * @return string The HTML and the JS of this popup
  */
-	protected function _popupLink($id, $options)
+	protected function _popupTextileLink($id, $options)
 	{
 		$popup_link_txt = array(
-			'instructions'	=> __('Burocrata::_popupLink - Instructions for link', true),
-			'label_text'	=> __('Burocrata::_popupLink - What is the text for this link', true),
-			// 'label_title'	=> __('Burocrata::_popupLink - What is the optional title for this link', true),
-			'label_link'	=> __('Burocrata::_popupLink - What is the URL of this link', true),
-			'title' 		=> __('Burocrata::_popupLink - Title of link popup', true)
+			'instructions'	=> __('Burocrata::_popupTextileLink - Instructions for link', true),
+			'label_text'	=> __('Burocrata::_popupTextileLink - What is the text for this link', true),
+			'label_link'	=> __('Burocrata::_popupTextileLink - What is the URL of this link', true),
+			'title' 		=> __('Burocrata::_popupTextileLink - Title of link popup', true)
 		);
 		
 		$itlink = 'itlink' . $options['baseID'];
@@ -1181,12 +1199,80 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$popup_config['type'] = 'form';
 		$popup_config['title'] = $popup_link_txt['title'];
-		$popup_config['callback'] = "BuroClassRegistry.get('{$options['baseID']}').insertLink($('$itlink').value, $('$iulink').value)";
+		$popup_config['callback'] = "BuroClassRegistry.get('{$options['baseID']}').insertLink($('$itlink').value, null, $('$iulink').value)";
 		$popup_config['content'] = '';
 		$popup_config['content'] .= $this->Bl->pDry($popup_link_txt['instructions']);
 		$popup_config['content'] .= $this->input(array('container' => false, 'id' => $itlink), array('required' => true, 'label' => $popup_link_txt['label_text']));
-		// $popup_config['content'] .= $this->input(array('container' => false, 'id' => $iclink), array('required' => false, 'label' => $popup_link_txt['label_title']));
 		$popup_config['content'] .= $this->input(array('container' => false, 'id' => $iulink), array('required' => true, 'label' => $popup_link_txt['label_link']));
+		
+		return $this->Popup->popup($id, $popup_config);
+	}
+
+
+/**
+ * Creates a popup for the Textile input "Add title" button
+ * 
+ * @access protected
+ * @param string $id The DOM ID for the popup (will be used on Popup helper)
+ * @param string $options The array of input options 
+ * @return string The HTML and the JS of this popup
+ */
+	protected function _popupTextileTitle($id, $options)
+	{
+		$popup_title_txt = array(
+			'instructions'	 => __('Burocrata::_popupTextileTitle - Instructions for link', true),
+			'label_type'	 => __('Burocrata::_popupTextileTitle - What is the type of this title', true),
+			'label_type_tit' => __('Burocrata::_popupTextileTitle - Title', true),
+			'label_type_sub' => __('Burocrata::_popupTextileTitle - Subtitle', true),
+			'label_text'	 => __('Burocrata::_popupTextileTitle - What is the title', true),
+			'title' 		 => __('Burocrata::_popupTextileTitle - Title of title popup', true)
+		);
+		
+		$iilink = 'itititle' . $options['baseID'];
+		$ixlink = 'itxtitle' . $options['baseID'];
+		
+		$popup_config['type'] = 'form';
+		$popup_config['title'] = $popup_title_txt['title'];
+		$popup_config['callback'] = "BuroClassRegistry.get('{$options['baseID']}').insertTitle($('$iilink').value, $('$ixlink').value)";
+		$popup_config['content'] = '';
+		$popup_config['content'] .= $this->Bl->pDry($popup_title_txt['instructions']);
+		$popup_config['content'] .= $this->input(
+			array('container' => false, 'id' => $iilink),
+			array(
+				'required' => true,
+				'type' => 'select', 
+				'options' => array('options' => array('h2' => $popup_title_txt['label_type_tit'], 'h3' => $popup_title_txt['label_type_sub'])),
+				'label' => $popup_title_txt['label_type']
+			)
+		);
+		$popup_config['content'] .= $this->input(
+			array('container' => false, 'id' => $ixlink),
+			array('required' => true, 'label' => $popup_title_txt['label_text'])
+		);
+		
+		return $this->Popup->popup($id, $popup_config);
+	}
+
+
+/**
+ * Creates a popup for the Textile input "Preview" button
+ * 
+ * @access protected
+ * @param string $id The DOM ID for the popup (will be used on Popup helper)
+ * @param string $options The array of input options 
+ * @return string The HTML and the JS of this popup
+ */
+	protected function _popupTextilePreview($id, $options)
+	{
+		$popup_title_txt = array(
+			'title' 		 => __('Burocrata::_popupTextilePreview - Title of preview popup', true)
+		);
+		
+		$popup_config['type'] = 'notice';
+		$popup_config['title'] = $popup_title_txt['title'];
+		$popup_config['content'] = '';
+		$popup_config['content'] .= $this->Bl->sdiv(array('id' => 'div' . $options['baseID'], 'class' => 'buro_textile preview'));
+		$popup_config['content'] .= $this->Bl->ediv();
 		
 		return $this->Popup->popup($id, $popup_config);
 	}

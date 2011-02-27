@@ -121,6 +121,12 @@
 			'text-decoration' => 'underline'
 	));
 	
+	$this->Decorator->rule(
+		'div.buro_textile.preview', array(
+			'max-height' => $hg->size(array('M' => 3)),
+			'overflow' => 'auto'
+	));
+	
 	
 	
 	$this->Decorator->rule(

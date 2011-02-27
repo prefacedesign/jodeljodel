@@ -610,13 +610,14 @@ var BuroTextile = Class.create(BuroCallbackable, {
 		this.id_base = id_base;
 		this.input = $('npt'+this.id_base);
 		this.links = {};
-		var ids = ['link','bold','ital','file','img']
+		var ids = ['link','bold','title','ital','file','img']
 		for (var i = 0; i < ids.length; i++)
 			this.links[ids[i]] = $('l'+ids[i]+this.id_base);
 		
 		this.links['bold'].observe('click', this.insertBold.bind(this));
 		this.links['ital'].observe('click', this.insertItalic.bind(this));
 		this.links['link'].observe('click', this.openLinkDialog.bind(this));
+		this.links['title'].observe('click', this.openTitleDialog.bind(this));
 		
 		this.input.observe('focus', this.focus.bind(this));
 		this.input.observe('blur', this.blur.bind(this));
@@ -641,12 +642,25 @@ var BuroTextile = Class.create(BuroCallbackable, {
 			$('itlink'+this.id_base).value = this.input.value.substring(selection.start, selection.end);
 		showPopup('link'+this.id_base);
 	},
+	openTitleDialog: function(ev)
+	{
+		ev.stop();
+		this.getSelection(this.input);
+		showPopup('title'+this.id_base);
+	},
 	insertLink: function(text, title, url)
 	{
+		if (text.blank() || url.blank())
+			return;
 		if (!url.match(/^\w+:\/\//i))
 			url = 'http://' + url;
 		url = encodeURI(url);
-		this.insert('"'+title+'":'+url);
+		this.insert('"'+text+'":'+url);
+	},
+	insertTitle: function(type, title)
+	{
+		var header = '\n' + type + '. ' + title + '\n\n';
+		this.insert(header);
 	},
 	insertBold: function(ev)
 	{
@@ -662,7 +676,6 @@ var BuroTextile = Class.create(BuroCallbackable, {
 	},
 	insertToken: function(token)
 	{
-		var scrollTmp = this.input.scrollTop;
 		var selection = this.getSelection(this.input);
 		var textBefore = this.input.value.substring(0, selection.start);
 		var selectedText = this.input.value.substring(selection.start, selection.end);
@@ -672,15 +685,17 @@ var BuroTextile = Class.create(BuroCallbackable, {
 			selectedText = selectedText.replace(/(^[\s\n\t\r]*)([^\t\n\r]*[^\s\t\n\r])([\s\b\t\r]*$)/gim, '$1'+token+'$2'+token+'$3');
 		
 		this.insert(selectedText);
-		this.input.scrollTop = scrollTmp;
 	},
 	insert: function(text)
 	{
+		var scrollTmp = this.input.scrollTop;
 		var selection = this.getSelection(this.input);
 		var textBefore = this.input.value.substring(0, selection.start);
 		var textAfter = this.input.value.substring(selection.end, this.input.value.length);
+		
 		this.input.value = textBefore+text+textAfter;
-		this.setSelection(this.input, selection.start, selection.start+text.length);
+		this.setSelection(this.input, selection.start, selection.start+text.length);	
+		this.input.scrollTop = scrollTmp;
 	},
 	getSelection: function(input)
 	{
