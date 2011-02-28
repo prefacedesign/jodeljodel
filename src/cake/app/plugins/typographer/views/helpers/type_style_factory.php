@@ -159,6 +159,7 @@ class TypeStyleFactoryHelper extends AppHelper
 			
 			foreach ($some_params as $params)
 			{
+			
 				$rule_name = $this->{$func_name . 'RuleNames'}($params);
 				
 				if ($check_whether_it_already_was_generated)

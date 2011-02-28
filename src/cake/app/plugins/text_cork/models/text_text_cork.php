@@ -61,7 +61,7 @@ class TextTextCork extends TextCorkAppModel
 		return array_merge_recursive(
 			array('TextTextCork' => array('languages' => $this->getLanguages($id))),
 			$this->find('first', array('emptyTranslation' => true, 'conditions' => array('TextTextCork.id' => $id), 'contain' => array()))
-		);	
+		);
 	}
 	
 	/** 

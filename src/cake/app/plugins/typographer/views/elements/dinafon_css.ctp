@@ -28,7 +28,7 @@ $this->Decorator->rule(
 //$hg->size(array('M'=>12))
 $this->Decorator->rule(
 		'.coluna_principal', array(
-			'width' => $hg->size(array('M'=>12, 'g' => -1)),
+			'width' => $hg->size(array('M' => 12, 'g' => -1)),
 			'position' => 'relative',
 			'margin-left' => 'auto',
 			'margin-right' => 'auto'
@@ -657,8 +657,8 @@ $this->Decorator->rule(
 //@todo acertar essa parte do $imagem_topo_caixas, o valor 100 ? tempor?rio
 $this->Decorator->rule(
 		'.topo_caixa', array(
-			'height' => 100,//$u->t($imagem_topo_caixas->altura_max), //seria necessario reconverter aqui no caso de se usar um layout de impressao
-			'margin-bottom' => $vg->size(array('M' => 1, 'g' => 0))
+			'height' => $u->t($imagem_topo_caixas->altura_max), //seria necessario reconverter aqui no caso de se usar um layout de impressao
+			'margin-bottom' => $vg->size(array('m' => 1))
 	));
 
 
