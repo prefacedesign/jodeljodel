@@ -591,6 +591,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'src' => null,
 			'cancel' => false
 		);
+		$options['close_me'] = false;
 		
 		$cancelOptions = $options['cancel'];
 		unset($options['cancel']);
@@ -602,7 +603,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		{
 			$cancelOptions = $cancelOptions + array(
 				'htmlAttributes' => array(),
-				'label' => __('Burocrata::okCancel - Cancel label', true),
+				'label' => __('Burocrata::okOrCancel - Cancel label', true),
 				'url' => ''
 			);
 			$cancelHtmlAttributes = $cancelOptions['htmlAttributes'];
@@ -616,18 +617,6 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$out .= $this->Bl->floatBreak();
 		}
 		return $out;
-	}
-
-
-/**
- * Ends a block of OK or cancel
- * 
- * @access public
- * @return string The HTML well formated
- */
-	public function eokOrCancel()
-	{
-		return $this->Bl->ediv();
 	}
 
 
@@ -1251,9 +1240,9 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		// Popups
 		$out .= $this->_popupTextileLink($link_id, $options);
-		// $out .= $this->_popupTextileTitle($title_id, $options);
+		$out .= $this->_popupTextileTitle($title_id, $options);
 		// $out .= $this->Popup->popup($file_id, array('type' => 'form'));
-		// $out .= $this->_popupTextilePreview($prev_id, $options);
+		$out .= $this->_popupTextilePreview($prev_id, $options);
 		
 		// Textarea input
 		$out .= $this->input($htmlAttributes, $options);
@@ -1301,7 +1290,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$popup_config['type'] = 'form';
 		$popup_config['title'] = $popup_link_txt['title'];
-		$popup_config['callback'] = "BuroClassRegistry.get('{$options['baseID']}').insertLink($('$itlink').value, null, $('$iulink').value)";
+		$popup_config['callback'] = "if (action == 'ok') BuroClassRegistry.get('{$options['baseID']}').insertLink($('$itlink').value, null, $('$iulink').value)";
 		$popup_config['content'] = '';
 		$popup_config['content'] .= $this->Bl->pDry($popup_link_txt['instructions']);
 		
@@ -1338,9 +1327,11 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$popup_config['type'] = 'form';
 		$popup_config['title'] = $popup_title_txt['title'];
-		$popup_config['callback'] = "BuroClassRegistry.get('{$options['baseID']}').insertTitle($('$iilink').value, $('$ixlink').value)";
+		$popup_config['callback'] = "if (action == 'ok') BuroClassRegistry.get('{$options['baseID']}').insertTitle($('$iilink').value, $('$ixlink').value)";
 		$popup_config['content'] = '';
 		$popup_config['content'] .= $this->Bl->pDry($popup_title_txt['instructions']);
+		
+		$popup_config['content'] .= $this->sform(array(), array('url' => ''));
 		$popup_config['content'] .= $this->input(
 			array('id' => $iilink),
 			array(
@@ -1355,6 +1346,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			array('id' => $ixlink),
 			array('container' => false, 'required' => true, 'label' => $popup_title_txt['label_text'])
 		);
+		$popup_config['content'] .= $this->eform();
 		
 		return $this->Popup->popup($id, $popup_config);
 	}

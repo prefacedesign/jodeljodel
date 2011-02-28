@@ -603,9 +603,8 @@ var BuroTextile = Class.create(BuroCallbackable, {
 	{
 		BuroClassRegistry.set(id_base, this);
 		
-		this.selection = {};
+		this.selection = {start: false, end: false};
 		this.with_focus = false;
-		this.timeout = false;
 		
 		this.id_base = id_base;
 		this.input = $('npt'+this.id_base);
@@ -613,6 +612,9 @@ var BuroTextile = Class.create(BuroCallbackable, {
 		var ids = ['link','bold','title','ital','file','img']
 		for (var i = 0; i < ids.length; i++)
 			this.links[ids[i]] = $('l'+ids[i]+this.id_base);
+		
+		this.input.observe('keyup', this.getSelection.bind(this));
+		this.input.observe('mouseup', this.getSelection.bind(this));
 		
 		this.links['bold'].observe('click', this.insertBold.bind(this));
 		this.links['ital'].observe('click', this.insertItalic.bind(this));
@@ -624,13 +626,11 @@ var BuroTextile = Class.create(BuroCallbackable, {
 	},
 	focus: function(ev)
 	{
-		if (this.timeout)
-			window.clearTimeout(this.timeout);
 		this.with_focus = true;
 	},
 	blur: function(ev)
 	{
-		this.timeout = window.setTimeout(function(){this.timeout = false; this.with_focus = false;}.bind(this), 1000);
+		this.with_focus = false;
 	},
 	openLinkDialog: function(ev)
 	{
@@ -659,19 +659,31 @@ var BuroTextile = Class.create(BuroCallbackable, {
 	},
 	insertTitle: function(type, title)
 	{
-		var header = '\n' + type + '. ' + title + '\n\n';
+		if (title.blank())
+			return;
+		var selection = this.getSelection(this.input);
+		var header = type + '. ' + title + '\n\n';
+		var char_before = '\n';
+		
+		if (selection.start != 0)
+		{
+			char_before = this.input.value.substr(selection.start-1, 1);
+			header = '\n' + header;
+		}
+		
+		if (char_before != '\n' && char_before != '\r')
+			header = '\n' + header;
+		
 		this.insert(header);
 	},
 	insertBold: function(ev)
 	{
 		ev.stop();
-		if (!this.with_focus) return;
 		this.insertToken('*');
 	},
 	insertItalic: function(ev)
 	{
 		ev.stop();
-		if (!this.with_focus) return;
 		this.insertToken('_');
 	},
 	insertToken: function(token)
@@ -691,17 +703,17 @@ var BuroTextile = Class.create(BuroCallbackable, {
 		var scrollTmp = this.input.scrollTop;
 		var selection = this.getSelection(this.input);
 		var textBefore = this.input.value.substring(0, selection.start);
-		var textAfter = this.input.value.substring(selection.end, this.input.value.length);
+		var textAfter = this.input.value.substring(selection.end);
 		
 		this.input.value = textBefore+text+textAfter;
 		this.setSelection(this.input, selection.start, selection.start+text.length);	
 		this.input.scrollTop = scrollTmp;
 	},
-	getSelection: function(input)
+	getSelection: function()
 	{
 		if (!this.with_focus)
 		{
-			if (this.selection.start || this.selection.end)
+			if (this.selection.start !== false && this.selection.end !== false)
 				return this.selection;
 			else
 				return {start:this.input.value.length, end:this.input.value.length};
@@ -711,14 +723,14 @@ var BuroTextile = Class.create(BuroCallbackable, {
 		if (document.selection) //IE
 		{
 			selected_text = document.selection.createRange().text;
-			start = input.value.indexOf(selected_text);
+			start = this.input.value.indexOf(selected_text);
 			if (start != -1)
 				end = start + selected_text.length;
 		}
-		else if (input.selectionEnd || input.selectionStart) //FF
+		else if (typeof this.input.selectionStart != 'undefined') //FF
 		{
-			start = input.selectionStart;
-			end = input.selectionEnd;
+			start = this.input.selectionStart;
+			end = this.input.selectionEnd;
 		}
 		return this.selection = {start:start, end:end};
 	},
@@ -737,5 +749,6 @@ var BuroTextile = Class.create(BuroCallbackable, {
 			range.moveEnd('character', end);
 			range.select();
 		}
+		this.getSelection();
 	}
 });
