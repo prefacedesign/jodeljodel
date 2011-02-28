@@ -1,6 +1,56 @@
 <?php
 switch ($type[0])
 {
+	case 'preview':
+		echo $this->Bl->h4(array(),array(),$this->Bl->anchor(
+				array(), 
+				array(
+					'url' => array(
+						'plugin' => 'person', 
+						'controller' => 'pers_people', 
+						'action' => 'view', 
+						$data['PersPerson']['id']
+					)
+				), 
+				$data['AuthAuthor']['name'] . ' ' . $data['AuthAuthor']['surname']
+			)
+		);
+		
+		
+		$exploden = explode(' ', $data['PersPerson']['cooperation_with_dinafon'], 36);
+		if (isset($exploden[35]))
+			unset($exploden[35]);
+		$cooperation_with_dinafon = implode(' ', $exploden) . '...';
+		
+		echo $this->Bl->paraDry(
+			array(
+				__('pers_person element: research_fields caption',true).'&ensp;'
+				. $this->Bl->span(array('class' => 'italico'), array(), $data['PersPerson']['research_fields'])
+			)
+		);
+		
+		echo $this->Bl->paraDry(
+			array(
+				__('pers_person element: cooperation_with_dinafon caption',true) . '&ensp;'
+				. $this->Bl->span(array('class' => 'italico'), array(), $cooperation_with_dinafon)
+			)
+		);
+	break;
+	case 'full':
+		echo $this->Bl->h2(array(),array(),$data['AuthAuthor']['name']);
+		echo $this->Bl->paraDry(array($data['PersPerson']['position']));
+		
+		echo $this->Bl->h4(array(),array(),__('pers_person element: research_fields caption',true));
+		echo $this->Bl->paraDry(array($data['PersPerson']['research_fields']));
+		echo $this->Bl->paraDry(array($this->Bl->anchor(array(), array('url' => $data['PersPerson']['lattes_link']),__('pers_person element: link_lattes caption',true))));
+		echo $this->Bl->barraHorizontal(array('class' => 'cinza_branco'));		
+		
+		echo $this->Bl->h4(array(),array(),__('pers_person element: cooperation_with_dinafon caption',true));				
+		echo $this->Bl->paraDry(array($data['PersPerson']['cooperation_with_dinafon']));		
+		
+		echo $this->Bl->h4(array(),array(),__('pers_person element: profile caption',true));
+		echo $this->Bl->paraDry(array($data['PersPerson']['profile']));
+	break;
 	case 'buro':
 		if ($type[1] == 'form')
 		{	
@@ -180,6 +230,7 @@ switch ($type[0])
 			echo $buro->eform();
 		}
 	break;
+	
 }
 
 ?>

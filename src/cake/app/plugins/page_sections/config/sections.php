@@ -116,18 +116,30 @@ $sections = array(
 						'headerCaption' => __('Sections: about_dinafon headerCaption', true),
 						'humanName' => __('Sections: about_dinafon humanName',true)
 					),
-					'about_people' => array(
-						'linkCaption' => __('Sections: about_people linkCaption', true),
+					'people' => array(
+						'linkCaption' => __('Sections: people linkCaption', true),
 						'url' => array(
-							'plugin' => false,
-							'controller' => 'people',
+							'plugin' => 'person',
+							'controller' => 'pers_people',
 							'action' => 'index'
 						),
-						'pageTitle' => array(null, null, __('Sections: about_people pageTitle',true)),
-						'headerCaption' => __('Sections: about_people headerCaption', true),
-						'humanName' => __('Sections: about_people humanName',true),
-					),
-
+						'pageTitle' => array(null, null, __('Sections: people pageTitle',true)),
+						'headerCaption' => __('Sections: people headerCaption', true),
+						'humanName' => __('Sections: people humanName',true),
+						'subSections' => array(
+							'profile' => array(
+								'linkCaption' => __('Sections: profile linkCaption', true),
+								'url' => array(
+									'plugin' => 'person',
+									'controller' => 'pers_people',
+									'action' => 'view'
+								),
+								'pageTitle' => array(null, null, __('Sections: profile pageTitle',true)),
+								'headerCaption' => __('Sections: profile headerCaption', true),
+								'humanName' => __('Sections: profile humanName',true),
+							)
+						)
+					)
 				)
 			),
 			'contact' => array(
@@ -380,6 +392,20 @@ $sectionMap = array(
 	array(
 		'rule' => array('controller' => 'people', 'action' => 'index'),
 		'location' => array('public_page','dinafon','people')
+	),
+	array(
+		'rule' => array('plugin' => 'person', 'controller' => 'pers_people'),
+		'location' => array('public_page','about','people'),
+		'subRules' => array(
+			array(
+				'rule' => array('action' => 'index'),
+				'location' => array('public_page','about','people'),
+			),
+			array(
+				'rule' => array('action' => 'view'),
+				'location' => array('public_page','about','people','profile'),
+			)
+		),
 	),
 	array(
 		'rule' => array('plugin' => 'news', 'controller' => 'new_news'),
