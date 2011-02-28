@@ -1,6 +1,65 @@
 <?php
 switch ($type[0])
 {
+	case 'preview':
+		echo $this->Bl->span(array('class' => 'texto_pequeno'), array(),br_strftime('%d de %B', strtotime($data['NewsNew']['date'])));
+
+		echo $this->Bl->h4(array(),array(),$this->Bl->anchor(
+				array(),
+				array(
+					'url' => array(
+						'plugin' => 'new',
+						'controller' => 'news_new',
+						'action' => 'view',
+						$data['NewsNew']['id']
+					)
+				),
+				$data['NewsNew']['title']
+			)
+		);
+
+
+		echo $this->Bl->para(array(),array(),array($data['NewsNew']['abstract']));
+	break;
+
+	case 'principal':
+		echo $this->Bl->h2(array(),array(),$dados['titulo']);
+		echo $this->Bl->span(array('class' => 'texto_pequeno'), array(),
+			br_strftime('%d de %B de %Y', strtotime($data['NewsNew']['date']))
+			. ', por ' .$dados['autor']);
+
+		echo $this->Bl->brDry();
+		echo $this->Bl->brDry();
+
+		echo $this->Bl->para(array(),array(),$data['NewsNew']['content']);
+	break;
+
+	case 'linha_link':
+		echo $this->Bl->span(array('class' => array('texto_pequeno', 'caixinha', 'larg_4i')), array(),
+				br_strftime('%d/%m', strtotime($dados['data'])) );
+
+
+		echo $this->Bl->span(array('class' => array('caixinha_2', 'larg_3M_-3i_-1m')),
+				array('escape' => true),
+				$this->Bl->anchor(
+				array(),
+				array(
+					'url' => array(
+						'plugin' => 'new',
+						'controller' => 'news_new',
+						'action' => 'view',
+						$data['NewsNew']['id']
+					)
+				),
+				$data['NewsNew']['title']
+			)
+		);
+
+
+		echo $this->Bl->floatBreak();
+	break;
+
+
 	case 'buro':
 		if ($type[1] == 'form')
 		{	
