@@ -178,8 +178,8 @@ $sections = array(
 			'news' => array(
 				'linkCaption' => __('Sections: news linkCaption', true),
 				'url' => array(
-					'plugin' => 'news',
-					'controller' => 'new_news',
+					'plugin' => 'new',
+					'controller' => 'news_new',
 					'action' => 'index'
 				),
 				'pageTitle' => array(null,__('Sections: news pageTitle',true)),
@@ -189,8 +189,8 @@ $sections = array(
 					'news_index' => array(
 						'linkCaption' => __('Sections: news_index linkCaption', true),
 						'url' => array(
-							'plugin' => 'news',
-							'controller' => 'new_news',
+							'plugin' => 'new',
+							'controller' => 'news_new',
 							'action' => 'index'
 						),
 						'pageTitle' => array(null, null, __('Sections: news_index pageTitle',true)),
@@ -200,8 +200,8 @@ $sections = array(
 					'news_item' => array(
 						'linkCaption' => __('Sections: * linkCaption', true),
 						'url' => array(
-							'plugin' => 'news',
-							'controller' => 'new_news',
+							'plugin' => 'new',
+							'controller' => 'news_new',
 							'action' => 'view'
 						),
 						'display' => false,
@@ -408,7 +408,7 @@ $sectionMap = array(
 		),
 	),
 	array(
-		'rule' => array('plugin' => 'news', 'controller' => 'new_news'),
+		'rule' => array('plugin' => 'new', 'controller' => 'news_new'),
 		'location' => array('public_page','news'),
 		'subRules' => array(
 			array(

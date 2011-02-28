@@ -1,9 +1,10 @@
 <?php
-class AuthAuthor extends AuthorAppModel {
-	var $name = 'AuthAuthor';
-	var $displayField = 'reference_name';
+class JourJournal extends PaperAppModel {
+	var $name = 'JourJournal';
+	var $displayField = 'short_name';
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
-	
+
+	/*
 	function __construct()
 	{
 		parent::__construct();
@@ -38,56 +39,23 @@ class AuthAuthor extends AuthorAppModel {
 			)
 		);
 	}
-	
-	
-	var $hasMany = array(
-		'NewsNews' => array(
-			'className' => 'New.NewsNews',
-			'foreignKey' => 'auth_author_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		),
-		'PersPerson' => array(
-			'className' => 'Person.PersPerson',
-			'foreignKey' => 'auth_author_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		)
-	);
+	*/
 
-	
-	var $hasAndBelongsToMany = array(
+	var $hasMany = array(
 		'PapPaper' => array(
 			'className' => 'Paper.PapPaper',
-			'joinTable' => 'auth_authors_pap_papers',
-			'foreignKey' => 'auth_author_id',
-			'associationForeignKey' => 'pap_paper_id',
-			'unique' => true,
+			'foreignKey' => 'jour_journal_id',
+			'dependent' => false,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',
 			'limit' => '',
 			'offset' => '',
+			'exclusive' => '',
 			'finderQuery' => '',
-			'deleteQuery' => '',
-			'insertQuery' => ''
+			'counterQuery' => ''
 		)
 	);
-	
 
 }
 ?>

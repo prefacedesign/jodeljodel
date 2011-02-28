@@ -61,8 +61,6 @@ class SfilStoredFile extends JjMediaAppModel {
 		)
 	);
 
-	var $hasMany = array('DinFile');
-
 
 /**
  * actsAs property
