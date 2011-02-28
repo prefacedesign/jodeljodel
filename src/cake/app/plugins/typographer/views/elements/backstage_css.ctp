@@ -121,6 +121,12 @@
 			'text-decoration' => 'underline'
 	));
 	
+	$this->Decorator->rule(
+		'div.buro_textile.preview', array(
+			'max-height' => $hg->size(array('M' => 3)),
+			'overflow' => 'auto'
+	));
+	
 	
 	
 	$this->Decorator->rule(
@@ -357,6 +363,14 @@
 	));
 	
 	$this->Decorator->rule(
+		'.small_text', array(
+			'font-size' => $u->t($line_height * 11/18)
+	));
+	
+	
+	// Control Box
+	
+	$this->Decorator->rule(
 		'.control_box', array(
 			'background-color' => $palette['control_box_bg']->write(),
 			'color' => $palette['control_box_fg']->write(),
@@ -383,42 +397,42 @@
 	));
 	
 	$this->Decorator->rule(
-		'.small_text', array(
-			'font-size' => $u->t($line_height * 11/18)
-	));
-	
-	$this->Decorator->rule(
-		'.control_box .alternative_option',
-		array(
-			'float' => 'left',
+		'.control_box .alternative_option', array(
 			'margin' => $vg->size(array('m' => 6)) . ' 0 ' . $vg->size(array('m' => 2)) . ' ' . $vg->size(array('m' => 1)),
+		)
+	);
+
+	$this->Decorator->rule(
+		'.control_box button.submit.buro', array(
+			'margin' => $vg->size(array('m' => 5)) . ' 0 ' . $vg->size(array('m' => 2)) . ' 0',
 		)
 	);
 	
 	$this->Decorator->rule(
-		'.dashboard th a, .control_box a',
-		array(
+		'.dashboard th a, .control_box a', array(
 			'color' => $palette['control_box_fg']->write(),
 			'border-color' =>  $palette['control_box_fg']->write()
 		)
 	);
 	
 	$this->Decorator->rule(
-		'.dashboard th a:visited, .control_box a:visited',
-		array(
+		'.dashboard th a:visited, .control_box a:visited', array(
 			'color' => $palette['control_box_fg']->write(),
 			'border-color' =>  $palette['control_box_fg']->write()			
 		)
 	);
 	
 	$this->Decorator->rule(
-		'.dashboard th a:hover, .dashboard th a:active, .control_box a:hover, .control_box a:active',
-		array(
+		'.dashboard th a:hover, .dashboard th a:active, .control_box a:hover, .control_box a:active', array(
 			'color' => $palette['control_box_bg']->write(),
 			'background-color' => $palette['control_box_fg']->write(),
 			'border-color' =>  $palette['control_box_bg']->write()
 		)
 	);
+	
+	
+	
+	// Burocrata form
 	
 	$this->Decorator->rule(
 		'.buro_form', array(
@@ -447,6 +461,10 @@
 			'font-style' => 'italic',
 			'display'	=> 'block'
 	));
+	
+	
+	
+	// Pagination
 	
 	$padding_left = $hg->size(array('m' => 0.75), false);
 	$this->Decorator->rule(
@@ -607,8 +625,9 @@
 	));
 	
 	$this->Decorator->rule(
-		'button', array(
-			''
+		'.alternative_option', array(
+			'margin' => $vg->size(array('m' => 1)) . ' 0 0 ' . $vg->size(array('m' => 1)),
+			'float' => 'left'
 	));
 	
 	$this->Decorator->rule(
@@ -627,7 +646,6 @@
 			'text-align' => 'left',
 			'text-transform' => 'uppercase',
 			'height' => $hg->size(array('g' => 1.4)),
-			'margin' => $vg->size(array('m' => 5)) . ' 0 ' . $vg->size(array('m' => 2)) . ' 0',
 			'letter-spacing' => $letterSpacing
 	));
 	

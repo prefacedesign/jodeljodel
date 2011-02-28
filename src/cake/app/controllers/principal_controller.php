@@ -2,8 +2,7 @@
 	class PrincipalController extends AppController
 	{
 		var $name = 'Principal';
-		var $pageTitle = 'Dinafon';
-		var $uses = array();
+		var $uses = array('Person.PersPerson');
 	
 		var $components = array('Typographer.TypeLayoutSchemePicker');
 		var $helpers = array(
@@ -25,25 +24,25 @@
 			'Burocrata.*BuroBurocrata' => array(
 				'name' => 'Buro'
 			),
-			'Kulepona'
+			'Kulepona',
+			'Corktile.Cork',
+			'Text'
 		);
 		var $layout = 'dinafon';
 
 		function beforeFilter()
 		{
 			parent::beforeFilter();
-			$this->Auth->allow('index');
+			StatusBehavior::setGlobalActiveStatuses(array(
+				'publishing_status' => array('active' => array('published'), 'overwrite' => true),
+			));
 		}
 
 		function beforeRender()
 		{
 			parent::beforeRender();
-			//Configure::write('Config.language','por');
-			//debug(Configure::read('Config.language'));
-			$this->TypeLayoutSchemePicker->pick('dinafon'); //aten��o que isto sobre-escreve a view escolhida
+			$this->TypeLayoutSchemePicker->pick('dinafon'); 
 		}
-
-
 
 		function index()
 		{
@@ -74,21 +73,18 @@
 		
 		function about()
 		{
-			Configure::load('bd_textos');
-			Configure::load('bd_pessoas');
+			$allPeople = $this->PersPerson->find('all', array('contain' => false));	// find 'list' doesn't work with Tradutore	
+			$allPeopleIds = Set::extract($allPeople,'{n}.PersPerson.id');
+			shuffle($allPeopleIds);
+			$chosenIds = array_chunk($allPeopleIds, 4);
 			
-			$this->set('sobre_dinafon', Configure::read('BDtemp.textos.sobre_dinafon'));
-			$pessoas = Configure::read('BDtemp.pessoas');
-			
-			$ids = array_keys($pessoas);
-			shuffle($ids);			
-			$ids_escolhidos = array_chunk($ids, 4);
-			
-			$this->set('pessoas', array(
-					$ids_escolhidos[0][0] => $pessoas[$ids_escolhidos[0][0]],
-					$ids_escolhidos[0][1] => $pessoas[$ids_escolhidos[0][1]],
-					$ids_escolhidos[0][2] => $pessoas[$ids_escolhidos[0][2]],
-					$ids_escolhidos[0][3] => $pessoas[$ids_escolhidos[0][3]]
+			$this->set(
+				'people',
+				$this->PersPerson->find(
+					'all', array(
+						'contain' => array('AuthAuthor'), 
+						'conditions' => array('PersPerson.id' => $chosenIds[0])
+					)
 				)
 			);
 		}

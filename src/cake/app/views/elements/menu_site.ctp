@@ -59,7 +59,7 @@
 						foreach($sectionsContext['subSections'] as $secao => $dados_secao)
 						{
 							$atributos = array();
-							if ($ourLocation[1] == $secao)
+							if ($ourLocation[2] == $secao)
 							{
 								$atributos = array_merge_recursive($atributos, array('class' => 'selecionado'));
 							}
@@ -75,7 +75,7 @@
 				$links_html = array();
 				foreach($pageSections[$ourLocation[0]]['subSections'] as $secao => $dados_secao)
 				{
-					if (($ourLocation[1] != $secao) && ($secao != 'tipo'))
+					if (($ourLocation[2] != $secao) && ($secao != 'tipo'))
 					{
 						$links_html[] = $this->Bl->anchor(array(),array('url' => $dados_secao['url']), $dados_secao['linkCaption']);
 					}

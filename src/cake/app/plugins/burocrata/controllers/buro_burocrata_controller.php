@@ -192,7 +192,12 @@ class BuroBurocrataController extends BurocrataAppController
 	}
 
 
-
+/**
+ * Just a router based on POSTed data (if it has POSTed data, it routers to 
+ * save, if doesnt, routers to view.
+ * 
+ * @access public
+ */
 	public function edit()
 	{
 		if(isset($this->buroData['id']))
@@ -264,10 +269,32 @@ class BuroBurocrataController extends BurocrataAppController
 
 
 /**
+ * Creates a JSON with a preview text of a textile input.
+ * 
+ * @access public
+ * @return json An javascript object that contains `error` and `content` properties
+ */
+	public function textile_preview()
+	{
+		$error = false;
+		$content = '';
+		if (!empty($this->data['text']))
+		{
+			App::import('Vendor', 'JjUtils.Textile');
+			$Textile = new Textile();
+			$content = $Textile->TextileThis($this->data['text']);
+		}
+		
+		$this->set('jsonVars', compact('error', 'content'));
+	}
+
+
+/**
  * Attempts to delete an database entry
  *
  * @access public
  * @return json An javascript object that contains `error` and `content` properties
+ * @todo Make
  */
 	public function delete()
 	{

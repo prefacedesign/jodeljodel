@@ -4,6 +4,13 @@ App::import('Helper', 'Burocrata.BuroBurocrata');
 
 class BackstageBuroBurocrataHelper extends BuroBurocrataHelper
 {
+
+/**
+ * Creates a box containing a submit button, a cancel link and some publising controls
+ * 
+ * @access public
+ * @todo Use return intead using echo
+ */
 	function submitBox($htmlAttributes = array(), $options = array())
 	{
 		$defaultHtmlAttr = array(
@@ -44,7 +51,3 @@ class BackstageBuroBurocrataHelper extends BuroBurocrataHelper
 		echo $this->Bl->econtrolBox();
 	}
 }
-
-
-
-?>
