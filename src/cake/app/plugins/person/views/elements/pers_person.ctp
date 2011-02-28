@@ -1,6 +1,19 @@
 <?php
+
 switch ($type[0])
 {
+	case 'mini_preview':
+			echo $this->Bl->h4(array(), array(), $this->Bl->anchor(array(),array('url' => array('plugin' => 'person', 'controller' => 'pers_people', 'action' => 'view', $data['PersPerson']['id'])),
+				$data['AuthAuthor']['name'] . ' ' . $data['AuthAuthor']['surname']));
+			echo $this->Bl->para(
+				array(),
+				array(),
+				array(
+					__('pers_person element: research_fields caption',true).':&ensp;'
+					. $this->Bl->span(array ('class' => 'italico'), array(), $data['PersPerson']['research_fields'])
+				)
+			);
+	break;
 	case 'preview':
 		echo $this->Bl->h4(array(),array(),$this->Bl->anchor(
 				array(), 
