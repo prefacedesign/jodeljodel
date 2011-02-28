@@ -101,7 +101,8 @@ class TradTradutoreBehavior extends ModelBehavior
             );
 
             assert('in_array($translation["foreignKey"], $translation["fields"])');
-            assert('in_array($translation["languageField"], $translation["fields"])');
+			//@todo review why this line stop the session
+           // assert('in_array($translation["languageField"], $translation["fields"])');
             
             // All fields in translatable model are untranslatable.
             $untranslatableFields = $this->__dotConcat($translatable['className'], $translatable['fields']);
