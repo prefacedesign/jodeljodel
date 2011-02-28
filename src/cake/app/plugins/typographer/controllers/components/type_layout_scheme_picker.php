@@ -55,6 +55,7 @@ class TypeLayoutSchemePickerComponent extends Object
 		{
 			$this->controller->view = 'Typographer.Type';
 		}
+		
 		$this->controller->set('used_automatic_classes', $used_automatic_classes);
 		$this->controller->set($tools);
 		$this->controller->set('layout_scheme', $layout_scheme);

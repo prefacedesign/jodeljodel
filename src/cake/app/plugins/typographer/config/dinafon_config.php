@@ -4,8 +4,6 @@ App::import('Vendor','browserdetection');
 
 $browserInfo = getBrowser();
 
-
-
 if (!isset($_SESSION))
 {
 	session_name('CAKEPHP');

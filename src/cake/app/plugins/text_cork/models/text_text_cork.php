@@ -37,8 +37,9 @@ class TextTextCork extends TextCorkAppModel
 			$content['TextTextCork']['text'] = __("TextTextCork Model: This text hasn't been written yet. It's up to the site content editor to write it.", true);
 		}
 		// @todo Treat the validation options, in order for it to work properly.
-		if ($this->save($content))
+		if ($this->save($content)){
 			return $this->id;
+		}
 		else
 			return false;
 	}
@@ -57,8 +58,10 @@ class TextTextCork extends TextCorkAppModel
 	
 	function getCorkContent($id, $options = array())
 	{
-		//@todo Make the right find.
-		return $this->find('first', array('emptyTranslation' => true, 'conditions' => array('TextTextCork.id' => $id), 'contain' => array()));	
+		return array_merge_recursive(
+			array('TextTextCork' => array('languages' => $this->getLanguages($id))),
+			$this->find('first', array('emptyTranslation' => true, 'conditions' => array('TextTextCork.id' => $id), 'contain' => array()))
+		);	
 	}
 	
 	/** 

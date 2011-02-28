@@ -1,4 +1,5 @@
 <?php
+
 switch ($type[0])
 {
 	case 'preview':

@@ -78,15 +78,18 @@
 			shuffle($allPeopleIds);
 			$chosenIds = array_chunk($allPeopleIds, 4);
 			
-			$this->set(
-				'people',
-				$this->PersPerson->find(
-					'all', array(
-						'contain' => array('AuthAuthor'), 
-						'conditions' => array('PersPerson.id' => $chosenIds[0])
+			if (isset($chosenIds[0])) {
+
+				$this->set(
+					'people',
+					$this->PersPerson->find(
+						'all', array(
+							'contain' => array('AuthAuthor'),
+							'conditions' => array('PersPerson.id' => $chosenIds[0])
+						)
 					)
-				)
-			);
+				);
+			}
 		}
 		
 		function contato()

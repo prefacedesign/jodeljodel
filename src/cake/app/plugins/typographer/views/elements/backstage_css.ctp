@@ -217,6 +217,30 @@
 	);
 	
 	$this->Decorator->rule(
+		'#login_box',
+		array(
+			'background-color' => $palette['menu_bg']->write(),
+			'border' => $u->t(1) . ' solid ' . $palette['bg']->write(),
+			'width' => $hg->size(array('M' => 4, 'g' => 1)),
+			'margin' => 'auto',
+			'margin-top' => $vg->size(array('g' => 5)),
+			'box-shadow' => $box_shadow,
+			'-webkit-box-shadow' => $box_shadow,
+			'-moz-box-shadow' => $box_shadow
+		)
+	);
+	
+	$this->Decorator->rule(
+		'#login_box div#login_box_contained',
+		array(
+			'width' => $hg->size(array('M' => 4, 'g' => -1)),
+			'margin' => $hg->size(array('g' => 1)),
+		)
+	);
+	
+	
+	
+	$this->Decorator->rule(
 		'#header',
 		array(
 			'width' => 'auto',
@@ -456,6 +480,12 @@
 	));
 	
 	$this->Decorator->rule(
+		'#login_box label', array(
+			'line-height' => $u->t($line_height),
+			'display' => 'block'
+	));
+	
+	$this->Decorator->rule(
 		'.buro_form .instructions', array(
 			'font-size' => $u->t($line_height * 11/18),
 			'font-style' => 'italic',
@@ -572,7 +602,7 @@
 	$margin_top = $vg->size(array('m' => 1), false);
 	$padding_top = $vg->size(array('m' => 1), false);
 	$this->Decorator->rule(
-		'.buro_form input, .buro_form textarea', array(
+		'.buro_form input, #login_box input, .buro_form textarea', array(
 			'border' => $u->t($border_size) . ' solid ' .  $palette['input_borders']->write(),
 			'background-color' => $palette['input_bg']->write(),
 			'color'	=> $palette['input_fg']->write(),
@@ -582,6 +612,11 @@
 			'margin-bottom' => $u->t($vg->size(array('g' => 0.5),false) - $margin_top),
 			'font-size' => $u->t($line_height * 13/18),
 			'line-height' => $u->t($line_height)
+	));
+	
+	$this->Decorator->rule(
+		'#login_box input', array(
+			'width' => $u->t($hg->size(array('M' => 4, 'g' => -1),false) - 2*($border_size + $padding_size))
 	));
 	
 	$this->Decorator->rule(
@@ -640,7 +675,7 @@
 	));
 	
 	$this->Decorator->rule(
-		'button.submit.buro', array(
+		'button.submit.buro, #login_box input[type="submit"]', array(
 			'-moz-border-radius'  => '5px',
 			'border-radius' => '5px',
 			'-webkit-border-radius' => '5px',
@@ -656,6 +691,15 @@
 			'text-transform' => 'uppercase',
 			'height' => $hg->size(array('g' => 1.4)),
 			'letter-spacing' => $letterSpacing
+	));
+	
+	$this->Decorator->rule(
+		'#login_box input[type="submit"]', array(
+			'float' => 'right',
+			'text-align' => 'center',
+			'text-transform' => 'none',
+			'width' => $vg->size(array('M' => 1, 'g' => -1)),
+			'letter-spacing' => '0'
 	));
 	
 	$this->Decorator->rule(

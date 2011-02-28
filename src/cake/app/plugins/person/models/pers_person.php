@@ -65,8 +65,6 @@ class PersPerson extends PersonAppModel {
 		'Status.Status' => array('publishing_status')
 	);
 	var $hasOne = array('PersPersonTranslation' => array('className' => 'Person.PersPersonTranslation'));
-	
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
 	var $belongsTo = array(
 		'AuthAuthor' => array(
@@ -105,26 +103,12 @@ class PersPerson extends PersonAppModel {
 	
 	function saveBurocrata($data)
 	{
-		//debug($data);
-		//debug($this->saveAll($data));
-		//die;
-		
-		//debug($data);
-		//debug($this->saveAll($data, array('validate' => 'only')));
-		//die;
-		
 		if ($this->saveAll($data, array('validate' => 'first')))
 			return true;
 		else
 		{
-			//debug($this->validationErrors);
-			//die;
 			return false;
 		}
-		
-		//debug($this->findById($this->id));
-		//debug($data);
-		//die;
 	}
 	
 	/** The data that must be saved into the dashboard. Part of the Dashboard contract.
