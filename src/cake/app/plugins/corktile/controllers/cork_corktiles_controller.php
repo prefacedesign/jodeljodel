@@ -2,7 +2,6 @@
 class CorkCorktilesController extends CorktileAppController {
 
 	var $name = 'CorkCorktiles';
-	var $helpers = array('Corktile.Cork', 'Text');
 	var $uses = array('Corktile.CorkCorktile');
 	
 	/** Used to make tests. Not the cake standard way.

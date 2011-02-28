@@ -26,13 +26,19 @@ class BackstageAppController extends AppController
 	);
 	var $layout = 'backstage';
 	
+	
+	
 	function beforeRender()
 	{
-		parent::beforeRender();
+		parent::beforeRender();		
 		$this->TypeLayoutSchemePicker->pick('backstage'); //atenção que isto sobre-escreve a view escolhida	
 		$this->TradLanguageSelector->setInterfaceLanguage(Configure::read('Tradutore.mainLanguage'));
-		//debug(Configure::read('Config.language'));
-		//debug(TradLanguageSelector);
+	}
+	
+	function beforeFilter()
+	{
+		parent::beforeFilter();
+		StatusBehavior::setGlobalActiveStatuses(array('publishing_status' => array('active' => array('published','draft'), 'overwrite' => false)));
 	}
 	
 	
