@@ -158,6 +158,13 @@ class CorkCorktile extends CorktileAppModel
 	{
 		$data = $this->getFullData($key);
 		
+		//@todo Make this take only the main language.
+		
+		$typeConfig = Configure::read('jj.modules.' . $data['CorkCorktile']['type']);
+		$pluginCamelName =  Inflector::camelize($typeConfig['plugin']);
+		$modelName = $typeConfig['model'];
+		$Model =& ClassRegistry::init($pluginCamelName . '.' . $modelName);
+		
 		if ($data == null)
 			return null;
 		
@@ -170,7 +177,7 @@ class CorkCorktile extends CorktileAppModel
 			'modified'       => $data['CorkCorktile']['modified'], 
 			'name'           => $data['CorkCorktile']['title'],
 			'info'           => 'Location: ' . substr($data['CorkCorktile']['location'][0], 0, 20) . '...',
-			'idiom'          => 'PT'
+			'idiom'          => isset($data[$Model->alias]['languages'])? $data[$Model->alias]['languages'] : array()
 		);
 		
 		return $dashdata;

@@ -37,7 +37,12 @@ class AppController extends Controller {
 		'PageSections.SectSectionHandler',
 		'Auth' => array(
 			'userModel' => 'JjUsers.UserUser',
-			'authorize' => 'controller'
+			'authorize' => 'controller',
+			'loginRedirect' => array(
+				'plugin' => 'dashboard',
+				'controller' => 'dash_dashboard',
+				'action' => 'index',
+			)
 		),
 		'Tradutore.TradLanguageSelector'
 	);

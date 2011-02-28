@@ -9,13 +9,6 @@ class BackContentsController extends BackstageAppController
     var $name = 'BackContents';
     var $uses = array();
 	
-	function beforeFilter()
-	{
-		StatusBehavior::setGlobalActiveStatuses(array('publishing_status' => array('active' => array('published','draft'), 'overwrite' => false)));
-	
-		parent::beforeFilter();
-	}
-	
 	/** Action to edit/create a model row. Model must have implemented
 	 *  createEmpty (to create a new empty row) and. findBurocrata (to retrieve
 	 *  the data needed for the form). The plugin must have
