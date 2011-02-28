@@ -56,6 +56,47 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `auth_authors_pap_papers`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `auth_authors_pap_papers` (
+  `auth_author_id` INT NOT NULL ,
+  `pap_paper_id` INT NOT NULL ,
+  PRIMARY KEY (`auth_author_id`, `pap_paper_id`) ,
+  INDEX `fk_auth_authors_has_pap_papers_auth_authors1` (`auth_author_id` ASC) ,
+  INDEX `fk_auth_authors_has_pap_papers_pap_papers1` (`pap_paper_id` ASC) ,
+  CONSTRAINT `fk_auth_authors_has_pap_papers_auth_authors1`
+    FOREIGN KEY (`auth_author_id` )
+    REFERENCES `auth_authors` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_auth_authors_has_pap_papers_pap_papers1`
+    FOREIGN KEY (`pap_paper_id` )
+    REFERENCES `pap_papers` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cork_corktiles`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `cork_corktiles` (
+  `id` VARCHAR(255) NOT NULL ,
+  `type` VARCHAR(128) NULL ,
+  `content_id` VARCHAR(255) NULL ,
+  `title` VARCHAR(255) NULL ,
+  `instructions` TEXT NULL ,
+  `location` TEXT NULL ,
+  `created` DATETIME NULL ,
+  `modified` DATETIME NULL ,
+  `options` TEXT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `k_type` (`type` ASC) ,
+  INDEX `k_content_id` (`content_id` ASC) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `text_text_corks`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `text_text_corks` (
@@ -92,18 +133,18 @@ ENGINE = InnoDB;
 -- Table `pap_paper_translations_tags_tags`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `pap_paper_translations_tags_tags` (
-  `pap_paper_translations_id` INT NOT NULL ,
-  `tags_tags_id` INT NOT NULL ,
+  `pap_paper_translation_id` INT NOT NULL ,
+  `tags_tag_id` INT NOT NULL ,
   PRIMARY KEY (`pap_paper_translations_id`, `tags_tags_id`) ,
   INDEX `fk_pap_paper_translations_has_tags_tags_pap_paper_translations` (`pap_paper_translations_id` ASC) ,
   INDEX `fk_pap_paper_translations_has_tags_tags_tags_tags` (`tags_tags_id` ASC) ,
   CONSTRAINT `fk_pap_paper_translations_has_tags_tags_pap_paper_translations`
-    FOREIGN KEY (`pap_paper_translations_id` )
+    FOREIGN KEY (`pap_paper_translation_id` )
     REFERENCES `pap_paper_translations` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_pap_paper_translations_has_tags_tags_tags_tags`
-    FOREIGN KEY (`tags_tags_id` )
+    FOREIGN KEY (`tags_tag_id` )
     REFERENCES `tags_tags` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
