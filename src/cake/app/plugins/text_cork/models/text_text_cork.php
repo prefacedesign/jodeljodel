@@ -37,8 +37,9 @@ class TextTextCork extends TextCorkAppModel
 			$content['TextTextCork']['text'] = __("TextTextCork Model: This text hasn't been written yet. It's up to the site content editor to write it.", true);
 		}
 		// @todo Treat the validation options, in order for it to work properly.
-		if ($this->save($content))
+		if ($this->save($content)){
 			return $this->id;
+		}
 		else
 			return false;
 	}

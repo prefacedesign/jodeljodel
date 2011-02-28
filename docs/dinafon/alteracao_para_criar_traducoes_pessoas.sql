@@ -38,6 +38,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `pers_person_translations`
 -- -----------------------------------------------------
+
 CREATE  TABLE IF NOT EXISTS `pers_person_translations` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `pers_person_id` INT NOT NULL ,
@@ -45,11 +46,14 @@ CREATE  TABLE IF NOT EXISTS `pers_person_translations` (
   `profile` TEXT NULL ,
   `cooperation_with_dinafon` TEXT NULL ,
   `position` TEXT NULL ,
+  `language` VARCHAR(3) NULL ,
+  `created` DATETIME NULL ,
+  `modified` DATETIME NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_pers_people_translations_pers_people` (`pers_person_id` ASC) ,
   CONSTRAINT `fk_pers_people_translations_pers_people`
     FOREIGN KEY (`pers_person_id` )
-    REFERENCES `pers_people` (`id` )
+    REFERENCES `jodeljodel`.`pers_people` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
