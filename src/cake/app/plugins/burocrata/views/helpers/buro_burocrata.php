@@ -110,7 +110,6 @@ class BuroBurocrataHelper extends XmlTagHelper
 				
 				$View = $this->_getView();
 				
-				$this->_addFormAttribute('inputs', $options);
 			}
 			else
 			{
@@ -121,6 +120,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			if ($options['type'] != 'hidden' && $container !== false)
 				$out .= $this->einputcontainer();
 		}
+		//debug($out);
 		return $out;
 	}
 
@@ -637,6 +637,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$htmlAttributes = am($defaults, $htmlAttributes);
 		$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultContainerClass);
+		$htmlAttributes = $this->addClass($htmlAttributes, 'input_' . Inflector::underscore($options['type']));
 		
 		if (isset($options['fieldName']))
 		{
@@ -930,6 +931,61 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'onShowPreview' => array('ajax' => $open_prev_ajax)
 		);
 		$out .= $this->BuroOfficeBoy->belongsTo($officeboy_options);
+		
+		return $out;
+	}
+	
+	
+	
+	
+	/**
+ * Construct a belongsTo form based on passed variable
+ *
+ * ### The options are:
+ *
+ * - `model` - The Alias used by related model (there is no default and MUST be passed).
+ * - `type` - Type of form (can be 'list'). Defaults to 'list'.
+ * - `actions` - An array that defines all the URLs for CRUD actions Defaults to BuroBurocrataController actions.
+ * - `callbacks` - An array with possible callbacks with Jodel Callbacks convention.
+ *
+ * @access public
+ * @param array $options An array with non-defaults values
+ * @return string The HTML well formated
+ * @todo actions param implementation
+ * @todo allow param implementation
+ * @todo type param implementation
+ * @todo Error handling
+ */
+	public function inputHasMany($options = array())
+	{
+		$input_options = $options;
+		$options = $options['options'];
+		$defaults = array(
+			'model' => false,
+			'assocName' => false,
+			'url' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'list'),
+			'type' => 'list',
+			'baseID' => uniqid()
+		);
+		$options = am($defaults, $options);
+		
+		
+		$model =& ClassRegistry::init($this->modelPlugin . '.' . $options['model']);
+		$options_to_list = $model->find('list');
+			
+		if ($options['type'] == 'list')
+			$out = $this->input(
+				array(
+					'options' => $options_to_list,
+					'multiple' => $options['multiple']
+				), 
+				array(
+					'label' => $input_options['label'], 
+					'instructions' => $input_options['instructions'], 
+					'type' => 'select', 
+					'fieldName' => $input_options['fieldName']
+				)
+			);
 		
 		return $out;
 	}

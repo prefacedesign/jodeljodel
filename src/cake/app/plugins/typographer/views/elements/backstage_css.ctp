@@ -604,6 +604,15 @@
 	));
 	
 	$this->Decorator->rule(
+		'.input_has_many select', array(
+			'border' => $u->t($border_size) . ' solid ' .  $palette['input_borders']->write(),
+			'padding-left' => $u->t($padding_size),
+			'width' => $hg->size(array('M' => 5, 'g' => -1, 'u' => -$padding_size-2*$border_size)),
+			'margin-right' => $hg->size(array('g' => 1)),
+			'height' => 'auto'
+	));
+	
+	$this->Decorator->rule(
 		'.buro_form .superfield h6', array(
 			'font-weight' => 'bold',
 			'text-transform' => 'uppercase',

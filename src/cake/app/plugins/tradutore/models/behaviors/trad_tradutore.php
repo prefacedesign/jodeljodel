@@ -555,6 +555,33 @@ class TradTradutoreBehavior extends ModelBehavior
 					}
 				}
 			}
+			
+			if (!empty($Model->{$settings['className']}->hasAndBelongsToMany))
+			{
+				//debug($contain);
+				
+				foreach($Model->{$settings['className']}->hasAndBelongsToMany as $k => $m)
+				{
+					//debug($k);
+					foreach($contain as $i => $c)
+					{
+						//debug($i);
+						//debug($c);
+						//debug($contain);
+						if ($k === $i)
+						{
+							$contain[$settings['className']] = array($i => $c);
+							unset($contain[$i]);
+						}
+						if ($k === $c)
+						{
+							$contain[$settings['className']] = array($i => $c);
+							unset($contain[$i]);
+						}
+						//debug($contain);
+					}
+				}
+			}
 		}
 		
 			
@@ -618,7 +645,7 @@ class TradTradutoreBehavior extends ModelBehavior
 		$this->already_done = array();
 		$contain = $this->__changeContain($Model, $query['contain']);
 		$query['contain'] = $contain;
-		//debug($query['contain']);
+		//debug($contain);
 		//die;
 		$this->already_done = array();
 		$query = $this->__createQuery($Model, $query);

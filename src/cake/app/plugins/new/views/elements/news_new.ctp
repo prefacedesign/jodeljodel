@@ -69,7 +69,7 @@ switch ($type[0])
 						'type' => 'textarea',
 						'fieldName' => 'abstract',
 						'label' => __('Form - NewsNew.abstract',true),
-						'instructions' => __('Form - NewsNew.date - abstract',true)
+						'instructions' => __('Form - NewsNew.abstract - instructions',true)
 					));
 					
 					echo $buro->input(array(),array(
