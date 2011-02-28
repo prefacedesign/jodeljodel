@@ -96,19 +96,21 @@ class CorkCorktile extends CorktileAppModel
 			$data = array('CorkCorktile' => array(
 				'id' => $options['key'],
 				'type' => $options['type'],
+				'content_id' => $corktileData['CorkCorktile']['content_id'],
 				'title' => isset($options['title']) ? $options['title'] : Inflector::humanize($options['key']),
 				'location' => isset($options['location']) ? $options['location'] : '',
 				'options' => isset($options['options']) ? $options['options'] : '' //@todo Make this a behavior
 			));
 			
-			if ($this->save($data) === false)
+			if (($corktileData = $this->save($data)) === false)
 			{
 				trigger_error(__('CorkCorktile Model: Could not update the Cork meta data',true));
 				return false;
 			}
+			
 		}
 		
-		return $Model->getCorkContent($corktileData['CorkCorktile']['content_id']); //Must always retrieve because the Model may have proccessed the data;
+		return am($corktileData, $Model->getCorkContent($corktileData['CorkCorktile']['content_id'])); //Must always retrieve because the Model may have proccessed the data;
 	}
 	
 	/** 

@@ -595,7 +595,13 @@ class TradTradutoreBehavior extends ModelBehavior
     {
 		$__settings = $this->__settings[$Model->name];
         $settings   = $this->settings[$Model->name];
-		//debug($query);
+		
+		if (isset($query['contain']) && $query['contain'] === false)
+			$query['contain'] = array();
+			
+		if (!isset($query['contain']))
+			$query['contain'] = array(); //@todo: This should be switched to something equivalente to the recursive functionality
+	
 		if (isset($query['language']))
 		{
 			$this->setLanguage($Model, $query['language']);

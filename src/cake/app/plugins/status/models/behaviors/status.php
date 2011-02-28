@@ -246,7 +246,7 @@ class StatusBehavior extends ModelBehavior
 				{
 					if (isset($default_config[$index]['active']) && isset($option))
 					{
-						if ($default_config[$index]['overwrite'])
+						if (isset($default_config[$index]['overwrite']) && $default_config[$index]['overwrite'])
 						{
 							if ($option !== $default_config[$index]['active'] && !$ignore)
 								die('Error. The global settings of active statuses is different of the local settings, and it is marked to overwrite, then there are a conflict to be resolved.');

@@ -104,10 +104,12 @@ class DinafonTypeBricklayerHelper extends TypeBricklayerHelper
 
 			$this->TypeStyleFactory->widthGenerateClasses(array(0 => $size));
 			$tmp = $this->TypeStyleFactory->widthClassNames($size);
-			$width = $tmp[0];
+			$attr = $this->_mergeAttributes(array('class' => array($tmp[0],'flutuante')), $attr);
 		}
+		
+		$attr = $this->_mergeAttributes(array('class' => array('coluna')), $attr);
 
-		return $this->sdiv(array('class' => array('coluna','flutuante',$width)),$options);
+		return $this->sdiv($attr,$options);
 	}
 
 	function ecoluna()
@@ -148,7 +150,7 @@ class DinafonTypeBricklayerHelper extends TypeBricklayerHelper
 	{
 
 		$t = parent::h2($attr,$options, $content);
-		$t.= $this->barraHorizontal(array('class' => 'cinza_branco') );
+		$t.= $this->barraHorizontal(array('class' => 'cinza_branco'));
 		return $t;
 	}
 

@@ -5,7 +5,25 @@
 		case 'cork':
 			if (!isset($type[1]))
 			{
-				echo $this->Bl->paraDry(explode("\n", $this->Text->autoLink($data['TextTextCork']['text'])));
+				if (isset($data['CorkCorktile']['options']['textile']) && $data['CorkCorktile']['options']['textile'])
+				{
+					$Textile =&	ClassRegistry::init('Textile','Vendor');
+					$text = $Textile->textileThis($data['TextTextCork']['text']);
+					
+					//@todo Hardcoded Dinafon only
+					$text = preg_replace('/<h([1-6])>/', '</div><h$1>', $text);
+					$text = preg_replace('/<\/h([1-6])>/', '</h$1><div class="para">', $text);
+					$text= preg_replace('/<\/h([2-3])>/', '</h$1><div class="barra_h cinza_branco"></div>', $text);
+					
+					echo '<div class="para">' . $text . '</div>';
+				}
+				else
+				{
+					if (isset($data['CorkCorktile']['options']['convertLinks']) && $data['CorkCorktile']['options']['convertLinks'])
+						echo $this->Bl->paraDry(explode("\n", $this->Text->autoLink($data['TextTextCork']['text'])));
+					else
+						echo $this->Bl->paraDry(explode("\n", $data['TextTextCork']['text']));
+				}
 			}
 		break;
 		case 'buro':
@@ -25,12 +43,25 @@
 						'fieldName' => 'id'
 					));
 					
-					echo $buro->input(array(),array(
-						'type' => 'textarea',
-						'fieldName' => 'text',
-						'label' => __('Cork Form - TextTextCork.text',true),
-						'instructions' => __('Cork Form - TextTextCork.text - instructions',true)
-					));				
+					/*if (isset($this->data['CorkCorktile']['options']['textile']) && $this->data['CorkCorktile']['options']['textile'])
+					{
+						echo $buro->input(array(),array(
+							'type' => 'textile',
+							'fieldName' => 'text',
+							'label' => __('Cork Form - TextTextCork.text',true),
+							'instructions' => __('Cork Form - TextTextCork.text - instructions',true)
+						));
+					}
+					else
+					{*/
+						echo $buro->input(array(),array(
+							'type' => 'textarea',
+							'fieldName' => 'text',
+							'label' => __('Cork Form - TextTextCork.text',true),
+							'instructions' => __('Cork Form - TextTextCork.text - instructions',true)
+						));
+					//}
+					
 					//@todo Customize submitBox.
 					echo $buro->submitBox(array(), array('publishControls' => false));
 				echo $buro->eform();

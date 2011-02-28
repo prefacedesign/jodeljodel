@@ -1,16 +1,25 @@
 <?php
 class TextTextCork extends TextCorkAppModel
 {
-	var $actsAs = array('Corktile.CorkAttachable' => array('type' => 'text_cork'));
+	var $actsAs = array(
+		'Cascata.AguaCascata', 
+		'Tradutore.TradTradutore', 
+		'Containable', 
+		'Corktile.CorkAttachable' => array('type' => 'text_cork'), 
+	);
+
+	var $hasOne = array('TextTextCorkTranslation' => array('className' => 'TextCork.TextTextCorkTranslation'));
+	
+	
 	/** saveCorkContent
 	 *
 	 *  This function is demanded by the Corktile contract. Basically, it must
 	 *  insert the data in a table row. If an 'id' is given in the content, it
 	 *  should update the data.
 	 *
-	 *  @param Array $content The data that must be saved. If empty it should be filled with
+	 *  @param array $content The data that must be saved. If empty it should be filled with
 	 *                        the default content.
-	 *  @param Array $options Special options related to this type of Cork. In the
+	 *  @param array $options Special options related to this type of Cork. In the
 	 *						  case of the TextCork this data can be:
 	 *						    - 'maxLenght' => maximum lenght of chars it must have 
 	 *							- 'minLenght' => minimum lenght of chars it should have
@@ -21,6 +30,8 @@ class TextTextCork extends TextCorkAppModel
 	 */ 
 	function saveCorkContent($content = array(), $options = array(), $fromForm = false)
 	{
+		//@todo: Treat multiple languages right. Now it creates content only for the 
+		//used language.
 		if (empty($content)) // sets the default content.
 		{
 			$content['TextTextCork']['text'] = __("TextTextCork Model: This text hasn't been written yet. It's up to the site content editor to write it.", true);
@@ -47,7 +58,7 @@ class TextTextCork extends TextCorkAppModel
 	function getCorkContent($id, $options = array())
 	{
 		//@todo Make the right find.
-		return $this->findById($id);	
+		return $this->find('first', array('emptyTranslation' => true, 'conditions' => array('TextTextCork.id' => $id), 'contain' => array()));	
 	}
 	
 	/** 
@@ -60,7 +71,6 @@ class TextTextCork extends TextCorkAppModel
 	
 	function saveBurocrataCork($data)
 	{
-		//@todo Include validation rules here!
 		return $this->save($data);
 	}
 }
