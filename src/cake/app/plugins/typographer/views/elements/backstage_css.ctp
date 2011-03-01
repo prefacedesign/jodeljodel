@@ -3,9 +3,9 @@
 	$box_shadow = '0 '.$vg->size(array('u' => 3)).' '. $vg->size(array('u' => 10)). ' ' . $palette['popin_shadow']->write();
 	$this->Decorator->rule(
 		'.box_popup', array(
-			'z-index' => '100',
+			'z-index' => '1000',
 			'border' => '1px solid white',
-			'position' => 'absolute',
+			'position' => 'fixed',
 			'background' => 'white',
 			'width' => $vg->size(array('M' => 7, 'g' => -1)),
 			'padding' => $hg->size(array('g' => 1)) . ' 0',
@@ -14,6 +14,16 @@
 			'-moz-box-shadow' => $box_shadow
 	));
 	
+	$this->Decorator->rule(
+		'.popup_maya_veil', array(
+			'background' => 'black',
+			'position' => 'fixed',
+			'width' => '100%',
+			'height' => '100%',
+			'z-index' => '999',
+			'left' => 0,
+			'top' => 0
+	));
 	
 
 	
@@ -217,18 +227,6 @@
 			'overflow' => 'auto'
 	));
 	
-	
-	
-	$this->Decorator->rule(
-		'.popup_maya_veil', array(
-			'background' => 'black',
-			'position' => 'fixed',
-			'width' => '100%',
-			'height' => '100%',
-			'z-index' => '99',
-			'left' => 0,
-			'top' => 0
-	));
 	
 	$this->Decorator->rule(
 		'.box_container', array(
@@ -760,7 +758,7 @@
 			'font-size' => $u->t($line_height * 13/18),
 			'line-height' => $u->t($line_height),
 			'margin-top' => $hg->size(array('m' => 2)),
-			'font-style' => 'bold',
+			'font-weight' => 'bold',
 			'display'	=> 'block',
 			'letter-spacing' => '0'
 	));
