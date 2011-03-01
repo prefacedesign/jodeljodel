@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-03-01 10:28-0300\n"
-"PO-Revision-Date: 2011-03-01 10:46-0300\n"
+"POT-Creation-Date: 2011-03-01 11:41-0300\n"
+"PO-Revision-Date: 2011-03-01 11:49-0300\n"
 "Last-Translator: Lucas Vignoli Reis <lucas@preface.com.br>\n"
 "Language-Team: Preface Design <preface@preface.com.br>\n"
 "MIME-Version: 1.0\n"
@@ -433,6 +433,65 @@ msgstr "Excluir conteúdo"
 msgid "Dashboard: Edit"
 msgstr "Editar"
 
+#: \plugins\event\models\eve_event.php:20
+#, fuzzy
+msgid "EveEvent validation: name."
+msgstr "Erro de validação no sobrenome"
+
+#: \plugins\event\models\eve_event.php:29
+#, fuzzy
+msgid "EveEvent validation: abstract required, between 50 255."
+msgstr "Erro de validação no sobrenome"
+
+#: \plugins\event\views\elements\eve_event.ctp:27
+#, fuzzy
+msgid "Form - EveEvent.name"
+msgstr "Nome"
+
+#: \plugins\event\views\elements\eve_event.ctp:28
+#, fuzzy
+msgid "Form - EveEvent.name - instructions"
+msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+
+#: \plugins\event\views\elements\eve_event.ctp:34
+#, fuzzy
+msgid "Form - EveEvent.abstract"
+msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+
+#: \plugins\event\views\elements\eve_event.ctp:35
+#, fuzzy
+msgid "Form - EveEvent.abstract - instructions"
+msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+
+#: \plugins\event\views\elements\eve_event.ctp:41
+#, fuzzy
+msgid "Form - EveEvent.link"
+msgstr "Qual é o link para o seu currículo lattes?"
+
+#: \plugins\event\views\elements\eve_event.ctp:42
+#, fuzzy
+msgid "Form - EveEvent.link - instructions"
+msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+
+#: \plugins\event\views\elements\eve_event.ctp:49
+msgid "Form - EveEvent.begins"
+msgstr ""
+
+#: \plugins\event\views\elements\eve_event.ctp:50
+#, fuzzy
+msgid "Form - EveEvent.begins - instructions"
+msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+
+#: \plugins\event\views\elements\eve_event.ctp:64
+#, fuzzy
+msgid "Form - EveEvent.ends"
+msgstr "Nome"
+
+#: \plugins\event\views\elements\eve_event.ctp:65
+#, fuzzy
+msgid "Form - EveEvent.ends - instructions"
+msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+
 #: \plugins\jj_users\views\user_users\login.ctp:6
 msgid "Login page: username label"
 msgstr ""
@@ -521,67 +580,67 @@ msgstr ""
 msgid "NewsNew validation: content required, between 100 6000."
 msgstr ""
 
-#: \plugins\new\views\elements\news_new.ctp:83
+#: \plugins\new\views\elements\news_new.ctp:85
 msgid "Form - NewsNew.Author - Select a Author"
 msgstr ""
 
-#: \plugins\new\views\elements\news_new.ctp:84
+#: \plugins\new\views\elements\news_new.ctp:86
 msgid "Form - NewsNew.Author - Instruction to belongsTo Author"
 msgstr ""
 
-#: \plugins\new\views\elements\news_new.ctp:89
+#: \plugins\new\views\elements\news_new.ctp:91
 msgid "Form - NewsNew.Author - Create a new Author"
 msgstr ""
 
-#: \plugins\new\views\elements\news_new.ctp:90
+#: \plugins\new\views\elements\news_new.ctp:92
 msgid "Form - NewsNew.Author - Edit this Author"
 msgstr ""
 
-#: \plugins\new\views\elements\news_new.ctp:98
+#: \plugins\new\views\elements\news_new.ctp:100
 #, fuzzy
 msgid "Form - NewsNew new info superfield"
 msgstr "Nome da pessoa"
 
-#: \plugins\new\views\elements\news_new.ctp:99
+#: \plugins\new\views\elements\news_new.ctp:101
 #, fuzzy
 msgid "Form - NewsNew new info superfield - instructions"
 msgstr " "
 
-#: \plugins\new\views\elements\news_new.ctp:109
+#: \plugins\new\views\elements\news_new.ctp:111
 #, fuzzy
 msgid "Form - NewsNew.date"
 msgstr "Nome"
 
-#: \plugins\new\views\elements\news_new.ctp:110
+#: \plugins\new\views\elements\news_new.ctp:112
 #, fuzzy
 msgid "Form - NewsNew.date - instructions"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
 
-#: \plugins\new\views\elements\news_new.ctp:123
+#: \plugins\new\views\elements\news_new.ctp:125
 #, fuzzy
 msgid "Form - NewsNew.title"
 msgstr "Perfil"
 
-#: \plugins\new\views\elements\news_new.ctp:124
+#: \plugins\new\views\elements\news_new.ctp:126
 #, fuzzy
 msgid "Form - NewsNew.title - instructions"
 msgstr " "
 
-#: \plugins\new\views\elements\news_new.ctp:130
+#: \plugins\new\views\elements\news_new.ctp:132
 msgid "Form - NewsNew.abstract"
 msgstr ""
 
-#: \plugins\new\views\elements\news_new.ctp:131
+#: \plugins\new\views\elements\news_new.ctp:133
 #, fuzzy
 msgid "Form - NewsNew.abstract - instructions"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
 
-#: \plugins\new\views\elements\news_new.ctp:137
+#: \plugins\new\views\elements\news_new.ctp:139
 #, fuzzy
 msgid "Form - NewsNew.content"
 msgstr "Nome"
 
-#: \plugins\new\views\elements\news_new.ctp:138
+#: \plugins\new\views\elements\news_new.ctp:140
 #, fuzzy
 msgid "Form - NewsNew.content - instructions"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
@@ -640,7 +699,7 @@ msgstr "As pessoas"
 
 #: \plugins\page_sections\config\sections.php:127
 msgid "Sections: people headerCaption"
-msgstr "Pessoas envolvidas"
+msgstr "As pessoas"
 
 #: \plugins\page_sections\config\sections.php:128
 msgid "Sections: people humanName"
@@ -726,167 +785,135 @@ msgstr "Notícias"
 msgid "Sections: news humanName"
 msgstr "Notícias"
 
-#: \plugins\page_sections\config\sections.php:190
-msgid "Sections: news_index linkCaption"
-msgstr ""
-
-#: \plugins\page_sections\config\sections.php:196
-msgid "Sections: news_index pageTitle"
-msgstr ""
-
-#: \plugins\page_sections\config\sections.php:197
-msgid "Sections: news_index headerCaption"
-msgstr ""
-
-#: \plugins\page_sections\config\sections.php:198
-msgid "Sections: news_index humanName"
-msgstr ""
-
-#: \plugins\page_sections\config\sections.php:201
-msgid "Sections: * linkCaption"
-msgstr ""
-
-#: \plugins\page_sections\config\sections.php:208
-msgid "Sections: news_item pageTitle"
-msgstr ""
-
-#: \plugins\page_sections\config\sections.php:209
-msgid "Sections: news_item headerCaption"
-msgstr ""
-
-#: \plugins\page_sections\config\sections.php:210
-msgid "Sections: news_item humanName"
-msgstr ""
-
-#: \plugins\page_sections\config\sections.php:217
+#: \plugins\page_sections\config\sections.php:218
 msgid "Sections: backstage linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:226
+#: \plugins\page_sections\config\sections.php:227
 msgid "Sections: backstage pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:227
+#: \plugins\page_sections\config\sections.php:228
 msgid "Sections: backstage headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:228
+#: \plugins\page_sections\config\sections.php:229
 msgid "Sections: backstage humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:231
+#: \plugins\page_sections\config\sections.php:232
 msgid "Sections: login linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:238
+#: \plugins\page_sections\config\sections.php:239
 msgid "Sections: login pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:239
+#: \plugins\page_sections\config\sections.php:240
 msgid "Sections: login headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:240
+#: \plugins\page_sections\config\sections.php:241
 msgid "Sections: login humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:243
+#: \plugins\page_sections\config\sections.php:244
 msgid "Sections: dashboard linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:250
+#: \plugins\page_sections\config\sections.php:251
 msgid "Sections: dashboard pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:251
+#: \plugins\page_sections\config\sections.php:252
 msgid "Sections: dashboard headerCaption"
 msgstr "Conteúdo"
 
-#: \plugins\page_sections\config\sections.php:252
+#: \plugins\page_sections\config\sections.php:253
 msgid "Sections: dashboard humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:255
+#: \plugins\page_sections\config\sections.php:256
 msgid "Sections: burocrata_save linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:265;275
+#: \plugins\page_sections\config\sections.php:266;276
 msgid "Sections: set_publishing_status linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:285
+#: \plugins\page_sections\config\sections.php:286
 msgid "Sections: corktile_edit linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:293
+#: \plugins\page_sections\config\sections.php:294
 msgid "Sections: corktile_edit pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:294
+#: \plugins\page_sections\config\sections.php:295
 msgid "Sections: corktile_edit headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:295
+#: \plugins\page_sections\config\sections.php:296
 msgid "Sections: corktile_edit humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:298
+#: \plugins\page_sections\config\sections.php:299
 msgid "Sections: edit linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:306
+#: \plugins\page_sections\config\sections.php:307
 msgid "Sections: edit pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:307
+#: \plugins\page_sections\config\sections.php:308
 msgid "Sections: edit headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:308
+#: \plugins\page_sections\config\sections.php:309
 msgid "Sections: edit humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:311
+#: \plugins\page_sections\config\sections.php:312
 msgid "Sections: news_edit linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:320
+#: \plugins\page_sections\config\sections.php:321
 msgid "Sections: news_edit pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:321
+#: \plugins\page_sections\config\sections.php:322
 msgid "Sections: news_edit headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:322
+#: \plugins\page_sections\config\sections.php:323
 msgid "Sections: news_edit humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:325
+#: \plugins\page_sections\config\sections.php:326
 msgid "Sections: news_form linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:333
+#: \plugins\page_sections\config\sections.php:334
 msgid "Sections: news_form humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:342
+#: \plugins\page_sections\config\sections.php:343
 msgid "Section One"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:350
+#: \plugins\page_sections\config\sections.php:351
 msgid "The Section One"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:351
+#: \plugins\page_sections\config\sections.php:352
 msgid "The Section One Header"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:352
+#: \plugins\page_sections\config\sections.php:353
 msgid "The Human Section One name"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:356
+#: \plugins\page_sections\config\sections.php:357
 msgid "Section Two"
 msgstr ""
 
@@ -1258,11 +1285,11 @@ msgstr ""
 msgid "TextTextCork Model: This text hasn't been written yet. It's up to the site content editor to write it."
 msgstr "Este texto ainda não foi redigido ainda."
 
-#: \plugins\text_cork\views\elements\text_text_cork.ctp:60
+#: \plugins\text_cork\views\elements\text_text_cork.ctp:52
 msgid "Cork Form - TextTextCork.text"
 msgstr "O texto"
 
-#: \plugins\text_cork\views\elements\text_text_cork.ctp:61
+#: \plugins\text_cork\views\elements\text_text_cork.ctp:53
 #, fuzzy
 msgid "Cork Form - TextTextCork.text - instructions"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
@@ -1289,7 +1316,51 @@ msgstr "This site in english"
 
 #: \plugins\typographer\views\elements\dinafon_layout.ctp:178
 msgid "Dinafon layout: short description about Dinafon"
-msgstr "Dinafon stands for Dinâmica Fônica, speech dynamics, and names a group of phonologists/phoneticians led by Eleonora Albano."
+msgstr "VERSÃO EM PORTUGUÊS DE: \"Dinafon stands for Dinâmica Fônica, speech dynamics, and names a group of phonologists/phoneticians led by Eleonora Albano.\""
+
+#: \plugins\typographer\views\elements\dinafon_layout.ctp:189
+msgid "Dinafon layout: e-mail label"
+msgstr "e-mail"
+
+#: \plugins\typographer\views\elements\dinafon_layout.ctp:190
+msgid "Dinafon layout: e-mail of dinafon"
+msgstr "albano@unicamp.br"
+
+#: \plugins\typographer\views\elements\dinafon_layout.ctp:191
+msgid "Dinafon layout: phone label"
+msgstr "telefone"
+
+#: \plugins\typographer\views\elements\dinafon_layout.ctp:192
+msgid "Dinafon layout: phone of dinafon "
+msgstr "+55 19 35211532 "
+
+#: \plugins\typographer\views\elements\dinafon_layout.ctp:193
+msgid "Dinafon layout: address label"
+msgstr "endereço"
+
+#: \plugins\typographer\views\elements\dinafon_layout.ctp:194
+msgid "Dinafon layout: address line 1"
+msgstr "LAFAPE, IEL/UNICAMP"
+
+#: \plugins\typographer\views\elements\dinafon_layout.ctp:195
+msgid "Dinafon layout: address line 2"
+msgstr "Rua Sérgio Buarque de Holanda, 571"
+
+#: \plugins\typographer\views\elements\dinafon_layout.ctp:196
+msgid "Dinafon layout: address line 3"
+msgstr "Cidade Universitária"
+
+#: \plugins\typographer\views\elements\dinafon_layout.ctp:197
+msgid "Dinafon layout: address line 4"
+msgstr "Campinas/SP – Brazil"
+
+#: \plugins\typographer\views\elements\dinafon_layout.ctp:198
+msgid "Dinafon layout: address line 5"
+msgstr "CEP 13.083–859"
+
+#: \plugins\typographer\views\elements\dinafon_layout.ctp:203
+msgid "Layout e programação por %s"
+msgstr "Site por %s"
 
 #: \views\pages\home.ctp:12
 msgid "Your tmp directory is writable."

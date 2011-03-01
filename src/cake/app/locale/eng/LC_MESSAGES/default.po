@@ -1,18 +1,19 @@
 # LANGUAGE translation of CakePHP Application
 # Copyright YEAR NAME <EMAIL@ADDRESS>
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2011-03-01 11:41-0300\n"
-"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
-"Last-Translator: NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2011-03-01 12:29-0300\n"
+"Last-Translator: Lucas Vignoli Reis <lucas@preface.com.br>\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
 #: \plugins\author\models\auth_author.php:18
 msgid "AuthAuthor validation: surname."
@@ -622,143 +623,143 @@ msgstr ""
 
 #: \plugins\page_sections\config\sections.php:84
 msgid "Sections: public_page linkCaption"
-msgstr ""
+msgstr "Dinafon"
 
 #: \plugins\page_sections\config\sections.php:91;92
 msgid "Sections: public_page pageTitle"
-msgstr ""
+msgstr "Dinafon"
 
 #: \plugins\page_sections\config\sections.php:93
 msgid "Sections: public_page humanName"
-msgstr ""
+msgstr "Dinafon"
 
 #: \plugins\page_sections\config\sections.php:96
 msgid "Sections: about linkCaption"
-msgstr ""
+msgstr "Dinafon"
 
 #: \plugins\page_sections\config\sections.php:102
 msgid "Sections: about pageTitle"
-msgstr ""
+msgstr "The research group"
 
 #: \plugins\page_sections\config\sections.php:103
 msgid "Sections: about headerCaption"
-msgstr ""
+msgstr "The research group"
 
 #: \plugins\page_sections\config\sections.php:104
 msgid "Sections: about humanName"
-msgstr ""
+msgstr "The research group"
 
 #: \plugins\page_sections\config\sections.php:109
 msgid "Sections: about_dinafon linkCaption"
-msgstr ""
+msgstr "The group"
 
 #: \plugins\page_sections\config\sections.php:115
 msgid "Sections: about_dinafon pageTitle"
-msgstr ""
+msgstr "The group"
 
 #: \plugins\page_sections\config\sections.php:116
 msgid "Sections: about_dinafon headerCaption"
-msgstr ""
+msgstr "The group"
 
 #: \plugins\page_sections\config\sections.php:117
 msgid "Sections: about_dinafon humanName"
-msgstr ""
+msgstr "The group"
 
 #: \plugins\page_sections\config\sections.php:120
 msgid "Sections: people linkCaption"
-msgstr ""
+msgstr "People"
 
 #: \plugins\page_sections\config\sections.php:126
 msgid "Sections: people pageTitle"
-msgstr ""
+msgstr "People"
 
 #: \plugins\page_sections\config\sections.php:127
 msgid "Sections: people headerCaption"
-msgstr ""
+msgstr "People"
 
 #: \plugins\page_sections\config\sections.php:128
 msgid "Sections: people humanName"
-msgstr ""
+msgstr "People"
 
 #: \plugins\page_sections\config\sections.php:131
 msgid "Sections: profile linkCaption"
-msgstr ""
+msgstr "Profile"
 
 #: \plugins\page_sections\config\sections.php:137
 msgid "Sections: profile pageTitle"
-msgstr ""
+msgstr "Profile"
 
 #: \plugins\page_sections\config\sections.php:138
 msgid "Sections: profile headerCaption"
-msgstr ""
+msgstr "Profile"
 
 #: \plugins\page_sections\config\sections.php:139
 msgid "Sections: profile humanName"
-msgstr ""
+msgstr "Profile"
 
 #: \plugins\page_sections\config\sections.php:146
 msgid "Sections: contact linkCaption"
-msgstr ""
+msgstr "Contact"
 
 #: \plugins\page_sections\config\sections.php:152
 msgid "Sections: contact pageTitle"
-msgstr ""
+msgstr "Contact"
 
 #: \plugins\page_sections\config\sections.php:153
 msgid "Sections: contact headerCaption"
-msgstr ""
+msgstr "Contact information"
 
 #: \plugins\page_sections\config\sections.php:154
 msgid "Sections: contact humanName"
-msgstr ""
+msgstr "Contact information"
 
 #: \plugins\page_sections\config\sections.php:157
 msgid "Sections: papers linkCaption"
-msgstr ""
+msgstr "Papers"
 
 #: \plugins\page_sections\config\sections.php:163
 msgid "Sections: papers pageTitle"
-msgstr ""
+msgstr "Papers"
 
 #: \plugins\page_sections\config\sections.php:164
 msgid "Sections: papers headerCaption"
-msgstr ""
+msgstr "Scientific papers"
 
 #: \plugins\page_sections\config\sections.php:165
 msgid "Sections: papers humanName"
-msgstr ""
+msgstr "Scientific papers"
 
 #: \plugins\page_sections\config\sections.php:168
 msgid "Sections: events linkCaption"
-msgstr ""
+msgstr "Events"
 
 #: \plugins\page_sections\config\sections.php:174
 msgid "Sections: events pageTitle"
-msgstr ""
+msgstr "Events"
 
 #: \plugins\page_sections\config\sections.php:175
 msgid "Sections: events headerCaption"
-msgstr ""
+msgstr "Event"
 
 #: \plugins\page_sections\config\sections.php:176
 msgid "Sections: events humanName"
-msgstr ""
+msgstr "Events"
 
 #: \plugins\page_sections\config\sections.php:179
 msgid "Sections: news linkCaption"
-msgstr ""
+msgstr "News"
 
 #: \plugins\page_sections\config\sections.php:185
 msgid "Sections: news pageTitle"
-msgstr ""
+msgstr "News"
 
 #: \plugins\page_sections\config\sections.php:186
 msgid "Sections: news headerCaption"
-msgstr ""
+msgstr "News"
 
 #: \plugins\page_sections\config\sections.php:187
 msgid "Sections: news humanName"
-msgstr ""
+msgstr "News"
 
 #: \plugins\page_sections\config\sections.php:218
 msgid "Sections: backstage linkCaption"
@@ -1230,55 +1231,55 @@ msgstr ""
 
 #: \plugins\typographer\views\elements\dinafon_layout.ctp:61
 msgid "Dinafon layout: switch language"
-msgstr ""
+msgstr "Este site em português"
 
 #: \plugins\typographer\views\elements\dinafon_layout.ctp:178
 msgid "Dinafon layout: short description about Dinafon"
-msgstr ""
+msgstr "Dinafon stands for Dinâmica Fônica, speech dynamics, and names a group of phonologists/phoneticians led by Eleonora Albano."
 
 #: \plugins\typographer\views\elements\dinafon_layout.ctp:189
 msgid "Dinafon layout: e-mail label"
-msgstr ""
+msgstr "e-mail"
 
 #: \plugins\typographer\views\elements\dinafon_layout.ctp:190
 msgid "Dinafon layout: e-mail of dinafon"
-msgstr ""
+msgstr "albano@unicamp.br "
 
 #: \plugins\typographer\views\elements\dinafon_layout.ctp:191
 msgid "Dinafon layout: phone label"
-msgstr ""
+msgstr "phone"
 
 #: \plugins\typographer\views\elements\dinafon_layout.ctp:192
 msgid "Dinafon layout: phone of dinafon "
-msgstr ""
+msgstr "+55 19 35211532 "
 
 #: \plugins\typographer\views\elements\dinafon_layout.ctp:193
 msgid "Dinafon layout: address label"
-msgstr ""
+msgstr "address"
 
 #: \plugins\typographer\views\elements\dinafon_layout.ctp:194
 msgid "Dinafon layout: address line 1"
-msgstr ""
+msgstr "LAFAPE, IEL/UNICAMP "
 
 #: \plugins\typographer\views\elements\dinafon_layout.ctp:195
 msgid "Dinafon layout: address line 2"
-msgstr ""
+msgstr "Rua Sérgio Buarque de Holanda, 571"
 
 #: \plugins\typographer\views\elements\dinafon_layout.ctp:196
 msgid "Dinafon layout: address line 3"
-msgstr ""
+msgstr "Cidade Universitária"
 
 #: \plugins\typographer\views\elements\dinafon_layout.ctp:197
 msgid "Dinafon layout: address line 4"
-msgstr ""
+msgstr "Campinas/SP – Brazil"
 
 #: \plugins\typographer\views\elements\dinafon_layout.ctp:198
 msgid "Dinafon layout: address line 5"
-msgstr ""
+msgstr "CEP 13.083–859"
 
 #: \plugins\typographer\views\elements\dinafon_layout.ctp:203
 msgid "Layout e programação por %s"
-msgstr ""
+msgstr "Website by %s"
 
 #: \views\pages\home.ctp:12
 msgid "Your tmp directory is writable."
@@ -1321,7 +1322,10 @@ msgid "Editing this Page"
 msgstr ""
 
 #: \views\pages\home.ctp:77
-msgid "To change the content of this page, edit: %s\n\t\tTo change its layout, edit: %s\n\t\tYou can also add some CSS styles for your pages at: %s"
+msgid ""
+"To change the content of this page, edit: %s\n"
+"\t\tTo change its layout, edit: %s\n"
+"\t\tYou can also add some CSS styles for your pages at: %s"
 msgstr ""
 
 #: \views\principal\about.ctp:33

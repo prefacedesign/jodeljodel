@@ -182,23 +182,24 @@
 						)
 					);
 
-					echo $bl->para(
-						array(),
-						array(),
+					echo $bl->paraDry(
 						array(
-							  '<b>e-mail</b>&emsp;albano@unicamp.br <br/>'
-							. '<b>phone</b>&emsp;+55 19 35211532 <br/>'
-							. '<b>address</b>&emsp;'
-							. '<br/>LAFAPE, IEL/UNICAMP <br/>'
-							. 'Rua Sérgio Buarque de Holanda, 571 <br/>'
-							. 'Cidade Universitária<br/>'
-							. 'Campinas/SP &ndash; Brazil <br/>'
-							. 'CEP 13.083&ndash;859'
+							  $this->Bl->bDry(__('Dinafon layout: e-mail label',true)) 
+							. $this->Bl->espacoM() .  __('Dinafon layout: e-mail of dinafon',true) . $this->Bl->brDry()
+							. $this->Bl->bDry(__('Dinafon layout: phone label',true)) 
+							. $this->Bl->espacoM() . __('Dinafon layout: phone of dinafon ',true) . $this->Bl->brDry()
+							. $this->Bl->bDry(__('Dinafon layout: address label',true))
+							. $this->Bl->brDry() . __('Dinafon layout: address line 1',true) . $this->Bl->brDry()
+							. __('Dinafon layout: address line 2',true) . $this->Bl->brDry()
+							. __('Dinafon layout: address line 3',true) . $this->Bl->brDry()
+							. __('Dinafon layout: address line 4',true) . $this->Bl->brDry()
+							. __('Dinafon layout: address line 5',true) . $this->Bl->brDry()
 						)
 					);
 
+					echo $this->Bl->brDry();
 					echo $bl->para(array(),array('escape' => false),
-						array('Layout e programação por ' . $bl->a(array('href' => 'http://preface.com.br'),array(), 'Preface&nbsp;Design')));
+						array(sprintf(__('Layout e programação por %s',true),$bl->a(array('href' => 'http://preface.com.br'),array(), 'Preface&nbsp;Design'))));
 						
 				echo $bl->ecoluna();
 
@@ -209,11 +210,11 @@
 						echo $bl->espacadorHorizontal(array(),array('size' => array('qi' => 1)));
 						//@todo verificar se o $bl->link funciona
 
-						echo $bl->spara();
+						echo $bl->sp();
 								echo $bl->sa(array('href' => 'http://www.unicamp.br'));
 									echo $bl->imagem(array(),array('imgurl' => '/img/layout/unicamp.gif'));
 								echo $bl->ea();
-						echo $bl->epara();
+						echo $bl->ep();
 					echo $bl->ecoluna();
 			echo $bl->ediv();
 

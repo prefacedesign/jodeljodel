@@ -34,6 +34,7 @@ class AppController extends Controller {
 	var $helpers = array('Html', 'Form', 'Javascript', 'Session');
 	var $components = array(
 		'Acl',
+		'Tradutore.TradLanguageSelector',
 		'PageSections.SectSectionHandler',
 		'Auth' => array(
 			'userModel' => 'JjUsers.UserUser',
@@ -44,7 +45,6 @@ class AppController extends Controller {
 				'action' => 'index',
 			)
 		),
-		'Tradutore.TradLanguageSelector'
 	);
 	
 	function beforeFilter()
