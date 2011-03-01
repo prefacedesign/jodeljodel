@@ -31,7 +31,9 @@ switch ($type[0])
 		echo $this->Bl->brDry();
 		echo $this->Bl->brDry();
 
-		echo $this->Bl->para(array(),array(),array($data['NewsNew']['content']));
+		echo $this->Bl->textileDry($data['NewsNew']['content']);
+
+
 	break;
 
 	case 'linha_link':
