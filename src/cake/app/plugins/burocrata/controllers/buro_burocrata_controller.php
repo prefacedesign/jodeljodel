@@ -280,7 +280,7 @@ class BuroBurocrataController extends BurocrataAppController
 		$content = '';
 		if (!empty($this->data['text']))
 		{
-			App::import('Vendor', 'JjUtils.Textile');
+			App::import('Vendor', 'Textile');
 			$Textile = new Textile();
 			$content = $Textile->TextileThis($this->data['text']);
 		}

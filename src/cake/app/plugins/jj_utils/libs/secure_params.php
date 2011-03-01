@@ -33,11 +33,13 @@ class SecureParams {
 
 /**
  * One char, used to separate the data strings
+ * Cannot be any of those chars: [a-b] [A-b] [0-9] * - + \ / = ? # & % . :
+ * Recommended separator: _ @ | ; , $
  * 
  * @access public
  * @var string
  */
-	public static $separator = ',';
+	public static $separator = '_';
 
 
 /**

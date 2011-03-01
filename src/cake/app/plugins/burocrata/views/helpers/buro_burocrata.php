@@ -105,6 +105,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 					unset($options['instructions']);
 				}
 				$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultObjectClass);
+				$htmlAttributes = $this->addClass($htmlAttributes, $this->_readFormAttribute('baseID'), 'form');
 				$inputOptions = am($htmlAttributes, $options['options'], array('label' => false, 'div' => false, 'type' => $options['type'], 'error' => $options['error']));
 				$out .= $this->Form->input($options['fieldName'], $inputOptions);
 				
@@ -236,7 +237,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'url' => $url,
 			'writeForm' => false, 
 			'model' => false,
-			'baseID' => uniqid(),
+			'baseID' => substr(uniqid(), -6),
 			'callbacks' => array(),
 			'data' => null
 		);
@@ -309,24 +310,29 @@ class BuroBurocrataHelper extends XmlTagHelper
  * @access protected
  * @param string $attribute
  * @param mixed $value
- * @return void
+ * @return boolean 
  */
 	protected function _addFormAttribute($attribute, $value, $append = true)
 	{
 		$current_form = end($this->_nestedForm);
+		
 		$map =& $this->_formMap;
 		foreach($this->_nestedForm as $form_id)
 		{
-			if (isset($map[$form_id])) {
+			if (!isset($map[$form_id]))
+				return false;
+			
+			if ($current_form != $form_id) {
+				$map =& $map[$form_id]['subforms'];
+			} else {
 				if ($append && isset($map[$form_id][$attribute])) {
 					$map[$form_id][$attribute] = am($map[$form_id][$attribute], array($value));
 				} else {
 					$map[$form_id][$attribute] = $value;
 				}
-			} else {
-				$map =& $map[$form_id]['subforms'];
 			}
 		}
+		return true;
 	}
 
 
@@ -342,14 +348,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$map =& $this->_formMap;
 		foreach($this->_nestedForm as $form_id)
 		{
-			if (isset($map[$form_id])) {
-				return $map[$form_id];
-			} elseif (!isset($map[$form_id]['subforms'])) {
-				return null;
-			} else {
+			if ($form_id != $current_form && isset($map[$form_id]['subforms']))
 				$map =& $map[$form_id]['subforms'];
-			}
+			elseif (isset($map[$form_id]))
+				return $map[$form_id];
 		}
+		return null;
 	}
 
 
@@ -456,11 +460,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$url = $this->_readFormAttribute('url');
 		
 		if (!empty($modelAlias))
-			$out .= $this->Bl->sinput(array(
-				'type' => 'hidden',
+			$out .= $this->input(array(
 				'name' => $this->internalParam('request'),
 				'value' => $this->security($url, $modelPlugin, $modelAlias),
-				), array('close_me' => true)
+				), array('type' => 'hidden', 'close_me' => true)
 			);
 		$out .= $this->inputLayoutScheme();
 		$out .= $this->Bl->ediv();
@@ -487,18 +490,17 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$View = $this->_getView();
 		
 		$htmlDefaults = array(
-			'type' => 'hidden',
 			'name' => $this->internalParam('layout_scheme'),
 			'value' => $View->viewVars['layout_scheme'],
 		);
 		$htmlAttributes = (empty($htmlAttributes) ? array() : $htmlAttributes) + $htmlDefaults;
 		unset ($htmlDefaults);
 		
-		$defaults = array('close_me' => true);
+		$defaults = array('type' => 'hidden', 'close_me' => true);
 		$options = (empty($options) ? array() : $options) + $defaults;
 		unset ($defaults);
 		
-		return $this->Bl->sinput($htmlAttributes, $options);
+		return $this->input($htmlAttributes, $options);
 	}
 
 
@@ -508,7 +510,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  * ### List of valid options:
  * 
  * - `label` - The label of button. Defaults to 'Submit'.
- * - `cancel` - 
+ * - `cancel` - An array with the cancel options (`id`, `label`, `url`). Defaults to false (no cancel link)
  * - `type` - Type of interface ('image' or 'button' or 'link'). Defaults to button.
  * - `src` - A URL for image, in case of use 
  * 
@@ -516,21 +518,21 @@ class BuroBurocrataHelper extends XmlTagHelper
  * @param array $htmlAttributes
  * @param array $options
  * @return string The HTML well formated
- * @todo Canceling the form (maybe in another method)
  * @todo More bricklayerly
  */
 	public function submit($htmlAttributes = array(), $options = array())
 	{
-		$htmlAttributes = $this->addClass($htmlAttributes, 'submit');
-		$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultObjectClass);
 		$htmlAttributes['id'] = 'sbmt' . $this->_readFormAttribute('baseID');
 		
-		$defaults = array('label' => 'Submit');
+		$defaults = array('cancel' => false, 'label' => __('Burocrata::submit - Submit label', true));
 		$options = am($defaults, $options);
 		
 		$this->_addFormAttribute('submit', $htmlAttributes['id']);
 		
-		return $this->Bl->button($htmlAttributes, $options, $options['label']);
+		if ($options['cancel'] == false)
+			return $this->button($htmlAttributes, $options, $options['label']);
+		else
+			return $this->okOrCancel($htmlAttributes, $options);
 	}
 
 
@@ -543,6 +545,79 @@ class BuroBurocrataHelper extends XmlTagHelper
 
 
 
+
+
+
+/**
+ * Overwrites the default button method to put some classes on it
+ * 
+ * @access public
+ * @param  array $htmlAttributes
+ * @param  array $options
+ * @return string The HTML well formated
+ */
+	public function sbutton($htmlAttributes = array(), $options = array())
+	{
+		$htmlAttributes = $this->addClass($htmlAttributes, 'submit');
+		$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultContainerClass);
+		
+		unset($options['close_me']);
+		return $this->Bl->sbutton($htmlAttributes, $options);
+	}
+
+
+/**
+ * Creates a block containing a Submit button and a Cancel link.
+ * The cancel link can be personalized filling the `cancel` parameter on $options
+ * 
+ * ### The options are:
+ * 
+ * - `label` - The label of button. Defaults to 'Submit'.
+ * - `cancel` - An array with the cancel options (`htmlAttributes`, `label`, `url`)
+ * - `type` - Type of interface ('image' or 'button' or 'link'). Defaults to button.
+ * - `src` - A URL for image, in case of use 
+ * 
+ * @access public
+ * @param  array $htmlAttributes
+ * @param  array $options
+ * @return string The HTML well formated
+ * @todo Implement the `type` option
+ */
+	public function sokOrCancel($htmlAttributes = array(), $options = array())
+	{
+		$options = $options + array(
+			'label' => __('Burocrata::okOrCancel - OK label', true),
+			'type' => 'button',
+			'src' => null,
+			'cancel' => false
+		);
+		$options['close_me'] = false;
+		
+		$cancelOptions = $options['cancel'];
+		unset($options['cancel']);
+		
+		$out = '';
+		$out .= $this->button($htmlAttributes, $options, $options['label']);
+		
+		if ($cancelOptions && is_array($cancelOptions))
+		{
+			$cancelOptions = $cancelOptions + array(
+				'htmlAttributes' => array(),
+				'label' => __('Burocrata::okOrCancel - Cancel label', true),
+				'url' => ''
+			);
+			$cancelHtmlAttributes = $cancelOptions['htmlAttributes'];
+			unset($cancelOptions['htmlAttributes']);
+			
+			$out .= $this->Bl->sp(array('class' => 'alternative_option'));
+				$out .= ', ';
+				$out .= __('anchorList or', true);
+				$out .= $this->Bl->anchor($cancelHtmlAttributes, $cancelOptions, $cancelOptions['label']);
+			$out .= $this->Bl->ep();
+			$out .= $this->Bl->floatBreak();
+		}
+		return $out;
+	}
 
 
 /**
@@ -1005,7 +1080,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$modelAlias = $this->_readFormAttribute('modelAlias');
 		//todo: trigger error
 		if (!$modelAlias)
-			return 'Can\'t create a upload file that is not inside a buro form.';
+			trigger_error('Can\'t create a upload file that is not inside a buro form.', E_USER_WARNING);
 		
 		$file_input_options = array_filter($options);
 		unset($file_input_options['options']);
@@ -1060,7 +1135,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$out .= $this->inputLayoutScheme();
 			$out .= $this->input(array('value' => $packed, 'name' => $this->internalParam('data')), array('type' => 'hidden'));
 			$out .= $this->input(array('id' => 'hi' . $gen_options['baseID']), array('type' => 'hidden', 'fieldName' => $file_input_options['fieldName']));
-			$out .= $this->input(array('id' => 'mi' . $gen_options['baseID']), array('type' => 'file', 'fieldName' => 'SfilStoredFile.file') + $file_input_options);
+			$out .= $this->input(array('id' => 'mi' . $gen_options['baseID']), array('type' => 'file', 'container' => false, 'fieldName' => 'SfilStoredFile.file') + $file_input_options);
 		$out .= $this->Bl->ediv();
 		
 		// JS class
@@ -1098,9 +1173,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$gen_options['callbacks']['onSave']['js'] = '';
 		$gen_options['callbacks']['onSave']['js'] .= "$('{$lnk_id}').update(json.filename).writeAttribute({href: json.url}); $('{$act_id}').show(); $('{$prv_id}').show();";
 		
+		if (empty($gen_options['callbacks']['onRestart']['js']))
+			$gen_options['callbacks']['onRestart']['js'] = '';
+		$gen_options['callbacks']['onRestart']['js'] .= "$('{$act_id}').hide(); $('{$prv_id}').hide();";
 		
 		$script  = "$('{$act_id}').hide(); $('{$prv_id}').hide();";
-		$script .= "$('{$chg_id}').observe('click', function(ev){ev.stop(); BuroClassRegistry.get('{$gen_options['baseID']}').again(); $('{$act_id}').hide(); $('{$prv_id}').hide();});";
+		$script .= "$('{$chg_id}').observe('click', function(ev){ev.stop(); BuroClassRegistry.get('{$gen_options['baseID']}').again();});";
 		$out .= $this->BuroOfficeBoy->addHtmlEmbScript($script);
 		
 		$out .= $this->_upload($gen_options, $file_input_options);
@@ -1196,8 +1274,19 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		
 		$out = '';
-		$out .= $this->label(array('for' => $npt_id), $options, $options['label']);
-		$options['label'] = false;
+		// Label
+		if ($options['label'])
+		{
+			$out .= $this->label(array('for' => $npt_id), $options, $options['label']);
+			$options['label'] = false;
+		}
+		
+		// Instructions
+		if (!empty($options['instructions']))
+		{
+			$out .= $this->instructions(array(),array(),$options['instructions']);
+			unset($options['instructions']);
+		}
 		
 		// Buttons
 		$out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile bold_textile', 'id' => $lbold_id), array(), __('Burocrata::inputTextile - Add bold', true));
@@ -1212,8 +1301,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		// Popups
 		$out .= $this->_popupTextileLink($link_id, $options);
 		$out .= $this->_popupTextileTitle($title_id, $options);
-		$out .= $this->Popup->popup($file_id, array('type' => 'form'));
 		$out .= $this->_popupTextilePreview($prev_id, $options);
+		$out .= $this->_popupTextileFile($file_id, $options);
 		
 		// Textarea input
 		$out .= $this->input($htmlAttributes, $options);
@@ -1261,11 +1350,14 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$popup_config['type'] = 'form';
 		$popup_config['title'] = $popup_link_txt['title'];
-		$popup_config['callback'] = "BuroClassRegistry.get('{$options['baseID']}').insertLink($('$itlink').value, null, $('$iulink').value)";
+		$popup_config['callback'] = "if (action == 'ok') BuroClassRegistry.get('{$options['baseID']}').insertLink($('$itlink').value, null, $('$iulink').value)";
 		$popup_config['content'] = '';
 		$popup_config['content'] .= $this->Bl->pDry($popup_link_txt['instructions']);
-		$popup_config['content'] .= $this->input(array('id' => $itlink), array('container' => false, 'required' => true, 'label' => $popup_link_txt['label_text']));
-		$popup_config['content'] .= $this->input(array('id' => $iulink), array('container' => false, 'required' => true, 'label' => $popup_link_txt['label_link']));
+		
+		$popup_config['content'] .= $this->sform(array(), array('url' => ''));
+		$popup_config['content'] .= $this->input(array('id' => $itlink), array('fieldName' => uniqid(), 'container' => false, 'required' => true, 'label' => $popup_link_txt['label_text']));
+		$popup_config['content'] .= $this->input(array('id' => $iulink), array('fieldName' => uniqid(), 'container' => false, 'required' => true, 'label' => $popup_link_txt['label_link']));
+		$popup_config['content'] .= $this->eform();
 		
 		return $this->Popup->popup($id, $popup_config);
 	}
@@ -1295,23 +1387,26 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$popup_config['type'] = 'form';
 		$popup_config['title'] = $popup_title_txt['title'];
-		$popup_config['callback'] = "BuroClassRegistry.get('{$options['baseID']}').insertTitle($('$iilink').value, $('$ixlink').value)";
+		$popup_config['callback'] = "if (action == 'ok') BuroClassRegistry.get('{$options['baseID']}').insertTitle($('$iilink').value, $('$ixlink').value)";
 		$popup_config['content'] = '';
 		$popup_config['content'] .= $this->Bl->pDry($popup_title_txt['instructions']);
-		$popup_config['content'] .= $this->input(
-			array('id' => $iilink),
-			array(
-				'required' => true,
-				'container' => false,
-				'type' => 'select', 
-				'options' => array('options' => array('h2' => $popup_title_txt['label_type_tit'], 'h3' => $popup_title_txt['label_type_sub'])),
-				'label' => $popup_title_txt['label_type']
-			)
-		);
-		$popup_config['content'] .= $this->input(
-			array('id' => $ixlink),
-			array('container' => false, 'required' => true, 'label' => $popup_title_txt['label_text'])
-		);
+		
+		$popup_config['content'] .= $this->sform(array(), array('url' => ''));
+			$popup_config['content'] .= $this->input(
+				array('id' => $iilink),
+				array(
+					'required' => true,
+					'container' => false,
+					'type' => 'select', 
+					'options' => array('options' => array('h2' => $popup_title_txt['label_type_tit'], 'h3' => $popup_title_txt['label_type_sub'])),
+					'label' => $popup_title_txt['label_type']
+				)
+			);
+			$popup_config['content'] .= $this->input(
+				array('id' => $ixlink),
+				array('container' => false, 'required' => true, 'label' => $popup_title_txt['label_text'])
+			);
+		$popup_config['content'] .= $this->eform();
 		
 		return $this->Popup->popup($id, $popup_config);
 	}
@@ -1328,14 +1423,52 @@ class BuroBurocrataHelper extends XmlTagHelper
 	protected function _popupTextilePreview($id, $options)
 	{
 		$popup_title_txt = array(
-			'title' 		 => __('Burocrata::_popupTextilePreview - Title of preview popup', true)
+			'title' => __('Burocrata::_popupTextilePreview - Title of preview popup', true)
 		);
 		
 		$popup_config['type'] = 'notice';
 		$popup_config['title'] = $popup_title_txt['title'];
 		$popup_config['content'] = '';
-		$popup_config['content'] .= $this->Bl->sdiv(array('id' => 'div' . $options['baseID'], 'class' => 'buro_textile preview'));
+		$popup_config['content'] .= $this->Bl->sdiv(array('id' => 'div' . $options['baseID'], 'class' => 'textile buro_textile preview'));
 		$popup_config['content'] .= $this->Bl->ediv();
+		
+		return $this->Popup->popup($id, $popup_config);
+	}
+
+
+/**
+ * Creates a popup for the Textile input "File" button, containing a
+ * file upload input.
+ * 
+ * @access protected
+ * @param string $id The DOM ID for the popup (will be used on Popup helper)
+ * @param string $options The array of input options 
+ * @return string The HTML and the JS of this popup
+ */
+	protected function _popupTextileFile($id, $options)
+	{
+		$popup_file_txt = array(
+			'title'			=> __('Burocrata::_popupTextileFile - Title of `add file` popup', true),
+			'label_input'	=> __('Burocrata::_popupTextileFile - Label of file input', true),
+		);
+		
+		$baseID = substr(uniqid(), -6);
+		
+		$popup_config['type'] = 'form';
+		$popup_config['title'] = $popup_file_txt['title'];
+		$popup_config['callback'] = "var ui = BuroClassRegistry.get('{$baseID}'); if (ui.uploading && action == 'ok') return false; if (action == 'ok') {BuroClassRegistry.get('{$options['baseID']}').insertFile(ui.responseJSON);}";
+		$popup_config['content'] = '';
+		$popup_config['content'] .= $this->sform(array(), array('model' => 'SfilStoredFile'));
+			$popup_config['content'] .= $this->input(array(), array(
+				'type' => 'upload',
+				'container' => false,
+				'label' => $popup_file_txt['label_input'],
+				'options' => array(
+					'baseID' => $baseID
+				)
+			));
+		$popup_config['content'] .= $this->BuroOfficeBoy->addHtmlEmbScript("$('$id').observe('popup:opened', function(ev){BuroClassRegistry.get('{$baseID}').again();})");
+		$popup_config['content'] .= $this->eform();
 		
 		return $this->Popup->popup($id, $popup_config);
 	}

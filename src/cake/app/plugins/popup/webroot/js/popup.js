@@ -43,8 +43,9 @@ var Popup = Class.create({
 			$(link_id).observe('click', function(ev, action)
 			{
 				ev.stop();
-				this.close();
-				this.callback(action);
+				callback = this.callback(action);
+				if (callback !== false)
+					this.close();
 			}.bindAsEventListener(this,action));
 		}.bind(this));
 		

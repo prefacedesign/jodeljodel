@@ -17,7 +17,11 @@ class PopupHelper extends AppHelper
  * @var array
  * @access public
  */
-	var $helpers = array('Html', 'Ajax', 'Javascript');
+	var $helpers = array('Html', 'Ajax', 'Javascript', 'Js' => 'prototype',
+		'Burocrata.*BuroBurocrata' => array(
+			'name' => 'Buro'
+		)
+	);
 
 	
 /**
@@ -66,6 +70,28 @@ class PopupHelper extends AppHelper
  */
 	protected function _form($options)
 	{
+		$options['actions'] = $options['actions'] + array(
+			'ok' => __('PopupHelper::_form - Ok button', true),
+			'cancel' => __('PopupHelper::_form - Cancel link', true)
+		);
+		
+		$buttonHtmlAttributes = array(
+			'id' => uniqid('btn')
+		);	
+		$buttonOptions = array(
+			'close_me' => false,
+			'label' => $options['actions']['ok'],
+			'cancel' => array(
+				'label' => $options['actions']['cancel'],
+				'htmlAttributes' => array('id' => uniqid('cancel'))
+			)
+		);
+		$options['actions'] = $this->Buro->okOrCancel($buttonHtmlAttributes, $buttonOptions);
+		$options['list_links'] = $this->Js->object(array(
+			'ok' => $buttonHtmlAttributes['id'],
+			'cancel' => $buttonOptions['cancel']['htmlAttributes']['id']
+		));
+		
 		return $this->_popup($options);
 	}
 

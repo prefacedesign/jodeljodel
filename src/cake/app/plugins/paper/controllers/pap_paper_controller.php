@@ -1,7 +1,7 @@
 <?php
-class NewsNewController extends NewAppController {
-	var $name = 'NewsNew';
-	var $uses = array('New.NewsNew');
+class PapPaperController extends PaperAppController {
+	var $name = 'PapPaper';
+	var $uses = array('Paper.PapPaper');
 
 	var $components = array('Typographer.TypeLayoutSchemePicker');
 	var $helpers = array(
@@ -44,12 +44,40 @@ class NewsNewController extends NewAppController {
 
 	function index()
 	{
-		$this->set('data',$this->NewsNew->find('all', array('contain' => array('AuthAuthor'), 'order' => 'NewsNew.date')));
+		$data = $this->PapPaper->find(
+				'all',
+				array(
+					'contain' => array(
+						'AuthAuthor',
+						'TagsTag',
+						'JourJournal'
+					),
+					'order' => 'PapPaper.date'
+				)
+			);
+
+		$this->set('data',$data);
 	}
 
 	function view()
 	{
-		$this->set('data',$this->NewsNew->find('first', array('contain' => array('AuthAuthor'))));
+		$data = $this->PapPaper->find(
+			'first',
+			array(
+				'contain' => array(
+					'AuthAuthor',
+					'TagsTag',
+					'JourJournal'
+				),
+				'order' => 'PapPaper.date'
+			)
+		);
+
+		$this->set('data',$data);
+		//$this->set('data',$this->NewsNew->find('first', array('contain' => array('AuthAuthor'))));
 	}
 }
+
+
+
 ?>
