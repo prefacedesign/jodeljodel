@@ -58,13 +58,13 @@ switch($type[0])
 				break;
 				case 'view':
 				case 'belongs_to_preview':
-					echo $this->Bl->b(array(), array(), 'Full Name: ');
+					echo $this->Bl->b(array(), array(), __('Form - JourJournal.full_name - belongsTo label',true));
 					echo $this->Bl->p(array(), array(), $data['JourJournal']['full_name']);
 					
-					echo $this->Bl->b(array(), array(), 'Short Name: ');
+					echo $this->Bl->b(array(), array(), __('Form - JourJournal.short_name - belongsTo label',true));
 					echo $this->Bl->p(array(), array(), $data['JourJournal']['short_name']);
 					
-					echo $this->Bl->b(array(), array(), 'Link: ');
+					echo $this->Bl->b(array(), array(), __('Form - JourJournal.link	- belongsTo label',true));
 					echo $this->Bl->p(array(), array(), $data['JourJournal']['link']);
 				break;
 			}

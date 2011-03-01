@@ -17,16 +17,95 @@
 	
 
 	
+	$border_size = 1;
+	$width = $hg->size(array('M' => 5, 'g' => -1), false) - 2*$border_size;
 	
 	$this->Decorator->rule(
 		'.autocomplete.list', array(
 			'z-index' => 1000,
 			'background-color' => $palette['menu_bg']->write(),
+			'border' => $u->t(1) . ' solid ' . $palette['menu_border']->write(),
+			'margin-top' => $u->t(-2),
+			'width' => $u->t($width) . ' !important',
 	));
 	
 	$this->Decorator->rule(
 		'.autocomplete.list ul', array(
 			'list-style-type' => 'none'
+	));
+	
+	$this->Decorator->rule(
+		'.autocomplete.list ul li', array(
+			'height' => $vg->size(array('g' => 1, 'm' => 1)),
+			'border-bottom' => $u->t(1) . ' dotted ' . $palette['text']->write(),
+			'cursor' => 'pointer',
+			'padding-left' => $hg->size(array('m' => 2)),
+			'padding-top' => $hg->size(array('m' => 1)),
+			'display' => 'block'
+	));
+	
+	$this->Decorator->rule(
+		'.autocomplete.list .message a', array(
+			'height' => $vg->size(array('g' => 1, 'm' => 1)),
+			'display' => 'block',
+			'background-color' => $palette['text']->write(),
+			'color' => $palette['bg']->write(),
+			'padding-left' => $hg->size(array('m' => 2)),
+			'padding-top' => $hg->size(array('m' => 1)),
+			'font-weight' => 'bold',
+	));
+	
+	$this->Decorator->rule(
+		'.autocomplete.list .message a:hover, .autocomplete.list .message a:active', array(
+			'background-color' => $palette['text']->write(),
+			'color' => $palette['bg']->write(),
+	));
+	
+	$this->Decorator->rule(
+		'.input_belongs_to .controls .actions', array(
+			'margin-top' => $vg->size(array('g' => 1))
+	));
+	
+	$this->Decorator->rule(
+		'.input_belongs_to .controls div div', array(
+			'border-top' => $u->t(1) . ' dotted ' . $palette['text']->write(),
+			'margin-top' => $vg->size(array('g' => 1)),
+			'padding-top' => $vg->size(array('g' => 1)),
+	));
+	
+	$this->Decorator->rule(
+		'.input_belongs_to .controls div div div', array(
+			'border-top' => '0',
+			'margin-top' => '0'
+	));
+	
+	$this->Decorator->rule(
+		'.input_belongs_to .controls div div div.input', array(
+			'padding-bottom' => '0',
+			'border' => '0',
+			//'position' => 'absolute',
+	));
+	
+	$width -= $hg->size(array('m' => 2), false);
+	$this->Decorator->rule(
+		'.autocomplete.list .nothing_found', array(
+			'height' => $vg->size(array('g' => 1, 'm' => 1)),
+			'background-color' => $palette['input_error_bg']->write(),
+			'color' => $palette['error_message']->write(),
+			'border' => $u->t(1) . ' solid ' . $palette['error_message']->write(),
+			'margin-top' => $u->t(-2),
+			'width' => $u->t($width) . ' !important',
+			'font-weight' => 'bold',
+			'font-style' => 'italic',
+			'padding-left' => $hg->size(array('m' => 2)),
+			'padding-top' => $hg->size(array('m' => 1)),
+			'margin-left' => $u->t(-1)
+	));
+	
+	
+	$this->Decorator->rule(
+		'.autocomplete.list ul li:hover', array(
+			'background-color' => $palette['selection']->write(),
 	));
 	
 	

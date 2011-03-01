@@ -894,6 +894,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out .= $this->Bl->sdiv(array('class' => 'controls'));
 			$out .= $updateble_div;
 			$out .= $actions_div;
+			$out .= $this->Bl->floatBreak();
 		$out .= $this->Bl->ediv();
 		
 		
