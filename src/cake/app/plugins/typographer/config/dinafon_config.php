@@ -1,10 +1,9 @@
 <?php
 App::import('Vendor','Typographer.tools');
+App::import('Vendor','Typographer.dinafon_tools');
 App::import('Vendor','browserdetection');
 
 $browserInfo = getBrowser();
-
-
 
 if (!isset($_SESSION))
 {
@@ -134,6 +133,14 @@ for ($i = 1; $i <= 7; $i++)
 	$used_automatic_classes['height'][] = array('g' => $i);
 }
 
+$imagem_topo_caixas = 
+	new ImagemTopoCaixas(array(
+		'vg' => $vertical_grid,
+		'hg' => $horizontal_grid,
+		'u'  => $unit
+	)
+);
+
 Configure::write('Typographer.Dinafon.tools',
 					array(
 						'vg' => $vertical_grid,
@@ -141,11 +148,11 @@ Configure::write('Typographer.Dinafon.tools',
 						'u'  => $unit,
 						'lineHeight' => $lineHeight,
 						'ig' => $image_generator,
+						'imagem_topo_caixas' => $imagem_topo_caixas,
 						'palette' => $paleta,
 						'browserInfo' => $browserInfo,
 						'standardFontSize' => $standard_font_size
 					)
 				);
 Configure::write('Typographer.Dinafon.used_automatic_classes', $used_automatic_classes);
-
 ?>

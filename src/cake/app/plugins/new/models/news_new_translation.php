@@ -17,7 +17,7 @@ class NewsNewTranslation extends PersonAppModel {
 
 	var $belongsTo = array(
 		'NewsNew' => array(
-			'className' => 'NewsNew',
+			'className' => 'New.NewsNew',
 			'foreignKey' => 'news_new_id',
 			'conditions' => '',
 			'fields' => '',

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 	$box_shadow = '0 '.$vg->size(array('u' => 3)).' '. $vg->size(array('u' => 10)). ' ' . $palette['popin_shadow']->write();
 	$this->Decorator->rule(
@@ -17,6 +17,96 @@
 	
 
 	
+	$border_size = 1;
+	$width = $hg->size(array('M' => 5, 'g' => -1), false) - 2*$border_size;
+	
+	$this->Decorator->rule(
+		'.autocomplete.list', array(
+			'z-index' => 1000,
+			'background-color' => $palette['menu_bg']->write(),
+			'border' => $u->t(1) . ' solid ' . $palette['menu_border']->write(),
+			'margin-top' => $u->t(-2),
+			'width' => $u->t($width) . ' !important',
+	));
+	
+	$this->Decorator->rule(
+		'.autocomplete.list ul', array(
+			'list-style-type' => 'none'
+	));
+	
+	$this->Decorator->rule(
+		'.autocomplete.list ul li', array(
+			'height' => $vg->size(array('g' => 1, 'm' => 1)),
+			'border-bottom' => $u->t(1) . ' dotted ' . $palette['text']->write(),
+			'cursor' => 'pointer',
+			'padding-left' => $hg->size(array('m' => 2)),
+			'padding-top' => $hg->size(array('m' => 1)),
+			'display' => 'block'
+	));
+	
+	$this->Decorator->rule(
+		'.autocomplete.list .message a', array(
+			'height' => $vg->size(array('g' => 1, 'm' => 1)),
+			'display' => 'block',
+			'background-color' => $palette['text']->write(),
+			'color' => $palette['bg']->write(),
+			'padding-left' => $hg->size(array('m' => 2)),
+			'padding-top' => $hg->size(array('m' => 1)),
+			'font-weight' => 'bold',
+	));
+	
+	$this->Decorator->rule(
+		'.autocomplete.list .message a:hover, .autocomplete.list .message a:active', array(
+			'background-color' => $palette['text']->write(),
+			'color' => $palette['bg']->write(),
+	));
+	
+	$this->Decorator->rule(
+		'.input_belongs_to .controls .actions', array(
+			'margin-top' => $vg->size(array('g' => 1))
+	));
+	
+	$this->Decorator->rule(
+		'.input_belongs_to .controls div div', array(
+			'border-top' => $u->t(1) . ' dotted ' . $palette['text']->write(),
+			'margin-top' => $vg->size(array('g' => 1)),
+			'padding-top' => $vg->size(array('g' => 1)),
+	));
+	
+	$this->Decorator->rule(
+		'.input_belongs_to .controls div div div', array(
+			'border-top' => '0',
+			'margin-top' => '0'
+	));
+	
+	$this->Decorator->rule(
+		'.input_belongs_to .controls div div div.input', array(
+			'padding-bottom' => '0',
+			'border' => '0',
+			//'position' => 'absolute',
+	));
+	
+	$width -= $hg->size(array('m' => 2), false);
+	$this->Decorator->rule(
+		'.autocomplete.list .nothing_found', array(
+			'height' => $vg->size(array('g' => 1, 'm' => 1)),
+			'background-color' => $palette['input_error_bg']->write(),
+			'color' => $palette['error_message']->write(),
+			'border' => $u->t(1) . ' solid ' . $palette['error_message']->write(),
+			'margin-top' => $u->t(-2),
+			'width' => $u->t($width) . ' !important',
+			'font-weight' => 'bold',
+			'font-style' => 'italic',
+			'padding-left' => $hg->size(array('m' => 2)),
+			'padding-top' => $hg->size(array('m' => 1)),
+			'margin-left' => $u->t(-1)
+	));
+	
+	
+	$this->Decorator->rule(
+		'.autocomplete.list ul li:hover', array(
+			'background-color' => $palette['selection']->write(),
+	));
 	
 	
 	$this->Decorator->rule(
@@ -215,6 +305,30 @@
 			'-moz-box-shadow' => $box_shadow
 		)
 	);
+	
+	$this->Decorator->rule(
+		'#login_box',
+		array(
+			'background-color' => $palette['menu_bg']->write(),
+			'border' => $u->t(1) . ' solid ' . $palette['bg']->write(),
+			'width' => $hg->size(array('M' => 4, 'g' => 1)),
+			'margin' => 'auto',
+			'margin-top' => $vg->size(array('g' => 5)),
+			'box-shadow' => $box_shadow,
+			'-webkit-box-shadow' => $box_shadow,
+			'-moz-box-shadow' => $box_shadow
+		)
+	);
+	
+	$this->Decorator->rule(
+		'#login_box div#login_box_contained',
+		array(
+			'width' => $hg->size(array('M' => 4, 'g' => -1)),
+			'margin' => $hg->size(array('g' => 1)),
+		)
+	);
+	
+	
 	
 	$this->Decorator->rule(
 		'#header',
@@ -443,7 +557,14 @@
 	$this->Decorator->rule(
 		'.buro_form div.input', array(
 			'border-top' => $u->t(1) . ' solid ' . $palette['text'] ->write(),
-			'padding-bottom' => $vg->size(array('g' => 2))
+			'padding-bottom' => $vg->size(array('g' => 2)),
+			'position' => 'relative',
+			'z-index' => 50
+	));
+	
+	$this->Decorator->rule(
+		'.buro_form div.input_belongs_to', array(
+			'position' => 'static',
 	));
 	
 	$this->Decorator->rule(
@@ -452,6 +573,12 @@
 			'text-transform' => 'uppercase',
 			'line-height' => $u->t($line_height * 4/3),
 			'letter-spacing' => $letterSpacing,
+			'display' => 'block'
+	));
+	
+	$this->Decorator->rule(
+		'#login_box label', array(
+			'line-height' => $u->t($line_height),
 			'display' => 'block'
 	));
 	
@@ -572,7 +699,7 @@
 	$margin_top = $vg->size(array('m' => 1), false);
 	$padding_top = $vg->size(array('m' => 1), false);
 	$this->Decorator->rule(
-		'.buro_form input, .buro_form textarea', array(
+		'.buro_form input, #login_box input, .buro_form textarea', array(
 			'border' => $u->t($border_size) . ' solid ' .  $palette['input_borders']->write(),
 			'background-color' => $palette['input_bg']->write(),
 			'color'	=> $palette['input_fg']->write(),
@@ -582,6 +709,11 @@
 			'margin-bottom' => $u->t($vg->size(array('g' => 0.5),false) - $margin_top),
 			'font-size' => $u->t($line_height * 13/18),
 			'line-height' => $u->t($line_height)
+	));
+	
+	$this->Decorator->rule(
+		'#login_box input', array(
+			'width' => $u->t($hg->size(array('M' => 4, 'g' => -1),false) - 2*($border_size + $padding_size))
 	));
 	
 	$this->Decorator->rule(
@@ -601,6 +733,15 @@
 			'padding-left' => $u->t($padding_size),
 			'width' => $hg->size(array('M' => 2, 'g' => -1, 'u' => -$padding_size-2*$border_size)),
 			'margin-right' => $hg->size(array('g' => 1))
+	));
+	
+	$this->Decorator->rule(
+		'.input_has_many select', array(
+			'border' => $u->t($border_size) . ' solid ' .  $palette['input_borders']->write(),
+			'padding-left' => $u->t($padding_size),
+			'width' => $hg->size(array('M' => 5, 'g' => -1, 'u' => -$padding_size-2*$border_size)),
+			'margin-right' => $hg->size(array('g' => 1)),
+			'height' => 'auto'
 	));
 	
 	$this->Decorator->rule(
@@ -631,7 +772,7 @@
 	));
 	
 	$this->Decorator->rule(
-		'button.submit.buro', array(
+		'button.submit.buro, #login_box input[type="submit"]', array(
 			'-moz-border-radius'  => '5px',
 			'border-radius' => '5px',
 			'-webkit-border-radius' => '5px',
@@ -647,6 +788,15 @@
 			'text-transform' => 'uppercase',
 			'height' => $hg->size(array('g' => 1.4)),
 			'letter-spacing' => $letterSpacing
+	));
+	
+	$this->Decorator->rule(
+		'#login_box input[type="submit"]', array(
+			'float' => 'right',
+			'text-align' => 'center',
+			'text-transform' => 'none',
+			'width' => $vg->size(array('M' => 1, 'g' => -1)),
+			'letter-spacing' => '0'
 	));
 	
 	$this->Decorator->rule(

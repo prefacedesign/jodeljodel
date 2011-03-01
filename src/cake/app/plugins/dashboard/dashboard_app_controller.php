@@ -28,10 +28,8 @@ class DashboardAppController extends AppController
 	function beforeRender()
 	{
 		parent::beforeRender();
-	
-		Configure::write('Config.language','por');
-		$this->set('user_name', 'Eleonora Cavalcante Albano');
-		$this->TypeLayoutSchemePicker->pick('backstage'); 
+		$this->TypeLayoutSchemePicker->pick('backstage');
+		$this->TradLanguageSelector->setInterfaceLanguage(Configure::read('Tradutore.mainLanguage'));
 	}
 
 }

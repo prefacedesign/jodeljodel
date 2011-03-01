@@ -156,8 +156,8 @@ $sections = array(
 			'papers' => array(
 				'linkCaption' => __('Sections: papers linkCaption', true),
 				'url' => array(
-					'plugin' => 'papers',
-					'controller' => 'pap_papers',
+					'plugin' => 'paper',
+					'controller' => 'pap_paper',
 					'action' => 'index'
 				),
 				'pageTitle' => array(null,__('Sections: papers pageTitle',true)),
@@ -178,38 +178,39 @@ $sections = array(
 			'news' => array(
 				'linkCaption' => __('Sections: news linkCaption', true),
 				'url' => array(
-					'plugin' => 'news',
-					'controller' => 'new_news',
+					'plugin' => 'new',
+					'controller' => 'news_new',
 					'action' => 'index'
 				),
 				'pageTitle' => array(null,__('Sections: news pageTitle',true)),
 				'headerCaption' => __('Sections: news headerCaption', true),
-				'humanName' => __('Sections: news humanName',true),
-				'subSections' => array(
-					'news_index' => array(
-						'linkCaption' => __('Sections: news_index linkCaption', true),
-						'url' => array(
-							'plugin' => 'news',
-							'controller' => 'new_news',
-							'action' => 'index'
-						),
-						'pageTitle' => array(null, null, __('Sections: news_index pageTitle',true)),
-						'headerCaption' => __('Sections: news_index headerCaption', true),
-						'humanName' => __('Sections: news_index humanName',true)
-					),					
-					'news_item' => array(
-						'linkCaption' => __('Sections: * linkCaption', true),
-						'url' => array(
-							'plugin' => 'news',
-							'controller' => 'new_news',
-							'action' => 'view'
-						),
-						'display' => false,
-						'pageTitle' => array(null, null, __('Sections: news_item pageTitle',true)),
-						'headerCaption' => __('Sections: news_item headerCaption', true),
-						'humanName' => __('Sections: news_item humanName',true),
-					),
-				),
+				'humanName' => __('Sections: news humanName',true)
+				,
+//				'subSections' => array(
+//					'news_index' => array(
+//						'linkCaption' => __('Sections: news_index linkCaption', true),
+//						'url' => array(
+//							'plugin' => 'new',
+//							'controller' => 'news_new',
+//							'action' => 'index'
+//						),
+//						'pageTitle' => array(null, null, __('Sections: news_index pageTitle',true)),
+//						'headerCaption' => __('Sections: news_index headerCaption', true),
+//						'humanName' => __('Sections: news_index humanName',true)
+//					),
+//					'news_item' => array(
+//						'linkCaption' => __('Sections: * linkCaption', true),
+//						'url' => array(
+//							'plugin' => 'new',
+//							'controller' => 'news_new',
+//							'action' => 'view'
+//						),
+//						'display' => false,
+//						'pageTitle' => array(null, null, __('Sections: news_item pageTitle',true)),
+//						'headerCaption' => __('Sections: news_item headerCaption', true),
+//						'humanName' => __('Sections: news_item humanName',true),
+//					),
+//				),
 			),
 		),
 	),
@@ -408,19 +409,25 @@ $sectionMap = array(
 		),
 	),
 	array(
-		'rule' => array('plugin' => 'news', 'controller' => 'new_news'),
-		'location' => array('public_page','news'),
-		'subRules' => array(
-			array(
-				'rule' => array('action' => 'index'),
-				'location' => array('public_page','news','news_index'),
-			),
-			array(
-				'rule' => array('action' => 'view'),
-				'location' => array('public_page','news','news_item'),
-			)
-		),
+		'rule' => array('plugin' => 'new', 'controller' => 'news_new'),
+		'location' => array('public_page','news')
+//		,
+//		'subRules' => array(
+//			array(
+//				'rule' => array('action' => 'index'),
+//				'location' => array('public_page','news','news_index'),
+//			),
+//			array(
+//				'rule' => array('action' => 'view'),
+//				'location' => array('public_page','news','news_item'),
+//			)
+//		),
 	),
+	array(
+		'rule' => array('plugin' => 'paper', 'controller' => 'pap_paper'),
+		'location' => array('public_page','paper')
+	),
+
 	array(
 		'rule' => array('plugin' => 'backstage'),
 		'location' => array('backstage'),

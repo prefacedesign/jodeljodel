@@ -225,7 +225,7 @@ class BuroBurocrataController extends BurocrataAppController
 		
 		if($error === false)
 		{
-			$Model->recusrsive = -1;
+			$Model->recursive = -1;
 			$this->data = $data = $Model->findById($this->buroData['id']);
 		}
 		

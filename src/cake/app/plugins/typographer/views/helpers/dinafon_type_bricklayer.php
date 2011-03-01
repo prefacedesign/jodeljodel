@@ -14,6 +14,17 @@ class DinafonTypeBricklayerHelper extends TypeBricklayerHelper
 		),
 		'Html'
 	);
+	
+	
+	var $diferentes_topos_caixas = array(
+		 array(0,5), array(0,4), array(0,3), 
+		 array(1,5), array(1,4), array(1,3),  
+		 array(2,5), array(2,4), array(2,3), 
+		 array(3,5), array(3,4), array(3,2), array(3,1), array(3,0), 
+		 array(4,3), array(4,2), array(4,1), array(4,0), 
+		 array(5,3), array(5,2), array(5,1), array(5,0)
+	);
+
 	//@todo incluir o topo caixa, e quando fizer isso incluir um ediv no ecaixa
 	function scaixa($attr = array(), $options = array())
 	{
@@ -27,10 +38,34 @@ class DinafonTypeBricklayerHelper extends TypeBricklayerHelper
 		if (isset($options['tipo']) && ($options['tipo'] == 'transparente')){
 			$attr = $this->_mergeAttributes(array('class' => array('transparente')), $attr);
 			unset ($options['tipo']);
+			$colocaTopo = false;
 		}
+		else
+			$colocaTopo = true;
 		
+		$t = $this->sbox($attr,$options);
+		
+		if ($colocaTopo)
+		{
+			$aleatorio = rand(0,21);
+			$topoCaixaParams = array(
+				'width' => $options['size'], 
+				'h1' => $this->diferentes_topos_caixas[$aleatorio][0], 
+				'h2' => $this->diferentes_topos_caixas[$aleatorio][1]
+			);
+			
+			$this->TypeStyleFactory->topoCaixaGenerateClasses(array(0 => $topoCaixaParams));
+			
+			$attrTopo = array(
+				'class' => array('topo_caixa')
+			);
+			$attrTopo['class'] = am($attrTopo['class'], $this->TypeStyleFactory->topoCaixaClassNames($topoCaixaParams));
+			$attrTopo['class'] = am($attrTopo['class'], $this->TypeStyleFactory->widthClassNames($options['size']));
 
-		return $this->sbox($attr,$options);  //'<div class="topo_caixa '. $classe_largura . ' ' . _classe_estilo_topo_caixa($tamanho['qM']) . '"></div>';
+			$t .= $this->div($attrTopo);
+		}
+
+		return $t;
 
 	}
 
@@ -170,6 +205,16 @@ class DinafonTypeBricklayerHelper extends TypeBricklayerHelper
 	function espacoN ()
 	{
 		return '&ensp;';
+	}
+
+	function  textile($attr = array(), $options = array(), $content = null) {
+		$text = parent::textile($attr, $options, $content);
+		//@todo Hardcoded Dinafon only
+		$text = preg_replace('/<h([1-6])>/', '</div><h$1>', $text);
+		$text = preg_replace('/<\/h([1-6])>/', '</h$1><div class="para">', $text);
+		$text= preg_replace('/<\/h([2-3])>/', '</h$1><div class="barra_h cinza_branco"></div>', $text);
+
+		return ('<div class="para">' . $text . '</div>');
 	}
 
 }

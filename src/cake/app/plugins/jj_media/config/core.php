@@ -60,3 +60,9 @@ Configure::write('Media.filter_plus.new_news', array(
 		'lista'   => array('fit' => array(100, 100))
 	)
 ));
+
+
+
+Configure::write('Media.filter_plus.pap_papers', array(
+	'fields' => array('PapPaper.file_id'),
+));

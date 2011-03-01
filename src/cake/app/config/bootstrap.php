@@ -59,6 +59,20 @@
 			'humanName' => 'MODULE NewsNew human name',
 			'plugged' => array('dashboard','backstage')
 		),
+		'paper' => array(
+			'plugin' => 'paper',
+			'prefix' => 'pap',
+			'model' => 'PapPaper',
+			'humanName' => 'MODULE PapPaper human name',
+			'plugged' => array('dashboard','backstage')
+		),
+		'event' => array(
+			'plugin' => 'event',
+			'prefix' => 'eve',
+			'model' => 'EveEvent',
+			'humanName' => 'MODULE EveEvent human name',
+			'plugged' => array('dashboard','backstage')
+		),
 		'text_cork' => array(
 			'plugin' => 'text_cork',
 			'prefix' => 'text',

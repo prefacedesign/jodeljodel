@@ -6,6 +6,7 @@ class UserUsersController extends JjUsersAppController {
 	
 	function login()
 	{
+		$this->set('typeLayout','login');
 	}
 	
 	function logout()

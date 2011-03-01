@@ -27,7 +27,7 @@
  * its action called 'display', and we pass a param to select the view file
  * to use (in this case, /app/views/pages/home.ctp)...
  */
-	Router::connect('/', array('controller' => 'pages', 'action' => 'display', 'home'));
+	Router::connect('/', array('controller' => 'principal', 'action' => 'index'));
 
 /**
  * ...and connect the rest of 'Pages' controller's urls.
@@ -58,20 +58,30 @@
 		)
 	);
 	
-	//Router::connect('/teste/:controller/:action/*', array('plugin' => 'tradutore'));
+	//Router::connect('/teste/:controller/:action/*', array('plugin' => 'tradutore'));	
 	
-	
-	
+//	Router::connect('/:language/:plugin/:controller/:action/*',
+//		array(),
+//		array('language' => '[a-z]{3}')
+//	);
+//
+//	Router::connect('/:language/:controller/:action/*',
+//		array(),
+//		array('language' => '[a-z]{3}')
+//	);
+
+
+	//@todo change this for the previous code (and find a way to resolve the route of plugin new)
 	Router::connect('/:language/:plugin/:controller/:action/*',
 		array(),
-		array('language' => '[a-z]{3}')
+		array('language' => '[a-t]{3}')
 	);
-	
+
 	Router::connect('/:language/:controller/:action/*',
 		array(),
-		array('language' => '[a-z]{3}')
+		array('language' => '[a-t]{3}')
 	);
-	
+
 	//ou
 	
 	/*

@@ -21,19 +21,18 @@ echo $this->Bl->scaixote(array(),array('size' => array('M' => 12)));
 	
 	echo $this->Bl->scaixa(array(),array('size' => array('M' => 5)));
 		echo $this->Bl->scoluna();
-/*
-			echo $this->Bl->h2(array(),array(),'As pessoas');
-			foreach ($pessoas as $k => $pessoa)
+
+			echo $this->Bl->h2(array(),array(),$pageSections['public_page']['subSections']['about']['subSections']['people']['headerCaption']);
+			foreach ($people as $k => $personData)
 			{
-				$pessoa['id'] = $k;
-				echo $this->element('pessoa',array('tipo' => 'mini_preview', 'dados' => $pessoa));
+				echo $this->element('pers_person',array('plugin' => 'person', 'type' => array('mini_preview'), 'data' => $personData));
 			}
+			
 			echo $this->Bl->para(array(),array(),
 					array(
-						$this->Bl->anchor(array(),array('url' => array('controller' => 'pessoas', 'action' => 'index')),'Conheça todas as pessoas')
+						$this->Bl->anchor(array(),array('url' => array('plugin' => 'person', 'controller' => 'pers_people', 'action' => 'index')),__('about_dinafon page: Know all people', true))
 					)
 			);
-*/
 		echo $this->Bl->ecoluna();
 	echo $this->Bl->ecaixa();
 echo $this->Bl->ecaixote();

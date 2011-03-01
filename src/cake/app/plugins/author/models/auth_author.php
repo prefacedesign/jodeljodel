@@ -1,6 +1,7 @@
 <?php
 class AuthAuthor extends AuthorAppModel {
 	var $name = 'AuthAuthor';
+	var $displayField = 'reference_name';
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 	
 	function __construct()
@@ -68,10 +69,10 @@ class AuthAuthor extends AuthorAppModel {
 		)
 	);
 
-	/*
+	
 	var $hasAndBelongsToMany = array(
 		'PapPaper' => array(
-			'className' => 'PapPaper',
+			'className' => 'Paper.PapPaper',
 			'joinTable' => 'auth_authors_pap_papers',
 			'foreignKey' => 'auth_author_id',
 			'associationForeignKey' => 'pap_paper_id',
@@ -86,7 +87,7 @@ class AuthAuthor extends AuthorAppModel {
 			'insertQuery' => ''
 		)
 	);
-	*/
+	
 
 }
 ?>

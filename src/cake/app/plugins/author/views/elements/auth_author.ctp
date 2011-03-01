@@ -58,13 +58,13 @@ switch($type[0])
 				break;
 				case 'view':
 				case 'belongs_to_preview':
-					echo $this->Bl->b(array(), array(), 'Name: ');
+					echo $this->Bl->b(array(), array(), __('Form - AuthAuthor.name - belongsTo label',true));
 					echo $this->Bl->p(array(), array(), $data['AuthAuthor']['name']);
 					
-					echo $this->Bl->b(array(), array(), 'Surnmae: ');
+					echo $this->Bl->b(array(), array(), __('Form - AuthAuthor.surname - belongsTo label',true));
 					echo $this->Bl->p(array(), array(), $data['AuthAuthor']['surname']);
 					
-					echo $this->Bl->b(array(), array(), 'Reference Name: ');
+					echo $this->Bl->b(array(), array(), __('Form - AuthAuthor.reference_name - belongsTo label',true));
 					echo $this->Bl->p(array(), array(), $data['AuthAuthor']['reference_name']);
 				break;
 			}

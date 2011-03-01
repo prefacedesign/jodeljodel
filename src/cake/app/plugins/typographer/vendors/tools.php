@@ -140,6 +140,10 @@ class Grid
 		}
 		else
 		{
+			if ($size == 'A')
+			{
+				trigger_error('ai');
+			}
 			$size = array_merge($this->standard_size, $size);
 		}
 
