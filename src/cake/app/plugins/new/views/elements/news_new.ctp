@@ -22,21 +22,23 @@ switch ($type[0])
 		echo $this->Bl->para(array(),array(),array($data['NewsNew']['abstract']));
 	break;
 
-	case 'principal':
-		echo $this->Bl->h2(array(),array(),$dados['titulo']);
+	case 'full':
+		echo $this->Bl->h2(array(),array(),$data['NewsNew']['title']);
 		echo $this->Bl->span(array('class' => 'texto_pequeno'), array(),
 			br_strftime('%d de %B de %Y', strtotime($data['NewsNew']['date']))
-			. ', por ' .$dados['autor']);
+			. ', por ' .$data['AuthAuthor']['name']);
 
 		echo $this->Bl->brDry();
 		echo $this->Bl->brDry();
 
-		echo $this->Bl->para(array(),array(),$data['NewsNew']['content']);
+		echo $this->Bl->textileDry($data['NewsNew']['content']);
+
+
 	break;
 
 	case 'linha_link':
 		echo $this->Bl->span(array('class' => array('texto_pequeno', 'caixinha', 'larg_4i')), array(),
-				br_strftime('%d/%m', strtotime($dados['data'])) );
+				br_strftime('%d/%m', strtotime($data['NewsNew']['date'])) );
 
 
 		echo $this->Bl->span(array('class' => array('caixinha_2', 'larg_3M_-3i_-1m')),

@@ -7,15 +7,7 @@
 			{
 				if (isset($data['CorkCorktile']['options']['textile']) && $data['CorkCorktile']['options']['textile'])
 				{
-					$Textile =&	ClassRegistry::init('Textile','Vendor');
-					$text = $Textile->textileThis($data['TextTextCork']['text']);
-					
-					//@todo Hardcoded Dinafon only
-					$text = preg_replace('/<h([1-6])>/', '</div><h$1>', $text);
-					$text = preg_replace('/<\/h([1-6])>/', '</h$1><div class="para">', $text);
-					$text= preg_replace('/<\/h([2-3])>/', '</h$1><div class="barra_h cinza_branco"></div>', $text);
-					
-					echo '<div class="para">' . $text . '</div>';
+					echo $this->Bl->textileDry($data['TextTextCork']['text']);
 				}
 				else
 				{

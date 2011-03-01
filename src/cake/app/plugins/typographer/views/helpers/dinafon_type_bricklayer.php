@@ -207,5 +207,15 @@ class DinafonTypeBricklayerHelper extends TypeBricklayerHelper
 		return '&ensp;';
 	}
 
+	function  textile($attr = array(), $options = array(), $content = null) {
+		$text = parent::textile($attr, $options, $content);
+		//@todo Hardcoded Dinafon only
+		$text = preg_replace('/<h([1-6])>/', '</div><h$1>', $text);
+		$text = preg_replace('/<\/h([1-6])>/', '</h$1><div class="para">', $text);
+		$text= preg_replace('/<\/h([2-3])>/', '</h$1><div class="barra_h cinza_branco"></div>', $text);
+
+		return ('<div class="para">' . $text . '</div>');
+	}
+
 }
 ?>

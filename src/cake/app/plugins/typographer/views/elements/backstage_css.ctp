@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 	$box_shadow = '0 '.$vg->size(array('u' => 3)).' '. $vg->size(array('u' => 10)). ' ' . $palette['popin_shadow']->write();
 	$this->Decorator->rule(
@@ -17,6 +17,17 @@
 	
 
 	
+	
+	$this->Decorator->rule(
+		'.autocomplete.list', array(
+			'z-index' => 1000,
+			'background-color' => $palette['menu_bg']->write(),
+	));
+	
+	$this->Decorator->rule(
+		'.autocomplete.list ul', array(
+			'list-style-type' => 'none'
+	));
 	
 	
 	$this->Decorator->rule(
@@ -467,7 +478,14 @@
 	$this->Decorator->rule(
 		'.buro_form div.input', array(
 			'border-top' => $u->t(1) . ' solid ' . $palette['text'] ->write(),
-			'padding-bottom' => $vg->size(array('g' => 2))
+			'padding-bottom' => $vg->size(array('g' => 2)),
+			'position' => 'relative',
+			'z-index' => 50
+	));
+	
+	$this->Decorator->rule(
+		'.buro_form div.input_belongs_to', array(
+			'position' => 'static',
 	));
 	
 	$this->Decorator->rule(
