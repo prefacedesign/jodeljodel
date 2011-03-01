@@ -377,17 +377,27 @@ $sections = array(
 	 
 $sectionMap = array(
 	array(
-		'rule' => array('controller' => 'principal', 'action' => 'index'),
-		'location' => array('public_page')
-	),
-	array(
-		'rule' => array('controller' => 'principal', 'action' => 'about'),
-		'location' => array('public_page', 'about'),
+		'rule' => array('controller' => 'principal'),
+		'location' => array('public_page'),
 		'subRules' => array(
 			array(
-				'rule' => array('controller' => 'principal', 'action' => 'about'),
-				'location' => array('public_page', 'about', 'about_dinafon')
+				'rule' => array('controller' => 'principal', 'action' => 'index'),
+				'location' => array('public_page')
 			),
+			array(
+				'rule' => array('controller' => 'principal', 'action' => 'contact'),
+				'location' => array('public_page','contact')
+			),
+			array(
+				'rule' => array('controller' => 'principal', 'action' => 'about'),
+				'location' => array('public_page', 'about'),
+				'subRules' => array(
+					array(
+						'rule' => array('controller' => 'principal', 'action' => 'about'),
+						'location' => array('public_page', 'about', 'about_dinafon')
+					),
+				)
+			)
 		)
 	),
 	array(

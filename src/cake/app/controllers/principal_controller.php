@@ -92,11 +92,8 @@
 			}
 		}
 		
-		function contato()
+		function contact()
 		{
-			Configure::load('bd_textos');
-			$this->set('texto_contato', Configure::read('BDtemp.textos.texto_contato'));
-			$this->set('contatos', Configure::read('BDtemp.textos.contatos'));
 		}
 	}
 ?>
