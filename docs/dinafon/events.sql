@@ -8,7 +8,7 @@ drop table `eve_events`;
 -- Table `eve_events`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `eve_events` (
-  `id` INT NOT NULL ,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `publishing_status` ENUM('published','draft') NULL ,
   `link` TEXT NULL ,
   `begins` DATETIME NULL ,
