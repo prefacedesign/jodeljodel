@@ -1023,7 +1023,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$modelAlias = $this->_readFormAttribute('modelAlias');
 		//todo: trigger error
 		if (!$modelAlias)
-			return 'Can\'t create a upload file that is not inside a buro form.';
+			trigger_error('Can\'t create a upload file that is not inside a buro form.', E_USER_WARNING);
 		
 		$file_input_options = array_filter($options);
 		unset($file_input_options['options']);
@@ -1078,7 +1078,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$out .= $this->inputLayoutScheme();
 			$out .= $this->input(array('value' => $packed, 'name' => $this->internalParam('data')), array('type' => 'hidden'));
 			$out .= $this->input(array('id' => 'hi' . $gen_options['baseID']), array('type' => 'hidden', 'fieldName' => $file_input_options['fieldName']));
-			$out .= $this->input(array('id' => 'mi' . $gen_options['baseID']), array('type' => 'file', 'fieldName' => 'SfilStoredFile.file') + $file_input_options);
+			$out .= $this->input(array('id' => 'mi' . $gen_options['baseID']), array('type' => 'file', 'container' => false, 'fieldName' => 'SfilStoredFile.file') + $file_input_options);
 		$out .= $this->Bl->ediv();
 		
 		// JS class
@@ -1116,9 +1116,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$gen_options['callbacks']['onSave']['js'] = '';
 		$gen_options['callbacks']['onSave']['js'] .= "$('{$lnk_id}').update(json.filename).writeAttribute({href: json.url}); $('{$act_id}').show(); $('{$prv_id}').show();";
 		
+		if (empty($gen_options['callbacks']['onRestart']['js']))
+			$gen_options['callbacks']['onRestart']['js'] = '';
+		$gen_options['callbacks']['onRestart']['js'] .= "$('{$act_id}').hide(); $('{$prv_id}').hide();";
 		
 		$script  = "$('{$act_id}').hide(); $('{$prv_id}').hide();";
-		$script .= "$('{$chg_id}').observe('click', function(ev){ev.stop(); BuroClassRegistry.get('{$gen_options['baseID']}').again(); $('{$act_id}').hide(); $('{$prv_id}').hide();});";
+		$script .= "$('{$chg_id}').observe('click', function(ev){ev.stop(); BuroClassRegistry.get('{$gen_options['baseID']}').again();});";
 		$out .= $this->BuroOfficeBoy->addHtmlEmbScript($script);
 		
 		$out .= $this->_upload($gen_options, $file_input_options);
@@ -1241,8 +1244,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		// Popups
 		$out .= $this->_popupTextileLink($link_id, $options);
 		$out .= $this->_popupTextileTitle($title_id, $options);
-		// $out .= $this->Popup->popup($file_id, array('type' => 'form'));
 		$out .= $this->_popupTextilePreview($prev_id, $options);
+		$out .= $this->_popupTextileFile($file_id, $options);
 		
 		// Textarea input
 		$out .= $this->input($htmlAttributes, $options);
@@ -1332,20 +1335,20 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$popup_config['content'] .= $this->Bl->pDry($popup_title_txt['instructions']);
 		
 		$popup_config['content'] .= $this->sform(array(), array('url' => ''));
-		$popup_config['content'] .= $this->input(
-			array('id' => $iilink),
-			array(
-				'required' => true,
-				'container' => false,
-				'type' => 'select', 
-				'options' => array('options' => array('h2' => $popup_title_txt['label_type_tit'], 'h3' => $popup_title_txt['label_type_sub'])),
-				'label' => $popup_title_txt['label_type']
-			)
-		);
-		$popup_config['content'] .= $this->input(
-			array('id' => $ixlink),
-			array('container' => false, 'required' => true, 'label' => $popup_title_txt['label_text'])
-		);
+			$popup_config['content'] .= $this->input(
+				array('id' => $iilink),
+				array(
+					'required' => true,
+					'container' => false,
+					'type' => 'select', 
+					'options' => array('options' => array('h2' => $popup_title_txt['label_type_tit'], 'h3' => $popup_title_txt['label_type_sub'])),
+					'label' => $popup_title_txt['label_type']
+				)
+			);
+			$popup_config['content'] .= $this->input(
+				array('id' => $ixlink),
+				array('container' => false, 'required' => true, 'label' => $popup_title_txt['label_text'])
+			);
 		$popup_config['content'] .= $this->eform();
 		
 		return $this->Popup->popup($id, $popup_config);
@@ -1363,14 +1366,52 @@ class BuroBurocrataHelper extends XmlTagHelper
 	protected function _popupTextilePreview($id, $options)
 	{
 		$popup_title_txt = array(
-			'title' 		 => __('Burocrata::_popupTextilePreview - Title of preview popup', true)
+			'title' => __('Burocrata::_popupTextilePreview - Title of preview popup', true)
 		);
 		
 		$popup_config['type'] = 'notice';
 		$popup_config['title'] = $popup_title_txt['title'];
 		$popup_config['content'] = '';
-		$popup_config['content'] .= $this->Bl->sdiv(array('id' => 'div' . $options['baseID'], 'class' => 'buro_textile preview'));
+		$popup_config['content'] .= $this->Bl->sdiv(array('id' => 'div' . $options['baseID'], 'class' => 'textile buro_textile preview'));
 		$popup_config['content'] .= $this->Bl->ediv();
+		
+		return $this->Popup->popup($id, $popup_config);
+	}
+
+
+/**
+ * Creates a popup for the Textile input "File" button, containing a
+ * file upload input.
+ * 
+ * @access protected
+ * @param string $id The DOM ID for the popup (will be used on Popup helper)
+ * @param string $options The array of input options 
+ * @return string The HTML and the JS of this popup
+ */
+	protected function _popupTextileFile($id, $options)
+	{
+		$popup_file_txt = array(
+			'title'			=> __('Burocrata::_popupTextileFile - Title of `add file` popup', true),
+			'label_input'	=> __('Burocrata::_popupTextileFile - Label of file input', true),
+		);
+		
+		$baseID = substr(uniqid(), -6);
+		
+		$popup_config['type'] = 'form';
+		$popup_config['title'] = $popup_file_txt['title'];
+		$popup_config['callback'] = "var ui = BuroClassRegistry.get('{$baseID}'); if (ui.uploading && action == 'ok') return false; if (action == 'ok') {BuroClassRegistry.get('{$options['baseID']}').insertFile(ui.responseJSON);}";
+		$popup_config['content'] = '';
+		$popup_config['content'] .= $this->sform(array(), array('model' => 'SfilStoredFile'));
+			$popup_config['content'] .= $this->input(array(), array(
+				'type' => 'upload',
+				'container' => false,
+				'label' => $popup_file_txt['label_input'],
+				'options' => array(
+					'baseID' => $baseID
+				)
+			));
+		$popup_config['content'] .= $this->BuroOfficeBoy->addHtmlEmbScript("$('$id').observe('popup:opened', function(ev){BuroClassRegistry.get('{$baseID}').again();})");
+		$popup_config['content'] .= $this->eform();
 		
 		return $this->Popup->popup($id, $popup_config);
 	}
