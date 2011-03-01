@@ -20,7 +20,7 @@ class DashDashboardController extends DashboardAppController
 			'order' => 'modified DESC'
 		)
 	);
-	var $helpers = array('Text','Popup.Popup');
+	var $helpers = array('Text');
 
 
 /**
