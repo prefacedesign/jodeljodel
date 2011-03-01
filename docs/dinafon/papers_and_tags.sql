@@ -2,12 +2,11 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
-
 -- -----------------------------------------------------
 -- Table `jour_journals`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `jour_journals` (
-  `id` INT NOT NULL ,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `full_name` VARCHAR(255) NULL ,
   `short_name` VARCHAR(255) NULL ,
   `link` TEXT NULL ,
@@ -135,9 +134,9 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `pap_paper_translations_tags_tags` (
   `pap_paper_translation_id` INT NOT NULL ,
   `tags_tag_id` INT NOT NULL ,
-  PRIMARY KEY (`pap_paper_translations_id`, `tags_tags_id`) ,
-  INDEX `fk_pap_paper_translations_has_tags_tags_pap_paper_translations` (`pap_paper_translations_id` ASC) ,
-  INDEX `fk_pap_paper_translations_has_tags_tags_tags_tags` (`tags_tags_id` ASC) ,
+  PRIMARY KEY (`pap_paper_translation_id`, `tags_tag_id`) ,
+  INDEX `fk_pap_paper_translations_has_tags_tags_pap_paper_translations` (`pap_paper_translation_id` ASC) ,
+  INDEX `fk_pap_paper_translations_has_tags_tags_tags_tags` (`tags_tag_id` ASC) ,
   CONSTRAINT `fk_pap_paper_translations_has_tags_tags_pap_paper_translations`
     FOREIGN KEY (`pap_paper_translation_id` )
     REFERENCES `pap_paper_translations` (`id` )

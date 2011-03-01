@@ -20,6 +20,17 @@ $this->Decorator->rule(
 		'#logo', array(
 			'margin-top' => $u->t($lineHeight/2)
 	));
+	
+$this->Decorator->rule(
+		'.language_switch', array(
+			'float' => 'right',
+			'width' => $hg->size(array('M' => 2, 'g' => -1)),
+	));
+
+$this->Decorator->rule(
+		'.language_switch a', array(
+			'font-size' => $u->t($standardFontSize * 11/13) 
+	));
 
 
 //@todo verificar se o 12M n??o gera problema
@@ -191,7 +202,7 @@ $this->Decorator->rule(
 	));
 
 $this->Decorator->rule(
-		'.coluna a, .menu_1_lateral a, .menu_lateral a:visited', array(
+		'.language_switch a, .coluna a, .menu_1_lateral a, .menu_lateral a:visited', array(
 			'color' => $palette['texto']->write(),
 			'border-bottom' => $u->t(2) . ' solid ' . $palette['texto_destaque']->write()
 	));
@@ -202,7 +213,7 @@ $this->Decorator->rule(
 	));
 
 $this->Decorator->rule(
-		'.coluna a:hover, .coluna a:active, .menu_1_lateral a:hover, .menu_1_lateral a:active', array(
+		'.language_switch a:hover, .language_switch a:active, .coluna a:hover, .coluna a:active, .menu_1_lateral a:hover, .menu_1_lateral a:active', array(
 			'border-bottom' => $u->t(2) . 'solid' . $palette['principal']->write(),
 			'background-color' => $palette['principal']->write()
 	));

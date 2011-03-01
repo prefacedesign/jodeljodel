@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-02-27 16:37-0300\n"
-"PO-Revision-Date: 2011-02-27 16:47-0300\n"
+"POT-Creation-Date: 2011-03-01 10:28-0300\n"
+"PO-Revision-Date: 2011-03-01 10:46-0300\n"
 "Last-Translator: Lucas Vignoli Reis <lucas@preface.com.br>\n"
 "Language-Team: Preface Design <preface@preface.com.br>\n"
 "MIME-Version: 1.0\n"
@@ -16,47 +16,47 @@ msgstr ""
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: \plugins\author\models\auth_author.php:17
+#: \plugins\author\models\auth_author.php:18
 #, fuzzy
 msgid "AuthAuthor validation: surname."
 msgstr "Erro de validação no sobrenome"
 
-#: \plugins\author\models\auth_author.php:26
+#: \plugins\author\models\auth_author.php:27
 #, fuzzy
 msgid "AuthAuthor validation: name."
 msgstr "Erro de validação no sobrenome"
 
-#: \plugins\author\models\auth_author.php:35
+#: \plugins\author\models\auth_author.php:36
 msgid "AuthAuthor validation: reference_name."
 msgstr ""
 
 #: \plugins\author\views\elements\auth_author.ctp:38
-#: \plugins\person\views\elements\pers_person.ctp:89
+#: \plugins\person\views\elements\pers_person.ctp:99
 msgid "Form - PersPerson.surname"
 msgstr "Sobrenome"
 
 #: \plugins\author\views\elements\auth_author.ctp:39
-#: \plugins\person\views\elements\pers_person.ctp:90
+#: \plugins\person\views\elements\pers_person.ctp:100
 msgid "Form - PersPerson.surname - instructions"
 msgstr "Preencha com o sobrenome completo, p.e., para José Carlos Penteado Lima: \"Penteado Lima\""
 
 #: \plugins\author\views\elements\auth_author.ctp:45
-#: \plugins\person\views\elements\pers_person.ctp:96
+#: \plugins\person\views\elements\pers_person.ctp:106
 msgid "Form - PersPerson.name"
 msgstr "Nome"
 
 #: \plugins\author\views\elements\auth_author.ctp:46
-#: \plugins\person\views\elements\pers_person.ctp:97
+#: \plugins\person\views\elements\pers_person.ctp:107
 msgid "Form - PersPerson.name - instructions"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
 
 #: \plugins\author\views\elements\auth_author.ctp:52
-#: \plugins\person\views\elements\pers_person.ctp:103
+#: \plugins\person\views\elements\pers_person.ctp:113
 msgid "Form - PersPerson.reference_name"
 msgstr "Como esta pessoa deve ser citada?"
 
 #: \plugins\author\views\elements\auth_author.ctp:53
-#: \plugins\person\views\elements\pers_person.ctp:104
+#: \plugins\person\views\elements\pers_person.ctp:114
 msgid "Form - PersPerson.reference_name - instructions"
 msgstr "Por exemplo, para José Carlos Penteado Lima: \"LIMA, J. C. P.\""
 
@@ -85,63 +85,56 @@ msgstr "marcá-lo como rascunho"
 msgid "Now, this document is published. You can %s."
 msgstr "No momento, este documento está publicado. Você pode %s."
 
-#: \plugins\backstage\views\back_contents\edit.ctp:60;76;94
-msgid "Language name: "
-msgstr ""
-
-#: \plugins\backstage\views\back_contents\edit.ctp:62
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:19
-msgid "anchorList and"
-msgstr " e "
-
-#: \plugins\backstage\views\back_contents\edit.ctp:65
-msgid "This content already has translations for %s."
-msgstr "Este conteúdo já tem traduções para %s. "
-
-#: \plugins\backstage\views\back_contents\edit.ctp:82
-msgid "Backstage edit page: If you want you can create a version for %s"
-msgstr "Você pode ainda criar uma versão em %s"
-
-#: \plugins\backstage\views\back_contents\edit.ctp:83;98
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:26;40
-msgid "anchorList or"
-msgstr " ou "
-
-#: \plugins\backstage\views\back_contents\edit.ctp:93
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:34
-msgid "backstage edit page: Editing"
-msgstr "Edição"
-
-#: \plugins\backstage\views\back_contents\edit.ctp:94
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:35
-msgid " the %s version."
-msgstr " da versão em %s."
-
-#: \plugins\backstage\views\back_contents\edit.ctp:100
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:28
-msgid "mark it as ready"
-msgstr "declará-la pronta"
-
-#: \plugins\backstage\views\back_contents\edit.ctp:101
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:29
-msgid "remove it"
-msgstr "removê-la"
-
-#: \plugins\backstage\views\back_contents\edit.ctp:117
+#: \plugins\backstage\views\back_contents\edit.ctp:63
 msgid "Backstage edit page: Your data cannot be saved - TITLE."
 msgstr "Falha ao salvar"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:118
+#: \plugins\backstage\views\back_contents\edit.ctp:64
 msgid "Backstage edit page: Your data cannot be saved - TEXT."
 msgstr "Houve um erro e os dados não puderam ser salvos."
 
-#: \plugins\backstage\views\back_contents\edit.ctp:124
+#: \plugins\backstage\views\back_contents\edit.ctp:71
 msgid "Backstage edit page: Your data has been saved - TITLE."
 msgstr "Sucesso"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:125
+#: \plugins\backstage\views\back_contents\edit.ctp:72
 msgid "Backstage edit page: Your data has been saved - TEXT."
 msgstr "Os dados foram salvos com sucesso."
+
+#: \plugins\backstage\views\elements\language_edit_select.ctp:5;21
+#: \plugins\backstage\views\elements\language_show_edited_language.ctp:5;21
+#: \plugins\backstage\views\elements\show_language_being_edited.ctp:9
+msgid "Language name: "
+msgstr ""
+
+#: \plugins\backstage\views\elements\language_edit_select.ctp:7
+#: \plugins\backstage\views\elements\language_show_edited_language.ctp:7
+msgid "anchorList and"
+msgstr " e "
+
+#: \plugins\backstage\views\elements\language_edit_select.ctp:10
+#: \plugins\backstage\views\elements\language_show_edited_language.ctp:10
+msgid "This content already has translations for %s."
+msgstr "Este conteúdo já tem traduções para %s. "
+
+#: \plugins\backstage\views\elements\language_edit_select.ctp:27
+#: \plugins\backstage\views\elements\language_show_edited_language.ctp:27
+msgid "Backstage edit page: If you want you can create a version for %s"
+msgstr "Você pode ainda criar uma versão em %s"
+
+#: \plugins\backstage\views\elements\language_edit_select.ctp:28
+#: \plugins\backstage\views\elements\language_show_edited_language.ctp:28
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:33;47
+msgid "anchorList or"
+msgstr " ou "
+
+#: \plugins\backstage\views\elements\show_language_being_edited.ctp:8
+msgid "backstage edit page: Editing"
+msgstr "Edição"
+
+#: \plugins\backstage\views\elements\show_language_being_edited.ctp:9
+msgid " the %s version."
+msgstr " da versão em %s."
 
 #: \plugins\burocrata\controllers\buro_burocrata_controller.php:316
 msgid "Request security field not defined"
@@ -155,15 +148,23 @@ msgstr ""
 msgid "Couldn't load model"
 msgstr "Não foi possível carregar o model."
 
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:13
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:20
 msgid "Save"
 msgstr "Salvar"
 
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:14
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:21
 msgid "Save box: cancel this change."
 msgstr "cancelar esta alteração"
 
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:34
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:35
+msgid "mark it as ready"
+msgstr "declará-la pronta"
+
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:36
+msgid "remove it"
+msgstr "removê-la"
+
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:41
 msgid "Version marked as draft. You can %s."
 msgstr "Versão marcada como rascunho. Você pode %s."
 
@@ -171,107 +172,107 @@ msgstr "Versão marcada como rascunho. Você pode %s."
 msgid "Burocrata: default save button"
 msgstr "Salvar"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:742
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:748
 msgid "Burocrata: nothing found on autocomplete."
 msgstr "Nenhum registro encontrado."
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:798
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:804
 msgid "Burocrata: create a new belongsto item"
 msgstr "deseja criar um novo?"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:799
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:805
 msgid "Burocrata: belongsto edit related data"
 msgstr "Edite os dados deste registro"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1027
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1088
 msgid "Burocrata::inputUpload - Change file"
 msgstr "Troque o arquivo"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1048
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1109
 msgid "Burocrata::inputUpload - Arquivo: "
 msgstr "Arquivo:"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1077
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1138
 msgid "Burocrata::inputImage - Change image"
 msgstr "Troque a imagem"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1079
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1140
 msgid "Burocrata::inputImage - Remove  image"
 msgstr "remova a imagem"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1108
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1169
 msgid "Burocrata::inputImage - or "
 msgstr " ou "
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1141
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1202
 msgid "Burocrata::inputTextile - Add bold"
 msgstr "negrito"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1142
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1203
 msgid "Burocrata::inputTextile - Add Italic"
 msgstr "itálico"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1143
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1204
 msgid "Burocrata::inputTextile - Add link"
 msgstr "link"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1144
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1205
 msgid "Burocrata::inputTextile - Add title"
 msgstr "título"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1145
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1206
 msgid "Burocrata::inputTextile - Add Img"
 msgstr "imagem"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1146
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1207
 msgid "Burocrata::inputTextile - Add file"
 msgstr "arquivo"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1147
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1208
 msgid "Burocrata::inputTextile - Preview"
 msgstr "preview"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1190
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1251
 msgid "Burocrata::_popupTextileLink - Instructions for link"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1191
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1252
 msgid "Burocrata::_popupTextileLink - What is the text for this link"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1192
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1253
 msgid "Burocrata::_popupTextileLink - What is the URL of this link"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1193
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1254
 msgid "Burocrata::_popupTextileLink - Title of link popup"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1223
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1284
 msgid "Burocrata::_popupTextileTitle - Instructions for link"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1224
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1285
 msgid "Burocrata::_popupTextileTitle - What is the type of this title"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1225
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1286
 msgid "Burocrata::_popupTextileTitle - Title"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1226
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1287
 msgid "Burocrata::_popupTextileTitle - Subtitle"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1227
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1288
 msgid "Burocrata::_popupTextileTitle - What is the title"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1228
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1289
 msgid "Burocrata::_popupTextileTitle - Title of title popup"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1268
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1330
 msgid "Burocrata::_popupTextilePreview - Title of preview popup"
 msgstr ""
 
@@ -283,7 +284,7 @@ msgstr "Não foi possível salvar o conteúdo fixo."
 msgid "CorkCorktile Model: Could not save the Cork meta data"
 msgstr "Não foi possível salvar os meta dados do conteúdo fixo."
 
-#: \plugins\corktile\models\cork_corktile.php:106
+#: \plugins\corktile\models\cork_corktile.php:107
 msgid "CorkCorktile Model: Could not update the Cork meta data"
 msgstr "Não foi possível atualizar os meta dados do conteúdo fixo."
 
@@ -291,43 +292,19 @@ msgstr "Não foi possível atualizar os meta dados do conteúdo fixo."
 msgid "Corktile edit page: Editing a fixed content"
 msgstr "Edição de um conteúdo fixo"
 
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:21
-msgid "english"
-msgstr "inglês"
-
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:22;35
-msgid "portuguese"
-msgstr "português"
-
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:23
-msgid "japanese"
-msgstr "japonês"
-
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:24
-msgid "javanese"
-msgstr "javanês"
-
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:29
-msgid "This %s already has translations for %s."
-msgstr "Este conteúdo já tem traduções para %s."
-
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:39
-msgid "Corktile: The edition to these contents will be automatically updated to the page where it appears."
-msgstr "A edição destes conteúdo será automaticamente atualizado na página aonde este conteúdo está disponível."
-
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:46
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:25
 msgid "Corktile edit page: Your data cannot be saved - TITLE."
 msgstr "Falha ao salvar"
 
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:47
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:26
 msgid "Corktile edit page: Your data cannot be saved - TEXT."
 msgstr "Houve um erro e os dados não puderem ser salvos."
 
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:53
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:32
 msgid "Corktile edit page: Your data has been saved - TITLE."
 msgstr "Sucesso"
 
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:54
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:33
 msgid "Corktile edit page: Your data has been saved - TEXT."
 msgstr "Os dados foram salvos com sucesso."
 
@@ -456,6 +433,14 @@ msgstr "Excluir conteúdo"
 msgid "Dashboard: Edit"
 msgstr "Editar"
 
+#: \plugins\jj_users\views\user_users\login.ctp:6
+msgid "Login page: username label"
+msgstr ""
+
+#: \plugins\jj_users\views\user_users\login.ctp:9
+msgid "Login page: password label"
+msgstr ""
+
 #: \plugins\jj_utils\vendors\shells\jj_console.php:13
 msgid "JjConsoleShell::main What is the command to execute? Say \"quit\" to exit, \"help\" to achieve help."
 msgstr "Qual comando deseja executar? Digite \"quit\" para sair e \"help\" para obter ajudar."
@@ -536,67 +521,67 @@ msgstr ""
 msgid "NewsNew validation: content required, between 100 6000."
 msgstr ""
 
-#: \plugins\new\views\elements\news_new.ctp:24
+#: \plugins\new\views\elements\news_new.ctp:83
 msgid "Form - NewsNew.Author - Select a Author"
 msgstr ""
 
-#: \plugins\new\views\elements\news_new.ctp:25
+#: \plugins\new\views\elements\news_new.ctp:84
 msgid "Form - NewsNew.Author - Instruction to belongsTo Author"
 msgstr ""
 
-#: \plugins\new\views\elements\news_new.ctp:30
+#: \plugins\new\views\elements\news_new.ctp:89
 msgid "Form - NewsNew.Author - Create a new Author"
 msgstr ""
 
-#: \plugins\new\views\elements\news_new.ctp:31
+#: \plugins\new\views\elements\news_new.ctp:90
 msgid "Form - NewsNew.Author - Edit this Author"
 msgstr ""
 
-#: \plugins\new\views\elements\news_new.ctp:39
+#: \plugins\new\views\elements\news_new.ctp:98
 #, fuzzy
 msgid "Form - NewsNew new info superfield"
 msgstr "Nome da pessoa"
 
-#: \plugins\new\views\elements\news_new.ctp:40
+#: \plugins\new\views\elements\news_new.ctp:99
 #, fuzzy
 msgid "Form - NewsNew new info superfield - instructions"
 msgstr " "
 
-#: \plugins\new\views\elements\news_new.ctp:50
+#: \plugins\new\views\elements\news_new.ctp:109
 #, fuzzy
 msgid "Form - NewsNew.date"
 msgstr "Nome"
 
-#: \plugins\new\views\elements\news_new.ctp:51
+#: \plugins\new\views\elements\news_new.ctp:110
 #, fuzzy
 msgid "Form - NewsNew.date - instructions"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
 
-#: \plugins\new\views\elements\news_new.ctp:64
+#: \plugins\new\views\elements\news_new.ctp:123
 #, fuzzy
 msgid "Form - NewsNew.title"
 msgstr "Perfil"
 
-#: \plugins\new\views\elements\news_new.ctp:65
+#: \plugins\new\views\elements\news_new.ctp:124
 #, fuzzy
 msgid "Form - NewsNew.title - instructions"
 msgstr " "
 
-#: \plugins\new\views\elements\news_new.ctp:71
+#: \plugins\new\views\elements\news_new.ctp:130
 msgid "Form - NewsNew.abstract"
 msgstr ""
 
-#: \plugins\new\views\elements\news_new.ctp:72
+#: \plugins\new\views\elements\news_new.ctp:131
 #, fuzzy
-msgid "Form - NewsNew.date - abstract"
+msgid "Form - NewsNew.abstract - instructions"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
 
-#: \plugins\new\views\elements\news_new.ctp:78
+#: \plugins\new\views\elements\news_new.ctp:137
 #, fuzzy
 msgid "Form - NewsNew.content"
 msgstr "Nome"
 
-#: \plugins\new\views\elements\news_new.ctp:79
+#: \plugins\new\views\elements\news_new.ctp:138
 #, fuzzy
 msgid "Form - NewsNew.content - instructions"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
@@ -905,6 +890,177 @@ msgstr ""
 msgid "Section Two"
 msgstr ""
 
+#: \plugins\paper\models\pap_paper.php:19
+#, fuzzy
+msgid "PapPaper validation: auth_author_id."
+msgstr "Erro de validação no sobrenome"
+
+#: \plugins\paper\models\pap_paper.php:28
+msgid "PapPaper validation: jour_journal_id."
+msgstr ""
+
+#: \plugins\paper\models\pap_paper.php:37
+msgid "PapPaper validation: complete_reference required."
+msgstr ""
+
+#: \plugins\paper\models\pap_paper.php:46
+#, fuzzy
+msgid "PapPaper validation: title required, between 50 350."
+msgstr "Erro de validação no sobrenome"
+
+#: \plugins\paper\models\pap_paper.php:55
+#, fuzzy
+msgid "PapPaper validation: abstract required, between 100 6000."
+msgstr "Erro de validação no sobrenome"
+
+#: \plugins\paper\views\elements\jour_journal.ctp:38
+#, fuzzy
+msgid "Form - JourJournal.full_name"
+msgstr "Sobrenome"
+
+#: \plugins\paper\views\elements\jour_journal.ctp:39
+#, fuzzy
+msgid "Form - JourJournal.full_name - instructions"
+msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+
+#: \plugins\paper\views\elements\jour_journal.ctp:45
+#, fuzzy
+msgid "Form - JourJournal.short_name"
+msgstr "Sobrenome"
+
+#: \plugins\paper\views\elements\jour_journal.ctp:46
+#, fuzzy
+msgid "Form - JourJournal.short_name - instructions"
+msgstr "Preencha com o sobrenome completo, p.e., para José Carlos Penteado Lima: \"Penteado Lima\""
+
+#: \plugins\paper\views\elements\jour_journal.ctp:52
+#, fuzzy
+msgid "Form - JourJournal.link"
+msgstr "Qual é o link para o seu currículo lattes?"
+
+#: \plugins\paper\views\elements\jour_journal.ctp:53
+#, fuzzy
+msgid "Form - JourJournal.link - instructions"
+msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+
+#: \plugins\paper\views\elements\pap_paper.ctp:24
+msgid "Form - PapPaper.Journal - Select a Journal"
+msgstr ""
+
+#: \plugins\paper\views\elements\pap_paper.ctp:25
+#, fuzzy
+msgid "Form - PapPaper.Journal - Instruction to belongsTo Journal"
+msgstr "Preencha com o sobrenome completo, p.e., para José Carlos Penteado Lima: \"Penteado Lima\""
+
+#: \plugins\paper\views\elements\pap_paper.ctp:30
+msgid "Form - PapPaper.Journal - Create a new Journal"
+msgstr ""
+
+#: \plugins\paper\views\elements\pap_paper.ctp:31
+#, fuzzy
+msgid "Form - PapPaper.Journal - Edit this Journal"
+msgstr "Preencha com o sobrenome completo, p.e., para José Carlos Penteado Lima: \"Penteado Lima\""
+
+#: \plugins\paper\views\elements\pap_paper.ctp:52
+#, fuzzy
+msgid "Form - PapPaper.Author"
+msgstr "Nome"
+
+#: \plugins\paper\views\elements\pap_paper.ctp:53
+#, fuzzy
+msgid "Form - PapPaper.author - instructions"
+msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+
+#: \plugins\paper\views\elements\pap_paper.ctp:65
+#, fuzzy
+msgid "Form - PapPaper new info superfield"
+msgstr "Nome da pessoa"
+
+#: \plugins\paper\views\elements\pap_paper.ctp:66
+#, fuzzy
+msgid "Form - PapPaper new info superfield - instructions"
+msgstr " "
+
+#: \plugins\paper\views\elements\pap_paper.ctp:76
+#, fuzzy
+msgid "Form - PapPaper.date"
+msgstr "Nome"
+
+#: \plugins\paper\views\elements\pap_paper.ctp:77
+#, fuzzy
+msgid "Form - PapPaper.date - instructions"
+msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+
+#: \plugins\paper\views\elements\pap_paper.ctp:90
+#, fuzzy
+msgid "Form - PapPaper.title"
+msgstr "Perfil"
+
+#: \plugins\paper\views\elements\pap_paper.ctp:91
+#, fuzzy
+msgid "Form - PapPaper.title - instructions"
+msgstr " "
+
+#: \plugins\paper\views\elements\pap_paper.ctp:97
+#, fuzzy
+msgid "Form - PapPaper.abstract"
+msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+
+#: \plugins\paper\views\elements\pap_paper.ctp:98
+#, fuzzy
+msgid "Form - PapPaper.abstract - instructions"
+msgstr "Preencha com o sobrenome completo, p.e., para José Carlos Penteado Lima: \"Penteado Lima\""
+
+#: \plugins\paper\views\elements\pap_paper.ctp:105
+#, fuzzy
+msgid "Form - PapPaper.tags"
+msgstr "Nome"
+
+#: \plugins\paper\views\elements\pap_paper.ctp:106
+#, fuzzy
+msgid "Form - PapPaper.tags - instructions"
+msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+
+#: \plugins\paper\views\elements\pap_paper.ctp:124
+#, fuzzy
+msgid "Form - PapPaper new reference superfield"
+msgstr "Nome da pessoa"
+
+#: \plugins\paper\views\elements\pap_paper.ctp:125
+#, fuzzy
+msgid "Form - PapPaper new reference superfield - instructions"
+msgstr " "
+
+#: \plugins\paper\views\elements\pap_paper.ctp:133
+#, fuzzy
+msgid "Form - PapPaper.complete_reference"
+msgstr "Como esta pessoa deve ser citada?"
+
+#: \plugins\paper\views\elements\pap_paper.ctp:134
+#, fuzzy
+msgid "Form - PapPaper.complete_reference - instructions"
+msgstr "Por exemplo, para José Carlos Penteado Lima: \"LIMA, J. C. P.\""
+
+#: \plugins\paper\views\elements\pap_paper.ctp:143
+#, fuzzy
+msgid "Form - PapPaper.link_to_it"
+msgstr "Qual é o link para o seu currículo lattes?"
+
+#: \plugins\paper\views\elements\pap_paper.ctp:144
+#, fuzzy
+msgid "Form - PapPaper.link_to_it - instructions"
+msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+
+#: \plugins\paper\views\elements\pap_paper.ctp:150
+#, fuzzy
+msgid "Form - PapPaper.file_id"
+msgstr "Nome"
+
+#: \plugins\paper\views\elements\pap_paper.ctp:151
+#, fuzzy
+msgid "Form - PapPaper.file_id - instructions"
+msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+
 #: \plugins\person\models\pers_person.php:17
 #, fuzzy
 msgid "PersPerson validation: lattes_link."
@@ -929,167 +1085,167 @@ msgstr ""
 msgid "PersPerson validation: position required, maxlength 150."
 msgstr "Erro de validação no sobrenome"
 
-#: \plugins\person\views\elements\pers_person.ctp:27;44
+#: \plugins\person\views\elements\pers_person.ctp:12;40;56
 msgid "pers_person element: research_fields caption"
 msgstr "Áreas de pesquisa"
 
-#: \plugins\person\views\elements\pers_person.ctp:34;51
+#: \plugins\person\views\elements\pers_person.ctp:47;61
 msgid "pers_person element: cooperation_with_dinafon caption"
 msgstr "Colaboração com o Dinafon"
 
-#: \plugins\person\views\elements\pers_person.ctp:47
+#: \plugins\person\views\elements\pers_person.ctp:58
 msgid "pers_person element: link_lattes caption"
 msgstr "Currículo Lattes"
 
-#: \plugins\person\views\elements\pers_person.ctp:54
+#: \plugins\person\views\elements\pers_person.ctp:64
 msgid "pers_person element: profile caption"
 msgstr "Perfil"
 
-#: \plugins\person\views\elements\pers_person.ctp:77
+#: \plugins\person\views\elements\pers_person.ctp:87
 msgid "Form - PersPerson name superfield"
 msgstr "Nome da pessoa"
 
-#: \plugins\person\views\elements\pers_person.ctp:78
+#: \plugins\person\views\elements\pers_person.ctp:88
 msgid "Form - PersPerson name superfield - instructions"
 msgstr " "
 
-#: \plugins\person\views\elements\pers_person.ctp:121
+#: \plugins\person\views\elements\pers_person.ctp:131
 msgid "Form - PersPerson.position"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:122
+#: \plugins\person\views\elements\pers_person.ctp:132
 #, fuzzy
 msgid "Form - PersPerson.position - instructions"
 msgstr " "
 
-#: \plugins\person\views\elements\pers_person.ctp:128
+#: \plugins\person\views\elements\pers_person.ctp:138
 msgid "Form - PersPerson.lattes_link"
 msgstr "Qual é o link para o seu currículo lattes?"
 
-#: \plugins\person\views\elements\pers_person.ctp:129
+#: \plugins\person\views\elements\pers_person.ctp:139
 msgid "Form - PersPerson.lattes_link - instructions"
 msgstr " "
 
-#: \plugins\person\views\elements\pers_person.ctp:135
+#: \plugins\person\views\elements\pers_person.ctp:145
 msgid "Form - PersPerson.research_fields"
 msgstr "Quais são os campos de pesquisa em que atua?"
 
-#: \plugins\person\views\elements\pers_person.ctp:136
+#: \plugins\person\views\elements\pers_person.ctp:146
 msgid "Form - PersPerson.research_fields - instructions"
 msgstr "P. e.: teoria de sistemas dinâmicos, dinâmica fônica."
 
-#: \plugins\person\views\elements\pers_person.ctp:144
+#: \plugins\person\views\elements\pers_person.ctp:154
 msgid "Form - PersPerson.profile"
 msgstr "Perfil"
 
-#: \plugins\person\views\elements\pers_person.ctp:145
+#: \plugins\person\views\elements\pers_person.ctp:155
 msgid "Form - PersPerson.profile - instructions"
 msgstr " "
 
-#: \plugins\person\views\elements\pers_person.ctp:151
+#: \plugins\person\views\elements\pers_person.ctp:161
 msgid "Form - PersPerson.cooperation_with_dinafon"
 msgstr "Como colabora com o Dinafon?"
 
-#: \plugins\person\views\elements\pers_person.ctp:152
+#: \plugins\person\views\elements\pers_person.ctp:162
 msgid "Form - PersPerson.cooperation_with_dinafon - instructions"
 msgstr "Descreva em poucas palavras como que a pessoa participa e/ou colabora com o Dinafon."
 
-#: \plugins\person\views\elements\pers_person.ctp:159
+#: \plugins\person\views\elements\pers_person.ctp:169
 #, fuzzy
 msgid "Form - PersPerson contact info superfield"
 msgstr "Nome da pessoa"
 
-#: \plugins\person\views\elements\pers_person.ctp:160
+#: \plugins\person\views\elements\pers_person.ctp:170
 #, fuzzy
 msgid "Form - PersPerson contact info superfield - instructions"
 msgstr " "
 
-#: \plugins\person\views\elements\pers_person.ctp:167
+#: \plugins\person\views\elements\pers_person.ctp:177
 #, fuzzy
 msgid "Form - PersPerson.phone1"
 msgstr "Nome"
 
-#: \plugins\person\views\elements\pers_person.ctp:168
+#: \plugins\person\views\elements\pers_person.ctp:178
 #, fuzzy
 msgid "Form - PersPerson.phone1 - instructions"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
 
-#: \plugins\person\views\elements\pers_person.ctp:174
+#: \plugins\person\views\elements\pers_person.ctp:184
 #, fuzzy
 msgid "Form - PersPerson.phone2"
 msgstr "Nome"
 
-#: \plugins\person\views\elements\pers_person.ctp:175
+#: \plugins\person\views\elements\pers_person.ctp:185
 #, fuzzy
 msgid "Form - PersPerson.phone2 - instructions"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
 
-#: \plugins\person\views\elements\pers_person.ctp:181
+#: \plugins\person\views\elements\pers_person.ctp:191
 #, fuzzy
 msgid "Form - PersPerson.link1"
 msgstr "Qual é o link para o seu currículo lattes?"
 
-#: \plugins\person\views\elements\pers_person.ctp:182
+#: \plugins\person\views\elements\pers_person.ctp:192
 #, fuzzy
 msgid "Form - PersPerson.link1 - instructions"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
 
-#: \plugins\person\views\elements\pers_person.ctp:188
+#: \plugins\person\views\elements\pers_person.ctp:198
 #, fuzzy
 msgid "Form - PersPerson.link1_caption"
 msgstr "Qual é o link para o seu currículo lattes?"
 
-#: \plugins\person\views\elements\pers_person.ctp:189
+#: \plugins\person\views\elements\pers_person.ctp:199
 #, fuzzy
 msgid "Form - PersPerson.link1_caption - instructions"
 msgstr " "
 
-#: \plugins\person\views\elements\pers_person.ctp:196
+#: \plugins\person\views\elements\pers_person.ctp:206
 #, fuzzy
 msgid "Form - PersPerson.link2"
 msgstr "Qual é o link para o seu currículo lattes?"
 
-#: \plugins\person\views\elements\pers_person.ctp:197
+#: \plugins\person\views\elements\pers_person.ctp:207
 #, fuzzy
 msgid "Form - PersPerson.link2 - instructions"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
 
-#: \plugins\person\views\elements\pers_person.ctp:203
+#: \plugins\person\views\elements\pers_person.ctp:213
 #, fuzzy
 msgid "Form - PersPerson.link2_caption"
 msgstr "Qual é o link para o seu currículo lattes?"
 
-#: \plugins\person\views\elements\pers_person.ctp:204
+#: \plugins\person\views\elements\pers_person.ctp:214
 #, fuzzy
 msgid "Form - PersPerson.link2_caption - instructions"
 msgstr " "
 
-#: \plugins\person\views\elements\pers_person.ctp:210
+#: \plugins\person\views\elements\pers_person.ctp:220
 #, fuzzy
 msgid "Form - PersPerson.link3"
 msgstr "Qual é o link para o seu currículo lattes?"
 
-#: \plugins\person\views\elements\pers_person.ctp:211
+#: \plugins\person\views\elements\pers_person.ctp:221
 #, fuzzy
 msgid "Form - PersPerson.link3 - instructions"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
 
-#: \plugins\person\views\elements\pers_person.ctp:218
+#: \plugins\person\views\elements\pers_person.ctp:228
 #, fuzzy
 msgid "Form - PersPerson.link3_caption"
 msgstr "Qual é o link para o seu currículo lattes?"
 
-#: \plugins\person\views\elements\pers_person.ctp:219
+#: \plugins\person\views\elements\pers_person.ctp:229
 #, fuzzy
 msgid "Form - PersPerson.link3_caption - instructions"
 msgstr " "
 
-#: \plugins\person\views\elements\pers_person.ctp:227
+#: \plugins\person\views\elements\pers_person.ctp:237
 #, fuzzy
 msgid "Form - PersPerson.img_id"
 msgstr "Nome"
 
-#: \plugins\person\views\elements\pers_person.ctp:228
+#: \plugins\person\views\elements\pers_person.ctp:238
 #, fuzzy
 msgid "Form - PersPerson.img_id - instructions"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
@@ -1098,36 +1254,40 @@ msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lim
 msgid "Popup plugin "
 msgstr ""
 
-#: \plugins\text_cork\models\text_text_cork.php:26
+#: \plugins\text_cork\models\text_text_cork.php:37
 msgid "TextTextCork Model: This text hasn't been written yet. It's up to the site content editor to write it."
 msgstr "Este texto ainda não foi redigido ainda."
 
-#: \plugins\text_cork\views\elements\text_text_cork.ctp:31
+#: \plugins\text_cork\views\elements\text_text_cork.ctp:60
 msgid "Cork Form - TextTextCork.text"
 msgstr "O texto"
 
-#: \plugins\text_cork\views\elements\text_text_cork.ctp:32
+#: \plugins\text_cork\views\elements\text_text_cork.ctp:61
 #, fuzzy
 msgid "Cork Form - TextTextCork.text - instructions"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
 
-#: \plugins\typographer\views\elements\backstage_layout.ctp:7
+#: \plugins\typographer\views\elements\backstage_layout.ctp:18
 msgid "Content management area"
 msgstr "Página administrativa"
 
-#: \plugins\typographer\views\elements\backstage_layout.ctp:20
+#: \plugins\typographer\views\elements\backstage_layout.ctp:31
 msgid "Logout"
 msgstr "Deslogar"
 
-#: \plugins\typographer\views\elements\backstage_layout.ctp:32
+#: \plugins\typographer\views\elements\backstage_layout.ctp:43
 msgid "Powered by Jodel Jodel"
 msgstr "Poderificado por Jodel Jodel"
 
-#: \plugins\typographer\views\elements\backstage_layout.ctp:35
+#: \plugins\typographer\views\elements\backstage_layout.ctp:46
 msgid "This site, alongside its public version, was developed by "
 msgstr "Este sítio, assim como sua versão pública, foi desenvolvido por "
 
-#: \plugins\typographer\views\elements\dinafon_layout.ctp:154
+#: \plugins\typographer\views\elements\dinafon_layout.ctp:61
+msgid "Dinafon layout: switch language"
+msgstr "This site in english"
+
+#: \plugins\typographer\views\elements\dinafon_layout.ctp:178
 msgid "Dinafon layout: short description about Dinafon"
 msgstr "Dinafon stands for Dinâmica Fônica, speech dynamics, and names a group of phonologists/phoneticians led by Eleonora Albano."
 
@@ -1176,6 +1336,10 @@ msgid ""
 "To change the content of this page, edit: %s\n"
 "\t\tTo change its layout, edit: %s\n"
 "\t\tYou can also add some CSS styles for your pages at: %s"
+msgstr ""
+
+#: \views\principal\about.ctp:33
+msgid "about_dinafon page: Know all people"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:4
@@ -1297,6 +1461,28 @@ msgstr ""
 #: \plugins\utils\models\behaviors\toggleable.php:93
 msgid "Invalid record"
 msgstr ""
+
+#~ msgid "english"
+#~ msgstr "inglês"
+
+#~ msgid "portuguese"
+#~ msgstr "português"
+
+#~ msgid "japanese"
+#~ msgstr "japonês"
+
+#~ msgid "javanese"
+#~ msgstr "javanês"
+
+#~ msgid "This %s already has translations for %s."
+#~ msgstr "Este conteúdo já tem traduções para %s."
+
+#~ msgid ""
+#~ "Corktile: The edition to these contents will be automatically updated to "
+#~ "the page where it appears."
+#~ msgstr ""
+#~ "A edição destes conteúdo será automaticamente atualizado na página aonde "
+#~ "este conteúdo está disponível."
 
 #~ msgid ""
 #~ "Backstage edit page: Verify the fields marked with an error and try to "

@@ -36,6 +36,30 @@
 
 				echo $bl->ecaixa();
 				echo $this->element('menu_site', array('nivel' => 0));
+				
+				echo $bl->sdiv(array('class' => 'language_switch'));
+				
+					if ($currentLanguage == 'por')
+						$switchLanguage = 'eng';
+					else
+						$switchLanguage = 'por';
+					
+					$url = am(
+						am(
+							array(
+								'plugin' => $this->params['plugin'],
+								'controller' => $this->params['controller'],
+								'action' => $this->params['action'],
+								'language' => $switchLanguage
+							),
+							$this->params['pass']
+						),
+						$this->params['named']
+					);
+						
+					
+					echo $bl->anchor(array(), array('url' => $url), __('Dinafon layout: switch language', true));
+				echo $bl->ediv();
 
 			echo $bl->ediv();
 
