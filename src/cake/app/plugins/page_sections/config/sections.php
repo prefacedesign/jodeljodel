@@ -156,8 +156,8 @@ $sections = array(
 			'papers' => array(
 				'linkCaption' => __('Sections: papers linkCaption', true),
 				'url' => array(
-					'plugin' => 'papers',
-					'controller' => 'pap_papers',
+					'plugin' => 'paper',
+					'controller' => 'pap_paper',
 					'action' => 'index'
 				),
 				'pageTitle' => array(null,__('Sections: papers pageTitle',true)),
@@ -423,6 +423,11 @@ $sectionMap = array(
 //			)
 //		),
 	),
+	array(
+		'rule' => array('plugin' => 'paper', 'controller' => 'pap_paper'),
+		'location' => array('public_page','paper')
+	),
+
 	array(
 		'rule' => array('plugin' => 'backstage'),
 		'location' => array('backstage'),
