@@ -405,7 +405,22 @@ class TypeBricklayerHelper extends AppHelper
 		}
 		return $r . $this->espan();
 	}
-	
+
+	function textile ($attr = array(), $options = array(), $content = null) {
+		$own_attr = array(
+			'class' => array('textile')
+		);
+		
+		$attr = $this->_mergeAttributes($attr, $own_attr);
+
+		$Textile =&	ClassRegistry::init('Textile','Vendor');
+		$result = $this->sdiv($attr,$options);
+		$result .= $Textile->textileThis($content);
+		$result .= $this->ediv();
+		
+		return ($result);
+
+	}
 	/** Used by the smartTable to store the current Table settings used to
 	 *  make table cells. The array format is internal to the smartTable
 	 *	functions and is parsed from the options that ssmartTable receives.
