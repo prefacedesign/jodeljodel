@@ -353,12 +353,15 @@ class TradTradutoreBehavior extends ModelBehavior
 						$Model->{$child['className']}->hasOne[$setts['className']]['className'] = $setts['className'];
 						$Model->{$child['className']}->hasOne[$setts['className']]['foreignKey'] = $setts['foreignKey'];
 						$Model->{$child['className']}->hasOne[$setts['className']]['conditions'] = $__setts['languageField']['translation'] . ' = "' . self::$currentLanguage. '"';
-						foreach ($query['fields'] as $k => $field)
+						if (isset($query['fields']))
 						{
-							$f = explode('.', $field);
-							$model_child = $f[0];
-							if ($model_child == $Model->{$child['className']}->hasOne[$setts['className']]['className'])
-								$c[$child['className']][$setts['className']]['fields'][] = $field;
+							foreach ($query['fields'] as $k => $field)
+							{
+								$f = explode('.', $field);
+								$model_child = $f[0];
+								if ($model_child == $Model->{$child['className']}->hasOne[$setts['className']]['className'])
+									$c[$child['className']][$setts['className']]['fields'][] = $field;
+							}
 						}
 						if (!empty($c[$child['className']][$setts['className']]))
 						{
@@ -426,12 +429,15 @@ class TradTradutoreBehavior extends ModelBehavior
 						$Model->{$child['className']}->hasOne[$setts['className']]['className'] = $setts['className'];
 						$Model->{$child['className']}->hasOne[$setts['className']]['foreignKey'] = $setts['foreignKey'];
 						$Model->{$child['className']}->hasOne[$setts['className']]['conditions'] = $__setts['languageField']['translation'] . ' = "' . self::$currentLanguage . '"';
-						foreach ($query['fields'] as $k => $field)
+						if (isset($query['fields']))
 						{
-							$f = explode('.', $field);
-							$model_child = $f[0];
-							if ($model_child == $Model->{$child['className']}->hasOne[$setts['className']]['className'])
-								$c[$child['className']][$setts['className']]['fields'][] = $field;
+							foreach ($query['fields'] as $k => $field)
+							{
+								$f = explode('.', $field);
+								$model_child = $f[0];
+								if ($model_child == $Model->{$child['className']}->hasOne[$setts['className']]['className'])
+									$c[$child['className']][$setts['className']]['fields'][] = $field;
+							}
 						}
 						if (!empty($c[$child['className']][$setts['className']]))
 						{
@@ -619,6 +625,32 @@ class TradTradutoreBehavior extends ModelBehavior
 		return $contain;
 	}
     
+	
+	function generateContain(&$Model, &$contain, &$linkedModels, $_associations, $recursive)
+	{
+		if ($recursive > -1) {
+			foreach ($_associations as $type) {
+				foreach ($Model->{$type} as $assoc => $assocData) {
+					$linkModel =& $Model->{$assoc};
+					//debug('teste');
+					if (empty($linkedModels[$type . '/' . $assoc])) {
+						//debug('entrou');
+						//debug($contain);
+						//debug($linkedModels);
+						$contain[$Model->alias][$assoc] = array();
+						$linkedModels[$type . '/' . $assoc] = true;
+						//debug('alimentou');
+						//debug($contain);
+						//debug($linkedModels);
+						$this->generateContain($linkModel, $contain[$Model->alias], $linkedModels, $linkModel->__associations, $recursive - 1 );	
+					}
+						
+				}
+			}
+		}
+		return $contain;
+	}
+	
     function beforeFind(&$Model, $query)
     {
 		$__settings = $this->__settings[$Model->name];
@@ -627,8 +659,44 @@ class TradTradutoreBehavior extends ModelBehavior
 		if (isset($query['contain']) && $query['contain'] === false)
 			$query['contain'] = array();
 			
+		if (isset($query['fields']) && !empty($query['fields']) && empty($query['contain']))
+			$query['contain'] = array();
+			
 		if (!isset($query['contain']))
-			$query['contain'] = array(); //@todo: This should be switched to something equivalente to the recursive functionality
+		{
+			$_associations = $Model->__associations;
+			if ($Model->recursive == -1) {
+				$_associations = array();
+			} else if ($Model->recursive == 0) {
+				unset($_associations[2], $_associations[3]);
+			}
+
+			$linkedModels = array();
+			$query['contain'] = array();
+			
+			//debug($query['recursive']);
+			if ($query['recursive'] >= 1)
+			{
+				//debug('aqui');
+				$contain = $this->generateContain($Model, $query['contain'], $linkedModels, $_associations, $query['recursive'] - 1);
+				$query['contain'] = $contain[$Model->alias];
+			}
+			else
+			{
+				foreach ($_associations as $type) {
+					foreach ($Model->{$type} as $assoc => $assocData) {
+						$linkModel =& $Model->{$assoc};
+						$external = isset($assocData['external']);
+
+						if ($Model->useDbConfig == $Model->useDbConfig) 
+						{
+							$linkedModels[$type . '/' . $assoc] = true;
+							$query['contain'][$assoc] = array();
+						}
+					}
+				}
+			}	
+		}
 	
 		if (isset($query['language']))
 		{
@@ -678,15 +746,18 @@ class TradTradutoreBehavior extends ModelBehavior
 			//debug($k);
 			//debug($model);
 			
-			foreach ($query['fields'] as $k => $field)
+			if (isset($query['fields']))
 			{
-				$f = explode('.', $field);
-				$model_child = $f[0];
-				if ($model_child == $i)
+				foreach ($query['fields'] as $k => $field)
 				{
-					if (!isset($c[$i]))
-						$c[$i] = array();
-					$c[$i]['fields'][] = $field;
+					$f = explode('.', $field);
+					$model_child = $f[0];
+					if ($model_child == $i)
+					{
+						if (!isset($c[$i]))
+							$c[$i] = array();
+						$c[$i]['fields'][] = $field;
+					}
 				}
 			}
 		}
