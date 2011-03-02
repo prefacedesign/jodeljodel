@@ -59,6 +59,20 @@
 				)
 			)
 		);
+
+		echo $this->Buro->input(array(), 
+			array(
+				'type' => 'upload',
+				'label' => 'Arquivo',
+				'options' => array(
+					'fieldName' => 'file_id',
+					'callbacks' => array(
+						'onStart' => array('popup' => 'Começando o upload...')
+					),
+					'change_file_text' => 'Mudar esse arquivo'
+				)
+			)
+		);
 		echo $this->Buro->input(array(), array('type' => 'textarea', 'fieldName' => 'ssda'));
 		echo $this->Buro->submit();
 	

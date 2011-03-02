@@ -1194,7 +1194,11 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$gen_options['callbacks']['onRestart']['js'] = '';
 		$gen_options['callbacks']['onRestart']['js'] .= "$('{$act_id}').hide(); $('{$prv_id}').hide();";
 		
-		$script  = "$('{$act_id}').hide(); $('{$prv_id}').hide();";
+		$value = $this->Form->value($gen_options['fieldName']);
+		
+		$script = '';
+		if (empty($value))
+			$script .= "$('{$act_id}').hide(); $('{$prv_id}').hide();";
 		$script .= "$('{$chg_id}').observe('click', function(ev){ev.stop(); BuroClassRegistry.get('{$gen_options['baseID']}').again();});";
 		$out .= $this->BuroOfficeBoy->addHtmlEmbScript($script);
 		
@@ -1202,7 +1206,11 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		// Div for previews
 		$out .= $this->Bl->sdiv(array('id' => $prv_id));
-			$out .= $this->Bl->pDry(__('Burocrata::inputUpload - Arquivo: ', true) . $this->Bl->a(array('id' => $lnk_id)));
+			$filename = 'Baixar arquivo';
+			$htmlAttributes = array('id' => $lnk_id);
+			if (!empty($value))
+				$htmlAttributes['href'] = $this->Bl->fileURL($value, '', true);
+			$out .= $this->Bl->pDry(__('Burocrata::inputUpload - Arquivo: ', true) . $this->Bl->a($htmlAttributes, array(), $filename));
 		$out .= $this->Bl->ediv();
 		
 		// Div for actions ID must be `'act' . $gen_options['baseID']`
@@ -1235,6 +1243,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		if (empty($gen_options['remove_file_text']))
 			$gen_options['remove_file_text'] = __('Burocrata::inputImage - Remove  image', true);
 		
+		$value = $this->Form->value($gen_options['fieldName']);
+		
 		$ids = array('act', 'prv', 'img', 'chg', 'rmv');
 		foreach ($ids as $id)
 			${$id.'_id'} = $id . $gen_options['baseID'];
@@ -1245,17 +1255,25 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$gen_options['callbacks']['onSave']['js'] = '';
 		$gen_options['callbacks']['onSave']['js'] .= "$('{$img_id}').src = ''; $('{$img_id}').writeAttribute({src: json.url, alt: json.filename}); $('{$act_id}').show(); $('{$prv_id}').show();";
 		
+		if (empty($gen_options['callbacks']['onRestart']['js']))
+			$gen_options['callbacks']['onRestart']['js'] = '';
+		$gen_options['callbacks']['onRestart']['js'] .= "$('{$act_id}').hide(); $('{$prv_id}').hide();";
 		
-		$script  = "$('{$act_id}').hide(); $('{$prv_id}').hide();";
-		$script .= "$('{$chg_id}').observe('click', function(ev){ev.stop(); BuroClassRegistry.get('{$gen_options['baseID']}').again(); $('{$act_id}').hide(); $('{$prv_id}').hide();});";
-		$script .= "$('{$rmv_id}').observe('click', function(ev){ev.stop(); BuroClassRegistry.get('{$gen_options['baseID']}').again(true); $('{$act_id}').hide(); $('{$prv_id}').hide();});";
+		$script = '';
+		if (empty($value))
+			$script .= "$('{$act_id}').hide(); $('{$prv_id}').hide();";
+		$script .= "$('{$chg_id}').observe('click', function(ev){ev.stop(); BuroClassRegistry.get('{$gen_options['baseID']}').again();});";
+		$script .= "$('{$rmv_id}').observe('click', function(ev){ev.stop(); BuroClassRegistry.get('{$gen_options['baseID']}').again(true);});";
+		
 		$out .= $this->BuroOfficeBoy->addHtmlEmbScript($script);
-		
 		$out .= $this->_upload($gen_options, $file_input_options);
 		
 		// Div for previews
 		$out .= $this->Bl->sdiv(array('id' => $prv_id));
-			$out .= $this->Bl->img(array('id' => $img_id, 'alt' => ''));
+			$url = '';
+			if (!empty($value))
+				$url = $this->Bl->imageURL($value, $gen_options['version']);
+			$out .= $this->Bl->img(array('id' => $img_id, 'alt' => '', 'src' => $url));
 		$out .= $this->Bl->ediv();
 		
 		// Div for actions ID must be `'act' . $gen_options['baseID']`
