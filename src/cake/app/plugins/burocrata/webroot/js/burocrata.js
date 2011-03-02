@@ -630,7 +630,7 @@ var BuroTextile = Class.create(BuroCallbackable, {
 		this.links['title'].observe('click', this.openTitleDialog.bind(this));
 		this.links['file'].observe('click', this.openFileDialog.bind(this));
 		this.links['img'].observe('click', this.openImageDialog.bind(this));
-		console.log(this.links['img'])
+		
 		this.input.observe('focus', this.focus.bind(this));
 		this.input.observe('blur', this.blur.bind(this));
 	},
@@ -675,7 +675,7 @@ var BuroTextile = Class.create(BuroCallbackable, {
 	insertImage: function(fileJson)
 	{
 		if (fileJson.saved)
-			this.insert('');
+			this.insert('!'+fileJson.url+'!');
 	},
 	insertLink: function(text, title, url)
 	{

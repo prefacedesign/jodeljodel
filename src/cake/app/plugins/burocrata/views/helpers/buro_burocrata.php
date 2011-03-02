@@ -1363,7 +1363,6 @@ class BuroBurocrataHelper extends XmlTagHelper
 		);
 		
 		$itlink = 'itlink' . $options['baseID'];
-		// $iclink = 'iclink' . $options['baseID'];
 		$iulink = 'iulink' . $options['baseID'];
 		
 		$popup_config['type'] = 'form';
@@ -1481,8 +1480,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 				'type' => 'upload',
 				'container' => false,
 				'label' => $popup_file_txt['label_input'],
-				'fieldName' => 'Textile.file_id',
 				'options' => array(
+					'fieldName' => 'Textile.file_id',
 					'baseID' => $baseID
 				)
 			));
@@ -1520,9 +1519,9 @@ class BuroBurocrataHelper extends XmlTagHelper
 				'type' => 'image',
 				'container' => false,
 				'label' => $popup_file_txt['label_input'],
-				'fieldName' => 'Textile.image_id',
 				'options' => array(
-					'version' => 'backstage_preview',
+					'fieldName' => 'Textile.image_id',
+					'version' => 'filter',
 					'baseID' => $baseID
 				)
 			));
