@@ -5,7 +5,7 @@
 		'.box_popup', array(
 			'z-index' => '1000',
 			'border' => '1px solid white',
-			'position' => 'fixed',
+			'position' => 'absolute',
 			'background' => 'white',
 			'width' => $vg->size(array('M' => 7, 'g' => -1)),
 			'padding' => $hg->size(array('g' => 1)) . ' 0',

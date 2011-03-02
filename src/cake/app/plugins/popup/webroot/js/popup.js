@@ -74,8 +74,8 @@ var Popup = Class.create({
 		document.body.insert(new Element('div',{className: 'popup_maya_veil'}).setOpacity(0.45));
 		this.divCont.show();
 		this.divCont.setStyle({
-			top: (document.viewport.getHeight()/2-this.divCont.getHeight()/2)+'px',
-			left: (document.viewport.getWidth()/2-this.divCont.getWidth()/2)+'px'
+			top: document.viewport.getScrollOffsets().top + (document.viewport.getHeight()/2-this.divCont.getHeight()/2)+'px',
+			left: document.viewport.getScrollOffsets().left + (document.viewport.getWidth()/2-this.divCont.getWidth()/2)+'px'
 		});
 		this.divCont.fire('popup:opened');
 	},
