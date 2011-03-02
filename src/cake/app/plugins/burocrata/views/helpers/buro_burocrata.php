@@ -1099,20 +1099,20 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$file_input_options = array_filter($options);
 		unset($file_input_options['options']);
-		$file_input_options = $file_input_options + array('fieldName' => $modelAlias . '.sfil_sored_file_id');
-		if (strpos($file_input_options['fieldName'], '.') === false)
-			$file_input_options['fieldName'] = $modelAlias . '.' . $file_input_options['fieldName'];
 		
 		$defaults = array(
 			'baseID' => $this->baseID(),
 			'url' => $this->url(array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'upload')),
 			'error' => array(),
 			'version' => '',
-			'model' => 'JjMedia.SfilStoredFile'
+			'model' => 'JjMedia.SfilStoredFile',
+			'fieldName' => $modelAlias . '.sfil_sored_file_id'
 		);
-
 		$gen_options = $options['options'] + $defaults;
-	
+		
+		if (strpos($gen_options['fieldName'], '.') === false)
+			$gen_options['fieldName'] = $modelAlias . '.' . $gen_options['fieldName'];
+		
 		if (isset($file_input_options['error']))
 		{
 			$gen_options['error'] = $file_input_options['error'];
@@ -1141,7 +1141,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	protected function _upload($gen_options, $file_input_options)
 	{
-		$packed = SecureParams::pack(array($gen_options['version'], $file_input_options['fieldName'], $gen_options['model']));
+		$packed = SecureParams::pack(array($gen_options['version'], $gen_options['fieldName'], $gen_options['model']));
 		
 		$out = '';
 		
@@ -1153,7 +1153,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out .= $this->Bl->ediv();
 		$this->eform();
 		
-		$out .= $this->input(array('id' => 'hi' . $gen_options['baseID']), array('type' => 'hidden', 'fieldName' => $file_input_options['fieldName']));
+		$out .= $this->input(array('id' => 'hi' . $gen_options['baseID']), array('type' => 'hidden', 'fieldName' => $gen_options['fieldName']));
 		
 		// JS class
 		$out .= $this->BuroOfficeBoy->upload($gen_options);
