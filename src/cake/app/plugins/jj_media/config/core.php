@@ -27,6 +27,24 @@
  * @see GeneratorBehavior
  */
 
+Configure::write('Media.filter_plus.textile', array(
+	'fields' => array('Textile.image_id'),
+	'image' => array(
+		'view' => array(
+			'fit' => array(
+				$dinafonTools['hg']->size(array('M' => 2), false),
+				$dinafonTools['vg']->size(array('M' => 2), false)
+			),
+			'convert' => 'image/jpeg'
+		),
+		'backstage_preview' => array(
+			'fitCrop' => array(
+				$dinafonTools['hg']->size(array('M' => 4, 'g' => -1), false),
+				$dinafonTools['vg']->size(array('M' => 4, 'g' => -1), false)
+			)
+		)
+	)
+));
 Configure::write('Media.filter_plus.people', array(
 	'fields' => array('PersPerson.img_id'),
 	'image' => array(

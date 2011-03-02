@@ -40,25 +40,26 @@
 			)
 		);
 
-		// echo $this->Buro->input(array(), 
-			// array(
-				// 'type' => 'image',
-				// 'label' => 'Faça seu upload de imagem',
-				// 'error' => array(
-					// 'size' => 'Arquivo muito grande!',
-					// 'pixels' => 'Foto muito grande!',
-					// 'mimeType' => 'Aceitamos somente imagens, ok?'
-				// ),
-				// 'fieldName' => 'PersPerson.sfil_storage_file_id',
-				// 'options' => array(
-					// 'version' => 'backstage_preview',
-					// 'callbacks' => array(
-						// 'onStart' => array('popup' => 'Começando o upload...')
-					// ),
-					// 'change_file_text' => 'Mudar esse arquivo'
-				// )
-			// )
-		// );
+		echo $this->Buro->input(array(), 
+			array(
+				'type' => 'image',
+				'label' => 'Faça seu upload de imagem',
+				'error' => array(
+					'size' => 'Arquivo muito grande!',
+					'pixels' => 'Foto muito grande!',
+					'mimeType' => 'Aceitamos somente imagens, ok?'
+				),
+				'options' => array(
+					'fieldName' => 'img_id',
+					'version' => 'backstage_preview',
+					'callbacks' => array(
+						'onStart' => array('popup' => 'Começando o upload...')
+					),
+					'change_file_text' => 'Mudar esse arquivo'
+				)
+			)
+		);
+		echo $this->Buro->input(array(), array('type' => 'textarea', 'fieldName' => 'ssda'));
 		echo $this->Buro->submit();
 	
 	echo $this->Buro->eform();
