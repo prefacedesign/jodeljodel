@@ -8,21 +8,24 @@ var Popups = {
 function showPopup(id)
 {
 	var popup = Popups.available_popups.get(id);
-	if(popup)
+	if (popup)
 		popup.open();
 }
 
 function closePopup(id)
 {
+	if (!id && Popups.open_popup)
+		id = Popups.open_popup;
+	
 	var popup = Popups.available_popups.get(id);
-	if(popup)
+	if (popup)
 		popup.close();
 }
 
 function cancelProgress(id, url)
 {
 	var popup = Popups.available_popups.get(id);
-	if(popup && popup.call_progress)
+	if (popup && popup.call_progress)
 		popup.call_progress.cancel(url);
 }
 
@@ -30,13 +33,23 @@ var Popup = Class.create({
 	initialize: function(id, links)
 	{
 		this.id = id;
+		this.links = links;
 		this.divCont = $(this.id);
-		this.divCont.hide();
 		this.call_progress = false;
 		
 		this.callback = function(action){}
 		
-		$H(links).each(function(pair)
+		if (document.loaded)
+			this.register()
+		else
+			document.observe('dom:loaded', this.register.bind(this));
+	},
+	register: function()
+	{
+		Popups.available_popups.set(this.id, this);
+		document.body.insert(this.divCont);
+		
+		$H(this.links).each(function(pair)
 		{
 			var action = pair.key;
 			var link_id = pair.value;
@@ -49,13 +62,12 @@ var Popup = Class.create({
 			}.bindAsEventListener(this,action));
 		}.bind(this));
 		
-		Popups.available_popups.set(this.id, this);
-		
+		this.divCont.hide();
 		this.divCont.fire('popup:registered');
 	},
 	open: function()
 	{
-		if(Popups.open_popup !== false)
+		if (Popups.open_popup !== false)
 			closePopup(Popups.open_popup);
 		
 		Popups.open_popup = this.id;
@@ -104,17 +116,17 @@ var ProgressPopup = Class.create({
 	},
 	completed: function(response)
 	{
-		if(response.responseJSON)
+		if (response.responseJSON)
 		{
 			var json = response.responseJSON;
 			this.popup.divCont.down('.msg').update(json.msg);
 			
-			if(json.erro == 0)
+			if (json.erro == 0)
 			{
 				this.popup.divCont.down('.enchimento_da_barra').morph('width: '+json.porcentagem+'%', {duration: 3});
-				if(json.porcentagem != 100)
+				if (json.porcentagem != 100)
 				{
-					if(this.can_continue)
+					if (this.can_continue)
 					{
 						new ProgressPopup(json.url_prox, this.popup_id);
 					}
@@ -156,7 +168,7 @@ var ProgressPopup = Class.create({
 	},
 	call_cancel: function()
 	{
-		if(this.url_cancel && this.url_cancel != '')
+		if (this.url_cancel && this.url_cancel != '')
 			new Ajax.Request(this.url_cancel,{
 				onComplete:function(){closePopup(this.popup_id+'_cancelando');}.bind(this)
 			});

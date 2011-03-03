@@ -27,6 +27,18 @@
  * @see GeneratorBehavior
  */
 
+Configure::write('Media.filter_plus.textile', array(
+	'fields' => array('Textile.image_id'),
+	'image' => array(
+		'filter' => array(
+			'fit' => array(
+				$dinafonTools['hg']->size(array('M' => 6), false),
+				$dinafonTools['vg']->size(array('M' => 6), false)
+			),
+			'convert' => 'image/jpeg'
+		)
+	)
+));
 Configure::write('Media.filter_plus.people', array(
 	'fields' => array('PersPerson.img_id'),
 	'image' => array(

@@ -508,18 +508,24 @@ var BuroUpload = Class.create(BuroCallbackable, {
 			.insert(this.form);
 		document.body.appendChild(this.div_container);
 		
-		if(!document.loaded)	document.observe('dom:loaded', this.startObserve.bind(this));
-		else					this.startObserve();
+		if(!document.loaded)	document.observe('dom:loaded', this.startObserve.bindAsEventListener(this, true));
+		else					this.startObserve(true);
 	},
-	startObserve: function()
+	startObserve: function(ev, first)
 	{
+		if (ev === true)
+			first = true;
 		this.master_input = $('mi'+this.id_base);
 		this.hidden_input = $('hi'+this.id_base);
 		this.div_hidden = $('div'+this.id_base);
+		this.master_input.hide();
 		
-		this.tmp_input = this.master_input.hide().clone().show();
-		this.tmp_input.observe('change', this.submit.bind(this));
-		this.master_input.insert({after: this.tmp_input});
+		if (!first || this.hidden_input.value.blank())
+		{
+			this.tmp_input = this.master_input.clone().show();
+			this.tmp_input.observe('change', this.submit.bind(this));
+			this.master_input.insert({after: this.tmp_input});
+		}
 	},
 	submit: function()
 	{
@@ -574,7 +580,7 @@ var BuroUpload = Class.create(BuroCallbackable, {
 	},
 	again: function(reset_id)
 	{
-		if (!this._submitted) return;
+		// if (!this._submitted) return;
 		
 		if (reset_id == true)
 			this.hidden_input.value = '';
@@ -629,6 +635,7 @@ var BuroTextile = Class.create(BuroCallbackable, {
 		this.links['link'].observe('click', this.openLinkDialog.bind(this));
 		this.links['title'].observe('click', this.openTitleDialog.bind(this));
 		this.links['file'].observe('click', this.openFileDialog.bind(this));
+		this.links['img'].observe('click', this.openImageDialog.bind(this));
 		
 		this.input.observe('focus', this.focus.bind(this));
 		this.input.observe('blur', this.blur.bind(this));
@@ -661,15 +668,20 @@ var BuroTextile = Class.create(BuroCallbackable, {
 		ev.stop();
 		showPopup('file'+this.id_base);
 	},
+	openImageDialog: function(ev)
+	{
+		ev.stop();
+		showPopup('img'+this.id_base);
+	},
 	insertFile: function(fileJson)
 	{
 		if (fileJson.saved)
-			this.insertLink(fileJson.filename, null, fileJson.url);
+			this.insertLink(fileJson.filename, null, fileJson.dlurl);
 	},
 	insertImage: function(fileJson)
 	{
 		if (fileJson.saved)
-			this.insert('');
+			this.insert('!'+fileJson.url+'!');
 	},
 	insertLink: function(text, title, url)
 	{

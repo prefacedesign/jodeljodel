@@ -92,6 +92,10 @@ class SecureParams {
 		if ($secure)
 			$params = array_map(array('SecureParams', 'secure'), $params);
 		
+		foreach ($params as $param)
+			if (strpos($param, self::$separator) !== false)
+				trigger_error('SecureParams::pack - Some of one packed strings contain the separator and this will create chaos!');
+		
 		$glued_params = ($secure ? '1' : '0') . implode(self::$separator, $params);
 		$checksum = self::_checksum($glued_params);
 		

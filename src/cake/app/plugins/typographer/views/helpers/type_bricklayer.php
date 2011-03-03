@@ -126,16 +126,19 @@ class TypeBricklayerHelper extends AppHelper
  * @param string $version The filter version of image to be displayed
  * @return string|boolean The URL that points to the picture or false, if wasn´t possible to create the url.
  */
-	public function fileURL($id, $version = '')
+	public function fileURL($id, $version = '', $force_download = false)
 	{
 		if (!$id)
 			return false;
 		
+		$url = array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'index');
+		if ($force_download)
+			array_push($url, '1');
+		
 		App::import('Lib', array('JjUtils.SecureParams'));
-		
 		$packed_params = SecureParams::pack(array($id, $version), true);
+		array_push($url, $packed_params);
 		
-		$url = array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'index', $packed_params);
 		return $this->url($url);
 	}
 
