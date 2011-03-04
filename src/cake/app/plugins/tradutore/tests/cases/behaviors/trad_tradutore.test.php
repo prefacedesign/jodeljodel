@@ -424,9 +424,8 @@ class TradTradutoreTestCase extends CakeTestCase
     function testGetSetLanguage()
     {
         $expected = Configure::read('Tradutore.mainLanguage');
+		$this->Play->setLanguage('por');
         $result = $this->Play->getLanguage();
-		
-
         $this->assertEqual($expected, $result);
 
         $this->Play->setLanguage('ukr');
@@ -439,6 +438,103 @@ class TradTradutoreTestCase extends CakeTestCase
     }
 
 	
+	function testFindWithoutContainOrFields()
+    {
+        $this->Play->setLanguage('eng');
+        $result = $this->Play->find('first', array('recursive' => 2));
+		$expected = array(
+			'Play' => array(
+				'id' => 1, 
+				'author_id' => 1, 
+				'language' => 'eng', 
+				'title' => 'Antony and Cleopatra', 
+				'year' => 1606,
+				'play_id' => 1,
+				'opening_excerpt' => "Phil: Nay, but this dotage of our gengeral's..."
+			),
+			'Author' => array(
+				'id' => 1,
+				'name' => 'Shakespeare',
+				'Image' => array(
+					0 => array(						
+						'id' => 11,
+						'play_id' => null,
+						'author_id' => 1,
+						'file' => 'Shakespeare.bmp'
+					)
+				),
+				'Bioinfo' => array(
+					0 => array(
+						'id' => 1,
+						'author_id' => 1,
+					),
+					1 => array(
+						'id' => 2,
+						'author_id' => 1,
+					)
+				),
+				'author_id' => 1,
+				'language' => 'eng',
+				'nacionality' => 'English'
+			),
+			'Scenario' => array(
+				'id' => 1,
+				'play_id' => 1,
+				'number_of_objects' => 70,
+				'scenario_id' => 1,
+				'language' => 'eng',
+				'concept' => 'Classic',
+			),
+			'Advertisement' => array(
+				0 => array(
+					'id' => 1,
+					'play_id' => 1,
+					'Play' => array(
+						'id' => 1,
+						'author_id' => 1,
+						'year' => 1606,
+					),
+					'advertisement_id' => 1,
+					'language' => 'eng',
+					'advertisement' => "Antony and Cleopatra is a tragedy by William Shakespeare, believed to have been written sometime between 1603 and 1607. It was first printed in the First Folio of 1623. The plot is based on Thomas North's translation of Plutarch's Life of Marcus Antonius and follows the relationship between Cleopatra and Mark Antony from the time of the Parthian War to Cleopatra's suicide. The major antagonist is Octavius Caesar, one of Antony's fellow triumviri and the future first emperor of Rome. The tragedy is a Roman play characterized by swift, panoramic shifts in geographical locations and in registers, alternating between sensual, imaginative Alexandria and the more pragmatic, austere Rome.",
+				),
+				1 => array(
+					'id' => 2,
+					'play_id' => 1,
+					'Play' => array(
+						'id' => 1,
+						'author_id' => 1,
+						'year' => 1606,
+					),
+					'advertisement_id' => 2,
+					'language' => 'eng',
+					'advertisement' => "Mark Antony – one of the Triumvirs of Rome along with Octavian and Marcus Aemilius Lepidus – has neglected his soldierly duties after being beguiled by Egypt's Queen, Cleopatra VII. He ignores Rome's domestic problems, including the fact that his third wife Fulvia rebelled against Octavian and then died."
+				)
+			),
+			'Tag' => array(
+				0 => array(
+					'id' => 1,
+					'tag_id' => 1,
+					'language' => 'eng',
+					'tag' => 'cool',
+				),
+				1 => array(
+					'id' => 2,
+					'tag_id' => 2,
+					'language' => 'eng',
+					'tag' => 'beautiful',
+				),
+				2 => array(
+					'id' => 3,
+					'tag_id' => 3,
+					'language' => 'eng',
+					'tag' => 'horrendous',
+				)
+			)
+        );
+        $this->assertEqual($expected, $result);
+		
+    }
 
     function testSingleLanguageQuery()
     {
