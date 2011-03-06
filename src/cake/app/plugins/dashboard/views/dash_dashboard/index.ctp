@@ -53,9 +53,13 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 				{
 					if (isset($module['plugged']))
 					{
-						if (in_array('dashboard', $module['plugged']))
+						$curSettings = isset($itemSettings[$k]) ? $itemSettings[$k] : $itemSettings['default'];
+					
+						if (in_array('dashboard', $module['plugged']) && in_array('create', $curSettings['actions']))
 						{
+							
 							$linkList[] = $this->Bl->anchor(array(), array('url' => array(
+										'language' => $mainLanguage,
 										'plugin' => 'backstage',
 										'controller' => 'back_contents',
 										'action' => 'edit',

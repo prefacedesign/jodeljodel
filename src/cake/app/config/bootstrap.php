@@ -87,16 +87,6 @@
 			'humanName' => 'MODULE CorkCorkTile human name',
 			'plugged' => array('dashboard', 'backstage')
 		)
-		/** Template
-		 *
-		'module' => array(
-			'plugin' => 'plugin_name',
-			'prefix' => 'pref',
-			'model' => 'PrefModule'
-			'humanName' => 'MODULE PrefModule human name', //it will be translated
-			'plugged' => array('dashboard', 'backstage', 'corktile', 'content_stream') //the tools it plugs into
-		)
-		*/
  ));
  
  
@@ -117,7 +107,7 @@ function br_strftime($formato, $tempo)
 	$meses = array(
 		1 => 'Janeiro',
 		2 => 'Fevereiro',
-		3 => 'Marï¿½o',
+		3 => 'Março',
 		4 => 'Abril',
 		5 => 'Maio',
 		6 => 'Junho',

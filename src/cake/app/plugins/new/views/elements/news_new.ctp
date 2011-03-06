@@ -134,7 +134,7 @@ switch ($type[0])
 					));
 					
 					echo $buro->input(array(),array(
-						'type' => 'textarea',
+						'type' => 'textile',
 						'fieldName' => 'content',
 						'label' => __('Form - NewsNew.content',true),
 						'instructions' => __('Form - NewsNew.content - instructions',true)

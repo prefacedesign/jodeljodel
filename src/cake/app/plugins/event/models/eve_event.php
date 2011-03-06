@@ -23,7 +23,7 @@ class EveEvent extends EventAppModel {
 			'abstract' => array
 			(
 				'required' => array(
-					'rule' => array('between', 50, 255),
+					'rule' => array('between', 50, 400),
 					'allowEmpty' => false,
 					'required' => true,
 					'message' => __('EveEvent validation: abstract required, between 50 255.', true),

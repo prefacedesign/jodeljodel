@@ -8,5 +8,5 @@ echo $this->Form->input('username', array(
 echo $this->Form->input('password', array(
 	'label' => __('Login page: password label', true)
 ));
-echo $this->Form->end('Login page: Enter');
+echo $this->Form->end(__('Login page: Enter',true));
 echo $this->Bl->floatBreak();

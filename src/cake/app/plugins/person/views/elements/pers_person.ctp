@@ -14,6 +14,7 @@ switch ($type[0])
 				)
 			);
 	break;
+	
 	case 'preview':
 		echo $this->Bl->h4(array(),array(),$this->Bl->anchor(
 				array(), 
@@ -49,6 +50,7 @@ switch ($type[0])
 			)
 		);
 	break;
+	
 	case 'full':
 		echo $this->Bl->h2(array(),array(),$data['AuthAuthor']['name']);
 		echo $this->Bl->paraDry(array($data['PersPerson']['position']));
@@ -64,6 +66,7 @@ switch ($type[0])
 		echo $this->Bl->h4(array(),array(),__('pers_person element: profile caption',true));
 		echo $this->Bl->paraDry(array($data['PersPerson']['profile']));
 	break;
+	
 	case 'buro':
 		if ($type[1] == 'form')
 		{	
@@ -116,7 +119,6 @@ switch ($type[0])
 
                 echo $buro->einput();
 				
-				/*
 				echo $buro->input(array(),array(
 					'type' => 'image',
 					'fieldName' => 'img_id',
@@ -124,7 +126,7 @@ switch ($type[0])
 					'instructions' => __('Form - PersPerson.img_id - instructions',true),
 					'options' => array('version' => 'backstage_preview')
 				));
-				*/
+				
 				echo $buro->input(array(),array(
 					'type' => 'text',
 					'fieldName' => 'position',
@@ -231,13 +233,13 @@ switch ($type[0])
 				
 				echo $buro->einput();
 				
-				echo $buro->input(array(),array(
+				/*echo $buro->input(array(),array(
 					'type' => 'image',
 					'fieldName' => 'img_id',
 					'label' => __('Form - PersPerson.img_id',true),
 					'instructions' => __('Form - PersPerson.img_id - instructions',true),
 					'options' => array('version' => 'backstage_preview')
-				));
+				));*/
 				
 				echo $buro->submitBox(array(),array('publishControls' => false));
 			echo $buro->eform();
