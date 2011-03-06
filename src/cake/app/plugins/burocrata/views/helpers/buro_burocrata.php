@@ -1498,8 +1498,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 				'type' => 'upload',
 				'container' => false,
 				'label' => $popup_file_txt['label_input'],
+				'fieldName' => 'Textile.file_id',
 				'options' => array(
-					'fieldName' => 'Textile.file_id',
 					'baseID' => $baseID
 				)
 			));
@@ -1537,8 +1537,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 				'type' => 'image',
 				'container' => false,
 				'label' => $popup_file_txt['label_input'],
+				'fieldName' => 'Textile.image_id',
 				'options' => array(
-					'fieldName' => 'Textile.image_id',
 					'version' => 'filter',
 					'baseID' => $baseID
 				)
