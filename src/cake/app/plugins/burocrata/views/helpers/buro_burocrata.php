@@ -1194,7 +1194,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$gen_options['callbacks']['onRestart']['js'] = '';
 		$gen_options['callbacks']['onRestart']['js'] .= "$('{$act_id}').hide(); $('{$prv_id}').hide();";
 		
-		$value = $this->Form->value($gen_options['fieldName']);
+		$value = $this->Form->value($file_input_options['fieldName']);
 		
 		$script = '';
 		if (empty($value))
@@ -1243,7 +1243,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		if (empty($gen_options['remove_file_text']))
 			$gen_options['remove_file_text'] = __('Burocrata::inputImage - Remove  image', true);
 		
-		$value = $this->Form->value($gen_options['fieldName']);
+		$value = $this->Form->value($file_input_options['fieldName']);
 		
 		$ids = array('act', 'prv', 'img', 'chg', 'rmv');
 		foreach ($ids as $id)
