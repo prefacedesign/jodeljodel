@@ -28,13 +28,13 @@ class NewsNewController extends NewAppController {
 	);
 	var $layout = 'dinafon';
 
-//	function beforeFilter()
-//	{
-//		parent::beforeFilter();
-//		StatusBehavior::setGlobalActiveStatuses(array(
-//			'publishing_status' => array('active' => array('published'), 'overwrite' => true),
-//		));
-//	}
+	function beforeFilter()
+	{
+		parent::beforeFilter();
+		StatusBehavior::setGlobalActiveStatuses(array(
+			'publishing_status' => array('active' => array('published'), 'overwrite' => true),
+		));
+	}
 
 	function beforeRender()
 	{
@@ -44,12 +44,12 @@ class NewsNewController extends NewAppController {
 
 	function index()
 	{
-		$this->set('data',$this->NewsNew->find('all', array('contain' => array('AuthAuthor'), 'order' => 'NewsNew.date')));
+		$this->set('data',$this->NewsNew->find('all', array('contain' => array('AuthAuthor'), 'order' => 'NewsNew.date DESC')));
 	}
 
-	function view()
+	function view($id)
 	{
-		$this->set('data',$this->NewsNew->find('first', array('contain' => array('AuthAuthor'))));
+		$this->set('data',$this->NewsNew->find('first', array('contain' => array('AuthAuthor'), 'conditions' => array('NewsNew.id' => $id))));
 	}
 }
 ?>

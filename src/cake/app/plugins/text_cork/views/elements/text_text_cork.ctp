@@ -35,7 +35,7 @@
 						'fieldName' => 'id'
 					));
 					
-					/*if (isset($this->data['CorkCorktile']['options']['textile']) && $this->data['CorkCorktile']['options']['textile'])
+					if (isset($this->data['CorkCorktile']['options']['textile']) && $this->data['CorkCorktile']['options']['textile'])
 					{
 						echo $buro->input(array(),array(
 							'type' => 'textile',
@@ -45,14 +45,14 @@
 						));
 					}
 					else
-					{*/
+					{
 						echo $buro->input(array(),array(
 							'type' => 'textarea',
 							'fieldName' => 'text',
 							'label' => __('Cork Form - TextTextCork.text',true),
 							'instructions' => __('Cork Form - TextTextCork.text - instructions',true)
 						));
-					//}
+					}
 					
 					//@todo Customize submitBox.
 					echo $buro->submitBox(array(), array('publishControls' => false));

@@ -3,13 +3,11 @@ switch ($type[0])
 {
 	
 	case 'preview':
-		//@todo JourJournals -> short or full name?
-
 		echo $this->Bl->span(
 				array('class' => 'texto_pequeno'),
 				array(),
-				br_strftime('%B de %Y', strtotime($data['PapPaper']['date']))
-			. ', ' .$data['JourJournal']['full_name']
+				br_strftime(__('%B de %Y',true), strtotime($data['PapPaper']['date']))
+			 . ', ' .$data['JourJournal']['short_name']
 		);
 
 
@@ -18,7 +16,7 @@ switch ($type[0])
 		//@todo use name or reference_name ?
 		$authors = array();
 		foreach ($data['AuthAuthor'] as $author)
-			$authors[] = $author['name'];
+			$authors[] = $author['surname'];
 
 		echo $this->Bl->span(
 				array('class' => 'texto_pequeno'),
@@ -42,7 +40,7 @@ switch ($type[0])
 		);
 
 
-		echo $this->Bl->paraDry(array($data['PapPaper']['abstract']));
+		//echo $this->Bl->paraDry(array($data['PapPaper']['abstract']));
 
 		$tags = array();
 		foreach ($data['PapPaper']['TagsTag'] as $tag)
@@ -51,7 +49,7 @@ switch ($type[0])
 		echo $this->Bl->para(
 			array('class' => 'texto_pequeno'),
 			array(),
-			array('Palavras-chave: ' . implode(', ', $tags))
+			array(__('Keywords',true) . ': ' . implode(', ', $tags))
 		);
 
 	break;
@@ -59,32 +57,38 @@ switch ($type[0])
 	case 'full_without_sheet':
 		echo $this->Bl->h2Dry($data['PapPaper']['title']);
 		echo $this->Bl->paraDry(array($data['PapPaper']['abstract']));
-
-
+		
 		$links = '';
 		if (isset($data['PapPaper']['file_id']))
-		{	//@todo change 'Artigo para download'
-			$links .= $this->Bl->anchor(array(),array('url' => $this->Bl->fileURL($data['PapPaper']['file_id'])),'Artigo para download')
+		{	
+			$links .= $this->Bl->anchor(array(),array('url' => $this->Bl->fileURL($data['PapPaper']['file_id'])),__('Paper view page: Paper for download',true))
 				   . $this->Bl->brDry();
 
 		}
+		if (isset($data['PapPaper']['link_to_it']))
+		{	
+			$links .= $this->Bl->anchor(array(),array('url' => $data['PapPaper']['link_to_it'],__('Paper view page: paper in the original publication',true)))
+				   . $this->Bl->brDry();
+
+		}
+		
 		echo $this->Bl->paraDry(array($links));
 	break;
 
 	case 'sheet':
 		//@todo change 'autores', 'Publicação' and 'Palavras-Chave'
-		echo $this->Bl->h4Dry('Autores');
+		echo $this->Bl->h4Dry(__('Authors', true));
 
 		$authors = array();
 		foreach ($data['AuthAuthor'] as $author)
-			$authors[] = $author['name'];
+			$authors[] = $author['reference_name'];
 
 		echo $this->Bl->paraDry(array(implode(', ', $authors)));
 		
-		echo $this->Bl->h4Dry('Publicação');
+		echo $this->Bl->h4Dry(__('Paper view page: Publication', true));
 
 		echo $this->Bl->paraDry(array(
-			br_strftime('%B de %Y', strtotime($data['PapPaper']['date']))
+			br_strftime(__('%B de %Y', true), strtotime($data['PapPaper']['date']))
 			. ', ' . $data['JourJournal']['full_name']
 			. $this->Bl->brDry()
 			. $data['PapPaper']['complete_reference']
@@ -92,12 +96,11 @@ switch ($type[0])
 		);
 
 
-		echo $this->Bl->h4Dry('Palavras-chave');
+		echo $this->Bl->h4Dry(__('Keywords',true));
 
 		$tags = array();
 		foreach ($data['PapPaper']['TagsTag'] as $tag)
 			$tags[] = $tag['name'];
-		//@todo change 'Palavras-chave' by __(...)
 		echo $this->Bl->paraDry(
 			array(implode(', ', $tags))
 		);

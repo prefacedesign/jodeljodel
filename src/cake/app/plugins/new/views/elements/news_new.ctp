@@ -138,8 +138,8 @@ switch ($type[0])
 						'fieldName' => 'content',
 						'label' => __('Form - NewsNew.content',true),
 						'instructions' => __('Form - NewsNew.content - instructions',true)
-					));
 				
+					));
 				echo $buro->einput();
                 
 				
