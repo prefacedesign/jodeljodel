@@ -675,11 +675,29 @@ class TradTradutoreBehavior extends ModelBehavior
 			$query['contain'] = array();
 			
 			//debug($query['recursive']);
-			if ($query['recursive'] >= 1)
+			if (isset($query['recursive']))
 			{
-				//debug('aqui');
-				$contain = $this->generateContain($Model, $query['contain'], $linkedModels, $_associations, $query['recursive'] - 1);
-				$query['contain'] = $contain[$Model->alias];
+				if ($query['recursive'] >= 1)
+				{
+					//debug('aqui');
+					$contain = $this->generateContain($Model, $query['contain'], $linkedModels, $_associations, $query['recursive'] - 1);
+					$query['contain'] = $contain[$Model->alias];
+				}
+				else
+				{
+					foreach ($_associations as $type) {
+						foreach ($Model->{$type} as $assoc => $assocData) {
+							$linkModel =& $Model->{$assoc};
+							$external = isset($assocData['external']);
+
+							if ($Model->useDbConfig == $Model->useDbConfig) 
+							{
+								$linkedModels[$type . '/' . $assoc] = true;
+								$query['contain'][$assoc] = array();
+							}
+						}
+					}
+				}
 			}
 			else
 			{
@@ -951,6 +969,20 @@ class TradTradutoreBehavior extends ModelBehavior
 			return true;
 		else
 			return false;
+	}
+	
+	
+	function beforeDelete(&$Model)
+	{		
+        $settings   = $this->settings[$Model->name];
+		
+		if (!empty($Model->hasOne[$settings['className']]))
+		{
+			Configure::write('debug', 0); 
+			return ($Model->{$settings['className']}->deleteAll(array($settings['foreignKey'] => $Model->id)));
+		}
+		
+		return true;
 	}
 }
 

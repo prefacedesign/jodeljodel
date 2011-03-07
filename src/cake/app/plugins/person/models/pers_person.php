@@ -95,7 +95,9 @@ class PersPerson extends PersonAppModel {
 	
 	function findBurocrata($id)
 	{
-		$data = $this->find('first', array('emptyTranslation' => true, 'conditions' => array($this->alias.'.id' => $id), 'contain' => array('AuthAuthor')));
+		$data = $this->find('first', array('emptyTranslation' => true, 'conditions' => array($this->alias.'.id' => $id)));
+		//debug($data);
+		//die;
 		$data['PersPerson']['languages'] = $this->getLanguages($id);
 		return $data;
 	}

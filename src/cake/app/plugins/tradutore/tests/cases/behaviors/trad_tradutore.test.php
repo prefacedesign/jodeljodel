@@ -549,6 +549,10 @@ class TradTradutoreTestCase extends CakeTestCase
         );
         $result = $this->Play->find('first', $query);
         $this->assertEqual($expected, $result);
+		
+		
+		$this->Play->delete(2);
+		
     }
 	
 	
