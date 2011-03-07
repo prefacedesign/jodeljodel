@@ -1807,6 +1807,7 @@ class Model extends Overloadable {
 			if (!$filters) {
 				return false;
 			}
+			
 			$this->_deleteDependent($id, $cascade);
 			$this->_deleteLinks($id);
 			$this->id = $id;

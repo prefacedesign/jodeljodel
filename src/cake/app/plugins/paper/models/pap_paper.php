@@ -10,15 +10,6 @@ class PapPaper extends PaperAppModel {
 		parent::__construct();
 		
 		$this->validate = array(
-			'auth_author_id' => array
-			(
-				'required' => array(
-					'rule' => 'notEmpty',
-					'allowEmpty' => false,
-					'required' => true,
-					'message' => __('PapPaper validation: auth_author_id.', true),
-				)
-			),
 			'jour_journal_id' => array
 			(
 				'required' => array(
@@ -40,10 +31,10 @@ class PapPaper extends PaperAppModel {
 			'title' => array
 			(
 				'required' => array(
-					'rule' => array('between', 50, 350),
+					'rule' => array('between', 20, 350),
 					'allowEmpty' => false,
 					'required' => true,
-					'message' => __('PapPaper validation: title required, between 50 350.', true),
+					'message' => __('PapPaper validation: title required, between 20 350.', true),
 				)
 			),
 			'abstract' => array
