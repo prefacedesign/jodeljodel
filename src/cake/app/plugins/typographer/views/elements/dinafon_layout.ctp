@@ -7,7 +7,8 @@
 						'class' => 'centralizado coluna_principal'));
 				//@todo verificar se pode continuar chamando tamanho
 				echo $bl->scaixa(array(),array('size' => array('M' => 4), 'tipo' => 'transparente'));
-						echo $bl->simagem(array('id' => 'logo'),array('imgurl' => $ig->url(
+					echo $bl->anchor(array(), array('url' => array('plugin' => false, 'controller' => 'principal', 'action' => 'index')),
+						$bl->imagem(array('id' => 'logo'),array('imgurl' => $ig->url(
 							array(
 								'w' => 239,
 								'h' => 79,
@@ -30,9 +31,8 @@
 									)
 								)
 							)
-
-						)));
-						echo $bl->eimagem();
+						)))
+					);
 
 				echo $bl->ecaixa();
 				echo $this->element('menu_site', array('nivel' => 0));

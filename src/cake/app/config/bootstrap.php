@@ -130,3 +130,32 @@ function br_strftime($formato, $tempo)
 		return strftime($formato, $tempo);
 }
 
+//DINAFON specific
+//@todo Introduce something more sofisticated for time formatting
+function _formatInterval($begin, $end)
+{
+	$beginArray = getdate($begin);
+	$endArray = getdate($end);
+	
+	if ($beginArray['mon'] == $endArray['mon'])
+	{
+		return sprintf(
+			__('%d-%d de %s de %d',true), 
+			$beginArray['mday'],
+			$endArray['mday'],
+			br_strftime('%B', $begin),
+			$endArray['year']
+		);
+	}
+	else
+	{
+		return sprintf(
+			__('%d de %s a %d de %s de %d',true), 
+			$beginArray['mday'],
+			br_strftime('%B', $begin),
+			$endArray['mday'],
+			br_strftime('%B', $end),
+			$endArray['year']
+		);
+	}
+}

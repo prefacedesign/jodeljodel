@@ -1,7 +1,19 @@
 <?php
 
+//@todo Make something more interesting for datetime formatting. Maybe a helper.
+
+
+
 switch ($type[0])
 {
+	case 'preview':
+		echo $this->Bl->h4Dry(_formatInterval(strtotime($data['EveEvent']['begins']), strtotime($data['EveEvent']['ends'])));
+		
+		echo $this->Bl->h4Dry($this->Bl->anchor(array(), array('url' => $data['EveEvent']['link']),	$data['EveEvent']['name']));
+		
+		echo $this->Bl->para(array(),array(),array($data['EveEvent']['abstract']));
+	break;
+	
 	case 'buro':
 		if ($type[1] == 'form')
 		{	
