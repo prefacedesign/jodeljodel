@@ -74,12 +74,21 @@ switch ($type[0])
 		echo $this->Bl->scoluna(array(), array('size' => array('M' => 3)));
 			echo $this->Bl->h4(array(),array(),__('pers_person element: profile caption',true));
 			echo $this->Bl->paraDry(array($data['PersPerson']['profile']));
-			echo $this->Bl->h4(array(),array(),__('pers_person element: contact caption',true));
+			if (!empty($data['PersPerson']['phone1']) || !empty($data['PersPerson']['phone2']))
+				echo $this->Bl->h4(array(),array(),__('pers_person element: contact caption',true));
+			
+			$a = '';
 			if (!empty($data['PersPerson']['phone1']))
-				echo $this->Bl->paraDry(array($data['PersPerson']['phone1']));
+			{
+				$a = $data['PersPerson']['phone1'];
+				$a .= '<br />';
+			}
 			if (!empty($data['PersPerson']['phone2']))
-				echo $this->Bl->paraDry(array($data['PersPerson']['phone2']));
-			echo $this->Bl->h4(array(),array(),__('pers_person element: internet caption',true));
+				$a = $data['PersPerson']['phone2'];
+			echo $this->Bl->paraDry(array($a));
+			
+			if (!empty($data['PersPerson']['link1']) || !empty($data['PersPerson']['link2']) || !empty($data['PersPerson']['link3']))
+				echo $this->Bl->h4(array(),array(),__('pers_person element: internet caption',true));
 			$a = '';
 			if (!empty($data['PersPerson']['link1']))
 			{
