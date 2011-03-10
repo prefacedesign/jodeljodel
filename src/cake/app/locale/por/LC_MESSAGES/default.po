@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2011-03-03 15:52-0300\n"
-"PO-Revision-Date: 2011-03-10 10:09-0300\n"
+"PO-Revision-Date: 2011-03-10 11:12-0300\n"
 "Last-Translator: Rodrigo <rodrigo@preface.com.br>\n"
 "Language-Team: Preface Design <preface@preface.com.br>\n"
 "MIME-Version: 1.0\n"
@@ -786,7 +786,7 @@ msgstr "Publicações"
 
 #: \plugins\page_sections\config\sections.php:163
 msgid "Sections: papers pageTitle"
-msgstr "Contato"
+msgstr "Publicações"
 
 #: \plugins\page_sections\config\sections.php:164
 msgid "Sections: papers headerCaption"
@@ -797,14 +797,12 @@ msgid "Sections: papers humanName"
 msgstr "Publicações"
 
 #: \plugins\page_sections\config\sections.php:169
-#, fuzzy
 msgid "Sections: papers_index linkCaption"
-msgstr "Publicações"
+msgstr "Outras publicações"
 
 #: \plugins\page_sections\config\sections.php:175
-#, fuzzy
 msgid "Sections: papers_index pageTitle"
-msgstr "Contato"
+msgstr "Listagem"
 
 #: \plugins\page_sections\config\sections.php:176
 #, fuzzy
@@ -817,14 +815,12 @@ msgid "Sections: papers_index humanName"
 msgstr "Publicações"
 
 #: \plugins\page_sections\config\sections.php:180
-#, fuzzy
 msgid "Sections: one_paper linkCaption"
-msgstr "Publicações"
+msgstr "Outras publicações"
 
 #: \plugins\page_sections\config\sections.php:187
-#, fuzzy
 msgid "Sections: one_paper pageTitle"
-msgstr "Contato"
+msgstr "Uma publicação"
 
 #: \plugins\page_sections\config\sections.php:188
 #, fuzzy
@@ -842,25 +838,23 @@ msgstr "Eventos"
 
 #: \plugins\page_sections\config\sections.php:200
 msgid "Sections: events pageTitle"
-msgstr "Publicações"
+msgstr "Eventos"
 
 #: \plugins\page_sections\config\sections.php:201
 msgid "Sections: events headerCaption"
-msgstr "Events"
+msgstr "Eventos"
 
 #: \plugins\page_sections\config\sections.php:202
 msgid "Sections: events humanName"
-msgstr "Events"
-
-#: \plugins\page_sections\config\sections.php:206
-#, fuzzy
-msgid "Sections: events_index linkCaption"
 msgstr "Eventos"
 
+#: \plugins\page_sections\config\sections.php:206
+msgid "Sections: events_index linkCaption"
+msgstr "Outros eventos"
+
 #: \plugins\page_sections\config\sections.php:213
-#, fuzzy
 msgid "Sections: events_index pageTitle"
-msgstr "Publicações"
+msgstr "Listagem"
 
 #: \plugins\page_sections\config\sections.php:214
 #, fuzzy
@@ -889,14 +883,12 @@ msgid "Sections: news humanName"
 msgstr "Notícias"
 
 #: \plugins\page_sections\config\sections.php:232
-#, fuzzy
 msgid "Sections: news_index linkCaption"
-msgstr "Notícias"
+msgstr "Outras notícias"
 
 #: \plugins\page_sections\config\sections.php:238
-#, fuzzy
 msgid "Sections: news_index pageTitle"
-msgstr "Notícias"
+msgstr "Listagem"
 
 #: \plugins\page_sections\config\sections.php:239
 #, fuzzy
@@ -909,14 +901,12 @@ msgid "Sections: news_index humanName"
 msgstr "Notícias"
 
 #: \plugins\page_sections\config\sections.php:243
-#, fuzzy
 msgid "Sections: news_item linkCaption"
-msgstr "Notícias"
+msgstr "Outras notícias"
 
 #: \plugins\page_sections\config\sections.php:250
-#, fuzzy
 msgid "Sections: news_item pageTitle"
-msgstr "Notícias"
+msgstr "Uma notícia"
 
 #: \plugins\page_sections\config\sections.php:251
 #, fuzzy
@@ -1120,7 +1110,7 @@ msgstr ""
 
 #: \plugins\paper\views\elements\pap_paper.ctp:52;99
 msgid "Keywords"
-msgstr ""
+msgstr "Palavras-chave"
 
 #: \plugins\paper\views\elements\pap_paper.ctp:64
 msgid "Paper view page: Paper for download"
@@ -1557,19 +1547,19 @@ msgstr ""
 
 #: \views\principal\about.ctp:33
 msgid "about_dinafon page: Know all people"
-msgstr ""
+msgstr "Conheça todas as pessoas"
 
 #: \views\principal\index.ctp:29
 msgid "public_page: See more news"
-msgstr ""
+msgstr "Veja mais notícias"
 
 #: \views\principal\index.ctp:45
 msgid "public_page: More papers from Dinafon"
-msgstr ""
+msgstr "Veja mais publicações"
 
 #: \views\principal\index.ctp:74
 msgid "public_page: More about Dinafon"
-msgstr ""
+msgstr "Saiba mais sobre o Dinafon"
 
 #: \views\translate_strings\translate_strings.ctp:4
 msgid "Backstage edit page: Editing a \"Person.PersPerson\""
