@@ -4,9 +4,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-03-03 15:52-0300\n"
-"PO-Revision-Date: 2011-03-10 11:12-0300\n"
-"Last-Translator: Rodrigo <rodrigo@preface.com.br>\n"
+"POT-Creation-Date: 2011-03-10 11:13-0300\n"
+"PO-Revision-Date: 2011-03-10 12:29-0300\n"
+"Last-Translator: Lucas Vignoli Reis <lucas@preface.com.br>\n"
 "Language-Team: Preface Design <preface@preface.com.br>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -488,27 +488,27 @@ msgstr "Este campo não pode ser deixado em branco."
 msgid "EveEvent validation: abstract required, between 20 400."
 msgstr "É necessário preencher a descrição resumida do evento. Esta descrição resumida deve ter entre 20 e 400 caracteres."
 
-#: \plugins\event\views\elements\eve_event.ctp:27
+#: \plugins\event\views\elements\eve_event.ctp:39
 msgid "Form - EveEvent.name"
 msgstr "Nome"
 
-#: \plugins\event\views\elements\eve_event.ctp:28
+#: \plugins\event\views\elements\eve_event.ctp:40
 msgid "Form - EveEvent.name - instructions"
 msgstr " "
 
-#: \plugins\event\views\elements\eve_event.ctp:34
+#: \plugins\event\views\elements\eve_event.ctp:46
 msgid "Form - EveEvent.abstract"
 msgstr "Resumo"
 
-#: \plugins\event\views\elements\eve_event.ctp:35
+#: \plugins\event\views\elements\eve_event.ctp:47
 msgid "Form - EveEvent.abstract - instructions"
 msgstr "Escreva um pequeno resumo do evento"
 
-#: \plugins\event\views\elements\eve_event.ctp:41
+#: \plugins\event\views\elements\eve_event.ctp:53
 msgid "Form - EveEvent.link"
 msgstr "Link"
 
-#: \plugins\event\views\elements\eve_event.ctp:42
+#: \plugins\event\views\elements\eve_event.ctp:54
 msgid "Form - EveEvent.link - instructions"
 msgstr "Caso este evento possua um link, coloque-o aqui"
 
@@ -516,15 +516,15 @@ msgstr "Caso este evento possua um link, coloque-o aqui"
 msgid "Form - EveEvent.begins"
 msgstr "Início do evento"
 
-#: \plugins\event\views\elements\eve_event.ctp:50
+#: \plugins\event\views\elements\eve_event.ctp:62
 msgid "Form - EveEvent.begins - instructions"
 msgstr " "
 
-#: \plugins\event\views\elements\eve_event.ctp:64
+#: \plugins\event\views\elements\eve_event.ctp:76
 msgid "Form - EveEvent.ends"
 msgstr "Final do evento"
 
-#: \plugins\event\views\elements\eve_event.ctp:65
+#: \plugins\event\views\elements\eve_event.ctp:77
 msgid "Form - EveEvent.ends - instructions"
 msgstr " "
 
@@ -1613,59 +1613,63 @@ msgstr "  "
 msgid "Popup plugin notice type"
 msgstr " "
 
-#: \views\translate_strings\translate_strings.ctp:32
+#: \views\translate_strings\translate_strings.ctp:29
+msgid "Popup plugin form type"
+msgstr " "
+
+#: \views\translate_strings\translate_strings.ctp:33
 msgid "Dashboard language abrev.: por"
 msgstr "PT"
 
-#: \views\translate_strings\translate_strings.ctp:33
+#: \views\translate_strings\translate_strings.ctp:34
 msgid "Dashboard language abrev.: eng"
 msgstr "EN"
 
-#: \views\translate_strings\translate_strings.ctp:34
+#: \views\translate_strings\translate_strings.ctp:35
 msgid "Dashboard language abrev.: nno"
 msgstr "NN"
 
-#: \views\translate_strings\translate_strings.ctp:35
+#: \views\translate_strings\translate_strings.ctp:36
 msgid "Dashboard language abrev.: lav"
 msgstr "LV"
 
-#: \views\translate_strings\translate_strings.ctp:36
+#: \views\translate_strings\translate_strings.ctp:37
 msgid "Dashboard language abrev.: gre"
 msgstr "EL"
 
-#: \views\translate_strings\translate_strings.ctp:37
+#: \views\translate_strings\translate_strings.ctp:38
 msgid "Dashboard language abrev.: ukr"
 msgstr "UK"
 
-#: \views\translate_strings\translate_strings.ctp:38
+#: \views\translate_strings\translate_strings.ctp:39
 msgid "Dashboard language abrev.: ger"
 msgstr "DE"
 
-#: \views\translate_strings\translate_strings.ctp:39
+#: \views\translate_strings\translate_strings.ctp:40
 msgid "Language name: por"
 msgstr "português"
 
-#: \views\translate_strings\translate_strings.ctp:40
+#: \views\translate_strings\translate_strings.ctp:41
 msgid "Language name: eng"
 msgstr "inglês"
 
-#: \views\translate_strings\translate_strings.ctp:41
+#: \views\translate_strings\translate_strings.ctp:42
 msgid "Language name: nno"
 msgstr "novo norueguês"
 
-#: \views\translate_strings\translate_strings.ctp:42
+#: \views\translate_strings\translate_strings.ctp:43
 msgid "Language name: lav"
 msgstr "letão"
 
-#: \views\translate_strings\translate_strings.ctp:43
+#: \views\translate_strings\translate_strings.ctp:44
 msgid "Language name: gre"
 msgstr "grego"
 
-#: \views\translate_strings\translate_strings.ctp:44
+#: \views\translate_strings\translate_strings.ctp:45
 msgid "Language name: ukr"
 msgstr "ucraniano"
 
-#: \views\translate_strings\translate_strings.ctp:45
+#: \views\translate_strings\translate_strings.ctp:46
 msgid "Language name: ger"
 msgstr "alemão"
 
