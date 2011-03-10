@@ -23,10 +23,10 @@ class EveEvent extends EventAppModel {
 			'abstract' => array
 			(
 				'required' => array(
-					'rule' => array('between', 50, 400),
+					'rule' => array('between', 20, 400),
 					'allowEmpty' => false,
 					'required' => true,
-					'message' => __('EveEvent validation: abstract required, between 50 255.', true),
+					'message' => __('EveEvent validation: abstract required, between 20 400.', true),
 				)
 			),
 		);
@@ -105,7 +105,7 @@ class EveEvent extends EventAppModel {
 			'created' => $data['EveEvent']['created'],
 			'modified' => $data['EveEvent']['modified'], 
 			'name' => $data['EveEvent']['name'],
-			'info' => 'Abstract: ' . substr($data['EveEvent']['abstract'], 0, 30) . '...',
+			'info' => 'Desc.: ' . substr($data['EveEvent']['abstract'], 0, 30) . '...',
 			'idiom' => $this->getLanguages($id)
 		);
 		

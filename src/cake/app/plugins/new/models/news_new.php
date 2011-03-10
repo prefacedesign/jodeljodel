@@ -132,7 +132,7 @@ class NewsNew extends NewAppModel {
 			'created' => $data['NewsNew']['created'],
 			'modified' => $data['NewsNew']['modified'], 
 			'name' => $data['NewsNew']['title'],
-			'info' => 'Abstract: ' . substr($data['NewsNew']['abstract'], 0, 30) . '...',
+			'info' => 'Resumo: ' . substr($data['NewsNew']['abstract'], 0, 30) . '...',
 			'idiom' => $this->getLanguages($id)
 		);
 		

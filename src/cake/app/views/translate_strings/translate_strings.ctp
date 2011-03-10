@@ -23,9 +23,9 @@ __('MODULE NewsNew human name');
 __('MODULE PapPaper human name');
 __('MODULE EveEvent human name');
 
-__('POPUP PLUGIN ERROR TYPE');
-__('POPUP PLUGIN SUCCESS TYPE');
-__('POPUP PLUGIN NOTICE TYPE');
+__('Popup plugin error type');
+__('Popup plugin success type');
+__('Popup plugin notice type');
 
 /** Dashboard language names
  */

@@ -138,7 +138,7 @@ class PersPerson extends PersonAppModel {
 			'created' => $data['PersPerson']['created'],
 			'modified' => $data['PersPerson']['modified'], 
 			'name' => $data['AuthAuthor']['name'] . ' ' . $data['AuthAuthor']['surname'],
-			'info' => 'Profile: ' . substr($data['PersPerson']['profile'], 0, 30) . '...',
+			'info' => 'Perfil: ' . substr($data['PersPerson']['profile'], 0, 30) . '...',
 			'idiom' => $this->getLanguages($id)
 		);
 		

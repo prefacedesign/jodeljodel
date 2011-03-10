@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-03-03 15:52-0300\n"
-"PO-Revision-Date: 2011-03-04 15:16-0300\n"
+"POT-Creation-Date: 2011-03-07 18:36-0300\n"
+"PO-Revision-Date: 2011-03-07 18:43-0300\n"
 "Last-Translator: Lucas Vignoli Reis <lucas@preface.com.br>\n"
 "Language-Team: Preface Design <preface@preface.com.br>\n"
 "MIME-Version: 1.0\n"
@@ -16,61 +16,67 @@ msgstr ""
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
+#: \config\bootstrap.php:143
+msgid "%d-%d de %s de %d"
+msgstr ""
+
+#: \config\bootstrap.php:153
+msgid "%d de %s a %d de %s de %d"
+msgstr ""
+
 #: \plugins\author\models\auth_author.php:18
-#, fuzzy
 msgid "AuthAuthor validation: surname."
-msgstr "Erro de validação no sobrenome"
+msgstr "Este campo não pode ser deixado em branco."
 
 #: \plugins\author\models\auth_author.php:27
-#, fuzzy
 msgid "AuthAuthor validation: name."
-msgstr "Erro de validação no sobrenome"
+msgstr "Este campo não pode ser deixado em branco."
 
 #: \plugins\author\models\auth_author.php:36
 msgid "AuthAuthor validation: reference_name."
-msgstr ""
+msgstr "Este campo não pode ser deixado em branco."
 
 #: \plugins\author\views\elements\auth_author.ctp:38
-#: \plugins\person\views\elements\pers_person.ctp:99
+#: \plugins\person\views\elements\pers_person.ctp:102
 msgid "Form - PersPerson.surname"
 msgstr "Sobrenome"
 
 #: \plugins\author\views\elements\auth_author.ctp:39
-#: \plugins\person\views\elements\pers_person.ctp:100
+#: \plugins\person\views\elements\pers_person.ctp:103
 msgid "Form - PersPerson.surname - instructions"
 msgstr "Preencha com o sobrenome completo, p.e., para José Carlos Penteado Lima: \"Penteado Lima\""
 
 #: \plugins\author\views\elements\auth_author.ctp:45
-#: \plugins\person\views\elements\pers_person.ctp:106
+#: \plugins\person\views\elements\pers_person.ctp:109
 msgid "Form - PersPerson.name"
 msgstr "Nome"
 
 #: \plugins\author\views\elements\auth_author.ctp:46
-#: \plugins\person\views\elements\pers_person.ctp:107
+#: \plugins\person\views\elements\pers_person.ctp:110
 msgid "Form - PersPerson.name - instructions"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
 
 #: \plugins\author\views\elements\auth_author.ctp:52
-#: \plugins\person\views\elements\pers_person.ctp:113
+#: \plugins\person\views\elements\pers_person.ctp:116
 msgid "Form - PersPerson.reference_name"
 msgstr "Como esta pessoa deve ser citada?"
 
 #: \plugins\author\views\elements\auth_author.ctp:53
-#: \plugins\person\views\elements\pers_person.ctp:114
+#: \plugins\person\views\elements\pers_person.ctp:117
 msgid "Form - PersPerson.reference_name - instructions"
 msgstr "Por exemplo, para José Carlos Penteado Lima: \"LIMA, J. C. P.\""
 
 #: \plugins\author\views\elements\auth_author.ctp:61
 msgid "Form - AuthAuthor.name - belongsTo label"
-msgstr ""
+msgstr "Nome"
 
 #: \plugins\author\views\elements\auth_author.ctp:64
 msgid "Form - AuthAuthor.surname - belongsTo label"
-msgstr ""
+msgstr "Sobrenome"
 
 #: \plugins\author\views\elements\auth_author.ctp:67
 msgid "Form - AuthAuthor.reference_name - belongsTo label"
-msgstr ""
+msgstr "Como esta pessoa deve ser citada?"
 
 #: \plugins\backstage\views\back_contents\edit.ctp:5
 #, fuzzy
@@ -103,7 +109,7 @@ msgstr "Falha ao salvar"
 
 #: \plugins\backstage\views\back_contents\edit.ctp:64
 msgid "Backstage edit page: Your data cannot be saved - TEXT."
-msgstr "Algum dos campos preenchidos não obedece os critérios exigidos. Estes campos estão em vermelho, corrija-os e salve de novo o documento."
+msgstr "Existem um ou mais campos cujo conteúdo não obedece os critérios editoriais. Estes campos estão em vermelho, com uma mensagem explicando o problema, corrija-os e salve de novo o documento."
 
 #: \plugins\backstage\views\back_contents\edit.ctp:71
 msgid "Backstage edit page: Your data has been saved - TITLE."
@@ -187,17 +193,15 @@ msgstr "Salvar"
 
 #: \plugins\burocrata\views\helpers\buro_burocrata.php:542
 msgid "Burocrata::submit - Submit label"
-msgstr ""
+msgstr "Ok"
 
 #: \plugins\burocrata\views\helpers\buro_burocrata.php:604
-#, fuzzy
 msgid "Burocrata::okOrCancel - OK label"
-msgstr "negrito"
+msgstr "OK"
 
 #: \plugins\burocrata\views\helpers\buro_burocrata.php:621
-#, fuzzy
 msgid "Burocrata::okOrCancel - Cancel label"
-msgstr "Troque o arquivo"
+msgstr "Cancelar"
 
 #: \plugins\burocrata\views\helpers\buro_burocrata.php:838
 msgid "Burocrata: nothing found on autocomplete."
@@ -304,24 +308,20 @@ msgid "Burocrata::_popupTextilePreview - Title of preview popup"
 msgstr ""
 
 #: \plugins\burocrata\views\helpers\buro_burocrata.php:1486
-#, fuzzy
 msgid "Burocrata::_popupTextileFile - Title of `add file` popup"
-msgstr "arquivo"
+msgstr "Adição de arquivo"
 
 #: \plugins\burocrata\views\helpers\buro_burocrata.php:1487
-#, fuzzy
 msgid "Burocrata::_popupTextileFile - Label of file input"
-msgstr "arquivo"
+msgstr "Nome do arquivo"
 
 #: \plugins\burocrata\views\helpers\buro_burocrata.php:1525
-#, fuzzy
 msgid "Burocrata::_popupTextileImage - Title of `add image` popup"
-msgstr "remova a imagem"
+msgstr "Adição de imagem"
 
 #: \plugins\burocrata\views\helpers\buro_burocrata.php:1526
-#, fuzzy
 msgid "Burocrata::_popupTextileImage - Label of file input"
-msgstr "arquivo"
+msgstr "Texto alternativo à imagem"
 
 #: \plugins\corktile\models\cork_corktile.php:70
 msgid "CorkCorktile Model: Could not save the CorkContent"
@@ -364,180 +364,169 @@ msgstr "Painel do editor"
 msgid "Dashboard: Add new content:"
 msgstr "Adicione novo conteúdo:"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:73
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:75
 msgid "or"
 msgstr "ou"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:74
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:76
 msgid "Dashboard: Close item list"
 msgstr "Cancelar"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:79
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:81
 msgid "Dashboard: Open item list"
 msgstr "Adicione novo conteúdo"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:115
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:117
 msgid "Dashboard: Notice of marking as draft success - TITLE"
 msgstr "Conteúdo marcado como rascunho"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:116
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:118
 msgid "Dashboard: Notice of marking as draft success - TEXT"
 msgstr "O conteúdo foi marcado como rascunho com sucesso. Esta página será recarregada."
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:123
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:125
 msgid "Dashboard: Notice of marking as draft failure - TITLE"
 msgstr "Falha ao marcar como rascunho"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:124
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:126
 msgid "Dashboard: Notice of marking as draft failure - TEXT"
 msgstr "Não foi possível marcar este documento como rascunho. Pode ter havido algum erro de comunicação."
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:130
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:132
 msgid "Dashboard: Notice of publishing success - TITLE"
 msgstr "Conteúdo publicado"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:131
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:133
 msgid "Dashboard: Notice of publishing success - TEXT"
 msgstr "O conteúdo foi publicado com sucesso. Esta página será recarregada."
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:138
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:140
 msgid "Dashboard: Notice of publishing failure - TITLE"
 msgstr "Falha na publicação"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:139
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:141
 msgid "Dashboard: Notice of publishing failure - TEXT"
 msgstr "Não foi possível publicar este documento. Pode ter havido algum erro de comunicação."
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:145
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:147
 msgid "Dashboard: Notice of delete success - TITLE"
 msgstr "Conteúdo excluído"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:146
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:148
 msgid "Dashboard: Notice of delete success - TEXT"
 msgstr "O conteúdo foi excluído com sucesso. Esta página será recarregada."
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:153
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:155
 msgid "Dashboard: Notice of delete failure - TITLE"
 msgstr "Falha na exclusão"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:154
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:156
 msgid "Dashboard: Notice of delete failure - TEXT"
 msgstr "Não foi possível excluir este documento. Pode ter havido algum erro de comunicação."
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:174
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:176
 msgid "Dashboard - dashboard header: Type"
 msgstr "Tipo"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:175
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:177
 msgid "Dashboard - dashboard header: Status"
 msgstr "Status"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:176
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:178
 msgid "Dashboard - dashboard header: Name"
 msgstr "Nome"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:177
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:179
 msgid "Dashboard - dashboard header: Extra info"
 msgstr "Informação extra"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:178
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:180
 msgid "Dashboard - dashboard header: Created"
 msgstr "Criado"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:179
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:181
 msgid "Dashboard - dashboard header: Modified"
 msgstr "Editado"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:180
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:182
 msgid "Dashboard - dashboard header: Translations"
 msgstr "Línguas"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:202
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:204
 msgid "Dashboard language abrev.: "
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:206
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:208
 msgid "Dashboard types: "
 msgstr "type error"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:207
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:209
 msgid "Dashboard status: "
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:229
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:231
 msgid "Dashboard: Hide from public"
 msgstr "Tirar do ar"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:243
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:245
 msgid "Dashboard: Publish to the great public"
 msgstr "Publicar"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:262
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:264
 msgid "Dashboard: Delete content"
 msgstr "Excluir conteúdo"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:297;308
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:299;310
 msgid "Dashboard: Edit"
 msgstr "Editar"
 
 #: \plugins\event\models\eve_event.php:20
-#, fuzzy
 msgid "EveEvent validation: name."
-msgstr "Erro de validação no sobrenome"
+msgstr "Este campo não pode ser deixado em branco."
 
 #: \plugins\event\models\eve_event.php:29
-#, fuzzy
-msgid "EveEvent validation: abstract required, between 50 255."
-msgstr "Erro de validação no sobrenome"
+msgid "EveEvent validation: abstract required, between 20 400."
+msgstr "É necessário preencher a descrição resumida do evento. Esta descrição resumida deve ter entre 20 e 400 caracteres."
 
-#: \plugins\event\views\elements\eve_event.ctp:27
-#, fuzzy
+#: \plugins\event\views\elements\eve_event.ctp:39
 msgid "Form - EveEvent.name"
 msgstr "Nome"
 
-#: \plugins\event\views\elements\eve_event.ctp:28
-#, fuzzy
+#: \plugins\event\views\elements\eve_event.ctp:40
 msgid "Form - EveEvent.name - instructions"
-msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+msgstr " "
 
-#: \plugins\event\views\elements\eve_event.ctp:34
-#, fuzzy
+#: \plugins\event\views\elements\eve_event.ctp:46
 msgid "Form - EveEvent.abstract"
-msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+msgstr "Descrição resumida"
 
-#: \plugins\event\views\elements\eve_event.ctp:35
-#, fuzzy
+#: \plugins\event\views\elements\eve_event.ctp:47
 msgid "Form - EveEvent.abstract - instructions"
-msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+msgstr "Descreva em poucas palavras do que se trata o evento."
 
-#: \plugins\event\views\elements\eve_event.ctp:41
-#, fuzzy
+#: \plugins\event\views\elements\eve_event.ctp:53
 msgid "Form - EveEvent.link"
-msgstr "Qual é o link para o seu currículo lattes?"
+msgstr "Endereço da página de internet do evento"
 
-#: \plugins\event\views\elements\eve_event.ctp:42
-#, fuzzy
+#: \plugins\event\views\elements\eve_event.ctp:54
 msgid "Form - EveEvent.link - instructions"
-msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+msgstr " "
 
-#: \plugins\event\views\elements\eve_event.ctp:49
+#: \plugins\event\views\elements\eve_event.ctp:61
 msgid "Form - EveEvent.begins"
 msgstr ""
 
-#: \plugins\event\views\elements\eve_event.ctp:50
-#, fuzzy
+#: \plugins\event\views\elements\eve_event.ctp:62
 msgid "Form - EveEvent.begins - instructions"
-msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+msgstr "Início"
 
-#: \plugins\event\views\elements\eve_event.ctp:64
-#, fuzzy
+#: \plugins\event\views\elements\eve_event.ctp:76
 msgid "Form - EveEvent.ends"
-msgstr "Nome"
+msgstr "Fim"
 
-#: \plugins\event\views\elements\eve_event.ctp:65
-#, fuzzy
+#: \plugins\event\views\elements\eve_event.ctp:77
 msgid "Form - EveEvent.ends - instructions"
-msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+msgstr " "
 
 #: \plugins\jj_users\views\user_users\login.ctp:6
 msgid "Login page: username label"
@@ -546,6 +535,10 @@ msgstr "E-mail"
 #: \plugins\jj_users\views\user_users\login.ctp:9
 msgid "Login page: password label"
 msgstr "Senha"
+
+#: \plugins\jj_users\views\user_users\login.ctp:11
+msgid "Login page: Enter"
+msgstr "Entrar"
 
 #: \plugins\jj_utils\vendors\shells\jj_console.php:13
 msgid "JjConsoleShell::main What is the command to execute? Say \"quit\" to exit, \"help\" to achieve help."
@@ -613,81 +606,93 @@ msgstr ""
 
 #: \plugins\new\models\news_new.php:18
 msgid "NewsNew validation: auth_author_id."
-msgstr ""
+msgstr "É necessário especificar um autor para a notícia."
 
 #: \plugins\new\models\news_new.php:27
 msgid "NewsNew validation: title required, maxlength 255."
-msgstr ""
+msgstr "O título é obrigatório e não deve ter mais do que 255 caracteres."
 
 #: \plugins\new\models\news_new.php:36
 msgid "NewsNew validation: abstract required, between 50 350."
-msgstr ""
+msgstr "É necessário preencher o resumo. O resumo deve ter entre 50 e 350 caracteres."
 
 #: \plugins\new\models\news_new.php:45
 msgid "NewsNew validation: content required, between 100 6000."
+msgstr "É necessário preencher o conteúdo da Notícia. O texto do conteúdo da notícia deve ter entre 100 e 600 caracteres."
+
+#: \plugins\new\views\elements\news_new.ctp:5
+msgid "%d/%m"
 msgstr ""
 
-#: \plugins\new\views\elements\news_new.ctp:85
+#: \plugins\new\views\elements\news_new.ctp:28;51
+msgid "%d de %B de %Y"
+msgstr ""
+
+#: \plugins\new\views\elements\news_new.ctp:52
+msgid "by"
+msgstr "por"
+
+#: \plugins\new\views\elements\news_new.ctp:106
 msgid "Form - NewsNew.Author - Select a Author"
-msgstr ""
+msgstr "Autor"
 
-#: \plugins\new\views\elements\news_new.ctp:86
+#: \plugins\new\views\elements\news_new.ctp:107
 msgid "Form - NewsNew.Author - Instruction to belongsTo Author"
-msgstr ""
+msgstr "Detalhe nos campos abaixo os dados do autor."
 
-#: \plugins\new\views\elements\news_new.ctp:91
+#: \plugins\new\views\elements\news_new.ctp:112
 msgid "Form - NewsNew.Author - Create a new Author"
-msgstr ""
+msgstr "Criar novo autor"
 
-#: \plugins\new\views\elements\news_new.ctp:92
+#: \plugins\new\views\elements\news_new.ctp:113
 msgid "Form - NewsNew.Author - Edit this Author"
-msgstr ""
+msgstr "Alterar este autor"
 
-#: \plugins\new\views\elements\news_new.ctp:100
+#: \plugins\new\views\elements\news_new.ctp:121
 #, fuzzy
 msgid "Form - NewsNew new info superfield"
 msgstr "Nome da pessoa"
 
-#: \plugins\new\views\elements\news_new.ctp:101
+#: \plugins\new\views\elements\news_new.ctp:122
 #, fuzzy
 msgid "Form - NewsNew new info superfield - instructions"
 msgstr " "
 
-#: \plugins\new\views\elements\news_new.ctp:111
+#: \plugins\new\views\elements\news_new.ctp:132
 #, fuzzy
 msgid "Form - NewsNew.date"
 msgstr "Nome"
 
-#: \plugins\new\views\elements\news_new.ctp:112
+#: \plugins\new\views\elements\news_new.ctp:133
 #, fuzzy
 msgid "Form - NewsNew.date - instructions"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
 
-#: \plugins\new\views\elements\news_new.ctp:125
+#: \plugins\new\views\elements\news_new.ctp:146
 #, fuzzy
 msgid "Form - NewsNew.title"
 msgstr "Perfil"
 
-#: \plugins\new\views\elements\news_new.ctp:126
+#: \plugins\new\views\elements\news_new.ctp:147
 #, fuzzy
 msgid "Form - NewsNew.title - instructions"
 msgstr " "
 
-#: \plugins\new\views\elements\news_new.ctp:132
+#: \plugins\new\views\elements\news_new.ctp:153
 msgid "Form - NewsNew.abstract"
-msgstr ""
+msgstr "Resumo"
 
-#: \plugins\new\views\elements\news_new.ctp:133
+#: \plugins\new\views\elements\news_new.ctp:154
 #, fuzzy
 msgid "Form - NewsNew.abstract - instructions"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
 
-#: \plugins\new\views\elements\news_new.ctp:139
+#: \plugins\new\views\elements\news_new.ctp:160
 #, fuzzy
 msgid "Form - NewsNew.content"
 msgstr "Nome"
 
-#: \plugins\new\views\elements\news_new.ctp:140
+#: \plugins\new\views\elements\news_new.ctp:161
 #, fuzzy
 msgid "Form - NewsNew.content - instructions"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
@@ -800,189 +805,284 @@ msgstr "Publicações"
 msgid "Sections: papers humanName"
 msgstr "Publicações"
 
-#: \plugins\page_sections\config\sections.php:168
-msgid "Sections: events linkCaption"
-msgstr "Eventos"
-
-#: \plugins\page_sections\config\sections.php:174
-msgid "Sections: events pageTitle"
+#: \plugins\page_sections\config\sections.php:169
+#, fuzzy
+msgid "Sections: papers_index linkCaption"
 msgstr "Publicações"
 
 #: \plugins\page_sections\config\sections.php:175
+#, fuzzy
+msgid "Sections: papers_index pageTitle"
+msgstr "Contato"
+
+#: \plugins\page_sections\config\sections.php:176
+#, fuzzy
+msgid "Sections: papers_index headerCaption"
+msgstr "Publicações"
+
+#: \plugins\page_sections\config\sections.php:177
+#, fuzzy
+msgid "Sections: papers_index humanName"
+msgstr "Publicações"
+
+#: \plugins\page_sections\config\sections.php:180
+#, fuzzy
+msgid "Sections: one_paper linkCaption"
+msgstr "Publicações"
+
+#: \plugins\page_sections\config\sections.php:187
+#, fuzzy
+msgid "Sections: one_paper pageTitle"
+msgstr "Contato"
+
+#: \plugins\page_sections\config\sections.php:188
+#, fuzzy
+msgid "Sections: one_paper headerCaption"
+msgstr "Publicações"
+
+#: \plugins\page_sections\config\sections.php:189
+#, fuzzy
+msgid "Sections: one_paper humanName"
+msgstr "Publicações"
+
+#: \plugins\page_sections\config\sections.php:194
+msgid "Sections: events linkCaption"
+msgstr "Eventos"
+
+#: \plugins\page_sections\config\sections.php:200
+msgid "Sections: events pageTitle"
+msgstr "Publicações"
+
+#: \plugins\page_sections\config\sections.php:201
 msgid "Sections: events headerCaption"
 msgstr "Events"
 
-#: \plugins\page_sections\config\sections.php:176
+#: \plugins\page_sections\config\sections.php:202
 msgid "Sections: events humanName"
 msgstr "Events"
 
-#: \plugins\page_sections\config\sections.php:179
+#: \plugins\page_sections\config\sections.php:206
+#, fuzzy
+msgid "Sections: events_index linkCaption"
+msgstr "Eventos"
+
+#: \plugins\page_sections\config\sections.php:213
+#, fuzzy
+msgid "Sections: events_index pageTitle"
+msgstr "Publicações"
+
+#: \plugins\page_sections\config\sections.php:214
+#, fuzzy
+msgid "Sections: events_index headerCaption"
+msgstr "Events"
+
+#: \plugins\page_sections\config\sections.php:215
+#, fuzzy
+msgid "Sections: events_index humanName"
+msgstr "Events"
+
+#: \plugins\page_sections\config\sections.php:220
 msgid "Sections: news linkCaption"
 msgstr "Notícias"
 
-#: \plugins\page_sections\config\sections.php:185
+#: \plugins\page_sections\config\sections.php:226
 msgid "Sections: news pageTitle"
 msgstr "Notícias"
 
-#: \plugins\page_sections\config\sections.php:186
+#: \plugins\page_sections\config\sections.php:227
 msgid "Sections: news headerCaption"
 msgstr "Notícias"
 
-#: \plugins\page_sections\config\sections.php:187
+#: \plugins\page_sections\config\sections.php:228
 msgid "Sections: news humanName"
 msgstr "Notícias"
 
-#: \plugins\page_sections\config\sections.php:218
-msgid "Sections: backstage linkCaption"
-msgstr ""
-
-#: \plugins\page_sections\config\sections.php:227
-msgid "Sections: backstage pageTitle"
-msgstr ""
-
-#: \plugins\page_sections\config\sections.php:228
-msgid "Sections: backstage headerCaption"
-msgstr ""
-
-#: \plugins\page_sections\config\sections.php:229
-msgid "Sections: backstage humanName"
-msgstr ""
-
 #: \plugins\page_sections\config\sections.php:232
-msgid "Sections: login linkCaption"
-msgstr ""
+#, fuzzy
+msgid "Sections: news_index linkCaption"
+msgstr "Notícias"
+
+#: \plugins\page_sections\config\sections.php:238
+#, fuzzy
+msgid "Sections: news_index pageTitle"
+msgstr "Notícias"
 
 #: \plugins\page_sections\config\sections.php:239
-msgid "Sections: login pageTitle"
-msgstr ""
+#, fuzzy
+msgid "Sections: news_index headerCaption"
+msgstr "Notícias"
 
 #: \plugins\page_sections\config\sections.php:240
-msgid "Sections: login headerCaption"
-msgstr ""
+#, fuzzy
+msgid "Sections: news_index humanName"
+msgstr "Notícias"
 
-#: \plugins\page_sections\config\sections.php:241
-msgid "Sections: login humanName"
-msgstr ""
+#: \plugins\page_sections\config\sections.php:243
+#, fuzzy
+msgid "Sections: news_item linkCaption"
+msgstr "Notícias"
 
-#: \plugins\page_sections\config\sections.php:244
-msgid "Sections: dashboard linkCaption"
-msgstr ""
+#: \plugins\page_sections\config\sections.php:250
+#, fuzzy
+msgid "Sections: news_item pageTitle"
+msgstr "Notícias"
 
 #: \plugins\page_sections\config\sections.php:251
-msgid "Sections: dashboard pageTitle"
-msgstr ""
+#, fuzzy
+msgid "Sections: news_item headerCaption"
+msgstr "Notícias"
 
 #: \plugins\page_sections\config\sections.php:252
+#, fuzzy
+msgid "Sections: news_item humanName"
+msgstr "Notícias"
+
+#: \plugins\page_sections\config\sections.php:259
+msgid "Sections: backstage linkCaption"
+msgstr "Página Administrativa"
+
+#: \plugins\page_sections\config\sections.php:268
+msgid "Sections: backstage pageTitle"
+msgstr "Página Administrativa"
+
+#: \plugins\page_sections\config\sections.php:269
+msgid "Sections: backstage headerCaption"
+msgstr "Página Administrativa"
+
+#: \plugins\page_sections\config\sections.php:270
+msgid "Sections: backstage humanName"
+msgstr "Página Administrativa"
+
+#: \plugins\page_sections\config\sections.php:273
+msgid "Sections: login linkCaption"
+msgstr "Login"
+
+#: \plugins\page_sections\config\sections.php:280
+msgid "Sections: login pageTitle"
+msgstr "Login"
+
+#: \plugins\page_sections\config\sections.php:281
+msgid "Sections: login headerCaption"
+msgstr "Login"
+
+#: \plugins\page_sections\config\sections.php:282
+msgid "Sections: login humanName"
+msgstr "Login"
+
+#: \plugins\page_sections\config\sections.php:285
+msgid "Sections: dashboard linkCaption"
+msgstr "Painel"
+
+#: \plugins\page_sections\config\sections.php:292
+msgid "Sections: dashboard pageTitle"
+msgstr "Painel do editor"
+
+#: \plugins\page_sections\config\sections.php:293
 msgid "Sections: dashboard headerCaption"
 msgstr "Conteúdo"
 
-#: \plugins\page_sections\config\sections.php:253
+#: \plugins\page_sections\config\sections.php:294
 msgid "Sections: dashboard humanName"
-msgstr ""
+msgstr "Painel do editor"
 
-#: \plugins\page_sections\config\sections.php:256
+#: \plugins\page_sections\config\sections.php:297
 msgid "Sections: burocrata_save linkCaption"
-msgstr ""
+msgstr "Salvar"
 
-#: \plugins\page_sections\config\sections.php:266;276
+#: \plugins\page_sections\config\sections.php:307;317
 msgid "Sections: set_publishing_status linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:286
+#: \plugins\page_sections\config\sections.php:327
 msgid "Sections: corktile_edit linkCaption"
-msgstr ""
+msgstr "Edição de conteúdo fixo"
 
-#: \plugins\page_sections\config\sections.php:294
+#: \plugins\page_sections\config\sections.php:335
 msgid "Sections: corktile_edit pageTitle"
-msgstr ""
+msgstr "Edição de conteúdo fixo"
 
-#: \plugins\page_sections\config\sections.php:295
+#: \plugins\page_sections\config\sections.php:336
 msgid "Sections: corktile_edit headerCaption"
-msgstr ""
+msgstr "Edição de conteúdo fixo"
 
-#: \plugins\page_sections\config\sections.php:296
+#: \plugins\page_sections\config\sections.php:337
 msgid "Sections: corktile_edit humanName"
-msgstr ""
+msgstr "Edição de conteúdo fixo"
 
-#: \plugins\page_sections\config\sections.php:299
+#: \plugins\page_sections\config\sections.php:340
 msgid "Sections: edit linkCaption"
-msgstr ""
+msgstr "Edição de conteúdo"
 
-#: \plugins\page_sections\config\sections.php:307
+#: \plugins\page_sections\config\sections.php:348
 msgid "Sections: edit pageTitle"
-msgstr ""
+msgstr "Edição de conteúdo"
 
-#: \plugins\page_sections\config\sections.php:308
+#: \plugins\page_sections\config\sections.php:349
 msgid "Sections: edit headerCaption"
-msgstr ""
+msgstr "Edição de conteúdo"
 
-#: \plugins\page_sections\config\sections.php:309
+#: \plugins\page_sections\config\sections.php:350
 msgid "Sections: edit humanName"
-msgstr ""
+msgstr "Edição de conteúdo"
 
-#: \plugins\page_sections\config\sections.php:312
+#: \plugins\page_sections\config\sections.php:353
 msgid "Sections: news_edit linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:321
+#: \plugins\page_sections\config\sections.php:362
 msgid "Sections: news_edit pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:322
+#: \plugins\page_sections\config\sections.php:363
 msgid "Sections: news_edit headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:323
+#: \plugins\page_sections\config\sections.php:364
 msgid "Sections: news_edit humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:326
+#: \plugins\page_sections\config\sections.php:367
 msgid "Sections: news_form linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:334
+#: \plugins\page_sections\config\sections.php:375
 msgid "Sections: news_form humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:343
+#: \plugins\page_sections\config\sections.php:384
 msgid "Section One"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:351
+#: \plugins\page_sections\config\sections.php:392
 msgid "The Section One"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:352
+#: \plugins\page_sections\config\sections.php:393
 msgid "The Section One Header"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:353
+#: \plugins\page_sections\config\sections.php:394
 msgid "The Human Section One name"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:357
+#: \plugins\page_sections\config\sections.php:398
 msgid "Section Two"
 msgstr ""
 
 #: \plugins\paper\models\pap_paper.php:19
-#, fuzzy
-msgid "PapPaper validation: auth_author_id."
-msgstr "Erro de validação no sobrenome"
+msgid "PapPaper validation: jour_journal_id."
+msgstr "Deve ser especificada a publicação científica aonde o artigo foi publicado."
 
 #: \plugins\paper\models\pap_paper.php:28
-msgid "PapPaper validation: jour_journal_id."
-msgstr ""
+msgid "PapPaper validation: complete_reference required."
+msgstr "Este campo não pode ser deixado em branco."
 
 #: \plugins\paper\models\pap_paper.php:37
-msgid "PapPaper validation: complete_reference required."
-msgstr ""
-
-#: \plugins\paper\models\pap_paper.php:46
 #, fuzzy
-msgid "PapPaper validation: title required, between 50 350."
+msgid "PapPaper validation: title required, between 10 350."
 msgstr "Erro de validação no sobrenome"
 
-#: \plugins\paper\models\pap_paper.php:55
+#: \plugins\paper\models\pap_paper.php:46
 #, fuzzy
 msgid "PapPaper validation: abstract required, between 100 6000."
 msgstr "Erro de validação no sobrenome"
@@ -1032,312 +1132,311 @@ msgstr "Preencha com o sobrenome completo, p.e., para José Carlos Penteado Lima
 msgid "Form - JourJournal.link\t- belongsTo label"
 msgstr "Qual é o link para o seu currículo lattes?"
 
-#: \plugins\paper\views\elements\pap_paper.ctp:145
+#: \plugins\paper\views\elements\pap_paper.ctp:9;91
+msgid "%B de %Y"
+msgstr ""
+
+#: \plugins\paper\views\elements\pap_paper.ctp:52;99
+msgid "Keywords"
+msgstr ""
+
+#: \plugins\paper\views\elements\pap_paper.ctp:64
+msgid "Paper view page: Paper for download"
+msgstr ""
+
+#: \plugins\paper\views\elements\pap_paper.ctp:70
+msgid "Paper view page: paper in the original publication"
+msgstr ""
+
+#: \plugins\paper\views\elements\pap_paper.ctp:80
+msgid "Authors"
+msgstr ""
+
+#: \plugins\paper\views\elements\pap_paper.ctp:88
+msgid "Paper view page: Publication"
+msgstr ""
+
+#: \plugins\paper\views\elements\pap_paper.ctp:148
 msgid "Form - PapPaper.Journal - Select a Journal"
 msgstr ""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:146
+#: \plugins\paper\views\elements\pap_paper.ctp:149
 #, fuzzy
 msgid "Form - PapPaper.Journal - Instruction to belongsTo Journal"
 msgstr "Preencha com o sobrenome completo, p.e., para José Carlos Penteado Lima: \"Penteado Lima\""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:151
+#: \plugins\paper\views\elements\pap_paper.ctp:154
 msgid "Form - PapPaper.Journal - Create a new Journal"
 msgstr ""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:152
+#: \plugins\paper\views\elements\pap_paper.ctp:155
 #, fuzzy
 msgid "Form - PapPaper.Journal - Edit this Journal"
 msgstr "Preencha com o sobrenome completo, p.e., para José Carlos Penteado Lima: \"Penteado Lima\""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:173
+#: \plugins\paper\views\elements\pap_paper.ctp:176
 #, fuzzy
 msgid "Form - PapPaper.Author"
 msgstr "Nome"
 
-#: \plugins\paper\views\elements\pap_paper.ctp:174
+#: \plugins\paper\views\elements\pap_paper.ctp:177
 #, fuzzy
 msgid "Form - PapPaper.author - instructions"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:186
+#: \plugins\paper\views\elements\pap_paper.ctp:189
 #, fuzzy
 msgid "Form - PapPaper new info superfield"
 msgstr "Nome da pessoa"
 
-#: \plugins\paper\views\elements\pap_paper.ctp:187
+#: \plugins\paper\views\elements\pap_paper.ctp:190
 #, fuzzy
 msgid "Form - PapPaper new info superfield - instructions"
 msgstr " "
 
-#: \plugins\paper\views\elements\pap_paper.ctp:197
+#: \plugins\paper\views\elements\pap_paper.ctp:200
 #, fuzzy
 msgid "Form - PapPaper.date"
 msgstr "Nome"
 
-#: \plugins\paper\views\elements\pap_paper.ctp:198
+#: \plugins\paper\views\elements\pap_paper.ctp:201
 #, fuzzy
 msgid "Form - PapPaper.date - instructions"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:211
+#: \plugins\paper\views\elements\pap_paper.ctp:214
 #, fuzzy
 msgid "Form - PapPaper.title"
 msgstr "Perfil"
 
-#: \plugins\paper\views\elements\pap_paper.ctp:212
+#: \plugins\paper\views\elements\pap_paper.ctp:215
 #, fuzzy
 msgid "Form - PapPaper.title - instructions"
 msgstr " "
 
-#: \plugins\paper\views\elements\pap_paper.ctp:218
+#: \plugins\paper\views\elements\pap_paper.ctp:221
 #, fuzzy
 msgid "Form - PapPaper.abstract"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:219
+#: \plugins\paper\views\elements\pap_paper.ctp:222
 #, fuzzy
 msgid "Form - PapPaper.abstract - instructions"
 msgstr "Preencha com o sobrenome completo, p.e., para José Carlos Penteado Lima: \"Penteado Lima\""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:226
+#: \plugins\paper\views\elements\pap_paper.ctp:229
 #, fuzzy
 msgid "Form - PapPaper.tags"
 msgstr "Nome"
 
-#: \plugins\paper\views\elements\pap_paper.ctp:227
+#: \plugins\paper\views\elements\pap_paper.ctp:230
 #, fuzzy
 msgid "Form - PapPaper.tags - instructions"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:245
+#: \plugins\paper\views\elements\pap_paper.ctp:248
 #, fuzzy
 msgid "Form - PapPaper new reference superfield"
 msgstr "Nome da pessoa"
 
-#: \plugins\paper\views\elements\pap_paper.ctp:246
+#: \plugins\paper\views\elements\pap_paper.ctp:249
 #, fuzzy
 msgid "Form - PapPaper new reference superfield - instructions"
 msgstr " "
 
-#: \plugins\paper\views\elements\pap_paper.ctp:254
+#: \plugins\paper\views\elements\pap_paper.ctp:257
 #, fuzzy
 msgid "Form - PapPaper.complete_reference"
 msgstr "Como esta pessoa deve ser citada?"
 
-#: \plugins\paper\views\elements\pap_paper.ctp:255
+#: \plugins\paper\views\elements\pap_paper.ctp:258
 #, fuzzy
 msgid "Form - PapPaper.complete_reference - instructions"
 msgstr "Por exemplo, para José Carlos Penteado Lima: \"LIMA, J. C. P.\""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:264
+#: \plugins\paper\views\elements\pap_paper.ctp:267
 #, fuzzy
 msgid "Form - PapPaper.link_to_it"
 msgstr "Qual é o link para o seu currículo lattes?"
 
-#: \plugins\paper\views\elements\pap_paper.ctp:265
+#: \plugins\paper\views\elements\pap_paper.ctp:268
 #, fuzzy
 msgid "Form - PapPaper.link_to_it - instructions"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:271
+#: \plugins\paper\views\elements\pap_paper.ctp:274
 #, fuzzy
 msgid "Form - PapPaper.file_id"
 msgstr "Nome"
 
-#: \plugins\paper\views\elements\pap_paper.ctp:272
+#: \plugins\paper\views\elements\pap_paper.ctp:275
 #, fuzzy
 msgid "Form - PapPaper.file_id - instructions"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
 
 #: \plugins\person\models\pers_person.php:17
-#, fuzzy
 msgid "PersPerson validation: lattes_link."
-msgstr "Erro de validação no sobrenome"
+msgstr "Este campo não pode ser deixado em branco."
 
 #: \plugins\person\models\pers_person.php:26
-#, fuzzy
 msgid "PersPerson validation: research_fields required, maxlength 300."
-msgstr "Erro de validação no sobrenome"
+msgstr "A área de pesquisa deve ser preenchida. O texto deve ter no máximo 300 caracteres."
 
 #: \plugins\person\models\pers_person.php:35
-#, fuzzy
 msgid "PersPerson validation: profile required, between 100 600."
-msgstr "Erro de validação no sobrenome"
+msgstr "O perfil deve ser preenchido. O texto deve ter entre 100 e 600 caracteres."
 
 #: \plugins\person\models\pers_person.php:44
 msgid "PersPerson validation: cooperation_with_dinafon required, between 100 400."
-msgstr ""
+msgstr "O texto deste campo deve ter entre 100 e 400 caracteres."
 
 #: \plugins\person\models\pers_person.php:53
-#, fuzzy
 msgid "PersPerson validation: position required, maxlength 150."
-msgstr "Erro de validação no sobrenome"
+msgstr "A posição deve ser preenchida. O texto deve ter no máximo 150 caracteres."
 
-#: \plugins\person\views\elements\pers_person.ctp:12;40;56
+#: \plugins\person\views\elements\pers_person.ctp:12;41;58
 msgid "pers_person element: research_fields caption"
 msgstr "Áreas de pesquisa"
 
-#: \plugins\person\views\elements\pers_person.ctp:47;61
+#: \plugins\person\views\elements\pers_person.ctp:48;63
 msgid "pers_person element: cooperation_with_dinafon caption"
 msgstr "Colaboração com o Dinafon"
 
-#: \plugins\person\views\elements\pers_person.ctp:58
+#: \plugins\person\views\elements\pers_person.ctp:60
 msgid "pers_person element: link_lattes caption"
 msgstr "Currículo Lattes"
 
-#: \plugins\person\views\elements\pers_person.ctp:64
+#: \plugins\person\views\elements\pers_person.ctp:66
 msgid "pers_person element: profile caption"
 msgstr "Perfil"
 
-#: \plugins\person\views\elements\pers_person.ctp:87
+#: \plugins\person\views\elements\pers_person.ctp:90
 msgid "Form - PersPerson name superfield"
 msgstr "Nome da pessoa"
 
-#: \plugins\person\views\elements\pers_person.ctp:88
+#: \plugins\person\views\elements\pers_person.ctp:91
 msgid "Form - PersPerson name superfield - instructions"
 msgstr " "
 
-#: \plugins\person\views\elements\pers_person.ctp:131
+#: \plugins\person\views\elements\pers_person.ctp:125
+msgid "Form - PersPerson.img_id"
+msgstr "Foto"
+
+#: \plugins\person\views\elements\pers_person.ctp:126
+msgid "Form - PersPerson.img_id - instructions"
+msgstr "A foto deve ser preto e branca e ter formato quadrado. Caso a fotografia tenha outro formato ela será automaticamente recortada."
+
+#: \plugins\person\views\elements\pers_person.ctp:133
 msgid "Form - PersPerson.position"
-msgstr ""
+msgstr "Posição"
 
-#: \plugins\person\views\elements\pers_person.ctp:132
-#, fuzzy
+#: \plugins\person\views\elements\pers_person.ctp:134
 msgid "Form - PersPerson.position - instructions"
-msgstr " "
+msgstr "P. ex. mestrando em Ciências Sociais no IFCH."
 
-#: \plugins\person\views\elements\pers_person.ctp:138
+#: \plugins\person\views\elements\pers_person.ctp:140
 msgid "Form - PersPerson.lattes_link"
 msgstr "Qual é o link para o seu currículo lattes?"
 
-#: \plugins\person\views\elements\pers_person.ctp:139
+#: \plugins\person\views\elements\pers_person.ctp:141
 msgid "Form - PersPerson.lattes_link - instructions"
 msgstr " "
 
-#: \plugins\person\views\elements\pers_person.ctp:145
+#: \plugins\person\views\elements\pers_person.ctp:147
 msgid "Form - PersPerson.research_fields"
 msgstr "Quais são os campos de pesquisa em que atua?"
 
-#: \plugins\person\views\elements\pers_person.ctp:146
+#: \plugins\person\views\elements\pers_person.ctp:148
 msgid "Form - PersPerson.research_fields - instructions"
 msgstr "P. e.: teoria de sistemas dinâmicos, dinâmica fônica."
 
-#: \plugins\person\views\elements\pers_person.ctp:154
+#: \plugins\person\views\elements\pers_person.ctp:156
 msgid "Form - PersPerson.profile"
 msgstr "Perfil"
 
-#: \plugins\person\views\elements\pers_person.ctp:155
+#: \plugins\person\views\elements\pers_person.ctp:157
 msgid "Form - PersPerson.profile - instructions"
 msgstr " "
 
-#: \plugins\person\views\elements\pers_person.ctp:161
+#: \plugins\person\views\elements\pers_person.ctp:163
 msgid "Form - PersPerson.cooperation_with_dinafon"
 msgstr "Como colabora com o Dinafon?"
 
-#: \plugins\person\views\elements\pers_person.ctp:162
+#: \plugins\person\views\elements\pers_person.ctp:164
 msgid "Form - PersPerson.cooperation_with_dinafon - instructions"
 msgstr "Descreva em poucas palavras como que a pessoa participa e/ou colabora com o Dinafon."
 
-#: \plugins\person\views\elements\pers_person.ctp:169
-#, fuzzy
+#: \plugins\person\views\elements\pers_person.ctp:171
 msgid "Form - PersPerson contact info superfield"
-msgstr "Nome da pessoa"
+msgstr "Informações de contato"
 
-#: \plugins\person\views\elements\pers_person.ctp:170
-#, fuzzy
+#: \plugins\person\views\elements\pers_person.ctp:172
 msgid "Form - PersPerson contact info superfield - instructions"
-msgstr " "
+msgstr "As informações de contato são opcionais, devem ser preenchidas se a pessoa quiser divulgar na página meios de contato."
 
-#: \plugins\person\views\elements\pers_person.ctp:177
-#, fuzzy
+#: \plugins\person\views\elements\pers_person.ctp:179
 msgid "Form - PersPerson.phone1"
-msgstr "Nome"
+msgstr "Telefone principal (opcional)"
 
-#: \plugins\person\views\elements\pers_person.ctp:178
-#, fuzzy
+#: \plugins\person\views\elements\pers_person.ctp:180
 msgid "Form - PersPerson.phone1 - instructions"
-msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+msgstr " "
 
-#: \plugins\person\views\elements\pers_person.ctp:184
-#, fuzzy
+#: \plugins\person\views\elements\pers_person.ctp:186
 msgid "Form - PersPerson.phone2"
-msgstr "Nome"
+msgstr "Outro telefone (opcional)"
 
-#: \plugins\person\views\elements\pers_person.ctp:185
-#, fuzzy
+#: \plugins\person\views\elements\pers_person.ctp:187
 msgid "Form - PersPerson.phone2 - instructions"
-msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+msgstr " "
 
-#: \plugins\person\views\elements\pers_person.ctp:191
-#, fuzzy
+#: \plugins\person\views\elements\pers_person.ctp:193
 msgid "Form - PersPerson.link1"
-msgstr "Qual é o link para o seu currículo lattes?"
+msgstr "Endereço de uma página de internet (opcional)"
 
-#: \plugins\person\views\elements\pers_person.ctp:192
-#, fuzzy
+#: \plugins\person\views\elements\pers_person.ctp:194
 msgid "Form - PersPerson.link1 - instructions"
-msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+msgstr "Por exemplo: http://www.facebook.com/Erik.Spiekermann.Fanpage"
 
-#: \plugins\person\views\elements\pers_person.ctp:198
-#, fuzzy
+#: \plugins\person\views\elements\pers_person.ctp:200
 msgid "Form - PersPerson.link1_caption"
-msgstr "Qual é o link para o seu currículo lattes?"
+msgstr "Texto do link (opcional)"
 
-#: \plugins\person\views\elements\pers_person.ctp:199
-#, fuzzy
+#: \plugins\person\views\elements\pers_person.ctp:201
 msgid "Form - PersPerson.link1_caption - instructions"
-msgstr " "
+msgstr "Qual é o texto que deve aparecer no link anterior? P. ex.: Facebook."
 
-#: \plugins\person\views\elements\pers_person.ctp:206
-#, fuzzy
+#: \plugins\person\views\elements\pers_person.ctp:208
 msgid "Form - PersPerson.link2"
-msgstr "Qual é o link para o seu currículo lattes?"
+msgstr "Outro endereço de internet (opcional)"
 
-#: \plugins\person\views\elements\pers_person.ctp:207
-#, fuzzy
+#: \plugins\person\views\elements\pers_person.ctp:209
 msgid "Form - PersPerson.link2 - instructions"
-msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+msgstr "  "
 
-#: \plugins\person\views\elements\pers_person.ctp:213
-#, fuzzy
+#: \plugins\person\views\elements\pers_person.ctp:215
 msgid "Form - PersPerson.link2_caption"
-msgstr "Qual é o link para o seu currículo lattes?"
+msgstr "Texto do link (opcional)"
 
-#: \plugins\person\views\elements\pers_person.ctp:214
-#, fuzzy
+#: \plugins\person\views\elements\pers_person.ctp:216
 msgid "Form - PersPerson.link2_caption - instructions"
-msgstr " "
+msgstr "  "
 
-#: \plugins\person\views\elements\pers_person.ctp:220
-#, fuzzy
+#: \plugins\person\views\elements\pers_person.ctp:222
 msgid "Form - PersPerson.link3"
-msgstr "Qual é o link para o seu currículo lattes?"
+msgstr "Outro endereço de internet (opcional)"
 
-#: \plugins\person\views\elements\pers_person.ctp:221
-#, fuzzy
+#: \plugins\person\views\elements\pers_person.ctp:223
 msgid "Form - PersPerson.link3 - instructions"
-msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
-
-#: \plugins\person\views\elements\pers_person.ctp:228
-#, fuzzy
-msgid "Form - PersPerson.link3_caption"
-msgstr "Qual é o link para o seu currículo lattes?"
-
-#: \plugins\person\views\elements\pers_person.ctp:229
-#, fuzzy
-msgid "Form - PersPerson.link3_caption - instructions"
 msgstr " "
 
-#: \plugins\person\views\elements\pers_person.ctp:237
-#, fuzzy
-msgid "Form - PersPerson.img_id"
-msgstr "Nome"
+#: \plugins\person\views\elements\pers_person.ctp:230
+msgid "Form - PersPerson.link3_caption"
+msgstr "Texto do link (opcional)"
 
-#: \plugins\person\views\elements\pers_person.ctp:238
-#, fuzzy
-msgid "Form - PersPerson.img_id - instructions"
-msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+#: \plugins\person\views\elements\pers_person.ctp:231
+msgid "Form - PersPerson.link3_caption - instructions"
+msgstr "  "
 
 #: \plugins\popup\views\elements\popup.ctp:31
 msgid "Popup plugin "
@@ -1355,14 +1454,13 @@ msgstr ""
 msgid "TextTextCork Model: This text hasn't been written yet. It's up to the site content editor to write it."
 msgstr "Este texto ainda não foi redigido ainda."
 
-#: \plugins\text_cork\views\elements\text_text_cork.ctp:52
+#: \plugins\text_cork\views\elements\text_text_cork.ctp:43;52
 msgid "Cork Form - TextTextCork.text"
 msgstr "O texto"
 
-#: \plugins\text_cork\views\elements\text_text_cork.ctp:53
-#, fuzzy
+#: \plugins\text_cork\views\elements\text_text_cork.ctp:44;53
 msgid "Cork Form - TextTextCork.text - instructions"
-msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+msgstr " "
 
 #: \plugins\typographer\views\elements\backstage_layout.ctp:18
 msgid "Content management area"
@@ -1483,6 +1581,18 @@ msgstr ""
 msgid "about_dinafon page: Know all people"
 msgstr ""
 
+#: \views\principal\index.ctp:29
+msgid "public_page: See more news"
+msgstr ""
+
+#: \views\principal\index.ctp:45
+msgid "public_page: More papers from Dinafon"
+msgstr ""
+
+#: \views\principal\index.ctp:74
+msgid "public_page: More about Dinafon"
+msgstr ""
+
 #: \views\translate_strings\translate_strings.ctp:4
 msgid "Backstage edit page: Editing a \"Person.PersPerson\""
 msgstr "Editando o perfil de uma pessoa"
@@ -1544,66 +1654,70 @@ msgid "MODULE EveEvent human name"
 msgstr "Evento"
 
 #: \views\translate_strings\translate_strings.ctp:26
-msgid "Popup plugin success type"
-msgstr " "
+msgid "Popup plugin error type"
+msgstr "Erro"
 
 #: \views\translate_strings\translate_strings.ctp:27
+msgid "Popup plugin success type"
+msgstr "  "
+
+#: \views\translate_strings\translate_strings.ctp:28
 msgid "Popup plugin notice type"
 msgstr " "
 
-#: \views\translate_strings\translate_strings.ctp:31
+#: \views\translate_strings\translate_strings.ctp:32
 msgid "Dashboard language abrev.: por"
 msgstr "PT"
 
-#: \views\translate_strings\translate_strings.ctp:32
+#: \views\translate_strings\translate_strings.ctp:33
 msgid "Dashboard language abrev.: eng"
 msgstr "EN"
 
-#: \views\translate_strings\translate_strings.ctp:33
+#: \views\translate_strings\translate_strings.ctp:34
 msgid "Dashboard language abrev.: nno"
 msgstr "NN"
 
-#: \views\translate_strings\translate_strings.ctp:34
+#: \views\translate_strings\translate_strings.ctp:35
 msgid "Dashboard language abrev.: lav"
 msgstr "LV"
 
-#: \views\translate_strings\translate_strings.ctp:35
+#: \views\translate_strings\translate_strings.ctp:36
 msgid "Dashboard language abrev.: gre"
 msgstr "EL"
 
-#: \views\translate_strings\translate_strings.ctp:36
+#: \views\translate_strings\translate_strings.ctp:37
 msgid "Dashboard language abrev.: ukr"
 msgstr "UK"
 
-#: \views\translate_strings\translate_strings.ctp:37
+#: \views\translate_strings\translate_strings.ctp:38
 msgid "Dashboard language abrev.: ger"
 msgstr "DE"
 
-#: \views\translate_strings\translate_strings.ctp:38
+#: \views\translate_strings\translate_strings.ctp:39
 msgid "Language name: por"
 msgstr "português"
 
-#: \views\translate_strings\translate_strings.ctp:39
+#: \views\translate_strings\translate_strings.ctp:40
 msgid "Language name: eng"
 msgstr "inglês"
 
-#: \views\translate_strings\translate_strings.ctp:40
+#: \views\translate_strings\translate_strings.ctp:41
 msgid "Language name: nno"
 msgstr "novo norueguês"
 
-#: \views\translate_strings\translate_strings.ctp:41
+#: \views\translate_strings\translate_strings.ctp:42
 msgid "Language name: lav"
 msgstr "letão"
 
-#: \views\translate_strings\translate_strings.ctp:42
+#: \views\translate_strings\translate_strings.ctp:43
 msgid "Language name: gre"
 msgstr "grego"
 
-#: \views\translate_strings\translate_strings.ctp:43
+#: \views\translate_strings\translate_strings.ctp:44
 msgid "Language name: ukr"
 msgstr "ucraniano"
 
-#: \views\translate_strings\translate_strings.ctp:44
+#: \views\translate_strings\translate_strings.ctp:45
 msgid "Language name: ger"
 msgstr "alemão"
 
@@ -1638,6 +1752,19 @@ msgstr ""
 #: \plugins\utils\models\behaviors\toggleable.php:93
 msgid "Invalid record"
 msgstr ""
+
+#~ msgid "POPUP PLUGIN ERROR TYPE"
+#~ msgstr "Erro"
+
+#~ msgid "POPUP PLUGIN SUCCESS TYPE"
+#~ msgstr " "
+
+#~ msgid "POPUP PLUGIN NOTICE TYPE"
+#~ msgstr " "
+
+#, fuzzy
+#~ msgid "PapPaper validation: auth_author_id."
+#~ msgstr "Erro de validação no sobrenome"
 
 #~ msgid "english"
 #~ msgstr "inglês"
