@@ -45,6 +45,4 @@
 		echo $this->Bl->ebox();
 	echo $this->Bl->eboxcontainer();
 	
-	echo $this->Html->scriptBlock("
-		new Popup('$id', $list_links).addCallback(function(action){ $callback; });
-	");
+	echo $this->Html->scriptBlock("new Popup('$id', $list_links).addCallback(function(action){ $callback; });");

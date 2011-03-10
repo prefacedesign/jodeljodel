@@ -37,32 +37,32 @@ msgid "AuthAuthor validation: reference_name."
 msgstr "Este campo não pode ser deixado em branco."
 
 #: \plugins\author\views\elements\auth_author.ctp:38
-#: \plugins\person\views\elements\pers_person.ctp:102
+#: \plugins\person\views\elements\pers_person.ctp:145
 msgid "Form - PersPerson.surname"
 msgstr "Sobrenome"
 
 #: \plugins\author\views\elements\auth_author.ctp:39
-#: \plugins\person\views\elements\pers_person.ctp:103
+#: \plugins\person\views\elements\pers_person.ctp:146
 msgid "Form - PersPerson.surname - instructions"
 msgstr "Preencha com o sobrenome completo, p.e., para José Carlos Penteado Lima: \"Penteado Lima\""
 
 #: \plugins\author\views\elements\auth_author.ctp:45
-#: \plugins\person\views\elements\pers_person.ctp:109
+#: \plugins\person\views\elements\pers_person.ctp:152
 msgid "Form - PersPerson.name"
 msgstr "Nome"
 
 #: \plugins\author\views\elements\auth_author.ctp:46
-#: \plugins\person\views\elements\pers_person.ctp:110
+#: \plugins\person\views\elements\pers_person.ctp:153
 msgid "Form - PersPerson.name - instructions"
 msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
 
 #: \plugins\author\views\elements\auth_author.ctp:52
-#: \plugins\person\views\elements\pers_person.ctp:116
+#: \plugins\person\views\elements\pers_person.ctp:159
 msgid "Form - PersPerson.reference_name"
 msgstr "Como esta pessoa deve ser citada?"
 
 #: \plugins\author\views\elements\auth_author.ctp:53
-#: \plugins\person\views\elements\pers_person.ctp:117
+#: \plugins\person\views\elements\pers_person.ctp:160
 msgid "Form - PersPerson.reference_name - instructions"
 msgstr "Por exemplo, para José Carlos Penteado Lima: \"LIMA, J. C. P.\""
 
@@ -1242,147 +1242,155 @@ msgstr "O texto deste campo deve ter entre 100 e 400 caracteres."
 msgid "PersPerson validation: position required, maxlength 150."
 msgstr "A posição deve ser preenchida. O texto deve ter no máximo 150 caracteres."
 
-#: \plugins\person\views\elements\pers_person.ctp:12;41;58
+#: \plugins\person\views\elements\pers_person.ctp:12;41;60
 msgid "pers_person element: research_fields caption"
 msgstr "Áreas de pesquisa"
 
-#: \plugins\person\views\elements\pers_person.ctp:48;63
+#: \plugins\person\views\elements\pers_person.ctp:48;70
 msgid "pers_person element: cooperation_with_dinafon caption"
 msgstr "Colaboração com o Dinafon"
 
-#: \plugins\person\views\elements\pers_person.ctp:60
+#: \plugins\person\views\elements\pers_person.ctp:62
 msgid "pers_person element: link_lattes caption"
 msgstr "Currículo Lattes"
 
-#: \plugins\person\views\elements\pers_person.ctp:66
+#: \plugins\person\views\elements\pers_person.ctp:75
 msgid "pers_person element: profile caption"
 msgstr "Perfil"
 
-#: \plugins\person\views\elements\pers_person.ctp:90
+#: \plugins\person\views\elements\pers_person.ctp:77
+msgid "pers_person element: contact caption"
+msgstr "Contato"
+
+#: \plugins\person\views\elements\pers_person.ctp:82
+msgid "pers_person element: internet caption"
+msgstr "Na internet"
+
+#: \plugins\person\views\elements\pers_person.ctp:133
 msgid "Form - PersPerson name superfield"
 msgstr "Nome da pessoa"
 
-#: \plugins\person\views\elements\pers_person.ctp:91
+#: \plugins\person\views\elements\pers_person.ctp:134
 msgid "Form - PersPerson name superfield - instructions"
 msgstr " "
 
-#: \plugins\person\views\elements\pers_person.ctp:125
+#: \plugins\person\views\elements\pers_person.ctp:168
 msgid "Form - PersPerson.img_id"
 msgstr "Foto"
 
-#: \plugins\person\views\elements\pers_person.ctp:126
+#: \plugins\person\views\elements\pers_person.ctp:169
 msgid "Form - PersPerson.img_id - instructions"
 msgstr "A foto deve ser preto e branca e ter formato quadrado. Caso a fotografia tenha outro formato ela será automaticamente recortada."
 
-#: \plugins\person\views\elements\pers_person.ctp:133
+#: \plugins\person\views\elements\pers_person.ctp:176
 msgid "Form - PersPerson.position"
 msgstr "Posição"
 
-#: \plugins\person\views\elements\pers_person.ctp:134
+#: \plugins\person\views\elements\pers_person.ctp:177
 msgid "Form - PersPerson.position - instructions"
 msgstr "P. ex. mestrando em Ciências Sociais no IFCH."
 
-#: \plugins\person\views\elements\pers_person.ctp:140
+#: \plugins\person\views\elements\pers_person.ctp:183
 msgid "Form - PersPerson.lattes_link"
 msgstr "Qual é o link para o seu currículo lattes?"
 
-#: \plugins\person\views\elements\pers_person.ctp:141
+#: \plugins\person\views\elements\pers_person.ctp:184
 msgid "Form - PersPerson.lattes_link - instructions"
 msgstr " "
 
-#: \plugins\person\views\elements\pers_person.ctp:147
+#: \plugins\person\views\elements\pers_person.ctp:190
 msgid "Form - PersPerson.research_fields"
 msgstr "Quais são os campos de pesquisa em que atua?"
 
-#: \plugins\person\views\elements\pers_person.ctp:148
+#: \plugins\person\views\elements\pers_person.ctp:191
 msgid "Form - PersPerson.research_fields - instructions"
 msgstr "P. e.: teoria de sistemas dinâmicos, dinâmica fônica."
 
-#: \plugins\person\views\elements\pers_person.ctp:156
+#: \plugins\person\views\elements\pers_person.ctp:199
 msgid "Form - PersPerson.profile"
 msgstr "Perfil"
 
-#: \plugins\person\views\elements\pers_person.ctp:157
+#: \plugins\person\views\elements\pers_person.ctp:200
 msgid "Form - PersPerson.profile - instructions"
 msgstr " "
 
-#: \plugins\person\views\elements\pers_person.ctp:163
+#: \plugins\person\views\elements\pers_person.ctp:206
 msgid "Form - PersPerson.cooperation_with_dinafon"
 msgstr "Como colabora com o Dinafon?"
 
-#: \plugins\person\views\elements\pers_person.ctp:164
+#: \plugins\person\views\elements\pers_person.ctp:207
 msgid "Form - PersPerson.cooperation_with_dinafon - instructions"
 msgstr "Descreva em poucas palavras como que a pessoa participa e/ou colabora com o Dinafon."
 
-#: \plugins\person\views\elements\pers_person.ctp:171
+#: \plugins\person\views\elements\pers_person.ctp:214
 msgid "Form - PersPerson contact info superfield"
 msgstr "Informações de contato"
 
-#: \plugins\person\views\elements\pers_person.ctp:172
+#: \plugins\person\views\elements\pers_person.ctp:215
 msgid "Form - PersPerson contact info superfield - instructions"
 msgstr "As informações de contato são opcionais, devem ser preenchidas se a pessoa quiser divulgar na página meios de contato."
 
-#: \plugins\person\views\elements\pers_person.ctp:179
+#: \plugins\person\views\elements\pers_person.ctp:222
 msgid "Form - PersPerson.phone1"
 msgstr "Telefone principal (opcional)"
 
-#: \plugins\person\views\elements\pers_person.ctp:180
+#: \plugins\person\views\elements\pers_person.ctp:223
 msgid "Form - PersPerson.phone1 - instructions"
 msgstr " "
 
-#: \plugins\person\views\elements\pers_person.ctp:186
+#: \plugins\person\views\elements\pers_person.ctp:229
 msgid "Form - PersPerson.phone2"
 msgstr "Outro telefone (opcional)"
 
-#: \plugins\person\views\elements\pers_person.ctp:187
+#: \plugins\person\views\elements\pers_person.ctp:230
 msgid "Form - PersPerson.phone2 - instructions"
 msgstr " "
 
-#: \plugins\person\views\elements\pers_person.ctp:193
+#: \plugins\person\views\elements\pers_person.ctp:236
 msgid "Form - PersPerson.link1"
 msgstr "Endereço de uma página de internet (opcional)"
 
-#: \plugins\person\views\elements\pers_person.ctp:194
+#: \plugins\person\views\elements\pers_person.ctp:237
 msgid "Form - PersPerson.link1 - instructions"
 msgstr "Por exemplo: http://www.facebook.com/Erik.Spiekermann.Fanpage"
 
-#: \plugins\person\views\elements\pers_person.ctp:200
+#: \plugins\person\views\elements\pers_person.ctp:243
 msgid "Form - PersPerson.link1_caption"
 msgstr "Texto do link (opcional)"
 
-#: \plugins\person\views\elements\pers_person.ctp:201
+#: \plugins\person\views\elements\pers_person.ctp:244
 msgid "Form - PersPerson.link1_caption - instructions"
 msgstr "Qual é o texto que deve aparecer no link anterior? P. ex.: Facebook."
 
-#: \plugins\person\views\elements\pers_person.ctp:208
+#: \plugins\person\views\elements\pers_person.ctp:251
 msgid "Form - PersPerson.link2"
 msgstr "Outro endereço de internet (opcional)"
 
-#: \plugins\person\views\elements\pers_person.ctp:209
+#: \plugins\person\views\elements\pers_person.ctp:252
 msgid "Form - PersPerson.link2 - instructions"
 msgstr "  "
 
-#: \plugins\person\views\elements\pers_person.ctp:215
+#: \plugins\person\views\elements\pers_person.ctp:258
 msgid "Form - PersPerson.link2_caption"
 msgstr "Texto do link (opcional)"
 
-#: \plugins\person\views\elements\pers_person.ctp:216
+#: \plugins\person\views\elements\pers_person.ctp:259
 msgid "Form - PersPerson.link2_caption - instructions"
 msgstr "  "
 
-#: \plugins\person\views\elements\pers_person.ctp:222
+#: \plugins\person\views\elements\pers_person.ctp:265
 msgid "Form - PersPerson.link3"
 msgstr "Outro endereço de internet (opcional)"
 
-#: \plugins\person\views\elements\pers_person.ctp:223
+#: \plugins\person\views\elements\pers_person.ctp:266
 msgid "Form - PersPerson.link3 - instructions"
 msgstr " "
 
-#: \plugins\person\views\elements\pers_person.ctp:230
+#: \plugins\person\views\elements\pers_person.ctp:273
 msgid "Form - PersPerson.link3_caption"
 msgstr "Texto do link (opcional)"
 
-#: \plugins\person\views\elements\pers_person.ctp:231
+#: \plugins\person\views\elements\pers_person.ctp:274
 msgid "Form - PersPerson.link3_caption - instructions"
 msgstr "  "
 

@@ -48,6 +48,12 @@ Configure::write('Media.filter_plus.people', array(
 				$dinafonTools['vg']->size(array('M' => 4, 'g' => -1), false)
 			)
 		),
+		'preview' => array(
+			'fitCrop' => array(
+				$dinafonTools['hg']->size(array('M' => 3, 'g' => -1), false),
+				$dinafonTools['vg']->size(array('M' => 3, 'g' => -1), false)
+			)
+		),
 		'backstage_list' => array('fitCrop' => array(150, 50))
 	)
 ));
