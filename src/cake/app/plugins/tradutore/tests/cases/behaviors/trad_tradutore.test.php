@@ -421,6 +421,7 @@ class TradTradutoreTestCase extends CakeTestCase
 	*/
 	
 	
+	
     function testGetSetLanguage()
     {
         $expected = Configure::read('Tradutore.mainLanguage');
@@ -437,11 +438,31 @@ class TradTradutoreTestCase extends CakeTestCase
         $this->assertEqual($expected, $result);
     }
 
-	
-	function testFindWithoutContainOrFields()
+	/*
+	function testSimplesFinds()
     {
-        $this->Play->setLanguage('eng');
-        $result = $this->Play->find('first', array('recursive' => 2));
+		$this->Play->setLanguage('eng');
+		$this->Play->recursive = -1;
+        $result = $this->Play->findById(1);
+		
+		$expected = array(
+			'Play' => array(
+				'id' => 1, 
+				'author_id' => 1, 
+				'language' => 'eng', 
+				'title' => 'Antony and Cleopatra', 
+				'year' => 1606,
+				'play_id' => 1,
+				'opening_excerpt' => "Phil: Nay, but this dotage of our gengeral's..."
+			)
+        );
+        $this->assertEqual($expected, $result);
+		
+		
+		$this->Play->recursive = 0;
+        $result = $this->Play->findById(1);
+		//debug($result);
+		
 		$expected = array(
 			'Play' => array(
 				'id' => 1, 
@@ -455,6 +476,129 @@ class TradTradutoreTestCase extends CakeTestCase
 			'Author' => array(
 				'id' => 1,
 				'name' => 'Shakespeare',
+				'author_id' => 1,
+				'language' => 'eng',
+				'nacionality' => 'English'
+			),
+			'Scenario' => array(
+				'id' => 1,
+				'play_id' => 1,
+				'number_of_objects' => 70,
+				'scenario_id' => 1,
+				'language' => 'eng',
+				'concept' => 'Classic'
+			),
+        );
+        $this->assertEqual($expected, $result);
+		
+		
+		
+		$this->Play->recursive = 1;
+        $result = $this->Play->findById(1);
+		//debug($result);
+		
+		$expected = array(
+			'Play' => array(
+				'id' => 1, 
+				'author_id' => 1, 
+				'language' => 'eng', 
+				'title' => 'Antony and Cleopatra', 
+				'year' => 1606,
+				'play_id' => 1,
+				'opening_excerpt' => "Phil: Nay, but this dotage of our gengeral's..."
+			),
+			'Author' => array(
+				'id' => 1,
+				'name' => 'Shakespeare',
+				'author_id' => 1,
+				'language' => 'eng',
+				'nacionality' => 'English'
+			),
+			'Scenario' => array(
+				'id' => 1,
+				'play_id' => 1,
+				'number_of_objects' => 70,
+				'scenario_id' => 1,
+				'language' => 'eng',
+				'concept' => 'Classic'
+			),
+			'Image' => array(
+				0 => array(						
+					'id' => 1,
+					'play_id' => 1,
+					'author_id' => null,
+					'file' => 'teste.bmp'
+				),
+				1 => array(						
+					'id' => 2,
+					'play_id' => 1,
+					'author_id' => null,
+					'file' => 'oficial.bmp'
+				)
+			),
+			'Advertisement' => array(
+				0 => array(
+					'id' => 1,
+					'play_id' => 1,
+					'advertisement_id' => 1,
+					'language' => 'eng',
+					'advertisement' => "Antony and Cleopatra is a tragedy by William Shakespeare, believed to have been written sometime between 1603 and 1607. It was first printed in the First Folio of 1623. The plot is based on Thomas North's translation of Plutarch's Life of Marcus Antonius and follows the relationship between Cleopatra and Mark Antony from the time of the Parthian War to Cleopatra's suicide. The major antagonist is Octavius Caesar, one of Antony's fellow triumviri and the future first emperor of Rome. The tragedy is a Roman play characterized by swift, panoramic shifts in geographical locations and in registers, alternating between sensual, imaginative Alexandria and the more pragmatic, austere Rome."
+				),
+				1 => array(
+					'id' => 2,
+					'play_id' => 1,
+					'advertisement_id' => 2,
+					'language' => 'eng',
+					'advertisement' => "Mark Antony – one of the Triumvirs of Rome along with Octavian and Marcus Aemilius Lepidus – has neglected his soldierly duties after being beguiled by Egypt's Queen, Cleopatra VII. He ignores Rome's domestic problems, including the fact that his third wife Fulvia rebelled against Octavian and then died."
+				)
+			),
+			'Tag' => array(
+				0 => array(
+					'id' => 1,
+					'tag_id' => 1,
+					'language' => 'eng',
+					'tag' => 'cool',
+				),
+				1 => array(
+					'id' => 2,
+					'tag_id' => 2,
+					'language' => 'eng',
+					'tag' => 'beautiful'
+				),
+				2 => array(
+					'id' => 3,
+					'tag_id' => 3,
+					'language' => 'eng',
+					'tag' => 'horrendous'
+				)
+			)
+        );
+        $this->assertEqual($expected, $result);
+		
+	}
+	
+	function testRecursiveFind()
+    {
+		$this->Play->recursive = 2;
+        $result = $this->Play->findById(1);
+		//debug($result);
+		
+		$expected = array(
+			'Play' => array(
+				'id' => 1, 
+				'author_id' => 1, 
+				'language' => 'eng', 
+				'title' => 'Antony and Cleopatra', 
+				'year' => 1606,
+				'play_id' => 1,
+				'opening_excerpt' => "Phil: Nay, but this dotage of our gengeral's..."
+			),
+			'Author' => array(
+				'id' => 1,
+				'name' => 'Shakespeare',
+				'author_id' => 1,
+				'language' => 'eng',
+				'nacionality' => 'English',
 				'Image' => array(
 					0 => array(						
 						'id' => 11,
@@ -464,15 +608,112 @@ class TradTradutoreTestCase extends CakeTestCase
 					)
 				),
 				'Bioinfo' => array(
-					0 => array(
+					0 => array(						
 						'id' => 1,
 						'author_id' => 1,
+						'bioinfo_id' => 1,
+						'language' => 'eng',
+						'type' => 'secret',
+						'info' => "Phil: Nay, but this dotage of our general's..."
 					),
-					1 => array(
+					1 => array(						
 						'id' => 2,
 						'author_id' => 1,
+						'bioinfo_id' => 2,
+						'language' => 'eng',
+						'type' => 'open',
+						'info' => "Phil: Nay, but this dotage of our general's..."
 					)
 				),
+				'Video' => array(
+					0 => array(						
+						'id' => 1,
+						'author_translation_id' => 1,
+						'file' => 'Shakespeare life.avi'
+					)
+				),
+			),
+			'Scenario' => array(
+				'id' => 1,
+				'play_id' => 1,
+				'number_of_objects' => 70,
+				'scenario_id' => 1,
+				'language' => 'eng',
+				'concept' => 'Classic'
+			),
+			'Image' => array(
+				0 => array(						
+					'id' => 1,
+					'play_id' => 1,
+					'author_id' => null,
+					'file' => 'teste.bmp'
+				),
+				1 => array(						
+					'id' => 2,
+					'play_id' => 1,
+					'author_id' => null,
+					'file' => 'oficial.bmp'
+				)
+			),
+			'Advertisement' => array(
+				0 => array(
+					'id' => 1,
+					'play_id' => 1,
+					'advertisement_id' => 1,
+					'language' => 'eng',
+					'advertisement' => "Antony and Cleopatra is a tragedy by William Shakespeare, believed to have been written sometime between 1603 and 1607. It was first printed in the First Folio of 1623. The plot is based on Thomas North's translation of Plutarch's Life of Marcus Antonius and follows the relationship between Cleopatra and Mark Antony from the time of the Parthian War to Cleopatra's suicide. The major antagonist is Octavius Caesar, one of Antony's fellow triumviri and the future first emperor of Rome. The tragedy is a Roman play characterized by swift, panoramic shifts in geographical locations and in registers, alternating between sensual, imaginative Alexandria and the more pragmatic, austere Rome."
+				),
+				1 => array(
+					'id' => 2,
+					'play_id' => 1,
+					'advertisement_id' => 2,
+					'language' => 'eng',
+					'advertisement' => "Mark Antony – one of the Triumvirs of Rome along with Octavian and Marcus Aemilius Lepidus – has neglected his soldierly duties after being beguiled by Egypt's Queen, Cleopatra VII. He ignores Rome's domestic problems, including the fact that his third wife Fulvia rebelled against Octavian and then died."
+				)
+			),
+			'Tag' => array(
+				0 => array(
+					'id' => 1,
+					'tag_id' => 1,
+					'language' => 'eng',
+					'tag' => 'cool',
+				),
+				1 => array(
+					'id' => 2,
+					'tag_id' => 2,
+					'language' => 'eng',
+					'tag' => 'beautiful'
+				),
+				2 => array(
+					'id' => 3,
+					'tag_id' => 3,
+					'language' => 'eng',
+					'tag' => 'horrendous'
+				)
+			)
+        );
+        $this->assertEqual($expected, $result);
+    }
+	
+	
+	
+	function testFindWithoutContainOrFields()
+    {
+        $this->Play->setLanguage('eng');
+        $result = $this->Play->find('first', array('recursive' => 1));
+		$expected = array(
+			'Play' => array(
+				'id' => 1, 
+				'author_id' => 1, 
+				'language' => 'eng', 
+				'title' => 'Antony and Cleopatra', 
+				'year' => 1606,
+				'play_id' => 1,
+				'opening_excerpt' => "Phil: Nay, but this dotage of our gengeral's..."
+			),
+			'Author' => array(
+				'id' => 1,
+				'name' => 'Shakespeare',
 				'author_id' => 1,
 				'language' => 'eng',
 				'nacionality' => 'English'
@@ -485,15 +726,24 @@ class TradTradutoreTestCase extends CakeTestCase
 				'language' => 'eng',
 				'concept' => 'Classic',
 			),
+			'Image' => array(
+				0 => array(						
+					'id' => 1,
+					'play_id' => 1,
+					'author_id' => null,
+					'file' => 'teste.bmp'
+				),
+				1 => array(						
+					'id' => 2,
+					'play_id' => 1,
+					'author_id' => null,
+					'file' => 'oficial.bmp'
+				)
+			),
 			'Advertisement' => array(
 				0 => array(
 					'id' => 1,
 					'play_id' => 1,
-					'Play' => array(
-						'id' => 1,
-						'author_id' => 1,
-						'year' => 1606,
-					),
 					'advertisement_id' => 1,
 					'language' => 'eng',
 					'advertisement' => "Antony and Cleopatra is a tragedy by William Shakespeare, believed to have been written sometime between 1603 and 1607. It was first printed in the First Folio of 1623. The plot is based on Thomas North's translation of Plutarch's Life of Marcus Antonius and follows the relationship between Cleopatra and Mark Antony from the time of the Parthian War to Cleopatra's suicide. The major antagonist is Octavius Caesar, one of Antony's fellow triumviri and the future first emperor of Rome. The tragedy is a Roman play characterized by swift, panoramic shifts in geographical locations and in registers, alternating between sensual, imaginative Alexandria and the more pragmatic, austere Rome.",
@@ -501,11 +751,6 @@ class TradTradutoreTestCase extends CakeTestCase
 				1 => array(
 					'id' => 2,
 					'play_id' => 1,
-					'Play' => array(
-						'id' => 1,
-						'author_id' => 1,
-						'year' => 1606,
-					),
 					'advertisement_id' => 2,
 					'language' => 'eng',
 					'advertisement' => "Mark Antony – one of the Triumvirs of Rome along with Octavian and Marcus Aemilius Lepidus – has neglected his soldierly duties after being beguiled by Egypt's Queen, Cleopatra VII. He ignores Rome's domestic problems, including the fact that his third wife Fulvia rebelled against Octavian and then died."
@@ -532,10 +777,49 @@ class TradTradutoreTestCase extends CakeTestCase
 				)
 			)
         );
+		//debug($result);
         $this->assertEqual($expected, $result);
 		
     }
 
+	*/
+		
+	function testOtherSimplesFinds()
+    {
+		$this->Play->setLanguage('eng');
+		
+		$result = $this->Play->find('count');
+		$expected = 5;
+        $this->assertEqual($expected, $result);
+		
+		$result = $this->Play->find('count', array('fields' => 'DISTINCT Play.id'));
+		$expected = 5;
+        $this->assertEqual($expected, $result);
+		
+		
+		$result = $this->Play->find('count', array('conditions' => array('Play.year >' => 1600)));
+		$expected = 2;
+        $this->assertEqual($expected, $result); 
+		
+		$result = $this->Play->find('count', array('conditions' => array('Play.year >=' => 1600)));
+		$expected = 3;
+        $this->assertEqual($expected, $result); 
+		
+		$this->Play->setLanguage('por');
+		$result = $this->Play->find('count');
+		$expected = 1;
+		$this->assertEqual($expected, $result); 
+		
+		
+        $result = $this->Play->find('list');
+		$expected = array(
+			5 => 'Aqui vai um título qualquer em português'
+		);
+        $this->assertEqual($expected, $result);
+		
+	}
+	
+	/*
     function testSingleLanguageQuery()
     {
         $this->Play->setLanguage('eng');
@@ -552,8 +836,11 @@ class TradTradutoreTestCase extends CakeTestCase
 		
 		
 		$this->Play->delete(2);
-		
+		$result = $this->Play->find('first', $query);
+		$this->assertEqual('', $result);
     }
+	
+	
 	
 	
 	function testSingleLanguageQueryWithCascade()
@@ -1204,7 +1491,7 @@ class TradTradutoreTestCase extends CakeTestCase
 		$this->assertEqual($expected, $result);
 	
     }
-
+	*/
 }
 
 ?>

@@ -28,7 +28,8 @@
 class Play extends AppModel
 {
     var $name = 'Play';
-
+	var $displayField = 'title';
+	
 	var $hasOne = array('PlayTranslation', 'Scenario');
 	var $hasMany = array('Image', 'Advertisement');
 	var $belongsTo = array('Author');
