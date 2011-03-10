@@ -54,7 +54,7 @@ switch ($type[0])
 	case 'full':
 		echo $this->Bl->scoluna(array('class' => 'person_info'), array('size' => array('M' => 8)));	
 			echo $this->Bl->img(array('class' => 'person_img'), array('id' => $data['PersPerson']['img_id'], 'version' => 'preview'));
-			echo $this->Bl->h2(array(),array(),$data['AuthAuthor']['name']);
+			echo $this->Bl->h2Dry($data['AuthAuthor']['name'] . ' ' . $data['AuthAuthor']['surname']);
 			echo $this->Bl->paraDry(array($data['PersPerson']['position']));
 			echo $this->Bl->scoluna(array(), array('size' => array('M' => 4)));	
 				echo $this->Bl->h4(array(),array(),__('pers_person element: research_fields caption',true));
@@ -74,12 +74,21 @@ switch ($type[0])
 		echo $this->Bl->scoluna(array(), array('size' => array('M' => 3)));
 			echo $this->Bl->h4(array(),array(),__('pers_person element: profile caption',true));
 			echo $this->Bl->paraDry(array($data['PersPerson']['profile']));
-			echo $this->Bl->h4(array(),array(),__('pers_person element: contact caption',true));
+			if (!empty($data['PersPerson']['phone1']) || !empty($data['PersPerson']['phone2']))
+				echo $this->Bl->h4(array(),array(),__('pers_person element: contact caption',true));
+			
+			$a = '';
 			if (!empty($data['PersPerson']['phone1']))
-				echo $this->Bl->paraDry(array($data['PersPerson']['phone1']));
+			{
+				$a = $data['PersPerson']['phone1'];
+				$a .= '<br />';
+			}
 			if (!empty($data['PersPerson']['phone2']))
-				echo $this->Bl->paraDry(array($data['PersPerson']['phone2']));
-			echo $this->Bl->h4(array(),array(),__('pers_person element: internet caption',true));
+				$a .= $data['PersPerson']['phone2'];
+			echo $this->Bl->paraDry(array($a));
+			
+			if (!empty($data['PersPerson']['link1']) || !empty($data['PersPerson']['link2']) || !empty($data['PersPerson']['link3']))
+				echo $this->Bl->h4(array(),array(),__('pers_person element: internet caption',true));
 			$a = '';
 			if (!empty($data['PersPerson']['link1']))
 			{
