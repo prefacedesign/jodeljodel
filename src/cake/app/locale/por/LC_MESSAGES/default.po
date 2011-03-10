@@ -4,9 +4,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-03-07 18:36-0300\n"
-"PO-Revision-Date: 2011-03-10 10:10-0300\n"
-"Last-Translator: Lucas Vignoli Reis <lucas@preface.com.br>\n"
+"POT-Creation-Date: 2011-03-03 15:52-0300\n"
+"PO-Revision-Date: 2011-03-10 10:09-0300\n"
+"Last-Translator: Rodrigo <rodrigo@preface.com.br>\n"
 "Language-Team: Preface Design <preface@preface.com.br>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -488,43 +488,43 @@ msgstr "Este campo não pode ser deixado em branco."
 msgid "EveEvent validation: abstract required, between 20 400."
 msgstr "É necessário preencher a descrição resumida do evento. Esta descrição resumida deve ter entre 20 e 400 caracteres."
 
-#: \plugins\event\views\elements\eve_event.ctp:39
+#: \plugins\event\views\elements\eve_event.ctp:27
 msgid "Form - EveEvent.name"
 msgstr "Nome"
 
-#: \plugins\event\views\elements\eve_event.ctp:40
+#: \plugins\event\views\elements\eve_event.ctp:28
 msgid "Form - EveEvent.name - instructions"
 msgstr " "
 
-#: \plugins\event\views\elements\eve_event.ctp:46
+#: \plugins\event\views\elements\eve_event.ctp:34
 msgid "Form - EveEvent.abstract"
-msgstr "Descrição resumida"
+msgstr "Resumo"
 
-#: \plugins\event\views\elements\eve_event.ctp:47
+#: \plugins\event\views\elements\eve_event.ctp:35
 msgid "Form - EveEvent.abstract - instructions"
-msgstr "Descreva em poucas palavras do que se trata o evento."
+msgstr "Escreva um pequeno resumo do evento"
 
-#: \plugins\event\views\elements\eve_event.ctp:53
+#: \plugins\event\views\elements\eve_event.ctp:41
 msgid "Form - EveEvent.link"
-msgstr "Endereço da página de internet do evento"
+msgstr "Link"
 
-#: \plugins\event\views\elements\eve_event.ctp:54
+#: \plugins\event\views\elements\eve_event.ctp:42
 msgid "Form - EveEvent.link - instructions"
-msgstr " "
+msgstr "Caso este evento possua um link, coloque-o aqui"
 
 #: \plugins\event\views\elements\eve_event.ctp:61
 msgid "Form - EveEvent.begins"
-msgstr ""
+msgstr "Início do evento"
 
-#: \plugins\event\views\elements\eve_event.ctp:62
+#: \plugins\event\views\elements\eve_event.ctp:50
 msgid "Form - EveEvent.begins - instructions"
-msgstr "Início"
+msgstr " "
 
-#: \plugins\event\views\elements\eve_event.ctp:76
+#: \plugins\event\views\elements\eve_event.ctp:64
 msgid "Form - EveEvent.ends"
-msgstr "Fim"
+msgstr "Final do evento"
 
-#: \plugins\event\views\elements\eve_event.ctp:77
+#: \plugins\event\views\elements\eve_event.ctp:65
 msgid "Form - EveEvent.ends - instructions"
 msgstr " "
 
