@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-03-01 11:41-0300\n"
-"PO-Revision-Date: 2011-03-01 12:29-0300\n"
+"POT-Creation-Date: 2011-03-10 11:13-0300\n"
+"PO-Revision-Date: 2011-03-10 12:56-0300\n"
 "Last-Translator: Lucas Vignoli Reis <lucas@preface.com.br>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -14,6 +14,14 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Poedit-Language: English\n"
 "X-Poedit-SourceCharset: utf-8\n"
+
+#: \config\bootstrap.php:143
+msgid "%d-%d de %s de %d"
+msgstr "%d-%d %s, %d"
+
+#: \config\bootstrap.php:153
+msgid "%d de %s a %d de %s de %d"
+msgstr "%d %s through %s %d"
 
 #: \plugins\author\models\auth_author.php:18
 msgid "AuthAuthor validation: surname."
@@ -28,33 +36,45 @@ msgid "AuthAuthor validation: reference_name."
 msgstr ""
 
 #: \plugins\author\views\elements\auth_author.ctp:38
-#: \plugins\person\views\elements\pers_person.ctp:99
+#: \plugins\person\views\elements\pers_person.ctp:102
 msgid "Form - PersPerson.surname"
 msgstr ""
 
 #: \plugins\author\views\elements\auth_author.ctp:39
-#: \plugins\person\views\elements\pers_person.ctp:100
+#: \plugins\person\views\elements\pers_person.ctp:103
 msgid "Form - PersPerson.surname - instructions"
 msgstr ""
 
 #: \plugins\author\views\elements\auth_author.ctp:45
-#: \plugins\person\views\elements\pers_person.ctp:106
+#: \plugins\person\views\elements\pers_person.ctp:109
 msgid "Form - PersPerson.name"
 msgstr ""
 
 #: \plugins\author\views\elements\auth_author.ctp:46
-#: \plugins\person\views\elements\pers_person.ctp:107
+#: \plugins\person\views\elements\pers_person.ctp:110
 msgid "Form - PersPerson.name - instructions"
 msgstr ""
 
 #: \plugins\author\views\elements\auth_author.ctp:52
-#: \plugins\person\views\elements\pers_person.ctp:113
+#: \plugins\person\views\elements\pers_person.ctp:116
 msgid "Form - PersPerson.reference_name"
 msgstr ""
 
 #: \plugins\author\views\elements\auth_author.ctp:53
-#: \plugins\person\views\elements\pers_person.ctp:114
+#: \plugins\person\views\elements\pers_person.ctp:117
 msgid "Form - PersPerson.reference_name - instructions"
+msgstr ""
+
+#: \plugins\author\views\elements\auth_author.ctp:61
+msgid "Form - AuthAuthor.name - belongsTo label"
+msgstr ""
+
+#: \plugins\author\views\elements\auth_author.ctp:64
+msgid "Form - AuthAuthor.surname - belongsTo label"
+msgstr ""
+
+#: \plugins\author\views\elements\auth_author.ctp:67
+msgid "Form - AuthAuthor.reference_name - belongsTo label"
 msgstr ""
 
 #: \plugins\backstage\views\back_contents\edit.ctp:5
@@ -121,6 +141,7 @@ msgstr ""
 #: \plugins\backstage\views\elements\language_edit_select.ctp:28
 #: \plugins\backstage\views\elements\language_show_edited_language.ctp:28
 #: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:33;47
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:629
 msgid "anchorList or"
 msgstr ""
 
@@ -164,112 +185,140 @@ msgstr ""
 msgid "Version marked as draft. You can %s."
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:278
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:276
 msgid "Burocrata: default save button"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:748
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:542
+msgid "Burocrata::submit - Submit label"
+msgstr ""
+
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:604
+msgid "Burocrata::okOrCancel - OK label"
+msgstr ""
+
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:621
+msgid "Burocrata::okOrCancel - Cancel label"
+msgstr ""
+
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:838
 msgid "Burocrata: nothing found on autocomplete."
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:804
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:894
 msgid "Burocrata: create a new belongsto item"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:805
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:895
 msgid "Burocrata: belongsto edit related data"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1088
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1181
 msgid "Burocrata::inputUpload - Change file"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1109
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1213
 msgid "Burocrata::inputUpload - Arquivo: "
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1138
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1242
 msgid "Burocrata::inputImage - Change image"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1140
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1244
 msgid "Burocrata::inputImage - Remove  image"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1169
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1283
 msgid "Burocrata::inputImage - or "
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1202
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1327
 msgid "Burocrata::inputTextile - Add bold"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1203
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1328
 msgid "Burocrata::inputTextile - Add Italic"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1204
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1329
 msgid "Burocrata::inputTextile - Add link"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1205
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1330
 msgid "Burocrata::inputTextile - Add title"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1206
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1331
 msgid "Burocrata::inputTextile - Add Img"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1207
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1332
 msgid "Burocrata::inputTextile - Add file"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1208
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1333
 msgid "Burocrata::inputTextile - Preview"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1251
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1377
 msgid "Burocrata::_popupTextileLink - Instructions for link"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1252
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1378
 msgid "Burocrata::_popupTextileLink - What is the text for this link"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1253
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1379
 msgid "Burocrata::_popupTextileLink - What is the URL of this link"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1254
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1380
 msgid "Burocrata::_popupTextileLink - Title of link popup"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1284
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1412
 msgid "Burocrata::_popupTextileTitle - Instructions for link"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1285
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1413
 msgid "Burocrata::_popupTextileTitle - What is the type of this title"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1286
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1414
 msgid "Burocrata::_popupTextileTitle - Title"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1287
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1415
 msgid "Burocrata::_popupTextileTitle - Subtitle"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1288
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1416
 msgid "Burocrata::_popupTextileTitle - What is the title"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1289
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1417
 msgid "Burocrata::_popupTextileTitle - Title of title popup"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1330
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1461
 msgid "Burocrata::_popupTextilePreview - Title of preview popup"
+msgstr ""
+
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1486
+msgid "Burocrata::_popupTextileFile - Title of `add file` popup"
+msgstr ""
+
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1487
+msgid "Burocrata::_popupTextileFile - Label of file input"
+msgstr ""
+
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1525
+msgid "Burocrata::_popupTextileImage - Title of `add image` popup"
+msgstr ""
+
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1526
+msgid "Burocrata::_popupTextileImage - Label of file input"
 msgstr ""
 
 #: \plugins\corktile\models\cork_corktile.php:70
@@ -313,119 +362,119 @@ msgstr ""
 msgid "Dashboard: Add new content:"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:71
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:75
 msgid "or"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:72
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:76
 msgid "Dashboard: Close item list"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:77
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:81
 msgid "Dashboard: Open item list"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:113
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:117
 msgid "Dashboard: Notice of marking as draft success - TITLE"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:114
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:118
 msgid "Dashboard: Notice of marking as draft success - TEXT"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:121
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:125
 msgid "Dashboard: Notice of marking as draft failure - TITLE"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:122
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:126
 msgid "Dashboard: Notice of marking as draft failure - TEXT"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:128
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:132
 msgid "Dashboard: Notice of publishing success - TITLE"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:129
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:133
 msgid "Dashboard: Notice of publishing success - TEXT"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:136
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:140
 msgid "Dashboard: Notice of publishing failure - TITLE"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:137
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:141
 msgid "Dashboard: Notice of publishing failure - TEXT"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:143
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:147
 msgid "Dashboard: Notice of delete success - TITLE"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:144
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:148
 msgid "Dashboard: Notice of delete success - TEXT"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:151
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:155
 msgid "Dashboard: Notice of delete failure - TITLE"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:152
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:156
 msgid "Dashboard: Notice of delete failure - TEXT"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:172
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:176
 msgid "Dashboard - dashboard header: Type"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:173
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:177
 msgid "Dashboard - dashboard header: Status"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:174
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:178
 msgid "Dashboard - dashboard header: Name"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:175
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:179
 msgid "Dashboard - dashboard header: Extra info"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:176
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:180
 msgid "Dashboard - dashboard header: Created"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:177
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:181
 msgid "Dashboard - dashboard header: Modified"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:178
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:182
 msgid "Dashboard - dashboard header: Translations"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:200
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:204
 msgid "Dashboard language abrev.: "
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:204
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:208
 msgid "Dashboard types: "
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:205
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:209
 msgid "Dashboard status: "
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:227
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:231
 msgid "Dashboard: Hide from public"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:241
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:245
 msgid "Dashboard: Publish to the great public"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:260
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:264
 msgid "Dashboard: Delete content"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:295;306
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:299;310
 msgid "Dashboard: Edit"
 msgstr ""
 
@@ -434,46 +483,46 @@ msgid "EveEvent validation: name."
 msgstr ""
 
 #: \plugins\event\models\eve_event.php:29
-msgid "EveEvent validation: abstract required, between 50 255."
+msgid "EveEvent validation: abstract required, between 20 400."
 msgstr ""
 
-#: \plugins\event\views\elements\eve_event.ctp:27
+#: \plugins\event\views\elements\eve_event.ctp:39
 msgid "Form - EveEvent.name"
 msgstr ""
 
-#: \plugins\event\views\elements\eve_event.ctp:28
+#: \plugins\event\views\elements\eve_event.ctp:40
 msgid "Form - EveEvent.name - instructions"
 msgstr ""
 
-#: \plugins\event\views\elements\eve_event.ctp:34
+#: \plugins\event\views\elements\eve_event.ctp:46
 msgid "Form - EveEvent.abstract"
 msgstr ""
 
-#: \plugins\event\views\elements\eve_event.ctp:35
+#: \plugins\event\views\elements\eve_event.ctp:47
 msgid "Form - EveEvent.abstract - instructions"
 msgstr ""
 
-#: \plugins\event\views\elements\eve_event.ctp:41
+#: \plugins\event\views\elements\eve_event.ctp:53
 msgid "Form - EveEvent.link"
 msgstr ""
 
-#: \plugins\event\views\elements\eve_event.ctp:42
+#: \plugins\event\views\elements\eve_event.ctp:54
 msgid "Form - EveEvent.link - instructions"
 msgstr ""
 
-#: \plugins\event\views\elements\eve_event.ctp:49
+#: \plugins\event\views\elements\eve_event.ctp:61
 msgid "Form - EveEvent.begins"
 msgstr ""
 
-#: \plugins\event\views\elements\eve_event.ctp:50
+#: \plugins\event\views\elements\eve_event.ctp:62
 msgid "Form - EveEvent.begins - instructions"
 msgstr ""
 
-#: \plugins\event\views\elements\eve_event.ctp:64
+#: \plugins\event\views\elements\eve_event.ctp:76
 msgid "Form - EveEvent.ends"
 msgstr ""
 
-#: \plugins\event\views\elements\eve_event.ctp:65
+#: \plugins\event\views\elements\eve_event.ctp:77
 msgid "Form - EveEvent.ends - instructions"
 msgstr ""
 
@@ -483,6 +532,10 @@ msgstr ""
 
 #: \plugins\jj_users\views\user_users\login.ctp:9
 msgid "Login page: password label"
+msgstr ""
+
+#: \plugins\jj_users\views\user_users\login.ctp:11
+msgid "Login page: Enter"
 msgstr ""
 
 #: \plugins\jj_utils\vendors\shells\jj_console.php:13
@@ -565,59 +618,71 @@ msgstr ""
 msgid "NewsNew validation: content required, between 100 6000."
 msgstr ""
 
-#: \plugins\new\views\elements\news_new.ctp:85
+#: \plugins\new\views\elements\news_new.ctp:5
+msgid "%d/%m"
+msgstr "%d/%m"
+
+#: \plugins\new\views\elements\news_new.ctp:28;51
+msgid "%d de %B de %Y"
+msgstr "%d %B, %Y"
+
+#: \plugins\new\views\elements\news_new.ctp:52
+msgid "by"
+msgstr "by"
+
+#: \plugins\new\views\elements\news_new.ctp:106
 msgid "Form - NewsNew.Author - Select a Author"
 msgstr ""
 
-#: \plugins\new\views\elements\news_new.ctp:86
+#: \plugins\new\views\elements\news_new.ctp:107
 msgid "Form - NewsNew.Author - Instruction to belongsTo Author"
 msgstr ""
 
-#: \plugins\new\views\elements\news_new.ctp:91
+#: \plugins\new\views\elements\news_new.ctp:112
 msgid "Form - NewsNew.Author - Create a new Author"
 msgstr ""
 
-#: \plugins\new\views\elements\news_new.ctp:92
+#: \plugins\new\views\elements\news_new.ctp:113
 msgid "Form - NewsNew.Author - Edit this Author"
 msgstr ""
 
-#: \plugins\new\views\elements\news_new.ctp:100
+#: \plugins\new\views\elements\news_new.ctp:121
 msgid "Form - NewsNew new info superfield"
 msgstr ""
 
-#: \plugins\new\views\elements\news_new.ctp:101
+#: \plugins\new\views\elements\news_new.ctp:122
 msgid "Form - NewsNew new info superfield - instructions"
 msgstr ""
 
-#: \plugins\new\views\elements\news_new.ctp:111
+#: \plugins\new\views\elements\news_new.ctp:132
 msgid "Form - NewsNew.date"
 msgstr ""
 
-#: \plugins\new\views\elements\news_new.ctp:112
+#: \plugins\new\views\elements\news_new.ctp:133
 msgid "Form - NewsNew.date - instructions"
 msgstr ""
 
-#: \plugins\new\views\elements\news_new.ctp:125
+#: \plugins\new\views\elements\news_new.ctp:146
 msgid "Form - NewsNew.title"
 msgstr ""
 
-#: \plugins\new\views\elements\news_new.ctp:126
+#: \plugins\new\views\elements\news_new.ctp:147
 msgid "Form - NewsNew.title - instructions"
 msgstr ""
 
-#: \plugins\new\views\elements\news_new.ctp:132
+#: \plugins\new\views\elements\news_new.ctp:153
 msgid "Form - NewsNew.abstract"
 msgstr ""
 
-#: \plugins\new\views\elements\news_new.ctp:133
+#: \plugins\new\views\elements\news_new.ctp:154
 msgid "Form - NewsNew.abstract - instructions"
 msgstr ""
 
-#: \plugins\new\views\elements\news_new.ctp:139
+#: \plugins\new\views\elements\news_new.ctp:160
 msgid "Form - NewsNew.content"
 msgstr ""
 
-#: \plugins\new\views\elements\news_new.ctp:140
+#: \plugins\new\views\elements\news_new.ctp:161
 msgid "Form - NewsNew.content - instructions"
 msgstr ""
 
@@ -729,187 +794,276 @@ msgstr "Scientific papers"
 msgid "Sections: papers humanName"
 msgstr "Scientific papers"
 
-#: \plugins\page_sections\config\sections.php:168
+#: \plugins\page_sections\config\sections.php:169
+msgid "Sections: papers_index linkCaption"
+msgstr "Other papers"
+
+#: \plugins\page_sections\config\sections.php:175
+msgid "Sections: papers_index pageTitle"
+msgstr "Papers "
+
+#: \plugins\page_sections\config\sections.php:176
+msgid "Sections: papers_index headerCaption"
+msgstr "Scientific papers "
+
+#: \plugins\page_sections\config\sections.php:177
+msgid "Sections: papers_index humanName"
+msgstr "Scientific papers "
+
+#: \plugins\page_sections\config\sections.php:180
+msgid "Sections: one_paper linkCaption"
+msgstr "One paper"
+
+#: \plugins\page_sections\config\sections.php:187
+msgid "Sections: one_paper pageTitle"
+msgstr "One paper"
+
+#: \plugins\page_sections\config\sections.php:188
+#, fuzzy
+msgid "Sections: one_paper headerCaption"
+msgstr "Scientific papers"
+
+#: \plugins\page_sections\config\sections.php:189
+#, fuzzy
+msgid "Sections: one_paper humanName"
+msgstr "Scientific papers"
+
+#: \plugins\page_sections\config\sections.php:194
 msgid "Sections: events linkCaption"
 msgstr "Events"
 
-#: \plugins\page_sections\config\sections.php:174
+#: \plugins\page_sections\config\sections.php:200
 msgid "Sections: events pageTitle"
 msgstr "Events"
 
-#: \plugins\page_sections\config\sections.php:175
+#: \plugins\page_sections\config\sections.php:201
 msgid "Sections: events headerCaption"
 msgstr "Event"
 
-#: \plugins\page_sections\config\sections.php:176
+#: \plugins\page_sections\config\sections.php:202
 msgid "Sections: events humanName"
 msgstr "Events"
 
-#: \plugins\page_sections\config\sections.php:179
+#: \plugins\page_sections\config\sections.php:206
+#, fuzzy
+msgid "Sections: events_index linkCaption"
+msgstr "Events"
+
+#: \plugins\page_sections\config\sections.php:213
+#, fuzzy
+msgid "Sections: events_index pageTitle"
+msgstr "Events"
+
+#: \plugins\page_sections\config\sections.php:214
+#, fuzzy
+msgid "Sections: events_index headerCaption"
+msgstr "Event"
+
+#: \plugins\page_sections\config\sections.php:215
+#, fuzzy
+msgid "Sections: events_index humanName"
+msgstr "Events"
+
+#: \plugins\page_sections\config\sections.php:220
 msgid "Sections: news linkCaption"
 msgstr "News"
 
-#: \plugins\page_sections\config\sections.php:185
+#: \plugins\page_sections\config\sections.php:226
 msgid "Sections: news pageTitle"
 msgstr "News"
 
-#: \plugins\page_sections\config\sections.php:186
+#: \plugins\page_sections\config\sections.php:227
 msgid "Sections: news headerCaption"
 msgstr "News"
 
-#: \plugins\page_sections\config\sections.php:187
+#: \plugins\page_sections\config\sections.php:228
 msgid "Sections: news humanName"
 msgstr "News"
 
-#: \plugins\page_sections\config\sections.php:218
+#: \plugins\page_sections\config\sections.php:232
+msgid "Sections: news_index linkCaption"
+msgstr "Other news"
+
+#: \plugins\page_sections\config\sections.php:238
+#, fuzzy
+msgid "Sections: news_index pageTitle"
+msgstr "News"
+
+#: \plugins\page_sections\config\sections.php:239
+#, fuzzy
+msgid "Sections: news_index headerCaption"
+msgstr "News"
+
+#: \plugins\page_sections\config\sections.php:240
+#, fuzzy
+msgid "Sections: news_index humanName"
+msgstr "News"
+
+#: \plugins\page_sections\config\sections.php:243
+#, fuzzy
+msgid "Sections: news_item linkCaption"
+msgstr "News"
+
+#: \plugins\page_sections\config\sections.php:250
+#, fuzzy
+msgid "Sections: news_item pageTitle"
+msgstr "News"
+
+#: \plugins\page_sections\config\sections.php:251
+#, fuzzy
+msgid "Sections: news_item headerCaption"
+msgstr "News"
+
+#: \plugins\page_sections\config\sections.php:252
+#, fuzzy
+msgid "Sections: news_item humanName"
+msgstr "News"
+
+#: \plugins\page_sections\config\sections.php:259
 msgid "Sections: backstage linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:227
+#: \plugins\page_sections\config\sections.php:268
 msgid "Sections: backstage pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:228
+#: \plugins\page_sections\config\sections.php:269
 msgid "Sections: backstage headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:229
+#: \plugins\page_sections\config\sections.php:270
 msgid "Sections: backstage humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:232
+#: \plugins\page_sections\config\sections.php:273
 msgid "Sections: login linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:239
+#: \plugins\page_sections\config\sections.php:280
 msgid "Sections: login pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:240
+#: \plugins\page_sections\config\sections.php:281
 msgid "Sections: login headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:241
+#: \plugins\page_sections\config\sections.php:282
 msgid "Sections: login humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:244
+#: \plugins\page_sections\config\sections.php:285
 msgid "Sections: dashboard linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:251
+#: \plugins\page_sections\config\sections.php:292
 msgid "Sections: dashboard pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:252
+#: \plugins\page_sections\config\sections.php:293
 msgid "Sections: dashboard headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:253
+#: \plugins\page_sections\config\sections.php:294
 msgid "Sections: dashboard humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:256
+#: \plugins\page_sections\config\sections.php:297
 msgid "Sections: burocrata_save linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:266;276
+#: \plugins\page_sections\config\sections.php:307;317
 msgid "Sections: set_publishing_status linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:286
+#: \plugins\page_sections\config\sections.php:327
 msgid "Sections: corktile_edit linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:294
+#: \plugins\page_sections\config\sections.php:335
 msgid "Sections: corktile_edit pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:295
+#: \plugins\page_sections\config\sections.php:336
 msgid "Sections: corktile_edit headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:296
+#: \plugins\page_sections\config\sections.php:337
 msgid "Sections: corktile_edit humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:299
+#: \plugins\page_sections\config\sections.php:340
 msgid "Sections: edit linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:307
+#: \plugins\page_sections\config\sections.php:348
 msgid "Sections: edit pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:308
+#: \plugins\page_sections\config\sections.php:349
 msgid "Sections: edit headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:309
+#: \plugins\page_sections\config\sections.php:350
 msgid "Sections: edit humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:312
+#: \plugins\page_sections\config\sections.php:353
 msgid "Sections: news_edit linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:321
+#: \plugins\page_sections\config\sections.php:362
 msgid "Sections: news_edit pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:322
+#: \plugins\page_sections\config\sections.php:363
 msgid "Sections: news_edit headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:323
+#: \plugins\page_sections\config\sections.php:364
 msgid "Sections: news_edit humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:326
+#: \plugins\page_sections\config\sections.php:367
 msgid "Sections: news_form linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:334
+#: \plugins\page_sections\config\sections.php:375
 msgid "Sections: news_form humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:343
+#: \plugins\page_sections\config\sections.php:384
 msgid "Section One"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:351
+#: \plugins\page_sections\config\sections.php:392
 msgid "The Section One"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:352
+#: \plugins\page_sections\config\sections.php:393
 msgid "The Section One Header"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:353
+#: \plugins\page_sections\config\sections.php:394
 msgid "The Human Section One name"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:357
+#: \plugins\page_sections\config\sections.php:398
 msgid "Section Two"
 msgstr ""
 
 #: \plugins\paper\models\pap_paper.php:19
-msgid "PapPaper validation: auth_author_id."
-msgstr ""
-
-#: \plugins\paper\models\pap_paper.php:28
 msgid "PapPaper validation: jour_journal_id."
 msgstr ""
 
-#: \plugins\paper\models\pap_paper.php:37
+#: \plugins\paper\models\pap_paper.php:28
 msgid "PapPaper validation: complete_reference required."
 msgstr ""
 
-#: \plugins\paper\models\pap_paper.php:46
-msgid "PapPaper validation: title required, between 50 350."
+#: \plugins\paper\models\pap_paper.php:37
+msgid "PapPaper validation: title required, between 10 350."
 msgstr ""
 
-#: \plugins\paper\models\pap_paper.php:55
+#: \plugins\paper\models\pap_paper.php:46
 msgid "PapPaper validation: abstract required, between 100 6000."
 msgstr ""
 
@@ -937,99 +1091,135 @@ msgstr ""
 msgid "Form - JourJournal.link - instructions"
 msgstr ""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:24
+#: \plugins\paper\views\elements\jour_journal.ctp:61
+msgid "Form - JourJournal.full_name - belongsTo label"
+msgstr ""
+
+#: \plugins\paper\views\elements\jour_journal.ctp:64
+msgid "Form - JourJournal.short_name - belongsTo label"
+msgstr ""
+
+#: \plugins\paper\views\elements\jour_journal.ctp:67
+msgid "Form - JourJournal.link\t- belongsTo label"
+msgstr ""
+
+#: \plugins\paper\views\elements\pap_paper.ctp:9;91
+msgid "%B de %Y"
+msgstr "%B %Y"
+
+#: \plugins\paper\views\elements\pap_paper.ctp:52;99
+msgid "Keywords"
+msgstr ""
+
+#: \plugins\paper\views\elements\pap_paper.ctp:64
+msgid "Paper view page: Paper for download"
+msgstr "Download"
+
+#: \plugins\paper\views\elements\pap_paper.ctp:70
+msgid "Paper view page: paper in the original publication"
+msgstr "Paper in the publication's webpage"
+
+#: \plugins\paper\views\elements\pap_paper.ctp:80
+msgid "Authors"
+msgstr ""
+
+#: \plugins\paper\views\elements\pap_paper.ctp:88
+msgid "Paper view page: Publication"
+msgstr "Publication"
+
+#: \plugins\paper\views\elements\pap_paper.ctp:148
 msgid "Form - PapPaper.Journal - Select a Journal"
 msgstr ""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:25
+#: \plugins\paper\views\elements\pap_paper.ctp:149
 msgid "Form - PapPaper.Journal - Instruction to belongsTo Journal"
 msgstr ""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:30
+#: \plugins\paper\views\elements\pap_paper.ctp:154
 msgid "Form - PapPaper.Journal - Create a new Journal"
 msgstr ""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:31
+#: \plugins\paper\views\elements\pap_paper.ctp:155
 msgid "Form - PapPaper.Journal - Edit this Journal"
 msgstr ""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:52
+#: \plugins\paper\views\elements\pap_paper.ctp:176
 msgid "Form - PapPaper.Author"
 msgstr ""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:53
+#: \plugins\paper\views\elements\pap_paper.ctp:177
 msgid "Form - PapPaper.author - instructions"
 msgstr ""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:65
+#: \plugins\paper\views\elements\pap_paper.ctp:189
 msgid "Form - PapPaper new info superfield"
 msgstr ""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:66
+#: \plugins\paper\views\elements\pap_paper.ctp:190
 msgid "Form - PapPaper new info superfield - instructions"
 msgstr ""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:76
+#: \plugins\paper\views\elements\pap_paper.ctp:200
 msgid "Form - PapPaper.date"
 msgstr ""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:77
+#: \plugins\paper\views\elements\pap_paper.ctp:201
 msgid "Form - PapPaper.date - instructions"
 msgstr ""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:90
+#: \plugins\paper\views\elements\pap_paper.ctp:214
 msgid "Form - PapPaper.title"
 msgstr ""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:91
+#: \plugins\paper\views\elements\pap_paper.ctp:215
 msgid "Form - PapPaper.title - instructions"
 msgstr ""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:97
+#: \plugins\paper\views\elements\pap_paper.ctp:221
 msgid "Form - PapPaper.abstract"
 msgstr ""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:98
+#: \plugins\paper\views\elements\pap_paper.ctp:222
 msgid "Form - PapPaper.abstract - instructions"
 msgstr ""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:105
+#: \plugins\paper\views\elements\pap_paper.ctp:229
 msgid "Form - PapPaper.tags"
 msgstr ""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:106
+#: \plugins\paper\views\elements\pap_paper.ctp:230
 msgid "Form - PapPaper.tags - instructions"
 msgstr ""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:124
+#: \plugins\paper\views\elements\pap_paper.ctp:248
 msgid "Form - PapPaper new reference superfield"
 msgstr ""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:125
+#: \plugins\paper\views\elements\pap_paper.ctp:249
 msgid "Form - PapPaper new reference superfield - instructions"
 msgstr ""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:133
+#: \plugins\paper\views\elements\pap_paper.ctp:257
 msgid "Form - PapPaper.complete_reference"
 msgstr ""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:134
+#: \plugins\paper\views\elements\pap_paper.ctp:258
 msgid "Form - PapPaper.complete_reference - instructions"
 msgstr ""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:143
+#: \plugins\paper\views\elements\pap_paper.ctp:267
 msgid "Form - PapPaper.link_to_it"
 msgstr ""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:144
+#: \plugins\paper\views\elements\pap_paper.ctp:268
 msgid "Form - PapPaper.link_to_it - instructions"
 msgstr ""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:150
+#: \plugins\paper\views\elements\pap_paper.ctp:274
 msgid "Form - PapPaper.file_id"
 msgstr ""
 
-#: \plugins\paper\views\elements\pap_paper.ctp:151
+#: \plugins\paper\views\elements\pap_paper.ctp:275
 msgid "Form - PapPaper.file_id - instructions"
 msgstr ""
 
@@ -1053,163 +1243,171 @@ msgstr ""
 msgid "PersPerson validation: position required, maxlength 150."
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:12;40;56
+#: \plugins\person\views\elements\pers_person.ctp:12;41;58
 msgid "pers_person element: research_fields caption"
-msgstr ""
+msgstr "Research fields"
 
-#: \plugins\person\views\elements\pers_person.ctp:47;61
+#: \plugins\person\views\elements\pers_person.ctp:48;63
 msgid "pers_person element: cooperation_with_dinafon caption"
-msgstr ""
+msgstr "Collaboration"
 
-#: \plugins\person\views\elements\pers_person.ctp:58
+#: \plugins\person\views\elements\pers_person.ctp:60
 msgid "pers_person element: link_lattes caption"
-msgstr ""
+msgstr "Lattes Curriculum"
 
-#: \plugins\person\views\elements\pers_person.ctp:64
+#: \plugins\person\views\elements\pers_person.ctp:66
 msgid "pers_person element: profile caption"
-msgstr ""
+msgstr "Profile"
 
-#: \plugins\person\views\elements\pers_person.ctp:87
+#: \plugins\person\views\elements\pers_person.ctp:90
 msgid "Form - PersPerson name superfield"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:88
+#: \plugins\person\views\elements\pers_person.ctp:91
 msgid "Form - PersPerson name superfield - instructions"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:131
-msgid "Form - PersPerson.position"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:132
-msgid "Form - PersPerson.position - instructions"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:138
-msgid "Form - PersPerson.lattes_link"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:139
-msgid "Form - PersPerson.lattes_link - instructions"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:145
-msgid "Form - PersPerson.research_fields"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:146
-msgid "Form - PersPerson.research_fields - instructions"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:154
-msgid "Form - PersPerson.profile"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:155
-msgid "Form - PersPerson.profile - instructions"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:161
-msgid "Form - PersPerson.cooperation_with_dinafon"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:162
-msgid "Form - PersPerson.cooperation_with_dinafon - instructions"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:169
-msgid "Form - PersPerson contact info superfield"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:170
-msgid "Form - PersPerson contact info superfield - instructions"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:177
-msgid "Form - PersPerson.phone1"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:178
-msgid "Form - PersPerson.phone1 - instructions"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:184
-msgid "Form - PersPerson.phone2"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:185
-msgid "Form - PersPerson.phone2 - instructions"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:191
-msgid "Form - PersPerson.link1"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:192
-msgid "Form - PersPerson.link1 - instructions"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:198
-msgid "Form - PersPerson.link1_caption"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:199
-msgid "Form - PersPerson.link1_caption - instructions"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:206
-msgid "Form - PersPerson.link2"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:207
-msgid "Form - PersPerson.link2 - instructions"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:213
-msgid "Form - PersPerson.link2_caption"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:214
-msgid "Form - PersPerson.link2_caption - instructions"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:220
-msgid "Form - PersPerson.link3"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:221
-msgid "Form - PersPerson.link3 - instructions"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:228
-msgid "Form - PersPerson.link3_caption"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:229
-msgid "Form - PersPerson.link3_caption - instructions"
-msgstr ""
-
-#: \plugins\person\views\elements\pers_person.ctp:237
+#: \plugins\person\views\elements\pers_person.ctp:125
 msgid "Form - PersPerson.img_id"
 msgstr ""
 
-#: \plugins\person\views\elements\pers_person.ctp:238
+#: \plugins\person\views\elements\pers_person.ctp:126
 msgid "Form - PersPerson.img_id - instructions"
 msgstr ""
 
-#: \plugins\popup\views\elements\popup.ctp:23
+#: \plugins\person\views\elements\pers_person.ctp:133
+msgid "Form - PersPerson.position"
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:134
+msgid "Form - PersPerson.position - instructions"
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:140
+msgid "Form - PersPerson.lattes_link"
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:141
+msgid "Form - PersPerson.lattes_link - instructions"
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:147
+msgid "Form - PersPerson.research_fields"
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:148
+msgid "Form - PersPerson.research_fields - instructions"
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:156
+msgid "Form - PersPerson.profile"
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:157
+msgid "Form - PersPerson.profile - instructions"
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:163
+msgid "Form - PersPerson.cooperation_with_dinafon"
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:164
+msgid "Form - PersPerson.cooperation_with_dinafon - instructions"
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:171
+msgid "Form - PersPerson contact info superfield"
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:172
+msgid "Form - PersPerson contact info superfield - instructions"
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:179
+msgid "Form - PersPerson.phone1"
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:180
+msgid "Form - PersPerson.phone1 - instructions"
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:186
+msgid "Form - PersPerson.phone2"
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:187
+msgid "Form - PersPerson.phone2 - instructions"
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:193
+msgid "Form - PersPerson.link1"
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:194
+msgid "Form - PersPerson.link1 - instructions"
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:200
+msgid "Form - PersPerson.link1_caption"
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:201
+msgid "Form - PersPerson.link1_caption - instructions"
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:208
+msgid "Form - PersPerson.link2"
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:209
+msgid "Form - PersPerson.link2 - instructions"
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:215
+msgid "Form - PersPerson.link2_caption"
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:216
+msgid "Form - PersPerson.link2_caption - instructions"
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:222
+msgid "Form - PersPerson.link3"
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:223
+msgid "Form - PersPerson.link3 - instructions"
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:230
+msgid "Form - PersPerson.link3_caption"
+msgstr ""
+
+#: \plugins\person\views\elements\pers_person.ctp:231
+msgid "Form - PersPerson.link3_caption - instructions"
+msgstr ""
+
+#: \plugins\popup\views\elements\popup.ctp:31
 msgid "Popup plugin "
+msgstr ""
+
+#: \plugins\popup\views\helpers\popup.php:74
+msgid "PopupHelper::_form - Ok button"
+msgstr ""
+
+#: \plugins\popup\views\helpers\popup.php:75
+msgid "PopupHelper::_form - Cancel link"
 msgstr ""
 
 #: \plugins\text_cork\models\text_text_cork.php:37
 msgid "TextTextCork Model: This text hasn't been written yet. It's up to the site content editor to write it."
 msgstr ""
 
-#: \plugins\text_cork\views\elements\text_text_cork.ctp:52
+#: \plugins\text_cork\views\elements\text_text_cork.ctp:43;52
 msgid "Cork Form - TextTextCork.text"
 msgstr ""
 
-#: \plugins\text_cork\views\elements\text_text_cork.ctp:53
+#: \plugins\text_cork\views\elements\text_text_cork.ctp:44;53
 msgid "Cork Form - TextTextCork.text - instructions"
 msgstr ""
 
@@ -1237,47 +1435,47 @@ msgstr "Este site em português"
 msgid "Dinafon layout: short description about Dinafon"
 msgstr "Dinafon stands for Dinâmica Fônica, speech dynamics, and names a group of phonologists/phoneticians led by Eleonora Albano."
 
-#: \plugins\typographer\views\elements\dinafon_layout.ctp:189
+#: \plugins\typographer\views\elements\dinafon_layout.ctp:187
 msgid "Dinafon layout: e-mail label"
 msgstr "e-mail"
 
-#: \plugins\typographer\views\elements\dinafon_layout.ctp:190
+#: \plugins\typographer\views\elements\dinafon_layout.ctp:188
 msgid "Dinafon layout: e-mail of dinafon"
 msgstr "albano@unicamp.br "
 
-#: \plugins\typographer\views\elements\dinafon_layout.ctp:191
+#: \plugins\typographer\views\elements\dinafon_layout.ctp:189
 msgid "Dinafon layout: phone label"
 msgstr "phone"
 
-#: \plugins\typographer\views\elements\dinafon_layout.ctp:192
+#: \plugins\typographer\views\elements\dinafon_layout.ctp:190
 msgid "Dinafon layout: phone of dinafon "
 msgstr "+55 19 35211532 "
 
-#: \plugins\typographer\views\elements\dinafon_layout.ctp:193
+#: \plugins\typographer\views\elements\dinafon_layout.ctp:191
 msgid "Dinafon layout: address label"
 msgstr "address"
 
-#: \plugins\typographer\views\elements\dinafon_layout.ctp:194
+#: \plugins\typographer\views\elements\dinafon_layout.ctp:192
 msgid "Dinafon layout: address line 1"
 msgstr "LAFAPE, IEL/UNICAMP "
 
-#: \plugins\typographer\views\elements\dinafon_layout.ctp:195
+#: \plugins\typographer\views\elements\dinafon_layout.ctp:193
 msgid "Dinafon layout: address line 2"
 msgstr "Rua Sérgio Buarque de Holanda, 571"
 
-#: \plugins\typographer\views\elements\dinafon_layout.ctp:196
+#: \plugins\typographer\views\elements\dinafon_layout.ctp:194
 msgid "Dinafon layout: address line 3"
 msgstr "Cidade Universitária"
 
-#: \plugins\typographer\views\elements\dinafon_layout.ctp:197
+#: \plugins\typographer\views\elements\dinafon_layout.ctp:195
 msgid "Dinafon layout: address line 4"
 msgstr "Campinas/SP – Brazil"
 
-#: \plugins\typographer\views\elements\dinafon_layout.ctp:198
+#: \plugins\typographer\views\elements\dinafon_layout.ctp:196
 msgid "Dinafon layout: address line 5"
 msgstr "CEP 13.083–859"
 
-#: \plugins\typographer\views\elements\dinafon_layout.ctp:203
+#: \plugins\typographer\views\elements\dinafon_layout.ctp:202
 msgid "Layout e programação por %s"
 msgstr "Website by %s"
 
@@ -1330,94 +1528,150 @@ msgstr ""
 
 #: \views\principal\about.ctp:33
 msgid "about_dinafon page: Know all people"
-msgstr ""
+msgstr "Know all people"
+
+#: \views\principal\index.ctp:29
+msgid "public_page: See more news"
+msgstr "More news from Dinafon"
+
+#: \views\principal\index.ctp:45
+msgid "public_page: More papers from Dinafon"
+msgstr "More papers"
+
+#: \views\principal\index.ctp:74
+msgid "public_page: More about Dinafon"
+msgstr "More about the research group"
 
 #: \views\translate_strings\translate_strings.ctp:4
 msgid "Backstage edit page: Editing a \"Person.PersPerson\""
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:9
-msgid "Dashboard status: published"
+#: \views\translate_strings\translate_strings.ctp:5
+msgid "Backstage edit page: Editing a \"Event.EveEvent\""
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:10
-msgid "Dashboard status: draft"
+#: \views\translate_strings\translate_strings.ctp:6
+msgid "Backstage edit page: Editing a \"New.NewsNew\""
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:11
-msgid "Dashboard types: person"
+#: \views\translate_strings\translate_strings.ctp:7
+msgid "Backstage edit page: Editing a \"Paper.PapPaper\""
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:12
-msgid "MODULE PersPerson human name"
+msgid "Dashboard status: published"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:13
-msgid "MODULE NewNews human name"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:14
-msgid "Popup plugin success type"
+msgid "Dashboard status: draft"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:15
-msgid "Popup plugin notice type"
+msgid "Dashboard types: person"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:16
-msgid "Language name: por"
+msgid "Dashboard types: corktile"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:17
-msgid "Language name: eng"
+msgid "Dashboard types: event"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:18
-msgid "Language name: nno"
+msgid "Dashboard types: new"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:19
-msgid "Language name: lav"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:20
-msgid "Language name: gre"
+msgid "Dashboard types: paper"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:21
-msgid "Language name: ukr"
+msgid "MODULE PersPerson human name"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:22
-msgid "Language name: ger"
+msgid "MODULE NewsNew human name"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:23
-msgid "Dashboard language abrev.: por"
+msgid "MODULE PapPaper human name"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:24
-msgid "Dashboard language abrev.: eng"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:25
-msgid "Dashboard language abrev.: nno"
+msgid "MODULE EveEvent human name"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:26
-msgid "Dashboard language abrev.: lav"
+msgid "Popup plugin error type"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:27
-msgid "Dashboard language abrev.: gre"
+msgid "Popup plugin success type"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:28
-msgid "Dashboard language abrev.: ukr"
+msgid "Popup plugin notice type"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:29
+msgid "Popup plugin form type"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:33
+msgid "Dashboard language abrev.: por"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:34
+msgid "Dashboard language abrev.: eng"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:35
+msgid "Dashboard language abrev.: nno"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:36
+msgid "Dashboard language abrev.: lav"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:37
+msgid "Dashboard language abrev.: gre"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:38
+msgid "Dashboard language abrev.: ukr"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:39
 msgid "Dashboard language abrev.: ger"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:40
+msgid "Language name: por"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:41
+msgid "Language name: eng"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:42
+msgid "Language name: nno"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:43
+msgid "Language name: lav"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:44
+msgid "Language name: gre"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:45
+msgid "Language name: ukr"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:46
+msgid "Language name: ger"
 msgstr ""
 
 #: \webroot\test.php:88
