@@ -54,7 +54,7 @@ switch ($type[0])
 	case 'full':
 		echo $this->Bl->scoluna(array('class' => 'person_info'), array('size' => array('M' => 8)));	
 			echo $this->Bl->img(array('class' => 'person_img'), array('id' => $data['PersPerson']['img_id'], 'version' => 'preview'));
-			echo $this->Bl->h2(array(),array(),$data['AuthAuthor']['name']);
+			echo $this->Bl->h2Dry($data['AuthAuthor']['name'] . ' ' . $data['AuthAuthor']['surname']);
 			echo $this->Bl->paraDry(array($data['PersPerson']['position']));
 			echo $this->Bl->scoluna(array(), array('size' => array('M' => 4)));	
 				echo $this->Bl->h4(array(),array(),__('pers_person element: research_fields caption',true));
