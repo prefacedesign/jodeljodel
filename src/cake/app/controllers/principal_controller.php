@@ -2,7 +2,7 @@
 	class PrincipalController extends AppController
 	{
 		var $name = 'Principal';
-		var $uses = array('Person.PersPerson');
+		var $uses = array('Person.PersPerson','Event.EveEvent','New.NewsNew','Paper.PapPaper');
 	
 		var $components = array('Typographer.TypeLayoutSchemePicker');
 		var $helpers = array(
@@ -46,29 +46,31 @@
 
 		function index()
 		{
-			Configure::load('bd_textos');
-			Configure::load('bd_noticias');
-			Configure::load('bd_publicacoes');
+			$this->set('event', $this->EveEvent->find(
+				'first',
+				array(
+					'contain' => array(),
+					'order' => array('EveEvent.begins DESC')
+				)
+			));
 			
-			$this->set('sobre_dinafon_pequeno', Configure::read('BDtemp.textos.sobre_dinafon_pequeno'));
+			$this->set('news', $this->NewsNew->find(
+				'all',
+				array(
+					'contain' => array('AuthAuthor'),
+					'order' => array('NewsNew.date DESC'),
+					'limit' => 4
+				)
+			));
 			
-			$noticias = Configure::read('BDtemp.noticias');			
-			foreach($noticias as $k => $noticia)
-			{
-				$noticias[$k]['id'] = $k;
-			}
-			
-			$noticias = array_chunk($noticias, 5);
-			$noticias = $noticias[0];
-			
-			$this->set('noticias', $noticias);
-			
-			$publicacoes = Configure::read('BDtemp.publicacoes');
-			foreach($publicacoes as $k => $publicacao)
-			{
-				$publicacoes[$k]['id'] = $k;
-			}
-			$this->set('publicacoes', $publicacoes);
+			$this->set('papers', $this->PapPaper->find(
+				'all',
+				array(
+					'contain' => array('AuthAuthor','JourJournal','TagsTag'),
+					'order' => array('PapPaper.date DESC'),
+					'limit' => 2
+				)
+			));
 		}
 		
 		function about()

@@ -147,7 +147,7 @@ class PapPaper extends PaperAppModel {
 	
 	
 	function saveBurocrata($data)
-	{		
+	{	
 		if ($this->saveAll($data))
 		{
 			// hard coded to save Tags related with Translation
@@ -161,7 +161,6 @@ class PapPaper extends PaperAppModel {
 					$_keyName = mb_strtolower(trim($_tag));
 					if ($_tag) {
 						// check if the tag exists
-						//$this->Tag->recursive = -1;
 						$tag = $this->PapPaperTranslation->TagsTag->findByKeyname($_keyName);
 						if (!$tag) {
 							// create new tag
@@ -173,22 +172,19 @@ class PapPaper extends PaperAppModel {
 							}
 						}
 						if ($tag) {
-							// use current tag
-							//debug($tag);
 							$new_data['TagsTag']['TagsTag'][$tag['TagsTag']['id']] = $tag['TagsTag']['id'];
 						}
 					}
 				}
 			}
 			$new_data['PapPaperTranslation']['id'] = $id;
-			//debug($new_data);
 			$this->PapPaperTranslation->save($new_data);
-			//die;
 			return true;
 			
 		}
 		else
 		{
+			debug($this->validationErrors);
 			return false;
 		}
 	}

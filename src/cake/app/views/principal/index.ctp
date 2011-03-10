@@ -2,45 +2,47 @@
 	echo $this->Bl->scaixote(array(),array('size' => array('M' => 7)));
 		echo $this->Bl->scaixa(array(),array('size' => array('M' => 7)));
 			echo $this->Bl->scoluna();
-				echo $this->Bl->h2(array(),array(),'Eventos');
-
-				echo $this->Bl->h4(array(),array(),'June 7 through June 11');
-
-				echo $this->Bl->h5(array(),array(),
-					$this->Bl->anchor(array(),array('url' => array('plugin' => 'spsassd', 'controller' => 'spsassd')),'São Paulo School of Advanced Studies in Speech Dynamics' )
-				);
-
-				echo $this->Bl->para(array(),array(),array('The São Paulo School of Advanced Studies in Speech Dynamics (SPSASSD) is a 5-day event designed to foster speech research in Brazil by promoting dialogue between international and national experts and offering opportunities to talented students from all over the world.'));
+				
+				echo $this->Bl->h2Dry($pageSections['public_page']['subSections']['events']['humanName']);
+				echo $this->element('eve_event', array('plugin' => 'event', 'type' => array('preview'), 'data' => $event));
+				
+				//array('plugin' => 'event', 'controller' => 'eve_events', 'action' => 'index')
 				
 				echo $this->Bl->floatBreak();
 
 				echo $this->Bl->sdiv(array('class' => 'noticias_pagina_principal'));
-					if (isset($noticias))
+					if (isset($news))
 					{
-						echo $this->Bl->h2(array(),array(),'Notícias');
-						echo $this->element('noticia', array ('tipo' => 'preview', 'dados' => $noticias[0]));
-
-						unset($noticias[0]);
-
-						foreach($noticias as $noticia)
+						echo $this->Bl->h2Dry($pageSections['public_page']['subSections']['news']['humanName']);
+						
+						if (isset($news[0]))
 						{
-							echo $this->element('noticia', array ('tipo' => 'linha_link', 'dados' => $noticia));
+							echo $this->element('news_new', array('plugin' => 'new', 'type' => array('preview'), 'data' => $news[0]));
+							unset($news[0]);
+						}
+						
+						foreach($news as $newsData)
+						{
+							echo $this->element('news_new', array('plugin' => 'new', 'type' => array('linha_link'), 'data' => $newsData));
 						}
 						echo $this->Bl->brDry();
-						echo $this->Bl->span(array(), array('escape' => true), $this->Bl->anchor(array(),array('url' => array('controller' => 'noticias')),'Ver mais notícias'));
+						echo $this->Bl->span(array(), array('escape' => true), $this->Bl->anchor(array(),array('url' => array('plugin' => 'new', 'controller' => 'news_new', 'action' => 'index')),__('public_page: See more news', true)));
 						echo $this->Bl->brDry();
 						echo $this->Bl->brDry();
 					}
 				echo $this->Bl->ediv();
 
 				echo $this->Bl->sdiv(array('class' => 'publicacoes_pagina_principal'));
-					if (isset($publicacoes))
+					if (isset($papers))
 					{
-						echo $this->Bl->h2(array(),array(),'Publicações');
-						echo $this->element('publicacao', array ('tipo' => 'preview', 'dados' => $publicacoes[0]));
-
-						echo $this->Bl->brDry();
-						echo $this->Bl->span(array(), array('escape' => true), $this->Bl->anchor(array(),array('url' => array('controller' => 'publicacoes')),'Ver mais publicações do Dinafon'));
+						echo $this->Bl->h2Dry($pageSections['public_page']['subSections']['papers']['humanName']);
+						
+						foreach($papers as $paperData)
+						{
+							echo $this->element('pap_paper', array('plugin' => 'paper', 'type' => array('preview'), 'data' => $paperData));
+						}
+						
+						echo $this->Bl->span(array(), array('escape' => true), $this->Bl->anchor(array(),array('url' => array('plugin' => 'paper', 'controller' => 'pap_paper', 'action' => 'index')), __('public_page: More papers from Dinafon',true)));
 						echo $this->Bl->brDry();
 						echo $this->Bl->brDry();
 					}
@@ -52,15 +54,25 @@
 	echo $this->Bl->scaixote(array(),array('size' => array('M' => 5)));
 		echo $this->Bl->scaixa(array(),array('size' => array('M' => 5)));
 			echo $this->Bl->scoluna();
-
-				echo $this->Bl->h2(array(),array(),'O grupo de pesquisa');
-
-				echo $this->Bl->para(array(),array(),array($sobre_dinafon_pequeno));
-
-				echo $this->Bl->span(array(), array('escape' => true), $this->Bl->anchor(array(),array('url' => array('controller' => 'principal', 'action' => 'about')), 'Mais sobre o Dinafon'));
-				echo $this->Bl->sdiv(array('id' => 'atrator_aleatorio'));
-				echo $this->Bl->ediv();
-
+				
+				echo $this->Bl->h2Dry($pageSections['public_page']['subSections']['about']['subSections']['about_dinafon']['humanName']);
+				
+				echo $this->Cork->tile(array(), array(
+					'key' => 'short about_dinafon',
+					'type' => 'text_cork',
+					'title' => 'Texto sobre o Dinafon da página inicial',
+					'location' => $ourLocation,
+					'editorsRecommendations' => 
+						'Este texto aparece na página inicial. Deve resumir em poucas palavras o que é o Dinafon. '
+						.'O texto deve ter entre 150 e 400 caracteres.',
+					'options' => array(
+						'textile' => true,
+						'convertLinks' => false
+					)
+				));
+				
+				echo $this->Bl->span(array(), array('escape' => true), $this->Bl->anchor(array(),array('url' => array('controller' => 'principal', 'action' => 'about')), __('public_page: More about Dinafon', true)));
+				echo $this->Bl->div(array('id' => 'atrator_aleatorio'));
 			echo $this->Bl->ecoluna();
 		echo $this->Bl->ecaixa();
 	echo $this->Bl->ecaixote();

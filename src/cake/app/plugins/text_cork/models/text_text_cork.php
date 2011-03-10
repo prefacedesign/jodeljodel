@@ -35,9 +35,11 @@ class TextTextCork extends TextCorkAppModel
 		if (empty($content)) // sets the default content.
 		{
 			$content['TextTextCork']['text'] = __("TextTextCork Model: This text hasn't been written yet. It's up to the site content editor to write it.", true);
+			$content['TextTextCork']['cake_fooler_field'] = "Cake, you're fooled";
 		}
 		// @todo Treat the validation options, in order for it to work properly.
 		if ($this->save($content)){
+			//debug($content);
 			return $this->id;
 		}
 		else

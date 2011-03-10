@@ -87,16 +87,6 @@
 			'humanName' => 'MODULE CorkCorkTile human name',
 			'plugged' => array('dashboard', 'backstage')
 		)
-		/** Template
-		 *
-		'module' => array(
-			'plugin' => 'plugin_name',
-			'prefix' => 'pref',
-			'model' => 'PrefModule'
-			'humanName' => 'MODULE PrefModule human name', //it will be translated
-			'plugged' => array('dashboard', 'backstage', 'corktile', 'content_stream') //the tools it plugs into
-		)
-		*/
  ));
  
  
@@ -114,22 +104,58 @@ require APP . 'plugins' . DS . 'typographer' . DS . 'config' . DS . 'core.php';
 
 function br_strftime($formato, $tempo)
 {
-	$meses = array(
-		1 => 'Janeiro',
-		2 => 'Fevereiro',
-		3 => 'Mar�o',
-		4 => 'Abril',
-		5 => 'Maio',
-		6 => 'Junho',
-		7 => 'Julho',
-		8 => 'Agosto',
-		9 => 'Setembro',
-		10 => 'Outubro',
-		11 => 'Novembro',
-		12 => 'Dezembro'
-	);
+	//UGLY HACK to make it work with english too:
+	
+	if (Configure::read('Config.language') == 'por')
+	{
+		$meses = array(
+			1 => 'Janeiro',
+			2 => 'Fevereiro',
+			3 => 'Março',
+			4 => 'Abril',
+			5 => 'Maio',
+			6 => 'Junho',
+			7 => 'Julho',
+			8 => 'Agosto',
+			9 => 'Setembro',
+			10 => 'Outubro',
+			11 => 'Novembro',
+			12 => 'Dezembro'
+		);
 
-	$data = getdate($tempo);
-	return strftime(str_replace('%B',$meses[$data['mon']], $formato), $tempo);
+		$data = getdate($tempo);
+		return strftime(str_replace('%B',$meses[$data['mon']], $formato), $tempo);
+	}
+	else
+		return strftime($formato, $tempo);
 }
 
+//DINAFON specific
+//@todo Introduce something more sofisticated for time formatting
+function _formatInterval($begin, $end)
+{
+	$beginArray = getdate($begin);
+	$endArray = getdate($end);
+	
+	if ($beginArray['mon'] == $endArray['mon'])
+	{
+		return sprintf(
+			__('%d-%d de %s de %d',true), 
+			$beginArray['mday'],
+			$endArray['mday'],
+			br_strftime('%B', $begin),
+			$endArray['year']
+		);
+	}
+	else
+	{
+		return sprintf(
+			__('%d de %s a %d de %s de %d',true), 
+			$beginArray['mday'],
+			br_strftime('%B', $begin),
+			$endArray['mday'],
+			br_strftime('%B', $end),
+			$endArray['year']
+		);
+	}
+}

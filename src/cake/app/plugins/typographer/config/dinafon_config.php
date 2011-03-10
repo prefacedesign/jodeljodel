@@ -128,6 +128,8 @@ for ($i = 1; $i <= 7; $i++)
 	$used_automatic_classes['width'][] = array('g' => $i);
 }
 
+$used_automatic_classes['width'][] = array('M' => 3, 'g' =>  -3, 'm' => -1);
+
 for ($i = 1; $i <= 7; $i++)
 {
 	$used_automatic_classes['height'][] = array('g' => $i);

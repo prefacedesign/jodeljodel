@@ -47,8 +47,6 @@ class AddAliasToAclBehavior extends ModelBehavior
 				)
 			);
 			
-			debug($data);
-			
 			$aclModel->create();
 			$aclModel->save($data);
 		}

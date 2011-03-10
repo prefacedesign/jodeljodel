@@ -62,8 +62,8 @@ class SectSectionHandlerComponent extends Object {
 	{
 		foreach($newArray as $k => $value)
 		{
-			if ($value === null)
-				$newArray[$k] == $this->pageTitleArray[$k];
+			if ($value == null)
+				$newArray[$k] = $this->pageTitleArray[$k];
 		}
 		
 		$this->pageTitleArray = $newArray;
@@ -89,13 +89,13 @@ class SectSectionHandlerComponent extends Object {
 		
 		foreach($this->ourLocation as $section)
 		{
-			if (isset($c[$section]))
+			if (isset($currentSectionContext[$section]))
 			{
 				if (isset($currentSectionContext[$section]['pageTitle']))
 					$this->addToPageTitleArray($currentSectionContext[$section]['pageTitle']);
 				
-				if (isset($$currentSectionContext[$section]['subSections']))
-					$currentSectionContext =& $$currentSectionContext[$sectioin]['subSections'];
+				if (isset($currentSectionContext[$section]['subSections']))
+					$currentSectionContext =& $currentSectionContext[$section]['subSections'];
 				else
 					break;
 			}
@@ -108,6 +108,7 @@ class SectSectionHandlerComponent extends Object {
 	 */
 	function _getPageTitle()
 	{
+		
 		if (empty($this->pageTitleArray))
 			return '';
 		
@@ -115,7 +116,7 @@ class SectSectionHandlerComponent extends Object {
 		$title = array_pop($titleArray);
 		
 		while(!empty($titleArray))
-			$titleArray =  $titleArray . ' – ' . array_pop($titleArray);
+			$title = $title . ' – ' . array_pop($titleArray);
 			
 		return $title;
 	}
@@ -248,7 +249,7 @@ class SectSectionHandlerComponent extends Object {
 	 */
 	function _setTheViewVars()
 	{
-		$this->controller->pageTitle = $this->_getPageTitle();
+		$this->controller->set('title_for_layout', $this->_getPageTitle());
 		$this->controller->set('ourLocation', $this->ourLocation);
 		$this->controller->set('pageSections', $this->sections);
 		$this->controller->set('sectionInfo', $this->thisSection);
@@ -257,7 +258,7 @@ class SectSectionHandlerComponent extends Object {
 	/**
 	 * Fills the blanks in the sections' configurations.
 	 */
-	function _insertDefaultsIntoSections($sectionsContext = null, $depth = 0)
+	function _insertDefaultsIntoSections(&$sectionsContext = null, $depth = 0)
 	{ 
 		if ($sectionsContext == null)
 			$sectionsContext =& $this->sections;

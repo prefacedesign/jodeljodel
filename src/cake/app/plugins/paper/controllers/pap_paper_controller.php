@@ -28,13 +28,13 @@ class PapPaperController extends PaperAppController {
 	);
 	var $layout = 'dinafon';
 
-//	function beforeFilter()
-//	{
-//		parent::beforeFilter();
-//		StatusBehavior::setGlobalActiveStatuses(array(
-//			'publishing_status' => array('active' => array('published'), 'overwrite' => true),
-//		));
-//	}
+	function beforeFilter()
+	{
+		parent::beforeFilter();
+		StatusBehavior::setGlobalActiveStatuses(array(
+			'publishing_status' => array('active' => array('published'), 'overwrite' => true),
+		));
+	}
 
 	function beforeRender()
 	{
@@ -52,14 +52,14 @@ class PapPaperController extends PaperAppController {
 						'TagsTag',
 						'JourJournal'
 					),
-					'order' => 'PapPaper.date'
+					'order' => 'PapPaper.date DESC'
 				)
 			);
 
 		$this->set('data',$data);
 	}
 
-	function view()
+	function view($id)
 	{
 		$data = $this->PapPaper->find(
 			'first',
@@ -69,12 +69,13 @@ class PapPaperController extends PaperAppController {
 					'TagsTag',
 					'JourJournal'
 				),
-				'order' => 'PapPaper.date'
+				'conditions' => array(
+					'PapPaper.id' => $id
+				)
 			)
 		);
 
 		$this->set('data',$data);
-		//$this->set('data',$this->NewsNew->find('first', array('contain' => array('AuthAuthor'))));
 	}
 }
 

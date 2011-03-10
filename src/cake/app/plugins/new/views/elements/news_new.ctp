@@ -1,8 +1,31 @@
 <?php
 switch ($type[0])
 {
+	case 'linha_link':
+		echo $this->Bl->span(array('class' => array('texto_pequeno', 'caixinha', 'w_4g')), array(), br_strftime(__('%d/%m',true), strtotime($data['NewsNew']['date'])) );
+
+		echo $this->Bl->span(
+			array('class' => array('caixinha_2', 'w_3M-3g-1m')),
+			array('escape' => true),
+			$this->Bl->anchor(
+					array(),
+					array(
+						'url' => array(
+							'plugin' => 'new',
+							'controller' => 'noticias',
+							'action' => 'view',
+							$data['NewsNew']['id']
+						)
+					),
+					$data['NewsNew']['title']
+			)
+		);
+
+		echo $this->Bl->floatBreak();
+	break;
+	
 	case 'preview':
-		echo $this->Bl->span(array('class' => 'texto_pequeno'), array(),br_strftime('%d de %B', strtotime($data['NewsNew']['date'])));
+		echo $this->Bl->span(array('class' => 'texto_pequeno'), array(),br_strftime(__('%d de %B de %Y', true), strtotime($data['NewsNew']['date'])));
 
 		echo $this->Bl->h4(array(),array(),$this->Bl->anchor(
 				array(),
@@ -25,15 +48,13 @@ switch ($type[0])
 	case 'full':
 		echo $this->Bl->h2(array(),array(),$data['NewsNew']['title']);
 		echo $this->Bl->span(array('class' => 'texto_pequeno'), array(),
-			br_strftime('%d de %B de %Y', strtotime($data['NewsNew']['date']))
-			. ', por ' .$data['AuthAuthor']['name']);
+			br_strftime(__('%d de %B de %Y', true), strtotime($data['NewsNew']['date']))
+			. ', ' .__('by', true) . ' ' . $data['AuthAuthor']['name']);
 
 		echo $this->Bl->brDry();
 		echo $this->Bl->brDry();
 
 		echo $this->Bl->textileDry($data['NewsNew']['content']);
-
-
 	break;
 
 	case 'linha_link':
@@ -134,12 +155,12 @@ switch ($type[0])
 					));
 					
 					echo $buro->input(array(),array(
-						'type' => 'textarea',
+						'type' => 'textile',
 						'fieldName' => 'content',
 						'label' => __('Form - NewsNew.content',true),
 						'instructions' => __('Form - NewsNew.content - instructions',true)
-					));
 				
+					));
 				echo $buro->einput();
                 
 				

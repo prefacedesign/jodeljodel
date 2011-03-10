@@ -162,18 +162,59 @@ $sections = array(
 				),
 				'pageTitle' => array(null,__('Sections: papers pageTitle',true)),
 				'headerCaption' => __('Sections: papers headerCaption', true),
-				'humanName' => __('Sections: papers humanName',true)
+				'humanName' => __('Sections: papers humanName',true),
+				'dinafonSubSectionsMenuType' => 'lateral',
+				'subSections' => array(
+					'papers_index' => array(
+						'linkCaption' => __('Sections: papers_index linkCaption', true),
+						'url' => array(
+							'plugin' => 'paper',
+							'controller' => 'pap_paper',
+							'action' => 'index'
+						),
+						'pageTitle' => array(null, null, __('Sections: papers_index pageTitle',true)),
+						'headerCaption' => __('Sections: papers_index headerCaption', true),
+						'humanName' => __('Sections: papers_index humanName',true)
+					),
+					'one_paper' => array(
+						'linkCaption' => __('Sections: one_paper linkCaption', true),
+						'url' => array(
+							'plugin' => 'paper',
+							'controller' => 'pap_paper',
+							'action' => 'view'
+						),
+						'display' => false,
+						'pageTitle' => array(null, null, __('Sections: one_paper pageTitle',true)),
+						'headerCaption' => __('Sections: one_paper headerCaption', true),
+						'humanName' => __('Sections: one_paper humanName',true),
+					),
+				),
 			),
 			'events' => array(
 				'linkCaption' => __('Sections: events linkCaption', true),
 				'url' => array(
-					'plugin' => 'events',
+					'plugin' => 'event',
 					'controller' => 'eve_events',
 					'action' => 'index'
 				),
 				'pageTitle' => array(null,__('Sections: events pageTitle',true)),
 				'headerCaption' => __('Sections: events headerCaption', true),
-				'humanName' => __('Sections: events humanName',true)
+				'humanName' => __('Sections: events humanName',true),
+				'dinafonSubSectionsMenuType' => 'lateral',
+				'subSections' => array(
+					'events_index' => array(
+						'linkCaption' => __('Sections: events_index linkCaption', true),
+						'url' => array(
+							'plugin' => 'event',
+							'controller' => 'eve_events',
+							'action' => 'index'
+						),
+						'display' => false,
+						'pageTitle' => array(null, null, __('Sections: events_index pageTitle',true)),
+						'headerCaption' => __('Sections: events_index headerCaption', true),
+						'humanName' => __('Sections: events_index humanName',true)
+					),
+				),
 			),
 			'news' => array(
 				'linkCaption' => __('Sections: news linkCaption', true),
@@ -184,33 +225,33 @@ $sections = array(
 				),
 				'pageTitle' => array(null,__('Sections: news pageTitle',true)),
 				'headerCaption' => __('Sections: news headerCaption', true),
-				'humanName' => __('Sections: news humanName',true)
-				,
-//				'subSections' => array(
-//					'news_index' => array(
-//						'linkCaption' => __('Sections: news_index linkCaption', true),
-//						'url' => array(
-//							'plugin' => 'new',
-//							'controller' => 'news_new',
-//							'action' => 'index'
-//						),
-//						'pageTitle' => array(null, null, __('Sections: news_index pageTitle',true)),
-//						'headerCaption' => __('Sections: news_index headerCaption', true),
-//						'humanName' => __('Sections: news_index humanName',true)
-//					),
-//					'news_item' => array(
-//						'linkCaption' => __('Sections: * linkCaption', true),
-//						'url' => array(
-//							'plugin' => 'new',
-//							'controller' => 'news_new',
-//							'action' => 'view'
-//						),
-//						'display' => false,
-//						'pageTitle' => array(null, null, __('Sections: news_item pageTitle',true)),
-//						'headerCaption' => __('Sections: news_item headerCaption', true),
-//						'humanName' => __('Sections: news_item humanName',true),
-//					),
-//				),
+				'humanName' => __('Sections: news humanName',true),
+				'dinafonSubSectionsMenuType' => 'lateral',
+				'subSections' => array(
+					'news_index' => array(
+						'linkCaption' => __('Sections: news_index linkCaption', true),
+							'url' => array(
+							'plugin' => 'new',
+							'controller' => 'news_new',
+							'action' => 'index'
+						),
+						'pageTitle' => array(null, null, __('Sections: news_index pageTitle',true)),
+						'headerCaption' => __('Sections: news_index headerCaption', true),
+						'humanName' => __('Sections: news_index humanName',true)
+					),
+					'news_item' => array(
+						'linkCaption' => __('Sections: news_item linkCaption', true),
+						'url' => array(
+							'plugin' => 'new',
+							'controller' => 'news_new',
+							'action' => 'view'
+						),
+						'display' => false,
+						'pageTitle' => array(null, null, __('Sections: news_item pageTitle',true)),
+						'headerCaption' => __('Sections: news_item headerCaption', true),
+						'humanName' => __('Sections: news_item humanName',true),
+					),
+				),
 			),
 		),
 	),
@@ -420,22 +461,41 @@ $sectionMap = array(
 	),
 	array(
 		'rule' => array('plugin' => 'new', 'controller' => 'news_new'),
-		'location' => array('public_page','news')
-//		,
-//		'subRules' => array(
-//			array(
-//				'rule' => array('action' => 'index'),
-//				'location' => array('public_page','news','news_index'),
-//			),
-//			array(
-//				'rule' => array('action' => 'view'),
-//				'location' => array('public_page','news','news_item'),
-//			)
-//		),
+		'location' => array('public_page','news'),
+		'subRules' => array(
+			array(
+				'rule' => array('action' => 'index'),
+				'location' => array('public_page','news','news_index'),
+			),
+			array(
+				'rule' => array('action' => 'view'),
+				'location' => array('public_page','news','news_item'),
+			)
+		),
+	),
+	array(
+		'rule' => array('plugin' => 'event', 'controller' => 'eve_events'),
+		'location' => array('public_page','event'),
+		'subRules' => array(
+			array(
+				'rule' => array('action' => 'index'),
+				'location' => array('public_page','events','events_index'),
+			),
+		),
 	),
 	array(
 		'rule' => array('plugin' => 'paper', 'controller' => 'pap_paper'),
-		'location' => array('public_page','paper')
+		'location' => array('public_page','papers'),
+		'subRules' => array(
+			array(
+				'rule' => array('action' => 'index'),
+				'location' => array('public_page','papers','papers_index'),
+			),
+			array(
+				'rule' => array('action' => 'view'),
+				'location' => array('public_page','papers','one_paper'),
+			)
+		),
 	),
 
 	array(

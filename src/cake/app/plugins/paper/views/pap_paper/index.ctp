@@ -17,5 +17,5 @@
 
 			$i++;
 		}
-	echo $kulepona->caixoteFim();
+	echo $this->Bl->ecaixote();
 ?>

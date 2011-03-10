@@ -73,9 +73,10 @@
 			if ($tipo == 'lateral')
 			{
 				$links_html = array();
-				foreach($pageSections[$ourLocation[0]]['subSections'] as $secao => $dados_secao)
+				
+				foreach($pageSections[$ourLocation[0]]['subSections'][$ourLocation[1]]['subSections'] as $secao => $dados_secao)
 				{
-					if (($ourLocation[2] != $secao) && ($secao != 'tipo'))
+					if ($ourLocation[2] != $secao && $dados_secao['display'])
 					{
 						$links_html[] = $this->Bl->anchor(array(),array('url' => $dados_secao['url']), $dados_secao['linkCaption']);
 					}
@@ -84,7 +85,7 @@
 				if (!empty($links_html))
 				{
 					echo $this->Bl->sdiv(array('class' => array('menu_1_lateral')));
-							echo implode($this->Bl->espacoM(), $links_html);
+						echo implode($this->Bl->espacoM(), $links_html);
 					echo $this->Bl->ediv();
 				}
 			}

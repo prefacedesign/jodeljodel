@@ -1,8 +1,8 @@
 <?php
 
-Configure::write('Dashboard.item_settings',array(
+Configure::write('Dashboard.itemSettings',array(
 		'default' => array(
-			'actions' => array('publish_draft','delete','edit'),
+			'actions' => array('publish_draft','delete','edit', 'create'),
 			'edit_version' => 'backstage'
 		),
 		'corktile' => array(
