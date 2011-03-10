@@ -36,7 +36,6 @@ function cancelProgress(id, url)
 var Popup = Class.create({
 	initialize: function(id, links)
 	{
-		console.log(id);
 		this.id = id;
 		this.links = links;
 		this.divCont = $(this.id);

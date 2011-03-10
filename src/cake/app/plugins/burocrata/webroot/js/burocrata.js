@@ -83,6 +83,7 @@ var BuroForm = Class.create(BuroCallbackable, {
 		{
 			this.id_base = arguments[1];
 			this.form = $('frm' + this.id_base);
+
 			this.form.lock = this.lockForm.bind(this);
 			this.form.unlock = this.unlockForm.bind(this);
 			this.form.observe('keypress', this.keyPress.bind(this));
@@ -92,7 +93,8 @@ var BuroForm = Class.create(BuroCallbackable, {
 			BuroClassRegistry.set(this.form.id, this);
 			
 			this.submit = $('sbmt' + this.id_base);
-			this.submit.observe('click', this.submits.bind(this));
+			if (this.submit)
+				this.submit.observe('click', this.submits.bind(this));
 		}
 		
 		if(n_args > 2)
