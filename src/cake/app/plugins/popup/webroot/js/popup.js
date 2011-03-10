@@ -1,7 +1,11 @@
 // Global hash to save the popups
 var Popups = {
 	available_popups: $H(),
-	open_popup: false
+	open_popup: false,
+	add: function (obj)
+	{
+		Popups.available_popups.set(obj.id, obj);
+	}
 }
 
 
@@ -32,6 +36,7 @@ function cancelProgress(id, url)
 var Popup = Class.create({
 	initialize: function(id, links)
 	{
+		console.log(id);
 		this.id = id;
 		this.links = links;
 		this.divCont = $(this.id);
@@ -46,7 +51,8 @@ var Popup = Class.create({
 	},
 	register: function()
 	{
-		Popups.available_popups.set(this.id, this);
+		Popups.add(this);
+		
 		document.body.insert(this.divCont);
 		
 		$H(this.links).each(function(pair)
