@@ -3,7 +3,7 @@
 switch ($type[0])
 {
 	case 'mini_preview':
-			$photo = '';
+			$photo = ' ';
 			if (!empty($data['PersPerson']['img_id']))
 				$photo = $this->Bl->img(array(), array('id' => $data['PersPerson']['img_id'], 'version' => 'mini_preview'));
 			echo $this->Bl->coluna(array('style' => 'float: left; min-height: 1px; margin-left: ' . $hg->size(array('g' => 1))), array('size' => array('M' => 1)), $photo);
