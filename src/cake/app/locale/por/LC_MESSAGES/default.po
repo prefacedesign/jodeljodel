@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2011-03-07 18:36-0300\n"
-"PO-Revision-Date: 2011-03-07 18:43-0300\n"
+"PO-Revision-Date: 2011-03-10 10:10-0300\n"
 "Last-Translator: Lucas Vignoli Reis <lucas@preface.com.br>\n"
 "Language-Team: Preface Design <preface@preface.com.br>\n"
 "MIME-Version: 1.0\n"
@@ -638,7 +638,7 @@ msgstr "Autor"
 
 #: \plugins\new\views\elements\news_new.ctp:107
 msgid "Form - NewsNew.Author - Instruction to belongsTo Author"
-msgstr "Detalhe nos campos abaixo os dados do autor."
+msgstr "Procure por um autor já cadastrado, caso ele não exista, você poderá criar um."
 
 #: \plugins\new\views\elements\news_new.ctp:112
 msgid "Form - NewsNew.Author - Create a new Author"
@@ -649,53 +649,44 @@ msgid "Form - NewsNew.Author - Edit this Author"
 msgstr "Alterar este autor"
 
 #: \plugins\new\views\elements\news_new.ctp:121
-#, fuzzy
 msgid "Form - NewsNew new info superfield"
-msgstr "Nome da pessoa"
+msgstr "Dados da notícia"
 
 #: \plugins\new\views\elements\news_new.ctp:122
-#, fuzzy
 msgid "Form - NewsNew new info superfield - instructions"
-msgstr " "
+msgstr "  "
 
 #: \plugins\new\views\elements\news_new.ctp:132
-#, fuzzy
 msgid "Form - NewsNew.date"
-msgstr "Nome"
+msgstr "Data"
 
 #: \plugins\new\views\elements\news_new.ctp:133
-#, fuzzy
 msgid "Form - NewsNew.date - instructions"
-msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+msgstr " "
 
 #: \plugins\new\views\elements\news_new.ctp:146
-#, fuzzy
 msgid "Form - NewsNew.title"
-msgstr "Perfil"
+msgstr "Título"
 
 #: \plugins\new\views\elements\news_new.ctp:147
-#, fuzzy
 msgid "Form - NewsNew.title - instructions"
-msgstr " "
+msgstr "  "
 
 #: \plugins\new\views\elements\news_new.ctp:153
 msgid "Form - NewsNew.abstract"
 msgstr "Resumo"
 
 #: \plugins\new\views\elements\news_new.ctp:154
-#, fuzzy
 msgid "Form - NewsNew.abstract - instructions"
-msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+msgstr "Preencha com um breve resumo da Notícia."
 
 #: \plugins\new\views\elements\news_new.ctp:160
-#, fuzzy
 msgid "Form - NewsNew.content"
-msgstr "Nome"
+msgstr "Corpo da notícia"
 
 #: \plugins\new\views\elements\news_new.ctp:161
-#, fuzzy
 msgid "Form - NewsNew.content - instructions"
-msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+msgstr " "
 
 #: \plugins\page_sections\config\sections.php:84
 msgid "Sections: public_page linkCaption"
@@ -1088,49 +1079,40 @@ msgid "PapPaper validation: abstract required, between 100 6000."
 msgstr "Erro de validação no sobrenome"
 
 #: \plugins\paper\views\elements\jour_journal.ctp:38
-#, fuzzy
 msgid "Form - JourJournal.full_name"
-msgstr "Sobrenome"
+msgstr "Nome completo da publicação"
 
 #: \plugins\paper\views\elements\jour_journal.ctp:39
-#, fuzzy
 msgid "Form - JourJournal.full_name - instructions"
-msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+msgstr " "
 
 #: \plugins\paper\views\elements\jour_journal.ctp:45
-#, fuzzy
 msgid "Form - JourJournal.short_name"
-msgstr "Sobrenome"
+msgstr "Qual é o nome mais curto pelo qual esta publicação é conhecida?"
 
 #: \plugins\paper\views\elements\jour_journal.ctp:46
-#, fuzzy
 msgid "Form - JourJournal.short_name - instructions"
-msgstr "Preencha com o sobrenome completo, p.e., para José Carlos Penteado Lima: \"Penteado Lima\""
+msgstr " "
 
 #: \plugins\paper\views\elements\jour_journal.ctp:52
-#, fuzzy
 msgid "Form - JourJournal.link"
-msgstr "Qual é o link para o seu currículo lattes?"
+msgstr "Link para a página de internet da publicação"
 
 #: \plugins\paper\views\elements\jour_journal.ctp:53
-#, fuzzy
 msgid "Form - JourJournal.link - instructions"
-msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+msgstr " "
 
 #: \plugins\paper\views\elements\jour_journal.ctp:61
-#, fuzzy
 msgid "Form - JourJournal.full_name - belongsTo label"
-msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+msgstr "Nome completo da publicação"
 
 #: \plugins\paper\views\elements\jour_journal.ctp:64
-#, fuzzy
 msgid "Form - JourJournal.short_name - belongsTo label"
-msgstr "Preencha com o sobrenome completo, p.e., para José Carlos Penteado Lima: \"Penteado Lima\""
+msgstr "Qual é o nome mais curto pelo qual esta publicação é conhecida?"
 
 #: \plugins\paper\views\elements\jour_journal.ctp:67
-#, fuzzy
 msgid "Form - JourJournal.link\t- belongsTo label"
-msgstr "Qual é o link para o seu currículo lattes?"
+msgstr "Link para a página de internet da publicação"
 
 #: \plugins\paper\views\elements\pap_paper.ctp:9;91
 msgid "%B de %Y"
@@ -1158,31 +1140,27 @@ msgstr ""
 
 #: \plugins\paper\views\elements\pap_paper.ctp:148
 msgid "Form - PapPaper.Journal - Select a Journal"
-msgstr ""
+msgstr "Em qual publicação científica o artigo foi publicado?"
 
 #: \plugins\paper\views\elements\pap_paper.ctp:149
-#, fuzzy
 msgid "Form - PapPaper.Journal - Instruction to belongsTo Journal"
-msgstr "Preencha com o sobrenome completo, p.e., para José Carlos Penteado Lima: \"Penteado Lima\""
+msgstr " "
 
 #: \plugins\paper\views\elements\pap_paper.ctp:154
 msgid "Form - PapPaper.Journal - Create a new Journal"
 msgstr ""
 
 #: \plugins\paper\views\elements\pap_paper.ctp:155
-#, fuzzy
 msgid "Form - PapPaper.Journal - Edit this Journal"
-msgstr "Preencha com o sobrenome completo, p.e., para José Carlos Penteado Lima: \"Penteado Lima\""
+msgstr "Edite os dados desta publicação"
 
 #: \plugins\paper\views\elements\pap_paper.ctp:176
-#, fuzzy
 msgid "Form - PapPaper.Author"
-msgstr "Nome"
+msgstr "Autor(es)"
 
 #: \plugins\paper\views\elements\pap_paper.ctp:177
-#, fuzzy
 msgid "Form - PapPaper.author - instructions"
-msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+msgstr "Escolha na lista de autores cadastrados os autores que fizeram este artigo científico. Caso não conste o autor desejado, é necessário cadastrá-lo primeiro."
 
 #: \plugins\paper\views\elements\pap_paper.ctp:189
 #, fuzzy
