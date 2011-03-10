@@ -1023,7 +1023,10 @@ class TradTradutoreBehavior extends ModelBehavior
         $settings   = $this->settings[$Model->name];
 		
 		if (!empty($Model->hasOne[$settings['className']]))
+		{
+			debug($settings['className']);
 			return ($Model->{$settings['className']}->deleteAll(array($settings['foreignKey'] => $Model->id)));
+		}
 		
 		return true;
 	}
