@@ -47,9 +47,9 @@ class PersPeopleController extends PersonAppController {
 		$this->set('data',$this->PersPerson->find('all', array('contain' => array('AuthAuthor'), 'order' => 'AuthAuthor.name')));
 	}
 	
-	function view()
+	function view($id)
 	{
-		$this->set('data',$this->PersPerson->find('first', array('contain' => array('AuthAuthor'))));
+		$this->set('data',$this->PersPerson->findById($id));
 	}
 }
 ?>

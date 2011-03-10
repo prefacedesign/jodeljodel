@@ -32,6 +32,18 @@ $this->Decorator->rule(
 			'font-size' => $u->t($standardFontSize * 11/13) 
 	));
 
+	$this->Decorator->rule(
+		'.person_info', array(
+			'position' => 'relative',
+			'min-height' => $vg->size(array('M' => 3, 'g' => 0)),
+	));
+	
+	$this->Decorator->rule(
+		'.person_img', array(
+			'position' => 'absolute',
+			'right' => $hg->size(array('g' => 1)),
+			'top' => $vg->size(array('g' => 0)),
+	));
 
 //@todo verificar se o 12M n??o gera problema
 //(pois ele substitui uma fun????o que n??o existe mais, a

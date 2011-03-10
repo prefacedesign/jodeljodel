@@ -52,19 +52,62 @@ switch ($type[0])
 	break;
 	
 	case 'full':
-		echo $this->Bl->h2(array(),array(),$data['AuthAuthor']['name']);
-		echo $this->Bl->paraDry(array($data['PersPerson']['position']));
-		
-		echo $this->Bl->h4(array(),array(),__('pers_person element: research_fields caption',true));
-		echo $this->Bl->paraDry(array($data['PersPerson']['research_fields']));
-		echo $this->Bl->paraDry(array($this->Bl->anchor(array(), array('url' => $data['PersPerson']['lattes_link']),__('pers_person element: link_lattes caption',true))));
+		echo $this->Bl->scoluna(array('class' => 'person_info'), array('size' => array('M' => 8)));	
+			echo $this->Bl->img(array('class' => 'person_img'), array('id' => $data['PersPerson']['img_id'], 'version' => 'preview'));
+			echo $this->Bl->h2(array(),array(),$data['AuthAuthor']['name']);
+			echo $this->Bl->paraDry(array($data['PersPerson']['position']));
+			echo $this->Bl->scoluna(array(), array('size' => array('M' => 4)));	
+				echo $this->Bl->h4(array(),array(),__('pers_person element: research_fields caption',true));
+				echo $this->Bl->paraDry(array($data['PersPerson']['research_fields']));
+				echo $this->Bl->paraDry(array($this->Bl->anchor(array(), array('url' => $data['PersPerson']['lattes_link']),__('pers_person element: link_lattes caption',true))));
+			echo $this->Bl->ecoluna();
+		echo $this->Bl->ecoluna();
 		echo $this->Bl->barraHorizontal(array('class' => 'cinza_branco'));		
+		echo $this->Bl->floatBreak();
 		
-		echo $this->Bl->h4(array(),array(),__('pers_person element: cooperation_with_dinafon caption',true));				
-		echo $this->Bl->paraDry(array($data['PersPerson']['cooperation_with_dinafon']));		
+		echo $this->Bl->scoluna(array(), array('size' => array('M' => 5)));
+			echo $this->Bl->scoluna(array(), array('size' => array('M' => 4)));
+				echo $this->Bl->h4(array(),array(),__('pers_person element: cooperation_with_dinafon caption',true));				
+				echo $this->Bl->paraDry(array($data['PersPerson']['cooperation_with_dinafon']));		
+			echo $this->Bl->ecoluna();
+		echo $this->Bl->ecoluna();
+		echo $this->Bl->scoluna(array(), array('size' => array('M' => 3)));
+			echo $this->Bl->h4(array(),array(),__('pers_person element: profile caption',true));
+			echo $this->Bl->paraDry(array($data['PersPerson']['profile']));
+			echo $this->Bl->h4(array(),array(),__('pers_person element: contact caption',true));
+			if (!empty($data['PersPerson']['phone1']))
+				echo $this->Bl->paraDry(array($data['PersPerson']['phone1']));
+			if (!empty($data['PersPerson']['phone2']))
+				echo $this->Bl->paraDry(array($data['PersPerson']['phone2']));
+			echo $this->Bl->h4(array(),array(),__('pers_person element: internet caption',true));
+			$a = '';
+			if (!empty($data['PersPerson']['link1']))
+			{
+				if (!empty($data['PersPerson']['link1_caption']))
+					$a = $this->Bl->anchor(array(), array('url' => $data['PersPerson']['link1']),$data['PersPerson']['link1_caption']);
+				else
+					$a = $this->Bl->anchor(array(), array('url' => $data['PersPerson']['link1']),$data['PersPerson']['link1']);
+				$a .= '<br />';
+			}
+			if (!empty($data['PersPerson']['link2']))
+			{
+				if (!empty($data['PersPerson']['link2_caption']))
+					$a .= $this->Bl->anchor(array(), array('url' => $data['PersPerson']['link2']),$data['PersPerson']['link2_caption']);
+				else
+					$a .= $this->Bl->anchor(array(), array('url' => $data['PersPerson']['link2']),$data['PersPerson']['link2']);
+				$a .= '<br />';
+			}
+			if (!empty($data['PersPerson']['link3']))
+			{
+				if (!empty($data['PersPerson']['link3_caption']))
+					$a .= $this->Bl->anchor(array(), array('url' => $data['PersPerson']['link3']),$data['PersPerson']['link3_caption']);
+				else
+					$a .= $this->Bl->anchor(array(), array('url' => $data['PersPerson']['link3']),$data['PersPerson']['link3']);
+				$a .= '<br />';
+			}
+			echo $this->Bl->paraDry(array($a));
+		echo $this->Bl->ecoluna();
 		
-		echo $this->Bl->h4(array(),array(),__('pers_person element: profile caption',true));
-		echo $this->Bl->paraDry(array($data['PersPerson']['profile']));
 	break;
 	
 	case 'buro':
