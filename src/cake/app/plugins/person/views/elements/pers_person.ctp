@@ -84,7 +84,7 @@ switch ($type[0])
 				$a .= '<br />';
 			}
 			if (!empty($data['PersPerson']['phone2']))
-				$a = $data['PersPerson']['phone2'];
+				$a .= $data['PersPerson']['phone2'];
 			echo $this->Bl->paraDry(array($a));
 			
 			if (!empty($data['PersPerson']['link1']) || !empty($data['PersPerson']['link2']) || !empty($data['PersPerson']['link3']))
