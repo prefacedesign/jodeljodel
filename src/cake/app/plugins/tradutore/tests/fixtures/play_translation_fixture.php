@@ -67,7 +67,7 @@ class PlayTranslationFixture extends CakeTestFixture
     var $records = array(
         // Antony and Cleopatra
         array(
-            // engglish
+            // English
             'id' => 1,
             'play_id' => 1,
             'language' => 'eng',
@@ -309,6 +309,14 @@ class PlayTranslationFixture extends CakeTestFixture
             'language' => 'gre',
             'title' => 'Η τραγωδία του Άμλετ, Πρίγκιπα της Δανίας',
             'opening_excerpt' => "Bernardo: Ποιος είναι εκεί?"
+        ),
+		array(
+            // Portuguese
+            'id' => 33,
+            'play_id' => 5,
+            'language' => 'por',
+            'title' => 'Aqui vai um título qualquer em português',
+            'opening_excerpt' => "Bernardo: O que raios você está fazendo aí?"
         )
     );
 }
