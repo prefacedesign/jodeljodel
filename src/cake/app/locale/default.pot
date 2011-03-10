@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-03-07 18:36-0300\n"
+"POT-Creation-Date: 2011-03-10 11:13-0300\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -1597,59 +1597,63 @@ msgstr ""
 msgid "Popup plugin notice type"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:32
-msgid "Dashboard language abrev.: por"
+#: \views\translate_strings\translate_strings.ctp:29
+msgid "Popup plugin form type"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:33
-msgid "Dashboard language abrev.: eng"
+msgid "Dashboard language abrev.: por"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:34
-msgid "Dashboard language abrev.: nno"
+msgid "Dashboard language abrev.: eng"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:35
-msgid "Dashboard language abrev.: lav"
+msgid "Dashboard language abrev.: nno"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:36
-msgid "Dashboard language abrev.: gre"
+msgid "Dashboard language abrev.: lav"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:37
-msgid "Dashboard language abrev.: ukr"
+msgid "Dashboard language abrev.: gre"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:38
-msgid "Dashboard language abrev.: ger"
+msgid "Dashboard language abrev.: ukr"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:39
-msgid "Language name: por"
+msgid "Dashboard language abrev.: ger"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:40
-msgid "Language name: eng"
+msgid "Language name: por"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:41
-msgid "Language name: nno"
+msgid "Language name: eng"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:42
-msgid "Language name: lav"
+msgid "Language name: nno"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:43
-msgid "Language name: gre"
+msgid "Language name: lav"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:44
-msgid "Language name: ukr"
+msgid "Language name: gre"
 msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:45
+msgid "Language name: ukr"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:46
 msgid "Language name: ger"
 msgstr ""
 
