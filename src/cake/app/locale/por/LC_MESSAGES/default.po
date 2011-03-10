@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2011-03-03 15:52-0300\n"
-"PO-Revision-Date: 2011-03-04 15:16-0300\n"
-"Last-Translator: Lucas Vignoli Reis <lucas@preface.com.br>\n"
+"PO-Revision-Date: 2011-03-10 10:09-0300\n"
+"Last-Translator: Rodrigo <rodrigo@preface.com.br>\n"
 "Language-Team: Preface Design <preface@preface.com.br>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -491,53 +491,44 @@ msgid "EveEvent validation: abstract required, between 50 255."
 msgstr "Erro de validação no sobrenome"
 
 #: \plugins\event\views\elements\eve_event.ctp:27
-#, fuzzy
 msgid "Form - EveEvent.name"
 msgstr "Nome"
 
 #: \plugins\event\views\elements\eve_event.ctp:28
-#, fuzzy
 msgid "Form - EveEvent.name - instructions"
-msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+msgstr " "
 
 #: \plugins\event\views\elements\eve_event.ctp:34
-#, fuzzy
 msgid "Form - EveEvent.abstract"
-msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+msgstr "Resumo"
 
 #: \plugins\event\views\elements\eve_event.ctp:35
-#, fuzzy
 msgid "Form - EveEvent.abstract - instructions"
-msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+msgstr "Escreva um pequeno resumo do evento"
 
 #: \plugins\event\views\elements\eve_event.ctp:41
-#, fuzzy
 msgid "Form - EveEvent.link"
-msgstr "Qual é o link para o seu currículo lattes?"
+msgstr "Link"
 
 #: \plugins\event\views\elements\eve_event.ctp:42
-#, fuzzy
 msgid "Form - EveEvent.link - instructions"
-msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+msgstr "Caso este evento possua um link, coloque-o aqui"
 
 #: \plugins\event\views\elements\eve_event.ctp:49
 msgid "Form - EveEvent.begins"
-msgstr ""
+msgstr "Início do evento"
 
 #: \plugins\event\views\elements\eve_event.ctp:50
-#, fuzzy
 msgid "Form - EveEvent.begins - instructions"
-msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+msgstr " "
 
 #: \plugins\event\views\elements\eve_event.ctp:64
-#, fuzzy
 msgid "Form - EveEvent.ends"
-msgstr "Nome"
+msgstr "Final do evento"
 
 #: \plugins\event\views\elements\eve_event.ctp:65
-#, fuzzy
 msgid "Form - EveEvent.ends - instructions"
-msgstr "Preencha com o nome pessoal. Por exemplo, para José Carlos Penteado Lima: \"José Carlos\""
+msgstr " "
 
 #: \plugins\jj_users\views\user_users\login.ctp:6
 msgid "Login page: username label"
