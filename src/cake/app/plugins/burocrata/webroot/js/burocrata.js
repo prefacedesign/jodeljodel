@@ -582,7 +582,8 @@ var BuroUpload = Class.create(BuroCallbackable, {
 	},
 	again: function(reset_id)
 	{
-		if (!this._submitted) this.tmp_input.remove();
+		if (!this._submitted && this.tmp_input)
+			this.tmp_input.remove();
 		
 		if (reset_id == true)
 			this.hidden_input.value = '';
