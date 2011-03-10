@@ -26,6 +26,7 @@ __('MODULE EveEvent human name');
 __('Popup plugin error type');
 __('Popup plugin success type');
 __('Popup plugin notice type');
+__('Popup plugin form type');
 
 /** Dashboard language names
  */

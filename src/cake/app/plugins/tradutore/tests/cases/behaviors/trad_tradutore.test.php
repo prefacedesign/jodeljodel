@@ -819,7 +819,7 @@ class TradTradutoreTestCase extends CakeTestCase
 		
 	}
 	
-	/*
+	
     function testSingleLanguageQuery()
     {
         $this->Play->setLanguage('eng');
@@ -835,8 +835,12 @@ class TradTradutoreTestCase extends CakeTestCase
         $this->assertEqual($expected, $result);
 		
 		
+		//$this->Play->PlayTranslation->deleteAll(array('play_id' => 2));
+		$this->Play->Scenario->delete(2);
+		$result = $this->Play->Scenario->findById(2);
+		$this->assertEqual('', $result);
 		$this->Play->delete(2);
-		$result = $this->Play->find('first', $query);
+		$result = $this->Play->findById(2);
 		$this->assertEqual('', $result);
     }
 	
@@ -1491,7 +1495,7 @@ class TradTradutoreTestCase extends CakeTestCase
 		$this->assertEqual($expected, $result);
 	
     }
-	*/
+	
 }
 
 ?>

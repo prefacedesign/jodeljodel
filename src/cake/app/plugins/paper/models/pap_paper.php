@@ -133,7 +133,6 @@ class PapPaper extends PaperAppModel {
 			)
 		);
 		$data['PapPaper']['languages'] = $this->getLanguages($id);
-		//debug($data);
 		
 		if (isset($data['PapPaper']['TagsTag']) && !empty($data['PapPaper']['TagsTag'])) 
 		{	                
@@ -184,7 +183,7 @@ class PapPaper extends PaperAppModel {
 		}
 		else
 		{
-			debug($this->validationErrors);
+			
 			return false;
 		}
 	}
