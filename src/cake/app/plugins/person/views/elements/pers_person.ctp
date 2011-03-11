@@ -3,16 +3,24 @@
 switch ($type[0])
 {
 	case 'mini_preview':
-			echo $this->Bl->h4(array(), array(), $this->Bl->anchor(array(),array('url' => array('plugin' => 'person', 'controller' => 'pers_people', 'action' => 'view', $data['PersPerson']['id'])),
-				$data['AuthAuthor']['name'] . ' ' . $data['AuthAuthor']['surname']));
-			echo $this->Bl->para(
-				array(),
-				array(),
-				array(
-					__('pers_person element: research_fields caption',true).':&ensp;'
-					. $this->Bl->span(array ('class' => 'italico'), array(), $data['PersPerson']['research_fields'])
-				)
-			);
+			$photo = ' ';
+			if (!empty($data['PersPerson']['img_id']))
+				$photo = $this->Bl->img(array(), array('id' => $data['PersPerson']['img_id'], 'version' => 'mini_preview'));
+			echo $this->Bl->coluna(array('style' => 'float: left; min-height: 1px; margin-left: ' . $hg->size(array('g' => 1))), array('size' => array('M' => 1)), $photo);
+			
+			echo $this->Bl->scoluna(array(), array('size' => array('M' => 4)));
+				echo $this->Bl->h4(array(), array(), $this->Bl->anchor(array(),array('url' => array('plugin' => 'person', 'controller' => 'pers_people', 'action' => 'view', $data['PersPerson']['id'])),
+					$data['AuthAuthor']['name'] . ' ' . $data['AuthAuthor']['surname']));
+				echo $this->Bl->para(
+					array(),
+					array(),
+					array(
+						__('pers_person element: research_fields caption',true).':&ensp;'
+						. $this->Bl->span(array ('class' => 'italico'), array(), $data['PersPerson']['research_fields'])
+					)
+				);
+			echo $this->Bl->ecoluna();
+			echo $this->Bl->floatBreak();
 	break;
 	
 	case 'preview':
@@ -125,7 +133,7 @@ switch ($type[0])
 			echo $buro->sform(array(), array(
 				'model' => $fullModelName,
 				'callbacks' => array(
-					'onReject' => array('js' => '$("content").scrollTo(); showPopup("error");', 'contentUpdate' => 'replace'),
+					'onReject' => array('contentUpdate' => 'replace', 'js' => '$("content").down(".error").scrollTo(); showPopup("error");'),
 					'onSave' => array('js' => '$("content").scrollTo(); showPopup("notice");'),
 				)
 			));
