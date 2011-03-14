@@ -25,7 +25,7 @@
  * @subpackage jodeljodel.tradutore.test
  */
 
-class Play extends AppModel
+class Play extends TradutoreAppModel
 {
     var $name = 'Play';
 	var $displayField = 'title';

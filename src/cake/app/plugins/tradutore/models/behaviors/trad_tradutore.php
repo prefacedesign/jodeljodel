@@ -669,10 +669,9 @@ class TradTradutoreBehavior extends ModelBehavior
 		
 		if (!$this->deleting)
 		{
-			if (!(isset($query['emptyTranslation']) && $query['emptyTranslation'] == true))
-			{
-				$query['conditions']['NOT']['language'] = 'IS NOT NULL'; 
-			}
+			if (is_array($query['conditions']) || !isset($query['conditions']))
+				if (!(isset($query['emptyTranslation']) && $query['emptyTranslation'] == true))
+					$query['conditions']['NOT']['language'] = 'IS NOT NULL'; 
 		}
 		
 		$this->already_done = array();
@@ -774,7 +773,7 @@ class TradTradutoreBehavior extends ModelBehavior
 					{
 						foreach($r[$settings['className']] as $k => $field)
 						{
-							if($k != 'id')
+							if($k != 'id' && $k != $settings['foreignKey'])
 								$results[$i][$Model->alias][$ix][$k] = $field;	
 						}
 					}
@@ -782,7 +781,7 @@ class TradTradutoreBehavior extends ModelBehavior
 					{
 						foreach($r[$Model->alias][$settings['className']] as $k => $field)
 						{
-							if($k != 'id')
+							if($k != 'id' && $k != $settings['foreignKey'])
 								$results[$i][$Model->alias][$ix][$k] = $field;
 							unset($results[$i][$Model->alias][$ix][$settings['className']][$k]);
 						}
@@ -797,7 +796,7 @@ class TradTradutoreBehavior extends ModelBehavior
 				{
 					foreach($result[$settings['className']] as $k => $field)
 					{
-						if($k != 'id')
+						if($k != 'id' && $k != $settings['foreignKey'])
 							$results[$i][$Model->alias][$k] = $field;
 					}
 				}
@@ -805,7 +804,7 @@ class TradTradutoreBehavior extends ModelBehavior
 				{
 					foreach($result[$Model->alias][$settings['className']] as $k => $field)
 					{
-						if($k != 'id')
+						if($k != 'id' && $k != $settings['foreignKey'])
 							$results[$i][$Model->alias][$k] = $field;
 						unset($results[$i][$Model->alias][$settings['className']][$k]);
 					}

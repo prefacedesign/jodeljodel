@@ -116,6 +116,49 @@ class TradTradutoreTestCase extends CakeTestCase
         $this->assertEqual($expected, $result);
     }
 
+	/*
+	function testDeleteAll()
+	{
+		$this->Play->deleteAll('year > 1600');
+		$data = $this->Play->find('all');
+		debug($data);
+		
+		$data = $this->PlayTranslation->find('all', array('conditions' => 'play_id in (1,2)'));
+		debug($data);
+		die;
+	}
+	*/
+	
+	
+	function testFindInline()
+	{
+		$result = $this->Play->find('all', array('conditions' => 'year > 1600', 'contain' => array()));
+		$expected = array(
+			0 => array(
+				'Play' => array(
+					'id' => 1, 
+					'author_id' => 1, 
+					'language' => 'ukr', 
+					'title' => 'Антоній і Клеопатра', 
+					'year' => 1606,
+					'opening_excerpt' => "Філ: Ні, але це дитинство нашого генерала..."
+				)
+			),
+			1 => array(
+				'Play' => array(
+					'id' => 2, 
+					'author_id' => 1, 
+					'language' => 'ukr', 
+					'title' => 'Король Лір', 
+					'year' => 1605,
+					'opening_excerpt' => "Граф Кент: Я думав, короля було більше постраждалих герцог Олбані, ніж Корнуолл."
+				)
+			)
+        );
+		//debug($result);
+		$this->assertEqual($expected, $result);
+	}
+	
 	
 	function testSimplesFinds()
     {
@@ -130,7 +173,6 @@ class TradTradutoreTestCase extends CakeTestCase
 				'language' => 'eng', 
 				'title' => 'Antony and Cleopatra', 
 				'year' => 1606,
-				'play_id' => 1,
 				'opening_excerpt' => "Phil: Nay, but this dotage of our gengeral's..."
 			)
         );
@@ -148,13 +190,11 @@ class TradTradutoreTestCase extends CakeTestCase
 				'language' => 'eng', 
 				'title' => 'Antony and Cleopatra', 
 				'year' => 1606,
-				'play_id' => 1,
 				'opening_excerpt' => "Phil: Nay, but this dotage of our gengeral's..."
 			),
 			'Author' => array(
 				'id' => 1,
 				'name' => 'Shakespeare',
-				'author_id' => 1,
 				'language' => 'eng',
 				'nacionality' => 'English'
 			),
@@ -162,7 +202,6 @@ class TradTradutoreTestCase extends CakeTestCase
 				'id' => 1,
 				'play_id' => 1,
 				'number_of_objects' => 70,
-				'scenario_id' => 1,
 				'language' => 'eng',
 				'concept' => 'Classic'
 			),
@@ -182,13 +221,11 @@ class TradTradutoreTestCase extends CakeTestCase
 				'language' => 'eng', 
 				'title' => 'Antony and Cleopatra', 
 				'year' => 1606,
-				'play_id' => 1,
 				'opening_excerpt' => "Phil: Nay, but this dotage of our gengeral's..."
 			),
 			'Author' => array(
 				'id' => 1,
 				'name' => 'Shakespeare',
-				'author_id' => 1,
 				'language' => 'eng',
 				'nacionality' => 'English'
 			),
@@ -196,7 +233,6 @@ class TradTradutoreTestCase extends CakeTestCase
 				'id' => 1,
 				'play_id' => 1,
 				'number_of_objects' => 70,
-				'scenario_id' => 1,
 				'language' => 'eng',
 				'concept' => 'Classic'
 			),
@@ -218,14 +254,12 @@ class TradTradutoreTestCase extends CakeTestCase
 				0 => array(
 					'id' => 1,
 					'play_id' => 1,
-					'advertisement_id' => 1,
 					'language' => 'eng',
 					'advertisement' => "Antony and Cleopatra is a tragedy by William Shakespeare, believed to have been written sometime between 1603 and 1607. It was first printed in the First Folio of 1623. The plot is based on Thomas North's translation of Plutarch's Life of Marcus Antonius and follows the relationship between Cleopatra and Mark Antony from the time of the Parthian War to Cleopatra's suicide. The major antagonist is Octavius Caesar, one of Antony's fellow triumviri and the future first emperor of Rome. The tragedy is a Roman play characterized by swift, panoramic shifts in geographical locations and in registers, alternating between sensual, imaginative Alexandria and the more pragmatic, austere Rome."
 				),
 				1 => array(
 					'id' => 2,
 					'play_id' => 1,
-					'advertisement_id' => 2,
 					'language' => 'eng',
 					'advertisement' => "Mark Antony – one of the Triumvirs of Rome along with Octavian and Marcus Aemilius Lepidus – has neglected his soldierly duties after being beguiled by Egypt's Queen, Cleopatra VII. He ignores Rome's domestic problems, including the fact that his third wife Fulvia rebelled against Octavian and then died."
 				)
@@ -233,19 +267,16 @@ class TradTradutoreTestCase extends CakeTestCase
 			'Tag' => array(
 				0 => array(
 					'id' => 1,
-					'tag_id' => 1,
 					'language' => 'eng',
 					'tag' => 'cool',
 				),
 				1 => array(
 					'id' => 2,
-					'tag_id' => 2,
 					'language' => 'eng',
 					'tag' => 'beautiful'
 				),
 				2 => array(
 					'id' => 3,
-					'tag_id' => 3,
 					'language' => 'eng',
 					'tag' => 'horrendous'
 				)
@@ -268,13 +299,11 @@ class TradTradutoreTestCase extends CakeTestCase
 				'language' => 'eng', 
 				'title' => 'Antony and Cleopatra', 
 				'year' => 1606,
-				'play_id' => 1,
 				'opening_excerpt' => "Phil: Nay, but this dotage of our gengeral's..."
 			),
 			'Author' => array(
 				'id' => 1,
 				'name' => 'Shakespeare',
-				'author_id' => 1,
 				'language' => 'eng',
 				'nacionality' => 'English',
 				'Image' => array(
@@ -289,7 +318,6 @@ class TradTradutoreTestCase extends CakeTestCase
 					0 => array(						
 						'id' => 1,
 						'author_id' => 1,
-						'bioinfo_id' => 1,
 						'language' => 'eng',
 						'type' => 'secret',
 						'info' => "Phil: Nay, but this dotage of our general's..."
@@ -297,7 +325,6 @@ class TradTradutoreTestCase extends CakeTestCase
 					1 => array(						
 						'id' => 2,
 						'author_id' => 1,
-						'bioinfo_id' => 2,
 						'language' => 'eng',
 						'type' => 'open',
 						'info' => "Phil: Nay, but this dotage of our general's..."
@@ -315,7 +342,6 @@ class TradTradutoreTestCase extends CakeTestCase
 				'id' => 1,
 				'play_id' => 1,
 				'number_of_objects' => 70,
-				'scenario_id' => 1,
 				'language' => 'eng',
 				'concept' => 'Classic'
 			),
@@ -337,14 +363,12 @@ class TradTradutoreTestCase extends CakeTestCase
 				0 => array(
 					'id' => 1,
 					'play_id' => 1,
-					'advertisement_id' => 1,
 					'language' => 'eng',
 					'advertisement' => "Antony and Cleopatra is a tragedy by William Shakespeare, believed to have been written sometime between 1603 and 1607. It was first printed in the First Folio of 1623. The plot is based on Thomas North's translation of Plutarch's Life of Marcus Antonius and follows the relationship between Cleopatra and Mark Antony from the time of the Parthian War to Cleopatra's suicide. The major antagonist is Octavius Caesar, one of Antony's fellow triumviri and the future first emperor of Rome. The tragedy is a Roman play characterized by swift, panoramic shifts in geographical locations and in registers, alternating between sensual, imaginative Alexandria and the more pragmatic, austere Rome."
 				),
 				1 => array(
 					'id' => 2,
 					'play_id' => 1,
-					'advertisement_id' => 2,
 					'language' => 'eng',
 					'advertisement' => "Mark Antony – one of the Triumvirs of Rome along with Octavian and Marcus Aemilius Lepidus – has neglected his soldierly duties after being beguiled by Egypt's Queen, Cleopatra VII. He ignores Rome's domestic problems, including the fact that his third wife Fulvia rebelled against Octavian and then died."
 				)
@@ -352,19 +376,16 @@ class TradTradutoreTestCase extends CakeTestCase
 			'Tag' => array(
 				0 => array(
 					'id' => 1,
-					'tag_id' => 1,
 					'language' => 'eng',
 					'tag' => 'cool',
 				),
 				1 => array(
 					'id' => 2,
-					'tag_id' => 2,
 					'language' => 'eng',
 					'tag' => 'beautiful'
 				),
 				2 => array(
 					'id' => 3,
-					'tag_id' => 3,
 					'language' => 'eng',
 					'tag' => 'horrendous'
 				)
@@ -386,13 +407,11 @@ class TradTradutoreTestCase extends CakeTestCase
 				'language' => 'eng', 
 				'title' => 'Antony and Cleopatra', 
 				'year' => 1606,
-				'play_id' => 1,
 				'opening_excerpt' => "Phil: Nay, but this dotage of our gengeral's..."
 			),
 			'Author' => array(
 				'id' => 1,
 				'name' => 'Shakespeare',
-				'author_id' => 1,
 				'language' => 'eng',
 				'nacionality' => 'English'
 			),
@@ -400,7 +419,6 @@ class TradTradutoreTestCase extends CakeTestCase
 				'id' => 1,
 				'play_id' => 1,
 				'number_of_objects' => 70,
-				'scenario_id' => 1,
 				'language' => 'eng',
 				'concept' => 'Classic',
 			),
@@ -422,14 +440,12 @@ class TradTradutoreTestCase extends CakeTestCase
 				0 => array(
 					'id' => 1,
 					'play_id' => 1,
-					'advertisement_id' => 1,
 					'language' => 'eng',
 					'advertisement' => "Antony and Cleopatra is a tragedy by William Shakespeare, believed to have been written sometime between 1603 and 1607. It was first printed in the First Folio of 1623. The plot is based on Thomas North's translation of Plutarch's Life of Marcus Antonius and follows the relationship between Cleopatra and Mark Antony from the time of the Parthian War to Cleopatra's suicide. The major antagonist is Octavius Caesar, one of Antony's fellow triumviri and the future first emperor of Rome. The tragedy is a Roman play characterized by swift, panoramic shifts in geographical locations and in registers, alternating between sensual, imaginative Alexandria and the more pragmatic, austere Rome.",
 				),
 				1 => array(
 					'id' => 2,
 					'play_id' => 1,
-					'advertisement_id' => 2,
 					'language' => 'eng',
 					'advertisement' => "Mark Antony – one of the Triumvirs of Rome along with Octavian and Marcus Aemilius Lepidus – has neglected his soldierly duties after being beguiled by Egypt's Queen, Cleopatra VII. He ignores Rome's domestic problems, including the fact that his third wife Fulvia rebelled against Octavian and then died."
 				)
@@ -437,19 +453,16 @@ class TradTradutoreTestCase extends CakeTestCase
 			'Tag' => array(
 				0 => array(
 					'id' => 1,
-					'tag_id' => 1,
 					'language' => 'eng',
 					'tag' => 'cool',
 				),
 				1 => array(
 					'id' => 2,
-					'tag_id' => 2,
 					'language' => 'eng',
 					'tag' => 'beautiful',
 				),
 				2 => array(
 					'id' => 3,
-					'tag_id' => 3,
 					'language' => 'eng',
 					'tag' => 'horrendous',
 				)
