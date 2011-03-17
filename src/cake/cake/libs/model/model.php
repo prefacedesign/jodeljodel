@@ -1820,6 +1820,7 @@ class Model extends Overloadable {
 			}
 
 			if ($db->delete($this)) {
+				
 				if (!empty($this->belongsTo)) {
 					$this->updateCounterCache($keys[$this->alias]);
 				}

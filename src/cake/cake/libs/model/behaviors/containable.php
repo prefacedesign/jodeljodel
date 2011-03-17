@@ -215,7 +215,6 @@ class ContainableBehavior extends ModelBehavior {
 			}
 		}
 		$query['fields'] = array_unique($query['fields']);
-		debug($query);
 		return $query;
 	}
 
