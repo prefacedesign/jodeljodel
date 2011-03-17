@@ -273,12 +273,13 @@
      inkscape:groupmode="layer"
      id="layer1">
     <image
-       y="-441.13782"
-       x="-186.28572"
-       id="image3013"
-       height="1947"
+       sodipodi:absref="/home/fedel/preface/Jodel/docs/ceu/especificacao_funcionalidades/./02_programacao.jpg"
+       xlink:href="./02_programacao.jpg"
        width="1024"
-       xlink:href="file:///home/fedel/preface/Ceu/especificacao_funcionalidades/02_programacao.jpg" />
+       height="1947"
+       id="image3013"
+       x="-186.28572"
+       y="-441.13782" />
     <rect
        style="fill:none;stroke:#0000ff;stroke-width:2.34891105;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect3038"

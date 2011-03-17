@@ -110,12 +110,13 @@
      inkscape:groupmode="layer"
      id="layer1">
     <image
-       y="-108.28068"
-       x="-220.57143"
-       id="image3057"
-       height="1407"
+       sodipodi:absref="/home/fedel/preface/Jodel/docs/ceu/especificacao_funcionalidades/./04_atividades_regulares.jpg"
+       xlink:href="./04_atividades_regulares.jpg"
        width="1024"
-       xlink:href="file:///home/fedel/preface/Ceu/especificacao_funcionalidades/04_atividades_regulares.jpg" />
+       height="1407"
+       id="image3057"
+       x="-220.57143"
+       y="-108.28068" />
     <rect
        style="fill:none;stroke:#0000ff;stroke-width:4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect3061"

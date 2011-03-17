@@ -103,12 +103,13 @@
      inkscape:groupmode="layer"
      id="layer1">
     <image
-       y="-295.42352"
-       x="-32"
-       id="image3339"
-       height="1747"
+       sodipodi:absref="/home/fedel/preface/Jodel/docs/ceu/especificacao_funcionalidades/./05_noticias.jpg"
+       xlink:href="./05_noticias.jpg"
        width="1024"
-       xlink:href="file:///home/fedel/preface/Ceu/especificacao_funcionalidades/05_noticias.jpg" />
+       height="1747"
+       id="image3339"
+       x="-32"
+       y="-295.42352" />
     <rect
        style="fill:none;stroke:#0000ff;stroke-width:4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect3349"

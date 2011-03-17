@@ -77,12 +77,13 @@
      inkscape:groupmode="layer"
      id="layer1">
     <image
-       y="-352.56638"
-       x="-172"
-       id="image2886"
-       height="1827"
+       sodipodi:absref="/home/fedel/preface/Jodel/docs/ceu/especificacao_funcionalidades/./03_atendimentos.jpg"
+       xlink:href="./03_atendimentos.jpg"
        width="1024"
-       xlink:href="file:///home/fedel/preface/Ceu/especificacao_funcionalidades/03_atendimentos.jpg" />
+       height="1827"
+       id="image2886"
+       x="-172"
+       y="-352.56638" />
     <rect
        style="fill:none;stroke:#0000ff;stroke-width:2.51289439;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect2890"

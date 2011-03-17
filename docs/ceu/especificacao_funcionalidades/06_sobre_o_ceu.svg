@@ -103,12 +103,13 @@
      inkscape:groupmode="layer"
      id="layer1">
     <image
-       y="-216.8521"
-       x="-180.57143"
-       id="image3449"
-       height="1247"
+       sodipodi:absref="/home/fedel/preface/Jodel/docs/ceu/especificacao_funcionalidades/./06_sobre_o_ceu.jpg"
+       xlink:href="./06_sobre_o_ceu.jpg"
        width="1024"
-       xlink:href="file:///home/fedel/preface/Ceu/especificacao_funcionalidades/06_sobre_o_ceu.jpg" />
+       height="1247"
+       id="image3449"
+       x="-180.57143"
+       y="-216.8521" />
     <flowRoot
        xml:space="preserve"
        id="flowRoot3453"

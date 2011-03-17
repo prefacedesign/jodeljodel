@@ -96,12 +96,13 @@
      inkscape:groupmode="layer"
      id="layer1">
     <image
-       y="-206.8521"
-       x="-12"
-       id="image3508"
-       height="1467"
+       sodipodi:absref="/home/fedel/preface/Jodel/docs/ceu/especificacao_funcionalidades/./07_quem.jpg"
+       xlink:href="./07_quem.jpg"
        width="1024"
-       xlink:href="file:///home/fedel/preface/Ceu/especificacao_funcionalidades/07_quem.jpg" />
+       height="1467"
+       id="image3508"
+       x="-12"
+       y="-206.8521" />
     <rect
        style="fill:none;stroke:#0000ff;stroke-width:4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect3512"

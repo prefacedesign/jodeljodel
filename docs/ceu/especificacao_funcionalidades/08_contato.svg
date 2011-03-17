@@ -69,12 +69,13 @@
      id="layer1"
      transform="translate(236.09343,-46.005039)">
     <image
-       y="46.005039"
-       x="-112"
-       id="image2843"
-       height="847"
+       sodipodi:absref="/home/fedel/preface/Jodel/docs/ceu/especificacao_funcionalidades/./08_contato.jpg"
+       xlink:href="./08_contato.jpg"
        width="1024"
-       xlink:href="file:///home/fedel/preface/Ceu/especificacao_funcionalidades/08_contato.jpg" />
+       height="847"
+       id="image2843"
+       x="-112"
+       y="46.005039" />
     <rect
        style="fill:none;stroke:#0000ff;stroke-width:4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect2847"

@@ -147,12 +147,13 @@
      inkscape:groupmode="layer"
      id="layer1">
     <image
-       y="-481.13782"
-       x="-162"
-       id="image2920"
-       height="2027"
+       sodipodi:absref="/home/fedel/preface/Jodel/docs/ceu/especificacao_funcionalidades/./02b_programacao.jpg"
+       xlink:href="./02b_programacao.jpg"
        width="1024"
-       xlink:href="file:///home/fedel/preface/Ceu/especificacao_funcionalidades/02b_programacao.jpg" />
+       height="2027"
+       id="image2920"
+       x="-162"
+       y="-481.13782" />
     <rect
        style="fill:none;stroke:#0000ff;stroke-width:1.89980519;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect2814"

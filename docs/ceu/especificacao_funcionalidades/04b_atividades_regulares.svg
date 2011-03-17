@@ -15,7 +15,7 @@
    id="svg3206"
    version="1.1"
    inkscape:version="0.47 r22583"
-   sodipodi:docname="Novo documento 18">
+   sodipodi:docname="04b_atividades_regulares.svg">
   <defs
      id="defs3208">
     <inkscape:perspective
@@ -59,7 +59,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -68,12 +68,13 @@
      inkscape:groupmode="layer"
      id="layer1">
     <image
-       y="36.005039"
-       x="-140.57143"
-       id="image3226"
-       height="1147"
+       sodipodi:absref="/home/fedel/preface/Jodel/docs/ceu/especificacao_funcionalidades/./04b_atividades_regulares.jpg"
+       xlink:href="./04b_atividades_regulares.jpg"
        width="1024"
-       xlink:href="file:///home/fedel/preface/Ceu/especificacao_funcionalidades/04b_atividades_regulares.jpg" />
+       height="1147"
+       id="image3226"
+       x="-140.57143"
+       y="36.005039" />
     <rect
        style="fill:none;stroke:#0000ff;stroke-width:4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect3230"
