@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   id="svg2866"
+   version="1.1"
+   inkscape:version="0.47 r22583"
+   sodipodi:docname="03_atendimentos.svg">
+  <defs
+     id="defs2868">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective2874" />
+    <inkscape:perspective
+       id="perspective2884"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective2828"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.7"
+     inkscape:cx="428.55021"
+     inkscape:cy="733.4642"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1440"
+     inkscape:window-height="825"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     showguides="true"
+     inkscape:guide-bbox="true" />
+  <metadata
+     id="metadata2871">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Camada 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <image
+       y="-352.56638"
+       x="-172"
+       id="image2886"
+       height="1827"
+       width="1024"
+       xlink:href="file:///home/fedel/preface/Ceu/especificacao_funcionalidades/03_atendimentos.jpg" />
+    <rect
+       style="fill:none;stroke:#0000ff;stroke-width:2.51289439;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect2890"
+       width="324.34424"
+       height="137.2014"
+       x="4.9707384"
+       y="28.76149" />
+    <text
+       xml:space="preserve"
+       style="font-size:14.91776943px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="178.84462"
+       y="159.20078"
+       id="text2892"><tspan
+         sodipodi:role="line"
+         x="178.84462"
+         y="159.20078"
+         id="tspan2822">element treatment</tspan><tspan
+         sodipodi:role="line"
+         x="178.84462"
+         y="177.84799"
+         id="tspan2941">tipo preview</tspan></text>
+    <rect
+       style="fill:none;stroke:#0000ff;stroke-width:5;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect2818"
+       width="505.71429"
+       height="385.71429"
+       x="337.14285"
+       y="333.79077" />
+    <text
+       xml:space="preserve"
+       style="font-size:14.91776943px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="860.81317"
+       y="342.86835"
+       id="text2892-0"><tspan
+         sodipodi:role="line"
+         x="860.81317"
+         y="342.86835"
+         id="tspan2822-5">element people</tspan><tspan
+         sodipodi:role="line"
+         x="860.81317"
+         y="361.51556"
+         id="tspan2941-1">tipo treatment</tspan></text>
+  </g>
+</svg>
