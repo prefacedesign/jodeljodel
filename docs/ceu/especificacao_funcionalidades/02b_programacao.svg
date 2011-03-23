@@ -119,7 +119,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.49497475"
      inkscape:cx="805.72081"
-     inkscape:cy="573.712"
+     inkscape:cy="492.8998"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -149,11 +149,11 @@
     <image
        sodipodi:absref="/home/fedel/preface/Jodel/docs/ceu/especificacao_funcionalidades/./02b_programacao.jpg"
        xlink:href="./02b_programacao.jpg"
-       width="1024"
-       height="2027"
-       id="image2920"
+       y="-481.13782"
        x="-162"
-       y="-481.13782" />
+       id="image2920"
+       height="2027"
+       width="1024" />
     <rect
        style="fill:none;stroke:#0000ff;stroke-width:1.89980519;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect2814"
@@ -259,11 +259,11 @@
          sodipodi:role="line"
          x="-428.25375"
          y="-338.23462"
-         id="tspan2890">element evento</tspan><tspan
+         id="tspan2894">element event</tspan><tspan
          sodipodi:role="line"
          x="-428.25375"
          y="-338.23462"
-         id="tspan2894">full</tspan></text>
+         id="tspan3240">full</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:17.29467392px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"

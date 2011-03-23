@@ -69,8 +69,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
-     inkscape:cx="749.96755"
-     inkscape:cy="764.23636"
+     inkscape:cx="449.05506"
+     inkscape:cy="153.64746"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -98,11 +98,11 @@
     <image
        sodipodi:absref="/home/fedel/preface/Jodel/docs/ceu/especificacao_funcionalidades/./07_quem.jpg"
        xlink:href="./07_quem.jpg"
-       width="1024"
-       height="1467"
-       id="image3508"
+       y="-206.8521"
        x="-12"
-       y="-206.8521" />
+       id="image3508"
+       height="1467"
+       width="1024" />
     <rect
        style="fill:none;stroke:#0000ff;stroke-width:4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect3512"
@@ -117,13 +117,13 @@
        y="1019.6752"
        id="text3535"><tspan
          sodipodi:role="line"
-         id="tspan3537"
          x="851.46429"
-         y="1019.6752">element quem</tspan><tspan
+         y="1019.6752"
+         id="tspan3539">element being</tspan><tspan
          sodipodi:role="line"
          x="851.46429"
-         y="1036.5654"
-         id="tspan3539">tipo preview</tspan></text>
+         y="1036.5653"
+         id="tspan3264">tipo preview vertical</tspan></text>
     <rect
        style="fill:none;stroke:#0000ff;stroke-width:5.29584932;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect3512-9"
@@ -140,11 +140,11 @@
          sodipodi:role="line"
          x="-107.53078"
          y="130.4263"
-         id="tspan3539-6">element people</tspan><tspan
+         id="tspan2870">element being</tspan><tspan
          sodipodi:role="line"
          x="-107.53078"
          y="130.4263"
-         id="tspan2870">tipo preview</tspan></text>
+         id="tspan3260">tipo preview</tspan></text>
     <rect
        style="fill:none;stroke:#0000ff;stroke-width:3.42973638;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect3512-9-0"

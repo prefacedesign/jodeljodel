@@ -217,7 +217,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
      inkscape:cx="695.79938"
-     inkscape:cy="1527.0812"
+     inkscape:cy="1414.8597"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -246,12 +246,12 @@
     <image
        sodipodi:absref="/home/fedel/preface/Jodel/docs/ceu/especificacao_funcionalidades/./01_pagina_inicial.jpg"
        xlink:href="./01_pagina_inicial.jpg"
-       style="fill:#000000"
-       width="1024"
-       height="1787"
-       id="image2826"
+       y="-381.13782"
        x="-32"
-       y="-381.13782" />
+       id="image2826"
+       height="1787"
+       width="1024"
+       style="fill:#000000" />
     <rect
        style="fill:none;stroke:#0000ff;stroke-width:4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect2830"
@@ -387,7 +387,7 @@
          sodipodi:role="line"
          id="tspan3606-8-6-7-2"
          x="328.40854"
-         y="77.452995">element treatment - preview_mini</tspan></text>
+         y="77.452995">element services - preview_mini</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:17.29467392px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"

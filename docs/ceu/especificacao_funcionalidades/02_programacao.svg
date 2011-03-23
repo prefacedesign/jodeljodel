@@ -244,8 +244,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
-     inkscape:cx="513.22269"
-     inkscape:cy="1165.8321"
+     inkscape:cx="271.40431"
+     inkscape:cy="22.974957"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -275,11 +275,11 @@
     <image
        sodipodi:absref="/home/fedel/preface/Jodel/docs/ceu/especificacao_funcionalidades/./02_programacao.jpg"
        xlink:href="./02_programacao.jpg"
-       width="1024"
-       height="1947"
-       id="image3013"
+       y="-441.13782"
        x="-186.28572"
-       y="-441.13782" />
+       id="image3013"
+       height="1947"
+       width="1024" />
     <rect
        style="fill:none;stroke:#0000ff;stroke-width:2.34891105;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect3038"
@@ -301,20 +301,6 @@
          x="266.03189"
          y="-198.04486"
          id="tspan3051" /></text>
-    <text
-       xml:space="preserve"
-       style="font-size:17.29467392px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
-       x="-381.965"
-       y="-138.38512"
-       id="text3604-7-8-24-5"><tspan
-         sodipodi:role="line"
-         x="-381.965"
-         y="-138.38512"
-         id="tspan3051-3">nada de especial </tspan><tspan
-         sodipodi:role="line"
-         x="-381.965"
-         y="-116.76678"
-         id="tspan3105">(ou tem?)</tspan></text>
     <rect
        style="fill:none;stroke:#0000ff;stroke-width:4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect3038-2-9"
@@ -461,16 +447,16 @@
     <text
        xml:space="preserve"
        style="font-size:17.29467392px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
-       x="810.68524"
-       y="444.27628"
+       x="856.39954"
+       y="439.99057"
        id="text3604-7-8-24-3-1-4-1"><tspan
          sodipodi:role="line"
-         x="810.68524"
-         y="444.27628"
+         x="856.39954"
+         y="439.99057"
          id="tspan3051-7-8-5-3">caixinha - talvez possa ser passado para a caixinha</tspan><tspan
          sodipodi:role="line"
-         x="810.68524"
-         y="465.89462"
+         x="856.39954"
+         y="461.60892"
          id="tspan2914">os elementos, e ela gera as separações</tspan></text>
     <rect
        style="fill:none;stroke:#0000ff;stroke-width:4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"

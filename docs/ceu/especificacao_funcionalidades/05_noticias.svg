@@ -75,9 +75,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.98994949"
-     inkscape:cx="975.78013"
-     inkscape:cy="847.6692"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="982.30052"
+     inkscape:cy="877.30717"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -105,11 +105,11 @@
     <image
        sodipodi:absref="/home/fedel/preface/Jodel/docs/ceu/especificacao_funcionalidades/./05_noticias.jpg"
        xlink:href="./05_noticias.jpg"
-       width="1024"
-       height="1747"
-       id="image3339"
+       y="-295.42352"
        x="-32"
-       y="-295.42352" />
+       id="image3339"
+       height="1747"
+       width="1024" />
     <rect
        style="fill:none;stroke:#0000ff;stroke-width:4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect3349"
@@ -124,13 +124,13 @@
        y="25.42289"
        id="text3357"><tspan
          sodipodi:role="line"
-         id="tspan3359"
          x="-175.97397"
-         y="25.42289">element noticia</tspan><tspan
+         y="25.42289"
+         id="tspan3361">element news</tspan><tspan
          sodipodi:role="line"
          x="-175.97397"
-         y="50.009544"
-         id="tspan3361">tipo full</tspan></text>
+         y="25.42289"
+         id="tspan3256">tipo full</tspan></text>
     <rect
        style="fill:none;stroke:#0000ff;stroke-width:5;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect2822"

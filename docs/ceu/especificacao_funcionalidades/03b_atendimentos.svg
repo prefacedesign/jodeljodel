@@ -77,7 +77,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.69999999"
      inkscape:cx="158.35873"
-     inkscape:cy="710.35345"
+     inkscape:cy="332.18757"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -105,11 +105,11 @@
     <image
        sodipodi:absref="/home/fedel/preface/Jodel/docs/ceu/especificacao_funcionalidades/./03b_atendimentos.jpg"
        xlink:href="./03b_atendimentos.jpg"
-       width="1024"
-       height="1147"
-       id="image2937"
+       y="-141.13782"
        x="-49.142857"
-       y="-141.13782" />
+       id="image2937"
+       height="1147"
+       width="1024" />
     <rect
        style="fill:none;stroke:#0000ff;stroke-width:4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect2956"
@@ -124,13 +124,13 @@
        y="161.89383"
        id="text2958"><tspan
          sodipodi:role="line"
-         id="tspan2960"
          x="-290.18542"
-         y="161.89383">element treatment</tspan><tspan
+         y="161.89383"
+         id="tspan2962">element service</tspan><tspan
          sodipodi:role="line"
          x="-290.18542"
-         y="183.02464"
-         id="tspan2962">tipo full</tspan></text>
+         y="161.89383"
+         id="tspan3248">tipo full</tspan></text>
     <rect
        style="fill:none;stroke:#0000ff;stroke-width:4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect2956-4"
@@ -147,7 +147,7 @@
          sodipodi:role="line"
          x="696.5282"
          y="705.02887"
-         id="tspan2962-4">element people</tspan><tspan
+         id="tspan2962-4">element being</tspan><tspan
          sodipodi:role="line"
          x="696.5282"
          y="726.15967"

@@ -40,9 +40,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.7"
-     inkscape:cx="573.82849"
-     inkscape:cy="419.01412"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="953.00954"
+     inkscape:cy="791.24192"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -70,11 +70,11 @@
     <image
        sodipodi:absref="/home/fedel/preface/Jodel/docs/ceu/especificacao_funcionalidades/./04b_atividades_regulares.jpg"
        xlink:href="./04b_atividades_regulares.jpg"
-       width="1024"
-       height="1147"
-       id="image3226"
+       y="36.005039"
        x="-140.57143"
-       y="36.005039" />
+       id="image3226"
+       height="1147"
+       width="1024" />
     <rect
        style="fill:none;stroke:#0000ff;stroke-width:4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect3230"
@@ -89,12 +89,12 @@
        y="272.93216"
        id="text3232"><tspan
          sodipodi:role="line"
-         id="tspan3234"
          x="-364.40683"
-         y="272.93216">Element atividades regulares</tspan><tspan
+         y="272.93216"
+         id="tspan3236">Element activities </tspan><tspan
          sodipodi:role="line"
          x="-364.40683"
-         y="291.07059"
-         id="tspan3236">tipo full</tspan></text>
+         y="272.93216"
+         id="tspan3252">tipo full</tspan></text>
   </g>
 </svg>
