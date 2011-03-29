@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2011-03-10 11:13-0300\n"
-"PO-Revision-Date: 2011-03-10 13:01-0300\n"
+"PO-Revision-Date: 2011-03-16 15:33-0300\n"
 "Last-Translator: Lucas Vignoli Reis <lucas@preface.com.br>\n"
 "Language-Team: Preface Design <preface@preface.com.br>\n"
 "MIME-Version: 1.0\n"
@@ -1112,19 +1112,19 @@ msgstr "Palavras-chave"
 
 #: \plugins\paper\views\elements\pap_paper.ctp:64
 msgid "Paper view page: Paper for download"
-msgstr ""
+msgstr "Download"
 
 #: \plugins\paper\views\elements\pap_paper.ctp:70
 msgid "Paper view page: paper in the original publication"
-msgstr ""
+msgstr "O artigo no períodico"
 
 #: \plugins\paper\views\elements\pap_paper.ctp:80
 msgid "Authors"
-msgstr ""
+msgstr "Autor(es)"
 
 #: \plugins\paper\views\elements\pap_paper.ctp:88
 msgid "Paper view page: Publication"
-msgstr ""
+msgstr "Publicação:"
 
 #: \plugins\paper\views\elements\pap_paper.ctp:148
 msgid "Form - PapPaper.Journal - Select a Journal"
@@ -1136,7 +1136,7 @@ msgstr " "
 
 #: \plugins\paper\views\elements\pap_paper.ctp:154
 msgid "Form - PapPaper.Journal - Create a new Journal"
-msgstr ""
+msgstr "Cadastrar uma publicação"
 
 #: \plugins\paper\views\elements\pap_paper.ctp:155
 msgid "Form - PapPaper.Journal - Edit this Journal"

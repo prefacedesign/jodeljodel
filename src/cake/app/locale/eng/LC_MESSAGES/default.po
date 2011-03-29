@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2011-03-10 12:49-0300\n"
-"PO-Revision-Date: 2011-03-10 13:08-0300\n"
+"PO-Revision-Date: 2011-03-16 15:36-0300\n"
 "Last-Translator: Lucas Vignoli Reis <lucas@preface.com.br>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -838,7 +838,7 @@ msgstr "Events"
 
 #: \plugins\page_sections\config\sections.php:201
 msgid "Sections: events headerCaption"
-msgstr "Event"
+msgstr "Events"
 
 #: \plugins\page_sections\config\sections.php:202
 msgid "Sections: events humanName"
@@ -855,9 +855,8 @@ msgid "Sections: events_index pageTitle"
 msgstr "Events"
 
 #: \plugins\page_sections\config\sections.php:214
-#, fuzzy
 msgid "Sections: events_index headerCaption"
-msgstr "Event"
+msgstr "Events"
 
 #: \plugins\page_sections\config\sections.php:215
 #, fuzzy
