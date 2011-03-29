@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   id="svg2917"
+   version="1.1"
+   inkscape:version="0.47 r22583"
+   sodipodi:docname="03b_atendimentos.svg">
+  <defs
+     id="defs2919">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective2925" />
+    <inkscape:perspective
+       id="perspective2935"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective2993"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective3015"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective2835"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective2837"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective2859"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.69999999"
+     inkscape:cx="158.35873"
+     inkscape:cy="332.18757"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1440"
+     inkscape:window-height="825"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata2922">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Camada 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <image
+       sodipodi:absref="/home/fedel/preface/Jodel/docs/ceu/especificacao_funcionalidades/./03b_atendimentos.jpg"
+       xlink:href="./03b_atendimentos.jpg"
+       y="-141.13782"
+       x="-49.142857"
+       id="image2937"
+       height="1147"
+       width="1024" />
+    <rect
+       style="fill:none;stroke:#0000ff;stroke-width:4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect2956"
+       width="1024.2858"
+       height="771.42859"
+       x="-35.714287"
+       y="69.505043" />
+    <text
+       xml:space="preserve"
+       style="font-size:16.90465355px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="-290.18542"
+       y="161.89383"
+       id="text2958"><tspan
+         sodipodi:role="line"
+         x="-290.18542"
+         y="161.89383"
+         id="tspan2962">element service</tspan><tspan
+         sodipodi:role="line"
+         x="-290.18542"
+         y="161.89383"
+         id="tspan3248">tipo full</tspan></text>
+    <rect
+       style="fill:none;stroke:#0000ff;stroke-width:4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect2956-4"
+       width="480.82373"
+       height="518.89044"
+       x="454.99997"
+       y="152.36218" />
+    <text
+       xml:space="preserve"
+       style="font-size:16.90465355px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="696.5282"
+       y="705.02887"
+       id="text2958-1"><tspan
+         sodipodi:role="line"
+         x="696.5282"
+         y="705.02887"
+         id="tspan2962-4">element being</tspan><tspan
+         sodipodi:role="line"
+         x="696.5282"
+         y="726.15967"
+         id="tspan2823">tipo biografia</tspan></text>
+    <rect
+       style="fill:none;stroke:#0000ff;stroke-width:5;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect2825"
+       width="483.86307"
+       height="128.28937"
+       x="-16.162441"
+       y="678.60571" />
+    <text
+       xml:space="preserve"
+       style="font-size:16.90465355px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="482.5368"
+       y="769.67865"
+       id="text2958-1-1"><tspan
+         sodipodi:role="line"
+         x="482.5368"
+         y="769.67865"
+         id="tspan2823-5">caixinha no bricklayer </tspan><tspan
+         sodipodi:role="line"
+         x="482.5368"
+         y="790.80945"
+         id="tspan2857">( o mesmo do atendimento geral )</tspan></text>
+    <rect
+       style="fill:none;stroke:#0000ff;stroke-width:3.91056895;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect2956-4-9"
+       width="459.48459"
+       height="518.97986"
+       x="-13.313742"
+       y="147.15796" />
+    <text
+       xml:space="preserve"
+       style="font-size:16.90465355px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="-1.4491509"
+       y="637.88898"
+       id="text2958-8"><tspan
+         sodipodi:role="line"
+         x="-1.4491509"
+         y="637.88898"
+         id="tspan2962-9">fluxo</tspan><tspan
+         sodipodi:role="line"
+         x="-1.4491509"
+         y="659.01984"
+         id="tspan2881">content stream</tspan></text>
+  </g>
+</svg>

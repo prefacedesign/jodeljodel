@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1372.2004"
+   height="847"
+   id="svg2823"
+   version="1.1"
+   inkscape:version="0.47 r22583"
+   sodipodi:docname="08_contato.svg">
+  <defs
+     id="defs2825">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective2831" />
+    <inkscape:perspective
+       id="perspective2841"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.7"
+     inkscape:cx="800.99441"
+     inkscape:cy="570.05018"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1440"
+     inkscape:window-height="825"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata2828">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Camada 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(236.09343,-46.005039)">
+    <image
+       sodipodi:absref="/home/fedel/preface/Jodel/docs/ceu/especificacao_funcionalidades/./08_contato.jpg"
+       xlink:href="./08_contato.jpg"
+       width="1024"
+       height="847"
+       id="image2843"
+       x="-112"
+       y="46.005039" />
+    <rect
+       style="fill:none;stroke:#0000ff;stroke-width:4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect2847"
+       width="387.14285"
+       height="392.85715"
+       x="-107.14286"
+       y="335.21933" />
+    <text
+       xml:space="preserve"
+       style="font-size:31.88109589px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="-237.85249"
+       y="384.70099"
+       id="text2849"><tspan
+         sodipodi:role="line"
+         id="tspan2851"
+         x="-237.85249"
+         y="384.70099">corktile</tspan><tspan
+         sodipodi:role="line"
+         x="-237.85249"
+         y="424.55237"
+         id="tspan2820">de fluxo</tspan></text>
+    <rect
+       style="fill:none;stroke:#0000ff;stroke-width:4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect2853"
+       width="340"
+       height="198.57143"
+       x="562.85712"
+       y="346.64789" />
+    <text
+       xml:space="preserve"
+       style="font-size:17.31813812px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="942.45331"
+       y="363.63654"
+       id="text2855"><tspan
+         sodipodi:role="line"
+         id="tspan2857"
+         x="942.45331"
+         y="363.63654">corktile de informacao</tspan></text>
+  </g>
+</svg>

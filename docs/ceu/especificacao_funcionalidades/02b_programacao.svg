@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   id="svg2900"
+   version="1.1"
+   inkscape:version="0.47 r22583"
+   sodipodi:docname="02b_programacao.svg">
+  <defs
+     id="defs2902">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective2908" />
+    <inkscape:perspective
+       id="perspective2918"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective2862"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective2839"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective2864"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective2886"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective2913"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective2943"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective2965"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective2873"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective2904"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective2966"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective3002"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="805.72081"
+     inkscape:cy="492.8998"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1440"
+     inkscape:window-height="825"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     showguides="true"
+     inkscape:guide-bbox="true" />
+  <metadata
+     id="metadata2905">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Camada 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <image
+       sodipodi:absref="/home/fedel/preface/Jodel/docs/ceu/especificacao_funcionalidades/./02b_programacao.jpg"
+       xlink:href="./02b_programacao.jpg"
+       y="-481.13782"
+       x="-162"
+       id="image2920"
+       height="2027"
+       width="1024" />
+    <rect
+       style="fill:none;stroke:#0000ff;stroke-width:1.89980519;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect2814"
+       width="278.49927"
+       height="73.605659"
+       x="-140.45114"
+       y="-284.10959" />
+    <text
+       xml:space="preserve"
+       style="font-size:17.29467392px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="146.96303"
+       y="-249.75444"
+       id="text3604-7-8-24"><tspan
+         sodipodi:role="line"
+         x="146.96303"
+         y="-249.75444"
+         id="tspan2827">h1 no céu-bricklayer</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:17.29467392px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="838.8891"
+       y="-155.37749"
+       id="text3604-7-8-24-2"><tspan
+         sodipodi:role="line"
+         x="838.8891"
+         y="-155.37749"
+         id="tspan2827-2">caixinha no bricklayer</tspan><tspan
+         sodipodi:role="line"
+         x="838.8891"
+         y="-133.75914"
+         id="tspan2985">a cor da caixinha é registrada no bd</tspan><tspan
+         sodipodi:role="line"
+         x="838.8891"
+         y="-112.1408"
+         id="tspan2988">(a pessoa que inserir escolhe)</tspan><tspan
+         sodipodi:role="line"
+         x="838.8891"
+         y="-90.522461"
+         id="tspan2990">que vai ser a mesma cor na programacao</tspan></text>
+    <rect
+       style="fill:none;stroke:#0000ff;stroke-width:4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect2814-6"
+       width="502.11322"
+       height="977.21973"
+       x="-127.48523"
+       y="317.32373" />
+    <text
+       xml:space="preserve"
+       style="font-size:17.29467392px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="-243.65836"
+       y="347.13339"
+       id="text3604-7-8-24-2-9"><tspan
+         sodipodi:role="line"
+         x="-243.65836"
+         y="347.13339"
+         id="tspan2903">content</tspan><tspan
+         sodipodi:role="line"
+         x="-243.65836"
+         y="368.75174"
+         id="tspan2837">stream</tspan><tspan
+         sodipodi:role="line"
+         x="-243.65836"
+         y="390.37009"
+         id="tspan2839" /><tspan
+         sodipodi:role="line"
+         x="-243.65836"
+         y="411.98843"
+         id="tspan2841">armazenado</tspan><tspan
+         sodipodi:role="line"
+         x="-243.65836"
+         y="433.60675"
+         id="tspan2843">como fluxo</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:17.29467392px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="-243.7742"
+       y="-165.87421"
+       id="text3604-7-8-24-2-9-6"><tspan
+         sodipodi:role="line"
+         x="-243.7742"
+         y="-165.87421"
+         id="tspan2903-6">imagem no BD</tspan></text>
+    <rect
+       style="fill:none;stroke:#0000ff;stroke-width:4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect2991"
+       width="318.57144"
+       height="102.85715"
+       x="515.71429"
+       y="-183.3521" />
+    <rect
+       style="fill:none;stroke:#0000ff;stroke-width:5;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect2863"
+       width="1568.5714"
+       height="1661.4286"
+       x="-294.28571"
+       y="-289.06638" />
+    <text
+       xml:space="preserve"
+       style="font-size:17.29467392px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="-428.25375"
+       y="-338.23462"
+       id="text3604-7-8-24-5"><tspan
+         sodipodi:role="line"
+         x="-428.25375"
+         y="-338.23462"
+         id="tspan2894">element event</tspan><tspan
+         sodipodi:role="line"
+         x="-428.25375"
+         y="-338.23462"
+         id="tspan3240">full</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:17.29467392px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="849.83063"
+       y="481.22937"
+       id="text3604-7-8-24-2-9-1-4"><tspan
+         sodipodi:role="line"
+         x="849.83063"
+         y="481.22937"
+         id="tspan2989-0">armazenar no bd</tspan><tspan
+         sodipodi:role="line"
+         x="849.83063"
+         y="502.84772"
+         id="tspan2932" /><tspan
+         sodipodi:role="line"
+         x="849.83063"
+         y="524.46606"
+         id="tspan2934">vão ter alguns campos padrões</tspan><tspan
+         sodipodi:role="line"
+         x="849.83063"
+         y="546.08441"
+         id="tspan2936">e alguns opcionais que se pode escolher o título</tspan><tspan
+         sodipodi:role="line"
+         x="849.83063"
+         y="567.70276"
+         id="tspan2938" /><tspan
+         sodipodi:role="line"
+         x="849.83063"
+         y="589.32111"
+         id="tspan2940">quando clicar em enviar, salva no bd</tspan><tspan
+         sodipodi:role="line"
+         x="849.83063"
+         y="610.93945"
+         id="tspan2942">e envia por email</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:17.29467392px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="558.34167"
+       y="-45.723724"
+       id="text3604-7-8-24-2-4"><tspan
+         sodipodi:role="line"
+         x="558.34167"
+         y="-45.723724"
+         id="tspan2827-2-6">vão ter campos padrões</tspan><tspan
+         sodipodi:role="line"
+         x="558.34167"
+         y="-24.105381"
+         id="tspan2983">e alguns extras que podem ser definidos</tspan></text>
+    <rect
+       style="fill:none;stroke:#0000ff;stroke-width:5;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect2992"
+       width="966.716"
+       height="38.385796"
+       x="-134.3503"
+       y="273.53458" />
+    <text
+       xml:space="preserve"
+       style="font-size:17.29467392px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="852.22986"
+       y="294.836"
+       id="text3604-7-8-24-2-9-9"><tspan
+         sodipodi:role="line"
+         x="852.22986"
+         y="294.836"
+         id="tspan2843-6">barra no bricklayer</tspan></text>
+  </g>
+</svg>
