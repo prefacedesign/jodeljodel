@@ -209,10 +209,14 @@ class BuroBurocrataHelper extends XmlTagHelper
  * 
  * ### Accepts the following options on second parameter:
  *
- * - `url` - URL where data will be posted. Defaults to /burocrata/buro_burocrata/save
- * - `model` - Model className, with plugin name when appropriate. Defaults to false
- * - `writeForm` - If true, attempts to write all form, using the conventional element. Defaults to false
- * - `data` Optional data that will fill out the form. Defaults to $this->data
+ * - `url` - URL where data will be posted.
+ *           Defaults to /burocrata/buro_burocrata/save
+ * - `model` - Model className, with plugin name when
+ *             appropriate. Defaults to false.
+ * - `writeForm` - If true, attempts to write all form, using
+ *                 the conventional element. Defaults to false.
+ * - `data` - Optional data that will fill out the form.
+ *            Defaults to $this->data
  *
  * @access public
  * @param  array $htmlAttributes Controls the HTML parameters
