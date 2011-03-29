@@ -3,7 +3,7 @@
  *
  */
  
-App::import('Config','DashDashboard.config');
+App::import('Config','Dashboard.config');
 
 /**
  * 
