@@ -31,52 +31,72 @@
 			)
 		)
 	);
-		echo $this->Buro->input(array(), array('type' => 'textarea', 'fieldName' => 'adsas'));
-		echo $this->Buro->input(array('id' => 'meu_textile'),
-			array(
-				'type' => 'textile',
-				'label' => 'Um input de textile',
-				'fieldName' => 'about'
-			)
-		);
-
+		
 		echo $this->Buro->input(array(), 
 			array(
-				'type' => 'image',
-				'label' => 'Faça seu upload de imagem',
-				'error' => array(
-					'size' => 'Arquivo muito grande!',
-					'pixels' => 'Foto muito grande!',
-					'mimeType' => 'Aceitamos somente imagens, ok?'
-				),
+				'type' => 'relational',
 				'options' => array(
-					'fieldName' => 'img_id',
-					'version' => 'backstage_preview',
-					'callbacks' => array(
-						'onStart' => array('popup' => 'Começando o upload...')
-					),
-					'change_file_text' => 'Mudar esse arquivo'
+					'type' => 'unitary_autocomplete' // Antigo belongsTo, que agora é hasOne tb
 				)
 			)
 		);
 
-		echo $this->Buro->input(array(), 
-			array(
-				'type' => 'upload',
-				'label' => 'Arquivo',
-				'options' => array(
-					'fieldName' => 'file_id',
-					'callbacks' => array(
-						'onStart' => array('popup' => 'Começando o upload...')
-					),
-					'change_file_text' => 'Mudar esse arquivo'
-				)
-			)
-		);
-		echo $this->Buro->input(array(), array('type' => 'textarea', 'fieldName' => 'ssda'));
+		
 		echo $this->Buro->submit();
 	
 	echo $this->Buro->eform();
+
+	
+/* 	
+	Exemple of a textile input
+	
+	echo $this->Buro->input(array('id' => 'meu_textile'),
+		array(
+			'type' => 'textile',
+			'label' => 'Um input de textile',
+			'fieldName' => 'about'
+		)
+	);
+	 */
+
+/* 
+	Two examples of upload input
+	
+	echo $this->Buro->input(array(), 
+		array(
+			'type' => 'image',
+			'label' => 'Faça seu upload de imagem',
+			'error' => array(
+				'size' => 'Arquivo muito grande!',
+				'pixels' => 'Foto muito grande!',
+				'mimeType' => 'Aceitamos somente imagens, ok?'
+			),
+			'options' => array(
+				'fieldName' => 'img_id',
+				'version' => 'backstage_preview',
+				'callbacks' => array(
+					'onStart' => array('popup' => 'Começando o upload...')
+				),
+				'change_file_text' => 'Mudar esse arquivo'
+			)
+		)
+	);
+
+	echo $this->Buro->input(array(), 
+		array(
+			'type' => 'upload',
+			'label' => 'Arquivo',
+			'options' => array(
+				'fieldName' => 'file_id',
+				'callbacks' => array(
+					'onStart' => array('popup' => 'Começando o upload...')
+				),
+				'change_file_text' => 'Mudar esse arquivo'
+			)
+		)
+	);
+ */
+
 
 /* 
 	An autocomplete input

@@ -846,8 +846,16 @@ class BuroBurocrataHelper extends XmlTagHelper
 		return $out;
 	}
 
-
-	function sinputAutocompleteMessage($htmlAttributes = array(), $options = array())
+/**
+ * Starts a autocomplete message element, used by inputAutocomplete
+ * 
+ * @access public
+ * @param  array $htmlAttributes
+ * @param  array $options
+ * @return string The HTML well formated
+ * @see BuroBurocrataHelper::inputAutocomplete
+ */
+	public function sinputAutocompleteMessage($htmlAttributes = array(), $options = array())
 	{
 		$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultObjectClass);
 		$htmlAttributes = $this->addClass($htmlAttributes, 'autocomplete');
@@ -856,10 +864,44 @@ class BuroBurocrataHelper extends XmlTagHelper
 		return $this->Bl->sdiv($htmlAttributes, $options);
 	}
 
-
-	function einputAutocompleteMessage()
+/**
+ * Ends a autocomplete message element, used by inputAutocomplete
+ * 
+ * @access public
+ * @param  array $htmlAttributes
+ * @param  array $options
+ * @return string The HTML well formated
+ * @see BuroBurocrataHelper::inputAutocomplete
+ */
+	public function einputAutocompleteMessage()
 	{
 		return $this->Bl->ediv();
+	}
+
+
+/**
+ * Routes all relational inputs to theirs respectives methods.
+ * Only `type` param is required here, but the specific method could ask some more options
+ * 
+ * @access public
+ * @param array $options An array with non-defaults values
+ * @return string The HTML well formated
+ */
+	public function inputRelational(array $options)
+	{
+		if (!isset($options['options']['type']))
+			trigger_error('BuroBurocrataHelper::inputRelational - The relational input must receive the [options][type] configuration.');
+			
+		$input_type = $options['options']['type'];
+		unset($options['options']['type']);
+		unset($options['type']);
+		
+		$method_name = 'inputRelational'.Inflector::camelize($input_type);
+		if (!method_exists($this, $method_name))
+			trigger_error("BuroBurocrataHelper::inputRelational - input of '$input_type' type is not known.");
+		else
+			$this->{$method_name}($options);
+		return '';
 	}
 
 
