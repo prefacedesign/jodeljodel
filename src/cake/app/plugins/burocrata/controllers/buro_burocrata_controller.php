@@ -238,7 +238,7 @@ class BuroBurocrataController extends BurocrataAppController
  *
  * @access public
  * @return json An javascript object that contains `error` and `content` properties
- * @todo Better conditions suport
+ * @todo Better conditions support
  * @todo Suport for order statment
  */
 	public function autocomplete()

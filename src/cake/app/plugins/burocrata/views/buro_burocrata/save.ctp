@@ -9,9 +9,7 @@
 		if(!empty($model_plugin))
 			$class_name = $model_plugin . '.' . $class_name;
 		
-		//debug($class_name);
 		$object['content'] = $this->Buro->insertForm($class_name);
-		//debug($object);
 	}
 	
 	echo $this->Js->object($object);
