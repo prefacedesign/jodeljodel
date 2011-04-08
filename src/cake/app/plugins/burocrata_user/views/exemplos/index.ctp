@@ -20,7 +20,7 @@
 
 	echo $this->Buro->sform(array('class' => 'azul'), // Parâmetros HTML
 		array(
-			'model' => 'Person.PersPerson', // Somente o Model pai, assim como no FormHelper::create
+			'model' => 'BurocrataUser.Galery', // Somente o Model pai, assim como no FormHelper::create
 			'callbacks' => array(
 				'onStart'	=> array('lockForm'),
 				'onComplete'=> array('unlockForm'),
@@ -36,7 +36,8 @@
 			array(
 				'type' => 'relational',
 				'options' => array(
-					'type' => 'unitary_autocomplete' // Antigo belongsTo, que agora é hasOne tb
+					'type' => 'unitary_autocomplete', // Former belongsTo, that now is also hasOne
+					'model' => 'JjUser.UserUser'
 				)
 			)
 		);

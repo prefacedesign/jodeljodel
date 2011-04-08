@@ -896,12 +896,14 @@ class BuroBurocrataHelper extends XmlTagHelper
 		unset($options['options']['type']);
 		unset($options['type']);
 		
+		$input = '';
 		$method_name = 'inputRelational'.Inflector::camelize($input_type);
 		if (!method_exists($this, $method_name))
 			trigger_error("BuroBurocrataHelper::inputRelational - input of '$input_type' type is not known.");
 		else
-			$this->{$method_name}($options);
-		return '';
+			$input = $this->{$method_name}($options);
+		
+		return $input;
 	}
 
 
@@ -926,7 +928,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  * @todo type param implementation
  * @todo Error handling
  */
-	public function inputBelongsTo($options = array())
+	public function inputRelationalUnitaryAutocomplete($options = array())
 	{
 		$input_options = $options;
 		$options = $options['options'];
@@ -937,8 +939,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'type' => 'autocomplete',
 			'allow' => array('create', 'modify', 'relate'),
 			'baseID' => $this->baseID(),
-			'new_item_text' => __('Burocrata: create a new belongsto item', true),
-			'edit_item_text' => __('Burocrata: belongsto edit related data', true)
+			'new_item_text' => __('Burocrata: create a new related item', true),
+			'edit_item_text' => __('Burocrata: edit related data', true)
 		);
 		$options = am($defaults, $options);
 		extract($options);
@@ -947,18 +949,28 @@ class BuroBurocrataHelper extends XmlTagHelper
 		if (!$assocName && !empty($model))
 			$assocName = $model;
 		
-		// TODO: Trigger error `related model not set`
-		if (!$assocName) return 'related model not set'; 
+		if (!$assocName) {
+			trigger_error('BuroBurocrataHelper::inputRelationalUnitaryAutocomplete - Related model not set on given options [options][model]');
+			return false; 
+		}
 		unset($options['assocName']);
 		unset($options['type']);
 		
-		// TODO: Trigger error `parent model not found`
+		// Usually the Cake core will display a "missing table" or "missing connection"
+		// if something went wrong on registring the model
 		$parent_model = $this->modelAlias;
 		$ParentModel =& ClassRegistry::init($this->modelPlugin . '.' . $parent_model);
-		if (!$ParentModel) return 'parent model not found';
+		// But won't hurt test if went ok
+		if (!$ParentModel) {
+			trigger_error('BuroBurocrataHelper::inputRelationalUnitaryAutocomplete - Parent model could not be found.');
+			return false;
+		}
 		
-		// TODO: Trigger error `not a belongsTo related model`
-		if (!isset($ParentModel->belongsTo[$assocName])) return 'not a belongsTo related model';
+		$availables = am(array_keys($ParentModel->belongsTo),array_keys($ParentModel->hasOne));
+		if (!in_array($assocName, $availables) ) {
+			trigger_error('BuroBurocrataHelper::inputRelationalUnitaryAutocomplete - Related model doesn\'t make a unitary relationship. Given \''.$assocName.'\', but availables are: \''.implode('\', \'', $availables).'\'');
+			return false;
+		}
 		$fieldName = implode('.', array($parent_model, $ParentModel->belongsTo[$assocName]['foreignKey']));
 		
 		$model_class_name = $model;
@@ -1067,15 +1079,14 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'onShowForm' => array('ajax' => $open_form_ajax),
 			'onShowPreview' => array('ajax' => $open_prev_ajax)
 		);
-		$out .= $this->BuroOfficeBoy->belongsTo($officeboy_options);
+		$out .= $this->BuroOfficeBoy->relationalUnitaryAutocomplete($officeboy_options);
 		
 		return $out;
 	}
 	
 	
 	
-	
-	/**
+/**
  * Construct a belongsTo form based on passed variable
  *
  * ### The options are:

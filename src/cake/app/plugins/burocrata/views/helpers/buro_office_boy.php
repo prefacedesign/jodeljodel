@@ -53,7 +53,7 @@ class BuroOfficeBoyHelper extends AppHelper
 			'onFailure' => 'function(response){%s}',
 			'onError' => 'function(code, error){%s}'
 		),
-		'belongsto' => array(
+		'relational_unitary' => array(
 			'onShowForm' => 'function(to_edit){%s}',
 			'onShowPreview' => 'function(id){%s}'
 		),
@@ -180,18 +180,18 @@ class BuroOfficeBoyHelper extends AppHelper
 
 
 /**
- * Creates the javascript counter-part of the belongsTo input
+ * Creates the javascript counter-part of the RelationalUnitaryAutocomplete input
  *
  * @access public
  * @param array $options
  * @return string The HTML <script> tag
  */
-	public function belongsTo($options)
+	public function relationalUnitaryAutocomplete($options)
 	{
 		$defaults = array('callbacks' => array());
 		extract(am($defaults, $options));
 		
-		$callbacks = $this->formatCallbacks('belongsto', $callbacks);
+		$callbacks = $this->formatCallbacks('relational_unitary', $callbacks);
 		$script = sprintf("new BuroBelongsTo('%s','%s'%s);", $baseID, $autocomplete_baseID, (empty($callbacks) ? '':','.$callbacks));
 		return $this->addHtmlEmbScript($script);
 	}
