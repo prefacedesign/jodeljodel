@@ -625,20 +625,27 @@ var BuroTextile = Class.create(BuroCallbackable, {
 		
 		this.id_base = id_base;
 		this.input = $('npt'+this.id_base);
+		
 		this.links = {};
-		var ids = ['link','bold','title','ital','file','img']
+		var ids = ['link','bold','title','italic','file','image']
 		for (var i = 0; i < ids.length; i++)
 			this.links[ids[i]] = $('l'+ids[i]+this.id_base);
-		
+			
 		this.input.observe('keyup', this.getSelection.bind(this));
 		this.input.observe('mouseup', this.getSelection.bind(this));
 		
-		this.links['bold'].observe('click', this.insertBold.bind(this));
-		this.links['ital'].observe('click', this.insertItalic.bind(this));
-		this.links['link'].observe('click', this.openLinkDialog.bind(this));
-		this.links['title'].observe('click', this.openTitleDialog.bind(this));
-		this.links['file'].observe('click', this.openFileDialog.bind(this));
-		this.links['img'].observe('click', this.openImageDialog.bind(this));
+		if (this.links['bold'])
+			this.links['bold'].observe('click', this.insertBold.bind(this));
+		if (this.links['italic'])
+			this.links['italic'].observe('click', this.insertItalic.bind(this));
+		if (this.links['link'])
+			this.links['link'].observe('click', this.openLinkDialog.bind(this));
+		if (this.links['title'])
+			this.links['title'].observe('click', this.openTitleDialog.bind(this));
+		if (this.links['file'])
+			this.links['file'].observe('click', this.openFileDialog.bind(this));
+		if (this.links['image'])
+			this.links['image'].observe('click', this.openImageDialog.bind(this));
 		
 		this.input.observe('focus', this.focus.bind(this));
 		this.input.observe('blur', this.blur.bind(this));
@@ -674,7 +681,7 @@ var BuroTextile = Class.create(BuroCallbackable, {
 	openImageDialog: function(ev)
 	{
 		ev.stop();
-		showPopup('img'+this.id_base);
+		showPopup('image'+this.id_base);
 	},
 	insertFile: function(fileJson)
 	{
@@ -740,6 +747,7 @@ var BuroTextile = Class.create(BuroCallbackable, {
 	{
 		var scrollTmp = this.input.scrollTop;
 		var selection = this.getSelection(this.input);
+		
 		var textBefore = this.input.value.substring(0, selection.start);
 		var textAfter = this.input.value.substring(selection.end);
 		
@@ -770,6 +778,7 @@ var BuroTextile = Class.create(BuroCallbackable, {
 			start = this.input.selectionStart;
 			end = this.input.selectionEnd;
 		}
+		
 		return this.selection = {start:start, end:end};
 	},
 	setSelection: function(input, start, end)

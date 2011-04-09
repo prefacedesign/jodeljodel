@@ -1348,16 +1348,31 @@ class BuroBurocrataHelper extends XmlTagHelper
  * Renders a input with shortcuts to the four most common textile syntax 
  * (bold, italic, link, image and link for a file)
  * 
+ * ### Valid options are:
+ * - `baseID`
+ * - `enabled_buttons` An array with enabled shortcuts for textile formating
+ *                     Valid names are: 'italic', 'bold', 'link', 'image', 'file', 'title'
+ *                     Defaults to all enabled
+ * - `allow_preview` Boolean value that says if will this input will have a preview button
+ *                   Defaults to true
+ * 
  * @access public
  * @param array $options
  * @return string The HTML and the Js
  */
 	public function inputTextile($options)
 	{
+		$button_list = array('bold', 'italic', 'link', 'title', 'image', 'file');
+		$config_options = $options['options'] + array('enabled_buttons' => $button_list, 'allow_preview' => true);
+		unset($options['options']);
+		
 		$baseID = $this->baseID();
 		$options = array('type' => 'textarea', 'container' => false) + $options + array('baseID' => $baseID);
 		
-		$ids = array('npt','link','llink','title','ltitle','file','prev','lbold', 'lital','img', 'limg', 'lfile', 'lprev');
+		// `npt` for input
+		// `{name}_id` for the popup
+		// `l{name}_id` is for the link
+		$ids = array('npt','link','llink','title','ltitle','file','prev','lbold', 'litalic','image', 'limage', 'lfile', 'lprev');
 		foreach ($ids as $id)
 			${$id.'_id'} = $id . $options['baseID'];
 		
@@ -1380,27 +1395,40 @@ class BuroBurocrataHelper extends XmlTagHelper
 			unset($options['instructions']);
 		}
 		
-		// Buttons
-		$out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile bold_textile', 'id' => $lbold_id), array(), __('Burocrata::inputTextile - Add bold', true));
-		$out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile ital_textile', 'id' => $lital_id), array(), __('Burocrata::inputTextile - Add Italic', true));
-		$out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile link_textile', 'id' => $llink_id), array(), __('Burocrata::inputTextile - Add link', true));
-		$out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile title_textile', 'id' => $ltitle_id), array(), __('Burocrata::inputTextile - Add title', true));
-		$out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile img_textile', 'id' => $limg_id), array(), __('Burocrata::inputTextile - Add Img', true));
-		$out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile file_textile', 'id' => $lfile_id), array(), __('Burocrata::inputTextile - Add file', true));
-		$out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile prev_textile', 'id' => $lprev_id), array(), __('Burocrata::inputTextile - Preview', true));
-		$out .= $this->Bl->floatBreak();
+		// Buttons and theirs popups
+		foreach ($config_options['enabled_buttons'] as $button)
+		{
+			if (in_array($button, $button_list))
+			{
+				$out .= $this->Bl->a(
+					array('href' => '', 'class' => 'link_button buro_textile '.$button.'_textile', 'id' => ${"l{$button}_id"}),
+					array(),
+					__('Burocrata::inputTextile - Add '.$button, true)
+				);
+				$popup_method = '_popupTextile'.Inflector::camelize($button);
+				if (method_exists($this, $popup_method))
+					$this->{$popup_method}(${"{$button}_id"}, $options);
+			}
+		}
+		// $out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile bold_textile', 'id' => $lbold_id), array(), __('Burocrata::inputTextile - Add bold', true));
+		// $out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile ital_textile', 'id' => $lital_id), array(), __('Burocrata::inputTextile - Add Italic', true));
+		// $out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile link_textile', 'id' => $llink_id), array(), __('Burocrata::inputTextile - Add link', true));
+		// $out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile title_textile', 'id' => $ltitle_id), array(), __('Burocrata::inputTextile - Add title', true));
+		// $out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile img_textile', 'id' => $limg_id), array(), __('Burocrata::inputTextile - Add Img', true));
+		// $out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile file_textile', 'id' => $lfile_id), array(), __('Burocrata::inputTextile - Add file', true));
 		
-		// Popups
-		$out .= $this->_popupTextileLink($link_id, $options);
-		$out .= $this->_popupTextileTitle($title_id, $options);
-		$out .= $this->_popupTextilePreview($prev_id, $options);
-		$out .= $this->_popupTextileFile($file_id, $options);
-		$out .= $this->_popupTextileImage($img_id, $options);
+		if ($config_options['allow_preview'])
+		{
+			$out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile prev_textile', 'id' => $lprev_id), array(), __('Burocrata::inputTextile - Preview', true));
+			$out .= $this->_popupTextilePreview($prev_id, $options);
+		}
+		
+		$out .= $this->Bl->floatBreak();
 		
 		// Textarea input
 		$out .= $this->input($htmlAttributes, $options);
 		
-		// Some Javascript
+		// Some Javascript (deals with button actions and preview ajax)
 		$out .= $this->BuroOfficeBoy->textile($options);
 		$ajax_options = array(
 			'url' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'textile_preview'),

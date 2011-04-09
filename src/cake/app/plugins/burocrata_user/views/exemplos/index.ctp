@@ -32,16 +32,52 @@
 		)
 	);
 		
+		echo $this->Buro->input(array(),
+			array(
+				'label' => 'Galery title',
+				'fieldName' => 'title'
+			)
+		);
+		
+		echo $this->Buro->input(array(),
+			array(
+				'label' => 'Galery release date',
+				'fieldName' => 'date',
+				'type' => 'date'
+			)
+		);
+		
 		echo $this->Buro->input(array(), 
 			array(
 				'type' => 'relational',
+				'label' => 'Owner',
 				'options' => array(
 					'type' => 'unitary_autocomplete', // Former belongsTo, that now is also hasOne
-					'model' => 'JjUser.UserUser'
+					'model' => 'BurocrataUser.Person'
 				)
 			)
 		);
-
+		
+		echo $this->Buro->input(array(),
+			array(
+				'label' => 'Something about this galery',
+				'fieldName' => 'about',
+				'type' => 'textile',
+				'options' => array(
+					'enabled_buttons' => array('bold', 'italic')
+				)
+			)
+		);
+		
+		// echo $this->Buro->input(array(),
+			// array(
+				// 'label' => 'Pictures',
+				// 'type' => 'relational',
+				// 'options' => array(
+					// 'type' => 'many_children'
+				// )
+			// )
+		// );
 		
 		echo $this->Buro->submit();
 	
