@@ -1,9 +1,7 @@
 <?php
-class User extends BurocrataUserAppModel {
-	var $name = 'User';
+class person extends BurocrataUserAppModel {
+	var $name = 'Person';
 	var $displayField = 'name';
-
-	var $hasMany = array('Galery');
 
 	var $validate = array(
 		'name' => array(
@@ -14,5 +12,10 @@ class User extends BurocrataUserAppModel {
 			'rule' => array('inList', array('female', 'male'))
 		)
 	);
+	
+	var $hasMany = array(
+		'Galery' => array(
+			'className' => 'BurocrataUser.Galery'
+		)
+	);
 }
-?>

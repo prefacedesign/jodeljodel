@@ -34,9 +34,14 @@ class Galery extends BurocrataUserAppModel {
 	);
 
 	var $belongsTo = array(
-		'UserUser' => array(
-			'className' => 'JjUsers.UserUser'
+		'Person' => array(
+			'className' => 'BurocrataUser.Person',
+			'counterCache' => true
 		)
 	);
-	var $hasMany = array('Picture');
+	var $hasMany = array(
+		'Picture' => array(
+			'className' => 'BurocrataUser.Picture'
+		)
+	);
 }
