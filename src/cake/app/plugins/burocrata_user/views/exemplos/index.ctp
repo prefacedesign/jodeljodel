@@ -69,15 +69,15 @@
 			)
 		);
 		
-		// echo $this->Buro->input(array(),
-			// array(
-				// 'label' => 'Pictures',
-				// 'type' => 'relational',
-				// 'options' => array(
-					// 'type' => 'many_children'
-				// )
-			// )
-		// );
+		echo $this->Buro->input(array(),
+			array(
+				'label' => 'Pictures',
+				'type' => 'relational',
+				'options' => array(
+					'type' => 'many_children'
+				)
+			)
+		);
 		
 		echo $this->Buro->submit();
 	

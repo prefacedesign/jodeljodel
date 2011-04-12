@@ -39,9 +39,16 @@ class Galery extends BurocrataUserAppModel {
 			'counterCache' => true
 		)
 	);
+	
 	var $hasMany = array(
 		'Picture' => array(
 			'className' => 'BurocrataUser.Picture'
+		)
+	);
+	
+	var $hasOne = array(
+		'ThreadComments' => array(
+			'className' => 'BurocrataUser.ThreadComments'
 		)
 	);
 }

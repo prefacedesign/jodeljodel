@@ -1,5 +1,5 @@
 <?php
-class person extends BurocrataUserAppModel {
+class Person extends BurocrataUserAppModel {
 	var $name = 'Person';
 	var $displayField = 'name';
 

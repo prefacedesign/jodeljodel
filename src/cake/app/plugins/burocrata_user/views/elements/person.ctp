@@ -22,7 +22,7 @@
 				case 'admin_view':
 				case 'preview':
 				case 'belongsto_preview':
-					echo $this->element('user_burocrata_view', array('plugin' => 'burocrata_user'));
+					echo $this->element('person_burocrata_view', array('plugin' => 'burocrata_user'));
 				break;
 			}
 		break;
