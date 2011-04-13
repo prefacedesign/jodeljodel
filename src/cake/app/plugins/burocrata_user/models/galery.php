@@ -45,10 +45,4 @@ class Galery extends BurocrataUserAppModel {
 			'className' => 'BurocrataUser.Picture'
 		)
 	);
-	
-	var $hasOne = array(
-		'ThreadComments' => array(
-			'className' => 'BurocrataUser.ThreadComments'
-		)
-	);
 }
