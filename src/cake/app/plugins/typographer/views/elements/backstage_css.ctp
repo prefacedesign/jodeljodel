@@ -566,12 +566,13 @@
 	));
 	
 	$this->Decorator->rule(
-		'.buro_form label', array(
-			'font-weight' => 'bold',
+		'.buro_form label.buro', array(
+			'font-weight' => 'bold !important',
 			'text-transform' => 'uppercase',
 			'line-height' => $u->t($line_height * 4/3),
 			'letter-spacing' => $letterSpacing,
-			'display' => 'block'
+			'display' => 'block !important',
+			'float' => 'none !important'
 	));
 	
 	$this->Decorator->rule(
@@ -731,6 +732,26 @@
 			'padding-left' => $u->t($padding_size),
 			'width' => $hg->size(array('M' => 2, 'g' => -1, 'u' => -$padding_size-2*$border_size)),
 			'margin-right' => $hg->size(array('g' => 1))
+	));
+	
+	$this->Decorator->rule(
+		'select.buro.list', array(
+			'height' => 'auto',
+			'width' => $u->t($hg->size(array('M' => 5, 'g' => -1),false))
+	));
+	
+	$this->Decorator->rule(
+		'input.buro.radio', array(
+			'height' => 'auto',
+			'width' => $u->t($hg->size(array('g' => 1),false)),
+			'clear' => 'both',
+			'float' => 'left'
+	));
+	
+	$this->Decorator->rule(
+		'.buro .input_radio label', array(
+			'float' => 'left',
+			'font-weight' => 'normal'
 	));
 	
 	$this->Decorator->rule(

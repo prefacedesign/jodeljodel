@@ -3,13 +3,6 @@
 class Galery extends BurocrataUserAppModel {
 	var $name = 'Galery';
 	var $validate = array(
-		'user_id' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				'message' => 'Needs a owner',
-				'required' => true
-			)
-		),
 		'about' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
@@ -22,13 +15,6 @@ class Galery extends BurocrataUserAppModel {
 				'rule' => array('notempty'),
 				'message' => 'Title missing',
 				'required' => true
-			)
-		),
-		'date' => array(
-			'date' => array(
-				'rule' => array('date'),
-				'message' => 'Not a valid date',
-				'required' => false
 			)
 		)
 	);
@@ -45,4 +31,8 @@ class Galery extends BurocrataUserAppModel {
 			'className' => 'BurocrataUser.Picture'
 		)
 	);
+	
+	
+	
+	
 }

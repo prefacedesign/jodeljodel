@@ -18,4 +18,5 @@ class Person extends BurocrataUserAppModel {
 			'className' => 'BurocrataUser.Galery'
 		)
 	);
+
 }
