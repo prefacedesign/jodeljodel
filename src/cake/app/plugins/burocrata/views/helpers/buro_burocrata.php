@@ -1097,6 +1097,7 @@ class BuroBurocrataHelper extends XmlTagHelper
   * - `model` - The Alias used by related model (there is no default and MUST be passed).
   * - `conditions` - An array with conditions to filter the options to list
   * - `multiple` - Multiple select or not (can be true or false). Defaults to false.
+  * - `size` - Size of the options that are showed. Defaults to 5.
   * - `actions` - An array that defines all the URLs for CRUD actions Defaults to BuroBurocrataController actions.
   * - `callbacks` - An array with possible callbacks with Jodel Callbacks convention.
   *
@@ -1115,13 +1116,15 @@ class BuroBurocrataHelper extends XmlTagHelper
  			'model' => false,
  			'assocName' => false,
 			'multiple' => false,
- 			'baseID' => $this->baseID()
+			'size' => 5,
+ 			'baseID' => $this->baseID(),
+			'filter_options' => array()
  		);
  		$options = am($defaults, $options);
  		
 		$model =& ClassRegistry::init($options['model']);
-		if (isset($options['conditions']))
-			$options_to_list = $model->find('list', array('conditions' => $options['conditions']));
+		if(method_exists($model, 'findFilteredOptions'))
+			$options_to_list = $model->{'findFilteredOptions'}($options['filter_options']);
 		else
 			$options_to_list = $model->find('list');
 
@@ -1132,6 +1135,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  				array(
 					'multiple' => $options['multiple'],
 					'class' => 'list',
+					'size' => $options['size'],
 					'name' => 'data['.$model->alias.']['.$model->alias.']'
  				), 
  				array(
@@ -1148,6 +1152,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$out = $this->input(
 				array(
 					'class' => 'list',
+					'size' => $options['size']
 				), 
 				array(
 					'options' => array('options' => $options_to_list),
@@ -1159,6 +1164,61 @@ class BuroBurocrataHelper extends XmlTagHelper
 			);
 		}
 		
+		return $out;
+	}
+	
+	
+/**
+ * Construct a belongsTo form based on passed variable
+  *
+  * ### The options are:
+  *
+  * - `model` - The Alias used by related model (there is no default and MUST be passed).
+  * - `conditions` - An array with conditions to filter the options to list
+  * - `actions` - An array that defines all the URLs for CRUD actions Defaults to BuroBurocrataController actions.
+  * - `callbacks` - An array with possible callbacks with Jodel Callbacks convention.
+  *
+  * @access public
+  * @param array $options An array with non-defaults values
+  * @todo actions param implementation
+  * @todo allow param implementation
+  * @todo type param implementation
+  * @todo Error handling
+  */
+	public function inputRelationalCombo($options = array())
+ 	{		
+ 		$input_options = $options;
+ 		$options = $options['options'];
+ 		$defaults = array(
+ 			'model' => false,
+ 			'assocName' => false,
+ 			'baseID' => $this->baseID(),
+			'filter_options' => array()
+ 		);
+ 		$options = am($defaults, $options);
+ 		
+		$model =& ClassRegistry::init($options['model']);
+		if(method_exists($model, 'findFilteredOptions'))
+			$options_to_list = $model->{'findFilteredOptions'}($options['filter_options']);
+		else
+			$options_to_list = $model->find('list');
+		
+			
+
+
+		$out = $this->input(
+			array(
+				'class' => 'combo'
+			), 
+			array(
+				'options' => array('options' => $options_to_list),
+				'label' => $input_options['label'], 
+				'instructions' => $input_options['instructions'], 
+				'type' => 'select', 
+				'fieldName' => $input_options['fieldName'],
+			)
+		);
+
 		return $out;
 	}
 	
@@ -1190,13 +1250,14 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'model' => false,
 			'assocName' => false,
 			'multiple' => false,
-			'baseID' => $this->baseID()
+			'baseID' => $this->baseID(),
+			'filter_options' => array()
 		);
 		$options = am($defaults, $options);
 
 		$model =& ClassRegistry::init($options['model']);
-		if (isset($options['conditions']))
-			$options_to_list = $model->find('list', array('conditions' => $options['conditions']));
+		if(method_exists($model, 'findFilteredOptions'))
+			$options_to_list = $model->{'findFilteredOptions'}($options['filter_options']);
 		else
 			$options_to_list = $model->find('list');
 

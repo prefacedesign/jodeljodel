@@ -40,6 +40,7 @@
 				'options' => array(
 					'type' => 'list', // Former belongsTo, that now is also hasOne
 					'multiple' => true,
+					'size' => 3,
 					'model' => 'Person',
 					//'conditions' => array('Person.id' => 1)
 				)

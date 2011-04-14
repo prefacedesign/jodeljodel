@@ -2,7 +2,7 @@
 class ExemplosController extends BurocrataUserAppController {
 
 	var $name = 'Exemplos';
-	var $uses = array('JjMedia.SfilStoredFile', 'BurocrataUser.Video');
+	var $uses = array('JjMedia.SfilStoredFile', 'BurocrataUser.Video', 'BurocrataUser.Galery');
 	
 	function index()
 	{
@@ -19,6 +19,7 @@ class ExemplosController extends BurocrataUserAppController {
 	
 	function teste()
 	{
+		
 		$this->data = array(
 			'PersPerson' => array(
 				'adsas' => 'Podemos já vislumbrar o modo pelo qual o novo modelo estrutural aqui preconizado talvez venha a ressaltar a relatividade dos procedimentos normalmente adotados.',
