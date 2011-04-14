@@ -1,5 +1,6 @@
 var E_NOT_JSON = 1; // Not a JSON response
 var E_JSON = 2; // JSON tells me the error
+var E_NOT_AUTH = 3; // Server sended a 403 (Not Authorized) code
 
 
 /**
@@ -35,6 +36,10 @@ var BuroCallbackable = Class.create({
 		
 		this.callbacks = this.callbacks.merge(callbacks); 
 		return this;
+	},
+	isRegistred: function(callback)
+	{
+		return !Object.isUndefined(this.callbacks.get(callback));
 	},
 	trigger: function()
 	{
@@ -377,7 +382,8 @@ var BuroAjax = Class.create(BuroCallbackable, {
 		var json = false;
 		if(response.responseJSON) json = response.responseJSON;
 		
-		if(!response.getAllHeaders())
+		var headers = response.getAllHeaders();
+		if(!headers)
 			this.trigger('onFailure', response); // No server response
 		else if(!json)
 			this.trigger('onError', E_NOT_JSON);
@@ -388,7 +394,18 @@ var BuroAjax = Class.create(BuroCallbackable, {
 	},
 	requestOnFailure: function(response)
 	{
-		this.trigger('onFailure', response); // Page not found
+		switch (response.status)
+		{
+			case 403: // Not Authorized
+				if (this.isRegistred('onError'))
+				{
+					this.trigger('onError', E_NOT_AUTH); 
+					break;
+				}
+			
+			default:
+				this.trigger('onFailure', response); // Page not found
+		}
 	}
 });
 

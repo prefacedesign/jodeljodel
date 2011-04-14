@@ -1,4 +1,7 @@
 <?php
+
+echo $this->Bl->sbox(array(), array('size'=> array('M' => 12, 'g' => -1)));
+	
 	// $popups = array('success', 'error', 'notice', 'form');
 	
 	// $content = array_flip($popups);
@@ -26,31 +29,58 @@
 				'onComplete'=> array('unlockForm'),
 				'onSuccess' => array('contentUpdate' => 'replace'),
 				'onSave'    => array('popup' => 'Salvou a gabaça'),
-				'onError'   => array('js' => "if(code == E_NOT_JSON) alert('Não é json! Não é json!'); else alert(error);"),
-				'onFailure'	=> array('popup' => 'Erro de comunicação com o servidor!')
+				'onError'   => array('js' => "if(code == E_NOT_JSON) alert('Não é json! Não é json!'); else if(code == E_JSON) alert(error); else if(code == E_NOT_AUTH) alert('Você não tem autorização para isso.');"),
+				'onFailure'	=> array('popup' => 'Erro de comunicação com o servidor!'),
 			)
 		)
 	);
-		
 		echo $this->Buro->input(array(),
 			array(
-				'label' => 'Galery title',
-				'fieldName' => 'title'
+				'type' => 'hidden',
+				'fieldName' => 'id'
 			)
 		);
 		
+		echo $this->Buro->sinput(array(), array('type' => 'super_field', 'label' => 'This gallery'));
+		
+			echo $this->Buro->input(array(),
+				array(
+					'label' => 'Gallery title',
+					'fieldName' => 'title'
+				)
+			);
+			
+			echo $this->Buro->input(array(),
+				array(
+					'label' => 'Gallery release date',
+					'fieldName' => 'date',
+					'type' => 'datetime',
+					'options' => array(
+						'dateFormat' => 'DMY',
+						'timeFormat' => null,
+						'separator' => ''
+					)
+				)
+			);
+			
+		echo $this->Buro->einput();
+			
 		echo $this->Buro->input(array(),
 			array(
-				'label' => 'Galery release date',
-				'fieldName' => 'date',
-				'type' => 'date'
+				'label' => 'Something about this gallery',
+				'fieldName' => 'about',
+				'type' => 'textile',
+				'options' => array(
+					'enabled_buttons' => array('bold', 'italic')
+				)
 			)
 		);
+		
 		
 		echo $this->Buro->input(array(), 
 			array(
 				'type' => 'relational',
-				'label' => 'Owner',
+				'label' => 'Owner of this gallery',
 				'options' => array(
 					'type' => 'unitary_autocomplete', // Former belongsTo, that now is also hasOne
 					'model' => 'BurocrataUser.Person'
@@ -60,21 +90,12 @@
 		
 		echo $this->Buro->input(array(),
 			array(
-				'label' => 'Something about this galery',
-				'fieldName' => 'about',
-				'type' => 'textile',
-				'options' => array(
-					'enabled_buttons' => array('bold', 'italic')
-				)
-			)
-		);
-		
-		echo $this->Buro->input(array(),
-			array(
-				'label' => 'Pictures',
+				'label' => 'Pictures for this gallery',
 				'type' => 'relational',
 				'options' => array(
-					'type' => 'many_children'
+					'type' => 'many_children',
+					'model' => 'BurocrataUser.Picture',
+					'auto_order' => false
 				)
 			)
 		);
@@ -83,7 +104,8 @@
 	
 	echo $this->Buro->eform();
 
-	
+echo $this->Bl->ebox();
+
 /* 	
 	Exemple of a textile input
 	
