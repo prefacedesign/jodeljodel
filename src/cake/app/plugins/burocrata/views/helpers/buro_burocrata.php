@@ -1091,11 +1091,85 @@ class BuroBurocrataHelper extends XmlTagHelper
 	
 /**
  * Construct a belongsTo form based on passed variable
+  *
+  * ### The options are:
+  *
+  * - `model` - The Alias used by related model (there is no default and MUST be passed).
+  * - `conditions` - An array with conditions to filter the options to list
+  * - `multiple` - Multiple select or not (can be true or false). Defaults to false.
+  * - `actions` - An array that defines all the URLs for CRUD actions Defaults to BuroBurocrataController actions.
+  * - `callbacks` - An array with possible callbacks with Jodel Callbacks convention.
+  *
+  * @access public
+  * @param array $options An array with non-defaults values
+  * @todo actions param implementation
+  * @todo allow param implementation
+  * @todo type param implementation
+  * @todo Error handling
+  */
+	public function inputRelationalList($options = array())
+ 	{		
+ 		$input_options = $options;
+ 		$options = $options['options'];
+ 		$defaults = array(
+ 			'model' => false,
+ 			'assocName' => false,
+			'multiple' => false,
+ 			'baseID' => $this->baseID()
+ 		);
+ 		$options = am($defaults, $options);
+ 		
+		$model =& ClassRegistry::init($options['model']);
+		if (isset($options['conditions']))
+			$options_to_list = $model->find('list', array('conditions' => $options['conditions']));
+		else
+			$options_to_list = $model->find('list');
+
+ 			
+		if ($options['multiple'])
+		{
+ 			$out = $this->input(
+ 				array(
+					'multiple' => $options['multiple'],
+					'class' => 'list',
+					'name' => 'data['.$model->alias.']['.$model->alias.']'
+ 				), 
+ 				array(
+					'options' => array('options' => $options_to_list),
+ 					'label' => $input_options['label'], 
+ 					'instructions' => $input_options['instructions'], 
+ 					'type' => 'select', 
+					'fieldName' =>$input_options['fieldName']
+ 				)
+ 			);
+		}
+		else
+		{
+			$out = $this->input(
+				array(
+					'class' => 'list',
+				), 
+				array(
+					'options' => array('options' => $options_to_list),
+					'label' => $input_options['label'], 
+					'instructions' => $input_options['instructions'], 
+					'type' => 'select', 
+					'fieldName' => $input_options['fieldName'],
+				)
+			);
+		}
+		
+		return $out;
+	}
+	
+	
+/**
+ * Construct a belongsTo form based on passed variable
  *
  * ### The options are:
  *
  * - `model` - The Alias used by related model (there is no default and MUST be passed).
- * - `type` - Type of form (can be 'list'). Defaults to 'list'.
+ * - `conditions` - An array with conditions to filter the options to list
  * - `actions` - An array that defines all the URLs for CRUD actions Defaults to BuroBurocrataController actions.
  * - `callbacks` - An array with possible callbacks with Jodel Callbacks convention.
  *
@@ -1107,39 +1181,40 @@ class BuroBurocrataHelper extends XmlTagHelper
  * @todo type param implementation
  * @todo Error handling
  */
-	public function inputHasMany($options = array())
+	public function inputRelationalRadio($options = array())
 	{
+		
 		$input_options = $options;
 		$options = $options['options'];
 		$defaults = array(
 			'model' => false,
 			'assocName' => false,
-			'url' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'list'),
-			'type' => 'list',
+			'multiple' => false,
 			'baseID' => $this->baseID()
 		);
 		$options = am($defaults, $options);
-		
-		
-		$model =& ClassRegistry::init($this->modelPlugin . '.' . $options['model']);
-		$options_to_list = $model->find('list');
-			
-		if ($options['type'] == 'list')
-			$out = $this->input(
-				array(
-					'options' => $options_to_list,
-					'multiple' => $options['multiple']
-				), 
-				array(
-					'label' => $input_options['label'], 
-					'instructions' => $input_options['instructions'], 
-					'type' => 'select', 
-					'fieldName' => $input_options['fieldName']
-				)
-			);
-		
-		return $out;
-	}
+
+		$model =& ClassRegistry::init($options['model']);
+		if (isset($options['conditions']))
+			$options_to_list = $model->find('list', array('conditions' => $options['conditions']));
+		else
+			$options_to_list = $model->find('list');
+
+		$out = $this->input(
+			array(
+				'class' => 'radio',
+			), 
+			array(
+				'options' => array('options' => $options_to_list, 'legend' => false),
+				'label' => $input_options['label'], 
+				'instructions' => $input_options['instructions'], 
+				'type' => 'radio', 
+				'fieldName' => $input_options['fieldName'],
+			)
+		);
+ 		
+ 		return $out;
+ 	}
 
 
 /**
