@@ -911,7 +911,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 
 
 /**
- * Construct a belongsTo form based on passed variable
+ * Construct a relational input that deals with related data based on passed variable
  *
  * ### The options are:
  *
@@ -948,6 +948,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$options = am($defaults, $options);
 		extract($options);
 		
+		$model_class_name = $model;
 		list($plugin, $model) = pluginSplit($model);
 		if (!$assocName && !empty($model))
 			$assocName = $model;
@@ -969,16 +970,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 			return false;
 		}
 		
-		$availables = am(array_keys($ParentModel->belongsTo),array_keys($ParentModel->hasOne));
+		$availables = array_keys($ParentModel->belongsTo);
 		if (!in_array($assocName, $availables) ) {
 			trigger_error('BuroBurocrataHelper::inputRelationalUnitaryAutocomplete - Related model doesn\'t make a unitary relationship. Given \''.$assocName.'\', but availables are: \''.implode('\', \'', $availables).'\'');
 			return false;
 		}
 		$fieldName = implode('.', array($parent_model, $ParentModel->belongsTo[$assocName]['foreignKey']));
-		
-		$model_class_name = $model;
-		if ($plugin)
-			$model_class_name = $plugin . '.' . $model_class_name;
 		
 		// END OF PARSING PARAMS
 		
@@ -1087,8 +1084,122 @@ class BuroBurocrataHelper extends XmlTagHelper
 		return $out;
 	}
 	
-	
-	
+/**
+ * Construct a belongsTo form based on passed variable
+ *
+ * ### The options are:
+ *
+ * - `model` - The Alias used by related model (there is no default and MUST be passed).
+ * - `type` - Type of form (can be 'autocomplete' or 'select'). Defaults to 'autocomplete'.
+ * - `allow` - An array that contains the actions allowed - Defaults to array('create', 'modify', 'relate').
+ * - `actions` - An array that defines all the URLs for CRUD actions Defaults to BuroBurocrataController actions.
+ * - `callbacks` - An array with possible callbacks with Jodel Callbacks convention.
+ * - `new_item_text` - The string that will be placed into the "Create a new item" link
+ * - `edit_item_text` - The string that will be placed into the "Edit this item" link
+ *
+ * @access public
+ * @param array $options An array with non-defaults values
+ * @return string The HTML well formated
+ * @todo actions param implementation
+ * @todo allow param implementation
+ * @todo type param implementation
+ * @todo Error handling
+ */
+	public function inputRelationalManyChildren($options = array())
+	{
+		$input_options = $options;
+		$options = $options['options'];
+		$defaults = array(
+			'baseID' => $this->baseID(),
+			'assocName' => false
+		);
+		$options = am($defaults, $options);
+		extract($options);
+		
+		$model_class_name = $model;
+		list($plugin, $model) = pluginSplit($model);
+		if (!$assocName && !empty($model))
+			$assocName = $model;
+		
+		if (!$assocName) {
+			trigger_error('BuroBurocrataHelper::inputRelationalManyChildren - Related model not set on given options [options][model]');
+			return false; 
+		}
+		unset($options['assocName']);
+		unset($options['type']);
+		
+		// Usually the Cake core will display a "missing table" or "missing connection"
+		// if something went wrong on registring the model
+		$parent_model = $this->modelAlias;
+		$ParentModel =& ClassRegistry::init($this->modelPlugin . '.' . $parent_model);
+		// But won't hurt test if went ok
+		if (!$ParentModel) {
+			trigger_error('BuroBurocrataHelper::inputRelationalManyChildren - Parent model could not be found.');
+			return false;
+		}
+		
+		$availables = array_keys($ParentModel->hasMany);
+		if (!in_array($assocName, $availables) ) {
+			trigger_error('BuroBurocrataHelper::inputRelationalManyChildren - Related model doesn\'t make a many children relationship. Given \''.$assocName.'\', but available(s) are: \''.implode('\', \'', $availables).'\'');
+			return false;
+		}
+		
+		if(empty($input_options['label']) && isset($ParentModel->{$assocName}))
+			$input_options['label'] = Inflector::humanize($ParentModel->{$assocName}->table);
+		
+		$out = $this->label(array('for' => ''), array(), $input_options['label']);
+		unset($input_options['label']);
+		
+		$out .= $this->_orderedItens($model_class_name);
+		
+		return $out;
+	}
+
+
+/**
+ * Creates a interface for a list of itens (ordenable or not, multicontent or not) based on options given
+ * 
+ * ### Accepted options are:
+ *
+ *  - `content` An array that describes what types of content will be available to content insertion.
+ *  - `auto_order` An boolean that tells if the order can be changed
+ *  - `type` An alias for content, that will be configured on (???)
+ * 
+ * 
+ * @access protected
+ * @param array $options An array whith the options for this ordered list
+ * @return string the HTML and its script
+ */
+	protected function _orderedItens($model_class_name)
+	{
+		list($model_plugin, $model_name) = pluginSplit($model_class_name);
+		
+		$out = $this->_orderedItensMenu();
+		foreach ($this->data[$model_name] as $data)
+			$out .= $this->_orderedItensItem();
+		return $out;
+	}
+
+/**
+ * 
+ * 
+ * @access protected
+ */
+	protected function _orderedItensMenu()
+	{
+		return '<p>Menu</p>';
+	}
+
+/**
+ * 
+ * 
+ * @access protected
+ */
+	protected function _orderedItensItem()
+	{
+		return '<p>An item</p>';
+	}
+
 /**
  * Construct a belongsTo form based on passed variable
   *
@@ -1266,7 +1377,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  *  - `model` - The alternate model for the stored file (must be a model extended from SfilStoredFile)
  *  - `callbacks` - An array with possible callbacks with Jodel Callbacks conven-
  *    tion.
- *  - `version`: The version of file that will be returned as URL for preview purposes (avaible on onSave callback)
+ *  - `version`: The version of file that will be returned as URL for preview purposes (available on onSave callback)
  *  - `error`: A list of possible errors and its texts to be passed for onReject callback
  *
  * @access public
@@ -1488,13 +1599,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 					$this->{$popup_method}(${"{$button}_id"}, $options);
 			}
 		}
-		// $out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile bold_textile', 'id' => $lbold_id), array(), __('Burocrata::inputTextile - Add bold', true));
-		// $out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile ital_textile', 'id' => $lital_id), array(), __('Burocrata::inputTextile - Add Italic', true));
-		// $out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile link_textile', 'id' => $llink_id), array(), __('Burocrata::inputTextile - Add link', true));
-		// $out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile title_textile', 'id' => $ltitle_id), array(), __('Burocrata::inputTextile - Add title', true));
-		// $out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile img_textile', 'id' => $limg_id), array(), __('Burocrata::inputTextile - Add Img', true));
-		// $out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile file_textile', 'id' => $lfile_id), array(), __('Burocrata::inputTextile - Add file', true));
 		
+		// Preview button, that has a special option
 		if ($config_options['allow_preview'])
 		{
 			$out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile prev_textile', 'id' => $lprev_id), array(), __('Burocrata::inputTextile - Preview', true));

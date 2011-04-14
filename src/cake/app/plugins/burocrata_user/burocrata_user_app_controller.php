@@ -27,11 +27,11 @@ class BurocrataUserAppController extends AppController
 	
 	var $layout = 'backstage';
 	
-	function beforeFilter()
-	{
-		parent::beforeFilter();
-		$this->Auth->allow('*');
-	}
+	// function beforeFilter()
+	// {
+		// parent::beforeFilter();
+		// $this->Auth->allow('*');
+	// }
 	
 	function beforeRender()
 	{
