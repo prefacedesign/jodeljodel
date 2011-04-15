@@ -2,7 +2,6 @@ var E_NOT_JSON = 1; // Not a JSON response
 var E_JSON = 2; // JSON tells me the error
 var E_NOT_AUTH = 3; // Server sended a 403 (Not Authorized) code
 
-
 /**
  * A instance of a Hash without overwrite of values to keep
  * a list of instace objects used to keep all created classes
@@ -366,6 +365,7 @@ var BuroAjax = Class.create(BuroCallbackable, {
 		this.addCallbacks(callbacks);
 		
 		this.url = url;
+		this.fulldebug = !Object.isUndefined(window.ajax_dump) && window.ajax_dump == true;
 		
 		this.ajax_options = {};
 		this.ajax_options.parameters = options.parameters;
@@ -379,6 +379,8 @@ var BuroAjax = Class.create(BuroCallbackable, {
 	},
 	requestOnComplete: function (response) {
 		this.trigger('onComplete', response);
+		if (this.fulldebug)
+			this.dumpResquest(response)
 	},
 	requestOnSuccess: function(response)
 	{
@@ -390,7 +392,7 @@ var BuroAjax = Class.create(BuroCallbackable, {
 			this.trigger('onFailure', response); // No server response
 		} else if(!json) {
 			this.trigger('onError', E_NOT_JSON);
-			if (debug != 0)
+			if (debug != 0 && !this.fulldebug)
 				this.dumpResquest(response);
 		} else if (json.error != false) {
 			this.trigger('onError', E_JSON, json.error);
