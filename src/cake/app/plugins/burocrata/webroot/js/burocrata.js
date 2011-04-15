@@ -365,7 +365,7 @@ var BuroAjax = Class.create(BuroCallbackable, {
 		this.addCallbacks(callbacks);
 		
 		this.url = url;
-		this.fulldebug = !Object.isUndefined(window.ajax_dump) && window.ajax_dump == true;
+		this.fulldebug = debug != 0 && !Object.isUndefined(window.ajax_dump) && window.ajax_dump == true;
 		
 		this.ajax_options = {};
 		this.ajax_options.parameters = options.parameters;
@@ -419,10 +419,13 @@ var BuroAjax = Class.create(BuroCallbackable, {
 	{
 		var div = new Element('div', {className: 'dump_ajax'})
 			.insert(new Element('div', {className: 'dump_config'})
-				.insert('<h1>Config call</h1>')
+				.insert('<h1>Call config</h1>')
 				.insert(new Element('pre')
-					.insert('URL: '+this.url+'<br>')
+					.insert('URL: '+this.url+'<br />')
 					.insert(Object.toJSON(this.ajax_options))))
+			.insert(new Element('div', {className: 'dump_code'})
+				.insert('<h1>Response status</h1>')
+				.insert('HTTP status: '+response.status+' ('+response.statusText+')'))
 			.insert(new Element('div', {className: 'dump_headers'})
 				.insert('<h1>Response headers</h1>')
 				.insert(new Element('pre').update(response.getAllHeaders())))
@@ -434,7 +437,7 @@ var BuroAjax = Class.create(BuroCallbackable, {
 				.insert(response.responseText/* .replace(/\{"\w+":.*\}/, '') */))
 		
 		div.observe('dblclick', function(ev){ev.findElement('div.dump_ajax').remove(); ev.stop();});
-		document.body.insert({top: div});
+		document.body.insert({bottom: div});
 	}
 });
 
