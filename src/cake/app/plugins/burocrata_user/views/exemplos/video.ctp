@@ -1,5 +1,7 @@
 <?php
 
+	//debug($this->data);
+	
 	echo $this->Buro->sform(array('class' => 'azul'), // Parâmetros HTML
 		array(
 			'model' => 'BurocrataUser.Video', // Somente o Model pai, assim como no FormHelper::create
@@ -29,6 +31,17 @@
 			)
 		);
 		
+		echo $this->Buro->input(array(), 
+			array(
+				'type' => 'tags',
+				'label' => 'Owner',
+				'instructions' => 'Selecione um ou mais',
+				'fieldName' => 'tags', // default tags
+				'options' => array(
+					'type' => 'comma', // (default comma)
+				)
+			)
+		);
 		
 		
 		echo $this->Buro->input(array(), 
@@ -42,7 +55,6 @@
 					'multiple' => true,
 					'size' => 3,
 					'model' => 'Person',
-					//'conditions' => array('Person.id' => 1)
 				)
 			)
 		);

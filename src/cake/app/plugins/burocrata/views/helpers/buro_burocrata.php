@@ -908,7 +908,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		return $input;
 	}
-
+	
 
 /**
  * Construct a belongsTo form based on passed variable
@@ -1277,6 +1277,76 @@ class BuroBurocrataHelper extends XmlTagHelper
  		return $out;
  	}
 
+/**
+ * Routes all tags inputs to theirs respectives methods.
+ * Only `type` param is required here, but the specific method could ask some more options
+ * 
+ * @access public
+ * @param array $options An array with non-defaults values
+ * @return string The HTML well formated
+ */
+	public function inputTags(array $options)
+	{
+		if (!isset($options['options']['type']))
+			trigger_error('BuroBurocrataHelper::inputTags - The tag input must receive the [options][type] configuration.');
+			
+		$input_type = $options['options']['type'];
+		unset($options['options']['type']);
+		unset($options['type']);
+		
+		$input = '';
+		$method_name = 'inputTags'.Inflector::camelize($input_type);
+		if (!method_exists($this, $method_name))
+			trigger_error("BuroBurocrataHelper::inputTags - input of '$input_type' type is not known.");
+		else
+			$input = $this->{$method_name}($options);
+		
+		return $input;
+	}
+
+	
+/**
+ * Construct a tags field, based in the taggable plugin
+ *
+ *
+ * @access public
+ * @param array $options An array with non-defaults values
+ * @return string The HTML well formated
+ * @todo actions param implementation
+ * @todo allow param implementation
+ * @todo type param implementation
+ * @todo Error handling
+ */
+	public function inputTagsComma($options = array())
+	{
+		$input_options = $options;
+		$options = $options['options'];
+		$defaults = array(
+			'model' => false,
+			'assocName' => false,
+			'baseID' => $this->baseID(),
+		);
+		$options = am($defaults, $options);
+
+		$input_options_defaults = array(
+			'fieldName' => 'tags'
+		);
+		$input_options = am($input_options_defaults, $input_options);
+
+		$out = $this->input(
+			array(
+				'class' => 'comma',
+			), 
+			array(
+				'label' => $input_options['label'], 
+				'instructions' => $input_options['instructions'], 
+				'type' => 'text', 
+				'fieldName' => $input_options['fieldName'],
+			)
+		);
+ 		
+ 		return $out;
+ 	}
 
 /**
  * Parses the upload parameters and return them for the file input

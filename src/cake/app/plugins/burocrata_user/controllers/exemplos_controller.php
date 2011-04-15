@@ -33,7 +33,7 @@ class ExemplosController extends BurocrataUserAppController {
 	
 	function video()
 	{
-		$this->data = $this->Video->findById(1);
+		$this->data = $this->Video->findById(6);
 	}
 }
 ?>

@@ -17,8 +17,8 @@ class Video extends BurocrataUserAppModel {
 		'Person' => array(
 			'className' => 'BurocrataUser.Person',
 			'joinTable' => 'people_videos',
-			'foreignKey' => 'person_id',
-			'associationForeignKey' => 'video_id',
+			'foreignKey' => 'video_id',
+			'associationForeignKey' => 'person_id',
 			'unique' => true,
 			'conditions' => '',
 			'fields' => '',
@@ -30,5 +30,27 @@ class Video extends BurocrataUserAppModel {
 			'insertQuery' => ''
 		)
 	);
+	
+	
+	
+	var $actsAs = array(
+	'Tags.Taggable' => array(
+		'separator' => ',',
+		'field' => 'tags',
+		'tagAlias' => 'Tag',
+		'tagClass' => 'Tags.Tag',
+		'taggedClass' => 'Tags.Tagged',
+		'foreignKey' => 'foreign_key',
+		'associationForeignKey' => 'tag_id',
+		'automaticTagging' => true,
+		'unsetInAfterFind' => false,
+		'resetBinding' => false,
+	));
+	
+	function saveBurocrata($data)
+	{
+		//debug($data);
+		return $this->saveAll($data);
+	}
 	
 }
