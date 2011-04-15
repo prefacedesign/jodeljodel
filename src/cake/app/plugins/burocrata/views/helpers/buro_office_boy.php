@@ -14,17 +14,17 @@ class BuroOfficeBoyHelper extends AppHelper
 /**
  * Other helpers used by OfficeBoy
  * 
- * @var array
  * @access public
+ * @var array
  */
 	public $helpers = array('Html', 'Ajax', 'Js' => 'prototype');
 
 
 /**
- * Callbacks tamplate
+ * Callbacks template
  *
- * @var array
  * @access protected
+ * @var array
  */
 	protected $callbacks = array(
 		'form' => array(
@@ -67,6 +67,39 @@ class BuroOfficeBoyHelper extends AppHelper
 			'onRestart' => 'function(){%s}'
 		)
 	);
+
+/**
+ * To avoid include various scripts
+ * 
+ * @access protected
+ * @var boolean
+ */
+	protected $scripts_linked = false;
+
+/**
+ * An array of all created scripts. If is not a Ajax call, then it
+ * is used to print all script in one single blok on <head>
+ * 
+ * @access protected
+ * @var array
+ */
+	protected $scripts = array();
+
+
+/**
+ * afterRender callback used for print automagically all created scripts on HTML <head>
+ * 
+ * @access public
+ */
+	public function afterRender()
+	{
+		$View = ClassRegistry::getObject('view');
+		if ($View && !$this->Ajax->isAjax())
+		{
+			$view =& ClassRegistry::getObject('view');
+			$view->addScript($this->Html->scriptBlock($this->Js->domReady(implode("\n", $this->scripts))));
+		}
+	}
 
 
 /**
@@ -249,13 +282,14 @@ class BuroOfficeBoyHelper extends AppHelper
  *
  * @access public
  * @param string $script The script that will be appended
- * @return string The pice of code ready for HTML
+ * @return string|void The pice of code ready for HTML or nothing (if the script was put on buffer)
  */
 	public function addHtmlEmbScript($script)
 	{
-		if(!$this->Ajax->isAjax())
-			$script = $this->Js->domReady($script);
-		return $this->Html->scriptBlock($script);
+		if($this->Ajax->isAjax())
+			return $this->Html->scriptBlock($script);
+		else
+			$this->scripts[] = $script;
 	}
 
 
@@ -466,9 +500,14 @@ class BuroOfficeBoyHelper extends AppHelper
  */
 	protected function _includeScripts()
 	{
+		if ($this->scripts_linked)
+			return;
+		$this->scripts_linked = true;
+		
 		$this->Html->script('prototype', array('inline' => false));
 		$this->Html->script('effects', array('inline' => false));
 		$this->Html->script('controls', array('inline' => false));
 		$this->Html->script('/burocrata/js/burocrata.js', array('inline' => false));
+		$this->Html->scriptBlock('var debug = ' . Configure::read() . ';', array('inline' => false));
 	}
 }
