@@ -33,7 +33,6 @@
 					'type' => 'list', // Former belongsTo, that now is also hasOne
 					'multiple' => true,
 					'model' => 'Person',
-					//'conditions' => array('Person.id' => 1)
 				)
 			)
 		);

@@ -18,5 +18,14 @@ class Person extends BurocrataUserAppModel {
 			'className' => 'BurocrataUser.Galery'
 		)
 	);
+	
+	
+	function findFilteredOptions($options = array())
+	{
+		if (empty($options))
+			return $this->find('list');
+		else
+			return $this->find('list', array('conditions' => $options));
+	}
 
 }

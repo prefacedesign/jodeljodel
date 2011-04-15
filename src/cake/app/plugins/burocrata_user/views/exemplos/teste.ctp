@@ -34,6 +34,14 @@
 		
 		echo $this->Buro->input(array(),
 			array(
+				'label' => 'Galery id',
+				'fieldName' => 'Galery.id',
+				'type' => 'hidden'
+			)
+		);
+		
+		echo $this->Buro->input(array(),
+			array(
 				'label' => 'Galery title',
 				'fieldName' => 'Galery.title'
 			)
@@ -57,13 +65,26 @@
 			array(
 				'type' => 'relational',
 				'label' => 'Owner',
-				'instructions' => 'Selecione um ou mais',
+				'instructions' => 'Selecione um apenas',
 				'fieldName' => 'Person',
 				'options' => array(
 					'type' => 'list', // Former belongsTo, that now is also hasOne
 					'multiple' => false,
 					'model' => 'Person',
-					//'conditions' => array('Person.id' => 1)
+				)
+			)
+		);
+		
+		echo $this->Buro->input(array(), 
+			array(
+				'type' => 'relational',
+				'label' => 'Owner',
+				'instructions' => 'Selecione um apenas',
+				'fieldName' => 'Person',
+				'options' => array(
+					'type' => 'combo', // Former belongsTo, that now is also hasOne
+					'model' => 'Person',
+					'filter_options' => array('Person.id' => 1)
 				)
 			)
 		);
@@ -78,7 +99,6 @@
 				'options' => array(
 					'type' => 'radio', // Former belongsTo, that now is also hasOne
 					'model' => 'BurocrataUser.Person',
-					//'conditions' => array('Person.id' => 1)
 				)
 			)
 		);		

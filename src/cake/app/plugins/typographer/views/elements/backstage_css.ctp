@@ -741,6 +741,12 @@
 	));
 	
 	$this->Decorator->rule(
+		'select.buro.combo', array(
+			'height' => 'auto',
+			'width' => $u->t($hg->size(array('M' => 5, 'g' => -1),false))
+	));
+	
+	$this->Decorator->rule(
 		'input.buro.radio', array(
 			'height' => 'auto',
 			'width' => $u->t($hg->size(array('g' => 1),false)),
