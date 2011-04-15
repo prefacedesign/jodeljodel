@@ -28,6 +28,14 @@ class BuroBurocrataHelper extends XmlTagHelper
 	protected static $defaultObjectClass = 'buro';
 
 
+	public function beforeRender()
+	{
+		parent::beforeRender();
+		if (Configure::read() > 0)
+			$this->Html->css('/burocrata/css/ajax_dump', 'stylesheet', array('inline' => false));
+	}
+
+
 /**
  * An alias method for the View::element method that encloses the Jodel conventions
  *

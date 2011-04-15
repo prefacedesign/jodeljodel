@@ -1,0 +1,16 @@
+.dump_ajax {
+    background: none repeat scroll 0 0 wheat;
+    border: 1px solid;
+    margin: 20px auto;
+    padding: 10px;
+    width: 956px;
+}
+.dump_ajax h1 {
+    border-bottom: 1px solid black;
+    margin: 20px 0 5px;
+    padding-bottom: 5px;
+}
+.dump_ajax > div {
+    overflow: auto;
+	padding-bottom: 10px;
+}

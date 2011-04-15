@@ -365,14 +365,17 @@ var BuroAjax = Class.create(BuroCallbackable, {
 	{
 		this.addCallbacks(callbacks);
 		
-		var ajax_options = {};
+		this.url = url;
 		
-		ajax_options.parameters = options.parameters;
-		ajax_options.onComplete = this.requestOnComplete.bind(this);
-		ajax_options.onSuccess = this.requestOnSuccess.bind(this);
-		ajax_options.onFailure = this.requestOnFailure.bind(this);
+		this.ajax_options = {};
+		this.ajax_options.parameters = options.parameters;
+		this.ajax_options.onComplete = this.requestOnComplete.bind(this);
+		this.ajax_options.onSuccess = this.requestOnSuccess.bind(this);
+		this.ajax_options.onFailure = this.requestOnFailure.bind(this);
+		
 		this.trigger('onStart');
-		new Ajax.Request(url, ajax_options);
+		
+		new Ajax.Request(this.url, this.ajax_options);
 	},
 	requestOnComplete: function (response) {
 		this.trigger('onComplete', response);
@@ -383,14 +386,17 @@ var BuroAjax = Class.create(BuroCallbackable, {
 		if(response.responseJSON) json = response.responseJSON;
 		
 		var headers = response.getAllHeaders();
-		if(!headers)
+		if(!headers) {
 			this.trigger('onFailure', response); // No server response
-		else if(!json)
+		} else if(!json) {
 			this.trigger('onError', E_NOT_JSON);
-		else if (json.error != false)
+			if (debug != 0)
+				this.dumpResquest(response);
+		} else if (json.error != false) {
 			this.trigger('onError', E_JSON, json.error);
-		else
+		} else {
 			this.trigger('onSuccess', response, json);
+		}
 	},
 	requestOnFailure: function(response)
 	{
@@ -406,6 +412,27 @@ var BuroAjax = Class.create(BuroCallbackable, {
 			default:
 				this.trigger('onFailure', response); // Page not found
 		}
+	},
+	dumpResquest: function(response)
+	{
+		var div = new Element('div', {className: 'dump_ajax'})
+			.insert(new Element('div', {className: 'dump_config'})
+				.insert('<h1>Config call</h1>')
+				.insert(new Element('pre')
+					.insert('URL: '+this.url+'<br>')
+					.insert(Object.toJSON(this.ajax_options))))
+			.insert(new Element('div', {className: 'dump_headers'})
+				.insert('<h1>Response headers</h1>')
+				.insert(new Element('pre').update(response.getAllHeaders())))
+			.insert(new Element('div', {className: 'dump_content'})
+				.insert('<h1>Response complete code</h1>')
+				.insert(new Element('pre').update(response.responseText.unfilterJSON().escapeHTML())))
+			.insert(new Element('div', {className: 'dump_code'})
+				.insert('<h1>Response content</h1>')
+				.insert(response.responseText/* .replace(/\{"\w+":.*\}/, '') */))
+		
+		div.observe('dblclick', function(ev){ev.findElement('div.dump_ajax').remove(); ev.stop();});
+		document.body.insert({top: div});
 	}
 });
 
