@@ -10,7 +10,8 @@
     margin: 20px 0 5px;
     padding-bottom: 5px;
 }
-.dump_ajax > div {
+.dump_ajax .dump_content{
     overflow: auto;
 	padding-bottom: 10px;
+	max-height: 300px;
 }
