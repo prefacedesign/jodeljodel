@@ -70,7 +70,7 @@
 				'options' => array(
 					'type' => 'editable_list',
 					'model' => 'BurocrataUser.Person',
-					'allow' => array('create', 'edit', 'view', 'relate')
+					'allow' => array('create', 'modify', 'view', 'relate')
 				)
 			)
 		);
