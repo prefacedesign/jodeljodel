@@ -35,7 +35,7 @@
 			array(
 				'type' => 'tags',
 				'label' => 'Owner',
-				'instructions' => 'Selecione um ou mais',
+				'instructions' => 'Digite as tags',
 				'fieldName' => 'tags', // default tags
 				'options' => array(
 					'type' => 'comma', // (default comma)
@@ -44,6 +44,7 @@
 		);
 		
 		
+		/*
 		echo $this->Buro->input(array(), 
 			array(
 				'type' => 'relational',
@@ -51,10 +52,25 @@
 				'instructions' => 'Selecione um ou mais',
 				'fieldName' => 'Person',
 				'options' => array(
-					'type' => 'list', // Former belongsTo, that now is also hasOne
+					'type' => 'list',
 					'multiple' => true,
 					'size' => 3,
-					'model' => 'Person',
+					'model' => 'BurocrataUser.Person',
+				)
+			)
+		);
+		
+		*/
+		
+		echo $this->Buro->input(array(), 
+			array(
+				'type' => 'relational',
+				'label' => 'Owner',
+				'instructions' => 'Selecione um ou mais',
+				'options' => array(
+					'type' => 'editable_list',
+					'model' => 'BurocrataUser.Person',
+					'allow' => array('create', 'edit', 'view', 'relate')
 				)
 			)
 		);

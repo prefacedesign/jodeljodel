@@ -2,7 +2,7 @@
 
 echo $this->Buro->sform(array(),
 	array(
-		'model' => 'BurocrataUser.User',
+		'model' => 'BurocrataUser.Person',
 		'callbacks' => array(
 			'onStart'	=> array('lockForm'),
 			'onComplete'=> array('unlockForm'),
@@ -26,10 +26,18 @@ echo $this->Buro->sform(array(),
 		array('fieldName' => 'name')
 	);
 	
-	echo $this->Buro->input(
-		array(),
-		array('fieldName' => 'age')
-	);
+	echo $this->Buro->input(array(),
+				array(
+					'label' => 'Birth date',
+					'fieldName' => 'birthdate',
+					'type' => 'datetime',
+					'options' => array(
+						'dateFormat' => 'DMY',
+						'timeFormat' => null,
+						'separator' => ''
+					)
+				)
+			);
 	
 	echo $this->Buro->input(
 		array(),

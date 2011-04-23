@@ -57,6 +57,11 @@ class BuroOfficeBoyHelper extends AppHelper
 			'onShowForm' => 'function(to_edit){%s}',
 			'onShowPreview' => 'function(id){%s}'
 		),
+		'relational_editable' => array(
+			'onShowForm' => 'function(to_edit){%s}',
+			'onShowPreview' => 'function(id){%s}',
+			'onAddNew' => 'function(id){%s}'
+		),
 		'upload' => array(
 			'onStart' => 'function(input){%s}',
 			'onSave' => 'function(input, json, saved){%s}',
@@ -227,6 +232,25 @@ class BuroOfficeBoyHelper extends AppHelper
 		$callbacks = $this->formatCallbacks('relational_unitary', $callbacks);
 		$script = sprintf("new BuroBelongsTo('%s','%s'%s);", $baseID, $autocomplete_baseID, (empty($callbacks) ? '':','.$callbacks));
 		return $this->addHtmlEmbScript($script);
+	}
+	
+	
+/**
+ * Creates the javascript counter-part of the RelationalEditableList input
+ *
+ * @access public
+ * @param array $options
+ * @return string The HTML <script> tag
+ */
+	public function relationalEditableList($options)
+	{
+		$defaults = array('callbacks' => array());
+		extract(am($defaults, $options));
+		
+		$callbacks = $this->formatCallbacks('relational_editable', $callbacks);
+		$script = sprintf("new BuroEditableList('%s','%s'%s,'%s','%s','%s');", $baseID, $autocomplete_baseID, (empty($callbacks) ? '':','.$callbacks), (empty($edit_item_text) ? '':''.$edit_item_text), (empty($view_item_text) ? '':''.$view_item_text), $delete_item_text);
+		return $this->addHtmlEmbScript($script);
+		
 	}
 
 
