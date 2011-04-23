@@ -2,7 +2,6 @@ var E_NOT_JSON = 1; // Not a JSON response
 var E_JSON = 2; // JSON tells me the error
 var E_NOT_AUTH = 3; // Server sended a 403 (Not Authorized) code
 
-
 /**
  * A instance of a Hash without overwrite of values to keep
  * a list of instace objects used to keep all created classes
@@ -366,6 +365,7 @@ var BuroAjax = Class.create(BuroCallbackable, {
 		this.addCallbacks(callbacks);
 		
 		this.url = url;
+		this.fulldebug = debug != 0 && !Object.isUndefined(window.ajax_dump) && window.ajax_dump == true;
 		
 		this.ajax_options = {};
 		this.ajax_options.parameters = options.parameters;
@@ -379,6 +379,8 @@ var BuroAjax = Class.create(BuroCallbackable, {
 	},
 	requestOnComplete: function (response) {
 		this.trigger('onComplete', response);
+		if (this.fulldebug)
+			this.dumpResquest(response)
 	},
 	requestOnSuccess: function(response)
 	{
@@ -390,7 +392,7 @@ var BuroAjax = Class.create(BuroCallbackable, {
 			this.trigger('onFailure', response); // No server response
 		} else if(!json) {
 			this.trigger('onError', E_NOT_JSON);
-			if (debug != 0)
+			if (debug != 0 && !this.fulldebug)
 				this.dumpResquest(response);
 		} else if (json.error != false) {
 			this.trigger('onError', E_JSON, json.error);
@@ -417,22 +419,41 @@ var BuroAjax = Class.create(BuroCallbackable, {
 	{
 		var div = new Element('div', {className: 'dump_ajax'})
 			.insert(new Element('div', {className: 'dump_config'})
-				.insert('<h1>Config call</h1>')
-				.insert(new Element('pre')
-					.insert('URL: '+this.url+'<br>')
-					.insert(Object.toJSON(this.ajax_options))))
+				.insert('<h1>Call config</h1>')
+				.insert(new Element('div', {className: 'dump_content'})
+					.insert(new Element('pre')
+						.insert('URL: '+this.url+'<br />')
+						.insert(Object.toJSON(this.ajax_options))
+					)
+				)
+			)
+			.insert(new Element('div', {className: 'dump_code'})
+				.insert('<h1>Response status</h1>')
+				.insert(new Element('div', {className: 'dump_content'})
+					.insert('HTTP status: '+response.status+' ('+response.statusText+')')
+				)
+			)
 			.insert(new Element('div', {className: 'dump_headers'})
 				.insert('<h1>Response headers</h1>')
-				.insert(new Element('pre').update(response.getAllHeaders())))
-			.insert(new Element('div', {className: 'dump_content'})
+				.insert(new Element('div', {className: 'dump_content'})
+					.insert(new Element('pre').update(response.getAllHeaders()))
+				)
+			)
+			.insert(new Element('div', {className: 'dump_content_code'})
 				.insert('<h1>Response complete code</h1>')
-				.insert(new Element('pre').update(response.responseText.unfilterJSON().escapeHTML())))
+				.insert(new Element('div', {className: 'dump_content'})
+					.insert(new Element('pre').update(response.responseText.unfilterJSON().escapeHTML()))
+				)
+			)
 			.insert(new Element('div', {className: 'dump_code'})
 				.insert('<h1>Response content</h1>')
-				.insert(response.responseText/* .replace(/\{"\w+":.*\}/, '') */))
+				.insert(new Element('div', {className: 'dump_content'})
+					.insert(response.responseText/* .replace(/\{"\w+":.*\}/, '') */)
+				)
+			)
 		
 		div.observe('dblclick', function(ev){ev.findElement('div.dump_ajax').remove(); ev.stop();});
-		document.body.insert({top: div});
+		document.body.insert({bottom: div});
 	}
 });
 
