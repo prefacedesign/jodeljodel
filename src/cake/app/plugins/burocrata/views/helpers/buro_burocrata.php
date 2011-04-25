@@ -1214,7 +1214,7 @@ class BuroBurocrataHelper extends XmlTagHelper
   * ### The options are:
   *
   * - `model` - The Alias used by related model (there is no default and MUST be passed).
-  * - `conditions` - An array with conditions to filter the options to list
+  * - `filter_options` - An array with conditions to filter the options to list
   * - `multiple` - Multiple select or not (can be true or false). Defaults to false.
   * - `size` - Size of the options that are showed. Defaults to 5.
   * - `actions` - An array that defines all the URLs for CRUD actions Defaults to BuroBurocrataController actions.
@@ -1287,13 +1287,232 @@ class BuroBurocrataHelper extends XmlTagHelper
 	}
 	
 	
+	/**
+ * Construct a relational input that deals with related data based on passed variable
+ *
+ * ### The options are:
+ *
+ * - `model` - The Alias used by related model (there is no default and MUST be passed).
+ * - `allow` - An array that contains the actions allowed - Defaults to array('create', 'modify', 'view', 'relate').
+ * - `actions` - An array that defines all the URLs for CRUD actions Defaults to BuroBurocrataController actions.
+ * - `callbacks` - An array with possible callbacks with Jodel Callbacks convention.
+ * - `new_item_text` - The string that will be placed into the "Create a new item" link
+ * - `edit_item_text` - The string that will be placed into the "Edit this item" link
+ * - `view_item_text` - The string that will be placed into the "View this item" link
+ * - `delete_item_text` - The string that will be placed into the "Delete this item" link
+ *
+ * @access public
+ * @param array $options An array with non-defaults values
+ * @return string The HTML well formated
+ * @todo actions param implementation
+ * @todo allow param implementation
+ * @todo type param implementation
+ * @todo Error handling
+ */
+	public function inputRelationalEditableList($options = array())
+	{
+		$input_options = $options;
+		$options = $options['options'];
+		$defaults = array(
+			'model' => false,
+			'assocName' => false,
+			'url' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'autocomplete'),
+			'allow' => array('create', 'modify', 'view', 'relate'),
+			'baseID' => $this->baseID(),
+			'new_item_text' => __('Burocrata: create a new related item', true),
+			'edit_item_text' => __('Burocrata: edit related data', true),
+			'view_item_text' => __('Burocrata: view related data', true),
+			'delete_item_text' => __('Burocrata: delete related data', true)
+		);
+		$options = am($defaults, $options);
+		extract($options);
+		
+		$Model =& ClassRegistry::init($options['model']);
+		
+		$model_class_name = $Model->alias;
+		list($plugin, $model) = pluginSplit($model);
+		if (!$assocName && !empty($model))
+			$assocName = $model;
+		
+		if (!$assocName) {
+			trigger_error('BuroBurocrataHelper::inputRelationalUnitaryAutocomplete - Related model not set on given options [options][model]');
+			return false; 
+		}
+		unset($options['assocName']);
+		
+		// Usually the Cake core will display a "missing table" or "missing connection"
+		// if something went wrong on registring the model
+		$parent_model = $this->modelAlias;
+		$ParentModel =& ClassRegistry::init($this->modelPlugin . '.' . $parent_model);
+		// But won't hurt test if went ok
+		if (!$ParentModel) {
+			trigger_error('BuroBurocrataHelper::inputRelationalUnitaryAutocomplete - Parent model could not be found.');
+			return false;
+		}
+		
+		$availables = am(array_keys($ParentModel->hasMany), array_keys($ParentModel->hasAndBelongsToMany));
+		if (!in_array($assocName, $availables) ) {
+			trigger_error('BuroBurocrataHelper::inputRelationalUnitaryAutocomplete - Related model doesn\'t make a unitary relationship. Given \''.$assocName.'\', but availables are: \''.implode('\', \'', $availables).'\'');
+			return false;
+		}
+		$fieldName = $options['model'] . '.' .$options['model'];
+		
+		// END OF PARSING PARAMS
+		
+		$out = '';
+		
+		$hidden_input_id = 'hii'.$baseID;
+		$link_id_new = 'lin'.$baseID;
+		$link_id_edit = 'lie'.$baseID;
+		$update = 'update'.$baseID;
+		$adition = 'adition'.$baseID;
+		$acplt_baseID = $this->baseID();
+		$edit_call_baseID = $this->baseID();
+		
+		// Input + Autocomplete list + Nothing found
+		
+		$autocomplete_options = array(
+			'options' => array(
+				'baseID' => $acplt_baseID,
+				'model' => $model_class_name,
+				'callbacks' => array(
+					'onUpdate' => array('js' => "$('$link_id_new').up().show()"),
+					'onSelect' => array(
+						'js' => "BuroClassRegistry.get('$baseID').selected(pair);"
+					)
+				)
+			)
+		);
+		
+		if (isset($options['queryField']))
+			$options['fieldName'] = $options['queryField'];
+		
+		$out .= $this->inputAutocomplete(am($input_options, $autocomplete_options));
+		
+		
+		// "Create a new item" link
+		if (in_array('create', $allow))
+		{
+			$out .= $this->inputAutocompleteMessage(
+				array('class' => 'action'),
+				array('escape' => false),
+				$this->Bl->a(array('id' => $link_id_new, 'href' => ''), array(), $options['new_item_text'])
+			);
+		}
+		
+		
+		// Hidden input that holds the related data ID
+		
+		$options_to_list = $Model->find('list');
+			
+		$out .= $this->input(
+			array(
+				'multiple' => true,
+				'name' => 'data['.$model_class_name.']['.$model_class_name.']',
+				'style' => 'display: none',
+				'id' => $hidden_input_id
+			), 
+			array(
+				'options' => array('options' => $options_to_list),
+				'type' => 'select', 
+				'fieldName' => $model_class_name,
+				'container' => false,
+				'label' => false
+			)
+		);
+	
+		
+		// Controls + Error message
+		
+		$updateble_div = $this->Bl->div(
+			array('id' => $update),
+			array('escape' => false),
+			$this->error(array(), compact('fieldName'))
+		);
+		
+		$adition_div = $this->Bl->div(
+			array('id' => $adition),
+			array('escape' => false)
+		);
+				
+		$actions_div = $this->Bl->div(
+			array('class' => 'actions', 'style' => 'display:none;'),
+			array('escape' => false)
+		);
+		
+		$out .= $this->Bl->sdiv(array('class' => 'controls'));
+			$out .= $updateble_div;
+			$out .= $adition_div;
+			$out .= $actions_div;
+			$out .= $this->Bl->floatBreak();
+		$out .= $this->Bl->ediv();
+		
+		
+		$url_view = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'view');
+		$open_prev_ajax = array(
+			'url' => $url_view,
+			'params' => array($this->securityParams($url_view, $plugin, $model), $this->internalParam('id') => '@id@'),
+			'callbacks' => array(
+				'onSuccess' => array('contentUpdate' => $adition)
+			)
+		);
+		
+		
+		
+		$url_add_new = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'new_editable_item');
+		$add_new_ajax = array(
+			'url' => $url_add_new,
+			'params' => array($this->securityParams($url_add_new, $plugin, $model), $this->internalParam('id') => '@id@'),
+			'callbacks' => array(
+				'onSuccess' => array('js' => "BuroClassRegistry.get('$baseID').addNew(response);")
+			)
+		);
+		
+		$url_edit = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'edit');
+		$open_form_ajax = array(
+				'baseID' => $edit_call_baseID,
+				'url' => $url_edit,
+				'params' => array(
+					$this->securityParams($url_edit, $plugin, $model),
+					$this->internalParam('id') => "@to_edit ? BuroClassRegistry.get('$baseID').master_input.value : null@",
+					$this->internalParam('baseID', $baseID)
+				),
+				'callbacks' => array(
+					'onSuccess' => array('contentUpdate' => $adition)
+				)
+			);
+		
+		
+		$officeboy_options = array();
+		$officeboy_options['baseID'] = $baseID;
+		$officeboy_options['autocomplete_baseID'] = $acplt_baseID;
+		if (in_array('modify', $allow))
+			$officeboy_options['edit_item_text'] = $options['edit_item_text'];
+		else
+			$officeboy_options['edit_item_text'] = '';
+		if (in_array('view', $allow))
+			$officeboy_options['view_item_text'] = $options['view_item_text'];
+		else
+			$officeboy_options['view_item_text'] = '';
+		$officeboy_options['delete_item_text'] = $options['delete_item_text'];
+		$officeboy_options['callbacks'] = array(
+			'onShowForm' => array('ajax' => $open_form_ajax),
+			'onAddNew' => array('ajax' => $add_new_ajax),
+			'onShowPreview' => array('ajax' => $open_prev_ajax)
+		);
+		
+		$out .= $this->BuroOfficeBoy->relationalEditableList($officeboy_options);
+		
+		return $out;
+	}
+	
 /**
  * Construct a belongsTo form based on passed variable
   *
   * ### The options are:
   *
   * - `model` - The Alias used by related model (there is no default and MUST be passed).
-  * - `conditions` - An array with conditions to filter the options to list
+  * - `filter_options` - An array with conditions to filter the options to list
   * - `actions` - An array that defines all the URLs for CRUD actions Defaults to BuroBurocrataController actions.
   * - `callbacks` - An array with possible callbacks with Jodel Callbacks convention.
   *
@@ -1348,7 +1567,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  * ### The options are:
  *
  * - `model` - The Alias used by related model (there is no default and MUST be passed).
- * - `conditions` - An array with conditions to filter the options to list
+ * - `filter_options` - An array with conditions to filter the options to list
  * - `actions` - An array that defines all the URLs for CRUD actions Defaults to BuroBurocrataController actions.
  * - `callbacks` - An array with possible callbacks with Jodel Callbacks convention.
  *
@@ -1392,6 +1611,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 				'fieldName' => $input_options['fieldName'],
 			)
 		);
+		
+		$out .= $this->Bl->floatBreak();
  		
  		return $out;
  	}

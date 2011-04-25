@@ -224,13 +224,13 @@ class BuroBurocrataController extends BurocrataAppController
 		$Model = null;
 		
 		$error = $this->_load($Model);
-		
+				
 		if($error === false)
 		{
 			$Model->recursive = -1;
 			$this->data = $data = $Model->findById($this->buroData['id']);
 		}
-		
+	
 		$this->set(compact('error', 'data'));
 	}
 
@@ -269,6 +269,32 @@ class BuroBurocrataController extends BurocrataAppController
 		$this->set('jsonVars', compact('error', 'content'));
 	}
 
+	
+/**
+ * Return a list to fill the autocomplete field.
+ *
+ * @access public
+ * @return json An javascript object that contains `error` and `content` properties
+ * @todo Better conditions support
+ * @todo Suport for order statment
+ */
+	public function new_editable_item()
+	{
+		$error = false;
+		$content = '';
+		$Model = null;
+		
+		$error = $this->_load($Model);
+		
+		if($error === false)
+		{	
+			$content = $Model->find('first', array('conditions' => array('id' => $this->buroData['id']), 'fields' => array('id', $Model->displayField)));
+			$content = $content[$Model->alias];
+			
+		}
+		
+		$this->set('jsonVars', compact('error', 'content'));
+	}
 
 /**
  * Creates a JSON with a preview text of a textile input.

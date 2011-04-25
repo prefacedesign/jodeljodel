@@ -520,6 +520,164 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
  * 
  *
  * Callbacks:
+ * - `onInitilize` function (response){}
+ * - `onComplete` function (response){}
+ * - `onFailure` function (response){}
+ * - `onError` function (code, error){}
+ * - `onSuccess` function (response, json){}
+ * 
+ * @access public
+ */
+var BuroEditableList = Class.create(BuroCallbackable, {
+	initialize: function(id_base, autocompleter_id_base, callbacks, view_item_text, edit_item_text, delete_item_text)
+	{
+		this.id_base = id_base;
+		this.view_item_text = view_item_text;
+		this.edit_item_text = edit_item_text;
+		this.delete_item_text = delete_item_text;
+		BuroClassRegistry.set(this.id_base, this);
+		this.autocomplete = BuroClassRegistry.get(autocompleter_id_base);
+		
+		this.addCallbacks(callbacks);
+		
+		this.input = $('hii'+id_base);
+		this.master_input = $('hii'+id_base+'_');
+		this.update = $('update'+id_base);
+		this.adition = $('adition'+id_base);
+		if ($('lin'+this.id_base))
+			$('lin'+this.id_base).observe('click', function(ev){ev.stop(); this.showForm(false);}.bind(this));
+		
+		var i;
+		for (i = this.input.length - 1; i>=0; i--) 
+		{
+			if (this.input.options[i].selected) 
+				new BuroEditableListItem(this, this.id_base, this.input.options[i].value, this.input.options[i].text, this.view_item_text, this.edit_item_text, this.delete_item_text);
+		}
+
+	},
+	addNew: function(response)
+	{		
+		if(!response.getAllHeaders())
+			this.trigger('onFailure', this.form, response); // No server response
+		
+		if(!response.responseJSON) {
+			this.trigger('onError', E_NOT_JSON);
+			return;
+		}
+		
+		this.json = response.responseJSON;
+		if(this.json.error != false)
+		{
+			this.trigger('onError', E_JSON, this.json.error);
+			return;
+		}
+		if (Object.isArray(this.json.content))
+			this.json.content = {};
+		this.foundContent = $H(this.json.content);
+		
+		this.foundContent = $H(this.json.content);
+		var keys = this.foundContent.keys();
+
+		new_id = this.foundContent.get(keys[0]);
+		new_item = this.foundContent.get(keys[(1)]);
+		
+		this.adition.update();
+		new BuroEditableListItem(this, this.id_base, new_id, new_item, this.view_item_text, this.edit_item_text, this.delete_item_text);
+	},
+	showForm: function(to_edit)
+	{
+		this.update.next('.actions').hide();
+		this.trigger('onShowForm', to_edit);
+	},
+	showPreview: function(id)
+	{
+		this.update.next('.actions').show();
+		this.trigger('onShowPreview', id);
+	},
+	selected: function(pair)
+	{
+		if(pair.id > 0)
+		{
+			this.saved(pair.id, pair.value)
+			this.autocomplete.input.value = '';
+			
+			new BuroEditableListItem(this, this.id_base, pair.id, pair.value, this.view_item_text, this.edit_item_text, this.delete_item_text);
+		}
+	},
+	saved: function(id, value)
+	{
+		
+		this.autocomplete.input.value = '';
+		
+		if (!value)
+		{
+			var elOptNew = document.createElement('option');
+			elOptNew.text = value;
+			elOptNew.value = id;
+			try {
+				this.input.add(elOptNew, null); // standards compliant; doesn't work in IE
+			}
+			catch(ex) {
+				this.input.add(elOptNew); // IE only
+			}
+		}
+		
+		this.input.down('option[value='+id+']').selected = 'selected';
+		
+		if (!value)
+			this.trigger('onAddNew', id);
+		
+	}
+});
+
+
+var BuroEditableListItem = Class.create(BuroCallbackable, {
+	initialize: function(master, id_base, id, value, edit_item_text, view_item_text, delete_item_text)
+	{
+		this.id_base = id_base;
+		this.id = id;
+		this.value = value;
+		this.view_item_text = view_item_text;
+		this.edit_item_text = edit_item_text;
+		this.delete_item_text = delete_item_text;
+		this.master = master;
+		
+		this.input = $('hii'+id_base);
+		this.master_input = $('hii'+id_base+'_');
+		this.update = $('update'+id_base);
+		this.adition = $('adition'+id_base);
+		
+		if (this.edit_item_text != '')
+			this.edit_item_text = '<a href="" id="edit_control_editable_list_'+this.id+'">'+this.edit_item_text+'</a>';
+		if (this.view_item_text != '')
+			this.view_item_text = '<a href="" id="view_control_editable_list_'+this.id+'">'+this.view_item_text+'</a>';
+		
+		this.edited_item = $('editable_list_selected_'+this.id);
+		
+		if (this.edited_item)
+			this.edited_item.update('<span class="name">'+this.value+'</span><span class="controls">'+this.edit_item_text+''+this.view_item_text+'<a href="" id="delete_control_editable_list_'+this.id+'">'+this.delete_item_text+'</a></span>');
+		else
+			this.update.insert('<div id="editable_list_selected_'+this.id+'"><span class="name">'+this.value+'</span>'+this.edit_item_text+''+this.view_item_text+'<a href="" id="delete_control_editable_list_'+this.id+'">'+this.delete_item_text+'</a></span></div>');
+			
+		if (this.view_item_text != '')
+			$('view_control_editable_list_'+this.id).observe('click', function(ev){ev.stop(); this.master.showPreview(this.id);}.bind(this));
+		if (this.edit_item_text != '')
+			$('edit_control_editable_list_'+this.id).observe('click', function(ev){ev.stop(); this.master_input.value = this.id; this.master.showForm(true);}.bind(this));
+		$('delete_control_editable_list_'+this.id).observe('click', function(ev){ ev.stop(); this.removeItem(this.id);}.bind(this));
+			
+	},
+	removeItem: function(id)
+	{
+		this.input.down('option[value='+id+']').selected = '';
+		$('editable_list_selected_'+id).remove();
+	}
+});
+
+
+/**
+ * 
+ *
+ * Callbacks:
  * - `onStart` function (input){}
  * - `onComplete` function (input){}
  * - `onFailure` function (input){}
