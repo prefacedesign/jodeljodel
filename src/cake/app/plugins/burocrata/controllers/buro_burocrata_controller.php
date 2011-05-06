@@ -79,7 +79,11 @@ class BuroBurocrataController extends BurocrataAppController
 
 /**
  * beforeFilter callback
- *
+ * For while, it allows everyone to have access even if AuthComponent is set.
+ * If is set $this->data['_b'], its data is passed to $this->buroData
+ * If was POSTed a `baseID`, it repasses for the view.
+ * And, finally, if is set a `layout_scheme`, it loads the Typographer helpers
+ * 
  * @access public
  * @todo Better user filtering
  */

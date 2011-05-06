@@ -35,6 +35,7 @@ class BurocrataUserAppController extends AppController
 	
 	function beforeRender()
 	{
+		parent::beforeRender();
 		$this->TypeLayoutSchemePicker->pick('backstage'); //atenção que isto sobre-escreve a view escolhida
 	}
 }

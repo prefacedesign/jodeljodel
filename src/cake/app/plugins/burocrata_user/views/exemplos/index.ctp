@@ -1,6 +1,6 @@
 <?php
 
-echo $this->Bl->sbox(array(), array('size'=> array('M' => 12, 'g' => -1)));
+echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 	
 	// $popups = array('success', 'error', 'notice', 'form');
 	
@@ -20,14 +20,13 @@ echo $this->Bl->sbox(array(), array('size'=> array('M' => 12, 'g' => -1)));
 
 	
 	// echo $this->Buro->insertForm('BurocrataUser.Galery', 'teste');	
-
+	
 	echo $this->Buro->sform(array('class' => 'azul'), // Parâmetros HTML
 		array(
 			'model' => 'BurocrataUser.Galery', // Somente o Model pai, assim como no FormHelper::create
 			'callbacks' => array(
 				'onStart'	=> array('lockForm'),
 				'onComplete'=> array('unlockForm'),
-				'onSuccess' => array('contentUpdate' => 'replace'),
 				'onSave'    => array('popup' => 'Salvou a gabaça'),
 				'onError'   => array('js' => "if(code == E_NOT_JSON) alert('Não é json! Não é json!'); else if(code == E_JSON) alert(error); else if(code == E_NOT_AUTH) alert('Você não tem autorização para isso.');"),
 				'onFailure'	=> array('popup' => 'Erro de comunicação com o servidor!'),
