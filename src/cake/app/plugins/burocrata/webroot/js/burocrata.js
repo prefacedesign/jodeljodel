@@ -2,6 +2,18 @@ var E_NOT_JSON = 1; // Not a JSON response
 var E_JSON = 2; // JSON tells me the error
 var E_NOT_AUTH = 3; // Server sended a 403 (Not Authorized) code
 
+Element.addMethods({
+	setLoading: function(element)
+	{
+		element.addClassName('loading');
+		return element;
+	},
+	unsetLoading: function(element)
+	{
+		element.removeClassName('loading');
+	}
+});
+
 /**
  * A instance of a Hash without overwrite of values to keep
  * a list of instace objects used to keep all created classes
@@ -259,6 +271,8 @@ var BuroAutocomplete = Class.create(BuroCallbackable, {
 	
 	onCreate: function()
 	{
+		if (!this.autocompleter.update.visible())
+			this.autocompleter.update.show().setLoading();
 		this.trigger('onStart', this.input);
 	},
 	
@@ -284,6 +298,7 @@ var BuroAutocomplete = Class.create(BuroCallbackable, {
 		
 		var ac = this.autocompleter;
 		
+		ac.update.unsetLoading();
 		if (!ac.update.down('ul'))
 			ac.update.insert({top: new Element('ul')});
 		ac.update.down('ul').replace(this.createChoices());

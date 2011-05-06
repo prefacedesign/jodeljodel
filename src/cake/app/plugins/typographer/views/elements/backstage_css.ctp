@@ -26,6 +26,16 @@
 	));
 	
 
+	$img_url = $this->Decorator->url('/burocrata/img/loading.gif');
+	$this->Decorator->rule('.loading',
+		array(
+			'background' => 'url('.$img_url.') no-repeat 10% center !important',
+			'height' => '0 !important',
+			'overflow' => 'hidden !important',
+			'padding-top' => '30px !important'
+		)
+	);
+	
 	
 	$border_size = 1;
 	$width = $hg->size(array('M' => 5, 'g' => -1), false) - 2*$border_size;
@@ -114,7 +124,7 @@
 	
 	
 	$this->Decorator->rule(
-		'.autocomplete.list ul li:hover', array(
+		'.autocomplete.list ul li.selected', array(
 			'background-color' => $palette['selection']->write(),
 	));
 	
