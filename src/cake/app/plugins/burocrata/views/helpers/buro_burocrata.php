@@ -6,6 +6,7 @@ App::import('Lib', 'JjUtils.SecureParams');
 class BuroBurocrataHelper extends XmlTagHelper
 {
 	public $helpers = array('Html', 'Form', 'Ajax', 'Js' => 'prototype', 'Burocrata.BuroOfficeBoy',
+		'JjUtils.Jodel',
 		'Typographer.*TypeBricklayer' => array(
 			'name' => 'Bl',
 			'receive_tools' => true
@@ -53,7 +54,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$plugin = Inflector::underscore($plugin);
 		$element_name = Inflector::underscore($model_alias);
 		
-		return $View->element($element_name, compact('plugin', 'type'));
+		return $this->Jodel->insertModule($modelClassName, $type);
 	}
 
 
