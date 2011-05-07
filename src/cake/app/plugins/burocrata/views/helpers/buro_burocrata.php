@@ -1103,15 +1103,12 @@ class BuroBurocrataHelper extends XmlTagHelper
  * - `allow` - An array that contains the actions allowed - Defaults to array('create', 'modify', 'relate').
  * - `actions` - An array that defines all the URLs for CRUD actions Defaults to BuroBurocrataController actions.
  * - `callbacks` - An array with possible callbacks with Jodel Callbacks convention.
- * - `new_item_text` - The string that will be placed into the "Create a new item" link
- * - `edit_item_text` - The string that will be placed into the "Edit this item" link
  *
  * @access public
  * @param array $options An array with non-defaults values
  * @return string The HTML well formated
  * @todo actions param implementation
  * @todo allow param implementation
- * @todo type param implementation
  * @todo Error handling
  */
 	public function inputRelationalManyChildren($options = array())
@@ -1120,7 +1117,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$options = $options['options'];
 		$defaults = array(
 			'baseID' => $this->baseID(),
-			'assocName' => false
+			'assocName' => false,
+			'title' => false
 		);
 		$options = am($defaults, $options);
 		extract($options);
@@ -1159,55 +1157,289 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out = $this->label(array('for' => ''), array(), $input_options['label']);
 		unset($input_options['label']);
 		
-		$out .= $this->_orderedItens($model_class_name);
+		$out .= $this->_orderedItensManyChildren(array(
+			'model_class_name' => $model_class_name,
+			'content' => array(array(
+				'model' => $model,
+				'label' => $model,
+				'title' => $title,
+			)),
+			'baseID' => $baseID
+		));
 		
-		return $out;
+		return $this->Bl->div(array('id' => 'div' . $baseID), array(), $out);
 	}
 
-
 /**
- * Creates a interface for a list of itens (ordenable or not, multicontent or not) based on options given
+ * Creates a interface for a list of items (ordenable or not), multi-model, based on options given
  * 
  * ### Accepted options are:
- *
- *  - `content` An array that describes what types of content will be available to content insertion.
- *  - `auto_order` An boolean that tells if the order can be changed
- *  - `type` An alias for content, that will be configured on (???)
  * 
+ *  - `type` string An alias name for an specific content array, that 
+ *                  must be configured on (to be defined)
+ *  - `content` array An array that describes (by model names) what types
+ *                    of content will be available to content insertion.
+ *  - `model_class_name` string The complete name (Plugin.Name) of the main model,
+ *                              i.e. model that holds all the information.
+ *                              Defaults to `ContentStream.ContentStream`
+ *  - `auto_order` boolean An boolean that tells if the order can be changed by 
+ *                         the user or is changed by the model. Defaults to false
+ *                         (ie. user can change the order)
  * 
  * @access protected
  * @param array $options An array whith the options for this ordered list
- * @return string the HTML and its script
+ * @return string|false The HTML and its script or false, if something went wrong
+ * @todo Make this method
  */
-	protected function _orderedItens($model_class_name)
+	protected function _orderedItensContentStream($options)
 	{
-		list($model_plugin, $model_name) = pluginSplit($model_class_name);
+		if (isset($options['type']) && !empty($options['type']) && is_string($options['type']))
+		{
+			// @todo: some type of convention for type configuration
+			// @todo: load the type of ordered itens and fill the $options['content'] properly
+		}
 		
-		$out = $this->_orderedItensMenu();
-		foreach ($this->data[$model_name] as $data)
-			$out .= $this->_orderedItensItem();
+		if (empty($options['content']))
+		{
+			trigger_error('BuroBurocrataHelper::_orderedItens - Content array for list of items was not set.');
+			return false;
+		}
+		
+		if (!is_array($options['content']))
+			$options['content'] = array($options['content']);
+	}
+
+
+/**
+ * Creates a interface for a list of items (ordenable or not) of just one type of content based on options given
+ * 
+ * ### Accepted options are:
+ *
+ *  - `model_class_name` string The complete name (Plugin.Name) of the main model, 
+ *                              i.e. model that holds all the information. No default value.
+ *  - `auto_order` boolean An boolean that tells if the order can be changed by 
+ *                         the user or is changed by the model. Defaults to false
+ *                         (ie. user can change the order)
+ * 
+ * @access protected
+ * @param array $options An array whith the options for this ordered list
+ * @return string|false The HTML and its script or false, if something went wrong
+ */
+	protected function _orderedItensManyChildren($options)
+	{
+		$options += array('model_class_name' => false, 'auto_order' => false);
+		extract($options);
+		
+		if (empty($model_class_name))
+		{
+			trigger_error('BuroBurocrataHelper::_orderedItensManyChildren - model_class_name wasn\'t set.');
+			return false;
+		}
+		
+		list($model_plugin, $model_name) = pluginSplit($model_class_name);
+		$type= am(BuroBurocrataHelper::$defaultSupertype, 'many_children', 'view');
+		
+		$out = '';
+		$out .= $this->orderedItensMenu(array(), array('content' => $content, 'order' => 1));
+		foreach ($this->data[$model_name] as $n => $data)
+			$out .= $this->orderedItensItem(array(), array('data' => array($model_name => $data), 'model' => $model_class_name, 'type' => $type))
+				. $this->orderedItensMenu(array(), array('content' => $content, 'order' => $n+2));
+			;
+		
+		// Javascripts
+		
+		$url_edit = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'edit');
+		$open_form_ajax = array(
+			'baseID' => $this->baseID(),
+			'url' => $url_edit,
+			'params' => array(
+				$this->securityParams($url_edit, $model_plugin, $model_name),
+				$this->internalParam('id') => "@id ? id : null@",
+				$this->internalParam('baseID', $baseID)
+			),
+			'callbacks' => array(
+				'onSuccess' => array('contentUpdate' => 'divform'.$baseID)
+			)
+		);
+		$options['callbacks'] = array(
+			'onShowForm' => array('ajax' => $open_form_ajax)
+		);
+		
+		$out .= $this->BuroOfficeBoy->listOfItems($options);
+		return $out;
+	}
+
+
+/**
+ * In theory this method is not necessary, but i had to make it 
+ * because this fucking helper doesnt call the ending function by itself.
+ * 
+ * @access public
+ * @param array $htmlAttributes
+ * @param array $options
+ * @return string The result of sorderedItensMenu concatened with the result of eorderedItensMenu
+ */
+	public function orderedItensMenu($htmlAttributes = array(), $options = array())
+	{
+		return $this->sorderedItensMenu($htmlAttributes, $options)
+			. $this->eorderedItensMenu();
+	}
+
+
+/**
+ * Starts an ordered list menu
+ * 
+ * @access public
+ * @param array $htmlAttributes
+ * @param array $options
+ * @return string The HTML for a menu of ordered list
+ */
+	public function sorderedItensMenu($htmlAttributes = array(), $options = array())
+	{
+		$htmlAttributes = $this->addClass($htmlAttributes, self::$defaultContainerClass);
+		$htmlAttributes = $this->addClass($htmlAttributes, 'ordered_list_menu');
+		$options = $options + array('content' => false);
+		
+		if (!is_array($options['content']))
+			trigger_error('BuroBurocrataHelper::sorderedItensMenu - No content list specified.');
+		
+		$htmlAttributes['buro:order'] = $options['order'];
+		$out = $this->Bl->sdiv($htmlAttributes); // to be closed on BuroBurocrataHelper::sorderedItensMenu
+		
+		// A menu made of list of content
+		$out .= $this->Bl->sdiv(array('class' => 'ordered_list_menu_list'));
+		foreach ($options['content'] as $content)
+		{
+			if (!is_array($content))
+				$content = array('model' => $content);
+			
+			$content += array('label' => Inflector::humanize($content['model']));
+			
+			$out .= $this->Bl->anchor(
+				array('href' => '/', 'class' => 'ordered_list_menu_link', 'buro:type' => $content['model']),
+				array(), 
+				$content['label']
+			);
+		}
+		$out .= $this->Bl->anchor(array('class' => 'ordered_list_menu_close', 'href' => '/'), array(), __('Burocrata::orderdItensMenu - close list', true));
+		$out .= $this->Bl->ediv();
+		
+		// Button that shows the list of content (if more then one item)
+		$out .= $this->Bl->button(array('class' => 'ordered_list_menu_add'), array(), '+');
+		
+		return $out;
+	}
+
+
+/**
+ * Ends a ordered list menu
+ * 
+ * @access public
+ * @return string The HTML of an ending div
+ */
+	public function eorderedItensMenu()
+	{
+		return $this->Bl->ediv();
+	}
+
+
+/**
+ * Render a item of a list based on passed data.
+ * 
+ * @access public
+ * @param array $htmlAttributes
+ * @param array $options
+ * @return string|false The well formated HTML or false, if something went wrong
+ */
+	public function orderedItensItem($htmlAttributes = array(), $options = array())
+	{
+		return $this->sorderedItensItem($htmlAttributes, $options)
+			. $this->eorderedItensItem();
+	}
+
+
+/**
+ * Starts a item of a ordered list of items
+ * 
+ * @access public
+ * @param array $htmlAttributes
+ * @param array $options
+ * @return string The HTML for an item on a ordered list of items
+ */
+	public function sorderedItensItem($htmlAttributes = array(), $options = array())
+	{
+		$options += array('model' => false, 'type' => array('buro', 'view'));
+		extract($options);
+		
+		$htmlAttributes = $this->addClass($htmlAttributes, self::$defaultContainerClass);
+		$htmlAttributes = $this->addClass($htmlAttributes, 'ordered_list_item');
+		
+		$out = $this->Bl->sdiv($htmlAttributes);
+		if (isset($options['title']) && !empty($options['title']))
+			$out .= $this->Bl->div(array(), array(), $options['title']);
+		$out .= $this->orderedItensControls();
+		$out .= $this->Jodel->insertModule($model, $type, $data);
+		return $out;
+	}
+
+
+/**
+ * Ends a item of a ordered list of items
+ * 
+ * @access public
+ * @return string The HTML of an ending div
+ */
+	public function eorderedItensItem()
+	{
+		return $this->Bl->ediv();
+	}
+
+/**
+ * Renders a div containing the controls for one item.
+ * 
+ * @access public
+ * @return string The HTML of controls
+ */
+	public function orderedItensControls($htmlAttributes = array(), $options = array())
+	{
+		return $this->sorderedItensControls($htmlAttributes, $options)
+				.$this->eorderedItensControls();
+	}
+
+/**
+ * Starts the div of control for one item.
+ * 
+ * @access public
+ * @return string The HTML starting the controls
+ */
+	public function sorderedItensControls($htmlAttributes = array(), $options = array())
+	{
+		$htmlAttributes = $this->addClass($htmlAttributes, self::$defaultContainerClass);
+		$htmlAttributes = $this->addClass($htmlAttributes, 'ordered_list_controls');
+		$out = $this->Bl->sdiv($htmlAttributes);
+		
+		$controls = array();
+		$controls[] = $this->Bl->button(array('class' => 'ordered_list_up', 'buro:action' => 'up'), array(), __('Burocrata::orderedItensControls - up', true));
+		$controls[] = $this->Bl->button(array('class' => 'ordered_list_down', 'buro:action' => 'down'), array(), __('Burocrata::orderedItensControls - down', true));
+		$controls[] = $this->Bl->button(array('class' => 'ordered_list_delete', 'buro:action' => 'delete'), array(), __('Burocrata::orderedItensControls - delete', true));
+		$controls[] = $this->Bl->anchor(array('class' => 'ordered_list_duplicate', 'buro:action' => 'duplicate', 'href' => '/'), array(), __('Burocrata::orderedItensControls - duplicate', true));
+		$controls[] = $this->Bl->anchor(array('class' => 'ordered_list_edit', 'buro:action' => 'edit', 'href' => '/'), array(), __('Burocrata::orderedItensControls - edit', true));
+		
+		$out .= implode('&ensp;', $controls);
 		return $out;
 	}
 
 /**
+ * Ends the div of control for one item.
  * 
- * 
- * @access protected
+ * @access public
+ * @retunr string The HTML endind the controls
  */
-	protected function _orderedItensMenu()
+	public function eorderedItensControls()
 	{
-		return '<p>Menu</p>';
+		return '</div>';
 	}
 
-/**
- * 
- * 
- * @access protected
- */
-	protected function _orderedItensItem()
-	{
-		return '<p>An item</p>';
-	}
 
 /**
  * Construct a belongsTo form based on passed variable

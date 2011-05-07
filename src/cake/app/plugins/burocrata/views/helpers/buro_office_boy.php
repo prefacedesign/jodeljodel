@@ -69,6 +69,9 @@ class BuroOfficeBoyHelper extends AppHelper
 			'onFailure' => 'function(input, json){%s}',
 			'onComplete' => 'function(input, response){%s}',
 			'onRestart' => 'function(){%s}'
+		),
+		'listOfItems' => array(
+			'onShowForm' => 'function(id){%s}',
 		)
 	);
 
@@ -239,6 +242,22 @@ class BuroOfficeBoyHelper extends AppHelper
 		
 	}
 
+/**
+ * Creates the javascript counter-part of the ordered list of items based on the given options
+ * 
+ * @access public
+ * @return string The HTML <script> tag
+ */
+	public function listOfItems($options)
+	{
+		$defaults = array('callbacks' => array(), 'baseID' => uniqid(), 'types' => array());
+		extract(am($defaults, $options));
+		unset($defaults);
+		
+		$callbacks = $this->formatCallbacks('listOfItems', $callbacks);
+		$script = sprintf("new BuroListOfItems('%s', %s, %s)", $baseID, $this->Js->object($types), $callbacks);
+		return $this->addHtmlEmbScript($script);
+	}
 
 /**
  * Creates the javascript for upload input

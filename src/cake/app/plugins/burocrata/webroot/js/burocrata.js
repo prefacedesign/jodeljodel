@@ -535,6 +535,165 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 	}
 });
 
+/**
+ * The main class for a list of items. It handles all ajax calls
+ * 
+ * @access public
+ * @param string id_base The master ID used to find one specific instance of this class and elements on HTML
+ * @param object types A list of allowed types for putting on this input
+ */
+var BuroListOfItems = Class.create(BuroCallbackable, {
+	initialize: function(id_base, types)
+	{
+		this.types = types;
+		this.id_base = id_base;
+		BuroClassRegistry.set(this.id_base, this);
+		
+		this.divForm = new Element('div', {id: 'divform'+id_base});
+		this.divCont = $('div'+id_base);
+		this.divCont.insert(this.divForm.hide());
+		
+		this.menus = this.divCont.select('.ordered_list_menu').map(function(div){
+			return new BuroListOfItemsMenu(div).addCallbacks({'buro:newItem': this.newItem.bind(this)});
+		}.bind(this));
+		this.items = this.divCont.select('.ordered_list_item').map(function(div){
+			return new BuroListOfItemsItem(div).addCallbacks({'buro:controlClick': this.routeAction.bind(this)});
+		}.bind(this));
+	},
+	newItem: function(menuObj, type)
+	{
+		menuObj.div.insert({after: this.divForm});
+		menuObj.hide();
+		this.trigger('onShowForm');
+	},
+	routeAction: function(item, action)
+	{
+		var _function = this['action'+action.capitalize()];
+		if (Object.isFunction(_function))
+			_function.bind(this).defer();
+	},
+	actionUp: function()
+	{
+	},
+	actionDown: function()
+	{
+	},
+	actionDelete: function()
+	{
+	},
+	actionDuplicate: function()
+	{
+	},
+	actionEdit: function()
+	{
+	}
+});
+
+/**
+ * Class for the menu of a list of items. It triggers the `buro:newItem` callback 
+ * when the creation of a new item is requested. If it has a list of contents, it triggers 
+ * when the link of that content is clicked. If not (just one item), it triggers when the 
+ * 'expand menu' link is clicked.
+ * 
+ * ### Callbacks:
+ * - `buro:newItem` callback receive itself and the 'type' of content (when there is a list)
+ * 
+ * @access public
+ * @param element div The div reference of menu container
+ * @todo order?
+ */
+var BuroListOfItemsMenu = Class.create(BuroCallbackable, {
+	initialize: function(div)
+	{
+		this.div = div;
+		this.order = this.div.readAttribute('buro:order');
+		
+		this.plus_button = this.div.down('button.ordered_list_menu_add');
+		this.plus_button.observe('click', this.plusClick.bind(this));
+
+		this.menu = this.div.down('div.ordered_list_menu_list');
+		
+		this.links = this.menu.select('a.ordered_list_menu_link');
+		this.links.each(function(lnk){lnk.observe('click', this.lnkClick.bind(this))}.bind(this));
+		
+		this.close_link = this.div.down('a.ordered_list_menu_close');
+		this.close_link.observe('click', function(ev){ ev.stop(); this.close()}.bind(this));
+		
+		this.close();
+	},
+	plusClick: function(ev)
+	{
+		ev.stop();
+		if (this.links.length > 1) 
+			this.open();
+		else if (this.links.length == 1)
+			this.trigger('buro:newItem', this, this.readType(this.links[0]));
+	},
+	lnkClick: function(ev)
+	{
+		ev.stop();
+		var lnk = ev.findElement('a');
+		if (lnk)
+			this.trigger('buro:newItem', this, this.readType(lnk));
+	},
+	open: function()
+	{
+		this.menu.show();
+		this.close_link.up().show();
+		this.plus_button.hide();
+	},
+	close: function(ev)
+	{
+		this.close_link.up().hide();
+		this.menu.hide();
+		this.plus_button.show();
+	},
+	readType: function(lnk) {return lnk.readAttribute('buro:type');},
+	hide: function() {this.div.hide();},
+	show: function() {this.div.show();}
+});
+
+/**
+ * Represents one item on list of items. It handles events on controls like (move up, move down, edit, etc)
+ * It triggers a callback (`buro:controlClick`) every time a control is activeted and is passed what type of
+ * callback was triggered (up, down, edit ... ).
+ * It doesn't handles any kind of ajax requests by itself.
+ * 
+ * ### Callbacks
+ * - `buro:controlClick` function(object, action) - It receive the object that triggered and an string describing the action
+ * 
+ * @access public
+ * @param object list The object for the parent list
+ * @param element div The div containing the item
+ */
+var BuroListOfItemsItem = Class.create(BuroCallbackable, {
+	initialize: function (div)
+	{
+		this.div = div;
+		this.controls = this.div.down('div.ordered_list_controls');
+		this.controls.childElements().each(this.observeControls.bind(this));
+		this.checkSiblings();
+	},
+	observeControls: function(element)
+	{
+		element.observe('click', this.controlClick.bindAsEventListener(this, element));
+	},
+	controlClick: function(ev, element)
+	{
+		ev.stop();
+		var action = element.readAttribute('buro:action');
+		this.trigger('buro:controlClick', this, action);
+	},
+	checkSiblings: function()
+	{
+		var hasPrev = this.div.previous('div.ordered_list_item');
+		var hasNext = this.div.next('div.ordered_list_item');
+		this.controls.childElements().each(Form.Element.enable);
+		if (!hasPrev) Form.Element.disable(this.controls.down('.ordered_list_up'));
+		if (!hasNext) Form.Element.disable(this.controls.down('.ordered_list_down'));
+	}
+});
+
 
 /**
  * 
