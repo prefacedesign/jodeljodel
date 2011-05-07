@@ -5,12 +5,15 @@ var E_NOT_AUTH = 3; // Server sended a 403 (Not Authorized) code
 Element.addMethods({
 	setLoading: function(element)
 	{
+		if (!(element = $(element))) return;
 		element.addClassName('loading');
 		return element;
 	},
 	unsetLoading: function(element)
 	{
+		if (!(element = $(element))) return;
 		element.removeClassName('loading');
+		return element;
 	}
 });
 
@@ -271,8 +274,10 @@ var BuroAutocomplete = Class.create(BuroCallbackable, {
 	
 	onCreate: function()
 	{
-		if (!this.autocompleter.update.visible())
+		if (!this.autocompleter.update.visible()) {
 			this.autocompleter.update.show().setLoading();
+			this.autocompleter.update.select('div.message').each(Element.hide);
+		}
 		this.trigger('onStart', this.input);
 	},
 	
