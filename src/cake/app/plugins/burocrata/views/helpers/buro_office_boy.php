@@ -19,7 +19,6 @@ class BuroOfficeBoyHelper extends AppHelper
  */
 	public $helpers = array('Html', 'Ajax', 'Js' => 'prototype');
 
-
 /**
  * Callbacks template
  *
@@ -74,14 +73,6 @@ class BuroOfficeBoyHelper extends AppHelper
 	);
 
 /**
- * To avoid include various scripts
- * 
- * @access protected
- * @var boolean
- */
-	protected $scripts_linked = false;
-
-/**
  * An array of all created scripts. If is not a Ajax call, then it
  * is used to print all script in one single blok on <head>
  * 
@@ -89,7 +80,6 @@ class BuroOfficeBoyHelper extends AppHelper
  * @var array
  */
 	protected $scripts = array();
-
 
 /**
  * afterRender callback used for print automagically all created scripts on HTML <head>
@@ -99,13 +89,19 @@ class BuroOfficeBoyHelper extends AppHelper
 	public function afterRender()
 	{
 		$View = ClassRegistry::getObject('view');
-		if ($View && !$this->Ajax->isAjax())
+		if ($View && !$this->Ajax->isAjax() && !empty($this->scripts))
 		{
+			
+			$this->Html->script('prototype', array('inline' => false));
+			$this->Html->script('effects', array('inline' => false));
+			$this->Html->script('controls', array('inline' => false));
+			$this->Html->script('/burocrata/js/burocrata.js', array('inline' => false));
+			$this->Html->scriptBlock('var debug = ' . Configure::read() . ';', array('inline' => false));
+
 			$view =& ClassRegistry::getObject('view');
 			$view->addScript($this->Html->scriptBlock($this->Js->domReady(implode("\n", $this->scripts))));
 		}
 	}
-
 
 /**
  * Creates the javascript counter-part of one autocomplete input.
@@ -117,8 +113,6 @@ class BuroOfficeBoyHelper extends AppHelper
  */
 	public function autocomplete($options = array())
 	{
-		$this->_includeScripts();
-		
 		$options = am(array('callbacks' => array()), $options);
 		extract($options);
 		
@@ -135,7 +129,6 @@ class BuroOfficeBoyHelper extends AppHelper
 		return $this->addHtmlEmbScript($script);
 	}
 
-
 /**
  * Creates the javascript counter-part of one form.
  *
@@ -146,8 +139,6 @@ class BuroOfficeBoyHelper extends AppHelper
  */
 	public function newForm($options)
 	{
-		$this->_includeScripts();
-		
 		$options = am(array('callbacks' => array()), $options);
 		extract($options);
 		
@@ -158,7 +149,6 @@ class BuroOfficeBoyHelper extends AppHelper
 		
 		return $this->addHtmlEmbScript($script);
 	}
-
 
 /**
  * Create a javascript thats performs a ajax request.
@@ -175,8 +165,6 @@ class BuroOfficeBoyHelper extends AppHelper
  */
 	public function ajaxRequest($options)
 	{
-		$this->_includeScripts();
-		
 		$defaults = array(
 			'url' => false,
 			'params' => array(),
@@ -216,7 +204,6 @@ class BuroOfficeBoyHelper extends AppHelper
 		return sprintf("new BuroAjax('%s',%s,%s)", $url, $ajax_options, $callbacks);
 	}
 
-
 /**
  * Creates the javascript counter-part of the RelationalUnitaryAutocomplete input
  *
@@ -233,8 +220,7 @@ class BuroOfficeBoyHelper extends AppHelper
 		$script = sprintf("new BuroBelongsTo('%s','%s'%s);", $baseID, $autocomplete_baseID, (empty($callbacks) ? '':','.$callbacks));
 		return $this->addHtmlEmbScript($script);
 	}
-	
-	
+
 /**
  * Creates the javascript counter-part of the RelationalEditableList input
  *
@@ -263,8 +249,6 @@ class BuroOfficeBoyHelper extends AppHelper
  */
 	public function upload($options)
 	{
-		$this->_includeScripts();
-		
 		$defaults = array('callbacks' => array(), 'baseID' => uniqid(), 'url' => '', 'error' => array());
 		extract(am($defaults, $options));
 		unset($defaults);
@@ -281,7 +265,6 @@ class BuroOfficeBoyHelper extends AppHelper
 		return $this->addHtmlEmbScript($script);
 	}
 
-
 /**
  * Creates the javascript for textile input
  * 
@@ -291,7 +274,6 @@ class BuroOfficeBoyHelper extends AppHelper
  */
 	public function textile($options)
 	{	
-		$this->_includeScripts();
 		$defaults = array('callbacks' => array(), 'baseID' => uniqid());
 		extract(am($defaults, $options));
 		
@@ -299,7 +281,6 @@ class BuroOfficeBoyHelper extends AppHelper
 		
 		return $this->addHtmlEmbScript($script);
 	}
-
 
 /** 
  * Function to add the script in HTML
@@ -315,7 +296,6 @@ class BuroOfficeBoyHelper extends AppHelper
 		else
 			$this->scripts[] = $script;
 	}
-
 
 /** 
  * Handles the array of callbacks and converts it to javascript
@@ -347,7 +327,6 @@ class BuroOfficeBoyHelper extends AppHelper
 		return '{' . implode(', ', $out) . '}';
 	}
 
-
 /**
  * Converts an array to javascript using the jodel convention
  *
@@ -370,7 +349,6 @@ class BuroOfficeBoyHelper extends AppHelper
 		return $js;
 	}
 
-
 /**
  * Generates the script that resets the content of form
  * Only works with forms callbacks
@@ -383,7 +361,6 @@ class BuroOfficeBoyHelper extends AppHelper
 	{
 		return 'form.reset();';
 	}
-
 
 /**
  * Generates the script that locks the content of form
@@ -398,7 +375,6 @@ class BuroOfficeBoyHelper extends AppHelper
 		return 'form.lock();';
 	}
 
-
 /**
  * Generates the script that locks the content of form
  * Only works with forms callbacks
@@ -412,11 +388,10 @@ class BuroOfficeBoyHelper extends AppHelper
 		return 'form.unlock();';
 	}
 
-
 /**
  * Generates the script that updates the content of form, based on json response content
  *
- * ###It may be called in many formats:
+ * ### It may be called in many formats:
  *
  *  - `array('contentUpdate')` - updates the form content with the returned content
  *  - `array('contentUpdate' => 'update')` - same of previous item
@@ -465,25 +440,25 @@ class BuroOfficeBoyHelper extends AppHelper
 		return $script;
 	}
 
-
 /**
- * Just escapes a string to be JSON friendly.
+ * Do nothing with the script. Just repasses it.
  *
  * @access protected
  * @param mixed $script 
- * @return string The formated script
+ * @return string Return the $script content untouched
  */
 	protected function _js($script)
 	{
 		return $script;
 	}
 
-
 /**
- * Formats a redirect script
+ * Formats a redirect script, using th JsHelper, that uses 
+ * `url.location()` function of javascript. It accepts the $url paramater
+ * ether on string or on array formats.
  *
  * @access protected
- * @param mixed $url
+ * @param array|string $url
  * @return string The formated script
  */
 	protected function _redirect($url)
@@ -491,9 +466,10 @@ class BuroOfficeBoyHelper extends AppHelper
 		return $this->Js->redirect($url);
 	}
 
-
 /**
- *
+ * Just an alias to <code>array('js' => "alert('$msg')")</code>
+ * 
+ * @todo Link with PopupHelper
  * @access protected
  * @param mixed $msg
  * @return string The formated script
@@ -503,9 +479,8 @@ class BuroOfficeBoyHelper extends AppHelper
 		return $this->Js->alert((string) $msg);
 	}
 
-
 /**
- * Renders a Ajax.Resquest or a Ajax.Updater
+ * Renders an Ajax.Resquest or an Ajax.Updater
  *
  * @access protected
  * @param array $options
@@ -516,22 +491,27 @@ class BuroOfficeBoyHelper extends AppHelper
 		return $this->ajaxRequest($options);
 	}
 
+/**
+ * Shows that a element, specified by $element_id, is waiting for a call to be finished
+ * 
+ * @access protected
+ * @param string $element_id The DOM ID of the element
+ * @return string The formated script
+ */
+	protected function _setLoading($element_id)
+	{
+		return "$('$element_id').setLoading();";
+	}
 
 /**
- * Includes the necessary script files to burocrata works
- *
+ * Reverses the BuroOfficeBoyHelper::_setLoading method effect
+ * 
  * @access protected
+ * @param string $element_id The DOM ID of the element
+ * @return string The formated script
  */
-	protected function _includeScripts()
+	protected function _unsetLoading($element_id)
 	{
-		if ($this->scripts_linked)
-			return;
-		$this->scripts_linked = true;
-		
-		$this->Html->script('prototype', array('inline' => false));
-		$this->Html->script('effects', array('inline' => false));
-		$this->Html->script('controls', array('inline' => false));
-		$this->Html->script('/burocrata/js/burocrata.js', array('inline' => false));
-		$this->Html->scriptBlock('var debug = ' . Configure::read() . ';', array('inline' => false));
+		return "$('$element_id').unsetLoading();";
 	}
 }

@@ -29,7 +29,7 @@
 	$img_url = $this->Decorator->url('/burocrata/img/loading.gif');
 	$this->Decorator->rule('.loading',
 		array(
-			'background' => 'url('.$img_url.') no-repeat 10% center !important',
+			'background' => 'url('.$img_url.') no-repeat 10px center !important',
 			'height' => '0 !important',
 			'overflow' => 'hidden !important',
 			'padding-top' => '30px !important'
@@ -113,7 +113,7 @@
 			'background-color' => $palette['input_error_bg']->write(),
 			'color' => $palette['error_message']->write(),
 			'border' => $u->t(1) . ' solid ' . $palette['error_message']->write(),
-			'margin-top' => $u->t(-2),
+			'margin-top' => $u->t(-1),
 			'width' => $u->t($width) . ' !important',
 			'font-weight' => 'bold',
 			'font-style' => 'italic',

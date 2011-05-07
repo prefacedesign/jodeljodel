@@ -1062,7 +1062,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'url' => $url_view,
 			'params' => array($this->securityParams($url_view, $plugin, $model), $this->internalParam('id') => '@id@'),
 			'callbacks' => array(
-				'onSuccess' => array('contentUpdate' => $update)
+				'onSuccess' => array('unsetLoading' => $update, 'contentUpdate' => $update)
 			)
 		);
 		
@@ -1076,7 +1076,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 					$this->internalParam('baseID', $baseID)
 				),
 				'callbacks' => array(
-					'onSuccess' => array('contentUpdate' => $update)
+					'onSuccess' => array('unsetLoading' => $update, 'contentUpdate' => $update)
 				)
 			);
 		
@@ -1085,8 +1085,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$officeboy_options['baseID'] = $baseID;
 		$officeboy_options['autocomplete_baseID'] = $acplt_baseID;
 		$officeboy_options['callbacks'] = array(
-			'onShowForm' => array('ajax' => $open_form_ajax),
-			'onShowPreview' => array('ajax' => $open_prev_ajax)
+			'onShowForm' => array('setLoading' => $update, 'ajax' => $open_form_ajax),
+			'onShowPreview' => array('setLoading' => $update, 'ajax' => $open_prev_ajax)
 		);
 		$out .= $this->BuroOfficeBoy->relationalUnitaryAutocomplete($officeboy_options);
 		
