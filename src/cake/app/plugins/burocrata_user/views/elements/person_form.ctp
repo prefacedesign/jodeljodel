@@ -7,6 +7,7 @@ echo $this->Buro->sform(array(),
 			'onStart'	=> array('lockForm'),
 			'onComplete'=> array('unlockForm'),
 			'onSave'    => array('js' => "BuroClassRegistry.get('$baseID').saved(json.saved);"),
+			'onCancel'	=> array('js' => "BuroClassRegistry.get('$baseID').cancel();"),
 			'onReject'  => array('contentUpdate', 'popup' => 'Existe algum erro de validação.'),
 			'onFailure'	=> array('popup' => 'Erro de comunicação com o servidor!')
 		)
@@ -40,5 +41,14 @@ echo $this->Buro->sform(array(),
 		)
 	);
 
-	echo $this->Buro->submit(array(), array('label' => 'Salva'));
+	echo $this->Buro->submit(
+		array(), 
+		array(
+			'label' => 'Salva',
+			'cancel' => array(
+				'label' => 'Cancelar'
+			)
+		)
+	);
 echo $this->Buro->eform();
+echo $this->Bl->floatBreak();

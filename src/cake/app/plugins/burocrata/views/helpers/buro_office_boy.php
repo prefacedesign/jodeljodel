@@ -32,6 +32,7 @@ class BuroOfficeBoyHelper extends AppHelper
 			'onReject' => 'function(form, response, json, saved){%s}',
 			'onSuccess' => 'function(form, response, json){%s}',
 			'onComplete' => 'function(form, response){%s}',
+			'onCancel' => 'function(form){%s}',
 			'onFailure' => 'function(form, response){%s}',
 			'onError' => 'function(code, error){%s}'
 		),

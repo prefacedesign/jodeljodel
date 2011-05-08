@@ -553,17 +553,26 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function submit($htmlAttributes = array(), $options = array())
 	{
-		$htmlAttributes['id'] = 'sbmt' . $this->_readFormAttribute('baseID');
+		$options += array(
+			'cancel' => false,
+			'label' => __('Burocrata::submit - Submit label', true),
+			'baseID' => $this->_readFormAttribute('baseID')
+		);
 		
-		$defaults = array('cancel' => false, 'label' => __('Burocrata::submit - Submit label', true));
-		$options = am($defaults, $options);
-		
+		$htmlAttributes['id'] = 'sbmt' . $options['baseID'];
 		$this->_addFormAttribute('submit', $htmlAttributes['id']);
 		
-		if ($options['cancel'] == false)
-			return $this->button($htmlAttributes, $options, $options['label']);
-		else
-			return $this->okOrCancel($htmlAttributes, $options);
+		if (!empty($options['cancel']))
+		{
+			$options['cancel'] += array(
+				'htmlAttributes' => array(),
+				'label' => __('Burocrata::okOrCancel - Cancel label', true)
+			);
+			$options['cancel']['htmlAttributes']['id'] = 'cncl' . $options['baseID'];
+			$this->_addFormAttribute('cancel', $options['cancel']['htmlAttributes']['id']);
+		}
+		
+		return $this->okOrCancel($htmlAttributes, $options);
 	}
 
 
@@ -606,7 +615,8 @@ class BuroBurocrataHelper extends XmlTagHelper
  * - `label` - The label of button. Defaults to 'Submit'.
  * - `cancel` - An array with the cancel options (`htmlAttributes`, `label`, `url`)
  * - `type` - Type of interface ('image' or 'button' or 'link'). Defaults to button.
- * - `src` - A URL for image, in case of use 
+ * - `src` - A URL for image, in case of use
+ * - ``
  * 
  * @access public
  * @param  array $htmlAttributes
@@ -620,7 +630,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'label' => __('Burocrata::okOrCancel - OK label', true),
 			'type' => 'button',
 			'src' => null,
-			'cancel' => false
+			'cancel' => false,
+			'baseID' => $this->_readFormAttribute('baseID')
 		);
 		$options['close_me'] = false;
 		
@@ -632,18 +643,21 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		if ($cancelOptions && is_array($cancelOptions))
 		{
-			$cancelOptions = $cancelOptions + array(
+			$cancelOptions += array(
 				'htmlAttributes' => array(),
 				'label' => __('Burocrata::okOrCancel - Cancel label', true),
 				'url' => ''
 			);
-			$cancelHtmlAttributes = $cancelOptions['htmlAttributes'];
+			$cancelHtmlAttributes = $cancelOptions['htmlAttributes'] + array('id' => 'cncl'+$options['baseID']);
 			unset($cancelOptions['htmlAttributes']);
+			$cancelLabel = $cancelOptions['label'];
+			unset($cancelOptions['label']);
 			
 			$out .= $this->Bl->sp(array('class' => 'alternative_option'));
 				$out .= ', ';
 				$out .= __('anchorList or', true);
-				$out .= $this->Bl->anchor($cancelHtmlAttributes, $cancelOptions, $cancelOptions['label']);
+				$out .= ' ';
+				$out .= $this->Bl->anchor($cancelHtmlAttributes, $cancelOptions, $cancelLabel);
 			$out .= $this->Bl->ep();
 			$out .= $this->Bl->floatBreak();
 		}

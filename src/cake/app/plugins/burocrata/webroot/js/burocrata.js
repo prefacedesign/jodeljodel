@@ -14,12 +14,13 @@ document.observe('dom:loaded', function()
 		setLoading: function(element)
 		{
 			if (!(element = $(element))) return;
-			return element.addClassName('loading');
+			var padding = Math.max(element.getHeight(), 30);
+			return element.setStyle({paddingTop: padding+'px'}).addClassName('loading');
 		},
 		unsetLoading: function(element)
 		{
 			if (!(element = $(element))) return;
-			return element.removeClassName('loading');
+			return element.removeClassName('loading').setStyle({paddingTop: ''})
 		},
 		addFocus: function(element)
 		{
@@ -137,6 +138,10 @@ var BuroForm = Class.create(BuroCallbackable, {
 			this.submit = $('sbmt' + this.id_base);
 			if (this.submit)
 				this.submit.observe('click', this.submits.bind(this));
+			
+			this.cancel = $('cncl' + this.id_base);
+			if (this.cancel)
+				this.cancel.observe('click', this.cancels.bind(this));
 		}
 		
 		if(n_args > 2)
@@ -195,6 +200,11 @@ var BuroForm = Class.create(BuroCallbackable, {
 				}.bind(this)
 			}
 		);
+	},
+	cancels: function(ev)
+	{
+		ev.stop();
+		this.trigger('onCancel', this.form);
 	}
 });
 
@@ -555,6 +565,10 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		this.autocomplete.input.value = '';
 		this.input.value = id;
 		this.showPreview(id);
+	},
+	cancel: function()
+	{
+		this.showPreview(this.input.value);
 	}
 });
 
@@ -608,6 +622,9 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	{
 	},
 	actionEdit: function()
+	{
+	},
+	cancel: function()
 	{
 	}
 });

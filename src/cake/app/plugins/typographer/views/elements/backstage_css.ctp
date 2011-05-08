@@ -29,10 +29,9 @@
 	$img_url = $this->Decorator->url('/burocrata/img/loading.gif');
 	$this->Decorator->rule('.loading',
 		array(
-			'background' => 'url('.$img_url.') no-repeat 10px center !important',
+			'background' => 'url('.$img_url.') no-repeat 10px 10px !important',
 			'height' => '0 !important',
-			'overflow' => 'hidden !important',
-			'padding-top' => '30px !important'
+			'overflow' => 'hidden !important'
 		)
 	);
 	
