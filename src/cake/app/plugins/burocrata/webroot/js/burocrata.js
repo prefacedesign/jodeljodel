@@ -2,19 +2,42 @@ var E_NOT_JSON = 1; // Not a JSON response
 var E_JSON = 2; // JSON tells me the error
 var E_NOT_AUTH = 3; // Server sended a 403 (Not Authorized) code
 
-Element.addMethods({
-	setLoading: function(element)
+/**
+ * Does some extends on default elements behavior:
+ *  - Adds the `setLoading` and `unsetLoading` methods that handles loading element
+ *  - Adds the `addFocus` and `removeFocus` methods that handles CSS for focused elements
+ *  - Implements an observer on inputs and textareas for focusing
+ */
+document.observe('dom:loaded', function()
+{
+	Element.addMethods({
+		setLoading: function(element)
+		{
+			if (!(element = $(element))) return;
+			return element.addClassName('loading');
+		},
+		unsetLoading: function(element)
+		{
+			if (!(element = $(element))) return;
+			return element.removeClassName('loading');
+		},
+		addFocus: function(element)
+		{
+			if (!(element = $(element))) return;
+			return element.addClassName('focus');
+		},
+		removeFocus: function(element)
+		{
+			if (!(element = $(element))) return;
+			return element.removeClassName('focus');
+		}
+	});
+	
+	$$('input, textarea').each(function(input)
 	{
-		if (!(element = $(element))) return;
-		element.addClassName('loading');
-		return element;
-	},
-	unsetLoading: function(element)
-	{
-		if (!(element = $(element))) return;
-		element.removeClassName('loading');
-		return element;
-	}
+		input.observe('focus', Element.addFocus.curry(input));
+		input.observe('blur', Element.removeFocus.curry(input));
+	});
 });
 
 /**

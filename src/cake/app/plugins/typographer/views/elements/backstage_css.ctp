@@ -706,6 +706,7 @@
 	$border_size = 1;
 	$padding_size = $hg->size(array('m' => 2), false);
 	$margin_top = $vg->size(array('m' => 1), false);
+	$margin_bottom = $vg->size(array('g' => 0.5),false) - $margin_top;
 	$padding_top = $vg->size(array('m' => 1), false);
 	$this->Decorator->rule(
 		'.buro_form input, #login_box input, .buro_form textarea', array(
@@ -715,9 +716,15 @@
 			'width' => $u->t($hg->size(array('M' => 5, 'g' => -1),false) - 2*($border_size + $padding_size)),
 			'padding' => $u->t($padding_top) . ' ' . $u->t($padding_size),
 			'margin-top' => $u->t($margin_top),
-			'margin-bottom' => $u->t($vg->size(array('g' => 0.5),false) - $margin_top),
+			'margin-bottom' => $u->t($margin_bottom),
 			'font-size' => $u->t($line_height * 13/18),
 			'line-height' => $u->t($line_height)
+	));
+	
+	$this->Decorator->rule(
+		'.buro_form input.focus, #login_box input.focus, .buro_form textarea.focus', array(
+			'border-width' => $u->t($border_size+1),
+			'margin' => implode(' ', array($u->t($margin_top-1), $u->t(-1), $u->t($margin_bottom-1), $u->t(-1)))
 	));
 	
 	$this->Decorator->rule(
