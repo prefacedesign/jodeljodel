@@ -87,6 +87,7 @@ class BuroOfficeBoyHelper extends AppHelper
 
 /**
  * afterRender callback used for print automagically all created scripts on HTML <head>
+ * when it is not a Ajax request
  * 
  * @access public
  */
@@ -113,7 +114,8 @@ class BuroOfficeBoyHelper extends AppHelper
  * @access public
  * @param string $form_id The form dom ID
  * @param array $options An array that must contains some attributes that defines the current form
- * @return string The javascript code generated
+ * @return string|void The the result of addHtmlEmbScript
+ * @see BuroOfficeBoyHelper::addHtmlEmbScript()
  */
 	public function autocomplete($options = array())
 	{
@@ -136,10 +138,17 @@ class BuroOfficeBoyHelper extends AppHelper
 /**
  * Creates the javascript counter-part of one form.
  *
+ * ### The list of options is:
+ *
+ * - `baseID` string Used to identify this form (all inputs inside this form will have the `form` param with this string)
+ * - `url` string|array The url for POSTing the form data
+ * - `callbacks` array An list of accepted callbacks
+ *
  * @access public
  * @param string $form_id The form dom ID
  * @param array $options An array that must contains some attributes that defines the current form
- * @return string The javascript code generated
+ * @return string|void The the result of addHtmlEmbScript
+ * @see BuroOfficeBoyHelper::addHtmlEmbScript()
  */
 	public function newForm($options)
 	{
@@ -155,7 +164,138 @@ class BuroOfficeBoyHelper extends AppHelper
 	}
 
 /**
- * Create a javascript thats performs a ajax request.
+ * Creates the javascript counter-part of the RelationalUnitaryAutocomplete input
+ *
+ * ### The list of options is:
+ *
+ * - `baseID` string Used to build all DOM ID of this input
+ * - `autocomplete_baseID` string Used to build all DOM ID of the autocomplete input
+ * - `callbacks` array An list of accepted callbacks
+ *
+ * @access public
+ * @param array $options
+ * @return string|void The the result of addHtmlEmbScript
+ * @see BuroOfficeBoyHelper::addHtmlEmbScript()
+ */
+	public function relationalUnitaryAutocomplete($options)
+	{
+		$defaults = array('callbacks' => array());
+		extract(am($defaults, $options));
+		
+		$callbacks = $this->formatCallbacks('relational_unitary', $callbacks);
+		$script = sprintf("new BuroBelongsTo('%s','%s'%s);", $baseID, $autocomplete_baseID, (empty($callbacks) ? '':','.$callbacks));
+		return $this->addHtmlEmbScript($script);
+	}
+
+/**
+ * Creates the javascript counter-part of the RelationalEditableList input
+ * 
+ * - `edit_item_text` string The label for the link 'edit'
+ * - `view_item_text` string The label for the link 'view'
+ * - `delete_item_text` string The label for the link 'delete'
+ *
+ * @access public
+ * @param array $options
+ * @return string|void The the result of addHtmlEmbScript
+ * @see BuroOfficeBoyHelper::addHtmlEmbScript()
+ */
+	public function relationalEditableList($options)
+	{
+		$defaults = array('callbacks' => array());
+		extract(am($defaults, $options));
+		
+		$callbacks = $this->formatCallbacks('relational_editable', $callbacks);
+		$script = sprintf("new BuroEditableList('%s','%s'%s,'%s','%s','%s');", $baseID, $autocomplete_baseID, (empty($callbacks) ? '':','.$callbacks), (empty($edit_item_text) ? '':''.$edit_item_text), (empty($view_item_text) ? '':''.$view_item_text), $delete_item_text);
+		return $this->addHtmlEmbScript($script);
+		
+	}
+
+/**
+ * Creates the javascript counter-part of the ordered list of items based on the given options
+ * 
+ * ### The options are:
+ * - 
+ * 
+ * @access public
+ * @param array $options a list of options including `callbacks`,`baseID`
+ * @return string|void The the result of addHtmlEmbScript
+ * @see BuroOfficeBoyHelper::addHtmlEmbScript()
+ */
+	public function listOfItems($options)
+	{
+		$defaults = array('callbacks' => array(), 'baseID' => uniqid(), 'types' => array());
+		extract(am($defaults, $options));
+		unset($defaults);
+		
+		$callbacks = $this->formatCallbacks('listOfItems', $callbacks);
+		$script = sprintf("new BuroListOfItems('%s', %s, %s)", $baseID, $this->Js->object($types), $callbacks);
+		return $this->addHtmlEmbScript($script);
+	}
+
+/**
+ * Creates the javascript for upload input
+ * 
+ * @access public
+ * @param array $options
+ * @return string|void The the result of addHtmlEmbScript
+ * @see BuroOfficeBoyHelper::addHtmlEmbScript()
+ */
+	public function upload($options)
+	{
+		$defaults = array('callbacks' => array(), 'baseID' => uniqid(), 'url' => '', 'error' => array());
+		extract(am($defaults, $options));
+		unset($defaults);
+		
+		if (!empty($error))
+			$error = $this->Js->object($error);
+		else 
+			$error = '{}';
+		
+		$script = sprintf("new BuroUpload('%s', '%s', %s)", $baseID, $url, $error);
+		if(!empty($callbacks) && is_array($callbacks))
+			$script .= sprintf('.addCallbacks(%s)', $this->formatCallbacks('upload', $callbacks));
+		
+		return $this->addHtmlEmbScript($script);
+	}
+
+/**
+ * Creates the javascript for textile input
+ * 
+ * @access public
+ * @param array $options
+ * @return string|void The the result of addHtmlEmbScript
+ * @see BuroOfficeBoyHelper::addHtmlEmbScript()
+ */
+	public function textile($options)
+	{	
+		$defaults = array('callbacks' => array(), 'baseID' => uniqid());
+		extract(am($defaults, $options));
+		
+		$script = sprintf("new BuroTextile('%s')", $baseID);
+		
+		return $this->addHtmlEmbScript($script);
+	}
+
+/** 
+ * Function to add the script in HTML. It is an Ajax request, this method
+ * returns the javascript inside an <script> tag. If is not an Ajax request,
+ * it puts the script on buffer to be echoed on <head> tag of HTML.
+ *
+ * @access public
+ * @param string $script The script that will be appended
+ * @return string|void The pice of code ready for HTML or nothing (if the script was put on buffer)
+ */
+	public function addHtmlEmbScript($script)
+	{
+		if($this->Ajax->isAjax())
+			return $this->Html->scriptBlock($script);
+		else
+			$this->scripts[] = $script;
+	}
+
+/**
+ * Create a javascript thats performs a ajax request. Beacuse this is
+ * usually a event related method, the script is returned without the <script> tag.
  *
  * ### Possible attributes passed
  *
@@ -208,122 +348,15 @@ class BuroOfficeBoyHelper extends AppHelper
 		return sprintf("new BuroAjax('%s',%s,%s)", $url, $ajax_options, $callbacks);
 	}
 
-/**
- * Creates the javascript counter-part of the RelationalUnitaryAutocomplete input
- *
- * @access public
- * @param array $options
- * @return string The HTML <script> tag
- */
-	public function relationalUnitaryAutocomplete($options)
-	{
-		$defaults = array('callbacks' => array());
-		extract(am($defaults, $options));
-		
-		$callbacks = $this->formatCallbacks('relational_unitary', $callbacks);
-		$script = sprintf("new BuroBelongsTo('%s','%s'%s);", $baseID, $autocomplete_baseID, (empty($callbacks) ? '':','.$callbacks));
-		return $this->addHtmlEmbScript($script);
-	}
-
-/**
- * Creates the javascript counter-part of the RelationalEditableList input
- *
- * @access public
- * @param array $options
- * @return string The HTML <script> tag
- */
-	public function relationalEditableList($options)
-	{
-		$defaults = array('callbacks' => array());
-		extract(am($defaults, $options));
-		
-		$callbacks = $this->formatCallbacks('relational_editable', $callbacks);
-		$script = sprintf("new BuroEditableList('%s','%s'%s,'%s','%s','%s');", $baseID, $autocomplete_baseID, (empty($callbacks) ? '':','.$callbacks), (empty($edit_item_text) ? '':''.$edit_item_text), (empty($view_item_text) ? '':''.$view_item_text), $delete_item_text);
-		return $this->addHtmlEmbScript($script);
-		
-	}
-
-/**
- * Creates the javascript counter-part of the ordered list of items based on the given options
- * 
- * @access public
- * @return string The HTML <script> tag
- */
-	public function listOfItems($options)
-	{
-		$defaults = array('callbacks' => array(), 'baseID' => uniqid(), 'types' => array());
-		extract(am($defaults, $options));
-		unset($defaults);
-		
-		$callbacks = $this->formatCallbacks('listOfItems', $callbacks);
-		$script = sprintf("new BuroListOfItems('%s', %s, %s)", $baseID, $this->Js->object($types), $callbacks);
-		return $this->addHtmlEmbScript($script);
-	}
-
-/**
- * Creates the javascript for upload input
- * 
- * @access public
- * @param array $options
- * @return string The HTML <script> tag
- */
-	public function upload($options)
-	{
-		$defaults = array('callbacks' => array(), 'baseID' => uniqid(), 'url' => '', 'error' => array());
-		extract(am($defaults, $options));
-		unset($defaults);
-		
-		if (!empty($error))
-			$error = $this->Js->object($error);
-		else 
-			$error = '{}';
-		
-		$script = sprintf("new BuroUpload('%s', '%s', %s)", $baseID, $url, $error);
-		if(!empty($callbacks) && is_array($callbacks))
-			$script .= sprintf('.addCallbacks(%s)', $this->formatCallbacks('upload', $callbacks));
-		
-		return $this->addHtmlEmbScript($script);
-	}
-
-/**
- * Creates the javascript for textile input
- * 
- * @access public
- * @param array $options
- * @return string The HTML <script> tag
- */
-	public function textile($options)
-	{	
-		$defaults = array('callbacks' => array(), 'baseID' => uniqid());
-		extract(am($defaults, $options));
-		
-		$script = sprintf("new BuroTextile('%s')", $baseID);
-		
-		return $this->addHtmlEmbScript($script);
-	}
-
-/** 
- * Function to add the script in HTML
- *
- * @access public
- * @param string $script The script that will be appended
- * @return string|void The pice of code ready for HTML or nothing (if the script was put on buffer)
- */
-	public function addHtmlEmbScript($script)
-	{
-		if($this->Ajax->isAjax())
-			return $this->Html->scriptBlock($script);
-		else
-			$this->scripts[] = $script;
-	}
-
 /** 
  * Handles the array of callbacks and converts it to javascript
+ * It uses the $callbacks variable for templating the script codes.
  *
  * @access protected
  * @param string $type Type of interface where the callbacks will be attached
  * @param array $callbacks One associative array that contains all configurable callbacks for the form
  * @return string An javascript object that contains all registred callbacks
+ * @see BuroOfficeBoyHelper::$callbacks
  */
 	protected function formatCallbacks($type, $callbacks)
 	{
