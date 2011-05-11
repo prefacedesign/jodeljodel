@@ -219,6 +219,7 @@ class Color
 		$this->r = max(0, min(255, floor($r)));
 		$this->g = max(0, min(255, floor($g)));
 		$this->b = max(0, min(255, floor($b)));
+		return $this;
 	}
 	
 	function blendWith ($with_color, $opacity = 0.5)
@@ -226,6 +227,7 @@ class Color
 		$this->r = min(255, floor($with_color->r * $opacity + $this->r * (1.0 - $opacity)));
 		$this->g = min(255, floor($with_color->g * $opacity + $this->g * (1.0 - $opacity)));
 		$this->b = min(255, floor($with_color->b * $opacity + $this->b * (1.0 - $opacity)));
+		return $this;
 	}
 	
 	function write ($mode = 'hexa')
@@ -315,7 +317,7 @@ class ImageGenerator
 	function url($params)
 	{
 		$url = $this->fileUrl($params);
-		$path = _fixPath(WWW_ROOT . DS . $url);
+		$path = ROOT . DS . APP_DIR . DS . WEBROOT_DIR . $url;
 		
 		if (!file_exists($path))
 		{
@@ -454,7 +456,6 @@ class CompoundImage extends ImageGenerator
 				
 				case 'image':
 					list($width, $height, $type) = getimagesize(WWW_ROOT . $layer['path']);
-								
 					switch($type)
 					{
 						case IMAGETYPE_JPEG:
@@ -471,12 +472,12 @@ class CompoundImage extends ImageGenerator
 							return false;
 					}
 					
+					// Blending mode is not available when drawing on palette images.
+					// @todo Check if it is an palette image (8bit PNG or gif) because it wont work!
 					imagealphablending($img, true);		
 					imagealphablending($img2, true);
 					imagesavealpha($img, true);
-		
 					imagecopy($img, $img2, 0, 0, 0, 0,  $w,  $h);
-
 					imagedestroy($img2);
 				break;
 				
@@ -499,19 +500,16 @@ class CompoundImage extends ImageGenerator
 							return false;
 					}
 
-
 					imagealphablending($img, true);
 					imagealphablending($img2, true);
 					imagefilter($img2, IMG_FILTER_COLORIZE, $layer['color']->r, $layer['color']->g, $layer['color']->b, 0);
-
 					imagesavealpha($img, true);
 					
 					$x = isset($layer['pos']['x']) ? $layer['pos']['x'] : 0;
 					$y = isset($layer['pos']['y']) ? $layer['pos']['y'] : 0;
 					
 					imagecopy($img, $img2, $x, $y, 0, 0, imagesx($img2), imagesy($img2));
-
-
+					
 					imagedestroy($img2);
 				break;
 			}

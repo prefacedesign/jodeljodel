@@ -80,6 +80,112 @@
 			'color' => $palette['bg']->write(),
 	));
 	
+	
+	// Input List of Items
+	
+	$this->Decorator->rule(
+		'.ordered_list .buro_form', array(
+			'background-color' => $palette['subform']->write(),
+			'margin' => sprintf('%s %s', $vg->size(array('g' => 1)), 0),
+			'margin-left' => $hg->size(array('g' => -1)),
+			'padding' => sprintf('%s %s', $vg->size(array('g' => 0.5)), $hg->size(array('g' => 1)))
+	));
+	
+	$this->Decorator->rule(
+		'.ordered_list button', array(
+			'overflow' => 'hidden',
+			'position' => 'relative',
+			'cursor' => 'pointer'
+	));
+
+	$this->Decorator->rule(
+		'.ordered_list button', array(
+			'cursor' => 'default'
+	));
+	
+	$this->Decorator->rule(
+		'.ordered_list button span', array(
+			'top' => '100%',
+			'position' => 'absolute',
+	));
+	
+	$this->Decorator->rule(
+		'.ordered_list .ordered_list_menu', array(
+			'border-top' => '1px dashed black',
+			'position' => 'relative',
+			'margin' => sprintf('%s %s', $hg->size(array('g' => 1)), 0)
+	));
+	
+	$arrow_size = 13;
+	$img_url = $ig->url(array(
+			'iw' => 427, 'w' => $arrow_size*3+15,
+			'ih' => 206, 'h' => $arrow_size*2,
+			'base_name' => 'burocrata_list_of_items',
+			'layers' => array(
+				array('type' => 'apply_color', 'color' => $palette['bg']),
+				array('type' => 'tint_image',  'color' => $palette['button_bg'],		  'path' => '/img/matrixes/burocrata_list_of_items_1.png'),
+				array('type' => 'tint_image',  'color' => $palette['text'],				  'path' => '/img/matrixes/burocrata_list_of_items_2.png'),
+				array('type' => 'tint_image',  'color' => $palette['button_bg_disabled'], 'path' => '/img/matrixes/burocrata_list_of_items_1.png', 'pos' => array('y' => 103)),
+				array('type' => 'tint_image',  'color' => $palette['button_fg_disabled'], 'path' => '/img/matrixes/burocrata_list_of_items_2.png', 'pos' => array('y' => 103)),
+			)
+		)
+	);
+	
+	$bg_pos = $u->t(15);
+	$this->Decorator->rule(
+		'.ordered_list_menu button.ordered_list_menu_add', array(
+			'background' => sprintf('transparent url(%s) repeat scroll %s top', $img_url, $bg_pos),
+			'height' => $u->t($arrow_size),
+			'width' => $u->t(15),
+			'position' => 'absolute',
+			'right' => $u->t(-15),
+			'top' => $u->t(-ceil($arrow_size/2))
+	));
+	$this->Decorator->rule(
+		'.ordered_list_menu button.ordered_list_menu_add[disabled]', array(
+			'background-position' => sprintf('%s bottom', $bg_pos)
+	));
+	
+	$bg_pos = $u->t(15+$arrow_size*1);
+	$this->Decorator->rule(
+		'.ordered_list_controls .ordered_list_delete', array(
+			'background' => sprintf('transparent url(%s) repeat scroll %s top', $img_url, $bg_pos),
+			'height' => $u->t($arrow_size),
+			'width' => $u->t($arrow_size),
+	));
+	$this->Decorator->rule(
+		'.ordered_list_controls .ordered_list_delete[disabled]', array(
+			'background-position' => sprintf('%s bottom', $bg_pos)
+	));
+	
+	$bg_pos = $u->t(15+$arrow_size*2);
+	$this->Decorator->rule(
+		'.ordered_list_controls .ordered_list_up', array(
+			'background' => sprintf('transparent url(%s) repeat scroll %s top', $img_url, $bg_pos),
+			'height' => $u->t($arrow_size),
+			'width' => $u->t($arrow_size),
+	));
+	$this->Decorator->rule(
+		'.ordered_list_controls .ordered_list_up[disabled]', array(
+			'background-position' => sprintf('%s bottom', $bg_pos)
+	));
+
+	$this->Decorator->rule(
+		'.ordered_list_controls .ordered_list_down', array(
+			'background' => sprintf('transparent url(%s) repeat scroll %s top', $img_url, 0),
+			'height' => $u->t($arrow_size),
+			'width' => $u->t($arrow_size),
+	));
+	$this->Decorator->rule(
+		'.ordered_list_controls .ordered_list_down[disabled]', array(
+			'background-position' => sprintf('%s bottom', 0)
+	));
+	
+	
+	
+	
+	
+	// Input belongsTo
 	$this->Decorator->rule(
 		'.input_belongs_to .controls .actions', array(
 			'margin-top' => $vg->size(array('g' => 1))
@@ -195,14 +301,14 @@
 	
 	$this->Decorator->rule(
 		'a.link_button:hover', array(
-			'background-color' => $palette['hover_button_bg']->write(),
+			'background-color' => $palette['button_bg_hover']->write(),
 			'color' => $palette['text']->write(),
 	));
 	
 	$this->Decorator->rule(
 		'a.link_button:active', array(
 			'color' => $palette['bg']->write(),
-			'background-color' => $palette['active_button_bg']->write(),
+			'background-color' => $palette['button_bg_hover']->write(),
 	));
 	
 	
@@ -817,6 +923,7 @@
 			'-moz-border-radius'  => '5px',
 			'border-radius' => '5px',
 			'-webkit-border-radius' => '5px',
+			'border' => '1px solid ' . $palette['text']->write(),
 			'background-color' => $palette['button_bg']->write(),
 			'color' => $palette['text']->write(),
 			'float' => 'left',

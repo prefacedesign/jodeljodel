@@ -1181,7 +1181,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'baseID' => $baseID
 		));
 		
-		return $this->Bl->div(array('id' => 'div' . $baseID), array(), $out);
+		return $this->Bl->div(array('id' => 'div' . $baseID, 'class' => 'ordered_list'), array(), $out);
 	}
 
 /**
@@ -1257,11 +1257,11 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out .= $this->orderedItensMenu(array(), array('content' => $content, 'order' => 1));
 		foreach ($this->data[$model_name] as $n => $data)
 			$out .= $this->orderedItensItem(array(), array('data' => array($model_name => $data), 'model' => $model_class_name, 'type' => $type))
-				. $this->orderedItensMenu(array(), array('content' => $content, 'order' => $n+2));
+				. $this->orderedItensMenu(array(), array('content' => $content, 'order' => $n+2))
 			;
 		
 		// Javascripts
-		
+		$divform_id = 'divform'.$baseID;
 		$url_edit = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'edit');
 		$open_form_ajax = array(
 			'baseID' => $this->baseID(),
@@ -1272,11 +1272,11 @@ class BuroBurocrataHelper extends XmlTagHelper
 				$this->internalParam('baseID', $baseID)
 			),
 			'callbacks' => array(
-				'onSuccess' => array('contentUpdate' => 'divform'.$baseID)
+				'onSuccess' => array('unsetLoading' => $divform_id, 'contentUpdate' => $divform_id)
 			)
 		);
 		$options['callbacks'] = array(
-			'onShowForm' => array('ajax' => $open_form_ajax)
+			'onShowForm' => array('setLoading' => $divform_id, 'ajax' => $open_form_ajax)
 		);
 		
 		$out .= $this->BuroOfficeBoy->listOfItems($options);
@@ -1339,7 +1339,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out .= $this->Bl->ediv();
 		
 		// Button that shows the list of content (if more then one item)
-		$out .= $this->Bl->button(array('class' => 'ordered_list_menu_add'), array(), '+');
+		$out .= $this->Bl->button(array('class' => 'ordered_list_menu_add'), array(), $this->Bl->spanDry('+'));
 		
 		return $out;
 	}
@@ -1433,13 +1433,37 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out = $this->Bl->sdiv($htmlAttributes);
 		
 		$controls = array();
-		$controls[] = $this->Bl->button(array('class' => 'ordered_list_up', 'buro:action' => 'up'), array(), __('Burocrata::orderedItensControls - up', true));
-		$controls[] = $this->Bl->button(array('class' => 'ordered_list_down', 'buro:action' => 'down'), array(), __('Burocrata::orderedItensControls - down', true));
-		$controls[] = $this->Bl->button(array('class' => 'ordered_list_delete', 'buro:action' => 'delete'), array(), __('Burocrata::orderedItensControls - delete', true));
-		$controls[] = $this->Bl->anchor(array('class' => 'ordered_list_duplicate', 'buro:action' => 'duplicate', 'href' => '/'), array(), __('Burocrata::orderedItensControls - duplicate', true));
-		$controls[] = $this->Bl->anchor(array('class' => 'ordered_list_edit', 'buro:action' => 'edit', 'href' => '/'), array(), __('Burocrata::orderedItensControls - edit', true));
+		$label = __('Burocrata::orderedItensControls - up', true);
+		$controls[] = $this->Bl->button(
+			array('class' => 'ordered_list_up', 'buro:action' => 'up'), 
+			array(), 
+			$this->Bl->spanDry($label));
 		
-		$out .= implode('&ensp;', $controls);
+		$label = __('Burocrata::orderedItensControls - down', true);
+		$controls[] = $this->Bl->button(
+			array('class' => 'ordered_list_down', 'buro:action' => 'down'),
+			array(), 
+			$this->Bl->spanDry($label));
+		
+		$label = __('Burocrata::orderedItensControls - delete', true);
+		$controls[] = $this->Bl->button(
+			array('class' => 'ordered_list_delete', 'buro:action' => 'delete'), 
+			array(), 
+			$this->Bl->spanDry($label));
+		
+		$label = __('Burocrata::orderedItensControls - duplicate', true);
+		$controls[] = $this->Bl->anchor(
+			array('class' => 'ordered_list_duplicate', 'buro:action' => 'duplicate'),
+			array('url' => ''), 
+			$label);
+			
+		$label = __('Burocrata::orderedItensControls - edit', true);
+		$controls[] = $this->Bl->anchor(
+			array('class' => 'ordered_list_edit', 'buro:action' => 'edit'), 
+			array('url' => ''),
+			$label);
+		
+		$out .= implode("\n", $controls);
 		return $out;
 	}
 

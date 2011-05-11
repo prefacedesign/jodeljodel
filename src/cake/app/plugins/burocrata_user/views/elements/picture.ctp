@@ -1,5 +1,4 @@
 <?php
-	
 	switch($type[0])
 	{
 		case 'buro':
@@ -9,12 +8,21 @@
 					switch($type[2])
 					{
 						case 'view': echo $this->Jodel->insertModule('BurocrataUser.Picture', array('view'), $data); break;
+						case 'form': echo $this->Jodel->insertModule('BurocrataUser.Picture', array('form'), $data); break;
 					}
+				break;
+				
+				case 'form':
+					echo $this->Jodel->insertModule('BurocrataUser.Picture', array('form'), $data);
 				break;
 			}
 		break;
 		
 		case 'view':
 			echo $this->Html->para('', $data['Picture']['title']);
+		break;
+		
+		case 'form':
+			echo $this->element('picture_form', array('plugin' => 'burocrata_user'));
 		break;
 	}

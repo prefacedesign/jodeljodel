@@ -20,7 +20,7 @@ document.observe('dom:loaded', function()
 		unsetLoading: function(element)
 		{
 			if (!(element = $(element))) return;
-			return element.removeClassName('loading').setStyle({paddingTop: ''})
+			return element.setStyle({paddingTop: ''}).removeClassName('loading');
 		},
 		addFocus: function(element)
 		{
@@ -81,12 +81,12 @@ var BuroCallbackable = Class.create({
 	},
 	trigger: function()
 	{
-		if(typeof(this.callbacks) == 'undefined')
+		if(Object.isUndefined(this.callbacks))
 			this.callbacks = $H({});
 		
 		var callback = arguments[0];
 		var callback_function = this.callbacks.get(callback);
-		if(!callback_function || typeof callback_function != 'function')
+		if(!callback_function || !Object.isFunction(callback_function))
 			return false;
 		
 		var i,args = new Array();
@@ -543,13 +543,13 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 	},
 	showForm: function(to_edit)
 	{
-		this.update.next('.actions').hide();
 		this.trigger('onShowForm', to_edit);
+		this.update.next('.actions').hide();
 	},
 	showPreview: function(id)
 	{
-		this.update.next('.actions').show();
 		this.trigger('onShowPreview', id);
+		this.update.next('.actions').show();
 	},
 	selected: function(pair)
 	{
@@ -599,9 +599,10 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	},
 	newItem: function(menuObj, type)
 	{
-		menuObj.div.insert({after: this.divForm});
+		menuObj.div.insert({after: this.divForm.show()});
 		menuObj.hide();
-		this.trigger('onShowForm');
+		this.menus.each(function(menu){menu.disable();});
+		this.trigger('onShowForm', false);
 	},
 	routeAction: function(item, action)
 	{
@@ -626,6 +627,8 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	},
 	cancel: function()
 	{
+		this.divForm.update().hide();
+		this.menus.each(function(menu){menu.show().enable();});
 	}
 });
 
@@ -659,7 +662,7 @@ var BuroListOfItemsMenu = Class.create(BuroCallbackable, {
 		this.close_link = this.div.down('a.ordered_list_menu_close');
 		this.close_link.observe('click', function(ev){ ev.stop(); this.close()}.bind(this));
 		
-		this.close();
+		this.enable().close();
 	},
 	plusClick: function(ev)
 	{
@@ -681,16 +684,20 @@ var BuroListOfItemsMenu = Class.create(BuroCallbackable, {
 		this.menu.show();
 		this.close_link.up().show();
 		this.plus_button.hide();
+		return this;
 	},
 	close: function(ev)
 	{
 		this.close_link.up().hide();
 		this.menu.hide();
 		this.plus_button.show();
+		return this;
 	},
 	readType: function(lnk) {return lnk.readAttribute('buro:type');},
-	hide: function() {this.div.hide();},
-	show: function() {this.div.show();}
+	hide: function() {this.div.hide(); return this;},
+	show: function() {this.div.show(); return this;},
+	disable: function() {Form.Element.disable(this.plus_button); return this;},
+	enable: function() {Form.Element.enable(this.plus_button); return this;}
 });
 
 /**
@@ -726,9 +733,9 @@ var BuroListOfItemsItem = Class.create(BuroCallbackable, {
 	},
 	checkSiblings: function()
 	{
-		var hasPrev = this.div.previous('div.ordered_list_item');
-		var hasNext = this.div.next('div.ordered_list_item');
 		this.controls.childElements().each(Form.Element.enable);
+		var hasPrev = Object.isElement(this.div.previous('div.ordered_list_item'));
+		var hasNext = Object.isElement(this.div.next('div.ordered_list_item'));
 		if (!hasPrev) Form.Element.disable(this.controls.down('.ordered_list_up'));
 		if (!hasNext) Form.Element.disable(this.controls.down('.ordered_list_down'));
 	}
