@@ -33,7 +33,7 @@ class JsonView extends TypeView
 	{
 		if(Configure::read() > 1)
 			Configure::write('debug', 1);
-		header('Content-type: application/json');
+		header('Content-Type: application/json; charset=UTF-8');
 		
 		$loaded;
 		if(!isset($this->Js))
