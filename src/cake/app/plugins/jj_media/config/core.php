@@ -27,6 +27,20 @@
  * @see GeneratorBehavior
  */
 
+ /**
+  * Basic configuration of JjMedia plugin:
+  * 
+  * {{{Configure::write('Media.filter_plus.NAME_OF_CONFIGURATION', array( // NAME_OF_CONFIGURATION is a name that has significance
+  * 	'fields' => array(),				// List of Model.file_id that this config will be applyed
+  * 	'image' => array(					// What type of media transformation (image, sound, video....)
+  * 		'filter' => array(				// Name of the version (will be used in future to get this version)
+  * 			'fit' => array(120,120)		// One filter
+  * 			'convert' => 'image/jpeg'	// Other filter
+  * 		)
+  * 	)
+  * ));}}} 
+  */
+ 
 Configure::write('Media.filter_plus.textile', array(
 	'fields' => array('Textile.image_id'),
 	'image' => array(
@@ -39,8 +53,8 @@ Configure::write('Media.filter_plus.textile', array(
 		)
 	)
 )); 
-Configure::write('Media.filter_plus.people', array(
-	'fields' => array('PersPerson.img_id'),
+Configure::write('Media.filter_plus.picture', array(
+	'fields' => array('Picture.file_upload_id'),
 	'image' => array(
 		'backstage_preview' => array(
 			'fitCrop' => array(
@@ -62,23 +76,4 @@ Configure::write('Media.filter_plus.people', array(
 		),
 		'backstage_list' => array('fitCrop' => array(150, 50))
 	)
-));
-
-
-Configure::write('Media.filter_plus.new_news', array(
-	'fields' => array('NewNew.sfil_storage_file_id', 'NewNew.audio_cast_id'),
-	'audio' => array(
-		'convert' => array('audio/ogg')
-	),
-	'image' => array(
-		'preview' => array('fit' => array(200, 250)),
-		'view'    => array('fit' => array(400, 400)),
-		'lista'   => array('fit' => array(100, 100))
-	)
-));
-
-
-
-Configure::write('Media.filter_plus.pap_papers', array(
-	'fields' => array('PapPaper.file_id'),
 ));

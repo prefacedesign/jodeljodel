@@ -26,6 +26,15 @@ echo $this->Buro->sform(array(),
 		array('fieldName' => 'title')
 	);
 	
+	echo $this->Buro->input(
+		array(),
+		array(
+			'type' => 'image',
+			'fieldName' => 'file_upload_id',
+			'version' => 'backstage_preview'
+		)
+	);
+	
 	echo $this->Buro->submit(
 		array(), 
 		array(

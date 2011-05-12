@@ -142,10 +142,7 @@ class JjMediaController extends JjMediaAppController {
 			$download = (boolean) $one;
 		}
 		
-		
 		$unpacked = SecureParams::unpack($packed_parameters);
-		//debug($unpacked);
-		//die;
 		if (count($unpacked) != 2)
 			$this->cakeError('error404');
 		

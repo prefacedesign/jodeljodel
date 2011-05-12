@@ -101,10 +101,12 @@ Convenções do Burocrata:
 		  Cada escopo permite a definição do campo relacionado ao qual ele será aplicado
 		  e quais os filtros pra cada tipo de arquivo (`image`, `audio`, `video`, `document` ...).
 		  O método do burocrata que monta o input recebe as seguites opções:
-		   - `foreignKey` - The foreinKey of parent model thats will be filled with the new file ID
+		   - `fieldName` - The foreinKey of parent model thats will be filled with the new file ID
 		   - `model` - The alternate model for the stored file (must ba a extended from SfilStoredFile)
 		   - `callbacks` - An array with possible callbacks with Jodel Callbacks conven-
 		     tion.
+		   - `version`: An string containing the name of the version of file that will be
+		     returned as URL for preview purposes (available on onSave callback)
  
  
  3. Callbacks
