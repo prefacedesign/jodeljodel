@@ -489,6 +489,9 @@ var BuroAjax = Class.create(BuroCallbackable, {
 	},
 	dumpResquest: function(response)
 	{
+		if (!confirm('This last request didn\'t return a valid JSON.\nDo you want to create a dump of this request?\n\nNote: to close the created dump, just click twice on it.'))
+			return;
+		
 		var div = new Element('div', {className: 'dump_ajax'})
 			.insert(new Element('div', {className: 'dump_config'})
 				.insert('<h1>Call config</h1>')
@@ -526,6 +529,7 @@ var BuroAjax = Class.create(BuroCallbackable, {
 		
 		div.observe('dblclick', function(ev){ev.findElement('div.dump_ajax').remove(); ev.stop();});
 		document.body.insert({bottom: div});
+		Effect.ScrollTo(div);
 	}
 });
 
