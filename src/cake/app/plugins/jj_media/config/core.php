@@ -27,19 +27,19 @@
  * @see GeneratorBehavior
  */
 
- /**
-  * Basic configuration of JjMedia plugin:
-  * 
-  * {{{Configure::write('Media.filter_plus.NAME_OF_CONFIGURATION', array( // NAME_OF_CONFIGURATION is a name that has significance
-  * 	'fields' => array(),				// List of Model.file_id that this config will be applyed
-  * 	'image' => array(					// What type of media transformation (image, sound, video....)
-  * 		'filter' => array(				// Name of the version (will be used in future to get this version)
-  * 			'fit' => array(120,120)		// One filter
-  * 			'convert' => 'image/jpeg'	// Other filter
-  * 		)
-  * 	)
-  * ));}}} 
-  */
+/**
+ * Basic configuration of JjMedia plugin:
+ * 
+ * {{{Configure::write('Media.filter_plus.NAME_OF_CONFIGURATION', array( // NAME_OF_CONFIGURATION is a name that has significance
+ * 	'fields' => array(),				// List of Model.file_id that this config will be applyed
+ * 	'image' => array(					// What type of media transformation (image, sound, video....)
+ * 		'filter' => array(				// Name of the version (will be used in future to get this version)
+ * 			'fit' => array(120,120)		// One filter
+ * 			'convert' => 'image/jpeg'	// Other filter
+ * 		)
+ * 	)
+ * ));}}} 
+ */
  
 Configure::write('Media.filter_plus.textile', array(
 	'fields' => array('Textile.image_id'),
@@ -58,22 +58,27 @@ Configure::write('Media.filter_plus.picture', array(
 	'image' => array(
 		'backstage_preview' => array(
 			'fitCrop' => array(
-				$dinafonTools['hg']->size(array('M' => 4, 'g' => -1), false),
-				$dinafonTools['vg']->size(array('M' => 4, 'g' => -1), false)
+				$backstageTools['hg']->size(array('M' => 4, 'g' => -1), false),
+				$backstageTools['vg']->size(array('M' => 4, 'g' => -1), false)
 			)
 		),
 		'preview' => array(
 			'fitCrop' => array(
-				$dinafonTools['hg']->size(array('M' => 3, 'g' => -1), false),
-				$dinafonTools['vg']->size(array('M' => 3, 'g' => -1), false)
+				$backstageTools['hg']->size(array('M' => 3, 'g' => -1), false),
+				$backstageTools['vg']->size(array('M' => 3, 'g' => -1), false)
 			)
 		),
 		'mini_preview' => array(
 			'fitCrop' => array(
-				$dinafonTools['hg']->size(array('M' => 1, 'g' => -1), false),
-				$dinafonTools['vg']->size(array('M' => 1, 'g' => -1), false)
+				$backstageTools['hg']->size(array('M' => 1, 'g' => -1), false),
+				$backstageTools['vg']->size(array('M' => 1, 'g' => -1), false)
 			)
 		),
-		'backstage_list' => array('fitCrop' => array(150, 50))
+		'backstage_list' => array(
+			'fitCrop' => array(
+				$backstageTools['hg']->size(array('M' => 7, 'g' => -1), false),
+				$backstageTools['vg']->size(array('M' => 2, 'g' => -1), false)
+			)
+		)
 	)
 ));

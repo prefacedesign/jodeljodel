@@ -11,8 +11,9 @@ echo $this->Buro->sform(array(),
 		)
 	)
 );
-	echo $this->Bl->input(
-		array('value' => $baseID, 'name' => $this->Buro->internalParam('baseID'), 'type' => 'hidden')
+	echo $this->Buro->input(
+		array('value' => $baseID, 'name' => $this->Buro->internalParam('baseID')),
+		array('type' => 'hidden')
 	);
 	
 	echo $this->Buro->input(
@@ -30,7 +31,9 @@ echo $this->Buro->sform(array(),
 		array(
 			'type' => 'image',
 			'fieldName' => 'file_upload_id',
-			'version' => 'backstage_preview'
+			'options' => array(
+				'version' => 'backstage_preview'
+			)
 		)
 	);
 	

@@ -96,6 +96,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			if ($options['type'] != 'hidden' && $container !== false)
 				$out .= $this->sinputcontainer(is_array($container) ? $container : array(), $options);
 			
+			
 			if (method_exists($this->Form, $options['type']))
 			{
 				if ($options['type'] != 'hidden' && $options['label'] !== false)
@@ -119,12 +120,23 @@ class BuroBurocrataHelper extends XmlTagHelper
 				if ($inputOptions['type'] == 'radio')
 					$inputOptions['label'] = true;
 				
-				$out .= $this->Form->input($options['fieldName'], $inputOptions);
+				if (!empty($options['fieldName']))
+					$out .= $this->Form->input($options['fieldName'], $inputOptions);
+				else
+					$out .= $this->Bl->input(Set::filter($inputOptions));
 			}
 			else
 			{
-				$options['_htmlAttributes'] = $htmlAttributes;
-				$out .= $this->{Inflector::variable('input'.$options['type'])}($options);
+				$method = Inflector::variable('input'.$options['type']);
+				if (method_exists($this, $method))
+				{
+					$options['_htmlAttributes'] = $htmlAttributes;
+					$out .= $this->{$method}($options);
+				}
+				else
+				{
+					trigger_error('BuroBurocrataHelper::sinput - input type `'.$options['type'].'` not implemented or known.');
+				}
 			}
 			
 			if ($options['type'] != 'hidden' && $container !== false)
@@ -1253,7 +1265,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		list($model_plugin, $model_name) = pluginSplit($model_class_name);
 		$type= am(BuroBurocrataHelper::$defaultSupertype, 'many_children', 'view');
 		
-		$out = '';
+		$out = $this->Bl->br();
 		$out .= $this->orderedItensMenu(array(), array('content' => $content, 'order' => 1));
 		foreach ($this->data[$model_name] as $n => $data)
 			$out .= $this->orderedItensItem(array(), array('data' => array($model_name => $data), 'model' => $model_class_name, 'type' => $type))
@@ -1387,8 +1399,11 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$options += array('model' => false, 'type' => array('buro', 'view'));
 		extract($options);
 		
+		$Model =& ClassRegistry::init($options['model']);
+		
 		$htmlAttributes = $this->addClass($htmlAttributes, self::$defaultContainerClass);
 		$htmlAttributes = $this->addClass($htmlAttributes, 'ordered_list_item');
+		$htmlAttributes['buro:id'] = $data[$Model->alias][$Model->primaryKey];
 		
 		$out = $this->Bl->sdiv($htmlAttributes);
 		if (isset($options['title']) && !empty($options['title']))

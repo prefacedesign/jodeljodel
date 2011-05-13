@@ -86,9 +86,20 @@
 	$this->Decorator->rule(
 		'.ordered_list .buro_form', array(
 			'background-color' => $palette['subform']->write(),
-			'margin' => sprintf('%s %s', $vg->size(array('g' => 1)), 0),
+			'margin' => sprintf('%s %s', $hg->size(array('g' => 1)), 0),
 			'margin-left' => $hg->size(array('g' => -1)),
 			'padding' => sprintf('%s %s', $vg->size(array('g' => 0.5)), $hg->size(array('g' => 1)))
+	));
+	
+	$this->Decorator->rule(
+		'.ordered_list .buro_form div.input', array(
+			'border' => 0,
+			'padding-bottom' => $vg->size(array('g' => 1))
+	));
+	
+	$this->Decorator->rule(
+		'.ordered_list .buro_form label.buro', array(
+			'text-transform' => 'none'
 	));
 	
 	$this->Decorator->rule(
@@ -109,10 +120,18 @@
 			'position' => 'absolute',
 	));
 	
+	
+	
+	
+	
 	$this->Decorator->rule(
 		'.ordered_list .ordered_list_menu', array(
 			'border-top' => '1px dashed black',
-			'position' => 'relative',
+			'position' => 'relative'
+	));
+	
+	$this->Decorator->rule(
+		'.ordered_list .ordered_list_item', array(
 			'margin' => sprintf('%s %s', $hg->size(array('g' => 1)), 0)
 	));
 	
