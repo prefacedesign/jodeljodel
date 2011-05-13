@@ -5,8 +5,7 @@ echo $this->Buro->sform(array(),
 		'callbacks' => array(
 			'onStart'	=> array('lockForm'),
 			'onComplete'=> array('unlockForm'),
-			'onSave'    => array('js' => "BuroClassRegistry.get('$baseID').saved(json.saved);"),
-			'onCancel'	=> array('js' => "BuroClassRegistry.get('$baseID').cancel();"),
+			'onCancel'	=> array('popup' => "Cancelando o dito cujo\n(alert de teste)"),
 			'onReject'  => array('contentUpdate', 'popup' => 'Existe algum erro de validação.'),
 			'onFailure'	=> array('popup' => 'Erro de comunicação com o servidor!')
 		)

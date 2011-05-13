@@ -1272,7 +1272,9 @@ class BuroBurocrataHelper extends XmlTagHelper
 				$this->internalParam('baseID', $baseID)
 			),
 			'callbacks' => array(
-				'onSuccess' => array('unsetLoading' => $divform_id, 'contentUpdate' => $divform_id)
+				'onSuccess' => array('unsetLoading' => $divform_id, 'contentUpdate' => $divform_id),
+				// Need to use the defered and binded function because the class is registred after the 
+				'onComplete' => array('js' => "var obj = BuroClassRegistry.get('$baseID'); obj.openedForm.bind(obj).defer();")
 			)
 		);
 		$options['callbacks'] = array(

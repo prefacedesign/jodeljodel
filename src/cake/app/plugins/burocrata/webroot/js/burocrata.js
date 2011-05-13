@@ -42,7 +42,7 @@ document.observe('dom:loaded', function()
 });
 
 /**
- * A instance of a Hash without overwrite of values to keep
+ * A instance of a Hash-like class, without overwriting of values, to keep
  * a list of instace objects used to keep all created classes
  * during the script.
  *
@@ -63,6 +63,7 @@ var BuroClassRegistry = new (Class.create(Hash, {
 /**
  * Abstract class that implements the behaviour of callbacks
  * with the methods `addCallbacks` and `trigger`
+ * It works like Events
  * 
  * @access protected
  */
@@ -72,30 +73,48 @@ var BuroCallbackable = Class.create({
 		if(typeof(this.callbacks) == 'undefined')
 			this.callbacks = $H({});
 		
-		this.callbacks = this.callbacks.merge(callbacks); 
+		callbacks = $H(callbacks);
+		if (callbacks.size())
+			callbacks.each(this.mergeCallback.bind(this));
+		
 		return this;
+	},
+	mergeCallback: function(pair)
+	{
+		var name = pair.key,
+			_function = pair.value;
+			
+		var callback = this.callbacks.get(name);
+		if (!Object.isArray(callback))
+			callback = [];
+		
+		callback.push(_function);
+		this.callbacks.set(name, callback);
 	},
 	isRegistred: function(callback)
 	{
-		return !Object.isUndefined(this.callbacks.get(callback));
+		return Object.isArray(this.callbacks.get(callback));
 	},
 	trigger: function()
 	{
 		if(Object.isUndefined(this.callbacks))
 			this.callbacks = $H({});
 		
-		var callback = arguments[0];
-		var callback_function = this.callbacks.get(callback);
-		if(!callback_function || !Object.isFunction(callback_function))
+		var name = arguments[0];
+		if(!this.isRegistred(name))
 			return false;
 		
 		var i,args = new Array();
 		for(i = 1; i < arguments.length; i++)
 			args.push(arguments[i]);
 		
-		callback_function.apply(this, args);
+		this.callbacks.get(name).each(this.apply_function.bind(this, args));
 		
 		return true;
+	},
+	apply_function: function(args, _function)
+	{
+		_function.apply(this, args);
 	}
 });
 
@@ -580,8 +599,9 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
  * @param object types A list of allowed types for putting on this input
  */
 var BuroListOfItems = Class.create(BuroCallbackable, {
-	initialize: function(id_base, types)
+	initialize: function(id_base, types, texts)
 	{
+		this.texts = texts;
 		this.types = types;
 		this.id_base = id_base;
 		BuroClassRegistry.set(this.id_base, this);
@@ -596,39 +616,69 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 		this.items = this.divCont.select('.ordered_list_item').map(function(div){
 			return new BuroListOfItemsItem(div).addCallbacks({'buro:controlClick': this.routeAction.bind(this)});
 		}.bind(this));
+		
+		this.editing = false;
 	},
 	newItem: function(menuObj, type)
 	{
-		menuObj.div.insert({after: this.divForm.show()});
-		menuObj.hide();
+		if (this.placesForm(menuObj.div))
+			this.trigger('onShowForm', false);
+	},
+	placesForm: function(element)
+	{
+		if (this.editing != false) return false;
+		element.insert({after: this.divForm.show()});
+		this.editing = element.hide();
 		this.menus.each(function(menu){menu.disable();});
-		this.trigger('onShowForm', false);
+		return true;
+	},
+	openedForm: function()
+	{
+		var form_id = this.divForm.down('.buro_form').readAttribute('id');
+		var OpenedForm = BuroClassRegistry.get(form_id);
+		OpenedForm.addCallbacks({
+			'onSave': this.saved.bind(this),
+			'onCancel': this.cancel.bind(this)
+		});
 	},
 	routeAction: function(item, action)
 	{
 		var _function = this['action'+action.capitalize()];
 		if (Object.isFunction(_function))
-			_function.bind(this).defer();
+			_function.bind(this, item).defer();
 	},
-	actionUp: function()
+	actionUp: function(item)
 	{
 	},
-	actionDown: function()
+	actionDown: function(item)
 	{
 	},
-	actionDelete: function()
+	actionDelete: function(item)
+	{
+		// if (confirm(this.texts.confirm_delete[type]))
+		if (confirm('Apagar?'))
+		{
+		}
+	},
+	actionDuplicate: function(item)
 	{
 	},
-	actionDuplicate: function()
+	actionEdit: function(item)
 	{
+		if (this.placesForm(item.div))
+			this.trigger('onShowForm', item.id);
 	},
-	actionEdit: function()
+	saved: function(form, response, json)
 	{
+		this.element.update(json.content);
+		this.cancel();
 	},
 	cancel: function()
 	{
 		this.divForm.update().hide();
-		this.menus.each(function(menu){menu.show().enable();});
+		this.editing.show();
+		this.editing = false;
+		this.menus.each(function(menu){menu.enable();});
 	}
 });
 
@@ -717,6 +767,7 @@ var BuroListOfItemsItem = Class.create(BuroCallbackable, {
 	initialize: function (div)
 	{
 		this.div = div;
+		this.id = this.div.readAttribute('buro:id');
 		this.controls = this.div.down('div.ordered_list_controls');
 		this.controls.childElements().each(this.observeControls.bind(this));
 		this.checkSiblings();
