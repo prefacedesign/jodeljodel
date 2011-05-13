@@ -231,8 +231,12 @@ class BuroBurocrataController extends BurocrataAppController
 				
 		if($error === false)
 		{
-			$Model->recursive = -1;
-			$this->data = $data = $Model->findById($this->buroData['id']);
+			$this->data = $data = $Model->find('first', array(
+				'recursive' => -1,
+				'conditions' => array(
+					$Model->alias.'.'.$Model->primaryKey => $this->buroData['id']
+				)
+			));
 		}
 	
 		$this->set(compact('error', 'data'));
@@ -330,6 +334,86 @@ class BuroBurocrataController extends BurocrataAppController
  */
 	public function delete()
 	{
+	}
+
+
+/**
+ * Used on contentStream an on manyChildren inputs
+ * 
+ * @access public
+ * @return json An javascript object that contains only `error` properties
+ */
+	public function list_of_items($action = null)
+	{
+		$Model = null;
+		$error = $this->_load($Model);
+		
+		if($error === false)
+		{
+			if (!empty($this->buroData['field']) && !empty($this->buroData['foreign_key']) && !$Model->Behaviors->attached('Ordered'))
+				$Model->Behaviors->attach('JjUtils.Ordered', 
+					array(
+						'field' => $this->buroData['field'],
+						'foreign_key' => $this->buroData['foreign_key']
+					)
+				);
+			
+			$ordered = $Model->Behaviors->attached('Ordered');
+			
+			switch ($action)
+			{
+				case 'up':
+					$error = $ordered == false || 
+							 empty($this->buroData['id']) || 
+							 $Model->moveup($this->buroData['id']) == false;
+				break;
+				
+				case 'down':
+					$error = $ordered == false || 
+							 empty($this->buroData['id']) || 
+							 $Model->movedown($this->buroData['id']) == false;
+				break;
+				
+				case 'delete':
+					$error = empty($this->buroData['id']) || 
+							 $Model->delete($this->buroData['id']) == false;
+				break;
+				
+				case 'duplicate':
+					$error = empty($this->buroData['id']);
+					if (!$error)
+					{
+						$data = $Model->find('first', array(
+							'recursive' => -1,
+							'conditions' => array(
+								$Model->alias.'.'.$Model->primaryKey => $this->buroData['id']
+							)
+						));
+						if ($ordered)
+						{
+							$order = $data[$Model->alias][$this->buroData['field']];
+							unset($data[$Model->alias][$this->buroData['field']]);
+						}
+						
+						foreach (array('created', 'updated', 'modified', $Model->foreign_key) as $field)
+							if (isset($data[$Model->alias][$field]))
+								unset($data[$Model->alias][$field]);
+						
+						$Model->create();
+						$error = !$Model->save($data, false);
+						if (!$error && $ordered)
+							$Model->moveto($order+1);
+					}
+				break;
+				
+				case 'edit':
+					$this->edit();
+				break;
+			}
+		
+		}
+	
+		$this->set('jsonVars', compact('error'));
 	}
 
 
