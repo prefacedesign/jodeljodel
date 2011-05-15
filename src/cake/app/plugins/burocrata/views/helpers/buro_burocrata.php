@@ -246,6 +246,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  * @param  array $htmlAttributes Controls the HTML parameters
  * @param  array $options 
  * @return string The HTML well formated
+ * @todo Fix `type` parameter implementation
  */
 	public function sform($htmlAttributes = array(), $options = array())
 	{
@@ -285,7 +286,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$this->_addFormAttribute('modelAlias', $this->modelAlias);
 		$this->_addFormAttribute('data', $options['data'] ? $options['data'] : $View->data);
 		
-		$this->Form->create($this->modelAlias, array('url' => $options['url']));
+		if ($this->modelAlias)
+			$this->Form->create($this->modelAlias, array('url' => $options['url']));
 		
 		$out = $this->Bl->sdiv($htmlAttributes);
 		if ($options['writeForm'] == true)
@@ -507,12 +509,16 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out .= $this->BuroOfficeBoy->newForm($this->_readFormAttributes());
 		
 		array_pop($this->_nestedForm);
-		$this->Form->end();
+		if ($this->modelAlias)
+			$this->Form->end();
 		
 		if (!empty($this->_nestedForm))
 		{
 			$options = $this->_readFormAttributes();
-			$this->Form->create($options['modelAlias'], array('url' => $options['url']));
+			$this->modelAlias = $options['modelAlias'];
+			$this->modelPlugin = $options['modelPlugin'];
+			if ($this->modelAlias)
+				$this->Form->create($this->modelAlias, array('url' => $options['url']));
 		}
 		
 		return $out;
@@ -2039,7 +2045,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$out = '';
 		
-		$this->sform(array(), array('model' => 'Textile'));
+		$this->sform(array(), array('url' => ''));
 		$out .= $this->Bl->sdiv(array('id' => 'div' . $gen_options['baseID']));
 			$out .= $this->inputLayoutScheme();
 			$out .= $this->input(array('value' => $packed, 'name' => $this->internalParam('data')), array('type' => 'hidden'));
@@ -2244,14 +2250,18 @@ class BuroBurocrataHelper extends XmlTagHelper
 				);
 				$popup_method = '_popupTextile'.Inflector::camelize($button);
 				if (method_exists($this, $popup_method))
-					$this->{$popup_method}(${"{$button}_id"}, $options);
+					$out .= $this->{$popup_method}(${"{$button}_id"}, $options);
 			}
 		}
 		
 		// Preview button, that has a special option
 		if ($config_options['allow_preview'])
 		{
-			$out .= $this->Bl->a(array('href' => '', 'class' => 'link_button buro_textile prev_textile', 'id' => $lprev_id), array(), __('Burocrata::inputTextile - Preview', true));
+			$out .= $this->Bl->a(
+				array('href' => '', 'class' => 'link_button buro_textile prev_textile', 'id' => $lprev_id), 
+				array(), 
+				__('Burocrata::inputTextile - Preview', true)
+			);
 			$out .= $this->_popupTextilePreview($prev_id, $options);
 		}
 		
@@ -2306,10 +2316,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$popup_config['content'] = '';
 		$popup_config['content'] .= $this->Bl->pDry($popup_link_txt['instructions']);
 		
-		$popup_config['content'] .= $this->sform(array(), array('url' => ''));
+		$this->sform(array(), array('url' => ''));
 		$popup_config['content'] .= $this->input(array('id' => $itlink), array('container' => false, 'required' => true, 'label' => $popup_link_txt['label_text']));
 		$popup_config['content'] .= $this->input(array('id' => $iulink), array('container' => false, 'required' => true, 'label' => $popup_link_txt['label_link']));
-		$popup_config['content'] .= $this->eform();
+		$this->eform();
 		
 		return $this->Popup->popup($id, $popup_config);
 	}

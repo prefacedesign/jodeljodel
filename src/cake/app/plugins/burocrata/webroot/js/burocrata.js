@@ -145,7 +145,10 @@ var BuroForm = Class.create(BuroCallbackable, {
 		{
 			this.id_base = arguments[1];
 			this.form = $('frm' + this.id_base);
-
+			
+			if (!this.form)
+				return;
+			
 			this.form.lock = this.lockForm.bind(this);
 			this.form.unlock = this.unlockForm.bind(this);
 			this.form.observe('keypress', this.keyPress.bind(this));

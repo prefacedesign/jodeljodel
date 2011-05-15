@@ -1,25 +1,5 @@
 <?php
-
 echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
-	
-	// $popups = array('success', 'error', 'notice', 'form');
-	
-	// $content = array_flip($popups);
-	
-	// foreach ($popups as $popup_type)
-	// {
-		// echo $this->Popup->popup($popup_type, array(
-			// 'type' => $popup_type,
-			// 'content' => $content[$popup_type],
-			// 'title' => 'Titulo do '.$popup_type
-		// ));
-		// echo $this->Bl->a(array('href' => '', 'onclick' => "showPopup('$popup_type'); return false;"), array(), $popup_type);
-		// echo $this->Bl->br();
-		// echo $this->Bl->br();
-	// }
-
-	
-	// echo $this->Buro->insertForm('BurocrataUser.Galery', 'teste');	
 	
 	echo $this->Buro->sform(array('class' => 'azul'), // Parâmetros HTML
 		array(
@@ -70,7 +50,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 				'fieldName' => 'about',
 				'type' => 'textile',
 				'options' => array(
-					'enabled_buttons' => array('bold', 'italic')
+					'enabled_buttons' => array('bold', 'italic', 'link')
 				)
 			)
 		);
@@ -81,7 +61,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 				'type' => 'relational',
 				'label' => 'Owner of this gallery',
 				'options' => array(
-					'type' => 'unitary_autocomplete', // Former belongsTo, that now is also hasOne
+					'type' => 'unitary_autocomplete',
 					'model' => 'BurocrataUser.Person'
 				)
 			)
