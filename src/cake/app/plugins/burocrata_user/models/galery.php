@@ -28,7 +28,8 @@ class Galery extends BurocrataUserAppModel {
 	
 	var $hasMany = array(
 		'Picture' => array(
-			'className' => 'BurocrataUser.Picture'
+			'className' => 'BurocrataUser.Picture',
+			'order' => 'Picture.weight'
 		)
 	);
 	
