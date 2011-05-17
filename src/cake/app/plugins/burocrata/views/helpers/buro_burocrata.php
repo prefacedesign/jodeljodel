@@ -1186,8 +1186,14 @@ class BuroBurocrataHelper extends XmlTagHelper
 		if(empty($input_options['label']) && isset($ParentModel->{$assocName}))
 			$input_options['label'] = Inflector::humanize($ParentModel->{$assocName}->table);
 		
-		$out = $this->label(array('for' => ''), array(), $input_options['label']);
+		$out = $this->Bl->h6(array(),array('escape' => false), $input_options['label']);
 		unset($input_options['label']);
+		
+		if (isset($input_options['instructions']))
+		{
+			$out .= $this->instructions(array(), array('close_me' => false), $input_options['instructions']);
+			unset($input_options['instructions']);
+		}
 		
 		$out .= $this->_orderedItensManyChildren(array(
 			'model_class_name' => $model_class_name,
@@ -2263,6 +2269,19 @@ class BuroBurocrataHelper extends XmlTagHelper
 				__('Burocrata::inputTextile - Preview', true)
 			);
 			$out .= $this->_popupTextilePreview($prev_id, $options);
+			$ajax_options = array(
+				'url' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'textile_preview'),
+				'params' => array('data[text]' => "@encodeURIComponent($('{$npt_id}').value)@"),
+				'callbacks' => array(
+					'onSuccess' => array(
+						'contentUpdate' => array('update' => 'div' . $options['baseID']),
+						'js' => "showPopup('{$prev_id}')"
+					)
+				)
+			);
+			$out .= $this->BuroOfficeBoy->addHtmlEmbScript(
+				$this->Js->get('#'.$lprev_id)->event('click', $this->BuroOfficeBoy->ajaxRequest($ajax_options), array('buffer' => false))
+			);
 		}
 		
 		$out .= $this->Bl->floatBreak();
@@ -2270,21 +2289,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		// Textarea input
 		$out .= $this->input($htmlAttributes, $options);
 		
-		// Some Javascript (deals with button actions and preview ajax)
+		// Some Javascript (deals with button actions)
 		$out .= $this->BuroOfficeBoy->textile($options);
-		$ajax_options = array(
-			'url' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'textile_preview'),
-			'params' => array('data[text]' => "@encodeURIComponent($('{$npt_id}').value)@"),
-			'callbacks' => array(
-				'onSuccess' => array(
-					'contentUpdate' => array('update' => 'div' . $options['baseID']),
-					'js' => "showPopup('{$prev_id}')"
-				)
-			)
-		);
-		$out .= $this->BuroOfficeBoy->addHtmlEmbScript(
-			$this->Js->get('#'.$lprev_id)->event('click', $this->BuroOfficeBoy->ajaxRequest($ajax_options), array('buffer' => false))
-		);
 		
 		return $out;
 	}

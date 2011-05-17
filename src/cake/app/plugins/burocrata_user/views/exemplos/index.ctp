@@ -50,7 +50,8 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 				'fieldName' => 'about',
 				'type' => 'textile',
 				'options' => array(
-					'enabled_buttons' => array('bold', 'italic', 'link')
+					'enabled_buttons' => array('bold', 'italic', 'link'),
+					'allow_preview' => false
 				)
 			)
 		);
@@ -60,6 +61,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 			array(
 				'type' => 'relational',
 				'label' => 'Owner of this gallery',
+				'instructions' => 'Fisrt, search if he/she already has a account, using his/her name. If does not, you will be able to create a new one.',
 				'options' => array(
 					'type' => 'unitary_autocomplete',
 					'model' => 'BurocrataUser.Person'
@@ -71,6 +73,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 			array(
 				'label' => 'Pictures for this gallery',
 				'type' => 'relational',
+				'instructions' => 'Click on plus sign (on right) to add more pictures. You can also change the order of appearance, edit, delete and duplicate each picture.',
 				'options' => array(
 					'type' => 'many_children',
 					'model' => 'BurocrataUser.Picture',

@@ -537,6 +537,8 @@ var BuroAjax = Class.create(BuroCallbackable, {
 });
 
 
+
+
 /**
  * 
  *
@@ -597,6 +599,9 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		this.showPreview(this.input.value);
 	}
 });
+
+
+
 
 /**
  * The main class for a list of items. It handles all ajax calls
@@ -705,7 +710,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 var BuroListOfItemsMenu = Class.create(BuroCallbackable, {
 	initialize: function(div)
 	{
-		this.div = div;
+		this.div = $(div);
 		this.order = this.div.readAttribute('buro:order');
 		
 		this.plus_button = this.div.down('button.ordered_list_menu_add');
@@ -798,6 +803,9 @@ var BuroListOfItemsItem = Class.create(BuroCallbackable, {
 		if (!hasNext) Form.Element.disable(this.controls.down('.ordered_list_down'));
 	}
 });
+
+
+
 
 
 /**
@@ -958,6 +966,8 @@ var BuroEditableListItem = Class.create(BuroCallbackable, {
 });
 
 
+
+
 /**
  * 
  *
@@ -1115,6 +1125,7 @@ var BuroUpload = Class.create(BuroCallbackable, {
 		this.trigger('onReject', this.tmp_input, this.responseJSON, this.responseJSON.saved);
 	}
 });
+
 
 
 /**
