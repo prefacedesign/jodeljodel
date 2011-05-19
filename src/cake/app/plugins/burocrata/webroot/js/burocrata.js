@@ -49,7 +49,7 @@ document.observe('dom:loaded', function()
  * @access public
  * @todo An garbage colletor to free all not instanciated objects
  */
-var BuroClassRegistry = new (Class.create(Hash, {
+var BuroCR = new (Class.create(Hash, {
 	set: function($super, id, obj)
 	{
 		if(this.get(id))
@@ -68,14 +68,14 @@ var BuroClassRegistry = new (Class.create(Hash, {
  * @access protected
  */
 var BuroCallbackable = Class.create({
-	addCallbacks: function(callbacks)
+	addCallbacks: function(cbs)
 	{
-		if(typeof(this.callbacks) == 'undefined')
+		if (!Object.isHash(this.callbacks))
 			this.callbacks = $H({});
 		
-		callbacks = $H(callbacks);
-		if (callbacks.size())
-			callbacks.each(this.mergeCallback.bind(this));
+		cbs = $H(cbs);
+		if (cbs.size())
+			cbs.each(this.mergeCallback.bind(this));
 		
 		return this;
 	},
@@ -155,7 +155,7 @@ var BuroForm = Class.create(BuroCallbackable, {
 			
 			this.inputs = $$('*[form='+this.id_base+']');
 
-			BuroClassRegistry.set(this.form.id, this);
+			BuroCR.set(this.form.id, this);
 			
 			this.submit = $('sbmt' + this.id_base);
 			if (this.submit)
@@ -262,7 +262,7 @@ var BuroForm = Class.create(BuroCallbackable, {
 var BuroAutocomplete = Class.create(BuroCallbackable, {
 	initialize: function(url, id_base, options)
 	{
-		BuroClassRegistry.set(id_base, this);
+		BuroCR.set(id_base, this);
 		
 		var id_of_text_field = 'input'+id_base,
 			id_of_div_to_populate = 'div'+id_base;
@@ -425,11 +425,15 @@ var BuroAutocomplete = Class.create(BuroCallbackable, {
 /**
  * Extends the default Ajax.Request built in Prototype.
  *
+ * It is possible to create a ajax dump for each request, just letting the debug
+ * config from cake != 0 and setting window.ajax_dump = true (on JS console)
+ * Also, if an request didnt return ajax and it debug != 0, it asks if you want a dump.
+ *
  * Callbacks:
  * - `onStart` function (){}
  * - `onComplete` function (response){}
  * - `onFailure` function (response){}
- * - `onError` function (code, error){}
+ * - `onError` function (code, error, json){}
  * - `onSuccess` function (response, json){}
  * 
  * @access public
@@ -452,32 +456,31 @@ var BuroAjax = Class.create(BuroCallbackable, {
 		
 		new Ajax.Request(this.url, this.ajax_options);
 	},
-	requestOnComplete: function (response) {
-		this.trigger('onComplete', response);
+	requestOnComplete: function (re) {
+		this.trigger('onComplete', re);
 		if (this.fulldebug)
-			this.dumpResquest(response)
+			this.dumpResquest(re)
 	},
-	requestOnSuccess: function(response)
+	requestOnSuccess: function(re)
 	{
 		var json = false;
-		if(response.responseJSON) json = response.responseJSON;
+		if(re.responseJSON) json = re.responseJSON;
 		
-		var headers = response.getAllHeaders();
-		if(!headers) {
-			this.trigger('onFailure', response); // No server response
+		if(!re.getAllHeaders()) {
+			this.trigger('onFailure', re); // No server response
 		} else if(!json) {
 			this.trigger('onError', E_NOT_JSON);
 			if (debug != 0 && !this.fulldebug)
-				this.dumpResquest(response);
+				this.dumpResquest(re);
 		} else if (json.error != false) {
-			this.trigger('onError', E_JSON, json.error);
+			this.trigger('onError', E_JSON, json.error, json);
 		} else {
-			this.trigger('onSuccess', response, json);
+			this.trigger('onSuccess', re, json);
 		}
 	},
-	requestOnFailure: function(response)
+	requestOnFailure: function(re)
 	{
-		switch (response.status)
+		switch (re.status)
 		{
 			case 403: // Not Authorized
 				if (this.isRegistred('onError'))
@@ -487,12 +490,12 @@ var BuroAjax = Class.create(BuroCallbackable, {
 				}
 			
 			default:
-				this.trigger('onFailure', response); // Page not found
+				this.trigger('onFailure', re); // Page not found
 		}
 	},
-	dumpResquest: function(response)
+	dumpResquest: function(re)
 	{
-		if (!confirm('This last request didn\'t return a valid JSON.\nDo you want to create a dump of this request?\n\nNote: to close the created dump, just click twice on it.'))
+		if (!confirm('This last request didn\'t return a valid JSON.\nDo you want to create a dump of this request?\n\nNote: to close the created dump, just double click on it.'))
 			return;
 		
 		var div = new Element('div', {className: 'dump_ajax'})
@@ -508,25 +511,25 @@ var BuroAjax = Class.create(BuroCallbackable, {
 			.insert(new Element('div', {className: 'dump_code'})
 				.insert('<h1>Response status</h1>')
 				.insert(new Element('div', {className: 'dump_content'})
-					.insert('HTTP status: '+response.status+' ('+response.statusText+')')
+					.insert('HTTP status: '+re.status+' ('+re.statusText+')')
 				)
 			)
 			.insert(new Element('div', {className: 'dump_headers'})
 				.insert('<h1>Response headers</h1>')
 				.insert(new Element('div', {className: 'dump_content'})
-					.insert(new Element('pre').update(response.getAllHeaders()))
+					.insert(new Element('pre').update(re.getAllHeaders()))
 				)
 			)
 			.insert(new Element('div', {className: 'dump_content_code'})
 				.insert('<h1>Response complete code</h1>')
 				.insert(new Element('div', {className: 'dump_content'})
-					.insert(new Element('pre').update(response.responseText.unfilterJSON().escapeHTML()))
+					.insert(new Element('pre').update(re.responseText.unfilterJSON().escapeHTML()))
 				)
 			)
 			.insert(new Element('div', {className: 'dump_code'})
 				.insert('<h1>Response content</h1>')
 				.insert(new Element('div', {className: 'dump_content'})
-					.insert(response.responseText/* .replace(/\{"\w+":.*\}/, '') */)
+					.insert(re.responseText/* .replace(/\{"\w+":.*\}/, '') */)
 				)
 			)
 		
@@ -555,8 +558,8 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 	initialize: function(id_base, autocompleter_id_base, callbacks)
 	{
 		this.id_base = id_base;
-		BuroClassRegistry.set(this.id_base, this);
-		this.autocomplete = BuroClassRegistry.get(autocompleter_id_base);
+		BuroCR.set(this.id_base, this);
+		this.autocomplete = BuroCR.get(autocompleter_id_base);
 		
 		this.addCallbacks(callbacks);
 		
@@ -616,7 +619,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 		this.texts = texts;
 		this.types = types;
 		this.id_base = id_base;
-		BuroClassRegistry.set(this.id_base, this);
+		BuroCR.set(this.id_base, this);
 		
 		this.divForm = new Element('div', {id: 'divform'+id_base});
 		this.divCont = $('div'+id_base);
@@ -634,7 +637,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	newItem: function(menuObj, type)
 	{
 		if (this.placesForm(menuObj.div))
-			this.trigger('onShowForm', false);
+			this.trigger('onAction', 'edit');
 	},
 	placesForm: function(element)
 	{
@@ -647,7 +650,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	openedForm: function()
 	{
 		var form_id = this.divForm.down('.buro_form').readAttribute('id');
-		var OpenedForm = BuroClassRegistry.get(form_id);
+		var OpenedForm = BuroCR.get(form_id);
 		OpenedForm.addCallbacks({
 			'onSave': this.saved.bind(this),
 			'onCancel': this.cancel.bind(this)
@@ -656,24 +659,10 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	routeAction: function(item, action)
 	{
 		var _function = this['action'+action.capitalize()];
-		if (Object.isFunction(_function))
-			_function.bind(this, item).defer();
-	},
-	actionUp: function(item)
-	{
-	},
-	actionDown: function(item)
-	{
-	},
-	actionDelete: function(item)
-	{
-		// if (confirm(this.texts.confirm_delete[type]))
-		if (confirm('Apagar?'))
-		{
-		}
-	},
-	actionDuplicate: function(item)
-	{
+		this.trigger('onAction', action)
+		// new BuroAjax('/burocrata/buro_burocrata/list_of_items/'+action,{});
+		// if (Object.isFunction(_function))
+			// _function.bind(this, item).defer();
 	},
 	actionEdit: function(item)
 	{
@@ -687,10 +676,20 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	},
 	cancel: function()
 	{
-		this.divForm.update().hide();
-		this.editing.show();
-		this.editing = false;
-		this.menus.each(function(menu){menu.enable();});
+		new Effect.BlindUp(this.divForm, {duration: 0.3, afterFinish: function()
+		{
+			this.divForm.update();
+			this.editing.show();
+			this.editing = false;
+			this.menus.each(function(menu){menu.enable();});
+		}.bind(this)});
+	},
+	error: function(json)
+	{
+		this.trigger('onError', json);
+	},
+	success: function()
+	{
 	}
 });
 
@@ -827,8 +826,8 @@ var BuroEditableList = Class.create(BuroCallbackable, {
 		this.view_item_text = view_item_text;
 		this.edit_item_text = edit_item_text;
 		this.delete_item_text = delete_item_text;
-		BuroClassRegistry.set(this.id_base, this);
-		this.autocomplete = BuroClassRegistry.get(autocompleter_id_base);
+		BuroCR.set(this.id_base, this);
+		this.autocomplete = BuroCR.get(autocompleter_id_base);
 		
 		this.addCallbacks(callbacks);
 		
@@ -997,7 +996,7 @@ var BuroUpload = Class.create(BuroCallbackable, {
 		this.url = url;
 		this.errors = errors;
 		
-		BuroClassRegistry.set(this.id_base, this);
+		BuroCR.set(this.id_base, this);
 		
 		this.iframe = new Element('iframe', {
 			name: 'if'+this.id_base, 
@@ -1136,7 +1135,7 @@ var BuroUpload = Class.create(BuroCallbackable, {
 var BuroTextile = Class.create(BuroCallbackable, {
 	initialize: function(id_base)
 	{
-		BuroClassRegistry.set(id_base, this);
+		BuroCR.set(id_base, this);
 		
 		this.selection = {start: false, end: false};
 		this.with_focus = false;

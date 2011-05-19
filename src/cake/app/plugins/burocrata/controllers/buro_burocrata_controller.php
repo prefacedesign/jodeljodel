@@ -228,7 +228,7 @@ class BuroBurocrataController extends BurocrataAppController
 		$Model = null;
 		
 		$error = $this->_load($Model);
-				
+		
 		if($error === false)
 		{
 			$this->data = $data = $Model->find('first', array(
@@ -343,9 +343,9 @@ class BuroBurocrataController extends BurocrataAppController
  * @access public
  * @return json An javascript object that contains only `error` properties
  */
-	public function list_of_items($action = null)
+	public function list_of_items()
 	{
-		$Model = null;
+		$action = $Model = null;
 		$error = $this->_load($Model);
 		
 		if($error === false)
@@ -358,30 +358,43 @@ class BuroBurocrataController extends BurocrataAppController
 					)
 				);
 			
+			$debug = Configure::read()>0;
 			$ordered = $Model->Behaviors->attached('Ordered');
+			
+			if (isset($this->buroData['action']))
+				$action = $this->buroData['action'];
 			
 			switch ($action)
 			{
 				case 'up':
-					$error = $ordered == false || 
-							 empty($this->buroData['id']) || 
-							 $Model->moveup($this->buroData['id']) == false;
+					if ($ordered == false)
+						$error = $debug?'BuroBurocrataController - Model does not act as ordered.':true;
+					elseif (empty($this->buroData['id']))
+						$error = $debug?'BuroBurocrataController - ID was not present on POST.':true;
+					elseif ($Model->moveup($this->buroData['id']) == false)
+						$error = $debug?'BuroBurocrataController - Model::moveup method returned false.':true;
 				break;
 				
 				case 'down':
-					$error = $ordered == false || 
-							 empty($this->buroData['id']) || 
-							 $Model->movedown($this->buroData['id']) == false;
+					if ($ordered == false)
+						$error = $debug?'BuroBurocrataController - Model does not act as ordered.':true;
+					elseif (empty($this->buroData['id']))
+						$error = $debug?'BuroBurocrataController - ID was not present on POST.':true;
+					elseif ($Model->movedown($this->buroData['id']) == false)
+						$error = $debug?'BuroBurocrataController - Model::movedown method returned false.':true;
 				break;
 				
 				case 'delete':
-					$error = empty($this->buroData['id']) || 
-							 $Model->delete($this->buroData['id']) == false;
+					if (empty($this->buroData['id']))
+						$error = $debug?'BuroBurocrataController - ID was not present on POST.':true;
+					elseif ($Model->delete($this->buroData['id']) == false)
+						$error = $debug?'BuroBurocrataController - Model::delete method returned false.':true;
 				break;
 				
 				case 'duplicate':
-					$error = empty($this->buroData['id']);
-					if (!$error)
+					if (empty($this->buroData['id']))
+						$error = $debug?'BuroBurocrataController - ID was not present on POST.':true;
+					else
 					{
 						$data = $Model->find('first', array(
 							'recursive' => -1,
@@ -399,8 +412,10 @@ class BuroBurocrataController extends BurocrataAppController
 							if (isset($data[$Model->alias][$field]))
 								unset($data[$Model->alias][$field]);
 						
+						// @todo A better solution for duplicate (that duplicates childs and those stuff)
 						$Model->create();
-						$error = !$Model->save($data, false);
+						if (!$Model->save($data, false))
+							$error = $debug?'BuroBurocrataController - Model didnt save':true;
 						if (!$error && $ordered)
 							$Model->moveto($order+1);
 					}
@@ -413,7 +428,7 @@ class BuroBurocrataController extends BurocrataAppController
 		
 		}
 	
-		$this->set('jsonVars', compact('error'));
+		$this->set('jsonVars', compact('error', 'action'));
 	}
 
 
@@ -426,20 +441,20 @@ class BuroBurocrataController extends BurocrataAppController
  */
 	protected function _load(&$var)
 	{
+		$debug = Configure::read()>0;
 		$error = false;
 		
 		if(!isset($this->buroData['request']))
-			$error = __('Request security field not defined', true);
+			$error = $debug?'BuroBurocrataController::_load - Request security field not defined':true;
 
 		if($error === false)
 		{
 			// The counter-part of this code is in BuroBurocrataHelper::_security method
 			@list($secure, $model_plugin, $model_alias) = SecureParams::unpack($this->buroData['request']);
-			unset($this->buroData['request']);
 			
 			$hash = substr(Security::hash($this->here), -5);
 			if($secure != $hash)
-				$error = __('POST Destination check failed.', true);
+				$error = $debug?'BuroBurocrataController::_load - POST Destination check failed.':true;
 		}
 
 		if($error === false)
@@ -449,7 +464,7 @@ class BuroBurocrataController extends BurocrataAppController
 				$model_class_name = $model_plugin . '.' . $model_class_name;
 			
 			if(!$this->loadModel($model_class_name))
-				$error = __('Couldn\'t load model', true);
+				$error = $debug?'BuroBurocrataController::_load - Couldn\'t load model.':true;
 		}
 		
 		if($error === false)

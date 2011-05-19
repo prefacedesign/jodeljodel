@@ -51,7 +51,7 @@ class BuroOfficeBoyHelper extends AppHelper
 			'onSuccess' => 'function(response, json){%s}',
 			'onComplete' => 'function(response){%s}',
 			'onFailure' => 'function(response){%s}',
-			'onError' => 'function(code, error){%s}'
+			'onError' => 'function(code, error, json){%s}'
 		),
 		'relational_unitary' => array(
 			'onShowForm' => 'function(to_edit){%s}',
@@ -73,6 +73,8 @@ class BuroOfficeBoyHelper extends AppHelper
 		),
 		'listOfItems' => array(
 			'onShowForm' => 'function(id){%s}',
+			'onAction' => 'function(action,id){%s}',
+			'onError' => 'function(json){%s}',
 		)
 	);
 
@@ -329,6 +331,7 @@ class BuroOfficeBoyHelper extends AppHelper
 		$url = $this->url($url);
 		$callbacks = $this->formatCallbacks('ajax', $callbacks);
 		$ajax_options = array();
+		$template = array();
 		
 		foreach($params as $k => $param)
 		{
@@ -341,10 +344,18 @@ class BuroOfficeBoyHelper extends AppHelper
 			if(substr($param,0,1) == '@' && substr($param,-1) == '@')
 				$param = '"+(' . substr($param,1,-1) . ')+"';
 			
+			$matches = array();
+			if (preg_match_all('/#\{(\w+)\}+/', $param, $matches))
+				foreach ($matches[1] as $match)
+					$template[$match] = $match.':'.$match;
+			
 			if(is_string($k))
-				$ajax_options['parameters'][] = $k . '=' . $param;
+				$ajax_options['parameters'][] = sprintf('%s=%s', $k, $param);
 		}
-		$ajax_options = '{parameters: "' . implode('&', $ajax_options['parameters']) . '"}';
+		
+		$parameters = implode('&', $ajax_options['parameters']);
+		$template = sprintf('{%s}', implode(',', $template));
+		$ajax_options = sprintf('{parameters: new Template("%s").evaluate(%s)}', $parameters, $template);
 		
 		return sprintf("new BuroAjax('%s',%s,%s)", $url, $ajax_options, $callbacks);
 	}

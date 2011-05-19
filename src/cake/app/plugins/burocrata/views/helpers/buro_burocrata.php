@@ -1038,7 +1038,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 				'callbacks' => array(
 					'onUpdate' => array('js' => "$('$link_id_new').up().show()"),
 					'onSelect' => array(
-						'js' => "BuroClassRegistry.get('$baseID').selected(pair);"
+						'js' => "BuroCR.get('$baseID').selected(pair);"
 					)
 				)
 			)
@@ -1104,7 +1104,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 				'url' => $url_edit,
 				'params' => array(
 					$this->securityParams($url_edit, $plugin, $model),
-					$this->internalParam('id') => "@to_edit ? BuroClassRegistry.get('$baseID').input.value : null@",
+					$this->internalParam('id') => "@to_edit ? BuroCR.get('$baseID').input.value : null@",
 					$this->internalParam('baseID', $baseID)
 				),
 				'callbacks' => array(
@@ -1150,7 +1150,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$defaults = array(
 			'baseID' => $this->baseID(),
 			'assocName' => false,
-			'title' => false
+			'title' => false,
+			'callbacks' => array()
 		);
 		$options = am($defaults, $options);
 		extract($options);
@@ -1195,15 +1196,13 @@ class BuroBurocrataHelper extends XmlTagHelper
 			unset($input_options['instructions']);
 		}
 		
-		$out .= $this->_orderedItensManyChildren(array(
-			'model_class_name' => $model_class_name,
-			'content' => array(array(
-				'model' => $model,
-				'label' => $model,
-				'title' => $title,
-			)),
-			'baseID' => $baseID
+		$content = array(array(
+			'model' => $model,
+			'label' => $model,
+			'title' => $title,
 		));
+		
+		$out .= $this->_orderedItensManyChildren(compact('model_class_name','content','baseID','callbacks'));
 		
 		return $this->Bl->div(array('id' => 'div' . $baseID, 'class' => 'ordered_list'), array(), $out);
 	}
@@ -1265,7 +1264,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	protected function _orderedItensManyChildren($options)
 	{
-		$options += array('model_class_name' => false, 'auto_order' => false);
+		$options += array('model_class_name' => false, 'auto_order' => false, 'callbacks' => array());
 		extract($options);
 		
 		if (empty($model_class_name))
@@ -1286,24 +1285,23 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		// Javascripts
 		$divform_id = 'divform'.$baseID;
-		$url_edit = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'edit');
+		$url_edit = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'list_of_items');
+		
 		$open_form_ajax = array(
 			'baseID' => $this->baseID(),
 			'url' => $url_edit,
 			'params' => array(
 				$this->securityParams($url_edit, $model_plugin, $model_name),
-				$this->internalParam('id') => "@id ? id : null@",
-				$this->internalParam('baseID', $baseID)
+				$this->internalParam('id') => "#{id}",
+				$this->internalParam('action') => "#{action}",
+				$this->internalParam('baseID', $baseID),
 			),
 			'callbacks' => array(
-				'onSuccess' => array('unsetLoading' => $divform_id, 'contentUpdate' => $divform_id),
-				// Need to use the defered and binded function because the class is registred after the 
-				'onComplete' => array('js' => "var obj = BuroClassRegistry.get('$baseID'); obj.openedForm.bind(obj).defer();")
+				'onError' => array('js' => "BuroCR.get('$baseID').error(json);"),
+				'onSuccess' => array('js' => "BuroCR.get('$baseID').success(json);"),
 			)
 		);
-		$options['callbacks'] = array(
-			'onShowForm' => array('setLoading' => $divform_id, 'ajax' => $open_form_ajax)
-		);
+		$options['callbacks']['onAction'] = array('ajax' => $open_form_ajax);
 		
 		$out .= $this->BuroOfficeBoy->listOfItems($options);
 		return $out;
@@ -1678,7 +1676,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 				'callbacks' => array(
 					'onUpdate' => array('js' => "$('$link_id_new').up().show()"),
 					'onSelect' => array(
-						'js' => "BuroClassRegistry.get('$baseID').selected(pair);"
+						'js' => "BuroCR.get('$baseID').selected(pair);"
 					)
 				)
 			)
@@ -1764,7 +1762,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'url' => $url_add_new,
 			'params' => array($this->securityParams($url_add_new, $plugin, $model), $this->internalParam('id') => '@id@'),
 			'callbacks' => array(
-				'onSuccess' => array('js' => "BuroClassRegistry.get('$baseID').addNew(response);")
+				'onSuccess' => array('js' => "BuroCR.get('$baseID').addNew(response);")
 			)
 		);
 		
@@ -1774,7 +1772,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 				'url' => $url_edit,
 				'params' => array(
 					$this->securityParams($url_edit, $plugin, $model),
-					$this->internalParam('id') => "@to_edit ? BuroClassRegistry.get('$baseID').master_input.value : null@",
+					$this->internalParam('id') => "@to_edit ? BuroCR.get('$baseID').master_input.value : null@",
 					$this->internalParam('baseID', $baseID)
 				),
 				'callbacks' => array(
@@ -2105,7 +2103,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$script = '';
 		if (empty($value))
 			$script .= "$('{$act_id}').hide(); $('{$prv_id}').hide();";
-		$script .= "$('{$chg_id}').observe('click', function(ev){ev.stop(); BuroClassRegistry.get('{$gen_options['baseID']}').again();});";
+		$script .= "$('{$chg_id}').observe('click', function(ev){ev.stop(); BuroCR.get('{$gen_options['baseID']}').again();});";
 		$out .= $this->BuroOfficeBoy->addHtmlEmbScript($script);
 		
 		$out .= $this->_upload($gen_options, $file_input_options);
@@ -2168,8 +2166,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$script = '';
 		if (empty($value))
 			$script .= "$('{$act_id}').hide(); $('{$prv_id}').hide();";
-		$script .= "$('{$chg_id}').observe('click', function(ev){ev.stop(); BuroClassRegistry.get('{$gen_options['baseID']}').again();});";
-		$script .= "$('{$rmv_id}').observe('click', function(ev){ev.stop(); BuroClassRegistry.get('{$gen_options['baseID']}').again(true);});";
+		$script .= "$('{$chg_id}').observe('click', function(ev){ev.stop(); BuroCR.get('{$gen_options['baseID']}').again();});";
+		$script .= "$('{$rmv_id}').observe('click', function(ev){ev.stop(); BuroCR.get('{$gen_options['baseID']}').again(true);});";
 		
 		$out .= $this->BuroOfficeBoy->addHtmlEmbScript($script);
 		$out .= $this->_upload($gen_options, $file_input_options);
@@ -2318,7 +2316,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$popup_config['type'] = 'form';
 		$popup_config['title'] = $popup_link_txt['title'];
-		$popup_config['callback'] = "if (action == 'ok') BuroClassRegistry.get('{$options['baseID']}').insertLink($('$itlink').value, null, $('$iulink').value)";
+		$popup_config['callback'] = "if (action == 'ok') BuroCR.get('{$options['baseID']}').insertLink($('$itlink').value, null, $('$iulink').value)";
 		$popup_config['content'] = '';
 		$popup_config['content'] .= $this->Bl->pDry($popup_link_txt['instructions']);
 		
@@ -2355,7 +2353,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$popup_config['type'] = 'form';
 		$popup_config['title'] = $popup_title_txt['title'];
-		$popup_config['callback'] = "if (action == 'ok') BuroClassRegistry.get('{$options['baseID']}').insertTitle($('$iilink').value, $('$ixlink').value)";
+		$popup_config['callback'] = "if (action == 'ok') BuroCR.get('{$options['baseID']}').insertTitle($('$iilink').value, $('$ixlink').value)";
 		$popup_config['content'] = '';
 		$popup_config['content'] .= $this->Bl->pDry($popup_title_txt['instructions']);
 		
@@ -2424,7 +2422,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$popup_config['type'] = 'form';
 		$popup_config['title'] = $popup_file_txt['title'];
-		$popup_config['callback'] = "var ui = BuroClassRegistry.get('{$baseID}'); if (ui.uploading && action == 'ok') return false; if (action == 'ok') {BuroClassRegistry.get('{$options['baseID']}').insertFile(ui.responseJSON);}";
+		$popup_config['callback'] = "var ui = BuroCR.get('{$baseID}'); if (ui.uploading && action == 'ok') return false; if (action == 'ok') {BuroCR.get('{$options['baseID']}').insertFile(ui.responseJSON);}";
 		$popup_config['content'] = '';
 		$popup_config['content'] .= $this->sform(array(), array('model' => 'SfilStoredFile'));
 			$popup_config['content'] .= $this->input(array(), array(
@@ -2436,7 +2434,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 					'baseID' => $baseID
 				)
 			));
-		$popup_config['content'] .= $this->BuroOfficeBoy->addHtmlEmbScript("$('$id').observe('popup:opened', function(ev){BuroClassRegistry.get('{$baseID}').again();})");
+		$popup_config['content'] .= $this->BuroOfficeBoy->addHtmlEmbScript("$('$id').observe('popup:opened', function(ev){BuroCR.get('{$baseID}').again();})");
 		$popup_config['content'] .= $this->eform();
 		
 		return $this->Popup->popup($id, $popup_config);
@@ -2463,7 +2461,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$popup_config['type'] = 'form';
 		$popup_config['title'] = $popup_file_txt['title'];
-		$popup_config['callback'] = "var ui = BuroClassRegistry.get('{$baseID}'); if (ui.uploading && action == 'ok') return false; if (action == 'ok') {BuroClassRegistry.get('{$options['baseID']}').insertImage(ui.responseJSON);}";
+		$popup_config['callback'] = "var ui = BuroCR.get('{$baseID}'); if (ui.uploading && action == 'ok') return false; if (action == 'ok') {BuroCR.get('{$options['baseID']}').insertImage(ui.responseJSON);}";
 		$popup_config['content'] = '';
 		$popup_config['content'] .= $this->sform(array(), array('model' => 'SfilStoredFile'));
 			$popup_config['content'] .= $this->input(array(), array(
@@ -2476,7 +2474,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 					'baseID' => $baseID
 				)
 			));
-		$popup_config['content'] .= $this->BuroOfficeBoy->addHtmlEmbScript("$('$id').observe('popup:opened', function(ev){BuroClassRegistry.get('{$baseID}').again();})");
+		$popup_config['content'] .= $this->BuroOfficeBoy->addHtmlEmbScript("$('$id').observe('popup:opened', function(ev){BuroCR.get('{$baseID}').again();})");
 		$popup_config['content'] .= $this->eform();
 		
 		return $this->Popup->popup($id, $popup_config);

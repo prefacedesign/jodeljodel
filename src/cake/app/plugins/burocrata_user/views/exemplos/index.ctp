@@ -20,6 +20,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 			)
 		);
 		
+		
 		echo $this->Buro->sinput(array(), array('type' => 'super_field', 'label' => 'This gallery'));
 		
 			echo $this->Buro->input(array(),
@@ -77,7 +78,9 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 				'options' => array(
 					'type' => 'many_children',
 					'model' => 'BurocrataUser.Picture',
-					'auto_order' => false
+					'callbacks' => array(
+						'onError' => array('js' => "alert('Deu erro ao fazer o `'+json.action+'`. Controller voltou:\\n\\n\\t'+json.error)")
+					)
 				)
 			)
 		);
@@ -127,6 +130,11 @@ echo $this->Bl->ebox();
 		array(
 			'type' => 'upload',
 			'label' => 'Arquivo',
+			'error' => array(
+				'size' => 'Arquivo muito grande!',
+				'pixels' => 'Foto muito grande!',
+				'mimeType' => 'Aceitamos somente imagens, ok?'
+			),
 			'options' => array(
 				'fieldName' => 'file_id',
 				'callbacks' => array(
