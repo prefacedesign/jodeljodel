@@ -211,35 +211,37 @@ class JjMediaController extends JjMediaAppController {
 			list($version, $fieldName, $model_name) = SecureParams::unpack($this->buroData['data']);
 		
 		if (is_null($version) || is_null($fieldName) || is_null($model_name))
-			return;
+			$error = Configure::read()>0?'JjMediaController::upload - Configuration data not available.':true;
 		
-		if (!$this->loadModel($model_name))
-			return;
+		if ($error === false && !$this->loadModel($model_name))
+			$error = Configure::read()>0?'JjMediaController::upload - Model '.$model_name.' not found.':true;
 		
-		list($plugin, $model_name) = pluginSplit($model_name);
-		$model_alias = $this->{$model_name}->alias;
-		
-		if (!empty($this->data))
+		if ($error === false)
 		{
-			$scope = $this->{$model_name}->findTheScope($fieldName);
-			if ($scope)
-				$this->{$model_name}->setScope($scope);
-			$saved = $this->{$model_name}->save($this->data);
+			list($plugin, $model_name) = pluginSplit($model_name);
+			$model_alias = $this->{$model_name}->alias;
 			
-			if ($saved == false)
-				$validationErrors = $this->validateErrors($this->{$model_name});
-			else
-				$saved = $this->{$model_name}->id;
-			
-			if ($saved)
+			if (!empty($this->data))
 			{
-				$filename = $this->data[$model_alias]['file']['name'];
-				list($fieldModelName, $fieldName) = pluginSplit($fieldName);
-				if (!empty($this->data[$fieldModelName][$fieldName]))
-					$this->{$model_name}->delete($this->data[$fieldModelName][$fieldName]);
+				$scope = $this->{$model_name}->findTheScope($fieldName);
+				if ($scope)
+					$this->{$model_name}->setScope($scope);
+				$saved = $this->{$model_name}->save($this->data);
+				
+				if ($saved == false)
+					$validationErrors = $this->validateErrors($this->{$model_name});
+				else
+					$saved = $this->{$model_name}->id;
+				
+				if ($saved)
+				{
+					$filename = $this->data[$model_alias]['file']['name'];
+					list($fieldModelName, $fieldName) = pluginSplit($fieldName);
+					if (!empty($this->data[$fieldModelName][$fieldName]))
+						$this->{$model_name}->delete($this->data[$fieldModelName][$fieldName]);
+				}
 			}
 		}
-		
 		$this->layout = 'ajax';
 		$this->set(compact('error', 'validationErrors', 'saved', 'version', 'filename'));
 	}

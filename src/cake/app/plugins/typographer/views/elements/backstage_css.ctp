@@ -110,7 +110,7 @@
 	));
 
 	$this->Decorator->rule(
-		'.ordered_list button', array(
+		'.ordered_list button[disabled]', array(
 			'cursor' => 'default'
 	));
 	
@@ -118,6 +118,15 @@
 		'.ordered_list button span', array(
 			'top' => '100%',
 			'position' => 'absolute',
+	));
+
+	$this->Decorator->rule(
+		'.ordered_list h6', array(
+		    'font-size' => '13px',
+			'font-weight' => 'bold',
+			'letter-spacing' => '0.135ex',
+			'line-height' => '24px',
+			'text-transform' => 'uppercase'
 	));
 	
 	

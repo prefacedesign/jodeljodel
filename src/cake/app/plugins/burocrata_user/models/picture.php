@@ -1,6 +1,14 @@
 <?php
 class Picture extends BurocrataUserAppModel {
 	var $name = 'Picture';
+	
+	var $actsAs = array(
+		'Utils.Ordered' => array(
+			'field' => 'weight',
+			'foreign_key' => 'galery_id'
+		)
+	);
+	
 	var $validate = array(
 		'galery_id' => array(
 			'numeric' => array(

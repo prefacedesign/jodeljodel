@@ -20,6 +20,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 			)
 		);
 		
+		
 		echo $this->Buro->sinput(array(), array('type' => 'super_field', 'label' => 'This gallery'));
 		
 			echo $this->Buro->input(array(),
@@ -50,7 +51,8 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 				'fieldName' => 'about',
 				'type' => 'textile',
 				'options' => array(
-					'enabled_buttons' => array('bold', 'italic', 'link')
+					'enabled_buttons' => array('bold', 'italic', 'link'),
+					'allow_preview' => false
 				)
 			)
 		);
@@ -60,6 +62,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 			array(
 				'type' => 'relational',
 				'label' => 'Owner of this gallery',
+				'instructions' => 'Fisrt, search if he/she already has a account, using his/her name. If does not, you will be able to create a new one.',
 				'options' => array(
 					'type' => 'unitary_autocomplete',
 					'model' => 'BurocrataUser.Person'
@@ -71,10 +74,13 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 			array(
 				'label' => 'Pictures for this gallery',
 				'type' => 'relational',
+				'instructions' => 'Click on plus sign (on right) to add more pictures. You can also change the order of appearance, edit, delete and duplicate each picture.',
 				'options' => array(
 					'type' => 'many_children',
 					'model' => 'BurocrataUser.Picture',
-					'auto_order' => false
+					'callbacks' => array(
+						'onError' => array('js' => "alert('Deu erro ao fazer o `'+json.action+'`. Controller voltou:\\n\\n\\t'+json.error)")
+					)
 				)
 			)
 		);
@@ -124,6 +130,11 @@ echo $this->Bl->ebox();
 		array(
 			'type' => 'upload',
 			'label' => 'Arquivo',
+			'error' => array(
+				'size' => 'Arquivo muito grande!',
+				'pixels' => 'Foto muito grande!',
+				'mimeType' => 'Aceitamos somente imagens, ok?'
+			),
 			'options' => array(
 				'fieldName' => 'file_id',
 				'callbacks' => array(
