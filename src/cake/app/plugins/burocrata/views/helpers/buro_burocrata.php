@@ -2320,10 +2320,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$popup_config['content'] = '';
 		$popup_config['content'] .= $this->Bl->pDry($popup_link_txt['instructions']);
 		
-		$this->sform(array(), array('url' => ''));
-		$popup_config['content'] .= $this->input(array('id' => $itlink), array('container' => false, 'required' => true, 'label' => $popup_link_txt['label_text']));
-		$popup_config['content'] .= $this->input(array('id' => $iulink), array('container' => false, 'required' => true, 'label' => $popup_link_txt['label_link']));
-		$this->eform();
+		$popup_config['content'] .= $this->sform(array(), array('url' => ''));
+			$popup_config['content'] .= $this->input(array('id' => $itlink), array('container' => false, 'required' => true, 'label' => $popup_link_txt['label_text']));
+			$popup_config['content'] .= $this->input(array('id' => $iulink), array('container' => false, 'required' => true, 'label' => $popup_link_txt['label_link']));
+		$popup_config['content'] .= $this->eform();
 		
 		return $this->Popup->popup($id, $popup_config);
 	}
