@@ -281,6 +281,14 @@ $sections = array(
 				'headerCaption' => __('Sections: login headerCaption', true),
 				'humanName' => __('Sections: login humanName',true),
 			),
+			'example' => array(
+				'linkCaption' => __('Sections: example linkCaption', true),
+				'url' => array('plugin' => 'BurocrataUser','controller' => 'exemplos','action' => 'index'),
+				'acos' => array('backstage_area' => array('read')),
+				'pageTitle' => array(null, __('Sections: example pageTitle',true)),
+				'headerCaption' => __('Sections: example headerCaption', true),
+				'humanName' => __('Sections: example humanName',true),
+			),
 			'dashboard' => array(
 				'linkCaption' => __('Sections: dashboard linkCaption', true),
 				'url' => array(
@@ -533,6 +541,10 @@ $sectionMap = array(
 	array(
 		'rule' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'save'),
 		'location' => array('backstage','burocrata_save'),
+	),
+	array(
+		'rule' => array('plugin' => 'burocrata_user'),
+		'location' => array('backstage', 'example'),
 	),
 	array(
 		'rule' => array('plugin' => 'page_sections', 'controller' => 'testing', 'action' => 'section_one'),
