@@ -1189,6 +1189,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out = $this->label(array('for' => ''), array(), $input_options['label']);
 		unset($input_options['label']);
 		
+		if (!empty($input_options['instructions']))
+		{
+			$out .= $this->instructions(array(),array(),$input_options['instructions']);
+			unset($input_options['instructions']);
+		}
+		
 		$out .= $this->_orderedItensManyChildren(array(
 			'model_class_name' => $model_class_name,
 			'content' => array(array(
@@ -2316,10 +2322,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$popup_config['content'] = '';
 		$popup_config['content'] .= $this->Bl->pDry($popup_link_txt['instructions']);
 		
-		$this->sform(array(), array('url' => ''));
-		$popup_config['content'] .= $this->input(array('id' => $itlink), array('container' => false, 'required' => true, 'label' => $popup_link_txt['label_text']));
-		$popup_config['content'] .= $this->input(array('id' => $iulink), array('container' => false, 'required' => true, 'label' => $popup_link_txt['label_link']));
-		$this->eform();
+		$popup_config['content'] .= $this->sform(array(), array('url' => ''));
+			$popup_config['content'] .= $this->input(array('id' => $itlink), array('container' => false, 'required' => true, 'label' => $popup_link_txt['label_text']));
+			$popup_config['content'] .= $this->input(array('id' => $iulink), array('container' => false, 'required' => true, 'label' => $popup_link_txt['label_link']));
+		$popup_config['content'] .= $this->eform();
 		
 		return $this->Popup->popup($id, $popup_config);
 	}
