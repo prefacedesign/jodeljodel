@@ -69,7 +69,8 @@ class BuroOfficeBoyHelper extends AppHelper
 			'onSuccess' => 'function(input, json){%s}',
 			'onFailure' => 'function(input, json){%s}',
 			'onComplete' => 'function(input, response){%s}',
-			'onRestart' => 'function(){%s}'
+			'onRestart' => 'function(){%s}',
+			'onError' => 'function(code, error, json){%s}'
 		),
 		'listOfItems' => array(
 			'onShowForm' => 'function(id){%s}',
