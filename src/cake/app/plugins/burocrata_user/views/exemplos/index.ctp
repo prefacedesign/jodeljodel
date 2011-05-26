@@ -51,7 +51,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 				'fieldName' => 'about',
 				'type' => 'textile',
 				'options' => array(
-					'enabled_buttons' => array('bold', 'italic', 'link'),
+					'enabled_buttons' => array('bold', 'italic', 'link', 'image'),
 					'allow_preview' => false
 				)
 			)
@@ -110,13 +110,13 @@ echo $this->Bl->ebox();
 		array(
 			'type' => 'image',
 			'label' => 'Faça seu upload de imagem',
+			'fieldName' => 'img_id',
 			'error' => array(
 				'size' => 'Arquivo muito grande!',
 				'pixels' => 'Foto muito grande!',
 				'mimeType' => 'Aceitamos somente imagens, ok?'
 			),
 			'options' => array(
-				'fieldName' => 'img_id',
 				'version' => 'backstage_preview',
 				'callbacks' => array(
 					'onStart' => array('popup' => 'Começando o upload...')
@@ -130,13 +130,13 @@ echo $this->Bl->ebox();
 		array(
 			'type' => 'upload',
 			'label' => 'Arquivo',
+			'fieldName' => 'file_id',
 			'error' => array(
 				'size' => 'Arquivo muito grande!',
 				'pixels' => 'Foto muito grande!',
 				'mimeType' => 'Aceitamos somente imagens, ok?'
 			),
 			'options' => array(
-				'fieldName' => 'file_id',
 				'callbacks' => array(
 					'onStart' => array('popup' => 'Começando o upload...')
 				),
