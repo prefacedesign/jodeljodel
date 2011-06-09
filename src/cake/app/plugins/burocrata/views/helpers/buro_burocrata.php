@@ -114,7 +114,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 					unset($options['instructions']);
 				}
 				$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultObjectClass);
-				$htmlAttributes = $this->addClass($htmlAttributes, $this->_readFormAttribute('baseID'), 'form');
+				$htmlAttributes = $this->addClass($htmlAttributes, $this->_readFormAttribute('baseID'), 'buro:form');
 				$inputOptions = am($htmlAttributes, $options['options'], array('label' => false, 'div' => false, 'type' => $options['type'], 'error' => $options['error']));
 				
 				if ($inputOptions['type'] == 'radio')
@@ -1092,7 +1092,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$url_view = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'view');
 		$open_prev_ajax = array(
 			'url' => $url_view,
-			'params' => array($this->securityParams($url_view, $plugin, $model), $this->internalParam('id') => '@id@'),
+			'params' => array(
+				$this->securityParams($url_view, $plugin, $model),
+				$this->internalParam('id') => '#{id}'
+			),
 			'callbacks' => array(
 				'onSuccess' => array('unsetLoading' => $update, 'contentUpdate' => $update)
 			)
@@ -1104,11 +1107,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 				'url' => $url_edit,
 				'params' => array(
 					$this->securityParams($url_edit, $plugin, $model),
-					$this->internalParam('id') => "@to_edit ? BuroCR.get('$baseID').input.value : null@",
+					$this->internalParam('id') => '#{id}',
 					$this->internalParam('baseID', $baseID)
 				),
 				'callbacks' => array(
-					'onSuccess' => array('unsetLoading' => $update, 'contentUpdate' => $update)
+					'onSuccess' => array('unsetLoading' => $update, 'contentUpdate' => $update), 
+					'onComplete' => array('js' => "BuroCR.get('$baseID').openedForm()")
 				)
 			);
 		
@@ -1117,7 +1121,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$officeboy_options['baseID'] = $baseID;
 		$officeboy_options['autocomplete_baseID'] = $acplt_baseID;
 		$officeboy_options['callbacks'] = array(
-			'onShowForm' => array('setLoading' => $update, 'ajax' => $open_form_ajax),
+			'onShowForm' => array('setLoading' => $update, 'js' => "id = to_edit ? BuroCR.get('$baseID').input.value : null;", 'ajax' => $open_form_ajax),
 			'onShowPreview' => array('setLoading' => $update, 'ajax' => $open_prev_ajax)
 		);
 		$out .= $this->BuroOfficeBoy->relationalUnitaryAutocomplete($officeboy_options);
@@ -2318,10 +2322,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$popup_config['content'] = '';
 		$popup_config['content'] .= $this->Bl->pDry($popup_link_txt['instructions']);
 		
-		$this->sform(array(), array('url' => ''));
-		$popup_config['content'] .= $this->input(array('id' => $itlink), array('container' => false, 'required' => true, 'label' => $popup_link_txt['label_text']));
-		$popup_config['content'] .= $this->input(array('id' => $iulink), array('container' => false, 'required' => true, 'label' => $popup_link_txt['label_link']));
-		$this->eform();
+		$popup_config['content'] .= $this->sform(array(), array('url' => ''));
+			$popup_config['content'] .= $this->input(array('id' => $itlink), array('container' => false, 'required' => true, 'label' => $popup_link_txt['label_text']));
+			$popup_config['content'] .= $this->input(array('id' => $iulink), array('container' => false, 'required' => true, 'label' => $popup_link_txt['label_link']));
+		$popup_config['content'] .= $this->eform();
 		
 		return $this->Popup->popup($id, $popup_config);
 	}

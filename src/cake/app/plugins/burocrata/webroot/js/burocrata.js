@@ -180,7 +180,7 @@ var BuroForm = Class.create(BuroCallbackable, {
 			this.form.unlock = this.unlockForm.bind(this);
 			this.form.observe('keypress', this.keyPress.bind(this));
 			
-			this.inputs = $$('*[form='+this.id_base+']');
+			this.inputs = $$('*[buro:form='+this.id_base+']');
 
 			BuroCR.set(this.form.id, this);
 			
@@ -604,6 +604,19 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		this.trigger('onShowForm', to_edit);
 		this.update.next('.actions').hide();
 	},
+	openedForm: function()
+	{
+		// timeout for the AjaxRequest have time to evaluate all js and register the Form object on BuroCR
+		window.setTimeout(this.observeForm.bind(this), 100);
+	},
+	observeForm: function()
+	{
+		var form_id = this.update.down('.buro_form').readAttribute('id');
+		BuroCR.get(form_id).addCallbacks({
+			onCancel: this.cancel.bind(this),
+			onSave: this.saved.bind(this)
+		})
+	},
 	showPreview: function(id)
 	{
 		this.trigger('onShowPreview', id);
@@ -614,15 +627,15 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		if(pair.id > 0)
 		{
 			this.update.update();
-			this.saved(pair.id)
+			this.saved(null, null, null, pair.id)
 			this.autocomplete.input.value = pair.value;
 		}
 	},
-	saved: function(id)
+	saved: function(form, response, json, saved)
 	{
 		this.autocomplete.input.value = '';
-		this.input.value = id;
-		this.showPreview(id);
+		this.input.value = saved;
+		this.showPreview(saved);
 	},
 	cancel: function()
 	{
@@ -1043,7 +1056,7 @@ var BuroUpload = Class.create(BuroCallbackable, {
 			var ua = navigator.userAgent;
 			var re  = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
 			if (re.exec(ua) != null)
-			rv = parseFloat( RegExp.$1 );
+				rv = parseFloat( RegExp.$1 );
 		}
 
 		this._submitted = false;
@@ -1136,7 +1149,7 @@ var BuroUpload = Class.create(BuroCallbackable, {
 		if (d.body.innerHTML.isJSON()) {
 			response = this.responseJSON = d.body.innerHTML.evalJSON();
 			if (this.responseJSON.error != false)
-				this.trigger('onError', E_JSON, json.error);
+				this.trigger('onError', E_JSON, response.error, response);
 			else
 				this.trigger('onSuccess', this.tmp_input, this.responseJSON);
 			
