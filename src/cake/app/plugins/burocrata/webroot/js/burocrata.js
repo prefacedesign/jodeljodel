@@ -14,13 +14,33 @@ document.observe('dom:loaded', function()
 		setLoading: function(element)
 		{
 			if (!(element = $(element))) return;
-			var padding = Math.max(element.getHeight(), 30);
-			return element.setStyle({paddingTop: padding+'px'}).addClassName('loading');
+			if (!element.visible() || element.retrieve('loading')) return element;
+			var indicator = new Element('div', {className: 'loading-indicator'}), 
+				overlayer = new Element('div', {className: 'loading-overlayer'});
+			document.body.insert(overlayer);
+			overlayer.insert({after: indicator}).clonePosition(element).setOpacity(0.7);
+			
+			var position = $H(overlayer.cumulativeOffset());
+			position = position.merge(overlayer.getDimensions());
+			indicator.setStyle({
+				left: (position.get('left')+position.get('width')/2-indicator.getWidth()/2)+'px',
+				top: position.get('top')+'px'
+			});
+			var pe = new PeriodicalExecuter(function(indicator, position) {
+				var pos = Math.max(position.get('top')+20, document.viewport.getScrollOffsets().top+20);
+				pos = Math.min(pos, position.get('top')+position.get('height')-20);
+				pos+= (indicator.cumulativeOffset().top-pos)/2;
+				indicator.setStyle({top: pos+'px'});
+			}.curry(indicator,position), 0.1);
+			return element.store('loading', {pe:pe,elements:[overlayer,indicator]}).addClassName('loading');
 		},
 		unsetLoading: function(element)
 		{
 			if (!(element = $(element))) return;
-			return element.setStyle({paddingTop: ''}).removeClassName('loading');
+			if (!(loading = element.retrieve('loading'))) return element;
+			loading.pe.stop();
+			loading.elements.each(Element.remove);
+			return element.store('loading', false).removeClassName('loading');
 		},
 		addFocus: function(element)
 		{
@@ -665,6 +685,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	},
 	routeAction: function(item, action, id)
 	{
+		item.div.setLoading();
 		this.trigger('onAction', action, id);
 	},
 	actionEdit: function(item)
@@ -690,6 +711,9 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	error: function(json)
 	{
 		this.trigger('onError', json);
+		this.items.each(function(item){
+			item.div.unsetLoading();
+		});
 	},
 	success: function(json)
 	{
@@ -699,7 +723,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 				var item, next;
 				if (!json.buro_id || !(item = this.getItem(json.buro_id)) || !item.hasNext || !(next = this.getItem(item.next)))
 					break;
-				item.div.swapWith(next.div);
+				item.div.swapWith(next.div).unsetLoading();
 				item.checkSiblings();
 				next.checkSiblings();
 			break;
@@ -708,7 +732,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 				var item, next;
 				if (!json.buro_id || !(item = this.getItem(json.buro_id)) || !item.hasPrev || !(prev = this.getItem(item.prev)))
 					break;
-				item.div.swapWith(prev.div);
+				item.div.swapWith(prev.div).unsetLoading();
 				item.checkSiblings();
 				prev.checkSiblings();
 			case 'delete':

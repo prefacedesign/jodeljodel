@@ -25,13 +25,32 @@
 			'top' => 0
 	));
 	
-
-	$img_url = $this->Decorator->url('/burocrata/img/loading.gif');
 	$this->Decorator->rule('.loading',
 		array(
-			'background' => 'url('.$img_url.') no-repeat 10px 10px !important',
-			'height' => '0 !important',
-			'overflow' => 'hidden !important'
+			'min-height' => $u->t(53)
+		)
+	);
+
+	$box_shadow = '0 0 2px 2px ' .  $palette['shadows']->write();
+	$img_url = $this->Decorator->url('/burocrata/img/loading.gif');
+	$this->Decorator->rule('.loading-indicator',
+		array(
+			'background' => sprintf('%s url(%s) no-repeat', $palette['bg']->write(), $img_url),
+			'height' => $u->t(13),
+			'width' => $u->t(45),
+			'position' => 'absolute',
+			'z-index' => 10001,
+			'box-shadow' => $box_shadow,
+			'-webkit-box-shadow' => $box_shadow,
+			'-moz-box-shadow' => $box_shadow
+		)
+	);
+	$this->Decorator->rule('.loading-overlayer',
+		array(
+			'background-color' => 'white',
+			'position' => 'absolute',
+			'z-index' => 10000,
+			'min-height' => $u->t(60)
 		)
 	);
 	
@@ -431,7 +450,7 @@
 		)
 	);
 	
-	$box_shadow = '0 0 2px 2px ' .  $palette['shadows']->write();	
+	$box_shadow = '0 0 2px 2px ' .  $palette['shadows']->write();
 	$this->Decorator->rule(
 		'#main_column',
 		array(
