@@ -656,10 +656,10 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			'onCancel': this.cancel.bind(this)
 		});
 	},
-	routeAction: function(item, action)
+	routeAction: function(item, action, id)
 	{
-		var _function = this['action'+action.capitalize()];
-		this.trigger('onAction', action)
+		this.trigger('onAction', action, id);
+		// var _function = this['action'+action.capitalize()];
 		// new BuroAjax('/burocrata/buro_burocrata/list_of_items/'+action,{});
 		// if (Object.isFunction(_function))
 			// _function.bind(this, item).defer();
@@ -731,14 +731,14 @@ var BuroListOfItemsMenu = Class.create(BuroCallbackable, {
 		if (this.links.length > 1) 
 			this.open();
 		else if (this.links.length == 1)
-			this.trigger('buro:newItem', this, this.readType(this.links[0]));
+			this.trigger('buro:newItem', this, this.getType(this.links[0]));
 	},
 	lnkClick: function(ev)
 	{
 		ev.stop();
 		var lnk = ev.findElement('a');
 		if (lnk)
-			this.trigger('buro:newItem', this, this.readType(lnk));
+			this.trigger('buro:newItem', this, this.getType(lnk));
 	},
 	open: function()
 	{
@@ -754,7 +754,7 @@ var BuroListOfItemsMenu = Class.create(BuroCallbackable, {
 		this.plus_button.show();
 		return this;
 	},
-	readType: function(lnk) {return lnk.readAttribute('buro:type');},
+	getType: function(lnk) {return lnk.readAttribute('buro:type');},
 	hide: function() {this.div.hide(); return this;},
 	show: function() {this.div.show(); return this;},
 	disable: function() {Form.Element.disable(this.plus_button); return this;},
@@ -791,7 +791,7 @@ var BuroListOfItemsItem = Class.create(BuroCallbackable, {
 	{
 		ev.stop();
 		var action = element.readAttribute('buro:action');
-		this.trigger('buro:controlClick', this, action);
+		this.trigger('buro:controlClick', this, action, this.id);
 	},
 	checkSiblings: function()
 	{

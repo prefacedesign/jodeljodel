@@ -1284,10 +1284,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 			;
 		
 		// Javascripts
-		$divform_id = 'divform'.$baseID;
 		$url_edit = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'list_of_items');
-		
-		$open_form_ajax = array(
+		$ajax_call = array(
 			'baseID' => $this->baseID(),
 			'url' => $url_edit,
 			'params' => array(
@@ -1301,7 +1299,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 				'onSuccess' => array('js' => "BuroCR.get('$baseID').success(json);"),
 			)
 		);
-		$options['callbacks']['onAction'] = array('ajax' => $open_form_ajax);
+		$options['callbacks']['onAction'] = array('ajax' => $ajax_call);
 		
 		$out .= $this->BuroOfficeBoy->listOfItems($options);
 		return $out;

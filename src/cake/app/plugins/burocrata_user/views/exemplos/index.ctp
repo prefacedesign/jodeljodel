@@ -62,7 +62,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 			array(
 				'type' => 'relational',
 				'label' => 'Owner of this gallery',
-				'instructions' => 'Fisrt, search if he/she already has a account, using his/her name. If does not, you will be able to create a new one.',
+				'instructions' => 'First, search if he/she already has a account, using his/her name. If does not, you will be able to create a new one.',
 				'options' => array(
 					'type' => 'unitary_autocomplete',
 					'model' => 'BurocrataUser.Person'
