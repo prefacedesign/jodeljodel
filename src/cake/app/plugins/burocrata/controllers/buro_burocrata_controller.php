@@ -427,8 +427,9 @@ class BuroBurocrataController extends BurocrataAppController
 			}
 		
 		}
-	
-		$this->set('jsonVars', compact('error', 'action'));
+		
+		$buro_id = $this->buroData['id'];
+		$this->set('jsonVars', compact('error', 'action', 'buro_id'));
 	}
 
 

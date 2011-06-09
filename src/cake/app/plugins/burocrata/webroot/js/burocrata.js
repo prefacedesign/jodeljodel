@@ -31,6 +31,13 @@ document.observe('dom:loaded', function()
 		{
 			if (!(element = $(element))) return;
 			return element.removeClassName('focus');
+		},
+		swapWith: function(element, other)
+		{
+			if (!(element = $(element))) return;
+			if (!(other = $(other))) return;
+			(ref = new Element('div')).insert({after: other.insert({after: element.insert({after: ref})})}).remove();
+			return element;
 		}
 	});
 	
@@ -659,10 +666,6 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	routeAction: function(item, action, id)
 	{
 		this.trigger('onAction', action, id);
-		// var _function = this['action'+action.capitalize()];
-		// new BuroAjax('/burocrata/buro_burocrata/list_of_items/'+action,{});
-		// if (Object.isFunction(_function))
-			// _function.bind(this, item).defer();
 	},
 	actionEdit: function(item)
 	{
@@ -688,8 +691,37 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	{
 		this.trigger('onError', json);
 	},
-	success: function()
+	success: function(json)
 	{
+		switch (json.action)
+		{
+			case 'down': 
+				var item, next;
+				if (!json.buro_id || !(item = this.getItem(json.buro_id)) || !item.hasNext || !(next = this.getItem(item.next)))
+					break;
+				item.div.swapWith(next.div);
+				item.checkSiblings();
+				next.checkSiblings();
+			break;
+			
+			case 'up': 
+				var item, next;
+				if (!json.buro_id || !(item = this.getItem(json.buro_id)) || !item.hasPrev || !(prev = this.getItem(item.prev)))
+					break;
+				item.div.swapWith(prev.div);
+				item.checkSiblings();
+				prev.checkSiblings();
+			case 'delete':
+		}
+	},
+	getItem: function(id)
+	{
+		if (Object.isElement(id)) 
+			id = id.readAttribute('buro:id');
+		var result = this.items.findAll(function(id, item) {return item.id == id}.curry(id))
+		if (result.length)
+			return result[0];
+		return null;
 	}
 });
 
@@ -777,7 +809,7 @@ var BuroListOfItemsMenu = Class.create(BuroCallbackable, {
 var BuroListOfItemsItem = Class.create(BuroCallbackable, {
 	initialize: function (div)
 	{
-		this.div = div;
+		this.div = $(div);
 		this.id = this.div.readAttribute('buro:id');
 		this.controls = this.div.down('div.ordered_list_controls');
 		this.controls.childElements().each(this.observeControls.bind(this));
@@ -796,10 +828,10 @@ var BuroListOfItemsItem = Class.create(BuroCallbackable, {
 	checkSiblings: function()
 	{
 		this.controls.childElements().each(Form.Element.enable);
-		var hasPrev = Object.isElement(this.div.previous('div.ordered_list_item'));
-		var hasNext = Object.isElement(this.div.next('div.ordered_list_item'));
-		if (!hasPrev) Form.Element.disable(this.controls.down('.ordered_list_up'));
-		if (!hasNext) Form.Element.disable(this.controls.down('.ordered_list_down'));
+		this.hasPrev = Object.isElement(this.prev = this.div.previous('div.ordered_list_item'));
+		this.hasNext = Object.isElement(this.next = this.div.next('div.ordered_list_item'));
+		if (!this.hasPrev) Form.Element.disable(this.controls.down('.ordered_list_up'));
+		if (!this.hasNext) Form.Element.disable(this.controls.down('.ordered_list_down'));
 	}
 });
 
