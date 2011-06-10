@@ -26,10 +26,7 @@ class Picture extends BurocrataUserAppModel {
 		'Galery' => array(
 			'className' => 'BurocrataUser.Galery',
 			'counterCache' => true
-		)
-	);
-	
-	var $hasOne = array(
+		),
 		'SfilStoredFile' => array(
 			'className' => 'JjMedia.SfilStoredFile',
 			'foreignKey' => 'file_upload_id'
