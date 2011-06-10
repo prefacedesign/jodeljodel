@@ -373,6 +373,9 @@ class BuroBurocrataController extends BurocrataAppController
 						$error = $debug?'BuroBurocrataController - ID was not present on POST.':true;
 					elseif ($Model->moveup($this->buroData['id']) == false)
 						$error = $debug?'BuroBurocrataController - Model::moveup method returned false.':true;
+					
+					if (!$error)
+						$saved = $this->buroData['id'];
 				break;
 				
 				case 'down':
@@ -382,6 +385,9 @@ class BuroBurocrataController extends BurocrataAppController
 						$error = $debug?'BuroBurocrataController - ID was not present on POST.':true;
 					elseif ($Model->movedown($this->buroData['id']) == false)
 						$error = $debug?'BuroBurocrataController - Model::movedown method returned false.':true;
+					
+					if (!$error)
+						$saved = $this->buroData['id'];
 				break;
 				
 				case 'delete':
@@ -389,35 +395,67 @@ class BuroBurocrataController extends BurocrataAppController
 						$error = $debug?'BuroBurocrataController - ID was not present on POST.':true;
 					elseif ($Model->delete($this->buroData['id']) == false)
 						$error = $debug?'BuroBurocrataController - Model::delete method returned false.':true;
+					
+					if (!$error)
+						$saved = $this->buroData['id'];
 				break;
 				
 				case 'duplicate':
 					if (empty($this->buroData['id']))
+					{
 						$error = $debug?'BuroBurocrataController - ID was not present on POST.':true;
+					}
 					else
 					{
-						$data = $Model->find('first', array(
-							'recursive' => -1,
-							'conditions' => array(
-								$Model->alias.'.'.$Model->primaryKey => $this->buroData['id']
-							)
-						));
-						if ($ordered)
+						$new_id = false;
+						if (method_exists($Model, 'duplicate'))
 						{
-							$order = $data[$Model->alias][$this->buroData['field']];
-							unset($data[$Model->alias][$this->buroData['field']]);
+							if (!$Model->duplicate($$this->buroData['id']))
+								$error = $debug?'BuroBurocrataController - Model::duplicate() failed.':true;
+							else
+								$new_id = $Model->id;
+						}
+						else
+						{
+							// Tries to duplicate (wont work if is necessary to duplicate children data)
+							$data = $Model->find('first', array(
+								'recursive' => -1,
+								'conditions' => array(
+									$Model->alias.'.'.$Model->primaryKey => $this->buroData['id']
+								)
+							));
+							
+							if ($ordered)
+							{
+								$field = $Model->Behaviors->Ordered->settings[$Model->alias]['field'];
+								$order = $data[$Model->alias][$field];
+								unset($data[$Model->alias][$field]);
+							}
+							
+							foreach (array('created', 'updated', 'modified', $Model->primaryKey) as $field)
+								if (isset($data[$Model->alias][$field]))
+									unset($data[$Model->alias][$field]);
+							
+							$Model->create();
+							if (!$Model->save($data, false))
+								$error = $debug?'BuroBurocrataController - Model did not save the duplicate data.':true;
+							else
+								$new_id = $Model->id;
 						}
 						
-						foreach (array('created', 'updated', 'modified', $Model->foreign_key) as $field)
-							if (isset($data[$Model->alias][$field]))
-								unset($data[$Model->alias][$field]);
-						
-						// @todo A better solution for duplicate (that duplicates childs and those stuff)
-						$Model->create();
-						if (!$Model->save($data, false))
-							$error = $debug?'BuroBurocrataController - Model didnt save':true;
 						if (!$error && $ordered)
-							$Model->moveto($order+1);
+						{
+							if (!$Model->moveto($new_id, $order+1))
+								$error = $debug?'BuroBurocrataController - Model::moveto() failed.':true;
+							else
+								$saved = $new_id;
+						}
+						
+						if (!$error)
+						{
+							$this->buroData['id'] = $new_id;
+							$this->view();
+						}
 					}
 				break;
 				
@@ -428,8 +466,7 @@ class BuroBurocrataController extends BurocrataAppController
 		
 		}
 		
-		$buro_id = $this->buroData['id'];
-		$this->set('jsonVars', compact('error', 'action', 'buro_id'));
+		$this->set('jsonVars', compact('error', 'action', 'saved'));
 	}
 
 
