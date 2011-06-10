@@ -79,8 +79,9 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 					'type' => 'many_children',
 					'model' => 'BurocrataUser.Picture',
 					'callbacks' => array(
-						'onError' => array('js' => "alert('Deu erro ao fazer o `'+json.action+'`. Controller voltou:\\n\\n\\t'+json.error)")
-					)
+						'onError' => array('js' => "alert('Deu erro ao fazer o `'+json.action+'`. Controller voltou:\\n\\n\\t'+json.error);")
+					),
+					'confirm_excluding_text' => 'Qué apagar a bagaça mesmo?'
 				)
 			)
 		);

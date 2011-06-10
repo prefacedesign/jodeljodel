@@ -234,7 +234,9 @@ class BuroOfficeBoyHelper extends AppHelper
 		extract(am($defaults, $options));
 		unset($defaults);
 		
-		$script = sprintf("new BuroListOfItems('%s', %s)", $baseID, $this->Js->object($types));
+		$texts = compact('confirm_excluding_text');
+		
+		$script = sprintf("new BuroListOfItems('%s', %s)", $baseID, $this->Js->object($texts));
 		if (!empty($callbacks))
 			$script .= sprintf('.addCallbacks(%s)', $this->formatCallbacks('listOfItems', $callbacks));
 		return $this->addHtmlEmbScript($script);

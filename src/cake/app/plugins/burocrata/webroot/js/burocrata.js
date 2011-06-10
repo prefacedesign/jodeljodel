@@ -81,7 +81,7 @@ document.observe('dom:loaded', function()
 var BuroCR = new (Class.create(Hash, {
 	set: function($super, id, obj)
 	{
-		if(this.get(id))
+		if (this.get(id))
 			return false;
 		
 		return $super(id, obj);
@@ -126,18 +126,24 @@ var BuroCallbackable = Class.create({
 	},
 	trigger: function()
 	{
-		if(Object.isUndefined(this.callbacks))
+		if (Object.isUndefined(this.callbacks))
 			this.callbacks = $H({});
 		
 		var name = arguments[0];
-		if(!this.isRegistred(name))
+		if (!this.isRegistred(name))
 			return false;
 		
 		var i,args = new Array();
 		for(i = 1; i < arguments.length; i++)
 			args.push(arguments[i]);
 		
-		this.callbacks.get(name).each(this.apply_function.bind(this, args));
+		try {
+			this.callbacks.get(name).each(this.apply_function.bind(this, args));
+		} catch(e)
+		{
+			if (debug && console && console.error)
+				console.error(e);
+		}
 		
 		return true;
 	},
@@ -167,10 +173,10 @@ var BuroForm = Class.create(BuroCallbackable, {
 	{
 		var n_args = arguments.length;
 		
-		if(n_args > 0)
+		if (n_args > 0)
 			this.url = arguments[0];
 
-		if(n_args > 1)
+		if (n_args > 1)
 		{
 			this.id_base = arguments[1];
 			this.form = $('frm' + this.id_base);
@@ -195,7 +201,7 @@ var BuroForm = Class.create(BuroCallbackable, {
 				this.cancel.observe('click', this.cancels.bind(this));
 		}
 		
-		if(n_args > 2)
+		if (n_args > 2)
 		{
 			this.addCallbacks(arguments[3]);
 		}
@@ -213,7 +219,7 @@ var BuroForm = Class.create(BuroCallbackable, {
 	keyPress: function(ev){
 		var element = ev.findElement().nodeName.toLowerCase();
 		var key = ev.keyCode;
-		if(ev.ctrlKey && key == Event.KEY_RETURN && element == 'input' && confirm('Deseja enviar os dados do formulário?'))
+		if (ev.ctrlKey && key == Event.KEY_RETURN && element == 'input' && confirm('Deseja enviar os dados do formulário?'))
 		{
 			ev.stop();
 			this.submits();
@@ -242,7 +248,7 @@ var BuroForm = Class.create(BuroCallbackable, {
 				onSuccess: function (response, json) {
 					this.json = json;
 					
-					if(this.json.saved !== false)	
+					if (this.json.saved !== false)	
 						this.trigger('onSave', this.form, response, this.json, this.json.saved);
 					else
 						this.trigger('onReject', this.form, response, this.json, this.json.saved);
@@ -301,15 +307,15 @@ var BuroAutocomplete = Class.create(BuroCallbackable, {
 		
 		Ajax.Autocompleter.addMethods({
 			markPrevious: function() {
-				if(this.index > 0) this.index--;
+				if (this.index > 0) this.index--;
 					else this.index = this.entryCount-1;
-				if(this.getEntry(this.index).cumulativeOffset().top < document.viewport.getScrollOffsets().top)
+				if (this.getEntry(this.index).cumulativeOffset().top < document.viewport.getScrollOffsets().top)
 					this.getEntry(this.index).scrollIntoView(true);
 			},
 			markNext: function() {
-				if(this.index < this.entryCount-1) this.index++;
+				if (this.index < this.entryCount-1) this.index++;
 					else this.index = 0;
-				if(this.getEntry(this.index).cumulativeOffset().top+this.getEntry(this.index).getHeight() > document.viewport.getScrollOffsets().top+document.viewport.getHeight())
+				if (this.getEntry(this.index).cumulativeOffset().top+this.getEntry(this.index).getHeight() > document.viewport.getScrollOffsets().top+document.viewport.getHeight())
 					this.getEntry(this.index).scrollIntoView(false);
 			}
 		});
@@ -347,7 +353,7 @@ var BuroAutocomplete = Class.create(BuroCallbackable, {
 	
 	onSuccess: function(response)
 	{
-		if(response && response.responseJSON)
+		if (response && response.responseJSON)
 			this.trigger('onSuccess', this.input, response, response.responseJSON);
 	},
 	
@@ -367,16 +373,16 @@ var BuroAutocomplete = Class.create(BuroCallbackable, {
 	
 	onComplete: function(response)
 	{
-		if(!response.getAllHeaders())
+		if (!response.getAllHeaders())
 			this.trigger('onFailure', this.form, response); // No server response
 		
-		if(!response.responseJSON) {
+		if (!response.responseJSON) {
 			this.trigger('onError', E_NOT_JSON);
 			return;
 		}
 		
 		this.json = response.responseJSON;
-		if(this.json.error != false)
+		if (this.json.error != false)
 		{
 			this.trigger('onError', E_JSON, this.json.error);
 			return;
@@ -392,12 +398,12 @@ var BuroAutocomplete = Class.create(BuroCallbackable, {
 			ac.update.insert({top: new Element('ul')});
 		ac.update.down('ul').replace(this.createChoices());
 		
-		if(!ac.changed && ac.hasFocus)
+		if (!ac.changed && ac.hasFocus)
 		{
 			Element.cleanWhitespace(ac.update);
 			Element.cleanWhitespace(ac.update.down());
 
-			if(ac.update.firstChild && ac.update.down().childNodes) {
+			if (ac.update.firstChild && ac.update.down().childNodes) {
 				ac.entryCount =
 					ac.update.down('ul').childNodes.length;
 				for (var i = 0; i < ac.entryCount; i++) {
@@ -412,7 +418,7 @@ var BuroAutocomplete = Class.create(BuroCallbackable, {
 			ac.stopIndicator();
 			ac.index = 0;
 
-			if(ac.entryCount==1 && ac.options.autoSelect) {
+			if (ac.entryCount==1 && ac.options.autoSelect) {
 				ac.selectEntry();
 				ac.hide();
 			} else {
@@ -420,7 +426,7 @@ var BuroAutocomplete = Class.create(BuroCallbackable, {
 			}
 		}
 		
-		if(ac.entryCount != 1)
+		if (ac.entryCount != 1)
 			ac.update.down('.nothing_found').hide();
 		else
 			ac.update.down('.nothing_found').show();
@@ -441,7 +447,7 @@ var BuroAutocomplete = Class.create(BuroCallbackable, {
 	alternateUpdateElement: function(selectedElement)
 	{
 		var keys = this.foundContent.keys();
-		if(!keys.length)
+		if (!keys.length)
 			return false;
 		
 		this.pair.id = keys[this.autocompleter.index];
@@ -493,11 +499,11 @@ var BuroAjax = Class.create(BuroCallbackable, {
 	requestOnSuccess: function(re)
 	{
 		var json = false;
-		if(re.responseJSON) json = re.responseJSON;
+		if (re.responseJSON) json = re.responseJSON;
 		
-		if(!re.getAllHeaders()) {
+		if (!re.getAllHeaders()) {
 			this.trigger('onFailure', re); // No server response
-		} else if(!json) {
+		} else if (!json) {
 			this.trigger('onError', E_NOT_JSON);
 			if (debug != 0 && !this.fulldebug)
 				this.dumpResquest(re);
@@ -598,7 +604,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		$('lie'+this.id_base).observe('click', function(ev){ev.stop(); this.showForm(true);}.bind(this));
 		$('lin'+this.id_base).observe('click', function(ev){ev.stop(); this.showForm(false);}.bind(this));
 		
-		if(!this.input.value.empty())
+		if (!this.input.value.empty())
 			this.showPreview(this.input.value);
 	},
 	showForm: function(to_edit)
@@ -626,7 +632,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 	},
 	selected: function(pair)
 	{
-		if(pair.id > 0)
+		if (pair.id > 0)
 		{
 			this.update.update();
 			this.saved(null, null, null, pair.id)
@@ -656,7 +662,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
  * @param object types A list of allowed types for putting on this input
  */
 var BuroListOfItems = Class.create(BuroCallbackable, {
-	initialize: function(id_base, types, texts)
+	initialize: function(id_base, texts, types)
 	{
 		this.texts = texts;
 		this.types = types;
@@ -667,32 +673,76 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 		this.divCont = $('div'+id_base);
 		this.divCont.insert(this.divForm.hide());
 		
-		this.menus = this.divCont.select('.ordered_list_menu').map(function(div){
-			return new BuroListOfItemsMenu(div).addCallbacks({'buro:newItem': this.newItem.bind(this)});
-		}.bind(this));
+		this.menus = this.divCont.select('.ordered_list_menu').map(this.newMenu.bind(this));
 		this.items = this.divCont.select('.ordered_list_item').map(function(div){
 			return new BuroListOfItemsItem(div).addCallbacks({'buro:controlClick': this.routeAction.bind(this)});
 		}.bind(this));
 		
 		this.editing = false;
 	},
+	
+	addNewMenu: function(order)
+	{
+		var i,
+			div = this.menus[0].div.clone(true),
+			prevMenu = this.menus.find(function(order, menu) { return menu.order == order; }.curry(order))
+					|| this.menus[this.menus.length-1];
+		
+		this.menus.each(function(order, menu) {
+			if (menu.order >= order)
+				menu.setOrder(Number(menu.order)+1);
+		}.curry(order));
+		
+		prevMenu.div.insert({before:div});
+		this.menus.push(this.newMenu(div));
+		this.reorderMenuList();
+		
+		return this;
+	},
+	newMenu: function(div)
+	{
+		return new BuroListOfItemsMenu(div).addCallbacks({'buro:newItem': this.newItem.bind(this)});
+	},
+	removeMenu: function(div)
+	{
+		var order = Number(div.readAttribute('buro:order'));
+		this.menus.splice(order-1, 1);
+		div.remove();
+		this.menus.each(function(order, menu) {
+			if (menu.order >= order)
+				menu.setOrder(Number(menu.order)-1);
+		}.curry(order));
+		return this;
+	},
+	reorderMenuList: function()
+	{
+		return this.menus = this.menus.sortBy(function(menu) {
+			return menu.order;
+		});
+	},
+	
 	newItem: function(menuObj, type)
 	{
 		if (this.placesForm(menuObj.div))
 			this.trigger('onAction', 'edit');
+	},
+	removeItem: function(item)
+	{
+		this.items.splice(this.items.indexOf(item), 1)
+		item.div.remove();
 	},
 	placesForm: function(element)
 	{
 		if (this.editing != false) return false;
 		element.insert({after: this.divForm.show()});
 		this.editing = element.hide();
-		this.menus.each(function(menu){menu.disable();});
+		this.menus.each(function(menu){ menu.disable(); });
 		return true;
 	},
 	openedForm: function()
 	{
-		var form_id = this.divForm.down('.buro_form').readAttribute('id');
-		var OpenedForm = BuroCR.get(form_id);
+		var form_id = this.divForm.down('.buro_form').readAttribute('id'),
+			OpenedForm = BuroCR.get(form_id);
 		OpenedForm.addCallbacks({
 			'onSave': this.saved.bind(this),
 			'onCancel': this.cancel.bind(this)
@@ -700,6 +750,8 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	},
 	routeAction: function(item, action, id)
 	{
+		if (action == 'delete' && !confirm(this.texts.confirm_excluding_text))
+			return;
 		item.div.setLoading();
 		this.trigger('onAction', action, id);
 	},
@@ -732,11 +784,11 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	},
 	success: function(json)
 	{
+		var item, prev, next;
 		switch (json.action)
 		{
 			case 'down': 
-				var item, next;
-				if (!json.buro_id || !(item = this.getItem(json.buro_id)) || !item.hasNext || !(next = this.getItem(item.next)))
+				if (!json.saved || !(item = this.getItem(json.saved)) || !item.hasNext || !(next = this.getItem(item.next)))
 					break;
 				item.div.swapWith(next.div).unsetLoading();
 				item.checkSiblings();
@@ -744,21 +796,34 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			break;
 			
 			case 'up': 
-				var item, next;
-				if (!json.buro_id || !(item = this.getItem(json.buro_id)) || !item.hasPrev || !(prev = this.getItem(item.prev)))
+				if (!json.saved || !(item = this.getItem(json.saved)) || !item.hasPrev || !(prev = this.getItem(item.prev)))
 					break;
 				item.div.swapWith(prev.div).unsetLoading();
 				item.checkSiblings();
 				prev.checkSiblings();
 			break;
 			
-			case 'edit':
-			break;
-			
 			case 'delete':
+				if (!json.saved || !(item = this.getItem(json.saved)))
+					break;
+				if (item.hasPrev) prev = this.getItem(item.prev);
+				if (item.hasNext) next = this.getItem(item.next);
+				
+				item.div.unsetLoading();
+				this.removeMenu(item.div.next('.ordered_list_menu'));
+				this.removeItem(item);
+				
+				prev.checkSiblings();
+				next.checkSiblings();
 			break;
 			
 			case 'duplicate':
+				if (!json.saved || !(item = this.getItem(json.saved)))
+					break;
+				item.div.unsetLoading();
+			break;
+			
+			case 'edit':
 			break;
 		}
 	},
@@ -820,6 +885,10 @@ var BuroListOfItemsMenu = Class.create(BuroCallbackable, {
 		if (lnk)
 			this.trigger('buro:newItem', this, this.getType(lnk));
 	},
+	getType: function(lnk)
+	{
+		return lnk.readAttribute('buro:type');
+	},
 	open: function()
 	{
 		this.menu.show();
@@ -834,11 +903,32 @@ var BuroListOfItemsMenu = Class.create(BuroCallbackable, {
 		this.plus_button.show();
 		return this;
 	},
-	getType: function(lnk) {return lnk.readAttribute('buro:type');},
-	hide: function() {this.div.hide(); return this;},
-	show: function() {this.div.show(); return this;},
-	disable: function() {Form.Element.disable(this.plus_button); return this;},
-	enable: function() {Form.Element.enable(this.plus_button); return this;}
+	setOrder: function(order)
+	{
+		if (Object.isNumber(order))
+			this.div.writeAttribute('buro:order', this.order = order);
+		return this;
+	},
+	hide: function()
+	{
+		this.div.hide();
+		return this;
+	},
+	show: function()
+	{
+		this.div.show();
+		return this;
+	},
+	disable: function()
+	{
+		Form.Element.disable(this.plus_button);
+		return this;
+	},
+	enable: function()
+	{
+		Form.Element.enable(this.plus_button);
+		return this;
+	}
 });
 
 /**
@@ -928,16 +1018,16 @@ var BuroEditableList = Class.create(BuroCallbackable, {
 	},
 	addNew: function(response)
 	{		
-		if(!response.getAllHeaders())
+		if (!response.getAllHeaders())
 			this.trigger('onFailure', this.form, response); // No server response
 		
-		if(!response.responseJSON) {
+		if (!response.responseJSON) {
 			this.trigger('onError', E_NOT_JSON);
 			return;
 		}
 		
 		this.json = response.responseJSON;
-		if(this.json.error != false)
+		if (this.json.error != false)
 		{
 			this.trigger('onError', E_JSON, this.json.error);
 			return;
@@ -967,7 +1057,7 @@ var BuroEditableList = Class.create(BuroCallbackable, {
 	},
 	selected: function(pair)
 	{
-		if(pair.id > 0)
+		if (pair.id > 0)
 		{
 			this.saved(pair.id, pair.value)
 			this.autocomplete.input.value = '';
@@ -1106,7 +1196,7 @@ var BuroUpload = Class.create(BuroCallbackable, {
 			.insert(this.form);
 		document.body.appendChild(this.div_container);
 		
-		if(!document.loaded)	document.observe('dom:loaded', this.startObserve.bindAsEventListener(this, true));
+		if (!document.loaded)	document.observe('dom:loaded', this.startObserve.bindAsEventListener(this, true));
 		else					this.startObserve(true);
 	},
 	startObserve: function(ev, first)
@@ -1335,7 +1425,7 @@ var BuroTextile = Class.create(BuroCallbackable, {
 		var selectedText = this.input.value.substring(selection.start, selection.end);
 		var textAfter = this.input.value.substring(selection.end, this.input.value.length);
 		
-		if(!selectedText.blank())
+		if (!selectedText.blank())
 			selectedText = selectedText.replace(/(^[\s\n\t\r]*)([^\t\n\r]*[^\s\t\n\r])([\s\b\t\r]*$)/gim, '$1'+token+'$2'+token+'$3');
 		
 		this.insert(selectedText);
@@ -1380,7 +1470,7 @@ var BuroTextile = Class.create(BuroCallbackable, {
 	},
 	setSelection: function(input, start, end)
 	{
-		if(input.setSelectionRange)
+		if (input.setSelectionRange)
 		{
 			input.focus();
 			input.setSelectionRange(start,end);

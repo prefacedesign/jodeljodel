@@ -1151,13 +1151,13 @@ class BuroBurocrataHelper extends XmlTagHelper
 	{
 		$input_options = $options;
 		$options = $options['options'];
-		$defaults = array(
+		$options += $defaults = array(
 			'baseID' => $this->baseID(),
 			'assocName' => false,
 			'title' => false,
-			'callbacks' => array()
+			'callbacks' => array(),
+			'confirm_excluding_text' => __('Bucrata::inputRelationalManyChildren - Message for confirm excluding', true)
 		);
-		$options = am($defaults, $options);
 		extract($options);
 		
 		$model_class_name = $model;
@@ -1206,7 +1206,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'title' => $title,
 		));
 		
-		$out .= $this->_orderedItensManyChildren(compact('model_class_name','content','baseID','callbacks'));
+		$out .= $this->_orderedItensManyChildren(compact('confirm_excluding_text','model_class_name','content','baseID','callbacks'));
 		
 		return $this->Bl->div(array('id' => 'div' . $baseID, 'class' => 'ordered_list'), array(), $out);
 	}
@@ -1261,6 +1261,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  *  - `auto_order` boolean An boolean that tells if the order can be changed by 
  *                         the user or is changed by the model. Defaults to false
  *                         (ie. user can change the order)
+ *  - `confirm_excluding_text` string A string to be display on screen on confirm box.
  * 
  * @access protected
  * @param array $options An array whith the options for this ordered list
@@ -1299,8 +1300,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 				$this->internalParam('baseID', $baseID),
 			),
 			'callbacks' => array(
-				'onError' => array('js' => "BuroCR.get('$baseID').error(json);"),
-				'onSuccess' => array('js' => "BuroCR.get('$baseID').success(json);"),
+				'onError' => array('js' => "BuroCR.get('$baseID').error(json||false);"),
+				'onSuccess' => array('js' => "BuroCR.get('$baseID').success(json||false);"),
 			)
 		);
 		$options['callbacks']['onAction'] = array('ajax' => $ajax_call);
