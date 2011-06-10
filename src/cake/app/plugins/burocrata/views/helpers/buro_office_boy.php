@@ -106,8 +106,12 @@ class BuroOfficeBoyHelper extends AppHelper
 			$this->Html->script('/burocrata/js/burocrata.js', array('inline' => false));
 			$this->Html->scriptBlock('var debug = ' . Configure::read() . ';', array('inline' => false));
 
+			$script = implode("\n", $this->scripts);
+			if (Configure::read('debug'))
+				$script = sprintf('try{ %s }catch(e){ console.log(e); }', $script);
+			
 			$view =& ClassRegistry::getObject('view');
-			$view->addScript($this->Html->scriptBlock($this->Js->domReady(implode("\n", $this->scripts))));
+			$view->addScript($this->Html->scriptBlock($this->Js->domReady($script)));
 		}
 	}
 

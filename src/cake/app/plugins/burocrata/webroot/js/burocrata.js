@@ -13,20 +13,21 @@ document.observe('dom:loaded', function()
 	Element.addMethods({
 		setLoading: function(element)
 		{
-			if (!(element = $(element))) return;
-			if (!element.visible() || element.retrieve('loading')) return element;
+			if (!(element = $(element))) { return; }
+			if (!element.visible() || element.retrieve('loading')) { return element; }
 			var indicator = new Element('div', {className: 'loading-indicator'}), 
-				overlayer = new Element('div', {className: 'loading-overlayer'});
+				overlayer = new Element('div', {className: 'loading-overlayer'}),
+				position, pe;
 			document.body.insert(overlayer);
 			overlayer.insert({after: indicator}).clonePosition(element).setOpacity(0.7);
 			
-			var position = $H(overlayer.cumulativeOffset());
+			position = $H(overlayer.cumulativeOffset());
 			position = position.merge(overlayer.getDimensions());
 			indicator.setStyle({
 				left: (position.get('left')+position.get('width')/2-indicator.getWidth()/2)+'px',
 				top: position.get('top')+'px'
 			});
-			var pe = new PeriodicalExecuter(function(indicator, position) {
+			pe = new PeriodicalExecuter(function(indicator, position) {
 				var pos = Math.max(position.get('top')+20, document.viewport.getScrollOffsets().top+20);
 				pos = Math.min(pos, position.get('top')+position.get('height')-20);
 				pos+= (indicator.cumulativeOffset().top-pos)/2;
@@ -36,6 +37,7 @@ document.observe('dom:loaded', function()
 		},
 		unsetLoading: function(element)
 		{
+			var loading;
 			if (!(element = $(element))) return;
 			if (!(loading = element.retrieve('loading'))) return element;
 			loading.pe.stop();
@@ -180,7 +182,7 @@ var BuroForm = Class.create(BuroCallbackable, {
 			this.form.unlock = this.unlockForm.bind(this);
 			this.form.observe('keypress', this.keyPress.bind(this));
 			
-			this.inputs = $$('*[buro:form='+this.id_base+']');
+			this.inputs = $$('[buro\\:form="'+this.id_base+'"]');
 
 			BuroCR.set(this.form.id, this);
 			
@@ -724,7 +726,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	error: function(json)
 	{
 		this.trigger('onError', json);
-		this.items.each(function(item){
+		this.items.each(function(item) {
 			item.div.unsetLoading();
 		});
 	},
@@ -748,7 +750,16 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 				item.div.swapWith(prev.div).unsetLoading();
 				item.checkSiblings();
 				prev.checkSiblings();
+			break;
+			
+			case 'edit':
+			break;
+			
 			case 'delete':
+			break;
+			
+			case 'duplicate':
+			break;
 		}
 	},
 	getItem: function(id)
