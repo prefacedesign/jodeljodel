@@ -662,6 +662,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
  * @param object types A list of allowed types for putting on this input
  */
 var BuroListOfItems = Class.create(BuroCallbackable, {
+	baseDuration: 0.3, //in seconds
 	initialize: function(id_base, texts, types)
 	{
 		this.texts = texts;
@@ -729,7 +730,19 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	removeItem: function(item)
 	{
 		this.items.splice(this.items.indexOf(item), 1)
-		item.div.remove();
+		item.div.unsetLoading();
+		new Effect.BlindUp(item.div, {
+			duration: this.baseDuration,
+			afterFinish: function(item, eff) {
+				var prev, next;
+				if (item.hasPrev) prev = this.getItem(item.prev);
+				if (item.hasNext) next = this.getItem(item.next);
+				
+				item.div.remove();
+				if (prev) prev.checkSiblings();
+				if (next) next.checkSiblings();
+			}.bind(this, item)
+		});
 	},
 	placesForm: function(element)
 	{
@@ -750,8 +763,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	},
 	routeAction: function(item, action, id)
 	{
-		if (action == 'delete' && !confirm(this.texts.confirm_excluding_text))
-			return;
+		if (action == 'delete' && !confirm(this.texts.confirm_excluding_text)) return;
 		item.div.setLoading();
 		this.trigger('onAction', action, id);
 	},
@@ -767,20 +779,20 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	},
 	cancel: function()
 	{
-		new Effect.BlindUp(this.divForm, {duration: 0.3, afterFinish: function()
-		{
-			this.divForm.update();
-			this.editing.show();
-			this.editing = false;
-			this.menus.each(function(menu){menu.enable();});
-		}.bind(this)});
+		new Effect.BlindUp(this.divForm, {
+			duration: this.baseDuration,
+			afterFinish: function() {
+				this.divForm.update();
+				this.editing.show();
+				this.editing = false;
+				this.menus.each(function(menu){menu.enable();});
+			}.bind(this)
+		});
 	},
 	error: function(json)
 	{
+		this.items.each(Element.unsetLoading);
 		this.trigger('onError', json);
-		this.items.each(function(item) {
-			item.div.unsetLoading();
-		});
 	},
 	success: function(json)
 	{
@@ -806,15 +818,9 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			case 'delete':
 				if (!json.saved || !(item = this.getItem(json.saved)))
 					break;
-				if (item.hasPrev) prev = this.getItem(item.prev);
-				if (item.hasNext) next = this.getItem(item.next);
 				
-				item.div.unsetLoading();
 				this.removeMenu(item.div.next('.ordered_list_menu'));
 				this.removeItem(item);
-				
-				prev.checkSiblings();
-				next.checkSiblings();
 			break;
 			
 			case 'duplicate':

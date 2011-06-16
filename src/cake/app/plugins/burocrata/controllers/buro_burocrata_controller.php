@@ -393,6 +393,8 @@ class BuroBurocrataController extends BurocrataAppController
 				case 'delete':
 					if (empty($this->buroData['id']))
 						$error = $debug?'BuroBurocrataController - ID was not present on POST.':true;
+					elseif (method_exists($Model, 'buroDelete') && $Model->buroDelete($this->buroData['id']) == false)
+						$error = $debug?'BuroBurocrataController - Model::buroDelete method returned false.':true;
 					elseif ($Model->delete($this->buroData['id']) == false)
 						$error = $debug?'BuroBurocrataController - Model::delete method returned false.':true;
 					
