@@ -682,7 +682,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
  * @param object types A list of allowed types for putting on this input
  */
 var BuroListOfItems = Class.create(BuroCallbackable, {
-	baseFxDuration: 0.4, //in seconds
+	baseFxDuration: 0.3, //in seconds
 	initialize: function(id_base, content, types)
 	{
 		this.texts = content.texts || {};
@@ -805,7 +805,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	placesForm: function(obj)
 	{
 		if (this.editing !== false) return false;
-		obj.div.insert({after: this.divForm}).hide();
+		obj.div.insert({after: this.divForm}).hide().unsetLoading();
 		this.divForm.show().setLoading()
 		this.editing = obj;
 		this.menus.each(function(menu){ menu.disable(); });
@@ -814,33 +814,26 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	openForm: function(content)
 	{
 		var iHeight = this.divForm.getHeight(),
-			fHeight = this.divForm.update(content).getHeight(),
+			fHeight = this.divForm.update(content).setStyle({height:''}).getHeight(),
 			form_id = this.divForm.down('.buro_form').readAttribute('id');
 		
-		var finish = function (form_id, fx) {
-			this.divForm.setStyle({overflow: '', height:''});
-			var OpenedForm = BuroCR.get(form_id);
-			if (OpenedForm)
-				OpenedForm.addCallbacks({
-					'onSave': this.formSaved.bind(this),
-					'onCancel': this.formCanceled.bind(this),
-					'onError': this.formError.bind(this)
-				});
-			else
-				console.error(form_id+' not found');
-		}.bind(this).curry(form_id);
+		this.divForm.unsetLoading().setStyle({overflow:'hidden', height: iHeight+'px'});
 		
-		this.divForm.unsetLoading();
-		if (this.editing.id) {
-			finish.delay(0.2);
-		} else {
-			this.divForm.setStyle({overflow:'hidden', height: iHeight+'px'});
-			new Effect.Morph(this.divForm, {
-				duration: this.baseFxDuration,
-				style: {height: fHeight+'px'},
-				afterFinish: finish
-			});
-		}
+		new Effect.Morph(this.divForm, {
+			queue: 'end',
+			duration: this.baseFxDuration,
+			style: {height: fHeight+'px'},
+			afterFinish: function (form_id, fx) {
+				this.divForm.setStyle({overflow: '', height:''});
+				var OpenedForm = BuroCR.get(form_id);
+				if (OpenedForm)
+					OpenedForm.addCallbacks({
+						'onSave': this.formSaved.bind(this),
+						'onCancel': this.formCanceled.bind(this),
+						'onError': this.formError.bind(this)
+					});
+			}.bind(this).curry(form_id)
+		});
 	},
 	closeForm: function()
 	{
@@ -924,8 +917,8 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			case 'edit':
 				if (json.id && (item = this.getItem(json.id)))
 				{
+					this.divForm.setStyle({height: item.div.getHeight()+'px'});
 					this.placesForm(item);
-					item.div.unsetLoading().hide();
 				}
 				if (this.editing == false)
 					break;
