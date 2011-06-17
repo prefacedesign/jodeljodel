@@ -657,15 +657,32 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 /**
  * The main class for a list of items. It handles all ajax calls
  * 
+ * ***How it works:***
+ *
+ *  - This class receives the templates for an item and for an menu.
+ *  - Also it receives all already saved contents and renders it on initialize using the item template.
+ *  - This class keeps updated two arrays (one for the items objects and other
+ *     for the menu objects)
+ *  - Each item created has a callback called `buro:controlClick` that is mapped here to
+ *     method BuroListOfItems.routeAction(item, action, id) that triggers its own `onAction` callback
+ *     that is coded on BuroBurocrataHelper::_orderedItensManyChildren method
+ *  - The `onAction` callback performs an ajax call witch when is complete, calls 
+ *     BuroListOfItems.actionError(json) or BuroListOfItems.actionSuccess(json) depending on response
+ *  - The BuroListOfItems.actionSuccess(json) method do on user interface what the controllers and
+ *     models did on backstage.
+ *  - Each menu created has a callback named `buro:newItem` that is mapped here to
+ *     BuroListOfItems.newItem() method
+ *  
  * @access public
  * @param string id_base The master ID used to find one specific instance of this class and elements on HTML
+ * @param object content A object with 3 properties: texts (object), templates (object) and contents (array)
  * @param object types A list of allowed types for putting on this input
  */
 var BuroListOfItems = Class.create(BuroCallbackable, {
 	baseFxDuration: 0.3, //in seconds
 	initialize: function(id_base, content, types)
 	{
-		this.texts = content.texts || [];
+		this.texts = content.texts || {};
 		this.templates = content.templates || {menu: '', item: ''};
 		this.contents = content.contents || [];
 
@@ -735,11 +752,6 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 		});
 	},
 	
-	newItem: function(menuObj, type)
-	{
-		if (this.placesForm(menuObj.div))
-			this.trigger('onAction', 'edit');
-	},
 	addNewItem: function(content, order, animate)
 	{
 		var contentHtml = this.templates.item.interpolate(content),
@@ -783,11 +795,16 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	},
 	
 	
-	placesForm: function(element)
+	newItem: function(menuObj, type)
 	{
-		if (this.editing != false) return false;
-		element.insert({after: this.divForm.show()});
-		this.editing = element.hide();
+		if (this.placesForm(menuObj))
+			this.trigger('onAction', 'edit', '', type);
+	},
+	placesForm: function(obj)
+	{
+		if (this.editing !== false) return false;
+		obj.div.insert({after: this.divForm.show()}).hide();
+		this.editing = obj;
 		this.menus.each(function(menu){ menu.disable(); });
 		return true;
 	},
@@ -796,27 +813,16 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 		var form_id = this.divForm.down('.buro_form').readAttribute('id'),
 			OpenedForm = BuroCR.get(form_id);
 		OpenedForm.addCallbacks({
-			'onSave': this.saved.bind(this),
-			'onCancel': this.cancel.bind(this)
+			'onSave': this.formSaved.bind(this),
+			'onCancel': this.formCanceled.bind(this)
 		});
 	},
-	routeAction: function(item, action, id)
-	{
-		if (action == 'delete' && !confirm(this.texts.confirm_excluding_text)) return;
-		item.div.setLoading();
-		this.trigger('onAction', action, id);
-	},
-	actionEdit: function(item)
-	{
-		if (this.placesForm(item.div))
-			this.trigger('onShowForm', item.id);
-	},
-	saved: function(form, response, json)
+	formSaved: function(form, response, json)
 	{
 		this.element.update(json.content);
-		this.cancel();
+		this.formCanceled();
 	},
-	cancel: function()
+	formCanceled: function()
 	{
 		new Effect.BlindUp(this.divForm, {
 			duration: this.baseFxDuration,
@@ -828,12 +834,18 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			}.bind(this)
 		});
 	},
-	error: function(json)
+	routeAction: function(item, action, id)
+	{
+		if (action && !Object.isUndefined(this.texts.confirm[action]) && !confirm(this.texts.confirm[action])) return;
+		item.div.setLoading();
+		this.trigger('onAction', action, id);
+	},
+	actionError: function(json)
 	{
 		this.items.each(function(item){item.div.unsetLoading()});
 		this.trigger('onError', json);
 	},
-	success: function(json)
+	actionSuccess: function(json)
 	{
 		var item, prev, next;
 		switch (json.action)
@@ -870,6 +882,10 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			break;
 			
 			case 'edit':
+				if (this.editing == false)
+					break;
+				
+				
 			break;
 		}
 	},

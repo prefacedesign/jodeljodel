@@ -21,18 +21,18 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 		);
 		
 		
-		echo $this->Buro->sinput(array(), array('type' => 'super_field', 'label' => 'This gallery'));
+		echo $this->Buro->sinput(array(), array('type' => 'super_field', 'label' => __d('buro_user','This gallery',true)));
 		
 			echo $this->Buro->input(array(),
 				array(
-					'label' => 'Gallery title',
+					'label' => __d('buro_user','Gallery title', true),
 					'fieldName' => 'title'
 				)
 			);
 			
 			echo $this->Buro->input(array(),
 				array(
-					'label' => 'Gallery release date',
+					'label' => __d('buro_user','Gallery release date', true),
 					'fieldName' => 'date',
 					'type' => 'datetime',
 					'options' => array(
@@ -47,7 +47,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 			
 		echo $this->Buro->input(array(),
 			array(
-				'label' => 'Something about this gallery',
+				'label' => __d('buro_user','Something about this gallery', true),
 				'fieldName' => 'about',
 				'type' => 'textile',
 				'options' => array(
@@ -61,8 +61,8 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 		echo $this->Buro->input(array(), 
 			array(
 				'type' => 'relational',
-				'label' => 'Owner of this gallery',
-				'instructions' => 'First, search if he/she already has a account, using his/her name. If does not, you will be able to create a new one.',
+				'label' => __d('buro_user','Owner of this gallery', true),
+				'instructions' => __d('buro_user','First, search if he/she already has a account, using his/her name. If does not, you will be able to create a new one.', true),
 				'options' => array(
 					'type' => 'unitary_autocomplete',
 					'model' => 'BurocrataUser.Person'
@@ -72,16 +72,21 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 		
 		echo $this->Buro->input(array(),
 			array(
-				'label' => 'Pictures for this gallery',
+				'label' => __d('buro_user','Pictures for this gallery', true),
 				'type' => 'relational',
-				'instructions' => 'Click on plus sign (on right) to add more pictures. You can also change the order of appearance, edit, delete and duplicate each picture.',
+				'instructions' => __d('buro_user','Click on plus sign (on right) to add more pictures. You can also change the order of appearance, edit, delete and duplicate each picture.', true),
 				'options' => array(
 					'type' => 'many_children',
 					'model' => 'BurocrataUser.Picture',
 					'callbacks' => array(
 						'onError' => array('js' => "alert('Deu erro ao fazer o `'+json.action+'`. Controller voltou:\\n\\n\\t'+json.error);")
 					),
-					'confirm_excluding_text' => 'Qué apagar a bagaça mesmo?'
+					'texts' => array(
+						'confirm' => array(
+							'delete' => __d('buro_user','Do you really want to delete this image?', true)
+						),
+						'title' => __d('buro_user','Image', true)
+					)
 				)
 			)
 		);

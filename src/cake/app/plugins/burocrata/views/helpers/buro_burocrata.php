@@ -1156,7 +1156,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'assocName' => false,
 			'title' => false,
 			'callbacks' => array(),
-			'confirm_excluding_text' => __('Bucrata::inputRelationalManyChildren - Message for confirm excluding', true)
+			'texts' => array('confirm' => array())
 		);
 		extract($options);
 		
@@ -1206,7 +1206,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'title' => $title,
 		));
 		
-		$out .= $this->_orderedItensManyChildren(compact('confirm_excluding_text','model_class_name','allowedContent','baseID','callbacks'));
+		$out .= $this->_orderedItensManyChildren(compact('texts','model_class_name','allowedContent','baseID','callbacks'));
 		
 		return $this->Bl->div(array('id' => 'div' . $baseID, 'class' => 'ordered_list'), array(), $out);
 	}
@@ -1261,7 +1261,11 @@ class BuroBurocrataHelper extends XmlTagHelper
  *  - `auto_order` boolean An boolean that tells if the order can be changed by 
  *                         the user or is changed by the model. Defaults to false
  *                         (ie. user can change the order)
- *  - `confirm_excluding_text` string A string to be display on screen on confirm box.
+ *  - `texts` array An array of groups of strings to be display on user interface. Accepted 
+ *                  groups of strings are: `confirm` witch is an array indexed by action (will display an 
+ *                  confirm box before actually performs the action); `title` witch is an string to be 
+ *                  displayed on top of every item.
+ *                  
  * 
  * @access protected
  * @param array $options An array whith the options for this ordered list
@@ -1305,8 +1309,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 				$this->internalParam('baseID', $baseID),
 			),
 			'callbacks' => array(
-				'onError' => array('js' => "BuroCR.get('$baseID').error(json||false);"),
-				'onSuccess' => array('js' => "BuroCR.get('$baseID').success(json||false);"),
+				'onError' => array('js' => "BuroCR.get('$baseID').actionError(json||false);"),
+				'onSuccess' => array('js' => "BuroCR.get('$baseID').actionSuccess(json||false);"),
 			)
 		);
 		$jsOptions['callbacks']['onAction'] = array('ajax' => $ajax_call);
@@ -1314,7 +1318,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$jsOptions['templates']['menu'] = $this->orderedItensMenu(array(), array('allowedContent' => $allowedContent));
 		$jsOptions['templates']['item'] = $this->orderedItensItem();
 		$jsOptions['contents'] = $contents;
-		$jsOptions['texts'] = compact('confirm_excluding_text');
+		$jsOptions['texts'] = $options['texts'];
 		
 		$out = $this->Bl->br();
 		$out .= $this->BuroOfficeBoy->listOfItems($jsOptions);
@@ -2119,11 +2123,11 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		// Div for previews
 		$out .= $this->Bl->sdiv(array('id' => $prv_id));
-			$filename = 'Baixar arquivo';
+			$filename = __('Burocrata::inputUpload - Download file', true);
 			$htmlAttributes = array('id' => $lnk_id);
 			if (!empty($value))
 				$htmlAttributes['href'] = $this->Bl->fileURL($value, '', true);
-			$out .= $this->Bl->pDry(__('Burocrata::inputUpload - Arquivo: ', true) . $this->Bl->a($htmlAttributes, array(), $filename));
+			$out .= $this->Bl->pDry(__('Burocrata::inputUpload - File: ', true) . $this->Bl->a($htmlAttributes, array(), $filename));
 		$out .= $this->Bl->ediv();
 		
 		// Div for actions ID must be `'act' . $gen_options['baseID']`
@@ -2259,7 +2263,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 				$out .= $this->Bl->a(
 					array('href' => '', 'class' => 'link_button buro_textile '.$button.'_textile', 'id' => ${"l{$button}_id"}),
 					array(),
-					__('Burocrata::inputTextile - Add '.$button, true)
+					__(sprintf('Burocrata::inputTextile - Add %s', $button), true)
 				);
 				$popup_method = '_popupTextile'.Inflector::camelize($button);
 				if (method_exists($this, $popup_method))
