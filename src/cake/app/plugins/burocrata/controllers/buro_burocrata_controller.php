@@ -223,23 +223,9 @@ class BuroBurocrataController extends BurocrataAppController
  */
 	public function view()
 	{
-		$error = false;
-		$data = array();
-		$Model = null;
-		
-		$error = $this->_load($Model);
-		
-		if($error === false)
-		{
-			$this->data = $data = $Model->find('first', array(
-				'recursive' => -1,
-				'conditions' => array(
-					$Model->alias.'.'.$Model->primaryKey => $this->buroData['id']
-				)
-			));
-		}
-	
-		$this->set(compact('error', 'data'));
+		$data = $this->_getBuroData();
+		$this->data = $data['data'];
+		$this->set($data);
 	}
 
 
@@ -455,20 +441,53 @@ class BuroBurocrataController extends BurocrataAppController
 						if (!$error)
 						{
 							$this->set('old_id', $this->buroData['id']);
-							$this->buroData['id'] = $id;
-							$this->view();
+							$buroData = $this->_getBuroData($id);
+							extract($buroData);
+							$this->set(compact('data'));
 						}
 					}
 				break;
 				
 				case 'edit':
-					$this->edit();
+					if (!empty($this->buroData['id']))
+						$id = $this->buroData['id'];
+					$buroData = $this->_getBuroData();
+					extract($buroData);
+					$this->data = $data;
+					$this->set(compact('data'));
 				break;
 			}
 		
 		}
 		
 		$this->set(compact('error', 'action', 'saved', 'id'));
+	}
+
+/**
+ * Used to find data on database using burocratas conventions
+ * 
+ * @access protected
+ * @return array An array with two index: `data` and `error`
+ */
+	protected function _getBuroData($id = null)
+	{
+		$error = false;
+		$data = array();
+		$Model = null;
+		
+		if (empty($id) && !empty($this->buroData['id']))
+			$id = $this->buroData['id'];
+		
+		if(!empty($id) && ($error = $this->_load($Model)) === false)
+		{
+			$data = $Model->find('first', array(
+				'recursive' => -1,
+				'conditions' => array(
+					$Model->alias.'.'.$Model->primaryKey => $id
+				)
+			));
+		}
+		return compact('error', 'data');
 	}
 
 

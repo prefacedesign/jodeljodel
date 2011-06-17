@@ -661,17 +661,20 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
  *
  *  - This class receives the templates for an item and for an menu.
  *  - Also it receives all already saved contents and renders it on initialize using the item template.
- *  - This class keeps updated two arrays (one for the items objects and other
- *     for the menu objects)
- *  - Each item created has a callback called `buro:controlClick` that is mapped here to
- *     method BuroListOfItems.routeAction(item, action, id) that triggers its own `onAction` callback
- *     that is coded on BuroBurocrataHelper::_orderedItensManyChildren method
- *  - The `onAction` callback performs an ajax call witch when is complete, calls 
+ *  - This class keeps updated two arrays (one for the items objects `BuroListOfItemsItem` and other
+ *     for the menu objects `BuroListOfItemsMenu`)
+ *  - Each item created has a callback called `buro:controlClick` (actions up, down, duplicate...) that
+ *     is mapped here to method BuroListOfItems.routeAction(item, action, id) that triggers its own 
+ *     `onAction` callback that is coded on BuroBurocrataHelper::_orderedItensManyChildren method
+ *  - The `onAction` callback performs an ajax call witch, when is complete, calls 
  *     BuroListOfItems.actionError(json) or BuroListOfItems.actionSuccess(json) depending on response
  *  - The BuroListOfItems.actionSuccess(json) method do on user interface what the controllers and
  *     models did on backstage.
- *  - Each menu created has a callback named `buro:newItem` that is mapped here to
- *     BuroListOfItems.newItem() method
+ *  - Each menu object created has a callback named `buro:newItem` that is mapped here to
+ *     BuroListOfItems.newItem() method that opens a form right below the menu div
+ *  - When a form is opened, this class searches for it and observes its main callbacks (like `onError`, 
+ *    `onCancel` and `onSave`) to make possible do the necessary changes after the submit.
+ *  
  *  
  * @access public
  * @param string id_base The master ID used to find one specific instance of this class and elements on HTML
@@ -679,7 +682,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
  * @param object types A list of allowed types for putting on this input
  */
 var BuroListOfItems = Class.create(BuroCallbackable, {
-	baseFxDuration: 0.3, //in seconds
+	baseFxDuration: 0.4, //in seconds
 	initialize: function(id_base, content, types)
 	{
 		this.texts = content.texts || {};
@@ -693,9 +696,8 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 		this.id_base = id_base;
 		BuroCR.set(this.id_base, this);
 		
-		this.divForm = new Element('div', {id: 'divform'+id_base});
 		this.divCont = $('div'+id_base);
-		this.divCont.insert(this.divForm.hide())
+		this.divCont.insert(this.divForm = new Element('div', {id: 'divform'+id_base}).hide());
 		
 		this.addNewMenu();
 		this.contents.each(this.addNewItem.bind(this));
@@ -803,19 +805,61 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	placesForm: function(obj)
 	{
 		if (this.editing !== false) return false;
-		obj.div.insert({after: this.divForm.show()}).hide();
+		obj.div.insert({after: this.divForm}).hide();
+		this.divForm.show().setLoading()
 		this.editing = obj;
 		this.menus.each(function(menu){ menu.disable(); });
 		return true;
 	},
-	openedForm: function()
+	openForm: function(content)
 	{
-		var form_id = this.divForm.down('.buro_form').readAttribute('id'),
-			OpenedForm = BuroCR.get(form_id);
-		OpenedForm.addCallbacks({
-			'onSave': this.formSaved.bind(this),
-			'onCancel': this.formCanceled.bind(this)
-		});
+		var iHeight = this.divForm.getHeight(),
+			fHeight = this.divForm.update(content).getHeight(),
+			form_id = this.divForm.down('.buro_form').readAttribute('id');
+		
+		var finish = function (form_id, fx) {
+			this.divForm.setStyle({overflow: '', height:''});
+			var OpenedForm = BuroCR.get(form_id);
+			if (OpenedForm)
+				OpenedForm.addCallbacks({
+					'onSave': this.formSaved.bind(this),
+					'onCancel': this.formCanceled.bind(this),
+					'onError': this.formError.bind(this)
+				});
+			else
+				console.error(form_id+' not found');
+		}.bind(this).curry(form_id);
+		
+		this.divForm.unsetLoading();
+		if (this.editing.id) {
+			finish.delay(0.2);
+		} else {
+			this.divForm.setStyle({overflow:'hidden', height: iHeight+'px'});
+			new Effect.Morph(this.divForm, {
+				duration: this.baseFxDuration,
+				style: {height: fHeight+'px'},
+				afterFinish: finish
+			});
+		}
+	},
+	closeForm: function()
+	{
+		var finish = function() {
+			this.editing.div.show();
+			this.editing = false;
+			this.menus.each(function(menu){menu.enable();});
+			this.divForm.update().hide();
+		}.bind(this);
+		
+		this.divForm.unsetLoading();
+		if (this.editing.id) {
+			finish();
+		} else {
+			new Effect.BlindUp(this.divForm, {
+				duration: this.baseFxDuration,
+				afterFinish: finish
+			});
+		}
 	},
 	formSaved: function(form, response, json)
 	{
@@ -824,15 +868,10 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	},
 	formCanceled: function()
 	{
-		new Effect.BlindUp(this.divForm, {
-			duration: this.baseFxDuration,
-			afterFinish: function() {
-				this.divForm.update();
-				this.editing.show();
-				this.editing = false;
-				this.menus.each(function(menu){menu.enable();});
-			}.bind(this)
-		});
+		this.closeForm();
+	},
+	formError: function()
+	{
 	},
 	routeAction: function(item, action, id)
 	{
@@ -843,6 +882,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	actionError: function(json)
 	{
 		this.items.each(function(item){item.div.unsetLoading()});
+		this.closeForm();
 		this.trigger('onError', json);
 	},
 	actionSuccess: function(json)
@@ -882,10 +922,14 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			break;
 			
 			case 'edit':
+				if (json.id && (item = this.getItem(json.id)))
+				{
+					this.placesForm(item);
+					item.div.unsetLoading().hide();
+				}
 				if (this.editing == false)
 					break;
-				
-				
+				this.openForm(json.content);
 			break;
 		}
 	},
