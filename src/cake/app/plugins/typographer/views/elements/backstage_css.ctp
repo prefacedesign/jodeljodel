@@ -160,7 +160,7 @@
 	
 	$this->Decorator->rule(
 		'.ordered_list .ordered_list_item', array(
-			'margin' => sprintf('%s %s', $hg->size(array('g' => 1)), 0)
+			'margin' => sprintf('%s %s', $hg->size(array('g' => 0.5)), 0)
 	));
 	
 	$arrow_size = 13;
@@ -191,6 +191,28 @@
 	$this->Decorator->rule(
 		'.ordered_list_menu button.ordered_list_menu_add[disabled]', array(
 			'background-position' => sprintf('%s bottom', $bg_pos)
+	));
+	
+	
+	$this->Decorator->rule(
+		'.ordered_list_controls', array(
+			'margin-bottom' => $vg->size(array('g' => 0.5)),
+			'font-size' => '11px',
+			'float' => 'left'
+	));
+	
+	$this->Decorator->rule(
+		'.ordered_list_item_title', array(
+			'color' => $palette['subitem_title']->write(),
+			'float' => 'right',
+			'font-size' => $u->t($line_height * 11/18),
+			'font-weight' => 'bold',
+			'text-transform' => 'uppercase'
+	));
+	
+	$this->Decorator->rule(
+		'.ordered_list_controls button', array(
+			'vertical-align' => 'middle'
 	));
 	
 	$bg_pos = $u->t(15+$arrow_size*1);

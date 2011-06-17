@@ -28,6 +28,7 @@ $palette['button_fg_disabled'] = clone $palette['text'];
 $palette['button_fg_disabled']->blendWith($palette['bg'], 0.75);
 $palette['button_bg_hover']    = new Color(234,255,207);
 $palette['button_bg_active']   = new Color(  0,  0,  0);
+$palette['subitem_title']	   = new Color(200,200,200);
 $palette['subform']            = new Color(216,229,255);
 $palette['wrong_tag_bg']       = new Color(255,223,199);
 $palette['tag_bg']             = new Color(229,235,213);

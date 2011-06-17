@@ -1430,8 +1430,9 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$htmlAttributes['buro:id'] = '#{id}';
 		
 		$out = $this->Bl->sdiv($htmlAttributes);
-		$out .= $this->Bl->div(array(), array(), '#{title}');
+		$out .= $this->Bl->div(array('class' => 'ordered_list_item_title'), array(), '#{title}');
 		$out .= $this->orderedItensControls();
+		$out .= $this->Bl->floatBreak();
 		$out .= '#{content}';
 		return $out;
 	}
