@@ -230,13 +230,11 @@ class BuroOfficeBoyHelper extends AppHelper
  */
 	public function listOfItems($options)
 	{
-		$defaults = array('callbacks' => array(), 'baseID' => uniqid(), 'types' => array());
-		extract(am($defaults, $options));
-		unset($defaults);
+		$options += array('callbacks' => array(), 'baseID' => uniqid(), 'types' => array(), 'texts' => array());
+		extract($options);
+		unset($options);
 		
-		$texts = compact('confirm_excluding_text');
-		
-		$script = sprintf("new BuroListOfItems('%s', %s)", $baseID, $this->Js->object($texts));
+		$script = sprintf("new BuroListOfItems('%s', %s)", $baseID, $this->Js->object(compact('texts', 'templates', 'contents')));
 		if (!empty($callbacks))
 			$script .= sprintf('.addCallbacks(%s)', $this->formatCallbacks('listOfItems', $callbacks));
 		return $this->addHtmlEmbScript($script);

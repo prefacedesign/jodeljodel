@@ -662,57 +662,70 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
  * @param object types A list of allowed types for putting on this input
  */
 var BuroListOfItems = Class.create(BuroCallbackable, {
-	baseDuration: 0.3, //in seconds
-	initialize: function(id_base, texts, types)
+	baseFxDuration: 0.3, //in seconds
+	initialize: function(id_base, content, types)
 	{
-		this.texts = texts;
+		this.texts = content.texts || [];
+		this.templates = content.templates || {menu: '', item: ''};
+		this.contents = content.contents || [];
+
+		this.menus = [];
+		this.items = [];
+		
 		this.types = types;
 		this.id_base = id_base;
 		BuroCR.set(this.id_base, this);
 		
 		this.divForm = new Element('div', {id: 'divform'+id_base});
 		this.divCont = $('div'+id_base);
-		this.divCont.insert(this.divForm.hide());
+		this.divCont.insert(this.divForm.hide())
 		
-		this.menus = this.divCont.select('.ordered_list_menu').map(this.newMenu.bind(this));
-		this.items = this.divCont.select('.ordered_list_item').map(function(div){
-			return new BuroListOfItemsItem(div).addCallbacks({'buro:controlClick': this.routeAction.bind(this)});
-		}.bind(this));
+		this.addNewMenu();
+		this.contents.each(this.addNewItem.bind(this));
 		
 		this.editing = false;
 	},
 	
 	addNewMenu: function(order)
 	{
-		var i,
-			div = this.menus[0].div.clone(true),
-			prevMenu = this.menus.find(function(order, menu) { return menu.order == order; }.curry(order))
-					|| this.menus[this.menus.length-1];
+		var div, prevMenu = false;
+		
+		if (Object.isUndefined(order) || order > this.menus.length)
+			order = this.menus.length;
+		
+		if (this.menus.length > order)
+			prevMenu = this.menus[order];
 		
 		this.menus.each(function(order, menu) {
 			if (menu.order >= order)
 				menu.setOrder(Number(menu.order)+1);
 		}.curry(order));
 		
-		prevMenu.div.insert({before:div});
-		this.menus.push(this.newMenu(div));
-		this.reorderMenuList();
+		div = new Element('div').insert(this.templates.menu.interpolate({order:order})).down();
 		
+		if (prevMenu)
+			prevMenu.div.insert({before:div});
+		else
+			this.divCont.insert(div);
+		
+		this.menus.push(this.createMenu(div));
+		this.reorderMenuList();
 		return this;
 	},
-	newMenu: function(div)
+	createMenu: function(div)
 	{
 		return new BuroListOfItemsMenu(div).addCallbacks({'buro:newItem': this.newItem.bind(this)});
 	},
 	removeMenu: function(div)
 	{
 		var order = Number(div.readAttribute('buro:order'));
-		this.menus.splice(order-1, 1);
+		this.menus.splice(order, 1);
 		div.remove();
 		this.menus.each(function(order, menu) {
 			if (menu.order >= order)
 				menu.setOrder(Number(menu.order)-1);
 		}.curry(order));
+		
 		return this;
 	},
 	reorderMenuList: function()
@@ -727,12 +740,35 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 		if (this.placesForm(menuObj.div))
 			this.trigger('onAction', 'edit');
 	},
+	addNewItem: function(content, order, animate)
+	{
+		var contentHtml = this.templates.item.interpolate(content),
+			div = new Element('div').insert(contentHtml).down();
+		
+		this.addNewMenu(order);
+		this.menus[order].div.insert({after: div});
+		this.items.splice(order, 0, this.createItem(div));
+		
+		if (order)
+			this.items[order-1].checkSiblings();
+		if (order+1 < this.items.length)
+			this.items[order+1].checkSiblings();
+			
+		if (animate)
+			new Effect.BlindDown(div, {duration: this.baseFxDuration});
+		
+		return this;
+	},
+	createItem: function(div)
+	{
+		return new BuroListOfItemsItem(div).addCallbacks({'buro:controlClick': this.routeAction.bind(this)});
+	},
 	removeItem: function(item)
 	{
 		this.items.splice(this.items.indexOf(item), 1)
 		item.div.unsetLoading();
 		new Effect.BlindUp(item.div, {
-			duration: this.baseDuration,
+			duration: this.baseFxDuration,
 			afterFinish: function(item, eff) {
 				var prev, next;
 				if (item.hasPrev) prev = this.getItem(item.prev);
@@ -743,7 +779,10 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 				if (next) next.checkSiblings();
 			}.bind(this, item)
 		});
+		return this;
 	},
+	
+	
 	placesForm: function(element)
 	{
 		if (this.editing != false) return false;
@@ -780,7 +819,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	cancel: function()
 	{
 		new Effect.BlindUp(this.divForm, {
-			duration: this.baseDuration,
+			duration: this.baseFxDuration,
 			afterFinish: function() {
 				this.divForm.update();
 				this.editing.show();
@@ -791,7 +830,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	},
 	error: function(json)
 	{
-		this.items.each(Element.unsetLoading);
+		this.items.each(function(item){item.div.unsetLoading()});
 		this.trigger('onError', json);
 	},
 	success: function(json)
@@ -800,7 +839,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 		switch (json.action)
 		{
 			case 'down': 
-				if (!json.saved || !(item = this.getItem(json.saved)) || !item.hasNext || !(next = this.getItem(item.next)))
+				if (!json.id || !(item = this.getItem(json.id)) || !item.hasNext || !(next = this.getItem(item.next)))
 					break;
 				item.div.swapWith(next.div).unsetLoading();
 				item.checkSiblings();
@@ -808,7 +847,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			break;
 			
 			case 'up': 
-				if (!json.saved || !(item = this.getItem(json.saved)) || !item.hasPrev || !(prev = this.getItem(item.prev)))
+				if (!json.id || !(item = this.getItem(json.id)) || !item.hasPrev || !(prev = this.getItem(item.prev)))
 					break;
 				item.div.swapWith(prev.div).unsetLoading();
 				item.checkSiblings();
@@ -816,7 +855,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			break;
 			
 			case 'delete':
-				if (!json.saved || !(item = this.getItem(json.saved)))
+				if (!json.id || !(item = this.getItem(json.id)))
 					break;
 				
 				this.removeMenu(item.div.next('.ordered_list_menu'));
@@ -824,9 +863,10 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			break;
 			
 			case 'duplicate':
-				if (!json.saved || !(item = this.getItem(json.saved)))
+				if (!json.id || !json.old_id || !(item = this.getItem(json.old_id)))
 					break;
-				item.div.unsetLoading();
+				item.div.unsetLoading()
+				this.addNewItem(json, json.order, true);
 			break;
 			
 			case 'edit':

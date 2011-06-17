@@ -345,7 +345,7 @@ class BuroBurocrataController extends BurocrataAppController
  */
 	public function list_of_items()
 	{
-		$action = $Model = null;
+		$id = $action = $Model = null;
 		$error = $this->_load($Model);
 		
 		if($error === false)
@@ -375,7 +375,7 @@ class BuroBurocrataController extends BurocrataAppController
 						$error = $debug?'BuroBurocrataController - Model::moveup method returned false.':true;
 					
 					if (!$error)
-						$saved = $this->buroData['id'];
+						$id = $this->buroData['id'];
 				break;
 				
 				case 'down':
@@ -387,7 +387,7 @@ class BuroBurocrataController extends BurocrataAppController
 						$error = $debug?'BuroBurocrataController - Model::movedown method returned false.':true;
 					
 					if (!$error)
-						$saved = $this->buroData['id'];
+						$id = $this->buroData['id'];
 				break;
 				
 				case 'delete':
@@ -399,23 +399,21 @@ class BuroBurocrataController extends BurocrataAppController
 						$error = $debug?'BuroBurocrataController - Model::delete method returned false.':true;
 					
 					if (!$error)
-						$saved = $this->buroData['id'];
+						$id = $this->buroData['id'];
 				break;
 				
 				case 'duplicate':
 					if (empty($this->buroData['id']))
-					{
 						$error = $debug?'BuroBurocrataController - ID was not present on POST.':true;
-					}
-					else
+					
+					if (!$error)
 					{
-						$new_id = false;
 						if (method_exists($Model, 'duplicate'))
 						{
 							if (!$Model->duplicate($$this->buroData['id']))
 								$error = $debug?'BuroBurocrataController - Model::duplicate() failed.':true;
 							else
-								$new_id = $Model->id;
+								$id = $Model->id;
 						}
 						else
 						{
@@ -442,20 +440,22 @@ class BuroBurocrataController extends BurocrataAppController
 							if (!$Model->save($data, false))
 								$error = $debug?'BuroBurocrataController - Model did not save the duplicate data.':true;
 							else
-								$new_id = $Model->id;
+								$id = $Model->id;
 						}
 						
 						if (!$error && $ordered)
 						{
-							if (!$Model->moveto($new_id, $order+1))
+							if (!$Model->moveto($id, $order+1))
 								$error = $debug?'BuroBurocrataController - Model::moveto() failed.':true;
 							else
-								$saved = $new_id;
+								$saved = $id;
+							$this->set('order', $order+1);
 						}
 						
 						if (!$error)
 						{
-							$this->buroData['id'] = $new_id;
+							$this->set('old_id', $this->buroData['id']);
+							$this->buroData['id'] = $id;
 							$this->view();
 						}
 					}
@@ -468,7 +468,7 @@ class BuroBurocrataController extends BurocrataAppController
 		
 		}
 		
-		$this->set('jsonVars', compact('error', 'action', 'saved'));
+		$this->set(compact('error', 'action', 'saved', 'id'));
 	}
 
 
@@ -514,6 +514,7 @@ class BuroBurocrataController extends BurocrataAppController
 			
 			$this->set('model_name', $this->model_name);
 			$this->set('model_plugin', $this->model_plugin);
+			$this->set('model_class_name', $model_class_name);
 			$this->set('fullModelName', $model_class_name);
 			
 			$var = $this->{$model_alias};

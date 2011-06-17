@@ -12,6 +12,10 @@
 					}
 				break;
 				
+				case 'view':
+					echo $this->Jodel->insertModule('BurocrataUser.Picture', array('view'), $data);
+				break;
+				
 				case 'form':
 					echo $this->Jodel->insertModule('BurocrataUser.Picture', array('form'), $data);
 				break;

@@ -1200,13 +1200,13 @@ class BuroBurocrataHelper extends XmlTagHelper
 			unset($input_options['instructions']);
 		}
 		
-		$content = array(array(
+		$allowedContent = array(array(
 			'model' => $model,
 			'label' => $model,
 			'title' => $title,
 		));
 		
-		$out .= $this->_orderedItensManyChildren(compact('confirm_excluding_text','model_class_name','content','baseID','callbacks'));
+		$out .= $this->_orderedItensManyChildren(compact('confirm_excluding_text','model_class_name','allowedContent','baseID','callbacks'));
 		
 		return $this->Bl->div(array('id' => 'div' . $baseID, 'class' => 'ordered_list'), array(), $out);
 	}
@@ -1281,12 +1281,17 @@ class BuroBurocrataHelper extends XmlTagHelper
 		list($model_plugin, $model_name) = pluginSplit($model_class_name);
 		$type= am(BuroBurocrataHelper::$defaultSupertype, 'many_children', 'view');
 		
-		$out = $this->Bl->br();
-		$out .= $this->orderedItensMenu(array(), array('content' => $content, 'order' => 1));
+		$contents = array();
 		foreach ($this->data[$model_name] as $n => $data)
-			$out .= $this->orderedItensItem(array(), array('data' => array($model_name => $data), 'model' => $model_class_name, 'type' => $type))
-				. $this->orderedItensMenu(array(), array('content' => $content, 'order' => $n+2))
-			;
+		{
+			$Model =& ClassRegistry::init($model_class_name);
+			$data = array($model_name => $data);
+			$contents[] = array(
+				'content' => $this->Jodel->insertModule($model_class_name, $type, $data),
+				'id' => $data[$Model->alias][$Model->primaryKey],
+				'title' => ''
+			);
+		}
 		
 		// Javascripts
 		$url_edit = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'list_of_items');
@@ -1304,9 +1309,15 @@ class BuroBurocrataHelper extends XmlTagHelper
 				'onSuccess' => array('js' => "BuroCR.get('$baseID').success(json||false);"),
 			)
 		);
-		$options['callbacks']['onAction'] = array('ajax' => $ajax_call);
+		$jsOptions['callbacks']['onAction'] = array('ajax' => $ajax_call);
+		$jsOptions['baseID'] = $options['baseID'];
+		$jsOptions['templates']['menu'] = $this->orderedItensMenu(array(), array('allowedContent' => $allowedContent));
+		$jsOptions['templates']['item'] = $this->orderedItensItem();
+		$jsOptions['contents'] = $contents;
+		$jsOptions['texts'] = compact('confirm_excluding_text');
 		
-		$out .= $this->BuroOfficeBoy->listOfItems($options);
+		$out = $this->Bl->br();
+		$out .= $this->BuroOfficeBoy->listOfItems($jsOptions);
 		return $out;
 	}
 
@@ -1314,6 +1325,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 /**
  * In theory this method is not necessary, but i had to make it 
  * because this fucking helper doesnt call the ending function by itself.
+ * It renders only a template (@link http://api.prototypejs.org/language/Template/)
  * 
  * @access public
  * @param array $htmlAttributes
@@ -1339,17 +1351,17 @@ class BuroBurocrataHelper extends XmlTagHelper
 	{
 		$htmlAttributes = $this->addClass($htmlAttributes, self::$defaultContainerClass);
 		$htmlAttributes = $this->addClass($htmlAttributes, 'ordered_list_menu');
-		$options = $options + array('content' => false);
+		$options = $options + array('allowedContent' => false);
 		
-		if (!is_array($options['content']))
-			trigger_error('BuroBurocrataHelper::sorderedItensMenu - No content list specified.');
+		if (!is_array($options['allowedContent']))
+			trigger_error('BuroBurocrataHelper::sorderedItensMenu - No allowedContent list specified.');
 		
-		$htmlAttributes['buro:order'] = $options['order'];
+		$htmlAttributes['buro:order'] = '#{order}';
 		$out = $this->Bl->sdiv($htmlAttributes); // to be closed on BuroBurocrataHelper::sorderedItensMenu
 		
 		// A menu made of list of content
 		$out .= $this->Bl->sdiv(array('class' => 'ordered_list_menu_list'));
-		foreach ($options['content'] as $content)
+		foreach ($options['allowedContent'] as $content)
 		{
 			if (!is_array($content))
 				$content = array('model' => $content);
@@ -1409,20 +1421,14 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function sorderedItensItem($htmlAttributes = array(), $options = array())
 	{
-		$options += array('model' => false, 'type' => array('buro', 'view'));
-		extract($options);
-		
-		$Model =& ClassRegistry::init($options['model']);
-		
 		$htmlAttributes = $this->addClass($htmlAttributes, self::$defaultContainerClass);
 		$htmlAttributes = $this->addClass($htmlAttributes, 'ordered_list_item');
-		$htmlAttributes['buro:id'] = $data[$Model->alias][$Model->primaryKey];
+		$htmlAttributes['buro:id'] = '#{id}';
 		
 		$out = $this->Bl->sdiv($htmlAttributes);
-		if (isset($options['title']) && !empty($options['title']))
-			$out .= $this->Bl->div(array(), array(), $options['title']);
+		$out .= $this->Bl->div(array(), array(), '#{title}');
 		$out .= $this->orderedItensControls();
-		$out .= $this->Jodel->insertModule($model, $type, $data);
+		$out .= '#{content}';
 		return $out;
 	}
 

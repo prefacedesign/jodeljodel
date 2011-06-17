@@ -270,6 +270,10 @@ class OrderedBehavior extends ModelBehavior {
 	/**
 	 * Moving a node to specific weight, it will shift the rest of the table to make room.
 	 *
+	 * Note: Edited from original file to return true instead of false 
+	 * when $new_weight == $old_weight (afterall, after the method call the 
+	 * node has the desired weight).
+	 * 
 	 * @param Object $Model
 	 * @param int $id The id of the node to move
 	 * @param int $new_weight the new weight of the node
@@ -302,7 +306,7 @@ class OrderedBehavior extends ModelBehavior {
 		$Model->set($this->settings[$Model->alias]['field'], $new_weight);
 		if ($new_weight == $old_weight) {
 			// move to same location?
-			return false;
+			return true;
 		} elseif ($old_weight == 0) {
 			$action = array(
 					$Model->alias . '.' . $this->settings[$Model->alias]['field'] => $Model->alias . '.' . $this->settings[$Model->alias]['field'] . ' + 1');
