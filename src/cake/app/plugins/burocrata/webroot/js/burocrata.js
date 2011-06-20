@@ -171,6 +171,7 @@ var BuroCallbackable = Class.create({
 var BuroForm = Class.create(BuroCallbackable, {
 	initialize: function()
 	{
+		this.params = $H({});
 		var n_args = arguments.length;
 		
 		if (n_args > 0)
@@ -205,6 +206,30 @@ var BuroForm = Class.create(BuroCallbackable, {
 		{
 			this.addCallbacks(arguments[3]);
 		}
+		
+		if (n_args > 3)
+		{
+			this.addParameters(arguments[4]);
+		}
+	},
+	addParameters: function(params, pattern)
+	{
+		if (Object.isString(params) || Object.isArray(params))
+		{
+			throw new Error('Form.addParameters method accepts only objects or Hashes.');
+			return;
+		}
+		
+		params = $H(params)
+		
+		if (pattern) 
+		{
+			params.each(function(pattern, pair){
+				this.set(pair.key, pair.value.interpolate(pattern));
+			}.bind(params, pattern));
+		}
+		
+		this.params = this.params.merge(params);
 	},
 	lockForm: function()
 	{
@@ -228,6 +253,10 @@ var BuroForm = Class.create(BuroCallbackable, {
 	submits: function(ev)
 	{
 		var data = Form.serializeElements(this.inputs);
+		var params = this.params.toQueryString();
+		if (!params.blank())
+			data+='&'+params;
+		
 		this.trigger('onStart', this.form);
 		new BuroAjax(
 			this.url,
