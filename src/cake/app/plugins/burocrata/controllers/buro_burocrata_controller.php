@@ -463,10 +463,13 @@ class BuroBurocrataController extends BurocrataAppController
 		$this->set(compact('error', 'action', 'saved', 'id'));
 	}
 
+
 /**
  * Used to find data on database using burocratas conventions
+ * based on passed id.
  * 
  * @access protected
+ * @param $id mixed If empty will be used $this->buroData['id']
  * @return array An array with two index: `data` and `error`
  */
 	protected function _getBuroData($id = null)

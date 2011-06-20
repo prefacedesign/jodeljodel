@@ -712,12 +712,13 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
  */
 var BuroListOfItems = Class.create(BuroCallbackable, {
 	baseFxDuration: 0.3, //in seconds
-	initialize: function(id_base, content, types)
+	initialize: function(id_base, parameters, content, types)
 	{
 		this.texts = content.texts || {};
 		this.templates = content.templates || {menu: '', item: ''};
 		this.contents = content.contents || [];
-
+		this.parameters = parameters || {};
+		
 		this.menus = [];
 		this.items = [];
 		
@@ -843,8 +844,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	openForm: function(content)
 	{
 		var iHeight = this.divForm.getHeight(),
-			fHeight = this.divForm.update(content).setStyle({height:''}).getHeight(),
-			form_id = this.divForm.down('.buro_form').readAttribute('id');
+			fHeight = this.divForm.update(content).setStyle({height:''}).getHeight();
 		
 		this.divForm.unsetLoading().setStyle({overflow:'hidden', height: iHeight+'px'});
 		
@@ -852,16 +852,21 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			queue: 'end',
 			duration: this.baseFxDuration,
 			style: {height: fHeight+'px'},
-			afterFinish: function (form_id, fx) {
+			afterFinish: function () {
+				var form_id = this.divForm.down('.buro_form').readAttribute('id');
 				this.divForm.setStyle({overflow: '', height:''});
 				var OpenedForm = BuroCR.get(form_id);
-				if (OpenedForm)
+				if (OpenedForm) {
+					OpenedForm.addParameters(this.parameters.fkField);
+					if (this.editing.order && this.parameters.orderField)
+						OpenedForm.addParameters(this.parameters.orderField, {order: this.editing.order});
 					OpenedForm.addCallbacks({
 						'onSave': this.formSaved.bind(this),
 						'onCancel': this.formCanceled.bind(this),
 						'onError': this.formError.bind(this)
 					});
-			}.bind(this).curry(form_id)
+				}
+			}.bind(this)
 		});
 	},
 	closeForm: function()
@@ -885,8 +890,12 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	},
 	formSaved: function(form, response, json)
 	{
-		this.element.update(json.content);
-		this.formCanceled();
+		if (this.editing.id) {
+			this.editing.div.update(json.content);
+		} else if (!Object.isUndefined(this.element.order)) {
+			this.addNewItem(json.content, this.element.order);
+		}
+		this.closeForm();
 	},
 	formCanceled: function()
 	{

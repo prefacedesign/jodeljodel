@@ -1173,9 +1173,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		unset($options['type']);
 		
 		// Usually the Cake core will display a "missing table" or "missing connection"
-		// if something went wrong on registring the model
-		$parent_model = $this->modelAlias;
-		$ParentModel =& ClassRegistry::init($this->modelPlugin . '.' . $parent_model);
+		// if something went wrong on registering the model
+		$ParentModel =& ClassRegistry::init($this->modelPlugin . '.' . $this->modelAlias);
 		// But won't hurt test if went ok
 		if (!$ParentModel) {
 			trigger_error('BuroBurocrataHelper::inputRelationalManyChildren - Parent model could not be found.');
@@ -1183,13 +1182,16 @@ class BuroBurocrataHelper extends XmlTagHelper
 		}
 		
 		$availables = array_keys($ParentModel->hasMany);
-		if (!in_array($assocName, $availables) ) {
+		if (!in_array($assocName, $availables) )
+		{
 			trigger_error('BuroBurocrataHelper::inputRelationalManyChildren - Related model doesn\'t make a many children relationship. Given \''.$assocName.'\', but available(s) are: \''.implode('\', \'', $availables).'\'');
 			return false;
 		}
 		
-		if(empty($input_options['label']) && isset($ParentModel->{$assocName}))
-			$input_options['label'] = Inflector::humanize($ParentModel->{$assocName}->table);
+		$AssocModel = isset($ParentModel->{$assocName})?$ParentModel->{$assocName}:false;
+		
+		if(empty($input_options['label']) && $AssocModel)
+			$input_options['label'] = Inflector::humanize($AssocModel->table);
 		
 		$out = $this->Bl->h6(array(),array('escape' => false), $input_options['label']);
 		unset($input_options['label']);
@@ -1206,7 +1208,20 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'title' => $title,
 		));
 		
-		$out .= $this->_orderedItensManyChildren(compact('texts','model_class_name','allowedContent','baseID','callbacks'));
+		$parameters = array();
+		if (!empty($this->data[$ParentModel->alias][$ParentModel->primaryKey]))
+		{
+			$fieldName = $this->_name($assocName.'.'.$ParentModel->hasMany[$assocName]['foreignKey']);
+			$parameters['fkField'] = array($fieldName => $this->data[$ParentModel->alias][$ParentModel->primaryKey]);
+		}
+		
+		if ($AssocModel && $AssocModel->Behaviors->attached('Ordered'))
+		{
+			$fieldName = $this->_name($AssocModel->alias.'.'.$AssocModel->Behaviors->Ordered->settings[$assocName]['field']);
+			$parameters['orderField'] = array($fieldName => '#{order}');
+		}
+		
+		$out .= $this->_orderedItensManyChildren(compact('texts','model_class_name','parameters','allowedContent','baseID','callbacks'));
 		
 		return $this->Bl->div(array('id' => 'div' . $baseID, 'class' => 'ordered_list'), array(), $out);
 	}
@@ -1319,6 +1334,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$jsOptions['templates']['item'] = $this->orderedItensItem();
 		$jsOptions['contents'] = $contents;
 		$jsOptions['texts'] = $options['texts'];
+		$jsOptions['parameters'] = $options['parameters'];
+		
 		
 		$out = $this->Bl->br();
 		$out .= $this->BuroOfficeBoy->listOfItems($jsOptions);
