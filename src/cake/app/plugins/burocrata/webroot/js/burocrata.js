@@ -97,15 +97,33 @@ var BuroCR = new (Class.create(Hash, {
  * @access protected
  */
 var BuroCallbackable = Class.create({
-	addCallbacks: function(cbs)
+	addCallbacks: function(callbacks)
 	{
 		if (!Object.isHash(this.callbacks))
 			this.callbacks = $H({});
 		
-		cbs = $H(cbs);
-		if (cbs.size())
-			cbs.each(this.mergeCallback.bind(this));
+		callbacks = $H(callbacks);
+		if (callbacks.size())
+			callbacks.each(this.mergeCallback.bind(this));
 		
+		return this;
+	},
+	removeCallback: function(name, _function)
+	{
+		if (Object.isUndefined(name))
+		{
+			this.callbacks = $H({});
+		}
+		else
+		{
+			var callbacks = this.callbacks.get(name);
+			if (Object.isFunction(_function) && (index = callbacks.indexOf(_function)) != -1)
+				callbacks.splice(index,1);
+			else if (Object.isUndefined(_function))
+				callbacks = [];
+			
+			this.callbacks.set(name, callbacks);
+		}
 		return this;
 	},
 	mergeCallback: function(pair)
