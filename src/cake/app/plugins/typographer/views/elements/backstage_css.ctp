@@ -896,7 +896,7 @@
 	));
 	
 	$this->Decorator->rule(
-		'.buro_form input.focus, #login_box input.focus, .buro_form textarea.focus', array(
+		'.buro_form input:focus, #login_box input:focus, .buro_form textarea:focus', array(
 			'border-width' => $u->t($border_size+1),
 			'margin' => implode(' ', array($u->t($margin_top-1), $u->t(-1), $u->t($margin_bottom-1), $u->t(-1)))
 	));
