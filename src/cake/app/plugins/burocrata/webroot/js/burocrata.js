@@ -13,8 +13,8 @@ document.observe('dom:loaded', function()
 	Element.addMethods({
 		setLoading: function(element)
 		{
-			if (!(element = $(element))) { return; }
-			if (!element.visible() || element.retrieve('loading')) { return element; }
+			if (!(element = $(element))) return;
+			if (!element.visible() || element.retrieve('loading')) return element;
 			var indicator = new Element('div', {className: 'loading-indicator'}), 
 				overlayer = new Element('div', {className: 'loading-overlayer'}),
 				position, pe;
@@ -44,16 +44,6 @@ document.observe('dom:loaded', function()
 			loading.elements.each(Element.remove);
 			return element.store('loading', false).removeClassName('loading');
 		},
-		addFocus: function(element)
-		{
-			if (!(element = $(element))) return;
-			return element.addClassName('focus');
-		},
-		removeFocus: function(element)
-		{
-			if (!(element = $(element))) return;
-			return element.removeClassName('focus');
-		},
 		swapWith: function(element, other)
 		{
 			if (!(element = $(element))) return;
@@ -61,12 +51,6 @@ document.observe('dom:loaded', function()
 			(ref = new Element('div')).insert({after: other.insert({after: element.insert({after: ref})})}).remove();
 			return element;
 		}
-	});
-	
-	$$('input, textarea').each(function(input)
-	{
-		input.observe('focus', Element.addFocus.curry(input));
-		input.observe('blur', Element.removeFocus.curry(input));
 	});
 });
 

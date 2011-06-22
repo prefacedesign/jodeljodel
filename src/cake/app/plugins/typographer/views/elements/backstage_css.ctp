@@ -883,7 +883,7 @@
 	$margin_bottom = $vg->size(array('g' => 0.5),false) - $margin_top;
 	$padding_top = $vg->size(array('m' => 1), false);
 	$this->Decorator->rule(
-		'.buro_form input, #login_box input, .buro_form textarea', array(
+		'.buro_form input, #login_box input[type=text], #login_box input[type=password], .buro_form textarea', array(
 			'border' => $u->t($border_size) . ' solid ' .  $palette['input_borders']->write(),
 			'background-color' => $palette['input_bg']->write(),
 			'color'	=> $palette['input_fg']->write(),
@@ -896,13 +896,13 @@
 	));
 	
 	$this->Decorator->rule(
-		'.buro_form input.focus, #login_box input.focus, .buro_form textarea.focus', array(
+		'.buro_form input:focus, #login_box input[type=text]:focus, #login_box input[type=password]:focus, .buro_form textarea:focus', array(
 			'border-width' => $u->t($border_size+1),
 			'margin' => implode(' ', array($u->t($margin_top-1), $u->t(-1), $u->t($margin_bottom-1), $u->t(-1)))
 	));
 	
 	$this->Decorator->rule(
-		'#login_box input', array(
+		'#login_box input[type=text], #login_box input[type=password]', array(
 			'width' => $u->t($hg->size(array('M' => 4, 'g' => -1),false) - 2*($border_size + $padding_size))
 	));
 	
