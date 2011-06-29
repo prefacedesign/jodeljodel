@@ -154,12 +154,12 @@ class OrderedBehavior extends ModelBehavior {
 	 * @todo add new model with weight. clean up after
 	 * @param Model $Model
 	 */
-	public function beforesave(&$Model) {
+	public function beforeSave(&$Model) {
 		//	Check if weight id is set. If not add to end, if set update all
 		// rows from ID and up
-		if (!isset($Model->data[$Model->alias][$Model->primaryKey])) {
+		if (empty($Model->data[$Model->alias][$Model->primaryKey])) {
 			if(isset($Model->data[$Model->alias][$this->settings[$Model->alias]['field']]))
-				$this->_weight = $Model->data[$Model->alias][$this->settings[$Model->alias]['field']];
+				$this->_weight[$Model->alias] = $Model->data[$Model->alias][$this->settings[$Model->alias]['field']];
 			// get highest current row
 			$highest = $this->_highest($Model);
 			// set new weight to model as last by using current highest one + 1
@@ -170,8 +170,10 @@ class OrderedBehavior extends ModelBehavior {
 	
 	public function afterSave(&$Model)
 	{
-		if($this->_weight)
-			$this->moveto($Model, $Model->id, $this->_weight);
+		if (!empty($this->_weight[$Model->alias]))
+			$this->moveto($Model, $Model->id, $this->_weight[$Model->alias]);
+		
+		$this->_weight[$Model->alias] = false;
 		return true;
 	}
 	
@@ -672,3 +674,4 @@ class OrderedBehavior extends ModelBehavior {
 		return $Model->data[$Model->alias][$this->settings[$Model->alias]['field']];
 	}
 }
+?>

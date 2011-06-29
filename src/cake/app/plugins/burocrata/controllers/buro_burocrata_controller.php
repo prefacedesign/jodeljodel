@@ -167,7 +167,7 @@ class BuroBurocrataController extends BurocrataAppController
 		
 		if($error === false)
 		{
-			$methodName = 'saveBurocrata';   //Trys specific saves related to the type
+			$methodName = 'saveBurocrata';   //Tries specific saves related to the type
 			
 			foreach($type as $k => $subType)
 			{
@@ -223,7 +223,7 @@ class BuroBurocrataController extends BurocrataAppController
  */
 	public function view()
 	{
-		$data = $this->_getBuroData();
+		$data = $this->_getViewData();
 		$this->data = $data['data'];
 		$this->set($data);
 	}
@@ -441,7 +441,7 @@ class BuroBurocrataController extends BurocrataAppController
 						if (!$error)
 						{
 							$this->set('old_id', $this->buroData['id']);
-							$buroData = $this->_getBuroData($id);
+							$buroData = $this->_getViewData($id);
 							extract($buroData);
 							$this->set(compact('data'));
 						}
@@ -449,10 +449,14 @@ class BuroBurocrataController extends BurocrataAppController
 				break;
 				
 				case 'edit':
-					if (!empty($this->buroData['id']))
-						$id = $this->buroData['id'];
-					$buroData = $this->_getBuroData();
-					extract($buroData);
+					extract($this->_getViewData());
+					$this->data = $data;
+					$this->set(compact('data'));
+				break;
+				
+				case 'afterEdit':
+					$id = $this->buroData['id'];
+					extract($this->_getViewData());
 					$this->data = $data;
 					$this->set(compact('data'));
 				break;
@@ -472,7 +476,7 @@ class BuroBurocrataController extends BurocrataAppController
  * @param $id mixed If empty will be used $this->buroData['id']
  * @return array An array with two index: `data` and `error`
  */
-	protected function _getBuroData($id = null)
+	protected function _getViewData($id = null)
 	{
 		$error = false;
 		$data = array();

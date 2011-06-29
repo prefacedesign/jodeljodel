@@ -795,7 +795,8 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 		this.menus[order].div.insert({after: div});
 		this.items.splice(order, 0, this.createItem(div));
 		
-		if (order)
+		order = Number(order);
+		if (order > 0)
 			this.items[order-1].checkSiblings();
 		if (order+1 < this.items.length)
 			this.items[order+1].checkSiblings();
@@ -855,19 +856,8 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			duration: this.baseFxDuration,
 			style: {height: fHeight+'px'},
 			afterFinish: function () {
-				var form_id = this.divForm.down('.buro_form').readAttribute('id');
 				this.divForm.setStyle({overflow: '', height:''});
-				var OpenedForm = BuroCR.get(form_id);
-				if (OpenedForm) {
-					OpenedForm.addParameters(this.parameters.fkField);
-					if (this.editing.order && this.parameters.orderField)
-						OpenedForm.addParameters(this.parameters.orderField, {order: this.editing.order});
-					OpenedForm.addCallbacks({
-						'onSave': this.formSaved.bind(this),
-						'onCancel': this.formCanceled.bind(this),
-						'onError': this.formError.bind(this)
-					});
-				}
+				this.injectControlOnForm();
 			}.bind(this)
 		});
 	},
@@ -890,18 +880,36 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			});
 		}
 	},
+	injectControlOnForm: function()
+	{
+		var form_id = this.divForm.down('.buro_form').readAttribute('id');
+		var OpenedForm = BuroCR.get(form_id);
+		if (OpenedForm) {
+			OpenedForm.addParameters(this.parameters.fkField);
+			if (this.editing.order && this.parameters.orderField)
+				OpenedForm.addParameters(this.parameters.orderField, {order: Number(this.editing.order)+1});
+			OpenedForm.addCallbacks({
+				onStart: function(form){form.lock()},
+				onSave: this.formSaved.bind(this),
+				onCancel: this.formCanceled.bind(this),
+				onError: this.formError.bind(this),
+				onReject: this.formRejected.bind(this)
+			});
+		}
+	},
 	formSaved: function(form, response, json)
 	{
-		if (this.editing.id) {
-			this.editing.div.update(json.content);
-		} else if (!Object.isUndefined(this.element.order)) {
-			this.addNewItem(json.content, this.element.order);
-		}
-		this.closeForm();
+		var id = this.editing.id || json.saved;
+		if (id)
+			this.trigger('onAction', 'afterEdit', id);
 	},
 	formCanceled: function()
 	{
 		this.closeForm();
+	},
+	formRejected: function(form, response, json)
+	{
+		this.openForm(json.content);
 	},
 	formError: function()
 	{
@@ -963,6 +971,15 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 				if (this.editing == false)
 					break;
 				this.openForm(json.content);
+			break;
+			
+			case 'afterEdit':
+				if (this.editing.id == json.id) {
+					this.editing.div.update(json.content);
+				} else if (!Object.isUndefined(this.editing.order)) {
+					this.addNewItem({content: json.content, id: json.id, title: json.title}, this.editing.order);
+				}
+				this.closeForm();
 			break;
 		}
 	},

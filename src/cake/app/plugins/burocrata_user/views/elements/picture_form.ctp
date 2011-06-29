@@ -1,16 +1,9 @@
 <?php
-echo $this->Buro->sform(array(), 
-	array(
-		'model' => 'BurocrataUser.Picture',
-		'callbacks' => array(
-			'onStart'	=> array('lockForm'),
-			'onComplete'=> array('unlockForm'),
-			'onCancel'	=> array('popup' => "Cancelando o dito cujo\n(alert de teste)"),
-			'onReject'  => array('contentUpdate', 'popup' => 'Existe algum erro de validação.'),
-			'onFailure'	=> array('popup' => 'Erro de comunicação com o servidor!')
-		)
-	)
+echo $this->Buro->sform(
+	array(), 
+	array('model' => 'BurocrataUser.Picture')
 );
+
 	echo $this->Buro->input(
 		array('value' => $baseID, 'name' => $this->Buro->internalParam('baseID')),
 		array('type' => 'hidden')
