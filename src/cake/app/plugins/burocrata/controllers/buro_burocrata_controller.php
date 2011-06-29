@@ -411,13 +411,6 @@ class BuroBurocrataController extends BurocrataAppController
 								)
 							));
 							
-							if ($ordered)
-							{
-								$field = $Model->Behaviors->Ordered->settings[$Model->alias]['field'];
-								$order = $data[$Model->alias][$field];
-								unset($data[$Model->alias][$field]);
-							}
-							
 							foreach (array('created', 'updated', 'modified', $Model->primaryKey) as $field)
 								if (isset($data[$Model->alias][$field]))
 									unset($data[$Model->alias][$field]);
@@ -429,17 +422,13 @@ class BuroBurocrataController extends BurocrataAppController
 								$id = $Model->id;
 						}
 						
-						if (!$error && $ordered)
-						{
-							if (!$Model->moveto($id, $order+1))
-								$error = $debug?'BuroBurocrataController - Model::moveto() failed.':true;
-							else
-								$saved = $id;
-							$this->set('order', $order+1);
-						}
-						
 						if (!$error)
 						{
+							if ($ordered)
+							{
+								$this->set('order', $order+1);
+								$saved = $id;
+							}
 							$this->set('old_id', $this->buroData['id']);
 							$buroData = $this->_getViewData($id);
 							extract($buroData);
@@ -449,13 +438,9 @@ class BuroBurocrataController extends BurocrataAppController
 				break;
 				
 				case 'edit':
-					extract($this->_getViewData());
-					$this->data = $data;
-					$this->set(compact('data'));
-				break;
-				
 				case 'afterEdit':
-					$id = $this->buroData['id'];
+					if (!empty($this->buroData['id']))
+						$id = $this->buroData['id'];
 					extract($this->_getViewData());
 					$this->data = $data;
 					$this->set(compact('data'));

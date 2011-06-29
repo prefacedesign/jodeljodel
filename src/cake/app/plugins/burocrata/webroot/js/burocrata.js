@@ -889,7 +889,8 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			if (this.editing.order && this.parameters.orderField)
 				OpenedForm.addParameters(this.parameters.orderField, {order: Number(this.editing.order)+1});
 			OpenedForm.addCallbacks({
-				onStart: function(form){form.lock()},
+				onStart: function(form){form.lock();},
+				onComplete: function(form){form.unlock();},
 				onSave: this.formSaved.bind(this),
 				onCancel: this.formCanceled.bind(this),
 				onError: this.formError.bind(this),
@@ -975,7 +976,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			
 			case 'afterEdit':
 				if (this.editing.id == json.id) {
-					this.editing.div.update(json.content);
+					this.editing.content.update(json.content);
 				} else if (!Object.isUndefined(this.editing.order)) {
 					this.addNewItem({content: json.content, id: json.id, title: json.title}, this.editing.order);
 				}
@@ -1105,6 +1106,7 @@ var BuroListOfItemsItem = Class.create(BuroCallbackable, {
 	{
 		this.div = $(div);
 		this.id = this.div.readAttribute('buro:id');
+		this.content = this.div.down('div.ordered_list_content');
 		this.controls = this.div.down('div.ordered_list_controls');
 		this.controls.childElements().each(this.observeControls.bind(this));
 		this.checkSiblings();

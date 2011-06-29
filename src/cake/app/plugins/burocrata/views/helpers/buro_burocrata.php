@@ -1450,7 +1450,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out .= $this->Bl->div(array('class' => 'ordered_list_item_title'), array(), '#{title}');
 		$out .= $this->orderedItensControls();
 		$out .= $this->Bl->floatBreak();
-		$out .= '#{content}';
+		$out .= $this->Bl->div(array('class' => 'ordered_list_content'), array(), '#{content}');
 		return $out;
 	}
 
