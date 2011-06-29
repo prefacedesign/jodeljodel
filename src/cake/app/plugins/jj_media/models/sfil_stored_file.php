@@ -54,13 +54,6 @@ class SfilStoredFile extends JjMediaAppModel {
 		),
 	);
 
-	var $belongsTo = array(
-		'Original' => array(
-			'className' => 'JjMedia.SfilStoredFile',
-			'foreignKey' => 'original_id'
-		)
-	);
-
 
 /**
  * actsAs property

@@ -923,8 +923,9 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	},
 	actionError: function(json)
 	{
-		this.items.each(function(item){item.div.unsetLoading()});
-		this.closeForm();
+		this.items.each(function(item){item.div.unsetLoading();});
+		if (this.editing)
+			this.closeForm();
 		this.trigger('onError', json);
 	},
 	actionSuccess: function(json)
