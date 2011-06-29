@@ -3,7 +3,7 @@ class Picture extends BurocrataUserAppModel {
 	var $name = 'Picture';
 	
 	var $actsAs = array(
-		'Utils.Ordered' => array(
+		'JjUtils.Ordered' => array(
 			'field' => 'weight',
 			'foreign_key' => 'galery_id'
 		)

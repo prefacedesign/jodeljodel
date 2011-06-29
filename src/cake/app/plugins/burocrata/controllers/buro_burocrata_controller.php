@@ -337,7 +337,7 @@ class BuroBurocrataController extends BurocrataAppController
 		if($error === false)
 		{
 			if (!empty($this->buroData['field']) && !empty($this->buroData['foreign_key']) && !$Model->Behaviors->attached('Ordered'))
-				$Model->Behaviors->attach('Utils.Ordered', 
+				$Model->Behaviors->attach('JjUtils.Ordered', 
 					array(
 						'field' => $this->buroData['field'],
 						'foreign_key' => $this->buroData['foreign_key']
