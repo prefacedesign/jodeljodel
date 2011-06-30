@@ -48,8 +48,17 @@ document.observe('dom:loaded', function()
 		{
 			if (!(element = $(element))) return;
 			if (!(other = $(other))) return;
-			(ref = new Element('div')).insert({after: other.insert({after: element.insert({after: ref})})}).remove();
+			var reference = new Element('div');
+			reference.insert({after: other.insert({after: element.insert({after: reference})})}).remove();
 			return element;
+		},
+		scrollVisible: function(element, padding)
+		{
+			if (!(element = $(element))) return;
+			padding = padding || 0;
+			
+			var offset = -(document.viewport.getHeight()-element.getHeight()-Number(padding));
+			new Effect.ScrollTo(element, {duration: 0.5, offset: offset});
 		}
 	});
 });
@@ -222,11 +231,11 @@ var BuroForm = Class.create(BuroCallbackable, {
 			return;
 		}
 		
-		params = $H(params)
+		params = $H(params);
 		
 		if (pattern) 
 		{
-			params.each(function(pattern, pair){
+			params.each(function(pattern, pair) {
 				this.set(pair.key, pair.value.interpolate(pattern));
 			}.bind(params, pattern));
 		}
@@ -235,12 +244,10 @@ var BuroForm = Class.create(BuroCallbackable, {
 	},
 	lockForm: function()
 	{
-		this.form.setOpacity(0.5);
 		this.inputs.each(Form.Element.disable);
 	},
 	unlockForm: function()
 	{
-		this.form.setOpacity(1);
 		this.inputs.each(Form.Element.enable);
 	},
 	keyPress: function(ev){
@@ -279,7 +286,7 @@ var BuroForm = Class.create(BuroCallbackable, {
 				onSuccess: function (response, json) {
 					this.json = json;
 					
-					if (this.json.saved !== false)	
+					if (this.json.saved !== false)
 						this.trigger('onSave', this.form, response, this.json, this.json.saved);
 					else
 						this.trigger('onReject', this.form, response, this.json, this.json.saved);
@@ -339,13 +346,13 @@ var BuroAutocomplete = Class.create(BuroCallbackable, {
 		Ajax.Autocompleter.addMethods({
 			markPrevious: function() {
 				if (this.index > 0) this.index--;
-					else this.index = this.entryCount-1;
+				else this.index = this.entryCount-1;
 				if (this.getEntry(this.index).cumulativeOffset().top < document.viewport.getScrollOffsets().top)
 					this.getEntry(this.index).scrollIntoView(true);
 			},
 			markNext: function() {
 				if (this.index < this.entryCount-1) this.index++;
-					else this.index = 0;
+				else this.index = 0;
 				if (this.getEntry(this.index).cumulativeOffset().top+this.getEntry(this.index).getHeight() > document.viewport.getScrollOffsets().top+document.viewport.getHeight())
 					this.getEntry(this.index).scrollIntoView(false);
 			}
@@ -365,9 +372,7 @@ var BuroAutocomplete = Class.create(BuroCallbackable, {
 		this.pair = {};
 		
 		while(tmp = this.autocompleter.update.next('.message'))
-		{
 			this.autocompleter.update.insert(tmp);
-		}
 	},
 	
 	onHide: function(element, update)
@@ -525,7 +530,7 @@ var BuroAjax = Class.create(BuroCallbackable, {
 	requestOnComplete: function (re) {
 		this.trigger('onComplete', re);
 		if (this.fulldebug)
-			this.dumpResquest(re)
+			this.dumpResquest(re);
 	},
 	requestOnSuccess: function(re)
 	{
@@ -598,6 +603,7 @@ var BuroAjax = Class.create(BuroCallbackable, {
 					.insert(re.responseText/* .replace(/\{"\w+":.*\}/, '') */)
 				)
 			)
+		;
 		
 		div.observe('dblclick', function(ev){ev.findElement('div.dump_ajax').remove(); ev.stop();});
 		document.body.insert({bottom: div});
@@ -666,7 +672,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		if (pair.id > 0)
 		{
 			this.update.update();
-			this.saved(null, null, null, pair.id)
+			this.saved(null, null, null, pair.id);
 			this.autocomplete.input.value = pair.value;
 		}
 	},
@@ -812,7 +818,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	},
 	removeItem: function(item)
 	{
-		this.items.splice(this.items.indexOf(item), 1)
+		this.items.splice(this.items.indexOf(item), 1);
 		item.div.unsetLoading();
 		new Effect.BlindUp(item.div, {
 			duration: this.baseFxDuration,
@@ -837,11 +843,14 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	},
 	placesForm: function(obj)
 	{
-		if (this.editing !== false) return false;
+		if (this.editing !== false)
+			return false;
 		obj.div.insert({after: this.divForm}).hide().unsetLoading();
-		this.divForm.show().setLoading()
+		this.divForm.show().setLoading();
 		this.editing = obj;
-		this.menus.each(function(menu){ menu.disable(); });
+		this.menus.each(function(menu){
+			menu.disable();
+		});
 		return true;
 	},
 	openForm: function(content)
@@ -1024,7 +1033,7 @@ var BuroListOfItemsMenu = Class.create(BuroCallbackable, {
 		this.links.each(function(lnk){lnk.observe('click', this.lnkClick.bind(this))}.bind(this));
 		
 		this.close_link = this.div.down('a.ordered_list_menu_close');
-		this.close_link.observe('click', function(ev){ ev.stop(); this.close()}.bind(this));
+		this.close_link.observe('click', function(ev){ ev.stop(); this.close();}.bind(this));
 		
 		this.enable().close();
 	},
@@ -1218,7 +1227,7 @@ var BuroEditableList = Class.create(BuroCallbackable, {
 	{
 		if (pair.id > 0)
 		{
-			this.saved(pair.id, pair.value)
+			this.saved(pair.id, pair.value);
 			this.autocomplete.input.value = '';
 			
 			new BuroEditableListItem(this, this.id_base, pair.id, pair.value, this.view_item_text, this.edit_item_text, this.delete_item_text);
@@ -1396,13 +1405,13 @@ var BuroUpload = Class.create(BuroCallbackable, {
 		
 		this.uploading = false;
 		
-		var i = this.iframe;
+		var d, i = this.iframe;
 		if (i.contentDocument) {
-			var d = i.contentDocument;
+			d = i.contentDocument;
 		} else if (i.contentWindow) {
-			var d = i.contentWindow.document;
+			d = i.contentWindow.document;
 		} else {
-			var d = window.frames[this.iframe.name].document;
+			d = window.frames[this.iframe.name].document;
 		}
 		
 		var response = null;
@@ -1473,7 +1482,7 @@ var BuroTextile = Class.create(BuroCallbackable, {
 		this.input = $('npt'+this.id_base);
 		
 		this.links = {};
-		var ids = ['link','bold','title','italic','file','image']
+		var ids = ['link','bold','title','italic','file','image'];
 		for (var i = 0; i < ids.length; i++)
 			this.links[ids[i]] = $('l'+ids[i]+this.id_base);
 			
