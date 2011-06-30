@@ -38,10 +38,8 @@ class Picture extends BurocrataUserAppModel {
 	function beforeDelete($cascade = true)
 	{
 		if ($cascade)
-		{
-			$this->recursive = -1;
 			$this->file_upload_id = $this->field('file_upload_id');
-		}
+		
 		return true;
 	}
 	

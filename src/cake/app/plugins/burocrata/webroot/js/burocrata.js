@@ -21,8 +21,7 @@ document.observe('dom:loaded', function()
 			document.body.insert(overlayer);
 			overlayer.insert({after: indicator}).clonePosition(element).setOpacity(0.7);
 			
-			position = $H(overlayer.cumulativeOffset());
-			position = position.merge(overlayer.getDimensions());
+			position = $H(overlayer.cumulativeOffset()).merge(overlayer.getDimensions());
 			indicator.setStyle({
 				left: (position.get('left')+position.get('width')/2-indicator.getWidth()/2)+'px',
 				top: position.get('top')+'px'
@@ -794,19 +793,15 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	
 	addNewItem: function(content, order, animate)
 	{
-		var contentHtml = this.templates.item.interpolate(content),
-			div = new Element('div').insert(contentHtml).down();
+		var item,
+			div = new Element('div').insert(this.templates.item.interpolate(content)).down();
 		
 		this.addNewMenu(order);
 		this.menus[order].div.insert({after: div});
-		this.items.splice(order, 0, this.createItem(div));
 		
-		order = Number(order);
-		if (order > 0)
-			this.items[order-1].checkSiblings();
-		if (order+1 < this.items.length)
-			this.items[order+1].checkSiblings();
-			
+		this.items.push(item = this.createItem(div));
+		this.updateSiblings(item);
+		
 		if (animate)
 			new Effect.BlindDown(div, {duration: this.baseFxDuration});
 		
@@ -823,18 +818,19 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 		new Effect.BlindUp(item.div, {
 			duration: this.baseFxDuration,
 			afterFinish: function(item, eff) {
-				var prev, next;
-				if (item.hasPrev) prev = this.getItem(item.prev);
-				if (item.hasNext) next = this.getItem(item.next);
-				
 				item.div.remove();
-				if (prev) prev.checkSiblings();
-				if (next) next.checkSiblings();
+				this.updateSiblings(item);
 			}.bind(this, item)
 		});
 		return this;
 	},
-	
+	updateSiblings: function(item)
+	{
+		var prev = this.getItem(item.getPrev()), 
+			next = this.getItem(item.getNext());
+		if (prev) prev.checkSiblings();
+		if (next) next.checkSiblings();
+	},
 	
 	newItem: function(menuObj, type)
 	{
@@ -872,22 +868,18 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	},
 	closeForm: function()
 	{
-		var finish = function() {
-			this.editing.div.show();
-			this.editing = false;
-			this.menus.each(function(menu){menu.enable();});
-			this.divForm.update().hide();
-		}.bind(this);
-		
 		this.divForm.unsetLoading();
-		if (this.editing.id) {
-			finish();
-		} else {
-			new Effect.BlindUp(this.divForm, {
-				duration: this.baseFxDuration,
-				afterFinish: finish
-			});
-		}
+		new Effect.BlindUp(this.divForm, {
+			duration: this.baseFxDuration,
+			afterFinish: function() {
+				this.editing.div.show();
+				this.editing = false;
+				this.menus.each(function(menu){
+					menu.enable();
+				});
+				this.divForm.update().hide();
+			}.bind(this)
+		});
 	},
 	injectControlOnForm: function()
 	{
@@ -898,10 +890,15 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			if (this.editing.order && this.parameters.orderField)
 				OpenedForm.addParameters(this.parameters.orderField, {order: Number(this.editing.order)+1});
 			OpenedForm.addCallbacks({
-				onStart: function(form){form.lock();},
-				onComplete: function(form){form.unlock();},
-				onSave: this.formSaved.bind(this),
+				onStart: function(form) {
+					form.lock();
+					this.divForm.down().setLoading();
+				}.bind(this),
+				onComplete: function(form) {
+					form.unlock();
+				},
 				onCancel: this.formCanceled.bind(this),
+				onSave: this.formSaved.bind(this),
 				onError: this.formError.bind(this),
 				onReject: this.formRejected.bind(this)
 			});
@@ -919,20 +916,36 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	},
 	formRejected: function(form, response, json)
 	{
+		this.divForm.down().unsetLoading();
 		this.openForm(json.content);
 	},
-	formError: function()
+	formError: function(code, error)
 	{
+		if (this.texts.error)
+			alert(this.texts.error);
+		else if (debug)
+		{
+			if (code == E_JSON)
+				alert(error);
+		}
 	},
 	routeAction: function(item, action, id)
 	{
-		if (action && !Object.isUndefined(this.texts.confirm[action]) && !confirm(this.texts.confirm[action])) return;
+		var prev, next;
+		if (!action || (!Object.isUndefined(this.texts.confirm[action]) && !confirm(this.texts.confirm[action])))
+			return;
+		
 		item.div.setLoading();
+		if (action == 'up' && (prev = item.getPrev()))	 this.getItem(prev).div.setLoading();
+		if (action == 'down' && (next = item.getNext())) this.getItem(next).div.setLoading();
+		
 		this.trigger('onAction', action, id);
 	},
 	actionError: function(json)
 	{
-		this.items.each(function(item){item.div.unsetLoading();});
+		this.items.each(function(item){
+			item.div.unsetLoading();
+		});
 		if (this.editing)
 			this.closeForm();
 		this.trigger('onError', json);
@@ -943,17 +956,17 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 		switch (json.action)
 		{
 			case 'down': 
-				if (!json.id || !(item = this.getItem(json.id)) || !item.hasNext || !(next = this.getItem(item.next)))
+				if (!json.id || !(item = this.getItem(json.id)) || !(next = this.getItem(item.getNext())))
 					break;
-				item.div.swapWith(next.div).unsetLoading();
+				item.div.swapWith(next.div.unsetLoading()).unsetLoading();
 				item.checkSiblings();
 				next.checkSiblings();
 			break;
 			
 			case 'up': 
-				if (!json.id || !(item = this.getItem(json.id)) || !item.hasPrev || !(prev = this.getItem(item.prev)))
+				if (!json.id || !(item = this.getItem(json.id)) || !(prev = this.getItem(item.getPrev())))
 					break;
-				item.div.swapWith(prev.div).unsetLoading();
+				item.div.swapWith(prev.div.unsetLoading()).unsetLoading();
 				item.checkSiblings();
 				prev.checkSiblings();
 			break;
@@ -969,7 +982,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			case 'duplicate':
 				if (!json.id || !json.old_id || !(item = this.getItem(json.old_id)))
 					break;
-				item.div.unsetLoading()
+				item.div.unsetLoading();
 				this.addNewItem(json, json.order, true);
 			break;
 			
@@ -985,9 +998,11 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			break;
 			
 			case 'afterEdit':
-				if (this.editing.id == json.id) {
+				this.divForm.down().unsetLoading();
+				
+				if (this.editing.id == json.id) { // Finished editing an item that already exists
 					this.editing.content.update(json.content);
-				} else if (!Object.isUndefined(this.editing.order)) {
+				} else if (!Object.isUndefined(this.editing.order)) { // Finished editing a new item
 					this.addNewItem({content: json.content, id: json.id, title: json.title}, this.editing.order);
 				}
 				this.closeForm();
@@ -998,10 +1013,10 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	{
 		if (Object.isElement(id)) 
 			id = id.readAttribute('buro:id');
-		var result = this.items.findAll(function(id, item) {return item.id == id}.curry(id))
+		var result = this.items.findAll(function(id, item) {return item.id == id}.curry(id));
 		if (result.length)
 			return result[0];
-		return null;
+		return false;
 	}
 });
 
@@ -1134,10 +1149,16 @@ var BuroListOfItemsItem = Class.create(BuroCallbackable, {
 	checkSiblings: function()
 	{
 		this.controls.childElements().each(Form.Element.enable);
-		this.hasPrev = Object.isElement(this.prev = this.div.previous('div.ordered_list_item'));
-		this.hasNext = Object.isElement(this.next = this.div.next('div.ordered_list_item'));
-		if (!this.hasPrev) Form.Element.disable(this.controls.down('.ordered_list_up'));
-		if (!this.hasNext) Form.Element.disable(this.controls.down('.ordered_list_down'));
+		if (!Object.isElement(this.getPrev())) Form.Element.disable(this.controls.down('.ordered_list_up'));
+		if (!Object.isElement(this.getNext())) Form.Element.disable(this.controls.down('.ordered_list_down'));
+	},
+	getNext: function()
+	{
+		return this.div.next('div.ordered_list_item');
+	},
+	getPrev: function()
+	{
+		return this.div.previous('div.ordered_list_item');
 	}
 });
 
