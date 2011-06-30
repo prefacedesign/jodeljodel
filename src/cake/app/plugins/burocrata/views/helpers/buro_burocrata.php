@@ -1328,7 +1328,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 				'onSuccess' => array('js' => "BuroCR.get('$baseID').actionSuccess(json||false);"),
 			)
 		);
-		$jsOptions['callbacks']['onAction'] = array('ajax' => $ajax_call);
+		$jsOptions['callbacks'] = array('onAction' => array('ajax' => $ajax_call))+$options['callbacks'];
 		$jsOptions['baseID'] = $options['baseID'];
 		$jsOptions['templates']['menu'] = $this->orderedItensMenu(array(), array('allowedContent' => $allowedContent));
 		$jsOptions['templates']['item'] = $this->orderedItensItem();
