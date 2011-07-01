@@ -1,7 +1,25 @@
 <?php
 
+/**
+ * Controller for burocrata plugin.
+ *
+ * PHP versions 5
+ *
+ * @package       jodel
+ * @subpackage    jodel.burocrata.views.helpers
+ */
+ 
 App::import('Lib', 'JjUtils.SecureParams');
 
+
+/**
+ * BuroBurocrataController.
+ *
+ * All burocrata`s ajax requests points here by default.
+ *
+ * @package       jodel
+ * @subpackage    jodel.burocrata.controllers
+ */
 class BuroBurocrataController extends BurocrataAppController
 {
 

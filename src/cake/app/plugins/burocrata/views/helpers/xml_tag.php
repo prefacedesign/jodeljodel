@@ -1,5 +1,22 @@
 <?php
-//@todo Make the XMLTag a appart plugin, and inherit the TypeBricklayerHelper from him.
+/**
+ * XML Tag helper
+ *
+ * PHP versions 5
+ *
+ * @package       jodel
+ * @subpackage    jodel.burocrata.views.helpers
+ */
+
+/**
+ * This helper methods are implementeds by the Typographic Helper too.
+ * 
+ * PHP versions 5
+ *
+ * @package       jodel
+ * @subpackage    jodel.burocrata.views.helpers
+ * @todo Make the XMLTagHelper a appart plugin, and inherit the TypeBricklayerHelper from him.
+ */
 class XmlTagHelper extends AppHelper
 {	
 	function _mergeAttributes($atr1, $atr2)

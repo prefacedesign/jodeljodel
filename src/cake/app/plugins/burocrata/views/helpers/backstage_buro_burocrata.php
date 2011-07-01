@@ -1,7 +1,26 @@
 <?php
-
+/**
+ * Version of Burocrata Helper for backstage
+ *
+ * PHP versions 5
+ *
+ * @package       jodel
+ * @subpackage    jodel.burocrata.views.helpers
+ */
+ 
+/**
+ * Importing of main burocrata class.
+ */
 App::import('Helper', 'Burocrata.BuroBurocrata');
 
+/**
+ * Version of Burocrata Helper for backstage
+ *
+ * PHP versions 5
+ *
+ * @package       jodel
+ * @subpackage    jodel.burocrata.views.helpers
+ */
 class BackstageBuroBurocrataHelper extends BuroBurocrataHelper
 {
 

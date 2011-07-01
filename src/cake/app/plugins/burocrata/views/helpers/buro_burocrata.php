@@ -1,8 +1,24 @@
 <?php
+/**
+ * Main Helper for burocrata plugin
+ *
+ * PHP versions 5
+ *
+ * @package       jodel
+ * @subpackage    jodel.burocrata.views.helpers
+ */
 
 App::import('Helper', 'Burocrata.XmlTag');
 App::import('Lib', 'JjUtils.SecureParams');
 
+/**
+ * BuroOfficeBoy helper.
+ *
+ * Creates all javascript necessary for BuroBurocrataHelper work.
+ *
+ * @package       jodel
+ * @subpackage    jodel.burocrata.views.helpers
+ */
 class BuroBurocrataHelper extends XmlTagHelper
 {
 	public $helpers = array('Html', 'Form', 'Ajax', 'Js' => 'prototype', 'Burocrata.BuroOfficeBoy',
@@ -897,7 +913,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  * @param  array $htmlAttributes
  * @param  array $options
  * @return string The HTML well formated
- * @see BuroBurocrataHelper::inputAutocomplete
+ * @see BuroBurocrataHelper::inputAutocomplete()
  */
 	public function sinputAutocompleteMessage($htmlAttributes = array(), $options = array())
 	{
@@ -1346,7 +1362,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 /**
  * In theory this method is not necessary, but i had to make it 
  * because this fucking helper doesnt call the ending function by itself.
- * It renders only a template (@link http://api.prototypejs.org/language/Template/)
+ * It renders only a template {@link http://api.prototypejs.org/language/Template/}
  * 
  * @access public
  * @param array $htmlAttributes
@@ -1529,7 +1545,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  * Ends the div of control for one item.
  * 
  * @access public
- * @retunr string The HTML endind the controls
+ * @return string The HTML endind the controls
  */
 	public function eorderedItensControls()
 	{
@@ -1616,7 +1632,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 	}
 	
 	
-	/**
+/**
  * Construct a relational input that deals with related data based on passed variable
  *
  * ### The options are:
@@ -2099,12 +2115,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 
 /**
  * Creates a input for general files, using the general _upload() method
- * For more details, see _upload()
+ * For more details, see {@link _upload()}
  * This method has one more option:
  *  - `change_file_text` - Text of link for change the file
  * 
  * @access public
- * @param array $options Array of options {@see _upload()}
+ * @param array $options Array of options. See {@link _upload()}.
  * @return string The HTML of the input
  * @see _upload()
  */
@@ -2159,13 +2175,14 @@ class BuroBurocrataHelper extends XmlTagHelper
 
 /**
  * Creates a input for general files, using the general _upload() method
- * For more details, see _upload()
+ * For more details, see {@link _upload()}
+ *
  * This method has one more option:
  *  - `change_file_text` - Text of link for change the file
  *  - `remove_file_text` - Text of link for change the file
  * 
  * @access public
- * @param array $options Array of options {@see _upload()}
+ * @param array $options Array of options. See {@link _upload()}.
  * @return string The HTML of the input
  * @see _upload()
  */

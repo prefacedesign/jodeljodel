@@ -1,12 +1,20 @@
 <?php
+/**
+ * Office boy Helper for burocrata.
+ *
+ * PHP versions 5
+ *
+ * @package       jodel
+ * @subpackage    jodel.burocrata.views.helpers
+ */
 
 /**
  * BuroOfficeBoy helper.
  *
- * Creates all javascript necessary for BuroBurocrataHelper work.
+ * Creates all javascript necessary for {@link BuroBurocrataHelper} work.
  *
  * @package       jodel
- * @subpackage    jodel.burocrata.view.helpers
+ * @subpackage    jodel.burocrata.views.helpers
  */
 class BuroOfficeBoyHelper extends AppHelper
 {
@@ -246,7 +254,7 @@ class BuroOfficeBoyHelper extends AppHelper
 	}
 
 /**
- * Creates the javascript for upload input
+ * Creates the javascript for upload input.
  * 
  * @access public
  * @param array $options
@@ -272,7 +280,7 @@ class BuroOfficeBoyHelper extends AppHelper
 	}
 
 /**
- * Creates the javascript for textile input
+ * Creates the javascript for textile input.
  * 
  * @access public
  * @param array $options
@@ -290,9 +298,11 @@ class BuroOfficeBoyHelper extends AppHelper
 	}
 
 /** 
- * Function to add the script in HTML. It is an Ajax request, this method
- * returns the javascript inside an <script> tag. If is not an Ajax request,
- * it puts the script on buffer to be echoed on <head> tag of HTML.
+ * Function to add the script in HTML.
+ * 
+ * It is an Ajax request, this method returns the javascript inside 
+ * an <script> tag. If is not an Ajax request, it puts the script on
+ * buffer to be echoed on <head> tag of HTML.
  *
  * @access public
  * @param string $script The script that will be appended
@@ -307,10 +317,12 @@ class BuroOfficeBoyHelper extends AppHelper
 	}
 
 /**
- * Create a javascript thats performs a ajax request. Beacuse this is
- * usually a event related method, the script is returned without the <script> tag.
+ * Create a javascript thats performs a ajax request.
  *
- * ### Possible attributes passed
+ * Beacuse this is usually a event related method, the script
+ * is returned without the <script> tag.
+ *
+ * Possible attributes passed:
  *
  * - `url` - URL. No default.
  * - `params` - A list of params that will populate the POST data. Defaults to nothing.
@@ -371,8 +383,9 @@ class BuroOfficeBoyHelper extends AppHelper
 	}
 
 /** 
- * Handles the array of callbacks and converts it to javascript
- * It uses the $callbacks variable for templating the script codes.
+ * Handles the array of callbacks
+ *
+ * This method converts the array to javascript code, using the {@link $callbacks} variable for templating the script codes.
  *
  * @access protected
  * @param string $type Type of interface where the callbacks will be attached
@@ -426,7 +439,8 @@ class BuroOfficeBoyHelper extends AppHelper
 
 /**
  * Generates the script that resets the content of form
- * Only works with forms callbacks
+ *
+ * Note that it only works with forms callbacks
  *
  * @access protected
  * @param mixed $script
@@ -438,8 +452,12 @@ class BuroOfficeBoyHelper extends AppHelper
 	}
 
 /**
- * Generates the script that locks the content of form
- * Only works with forms callbacks
+ * Generates the script that locks the form
+ * 
+ * Once executed, each input inside the form is disabled and
+ * than can't accept changes by user or by javascript code.
+ *
+ * Note that this only works with forms callbacks
  *
  * @access protected
  * @param mixed $script
@@ -451,8 +469,9 @@ class BuroOfficeBoyHelper extends AppHelper
 	}
 
 /**
- * Generates the script that locks the content of form
- * Only works with forms callbacks
+ * Generates the script that unlocks the form
+ *
+ * Note that this only works with forms callbacks
  *
  * @access protected
  * @param mixed $script
@@ -528,9 +547,10 @@ class BuroOfficeBoyHelper extends AppHelper
 	}
 
 /**
- * Formats a redirect script, using th JsHelper, that uses 
- * `url.location()` function of javascript. It accepts the $url paramater
- * ether on string or on array formats.
+ * Formats a redirect script.
+ *
+ * This method uses the JsHelper, that uses `window.location.href()` function
+ * of javascript. It accepts the <var>$url</var> paramater ether on string or on array formats.
  *
  * @access protected
  * @param array|string $url
@@ -542,7 +562,9 @@ class BuroOfficeBoyHelper extends AppHelper
 	}
 
 /**
- * Just an alias to <code>array('js' => "alert('$msg')")</code>
+ * A way of comunication with the user.
+ * 
+ * For while, it is just an alias to <code>array('js' => "alert('$msg')")</code>
  * 
  * @todo Link with PopupHelper
  * @access protected
