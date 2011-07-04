@@ -736,6 +736,8 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 		this.contents = content.contents || [];
 		this.parameters = parameters || {};
 		
+		this.ordered = !Object.isUndefined(this.parameters.orderField);
+		
 		this.menus = [];
 		this.items = [];
 		
@@ -807,20 +809,29 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			content = {content: data.content, title: this.texts.title},
 			div = new Element('div').insert(this.templates.item.interpolate(content)).down();
 		
-		this.addNewMenu(order);
-		this.menus[order].div.insert({after: div});
+		if (this.ordered)
+		{
+			this.addNewMenu(order);
+			this.menus[order].div.insert({after: div});
+		}
+		else
+		{
+			if (this.menus.length < 2)
+				this.addNewMenu(1);
+			this.menus[1].div.insert({before: div});
+		}
 		
-		this.items.push(item = this.createItem(div));
+		item = new BuroListOfItemsItem(div).addCallbacks({'buro:controlClick': this.routeAction.bind(this)})
+		this.items.push(item);
 		this.updateSiblings(item);
+		
+		if (!this.ordered)
+			item.disableOrderControl();
 		
 		if (animate)
 			new Effect.BlindDown(div, {duration: this.baseFxDuration});
 		
 		return this;
-	},
-	createItem: function(div)
-	{
-		return new BuroListOfItemsItem(div).addCallbacks({'buro:controlClick': this.routeAction.bind(this)});
 	},
 	removeItem: function(item)
 	{
@@ -1150,6 +1161,7 @@ var BuroListOfItemsItem = Class.create(BuroCallbackable, {
 	observeControls: function(element)
 	{
 		element.observe('click', this.controlClick.bindAsEventListener(this, element));
+		return this;
 	},
 	controlClick: function(ev, element)
 	{
@@ -1162,6 +1174,7 @@ var BuroListOfItemsItem = Class.create(BuroCallbackable, {
 		this.controls.childElements().each(Form.Element.enable);
 		if (!Object.isElement(this.getPrev())) Form.Element.disable(this.controls.down('.ordered_list_up'));
 		if (!Object.isElement(this.getNext())) Form.Element.disable(this.controls.down('.ordered_list_down'));
+		return this;
 	},
 	getNext: function()
 	{
@@ -1170,6 +1183,12 @@ var BuroListOfItemsItem = Class.create(BuroCallbackable, {
 	getPrev: function()
 	{
 		return this.div.previous('div.ordered_list_item');
+	},
+	disableOrderControl: function()
+	{
+		this.controls.down('.ordered_list_up').hide();
+		this.controls.down('.ordered_list_down').hide();
+		return this;
 	}
 });
 

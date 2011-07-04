@@ -30,6 +30,10 @@ class Galery extends BurocrataUserAppModel {
 		'Picture' => array(
 			'className' => 'BurocrataUser.Picture',
 			'order' => 'Picture.weight'
+		),
+		'Something' => array(
+			'className' => 'BurocrataUser.Something',
+			'order' => array('Something.modified' => 'desc')
 		)
 	);
 	

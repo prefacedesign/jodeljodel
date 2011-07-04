@@ -91,6 +91,27 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 			)
 		);
 		
+		echo $this->Buro->input(array(),
+			array(
+				'label' => __d('buro_user','Something else for this gallery', true),
+				'type' => 'relational',
+				'instructions' => __d('buro_user','Some instructions here.', true),
+				'options' => array(
+					'type' => 'many_children',
+					'model' => 'BurocrataUser.Something',
+					'callbacks' => array(
+						'onError' => array('js' => "alert('Deu erro ao fazer o `#{action}`. Controller voltou:\\n\\n\\t#{error}'.interpolate(json));")
+					),
+					'texts' => array(
+						'confirm' => array(
+							'delete' => __d('buro_user','Do you really want to delete this thing?', true)
+						),
+						'title' => __d('buro_user','Something', true)
+					)
+				)
+			)
+		);
+		
 		echo $this->Buro->submit();
 	
 	echo $this->Buro->eform();
