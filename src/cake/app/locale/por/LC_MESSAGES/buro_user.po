@@ -1,0 +1,55 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2011-06-16 23:23-0300\n"
+"PO-Revision-Date: 2011-06-16 22:23-0400\n"
+"Last-Translator: Daniel <daniel@preface.com.br>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: \plugins\burocrata_user\views\exemplos\index.ctp:24
+msgid "This gallery"
+msgstr "Sobre essa galeria"
+
+#: \plugins\burocrata_user\views\exemplos\index.ctp:28
+msgid "Gallery title"
+msgstr "Título da galeria"
+
+#: \plugins\burocrata_user\views\exemplos\index.ctp:35
+msgid "Gallery release date"
+msgstr "Data de publicação"
+
+#: \plugins\burocrata_user\views\exemplos\index.ctp:50
+msgid "Something about this gallery"
+msgstr "Descrição da galeria"
+
+#: \plugins\burocrata_user\views\exemplos\index.ctp:64
+msgid "Owner of this gallery"
+msgstr "Dono da galeria"
+
+#: \plugins\burocrata_user\views\exemplos\index.ctp:65
+msgid "First, search if he/she already has a account, using his/her name. If does not, you will be able to create a new one."
+msgstr "Primeiramente procure a pessoa pelo seu nome. Se não ela não tiver cadastro, você poderá criar um novo cadastro."
+
+#: \plugins\burocrata_user\views\exemplos\index.ctp:75
+msgid "Pictures for this gallery"
+msgstr "As imagens"
+
+#: \plugins\burocrata_user\views\exemplos\index.ctp:77
+msgid "Click on plus sign (on right) to add more pictures. You can also change the order of appearance, edit, delete and duplicate each picture."
+msgstr "Clique no sinal de mais (à direita) para adicionar mais imagens. Você também pode alterar a ordem em que elas aparecem, editar, apagar e duplicar cada imagem."
+
+#: \plugins\burocrata_user\views\exemplos\index.ctp:86
+msgid "Do you really want to delete this image?"
+msgstr "Você quer realmente apagar essa imagem?"
+
+#: \plugins\burocrata_user\views\exemplos\index.ctp:88
+msgid "Image"
+msgstr "Imagem"
+
