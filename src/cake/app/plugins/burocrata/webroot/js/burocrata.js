@@ -5,7 +5,8 @@ var E_NOT_AUTH = 3; // Server sended a 403 (Not Authorized) code
 /**
  * Does some extends on default elements behavior:
  *  - Adds the `setLoading` and `unsetLoading` methods that handles loading element
- *  - Adds the `addFocus` and `removeFocus` methods that handles CSS for focused elements
+ *  - Adds the `swapWith` method, that allows swapping elements places 
+ *  - Adds the `scrollVisible` that works like scrollIntoView(), but does some animation.
  *  - Implements an observer on inputs and textareas for focusing
  */
 document.observe('dom:loaded', function()
@@ -56,8 +57,17 @@ document.observe('dom:loaded', function()
 			if (!(element = $(element))) return;
 			padding = padding || 0;
 			
-			var offset = -(document.viewport.getHeight()-element.getHeight()-Number(padding));
-			new Effect.ScrollTo(element, {duration: 0.5, offset: offset});
+			var offset = element.viewportOffset().top;
+			if (offset < 0)
+				offset = -Number(padding);
+			else if (offset > document.viewport.getHeight()-element.getHeight())
+				offset = -(document.viewport.getHeight()-element.getHeight()-Number(padding));
+			else
+				offset = false;
+			
+			if (offset !== false)
+				new Effect.ScrollTo(element, {duration: 0.5, offset: offset});
+			return element;
 		}
 	});
 });
@@ -791,9 +801,10 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 		});
 	},
 	
-	addNewItem: function(content, order, animate)
+	addNewItem: function(data, order, animate)
 	{
 		var item,
+			content = {content: data.content, title: this.texts.title},
 			div = new Element('div').insert(this.templates.item.interpolate(content)).down();
 		
 		this.addNewMenu(order);
@@ -861,7 +872,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			duration: this.baseFxDuration,
 			style: {height: fHeight+'px'},
 			afterFinish: function () {
-				this.divForm.setStyle({overflow: '', height:''});
+				this.divForm.setStyle({overflow: '', height:''}).scrollVisible();
 				this.injectControlOnForm();
 			}.bind(this)
 		});
@@ -883,7 +894,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	},
 	injectControlOnForm: function()
 	{
-		var form_id = this.divForm.down('.buro_form').readAttribute('id');
+		var form_id = this.divForm.down('.buro_form') && this.divForm.down('.buro_form').readAttribute('id');
 		var OpenedForm = BuroCR.get(form_id);
 		if (OpenedForm) {
 			OpenedForm.addParameters(this.parameters.fkField);
