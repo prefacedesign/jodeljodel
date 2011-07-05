@@ -736,7 +736,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 		this.contents = content.contents || [];
 		this.parameters = parameters || {};
 		
-		this.ordered = !Object.isUndefined(this.parameters.orderField);
+		this.auto_order = Object.isUndefined(this.parameters.orderField);
 		
 		this.menus = [];
 		this.items = [];
@@ -806,10 +806,10 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	addNewItem: function(data, order, animate)
 	{
 		var item,
-			content = {content: data.content, title: this.texts.title},
+			content = {content: data.content, title: this.texts.title, id: data.id},
 			div = new Element('div').insert(this.templates.item.interpolate(content)).down();
 		
-		if (this.ordered)
+		if (!this.auto_order)
 		{
 			this.addNewMenu(order);
 			this.menus[order].div.insert({after: div});
@@ -825,7 +825,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 		this.items.push(item);
 		this.updateSiblings(item);
 		
-		if (!this.ordered)
+		if (this.auto_order)
 			item.disableOrderControl();
 		
 		if (animate)
@@ -908,7 +908,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 		var form_id = this.divForm.down('.buro_form') && this.divForm.down('.buro_form').readAttribute('id');
 		var OpenedForm = BuroCR.get(form_id);
 		if (OpenedForm) {
-			OpenedForm.addParameters(this.parameters.fkField);
+			OpenedForm.addParameters(this.parameters.fkBounding);
 			if (this.editing.order && this.parameters.orderField)
 				OpenedForm.addParameters(this.parameters.orderField, {order: Number(this.editing.order)+1});
 			OpenedForm.addCallbacks({
@@ -997,7 +997,8 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 				if (!json.id || !(item = this.getItem(json.id)))
 					break;
 				
-				this.removeMenu(item.div.next('.ordered_list_menu'));
+				if (!this.auto_order || this.items.length == 1)
+					this.removeMenu(item.div.next('.ordered_list_menu'));
 				this.removeItem(item);
 			break;
 			
@@ -1027,6 +1028,11 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 				} else if (!Object.isUndefined(this.editing.order)) { // Finished editing a new item
 					this.addNewItem({content: json.content, id: json.id, title: json.title}, this.editing.order);
 				}
+				
+				if (this.auto_order && json.id_order)
+					for (i = json.id_order.length-1; i >= 0; i--)
+						this.menus[0].div.insert({after: this.getItem(json.id_order[i]).div});
+				
 				this.closeForm();
 			break;
 		}

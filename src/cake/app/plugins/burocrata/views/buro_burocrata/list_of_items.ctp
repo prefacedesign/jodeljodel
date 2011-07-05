@@ -20,6 +20,8 @@
 	{
 		$type = array('buro', 'many_children', 'view');
 		$object['content'] = $this->Jodel->insertModule($model_class_name, $type, $data);
+		if (isset($id_order))
+			$object['id_order'] = $id_order;
 	}
 	
 	echo $this->Js->object($object);

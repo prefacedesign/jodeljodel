@@ -345,7 +345,7 @@ class BuroBurocrataController extends BurocrataAppController
  * Used on contentStream an on manyChildren inputs
  * 
  * @access public
- * @return json An javascript object that contains only `error` properties
+ * @return json An javascript object whose properties depend on action requested
  */
 	public function list_of_items()
 	{
@@ -456,10 +456,27 @@ class BuroBurocrataController extends BurocrataAppController
 				break;
 				
 				case 'edit':
+					if (!empty($this->buroData['id']))
+						$id = $this->buroData['id'];
+					extract($this->_getViewData());
+					$this->data = $data;
+					$this->set(compact('data'));
+				break;
+				
 				case 'afterEdit':
 					if (!empty($this->buroData['id']))
 						$id = $this->buroData['id'];
 					extract($this->_getViewData());
+					
+					if (!$ordered)
+					{
+						list($model,$field) = pluginSplit($this->buroData['foreign_key']);
+						
+						$conditions = array($model.'.'.$field => $data[$model][$field]);
+						$id_order = array_keys($Model->find('list', array('recursive' => -1, 'conditions' => $conditions)));
+						$this->set(compact('id_order'));
+					}
+					
 					$this->data = $data;
 					$this->set(compact('data'));
 				break;

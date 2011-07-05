@@ -1144,18 +1144,21 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		return $out;
 	}
-	
+
 /**
  * Construct a belongsTo form based on passed variable
  *
- * ### The options are:
  *
- * - `model` - The Alias used by related model (there is no default and MUST be passed).
- * - `type` - Type of form (can be 'autocomplete' or 'select'). Defaults to 'autocomplete'.
- * - `allow` - An array that contains the actions allowed - Defaults to array('create', 'modify', 'relate').
- * - `actions` - An array that defines all the URLs for CRUD actions Defaults to BuroBurocrataController actions.
- * - `callbacks` - An array with possible callbacks with Jodel Callbacks convention.
- *
+ *  - `baseID` string The baseID for the input
+ *  - `callbacks` array An array with registered callbacks
+ *  - `assocName` string The name of model association 
+ *  - `auto_order` boolean An boolean that tells if the order can be changed by 
+ *                         the user or is changed by the model. Defaults to false
+ *                         (ie. user can change the order)
+ *  - `texts` array An array of groups of strings to be display on user interface. Accepted 
+ *                  groups of strings are: `confirm` witch is an array indexed by action (will display an 
+ *                  confirm box before actually performs the action); `title` witch is an string to be 
+ *                  displayed on top of every item.
  * @access public
  * @param array $options An array with non-defaults values
  * @return string The HTML well formated
@@ -1172,7 +1175,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'assocName' => false,
 			'title' => false,
 			'callbacks' => array(),
-			'texts' => array('confirm' => array())
+			'texts' => array('confirm' => array()),
+			'auto_order' => null
 		);
 		extract($options);
 		
@@ -1206,19 +1210,30 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$AssocModel = isset($ParentModel->{$assocName})?$ParentModel->{$assocName}:false;
 		
+		
+		// Label
 		if(empty($input_options['label']) && $AssocModel)
 			$input_options['label'] = Inflector::humanize($AssocModel->table);
 		
 		$out = $this->Bl->h6(array(),array('escape' => false), $input_options['label']);
 		unset($input_options['label']);
 		
+		
+		// Instructions
 		if (isset($input_options['instructions']))
 		{
 			$out .= $this->instructions(array(), array('close_me' => false), $input_options['instructions']);
 			unset($input_options['instructions']);
 		}
 		
-		$allowedContent = array(array(
+		
+		
+		// Creating the options for _orderedItens method
+		
+		if (is_null($auto_order))
+			$auto_order = $AssocModel && $AssocModel->Behaviors->attached('Ordered');
+		
+		$allowed_content = array(array(
 			'model' => $model,
 			'label' => $model,
 			'title' => $title,
@@ -1227,58 +1242,20 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$parameters = array();
 		if (!empty($this->data[$ParentModel->alias][$ParentModel->primaryKey]))
 		{
-			$fieldName = $this->_name($assocName.'.'.$ParentModel->hasMany[$assocName]['foreignKey']);
-			$parameters['fkField'] = array($fieldName => $this->data[$ParentModel->alias][$ParentModel->primaryKey]);
+			$foreign_key = $assocName.'.'.$ParentModel->hasMany[$assocName]['foreignKey'];
+			$fieldName = $this->_name($foreign_key);
+			$parameters['fkBounding'] = array($fieldName => $this->data[$ParentModel->alias][$ParentModel->primaryKey]);
 		}
 		
-		if ($AssocModel && $AssocModel->Behaviors->attached('Ordered'))
+		if ($auto_order && isset($AssocModel->Behaviors->Ordered))
 		{
 			$fieldName = $this->_name($AssocModel->alias.'.'.$AssocModel->Behaviors->Ordered->settings[$assocName]['field']);
 			$parameters['orderField'] = array($fieldName => '#{order}');
 		}
 		
-		$out .= $this->_orderedItensManyChildren(compact('texts','model_class_name','parameters','allowedContent','baseID','callbacks'));
+		$out .= $this->_orderedItens(compact('texts','model_class_name','foreign_key', 'parameters','allowed_content','baseID','callbacks', 'auto_order'));
 		
 		return $this->Bl->div(array('id' => 'div' . $baseID, 'class' => 'ordered_list'), array(), $out);
-	}
-
-/**
- * Creates a interface for a list of items (ordenable or not), multi-model, based on options given
- * 
- * ### Accepted options are:
- * 
- *  - `type` string An alias name for an specific content array, that 
- *                  must be configured on (to be defined)
- *  - `content` array An array that describes (by model names) what types
- *                    of content will be available to content insertion.
- *  - `model_class_name` string The complete name (Plugin.Name) of the main model,
- *                              i.e. model that holds all the information.
- *                              Defaults to `ContentStream.ContentStream`
- *  - `auto_order` boolean An boolean that tells if the order can be changed by 
- *                         the user or is changed by the model. Defaults to false
- *                         (ie. user can change the order)
- * 
- * @access protected
- * @param array $options An array whith the options for this ordered list
- * @return string|false The HTML and its script or false, if something went wrong
- * @todo Make this method
- */
-	protected function _orderedItensContentStream($options)
-	{
-		if (isset($options['type']) && !empty($options['type']) && is_string($options['type']))
-		{
-			// @todo: some type of convention for type configuration
-			// @todo: load the type of ordered itens and fill the $options['content'] properly
-		}
-		
-		if (empty($options['content']))
-		{
-			trigger_error('BuroBurocrataHelper::_orderedItens - Content array for list of items was not set.');
-			return false;
-		}
-		
-		if (!is_array($options['content']))
-			$options['content'] = array($options['content']);
 	}
 
 
@@ -1287,6 +1264,10 @@ class BuroBurocrataHelper extends XmlTagHelper
  * 
  * ### Accepted options are:
  *
+ *  - `baseID` string The baseID for the input
+ *  - `callbacks` array An array with registered callbacks
+ *  - `allowed_content` array An array that tells what types of contents are availables on menu
+ *  - `parameters` array Additional parameters for passing with action POSTs
  *  - `model_class_name` string The complete name (Plugin.Name) of the main model, 
  *                              i.e. model that holds all the information. No default value.
  *  - `auto_order` boolean An boolean that tells if the order can be changed by 
@@ -1302,14 +1283,14 @@ class BuroBurocrataHelper extends XmlTagHelper
  * @param array $options An array whith the options for this ordered list
  * @return string|false The HTML and its script or false, if something went wrong
  */
-	protected function _orderedItensManyChildren($options)
+	protected function _orderedItens($options)
 	{
 		$options += array('model_class_name' => false, 'auto_order' => false, 'callbacks' => array());
 		extract($options);
 		
 		if (empty($model_class_name))
 		{
-			trigger_error('BuroBurocrataHelper::_orderedItensManyChildren - model_class_name wasn\'t set.');
+			trigger_error('BuroBurocrataHelper::_orderedItens - model_class_name wasn\'t set.');
 			return false;
 		}
 		
@@ -1344,9 +1325,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 				'onSuccess' => array('js' => "BuroCR.get('$baseID').actionSuccess(json||false);"),
 			)
 		);
+		if ($auto_order === false)
+			$ajax_call['params'][$this->internalParam('foreign_key')] = $foreign_key;
 		$jsOptions['callbacks'] = array('onAction' => array('ajax' => $ajax_call))+$options['callbacks'];
+		
 		$jsOptions['baseID'] = $options['baseID'];
-		$jsOptions['templates']['menu'] = $this->orderedItensMenu(array(), array('allowedContent' => $allowedContent));
+		$jsOptions['templates']['menu'] = $this->orderedItensMenu(array(), array('allowed_content' => $allowed_content));
 		$jsOptions['templates']['item'] = $this->orderedItensItem();
 		$jsOptions['contents'] = $contents;
 		$jsOptions['texts'] = $options['texts'];
@@ -1388,17 +1372,17 @@ class BuroBurocrataHelper extends XmlTagHelper
 	{
 		$htmlAttributes = $this->addClass($htmlAttributes, self::$defaultContainerClass);
 		$htmlAttributes = $this->addClass($htmlAttributes, 'ordered_list_menu');
-		$options = $options + array('allowedContent' => false);
+		$options = $options + array('allowed_content' => false);
 		
-		if (!is_array($options['allowedContent']))
-			trigger_error('BuroBurocrataHelper::sorderedItensMenu - No allowedContent list specified.');
+		if (!is_array($options['allowed_content']))
+			trigger_error('BuroBurocrataHelper::sorderedItensMenu - No allowed_content list specified.');
 		
 		$htmlAttributes['buro:order'] = '#{order}';
 		$out = $this->Bl->sdiv($htmlAttributes); // to be closed on BuroBurocrataHelper::sorderedItensMenu
 		
 		// A menu made of list of content
 		$out .= $this->Bl->sdiv(array('class' => 'ordered_list_menu_list'));
-		foreach ($options['allowedContent'] as $content)
+		foreach ($options['allowed_content'] as $content)
 		{
 			if (!is_array($content))
 				$content = array('model' => $content);
