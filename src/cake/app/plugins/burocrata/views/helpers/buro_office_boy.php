@@ -247,7 +247,9 @@ class BuroOfficeBoyHelper extends AppHelper
 		$parameters = $this->Js->object($parameters);
 		$content = $this->Js->object(compact('texts', 'templates', 'contents'));
 		
-		$script = sprintf("new BuroListOfItems('%s', %s, %s)", $baseID, $parameters, $content);
+		$className = $auto_order ? 'BuroListOfItemsAutomatic' : 'BuroListOfItems';
+		
+		$script = sprintf("new %s('%s', %s, %s)", $className, $baseID, $parameters, $content);
 		if (!empty($callbacks))
 			$script .= sprintf('.addCallbacks(%s)', $this->formatCallbacks('listOfItems', $callbacks));
 		return $this->addHtmlEmbScript($script);

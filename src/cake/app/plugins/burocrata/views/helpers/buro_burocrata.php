@@ -1231,7 +1231,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		// Creating the options for _orderedItens method
 		
 		if (is_null($auto_order))
-			$auto_order = $AssocModel && $AssocModel->Behaviors->attached('Ordered');
+			$auto_order = !($AssocModel && $AssocModel->Behaviors->attached('Ordered'));
 		
 		$allowed_content = array(array(
 			'model' => $model,
@@ -1247,7 +1247,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$parameters['fkBounding'] = array($fieldName => $this->data[$ParentModel->alias][$ParentModel->primaryKey]);
 		}
 		
-		if ($auto_order && isset($AssocModel->Behaviors->Ordered))
+		if (!$auto_order && isset($AssocModel->Behaviors->Ordered))
 		{
 			$fieldName = $this->_name($AssocModel->alias.'.'.$AssocModel->Behaviors->Ordered->settings[$assocName]['field']);
 			$parameters['orderField'] = array($fieldName => '#{order}');
@@ -1325,16 +1325,14 @@ class BuroBurocrataHelper extends XmlTagHelper
 				'onSuccess' => array('js' => "BuroCR.get('$baseID').actionSuccess(json||false);"),
 			)
 		);
-		if ($auto_order === false)
+		if ($auto_order)
 			$ajax_call['params'][$this->internalParam('foreign_key')] = $foreign_key;
 		$jsOptions['callbacks'] = array('onAction' => array('ajax' => $ajax_call))+$options['callbacks'];
 		
-		$jsOptions['baseID'] = $options['baseID'];
 		$jsOptions['templates']['menu'] = $this->orderedItensMenu(array(), array('allowed_content' => $allowed_content));
-		$jsOptions['templates']['item'] = $this->orderedItensItem();
+		$jsOptions['templates']['item'] = $this->orderedItensItem(array('class' => $auto_order?'auto_order':''));
 		$jsOptions['contents'] = $contents;
-		$jsOptions['texts'] = $options['texts'];
-		$jsOptions['parameters'] = $options['parameters'];
+		$jsOptions += compact('auto_order', 'parameters', 'texts', 'baseID');
 		
 		
 		$out = $this->Bl->br();

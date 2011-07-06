@@ -736,8 +736,6 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 		this.contents = content.contents || [];
 		this.parameters = parameters || {};
 		
-		this.auto_order = Object.isUndefined(this.parameters.orderField);
-		
 		this.menus = [];
 		this.items = [];
 		
@@ -810,27 +808,19 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			content = {content: data.content, title: this.texts.title, id: data.id},
 			div = new Element('div').insert(this.templates.item.interpolate(content)).down();
 		
-		if (!this.auto_order)
-		{
-			this.addNewMenu(order);
+		this.addNewMenu(order);
+		if (this.menus[order])
 			this.menus[order].div.insert({after: div});
-		}
-		else
-		{
-			if (this.menus.length < 2)
-				this.addNewMenu(1);
-			this.menus[1].div.insert({before: div});
-		}
 		
 		item = new BuroListOfItemsItem(div).addCallbacks({'buro:controlClick': this.routeAction.bind(this)})
 		this.items.push(item);
 		this.updateSiblings(item);
 		
-		if (this.auto_order)
-			item.disableOrderControl();
-		
 		if (animate)
-			new Effect.BlindDown(div, {queue: this.queue, duration: this.baseFxDuration});
+			new Effect.BlindDown(div, {
+				queue: this.queue, 
+				duration: this.baseFxDuration
+			});
 		
 		return this;
 	},
@@ -854,63 +844,6 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			next = this.getItem(item.getNext());
 		if (prev) prev.checkSiblings();
 		if (next) next.checkSiblings();
-	},
-	putItem: function(id, on, other_id, animate)
-	{
-		var item = this.getItem(id),
-			other = this.getItem(other_id);
-		if (item && item.div && other && other.div)
-		{
-			if (on == 'after' && other.getNext() == item.div || on == 'before' && item.getNext() == other.div)
-				return;
-			
-			var div, insert, insertion = $H({});
-			
-			if (!animate)
-			{
-				insertion.set(on, item.div);
-				other.div.insert(insertion.toObject());
-			}
-			else
-			{
-				insertion.set(on, div = new Element('div'));
-				other.div.insert(insertion.toObject());
-				
-				new Effect.Morph(div, {
-					style: {height: item.div.getHeight()+'px'},
-					queue: this.queue,
-					delay: this.baseFxDuration,
-					duration: this.baseFxDuration,
-					afterFinish: function(item, div, fx)
-					{
-						item.div
-							.swapWith(div)
-							.setStyle({
-								position: 'relative',
-								top: (div.cumulativeOffset().top-item.div.cumulativeOffset().top)+'px'
-							});
-					}.curry(item, div)
-				});
-				new Effect.Morph(item.div, {
-					style: {top: '0px'},
-					queue: this.queue,
-					duration: this.baseFxDuration,
-					afterFinish: function(item, div, fx)
-					{
-						item.div.setStyle({position:'', top: ''});
-					}.curry(item, div)
-				});
-				new Effect.Morph(div, {
-					style: {height: '0px'},
-					queue: this.queue,
-					duration: this.baseFxDuration,
-					afterFinish: function(fx)
-					{
-						fx.element.remove.bind(fx.element).defer();
-					}
-				});
-			}
-		}
 	},
 	
 	newItem: function(menuObj, type)
@@ -1061,8 +994,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 				if (!json.id || !(item = this.getItem(json.id)))
 					break;
 				
-				if (!this.auto_order || this.items.length == 1)
-					this.removeMenu(item.div.next('.ordered_list_menu'));
+				this.removeMenu(item.div.next('.ordered_list_menu'));
 				this.removeItem(item);
 			break;
 			
@@ -1094,8 +1026,55 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 				}
 				
 				this.closeForm();
-				
-				if (this.auto_order && json.id_order)
+			break;
+		}
+	},
+	getItem: function(id)
+	{
+		if (Object.isElement(id)) 
+			id = id.readAttribute('buro:id');
+		var result = this.items.findAll(function(id, item) {return item.id == id}.curry(id));
+		if (result.length)
+			return result[0];
+		return false;
+	}
+});
+
+
+/**
+ * Automatic ordering version of BuroListOfItems.
+ * All specific methods and behaviors are implemented here.
+ * 
+ * @access public
+ */
+var BuroListOfItemsAutomatic = Class.create(BuroListOfItems, {
+	addNewItem: function($super, data, order, animate)
+	{
+		$super(data, order, animate);
+		this.items.last().disableOrderControl();
+		this.menus[1].div.insert({before: this.items.last().div});
+		this.checkLast();
+		return this;
+	},
+	addNewMenu: function($super, order)
+	{
+		if (this.menus.length < 2)
+			$super(this.menus.length);
+		return this;
+	},
+	removeMenu: function($super, div)
+	{
+		if (this.items.length == 1)
+			$super(div);
+		return this;
+	},
+	actionSuccess: function($super, json)
+	{
+		$super(json);
+		switch (json.action)
+		{
+			case 'afterEdit':
+				if (json.id_order)
 				{
 					for (i = 0; i < json.length; i++)
 						if (json.id == json.id_order[i])
@@ -1112,16 +1091,75 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			break;
 		}
 	},
-	getItem: function(id)
+	putItem: function(id, on, other_id, animate)
 	{
-		if (Object.isElement(id)) 
-			id = id.readAttribute('buro:id');
-		var result = this.items.findAll(function(id, item) {return item.id == id}.curry(id));
-		if (result.length)
-			return result[0];
-		return false;
+		var item = this.getItem(id),
+			other = this.getItem(other_id);
+		if (item && item.div && other && other.div)
+		{
+			if (on == 'after' && other.getNext() == item.div || on == 'before' && item.getNext() == other.div)
+				return;
+			
+			var div, insert, insertion = $H({});
+			
+			// Experimentar pular item a item um menu todos os items após a nova posição do item
+			// {[]][.}
+			if (!animate)
+			{
+				insertion.set(on, item.div);
+				other.div.insert(insertion.toObject());
+			}
+			else
+			{
+				insertion.set(on, div = new Element('div'));
+				other.div.insert(insertion.toObject());
+				
+				new Effect.Morph(div, {
+					style: {height: item.div.getHeight()+'px'},
+					queue: this.queue,
+					delay: this.baseFxDuration,
+					duration: this.baseFxDuration,
+					afterFinish: function(item, div, fx)
+					{
+						item.div
+							.swapWith(div)
+							.setStyle({
+								position: 'relative',
+								top: (div.cumulativeOffset().top-item.div.cumulativeOffset().top)+'px'
+							});
+					}.curry(item, div)
+				});
+				new Effect.Morph(item.div, {
+					style: {top: '0px'},
+					queue: this.queue,
+					duration: this.baseFxDuration,
+					afterFinish: function(item, div, fx)
+					{
+						item.div.setStyle({position:'', top: ''});
+						this.checkLast();
+					}.bind(this, item, div)
+				});
+				new Effect.Morph(div, {
+					style: {height: '0px'},
+					queue: this.queue,
+					duration: this.baseFxDuration,
+					afterFinish: function(fx)
+					{
+						fx.element.remove.bind(fx.element).defer();
+					}
+				});
+			}
+		}
+	},
+	checkLast: function()
+	{
+		var last = this.divCont.down('div.ordered_list_item.last_item');
+		if (last) 
+			last.removeClassName('last_item');
+		this.divCont.select('div.ordered_list_item').last().addClassName('last_item');
 	}
 });
+
 
 /**
  * Class for the menu of a list of items. It triggers the `buro:newItem` callback 

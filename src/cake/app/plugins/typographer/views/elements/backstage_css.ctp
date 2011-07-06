@@ -163,6 +163,17 @@
 			'margin' => sprintf('%s %s', $hg->size(array('g' => 0.5)), 0)
 	));
 	
+	$this->Decorator->rule(
+		'.ordered_list .ordered_list_item.auto_order', array(
+			'padding-bottom' => $hg->size(array('g' => 0.5)),
+			'border-bottom' => '1px dashed black'
+	));
+	
+	$this->Decorator->rule(
+		'.ordered_list .ordered_list_item.auto_order.last_item', array(
+			'border-bottom' => '0px'
+	));
+	
 	$arrow_size = 13;
 	$img_url = $ig->url(array(
 			'iw' => 427, 'w' => $arrow_size*3+15,
