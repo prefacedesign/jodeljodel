@@ -1051,8 +1051,17 @@ var BuroListOfItemsAutomatic = Class.create(BuroListOfItems, {
 	addNewItem: function($super, data, order, animate)
 	{
 		$super(data, order, animate);
-		this.items.last().disableOrderControl();
-		this.menus[1].div.insert({before: this.items.last().div});
+		
+		var item = this.items.last(),
+			reference = this.menus[1].div;
+		if (this.editing)
+			reference = this.editing.div;
+		
+		item.disableOrderControl();
+		if (reference == this.menus[0].div)
+			reference.insert({after: item.div});
+		else
+			reference.insert({before: item.div});
 		this.checkLast();
 		return this;
 	},
@@ -1102,8 +1111,6 @@ var BuroListOfItemsAutomatic = Class.create(BuroListOfItems, {
 			
 			var div, insert, insertion = $H({});
 			
-			// Experimentar pular item a item um menu todos os items após a nova posição do item
-			// {[]][.}
 			if (!animate)
 			{
 				insertion.set(on, item.div);
@@ -1157,6 +1164,10 @@ var BuroListOfItemsAutomatic = Class.create(BuroListOfItems, {
 		if (last) 
 			last.removeClassName('last_item');
 		this.divCont.select('div.ordered_list_item').last().addClassName('last_item');
+	},
+	updateSiblings: function()
+	{
+		this.checkLast();
 	}
 });
 
