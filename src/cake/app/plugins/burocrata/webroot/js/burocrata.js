@@ -891,7 +891,8 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			duration: this.baseFxDuration,
 			style: {height: fHeight+'px'},
 			afterFinish: function() {
-				this.editing.div.show();
+				if (this.editing)
+					this.editing.div.show();
 				this.editing = false;
 				this.menus.each(function(menu){
 					menu.enable();
@@ -1017,7 +1018,8 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			break;
 			
 			case 'afterEdit':
-				this.divForm.down().unsetLoading();
+				if (this.divForm.down())
+					this.divForm.down().unsetLoading();
 				
 				if (this.editing.id == json.id) { // Finished editing an item that already exists
 					this.editing.content.update(json.content);
@@ -1048,20 +1050,21 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
  * @access public
  */
 var BuroListOfItemsAutomatic = Class.create(BuroListOfItems, {
-	addNewItem: function($super, data, order, animate)
+	addNewItem: function($super, data, order, animate, reference)
 	{
 		$super(data, order, animate);
 		
-		var item = this.items.last(),
-			reference = this.menus[1].div;
+		var item = this.items.last();
+		
+		reference = reference || this.menus[1].div;
 		if (this.editing)
 			reference = this.editing.div;
 		
 		item.disableOrderControl();
-		if (reference == this.menus[0].div)
-			reference.insert({after: item.div});
-		else
+		if (reference == this.menus[1].div)
 			reference.insert({before: item.div});
+		else
+			reference.insert({after: item.div});
 		this.checkLast();
 		return this;
 	},
@@ -1079,25 +1082,36 @@ var BuroListOfItemsAutomatic = Class.create(BuroListOfItems, {
 	},
 	actionSuccess: function($super, json)
 	{
-		$super(json);
 		switch (json.action)
 		{
+			case 'duplicate':
+				if (!json.id || !json.old_id || !(item = this.getItem(json.old_id)))
+					break;
+				item.div.unsetLoading();
+				this.addNewItem(json, null, true, item.div);
+				this.getItem(json.id).div.setLoading();
+				this.trigger.bind(this,'onAction', 'afterEdit', json.id).delay(this.baseFxDuration);
+			break;
+			
 			case 'afterEdit':
-				if (json.id_order)
+				$super(json);
+				
+				if (Object.isArray(json.id_order))
 				{
-					for (i = 0; i < json.length; i++)
-						if (json.id == json.id_order[i])
-							break;
+					var index = json.id_order.map(Number).indexOf(Number(json.id));
 					
 					if (this.items.length > 1)
 					{
-						if (i == 0)
-							this.putItem(json.id_order[i], 'before', json.id_order[i+1], true);
+						if (index == 0)
+							this.putItem(json.id_order[index], 'before', json.id_order[index+1], true);
 						else
-							this.putItem(json.id_order[i], 'after', json.id_order[i-1], true);
+							this.putItem(json.id_order[index], 'after', json.id_order[index-1], true);
 					}
 				}
 			break;
+			
+			default:
+				$super(json);
 		}
 	},
 	putItem: function(id, on, other_id, animate)
@@ -1108,6 +1122,9 @@ var BuroListOfItemsAutomatic = Class.create(BuroListOfItems, {
 		{
 			if (on == 'after' && other.getNext() == item.div || on == 'before' && item.getNext() == other.div)
 				return;
+			
+			item.div.unsetLoading();
+			other.div.unsetLoading();
 			
 			var div, insert, insertion = $H({});
 			
@@ -1160,10 +1177,12 @@ var BuroListOfItemsAutomatic = Class.create(BuroListOfItems, {
 	},
 	checkLast: function()
 	{
-		var last = this.divCont.down('div.ordered_list_item.last_item');
+		var last = this.divCont.down('div.ordered_list_item.last_item'),
+			items = this.divCont.select('div.ordered_list_item');
 		if (last) 
 			last.removeClassName('last_item');
-		this.divCont.select('div.ordered_list_item').last().addClassName('last_item');
+		if (items.length)
+			items.last().addClassName('last_item');
 	},
 	updateSiblings: function()
 	{
