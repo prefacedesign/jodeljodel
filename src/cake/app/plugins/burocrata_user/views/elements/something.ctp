@@ -23,9 +23,8 @@
 		break;
 		
 		case 'view':
-			echo $this->Html->tag('strong', $data['Something']['id']);
 			echo $this->Html->para('', $data['Something']['some_text']);
-			echo $this->Html->para('', 'Última alteração: '. date('d/m/Y H:i:s', strtotime($data['Something']['modified'])) . ' ('.$this->Time->timeAgoInWords($data['Something']['modified']).')');
+			echo $this->Html->para('', 'Última alteração: '. date('d/m/Y H:i:s', strtotime($data['Something']['modified'])));
 		break;
 		
 		case 'form':

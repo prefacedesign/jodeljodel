@@ -33,7 +33,7 @@ class Galery extends BurocrataUserAppModel {
 		),
 		'Something' => array(
 			'className' => 'BurocrataUser.Something',
-			'order' => array('Something.modified' => 'desc')
+			'order' => array('Something.some_text' => 'asc')
 		)
 	);
 	
