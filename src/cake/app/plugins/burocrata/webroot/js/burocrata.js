@@ -752,6 +752,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 		this.contents.each(this.addNewItem.bind(this));
 		
 		this.editing = false;
+		this.queue = {position:'end', scope: this.id_base};
 	},
 	
 	addNewMenu: function(order)
@@ -829,7 +830,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			item.disableOrderControl();
 		
 		if (animate)
-			new Effect.BlindDown(div, {duration: this.baseFxDuration});
+			new Effect.BlindDown(div, {queue: this.queue, duration: this.baseFxDuration});
 		
 		return this;
 	},
@@ -838,6 +839,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 		this.items.splice(this.items.indexOf(item), 1);
 		item.div.unsetLoading();
 		new Effect.BlindUp(item.div, {
+			queue: this.queue,
 			duration: this.baseFxDuration,
 			afterFinish: function(item, eff) {
 				item.div.remove();
@@ -852,6 +854,63 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			next = this.getItem(item.getNext());
 		if (prev) prev.checkSiblings();
 		if (next) next.checkSiblings();
+	},
+	putItem: function(id, on, other_id, animate)
+	{
+		var item = this.getItem(id),
+			other = this.getItem(other_id);
+		if (item && item.div && other && other.div)
+		{
+			if (on == 'after' && other.getNext() == item.div || on == 'before' && item.getNext() == other.div)
+				return;
+			
+			var div, insert, insertion = $H({});
+			
+			if (!animate)
+			{
+				insertion.set(on, item.div);
+				other.div.insert(insertion.toObject());
+			}
+			else
+			{
+				insertion.set(on, div = new Element('div'));
+				other.div.insert(insertion.toObject());
+				
+				new Effect.Morph(div, {
+					style: {height: item.div.getHeight()+'px'},
+					queue: this.queue,
+					delay: this.baseFxDuration,
+					duration: this.baseFxDuration,
+					afterFinish: function(item, div, fx)
+					{
+						item.div
+							.swapWith(div)
+							.setStyle({
+								position: 'relative',
+								top: (div.cumulativeOffset().top-item.div.cumulativeOffset().top)+'px'
+							});
+					}.curry(item, div)
+				});
+				new Effect.Morph(item.div, {
+					style: {top: '0px'},
+					queue: this.queue,
+					duration: this.baseFxDuration,
+					afterFinish: function(item, div, fx)
+					{
+						item.div.setStyle({position:'', top: ''});
+					}.curry(item, div)
+				});
+				new Effect.Morph(div, {
+					style: {height: '0px'},
+					queue: this.queue,
+					duration: this.baseFxDuration,
+					afterFinish: function(fx)
+					{
+						fx.element.remove.bind(fx.element).defer();
+					}
+				});
+			}
+		}
 	},
 	
 	newItem: function(menuObj, type)
@@ -873,13 +932,13 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	},
 	openForm: function(content)
 	{
-		var iHeight = this.divForm.getHeight(),
+		var iHeight = this.editing.id ? this.editing.div.getHeight() : this.divForm.getHeight(),
 			fHeight = this.divForm.update(content).setStyle({height:''}).getHeight();
 		
 		this.divForm.unsetLoading().setStyle({overflow:'hidden', height: iHeight+'px'});
 		
 		new Effect.Morph(this.divForm, {
-			queue: 'end',
+			queue: this.queue,
 			duration: this.baseFxDuration,
 			style: {height: fHeight+'px'},
 			afterFinish: function () {
@@ -890,16 +949,21 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	},
 	closeForm: function()
 	{
-		this.divForm.unsetLoading();
-		new Effect.BlindUp(this.divForm, {
+		var fHeight = this.editing.id ? this.editing.div.getHeight() : 0;
+		
+		this.divForm.unsetLoading().setStyle({overflow: 'hidden'});
+		
+		new Effect.Morph(this.divForm, {
+			queue: this.queue,
 			duration: this.baseFxDuration,
+			style: {height: fHeight+'px'},
 			afterFinish: function() {
 				this.editing.div.show();
 				this.editing = false;
 				this.menus.each(function(menu){
 					menu.enable();
 				});
-				this.divForm.update().hide();
+				this.divForm.update().hide().setStyle({overflow: ''});
 			}.bind(this)
 		});
 	},
@@ -1029,11 +1093,22 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 					this.addNewItem({content: json.content, id: json.id, title: json.title}, this.editing.order);
 				}
 				
-				if (this.auto_order && json.id_order)
-					for (i = json.id_order.length-1; i >= 0; i--)
-						this.menus[0].div.insert({after: this.getItem(json.id_order[i]).div});
-				
 				this.closeForm();
+				
+				if (this.auto_order && json.id_order)
+				{
+					for (i = 0; i < json.length; i++)
+						if (json.id == json.id_order[i])
+							break;
+					
+					if (this.items.length > 1)
+					{
+						if (i == 0)
+							this.putItem(json.id_order[i], 'before', json.id_order[i+1], true);
+						else
+							this.putItem(json.id_order[i], 'after', json.id_order[i-1], true);
+					}
+				}
 			break;
 		}
 	},

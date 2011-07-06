@@ -23,6 +23,7 @@
 		break;
 		
 		case 'view':
+			echo $this->Html->tag('strong', $data['Something']['id']);
 			echo $this->Html->para('', $data['Something']['some_text']);
 			echo $this->Html->para('', 'Última alteração: '. $this->Time->timeAgoInWords($data['Something']['modified']));
 		break;
@@ -50,5 +51,6 @@
 					array('label' => 'Salva','cancel' => array('label' => 'Cancelar'))
 				);
 			echo $this->Buro->eform();
+			echo $this->Bl->floatBreak();
 		break;
 	}
