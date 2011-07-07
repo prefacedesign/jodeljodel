@@ -1096,6 +1096,8 @@ var BuroListOfItemsAutomatic = Class.create(BuroListOfItems, {
 			case 'afterEdit':
 				$super(json);
 				
+				this.getItem(json.id).div.unsetLoading();
+				
 				if (Object.isArray(json.id_order))
 				{
 					var index = json.id_order.map(Number).indexOf(Number(json.id));
