@@ -505,14 +505,17 @@ class BuroBurocrataController extends BurocrataAppController
 		if (empty($id) && !empty($this->buroData['id']))
 			$id = $this->buroData['id'];
 		
-		if(!empty($id) && ($error = $this->_load($Model)) === false)
+		if(($error = $this->_load($Model)) === false && !empty($id))
 		{
-			$data = $Model->find('first', array(
-				'recursive' => -1,
-				'conditions' => array(
-					$Model->alias.'.'.$Model->primaryKey => $id
-				)
-			));
+			if (method_exists($Model, 'findBurocrata'))
+				$data = $Model->findBurocrata($id);
+			else
+				$data = $Model->find('first', array(
+					'recursive' => -1,
+					'conditions' => array(
+						$Model->alias.'.'.$Model->primaryKey => $id
+					)
+				));
 		}
 		return compact('error', 'data');
 	}
