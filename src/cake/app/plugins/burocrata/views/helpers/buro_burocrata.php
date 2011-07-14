@@ -152,6 +152,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 				else
 				{
 					trigger_error('BuroBurocrataHelper::sinput - input type `'.$options['type'].'` not implemented or known.');
+					return false;
 				}
 			}
 			
