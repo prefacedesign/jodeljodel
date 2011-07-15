@@ -138,15 +138,6 @@
 			'top' => '100%',
 			'position' => 'absolute',
 	));
-
-	$this->Decorator->rule(
-		'.ordered_list h6', array(
-		    'font-size' => '13px',
-			'font-weight' => 'bold',
-			'letter-spacing' => '0.135ex',
-			'line-height' => '24px',
-			'text-transform' => 'uppercase'
-	));
 	
 	
 	
@@ -972,7 +963,7 @@
 	));
 	
 	$this->Decorator->rule(
-		'.buro_form .superfield h6', array(
+		'.buro_form .superfield h6, .buro_form .input h6', array(
 			'font-weight' => 'bold',
 			'text-transform' => 'uppercase',
 			'line-height' => $u->t($line_height * 4/3),

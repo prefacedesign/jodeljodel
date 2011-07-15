@@ -1261,6 +1261,59 @@ class BuroBurocrataHelper extends XmlTagHelper
 
 
 /**
+ * Content stream input.
+ * 
+ * @access public
+ */
+	public function inputContentStream($options = array())
+	{
+		$input_options = $options;
+		$options = $options['options'];
+		$options += $defaults = array(
+			'baseID' => $this->baseID(),
+			'assocName' => false,
+			'type' => null,
+			'callbacks' => array(),
+			'texts' => array('confirm' => array())
+		);
+		extract($options);
+		
+		// Usually the Cake core will display a "missing table" or "missing connection"
+		// if something went wrong on registering the model
+		$ParentModel =& ClassRegistry::init($this->modelPlugin . '.' . $this->modelAlias);
+		// But won't hurt test if went ok
+		if (!$ParentModel) {
+			trigger_error('BuroBurocrataHelper::inputContentStream - Parent model could not be found.');
+			return false;
+		}
+		
+		// Test if the parent model is ContentStreamed
+		if (!$ParentModel->Behaviors->attached('CsContentStreamHolder')) {
+			trigger_error('BuroBurocrataHelper::inputContentStream - The model need to be attached with ContentStream.CsContentStreamHolder behavior.');
+			return false;
+		}
+		
+		
+		// Label
+		if(empty($input_options['label']) && $AssocModel)
+			$input_options['label'] = Inflector::humanize($AssocModel->table);
+		
+		$out = $this->Bl->h6(array(),array('escape' => false), $input_options['label']);
+		unset($input_options['label']);
+		
+		
+		// Instructions
+		if (isset($input_options['instructions']))
+		{
+			$out .= $this->instructions(array(), array('close_me' => false), $input_options['instructions']);
+			unset($input_options['instructions']);
+		}
+		
+		return $out;
+	}
+
+
+/**
  * Creates a interface for a list of items (ordenable or not) of just one type of content based on options given
  * 
  * ### Accepted options are:

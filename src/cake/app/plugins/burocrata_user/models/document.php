@@ -1,11 +1,13 @@
 <?php
-	class Document extends BurocrataUserAppModel {
-		var $name = 'Document';
-		
-		var $actsAs = array(
-			'ContentStream.CsContentStreamerHolder' => array(
-				'foraignKey' => 'content_stream_id',
-				'type' => 'document'
+
+class Document extends BurocrataUserAppModel {
+	var $name = 'Document';
+	
+	var $actsAs = array(
+		'ContentStream.CsContentStreamHolder' => array(
+			'type' => array(
+				'content_stream_id' => 'document'
 			)
-		);
-	}
+		)
+	);
+}
