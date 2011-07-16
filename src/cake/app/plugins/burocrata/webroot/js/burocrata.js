@@ -636,7 +636,7 @@ var BuroAjax = Class.create(BuroCallbackable, {
  * @access public
  */
 var BuroBelongsTo = Class.create(BuroCallbackable, {
-	initialize: function(id_base, autocompleter_id_base, callbacks)
+	initialize: function(id_base, autocompleter_id_base, update_on_load, callbacks)
 	{
 		this.id_base = id_base;
 		BuroCR.set(this.id_base, this);
@@ -650,7 +650,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		$('lie'+this.id_base).observe('click', function(ev){ev.stop(); this.showForm(true);}.bind(this));
 		$('lin'+this.id_base).observe('click', function(ev){ev.stop(); this.showForm(false);}.bind(this));
 		
-		if (!this.input.value.empty())
+		if (update_on_load && !this.input.value.empty())
 			this.showPreview(this.input.value);
 	},
 	showForm: function(to_edit)

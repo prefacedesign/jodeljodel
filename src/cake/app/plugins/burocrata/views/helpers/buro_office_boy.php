@@ -198,7 +198,7 @@ class BuroOfficeBoyHelper extends AppHelper
 		extract(am($defaults, $options));
 		
 		$callbacks = $this->formatCallbacks('relational_unitary', $callbacks);
-		$script = sprintf("new BuroBelongsTo('%s','%s'%s);", $baseID, $autocomplete_baseID, (empty($callbacks) ? '':','.$callbacks));
+		$script = sprintf("new BuroBelongsTo('%s','%s',%s%s);", $baseID, $autocomplete_baseID, $update_on_load?'true':'false', (empty($callbacks) ? '':','.$callbacks));
 		return $this->addHtmlEmbScript($script);
 	}
 
