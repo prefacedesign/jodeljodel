@@ -1299,9 +1299,9 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$type= am(BuroBurocrataHelper::$defaultSupertype, 'many_children', 'view');
 		
 		$contents = array();
+		$Model =& ClassRegistry::init($model_class_name);
 		foreach ($this->data[$model_name] as $n => $data)
 		{
-			$Model =& ClassRegistry::init($model_class_name);
 			$data = array($model_name => $data);
 			$contents[] = array(
 				'content' => $this->Jodel->insertModule($model_class_name, $type, $data),
