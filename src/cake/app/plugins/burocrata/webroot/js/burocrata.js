@@ -646,17 +646,42 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		
 		this.input = $('hii'+id_base);
 		this.update = $('update'+id_base);
+		this.actions = this.update.next('.actions');
+		this.actions.select('a').each(this.observeControls.bind(this));
 		
-		$('lie'+this.id_base).observe('click', function(ev){ev.stop(); this.showForm(true);}.bind(this));
+		// $('lie'+this.id_base).observe('click', function(ev){ev.stop(); this.showForm(true);}.bind(this));
 		$('lin'+this.id_base).observe('click', function(ev){ev.stop(); this.showForm(false);}.bind(this));
 		
-		if (update_on_load && !this.input.value.empty())
+		if (!update_on_load)
+			this.updated();
+		else if (!this.input.value.empty())
 			this.showPreview(this.input.value);
+	},
+	observeControls: function(element)
+	{
+		element.observe('click', this.controlClick.bindAsEventListener(this, element));
+		return this;
+	},
+	controlClick: function(ev, element)
+	{
+		ev.stop();
+		var action = element.readAttribute('buro:action');
+		switch (action)
+		{
+			case 'edit':
+				this.showForm(true);
+			break;
+			
+			case 'reset':
+				this.reset();
+			break;
+		}
 	},
 	showForm: function(to_edit)
 	{
 		this.trigger('onShowForm', to_edit);
-		this.update.next('.actions').hide();
+		this.actions.hide();
+		this.autocomplete.input.hide();
 	},
 	openedForm: function()
 	{
@@ -674,7 +699,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 	showPreview: function(id)
 	{
 		this.trigger('onShowPreview', id);
-		this.update.next('.actions').show();
+		this.updated();
 	},
 	selected: function(pair)
 	{
@@ -685,6 +710,11 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 			this.autocomplete.input.value = pair.value;
 		}
 	},
+	updated: function()
+	{
+		this.actions.show();
+		this.autocomplete.input.hide();
+	},
 	saved: function(form, response, json, saved)
 	{
 		this.autocomplete.input.value = '';
@@ -694,6 +724,13 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 	cancel: function()
 	{
 		this.showPreview(this.input.value);
+	},
+	reset: function()
+	{
+		this.input.value = this.autocomplete.input.value = '';
+		this.autocomplete.input.show();
+		this.update.update();
+		this.actions.hide();
 	}
 });
 

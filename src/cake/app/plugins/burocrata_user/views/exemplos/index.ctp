@@ -69,6 +69,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 					'texts' => array(
 						'new_item' => __d('buro_user', 'Create a new person', true),
 						'edit_item' => __d('buro_user', 'Edit this person', true),
+						'reset_item' => __d('buro_user', 'Chose another person', true),
 						'nothing_found' => __d('buro_user', 'Person not found', true)
 					)
 				)

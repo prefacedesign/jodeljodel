@@ -1006,7 +1006,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$texts += array(
 			'new_item' => __('Burocrata: create a new related item', true),
 			'edit_item' => __('Burocrata: edit related data', true),
-			'nothing_found' => __('Burocrata: nothing found on autocomplete', true)
+			'nothing_found' => __('Burocrata: nothing found on autocomplete', true),
+			'reset_item' => __('Burocrata: choose another related item', true)
 		);
 		if (isset($new_item_text))
 			$texts['new_item'] = $new_item_text;
@@ -1044,7 +1045,6 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$hidden_input_id = 'hii'.$baseID;
 		$link_id_new = 'lin'.$baseID;
-		$link_id_edit = 'lie'.$baseID;
 		$update = 'update'.$baseID;
 		$acplt_baseID = $this->baseID();
 		$edit_call_baseID = $this->baseID();
@@ -1075,7 +1075,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out .= $this->inputAutocompleteMessage(
 			array('class' => 'action'),
 			array('escape' => false),
-			$this->Bl->a(array('id' => $link_id_new, 'href' => ''), array(), $options['texts']['new_item'])
+			$this->Bl->a(array('id' => $link_id_new, 'href' => ''), array(), $texts['new_item'])
 		);
 		
 		
@@ -1102,12 +1102,15 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$module.$error
 		);
 		
-		$links = $this->Bl->a(array('id' => $link_id_edit, 'href' => ''), array(), $texts['edit_item']);
+		$links = array(
+			$this->Bl->a(array('buro:action' => 'edit', 'href' => ''), array(), $texts['edit_item']),
+			$this->Bl->a(array('buro:action' => 'reset', 'href' => ''), array(), $texts['reset_item'])
+		);
 		
 		$actions_div = $this->Bl->div(
 			array('class' => 'actions', 'style' => 'display:none;'),
 			array('escape' => false),
-			$links
+			implode('&ensp;', $links)
 		);
 		
 		$out .= $this->Bl->sdiv(array('class' => 'controls'));
