@@ -3,12 +3,12 @@
 echo $this->Buro->sform(array(),
 	array(
 		'model' => 'BurocrataUser.Person',
-		'callbacks' => array(
-			'onStart'	=> array('lockForm'),
-			'onComplete'=> array('unlockForm'),
-			'onReject'  => array('contentUpdate', 'popup' => 'Existe algum erro de validação.'),
-			'onFailure'	=> array('popup' => 'Erro de comunicação com o servidor!')
-		)
+		// 'callbacks' => array(
+			// 'onStart'	=> array('lockForm'),
+			// 'onComplete'=> array('unlockForm'),
+			// 'onReject'  => array('contentUpdate', 'popup' => 'Existe algum erro de validação.'),
+			// 'onFailure'	=> array('popup' => 'Erro de comunicação com o servidor!')
+		// )
 	)
 );
 	echo $this->Bl->input(

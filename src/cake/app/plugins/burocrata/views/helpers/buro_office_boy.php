@@ -62,6 +62,7 @@ class BuroOfficeBoyHelper extends AppHelper
 			'onError' => 'function(code, error, json){%s}'
 		),
 		'relational_unitary' => array(
+			'onAction' => 'function(action, id){%s}',
 			'onShowForm' => 'function(to_edit){%s}',
 			'onShowPreview' => 'function(id){%s}'
 		),

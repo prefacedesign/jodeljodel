@@ -1041,13 +1041,18 @@ class BuroBurocrataHelper extends XmlTagHelper
 		}
 		$fieldName = implode('.', array($this->modelAlias, $ParentModel->belongsTo[$assocName]['foreignKey']));
 		
+		
+		// if (isset($options['queryField']))
+			// $options['fieldName'] = $options['queryField'];
+		
 		// END OF PARSING PARAMS
 		
 		$hidden_input_id = 'hii'.$baseID;
-		$link_id_new = 'lin'.$baseID;
 		$update = 'update'.$baseID;
 		$acplt_baseID = $this->baseID();
 		$edit_call_baseID = $this->baseID();
+		
+		$out = $this->Bl->sdiv(array('id' => 'div'.$baseID));
 		
 		// Input + Autocomplete list + Nothing found
 		
@@ -1056,18 +1061,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 				'baseID' => $acplt_baseID,
 				'model' => $model_class_name,
 				'callbacks' => array(
-					'onUpdate' => array('js' => "$('$link_id_new').up().show()"),
-					'onSelect' => array(
-						'js' => "BuroCR.get('$baseID').selected(pair);"
-					)
+					'onUpdate' => array('js' => "BuroCR.get('$baseID').ACUpdated();"),
+					'onSelect' => array('js' => "BuroCR.get('$baseID').ACSelected(pair);")
 				)
 			)
 		);
-		
-		if (isset($options['queryField']))
-			$options['fieldName'] = $options['queryField'];
-		
-		$out = $this->inputAutocomplete(am($input_options, $autocomplete_options));
+		$out .= $this->inputAutocomplete(am($input_options, $autocomplete_options));
 		
 		
 		// "Create a new item" link
@@ -1075,7 +1074,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out .= $this->inputAutocompleteMessage(
 			array('class' => 'action'),
 			array('escape' => false),
-			$this->Bl->a(array('id' => $link_id_new, 'href' => ''), array(), $texts['new_item'])
+			$this->Bl->a(array('buro:action' => 'new', 'href' => ''), array(), $texts['new_item'])
 		);
 		
 		
@@ -1119,46 +1118,36 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$out .= $this->Bl->floatBreak();
 		$out .= $this->Bl->ediv();
 		
-		
-		
-		
-		$url_view = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'view');
-		$open_prev_ajax = array(
-			'url' => $url_view,
-			'params' => array(
-				$this->securityParams($url_view, $plugin, $model),
-				$this->internalParam('id') => '#{id}'
-			),
-			'callbacks' => array(
-				'onSuccess' => array('unsetLoading' => $update, 'contentUpdate' => $update)
-			)
-		);
-		
-		$url_edit = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'edit');
-		$open_form_ajax = array(
+		// Ajax call and OfficeBoy call
+		$url = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'unitary');
+		$ajax_options = array(
 				'baseID' => $edit_call_baseID,
-				'url' => $url_edit,
+				'url' => $url,
 				'params' => array(
-					$this->securityParams($url_edit, $plugin, $model),
+					$this->securityParams($url, $plugin, $model),
 					$this->internalParam('id') => '#{id}',
+					$this->internalParam('action') => "#{action}",
 					$this->internalParam('baseID', $baseID)
 				),
 				'callbacks' => array(
-					'onSuccess' => array('unsetLoading' => $update, 'contentUpdate' => $update), 
-					'onComplete' => array('js' => "BuroCR.get('$baseID').openedForm()")
+					'onError' => array('js' => "BuroCR.get('$baseID').actionError(json||false);"),
+					'onSuccess' => array('js' => "BuroCR.get('$baseID').actionSuccess(json||false);"),
 				)
 			);
 		
 		
-		$officeboy_options = array();
-		$officeboy_options['baseID'] = $baseID;
-		$officeboy_options['update_on_load'] = empty($module);
-		$officeboy_options['autocomplete_baseID'] = $acplt_baseID;
-		$officeboy_options['callbacks'] = array(
-			'onShowForm' => array('setLoading' => $update, 'js' => "id = to_edit ? BuroCR.get('$baseID').input.value : null;", 'ajax' => $open_form_ajax),
-			'onShowPreview' => array('setLoading' => $update, 'ajax' => $open_prev_ajax)
+		$jsOptions = array();
+		$jsOptions['baseID'] = $baseID;
+		$jsOptions['update_on_load'] = empty($module);
+		$jsOptions['autocomplete_baseID'] = $acplt_baseID;
+		$jsOptions['callbacks'] = array(
+			'onAction' => array('ajax' => $ajax_options)
+			// 'onShowForm' => array('setLoading' => $update, 'js' => "id = to_edit ? BuroCR.get('$baseID').input.value : null;", 'ajax' => $open_form_ajax),
+			// 'onShowPreview' => array('setLoading' => $update, 'ajax' => $open_prev_ajax)
 		);
-		$out .= $this->BuroOfficeBoy->relationalUnitaryAutocomplete($officeboy_options);
+		$out .= $this->BuroOfficeBoy->relationalUnitaryAutocomplete($jsOptions);
+		
+		$out .= $this->Bl->ediv();
 		
 		return $out;
 	}

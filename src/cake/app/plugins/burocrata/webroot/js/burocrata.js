@@ -636,6 +636,7 @@ var BuroAjax = Class.create(BuroCallbackable, {
  * @access public
  */
 var BuroBelongsTo = Class.create(BuroCallbackable, {
+	baseFxDuration: 0.3,
 	initialize: function(id_base, autocompleter_id_base, update_on_load, callbacks)
 	{
 		this.id_base = id_base;
@@ -648,18 +649,35 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		this.update = $('update'+id_base);
 		this.actions = this.update.next('.actions');
 		this.actions.select('a').each(this.observeControls.bind(this));
+		// this.observeControls($('lin'+this.id_base));
 		
-		// $('lie'+this.id_base).observe('click', function(ev){ev.stop(); this.showForm(true);}.bind(this));
-		$('lin'+this.id_base).observe('click', function(ev){ev.stop(); this.showForm(false);}.bind(this));
-		
-		if (!update_on_load)
-			this.updated();
-		else if (!this.input.value.empty())
-			this.showPreview(this.input.value);
+		if (this.input.value.empty())
+		{
+			this.reset(false);
+		}
+		else
+		{
+			if (!update_on_load)
+				this.updated();
+			else
+				this.showPreview();
+		}
+		this.queue = {position:'end', scope: this.id_base};
+	},
+	reset: function(animate)
+	{
+		this.input.value = this.autocomplete.input.value = '';
+		this.autocomplete.input.show();
+		this.actions.hide();
+		if (animate)
+			new Effect.BlindUp(this.update, {duration: this.baseFxDuration, queue: this.queue});
+		else
+			this.update.hide();
 	},
 	observeControls: function(element)
 	{
-		element.observe('click', this.controlClick.bindAsEventListener(this, element));
+		if (Object.isElement(element) || Object.isElement(element = $(element)))
+			element.observe('click', this.controlClick.bindAsEventListener(this, element));
 		return this;
 	},
 	controlClick: function(ev, element)
@@ -668,47 +686,59 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		var action = element.readAttribute('buro:action');
 		switch (action)
 		{
+			case 'new':
 			case 'edit':
-				this.showForm(true);
+				this.update.setLoading();
+				this.trigger('onAction', action, this.input.value);
 			break;
 			
 			case 'reset':
-				this.reset();
+				this.reset(true);
 			break;
 		}
 	},
-	showForm: function(to_edit)
+	actionSuccess: function(json)
 	{
-		this.trigger('onShowForm', to_edit);
-		this.actions.hide();
-		this.autocomplete.input.hide();
+		this.removeForm();
+		
+		var iHeight = this.update.unsetLoading().getHeight(),
+			fHeight = this.update.update(json.content).getHeight();
+		
+		this.update.setStyle({height: iHeight+'px', overflow: 'hidden'});
+		
+		new Effect.Morph(this.update, {
+			duration: this.baseFxDuration, 
+			queue: this.queue, 
+			style: {height: fHeight+'px'},
+			afterFinish: function(action, fx){
+				this.update.setStyle({height: '', overflow: ''});
+				this.observeForm();
+				if (action == 'preview')
+					this.updated();
+				else
+					this.actions.hide();
+			}.bind(this, json.action)
+		});
 	},
-	openedForm: function()
+	actionError: function(json)
 	{
-		// timeout for the AjaxRequest have time to evaluate all js and register the Form object on BuroCR
-		window.setTimeout(this.observeForm.bind(this), 100);
 	},
 	observeForm: function()
 	{
-		var form_id = this.update.down('.buro_form').readAttribute('id');
-		BuroCR.get(form_id).addCallbacks({
-			onCancel: this.cancel.bind(this),
-			onSave: this.saved.bind(this)
-		})
+		var form_id = false,
+			div_form = this.update.down('.buro_form');
+		
+		if (Object.isElement(div_form))
+			if (form_id = div_form.readAttribute('id'))
+				BuroCR.get(form_id).addCallbacks({
+					onCancel: this.cancel.bind(this),
+					onSave: this.saved.bind(this)
+				});
 	},
-	showPreview: function(id)
+	showPreview: function()
 	{
-		this.trigger('onShowPreview', id);
-		this.updated();
-	},
-	selected: function(pair)
-	{
-		if (pair.id > 0)
-		{
-			this.update.update();
-			this.saved(null, null, null, pair.id);
-			this.autocomplete.input.value = pair.value;
-		}
+		this.update.setLoading();
+		this.trigger('onAction', 'preview', this.input.value);
 	},
 	updated: function()
 	{
@@ -719,18 +749,19 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 	{
 		this.autocomplete.input.value = '';
 		this.input.value = saved;
-		this.showPreview(saved);
+		this.showPreview();
 	},
 	cancel: function()
 	{
-		this.showPreview(this.input.value);
+		this.showPreview();
 	},
-	reset: function()
+	ACUpdated: function()
 	{
-		this.input.value = this.autocomplete.input.value = '';
-		this.autocomplete.input.show();
-		this.update.update();
-		this.actions.hide();
+	},
+	ACSelected: function(pair)
+	{
+		this.input.value = pair.id;
+		this.showPreview();
 	}
 });
 
