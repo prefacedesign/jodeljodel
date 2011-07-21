@@ -678,7 +678,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 	},
 	selected: function(pair)
 	{
-		if (pair.id > 0)
+		if (pair.id)
 		{
 			this.update.update();
 			this.saved(null, null, null, pair.id);
