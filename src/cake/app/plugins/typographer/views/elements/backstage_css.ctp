@@ -762,12 +762,11 @@
 	
 	$this->Decorator->rule(
 		'.buro_form label.buro', array(
-			'font-weight' => 'bold !important',
+			'font-weight' => 'bold',
 			'text-transform' => 'uppercase',
 			'line-height' => $u->t($line_height * 4/3),
 			'letter-spacing' => $letterSpacing,
-			'display' => 'block !important',
-			'float' => 'none !important'
+			'display' => 'block'
 	));
 	
 	$this->Decorator->rule(
@@ -957,9 +956,18 @@
 	));
 	
 	$this->Decorator->rule(
-		'.buro .input_radio label', array(
+		'.input_radio input+label', array(
+			'font-weight' => 'normal !important',
+			'float' => 'left'
+	));
+	
+	$this->Decorator->rule(
+		'.input_radio input.buro', array(
 			'float' => 'left',
-			'font-weight' => 'normal'
+			'clear' => 'left',
+			'width' => 'auto',
+			'height' => $u->t($line_height),
+			'margin' => sprintf('%s %s 0', $hg->size(array('g' => 0.5)), $hg->size(array('g' => 0.5)))
 	));
 	
 	$this->Decorator->rule(

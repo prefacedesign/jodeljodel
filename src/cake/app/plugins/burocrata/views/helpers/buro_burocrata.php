@@ -64,12 +64,6 @@ class BuroBurocrataHelper extends XmlTagHelper
 	public function insertForm($modelClassName, $typeParams = array())
 	{
 		$type= am(BuroBurocrataHelper::$defaultSupertype, 'form', $typeParams);
-		list($plugin, $model_alias) = pluginSplit($modelClassName);
-		
-		$View = &$this->_getView();
-		$plugin = Inflector::underscore($plugin);
-		$element_name = Inflector::underscore($model_alias);
-		
 		return $this->Jodel->insertModule($modelClassName, $type);
 	}
 
