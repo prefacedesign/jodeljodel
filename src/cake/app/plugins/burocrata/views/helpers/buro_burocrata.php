@@ -2070,6 +2070,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 	protected function _upload($gen_options, $file_input_options)
 	{
 		$packed = SecureParams::pack(array($gen_options['version'], $file_input_options['fieldName'], $gen_options['model']));
+		list($model_plugin, $model_name) = pluginSplit($gen_options['model']);
 		
 		$out = '';
 		
@@ -2077,7 +2078,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out .= $this->Bl->sdiv(array('id' => 'div' . $gen_options['baseID']));
 			$out .= $this->inputLayoutScheme();
 			$out .= $this->input(array('value' => $packed, 'name' => $this->internalParam('data')), array('type' => 'hidden'));
-			$out .= $this->input(array('id' => 'mi' . $gen_options['baseID']), array('type' => 'file', 'container' => false, 'fieldName' => 'SfilStoredFile.file') + $file_input_options);
+			$out .= $this->input(
+				array('id' => 'mi' . $gen_options['baseID']),
+				array('type' => 'file', 'container' => false, 'fieldName' => $model_name.'.file') + $file_input_options
+			);
 		$out .= $this->Bl->ediv();
 		$this->eform();
 		
