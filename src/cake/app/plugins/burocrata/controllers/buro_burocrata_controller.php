@@ -489,6 +489,34 @@ class BuroBurocrataController extends BurocrataAppController
 
 
 /**
+ * 
+ * 
+ * @access public
+ */
+	public function unitary()
+	{
+		$id = $action = $Model = null;
+		$error = $this->_load($Model);
+		
+		if ($error === false)
+		{
+			if (isset($this->buroData['action']))
+				$action = $this->buroData['action'];
+			
+			if (!empty($this->buroData['id']))
+				$id = $this->buroData['id'];
+			
+			extract($this->_getViewData());
+			$this->data = $data;
+			
+			$this->set(compact('data'));
+		}
+		
+		$this->set(compact('error', 'action', 'saved', 'id'));
+	}
+
+
+/**
  * Used to find data on database using burocratas conventions
  * based on passed id.
  * 
@@ -570,5 +598,18 @@ class BuroBurocrataController extends BurocrataAppController
 		}
 		
 		return $error;
+	}
+
+
+/**
+ * Simple function to pass foward the error message only if debug level > 0
+ * 
+ * @access protected
+ * @param string $err_msg
+ * @return string|true The error message or true depending on debug level
+ */
+	protected function _error($err_msg)
+	{
+		return Configure::read() > 0 ? $err_msg : true;
 	}
 }

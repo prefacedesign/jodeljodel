@@ -114,7 +114,9 @@ var BuroCallbackable = Class.create({
 	{
 		if (Object.isUndefined(name))
 		{
-			this.callbacks = $H({});
+			this.callbacks.keys().each(function(key) {
+				this.callbacks.unset(key);
+			}.bind(this));
 		}
 		else
 		{
@@ -158,7 +160,7 @@ var BuroCallbackable = Class.create({
 			args.push(arguments[i]);
 		
 		try {
-			this.callbacks.get(name).each(this.apply_function.bind(this, args));
+			this.callbacks.get(name).each(this.applyFunction.bind(this, args));
 		} catch(e)
 		{
 			if (debug && console && console.error)
@@ -167,7 +169,7 @@ var BuroCallbackable = Class.create({
 		
 		return true;
 	},
-	apply_function: function(args, _function)
+	applyFunction: function(args, _function)
 	{
 		_function.apply(this, args);
 	}
@@ -309,6 +311,19 @@ var BuroForm = Class.create(BuroCallbackable, {
 	{
 		ev.stop();
 		this.trigger('onCancel', this.form);
+	},
+	purge: function()
+	{
+		BuroCR.unset(this.id_base);
+		this.form.stopObserving('keypress');
+		if (this.submit)
+			this.submit.stopObserving('click');
+		if (this.cancel)
+			this.cancel.stopObserving('click');
+		if (this.form.up('body'))
+			this.form.remove();
+		this.removeCallback();
+		this.cancel = this.submit = this.form = null;
 	}
 });
 
@@ -624,7 +639,9 @@ var BuroAjax = Class.create(BuroCallbackable, {
 
 
 /**
- * 
+ * How it works: on load, if passed true on update_on_load, it will try to update the 
+ * display div and hide the autocomplete input. Else, it will hide the autocomplete
+ * input.
  *
  * Callbacks:
  * - `onInitilize` function (response){}
@@ -636,8 +653,10 @@ var BuroAjax = Class.create(BuroCallbackable, {
  * @access public
  */
 var BuroBelongsTo = Class.create(BuroCallbackable, {
-	initialize: function(id_base, autocompleter_id_base, callbacks)
+	baseFxDuration: 0.3,
+	initialize: function(id_base, autocompleter_id_base, update_on_load, callbacks)
 	{
+		this.form = false;
 		this.id_base = id_base;
 		BuroCR.set(this.id_base, this);
 		this.autocomplete = BuroCR.get(autocompleter_id_base);
@@ -646,54 +665,148 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		
 		this.input = $('hii'+id_base);
 		this.update = $('update'+id_base);
+		this.actions = this.update.next('.actions');
+		this.actions.select('a').each(this.observeControls.bind(this));
+		// this.observeControls($('lin'+this.id_base));
 		
-		$('lie'+this.id_base).observe('click', function(ev){ev.stop(); this.showForm(true);}.bind(this));
-		$('lin'+this.id_base).observe('click', function(ev){ev.stop(); this.showForm(false);}.bind(this));
+		if (this.input.value.empty())
+		{
+			this.reset(false);
+		}
+		else
+		{
+			if (!update_on_load)
+				this.showActions().showAutocomplete();
+			else
+				this.showPreview();
+		}
+		this.queue = {position:'end', scope: this.id_base};
+	},
+	reset: function(animate)
+	{
+		this.input.value = this.autocomplete.input.value = '';
+		this.autocomplete.input.show();
+		this.actions.hide();
+		if (!animate)
+		{
+			this.update.hide();
+		}
+		else
+		{
+			this.update.setStyle({height: (this.update.getHeight()-this.autocomplete.input.getHeight())+'px'});
+			new Effect.BlindUp(this.update, {duration: this.baseFxDuration, queue: this.queue});
+		}
+	},
+	observeControls: function(element)
+	{
+		if (Object.isElement(element) || Object.isElement(element = $(element)))
+			element.observe('click', this.controlClick.bindAsEventListener(this, element));
+		return this;
+	},
+	controlClick: function(ev, element)
+	{
+		ev.stop();
+		var action = element.readAttribute('buro:action');
+		switch (action)
+		{
+			case 'new':
+			case 'edit':
+				this.update.setLoading();
+				this.trigger('onAction', action, this.input.value);
+			break;
+			
+			case 'reset':
+				this.reset(true);
+			break;
+		}
+	},
+	actionSuccess: function(json)
+	{
+		if (this.form)
+			this.form.purge();
+		this.form = false;
 		
-		if (!this.input.value.empty())
-			this.showPreview(this.input.value);
+		var iHeight = this.update.show().unsetLoading().getHeight(),
+			fHeight = this.update.update(json.content).getHeight();
+		
+		this.update.setStyle({height: iHeight+'px', overflow: 'hidden'});
+		
+		new Effect.Morph(this.update, {
+			duration: this.baseFxDuration, 
+			queue: this.queue, 
+			style: {height: fHeight+'px'},
+			afterFinish: function(action, fx){
+				this.update.setStyle({height: '', overflow: ''});
+				this.observeForm();
+				if (action == 'preview')
+					this.showActions().showAutocomplete();
+				else
+					this.actions.hide();
+			}.bind(this, json.action)
+		});
 	},
-	showForm: function(to_edit)
+	actionError: function(json)
 	{
-		this.trigger('onShowForm', to_edit);
-		this.update.next('.actions').hide();
-	},
-	openedForm: function()
-	{
-		// timeout for the AjaxRequest have time to evaluate all js and register the Form object on BuroCR
-		window.setTimeout(this.observeForm.bind(this), 100);
+		this.trigger('onError');
 	},
 	observeForm: function()
 	{
-		var form_id = this.update.down('.buro_form').readAttribute('id');
-		BuroCR.get(form_id).addCallbacks({
-			onCancel: this.cancel.bind(this),
-			onSave: this.saved.bind(this)
-		})
+		var form_id = false,
+			div_form = this.update.down('.buro_form');
+		
+		if (Object.isElement(div_form))
+			if (form_id = div_form.readAttribute('id'))
+				this.form = BuroCR.get(form_id).addCallbacks({
+					onCancel: this.cancel.bind(this),
+					onSave: this.saved.bind(this)
+				});
 	},
-	showPreview: function(id)
+	showPreview: function()
 	{
-		this.trigger('onShowPreview', id);
-		this.update.next('.actions').show();
+		this.update.update().show().setLoading();
+		this.trigger('onAction', 'preview', this.input.value);
 	},
-	selected: function(pair)
+	showAutocomplete: function()
 	{
-		if (pair.id)
-		{
-			this.update.update();
-			this.saved(null, null, null, pair.id);
-			this.autocomplete.input.value = pair.value;
-		}
+		this.autocomplete.input.hide();
+		return this;
+	},
+	showActions: function()
+	{
+		this.actions.show();
+		return this;
 	},
 	saved: function(form, response, json, saved)
 	{
 		this.autocomplete.input.value = '';
 		this.input.value = saved;
-		this.showPreview(saved);
+		this.showPreview();
 	},
 	cancel: function()
 	{
-		this.showPreview(this.input.value);
+		var content = this.update.innerHTML,
+			iHeight = this.update.show().getHeight(),
+			fHeight = this.update.update().setLoading().getHeight();
+		
+		this.update.unsetLoading().update(content).setStyle({height: iHeight+'px', overflow: 'hidden'});
+		
+		new Effect.Morph(this.update, {
+			duration: this.baseFxDuration, 
+			queue: this.queue, 
+			style: {height: fHeight+'px'},
+			afterFinish: function(fx) {
+				this.showPreview();
+			}.bind(this)
+		});
+	},
+	ACUpdated: function()
+	{
+	},
+	ACSelected: function(pair)
+	{
+		this.showAutocomplete();
+		this.input.value = pair.id;
+		this.showPreview();
 	}
 });
 

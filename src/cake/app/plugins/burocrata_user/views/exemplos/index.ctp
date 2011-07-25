@@ -65,7 +65,13 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 				'instructions' => __d('buro_user','First, search if he/she already has a account, using his/her name. If does not, you will be able to create a new one.', true),
 				'options' => array(
 					'type' => 'unitary_autocomplete',
-					'model' => 'BurocrataUser.Person'
+					'model' => 'BurocrataUser.Person',
+					'texts' => array(
+						'new_item' => __d('buro_user', 'Create a new person', true),
+						'edit_item' => __d('buro_user', 'Edit this person', true),
+						'reset_item' => __d('buro_user', 'Chose another person', true),
+						'nothing_found' => __d('buro_user', 'Person not found', true)
+					)
 				)
 			)
 		);

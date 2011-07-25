@@ -62,6 +62,7 @@ class BuroOfficeBoyHelper extends AppHelper
 			'onError' => 'function(code, error, json){%s}'
 		),
 		'relational_unitary' => array(
+			'onAction' => 'function(action, id){%s}',
 			'onShowForm' => 'function(to_edit){%s}',
 			'onShowPreview' => 'function(id){%s}'
 		),
@@ -198,7 +199,7 @@ class BuroOfficeBoyHelper extends AppHelper
 		extract(am($defaults, $options));
 		
 		$callbacks = $this->formatCallbacks('relational_unitary', $callbacks);
-		$script = sprintf("new BuroBelongsTo('%s','%s'%s);", $baseID, $autocomplete_baseID, (empty($callbacks) ? '':','.$callbacks));
+		$script = sprintf("new BuroBelongsTo('%s','%s',%s%s);", $baseID, $autocomplete_baseID, $update_on_load?'true':'false', (empty($callbacks) ? '':','.$callbacks));
 		return $this->addHtmlEmbScript($script);
 	}
 
