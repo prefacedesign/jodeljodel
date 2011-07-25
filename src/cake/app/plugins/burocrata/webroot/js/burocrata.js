@@ -687,10 +687,15 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		this.input.value = this.autocomplete.input.value = '';
 		this.autocomplete.input.show();
 		this.actions.hide();
-		if (animate)
-			new Effect.BlindUp(this.update, {duration: this.baseFxDuration, queue: this.queue});
-		else
+		if (!animate)
+		{
 			this.update.hide();
+		}
+		else
+		{
+			this.update.setStyle({height: (this.update.getHeight()-this.autocomplete.input.getHeight())+'px'});
+			new Effect.BlindUp(this.update, {duration: this.baseFxDuration, queue: this.queue});
+		}
 	},
 	observeControls: function(element)
 	{
