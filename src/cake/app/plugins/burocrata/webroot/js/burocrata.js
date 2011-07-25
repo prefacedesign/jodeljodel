@@ -114,7 +114,9 @@ var BuroCallbackable = Class.create({
 	{
 		if (Object.isUndefined(name))
 		{
-			this.callbacks = $H({});
+			this.callbacks.keys().each(function(key) {
+				this.callbacks.unset(key);
+			}.bind(this));
 		}
 		else
 		{
@@ -158,7 +160,7 @@ var BuroCallbackable = Class.create({
 			args.push(arguments[i]);
 		
 		try {
-			this.callbacks.get(name).each(this.apply_function.bind(this, args));
+			this.callbacks.get(name).each(this.applyFunction.bind(this, args));
 		} catch(e)
 		{
 			if (debug && console && console.error)
@@ -167,7 +169,7 @@ var BuroCallbackable = Class.create({
 		
 		return true;
 	},
-	apply_function: function(args, _function)
+	applyFunction: function(args, _function)
 	{
 		_function.apply(this, args);
 	}
@@ -309,6 +311,19 @@ var BuroForm = Class.create(BuroCallbackable, {
 	{
 		ev.stop();
 		this.trigger('onCancel', this.form);
+	},
+	purge: function()
+	{
+		BuroCR.unset(this.id_base);
+		this.form.stopObserving('keypress');
+		if (this.submit)
+			this.submit.stopObserving('click');
+		if (this.cancel)
+			this.cancel.stopObserving('click');
+		if (this.form.up('body'))
+			this.form.remove();
+		this.removeCallback();
+		this.cancel = this.submit = this.form = null;
 	}
 });
 
@@ -624,7 +639,9 @@ var BuroAjax = Class.create(BuroCallbackable, {
 
 
 /**
- * 
+ * How it works: on load, if passed true on update_on_load, it will try to update the 
+ * display div and hide the autocomplete input. Else, it will hide the autocomplete
+ * input.
  *
  * Callbacks:
  * - `onInitilize` function (response){}
@@ -639,6 +656,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 	baseFxDuration: 0.3,
 	initialize: function(id_base, autocompleter_id_base, update_on_load, callbacks)
 	{
+		this.form = false;
 		this.id_base = id_base;
 		BuroCR.set(this.id_base, this);
 		this.autocomplete = BuroCR.get(autocompleter_id_base);
@@ -658,7 +676,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		else
 		{
 			if (!update_on_load)
-				this.updated();
+				this.showActions().showAutocomplete();
 			else
 				this.showPreview();
 		}
@@ -699,9 +717,11 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 	},
 	actionSuccess: function(json)
 	{
-		this.removeForm();
+		if (this.form)
+			this.form.purge();
+		this.form = false;
 		
-		var iHeight = this.update.unsetLoading().getHeight(),
+		var iHeight = this.update.show().unsetLoading().getHeight(),
 			fHeight = this.update.update(json.content).getHeight();
 		
 		this.update.setStyle({height: iHeight+'px', overflow: 'hidden'});
@@ -714,7 +734,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 				this.update.setStyle({height: '', overflow: ''});
 				this.observeForm();
 				if (action == 'preview')
-					this.updated();
+					this.showActions().showAutocomplete();
 				else
 					this.actions.hide();
 			}.bind(this, json.action)
@@ -722,6 +742,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 	},
 	actionError: function(json)
 	{
+		this.trigger('onError');
 	},
 	observeForm: function()
 	{
@@ -730,20 +751,25 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		
 		if (Object.isElement(div_form))
 			if (form_id = div_form.readAttribute('id'))
-				BuroCR.get(form_id).addCallbacks({
+				this.form = BuroCR.get(form_id).addCallbacks({
 					onCancel: this.cancel.bind(this),
 					onSave: this.saved.bind(this)
 				});
 	},
 	showPreview: function()
 	{
-		this.update.setLoading();
+		this.update.update().show().setLoading();
 		this.trigger('onAction', 'preview', this.input.value);
 	},
-	updated: function()
+	showAutocomplete: function()
+	{
+		this.autocomplete.input.hide();
+		return this;
+	},
+	showActions: function()
 	{
 		this.actions.show();
-		this.autocomplete.input.hide();
+		return this;
 	},
 	saved: function(form, response, json, saved)
 	{
@@ -753,13 +779,27 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 	},
 	cancel: function()
 	{
-		this.showPreview();
+		var content = this.update.innerHTML,
+			iHeight = this.update.show().getHeight(),
+			fHeight = this.update.update().setLoading().getHeight();
+		
+		this.update.unsetLoading().update(content).setStyle({height: iHeight+'px', overflow: 'hidden'});
+		
+		new Effect.Morph(this.update, {
+			duration: this.baseFxDuration, 
+			queue: this.queue, 
+			style: {height: fHeight+'px'},
+			afterFinish: function(fx) {
+				this.showPreview();
+			}.bind(this)
+		});
 	},
 	ACUpdated: function()
 	{
 	},
 	ACSelected: function(pair)
 	{
+		this.showAutocomplete();
 		this.input.value = pair.id;
 		this.showPreview();
 	}
