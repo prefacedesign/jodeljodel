@@ -997,16 +997,14 @@ class BuroBurocrataHelper extends XmlTagHelper
 		);
 		extract($options);
 		
-		$texts += array(
-			'new_item' => __('Burocrata: create a new related item', true),
-			'edit_item' => __('Burocrata: edit related data', true),
-			'nothing_found' => __('Burocrata: nothing found on autocomplete', true),
-			'reset_item' => __('Burocrata: choose another related item', true)
-		);
-		if (isset($new_item_text))
-			$texts['new_item'] = $new_item_text;
-		if (isset($edit_item_text))
-			$texts['edit_item'] = $edit_item_text;
+		if (!isset($texts['new_item']))			$texts['new_item'] = __('Burocrata: create a new related item', true);
+		if (!isset($texts['edit_item']))		$texts['edit_item'] = __('Burocrata: edit related data', true);
+		if (!isset($texts['nothing_found']))	$texts['nothing_found'] = __('Burocrata: nothing found on autocomplete', true);
+		if (!isset($texts['reset_item']))		$texts['reset_item'] = __('Burocrata: choose another related item', true);
+		if (!isset($texts['bring_last_item']))	$texts['bring_last_item'] = __('Burocrata: Bring last item back', true);
+		
+		if (isset($new_item_text))	$texts['new_item'] = $new_item_text;
+		if (isset($edit_item_text))	$texts['edit_item'] = $edit_item_text;
 		
 		$model_class_name = $model;
 		list($plugin, $model) = pluginSplit($model);
@@ -1078,6 +1076,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		
 		// Controls + Error message
+		
 		$data = false;
 		if (isset($this->data[$assocName]))
 			$data = $this->data[$assocName];
@@ -1097,13 +1096,14 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$links = array(
 			$this->Bl->a(array('buro:action' => 'edit', 'href' => ''), array(), $texts['edit_item']),
-			$this->Bl->a(array('buro:action' => 'reset', 'href' => ''), array(), $texts['reset_item'])
+			$this->Bl->a(array('buro:action' => 'reset', 'href' => ''), array(), $texts['reset_item']),
+			$this->Bl->a(array('buro:action' => 'undo_reset', 'href' => ''), array(), $texts['undo_reset'])
 		);
 		
 		$actions_div = $this->Bl->div(
-			array('class' => 'actions', 'style' => 'display:none;'),
+			array('class' => 'actions'),
 			array('escape' => false),
-			implode('&ensp;', $links)
+			implode(' ', $links)
 		);
 		
 		$out .= $this->Bl->sdiv(array('class' => 'controls'));
@@ -1136,8 +1136,6 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$jsOptions['autocomplete_baseID'] = $acplt_baseID;
 		$jsOptions['callbacks'] = array(
 			'onAction' => array('ajax' => $ajax_options)
-			// 'onShowForm' => array('setLoading' => $update, 'js' => "id = to_edit ? BuroCR.get('$baseID').input.value : null;", 'ajax' => $open_form_ajax),
-			// 'onShowPreview' => array('setLoading' => $update, 'ajax' => $open_prev_ajax)
 		);
 		$out .= $this->BuroOfficeBoy->relationalUnitaryAutocomplete($jsOptions);
 		

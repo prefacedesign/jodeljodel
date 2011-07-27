@@ -256,10 +256,12 @@ var BuroForm = Class.create(BuroCallbackable, {
 	lockForm: function()
 	{
 		this.inputs.each(Form.Element.disable);
+		return this;
 	},
 	unlockForm: function()
 	{
 		this.inputs.each(Form.Element.enable);
+		return this;
 	},
 	keyPress: function(ev){
 		var element = ev.findElement().nodeName.toLowerCase();
@@ -667,7 +669,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		this.update = $('update'+id_base);
 		this.actions = this.update.next('.actions');
 		this.actions.select('a').each(this.observeControls.bind(this));
-		// this.observeControls($('lin'+this.id_base));
+		this.observeControls(this.autocomplete.autocompleter.update.down('.action a'));
 		
 		if (this.input.value.empty())
 		{
@@ -676,7 +678,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		else
 		{
 			if (!update_on_load)
-				this.showActions().showAutocomplete();
+				this.setActions('edit reset').hideAutocomplete();
 			else
 				this.showPreview();
 		}
@@ -684,9 +686,13 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 	},
 	reset: function(animate)
 	{
+		if (!this.input.value.blank())
+			this.backup_id = this.input.value;
 		this.input.value = this.autocomplete.input.value = '';
 		this.autocomplete.input.show();
-		this.actions.hide();
+		
+		this.setActions('undo_reset');
+		
 		if (!animate)
 		{
 			this.update.hide();
@@ -706,17 +712,27 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 	controlClick: function(ev, element)
 	{
 		ev.stop();
+		this.setActions('');
 		var action = element.readAttribute('buro:action');
 		switch (action)
 		{
 			case 'new':
+				this.update.setLoading();
+				this.trigger('onAction', action);
+			break;
+			
 			case 'edit':
 				this.update.setLoading();
 				this.trigger('onAction', action, this.input.value);
 			break;
-			
+			purge
 			case 'reset':
 				this.reset(true);
+			break;
+			
+			case 'undo_reset':
+				this.input.value = this.backup_id;
+				this.hideAutocomplete().showPreview();
 			break;
 		}
 	},
@@ -739,9 +755,9 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 				this.update.setStyle({height: '', overflow: ''});
 				this.observeForm();
 				if (action == 'preview')
-					this.showActions().showAutocomplete();
+					this.setActions('edit reset').hideAutocomplete();
 				else
-					this.actions.hide();
+					this.setActions('');
 			}.bind(this, json.action)
 		});
 	},
@@ -757,6 +773,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		if (Object.isElement(div_form))
 			if (form_id = div_form.readAttribute('id'))
 				this.form = BuroCR.get(form_id).addCallbacks({
+					onStart: function(form){form.setLoading().lock();},
 					onCancel: this.cancel.bind(this),
 					onSave: this.saved.bind(this)
 				});
@@ -766,18 +783,9 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		this.update.update().show().setLoading();
 		this.trigger('onAction', 'preview', this.input.value);
 	},
-	showAutocomplete: function()
-	{
-		this.autocomplete.input.hide();
-		return this;
-	},
-	showActions: function()
-	{
-		this.actions.show();
-		return this;
-	},
 	saved: function(form, response, json, saved)
 	{
+		this.form.form.unsetLoading().unlock();
 		this.autocomplete.input.value = '';
 		this.input.value = saved;
 		this.showPreview();
@@ -801,13 +809,28 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 	},
 	ACUpdated: function()
 	{
+		var new_item = this.autocomplete.autocompleter.update.down('.action');
+		if (new_item)
+			new_item.show();
 	},
 	ACSelected: function(pair)
 	{
-		this.showAutocomplete();
+		this.hideAutocomplete();
 		this.input.value = pair.id;
 		this.showPreview();
-	}
+	},
+	setActions: function(filter)
+	{
+		var links = this.actions.select('a'),
+			filter = function(filter, link) {
+				return $w(filter).indexOf(link.readAttribute('buro:action')) != -1;
+			}.curry(filter);
+		
+		links.invoke('hide').findAll(filter).invoke('show');
+		return this;
+	},
+	showAutocomplete: function() {this.autocomplete.input.show(); return this;},
+	hideAutocomplete: function() {this.autocomplete.input.hide(); return this;},
 });
 
 
