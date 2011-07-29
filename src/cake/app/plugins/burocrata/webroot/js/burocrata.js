@@ -673,7 +673,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		
 		if (this.input.value.empty())
 		{
-			this.reset(false);
+			this.reset(false).setActions('');
 		}
 		else
 		{
@@ -702,6 +702,8 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 			this.update.setStyle({height: (this.update.getHeight()-this.autocomplete.input.getHeight())+'px'});
 			new Effect.BlindUp(this.update, {duration: this.baseFxDuration, queue: this.queue});
 		}
+		
+		return this;
 	},
 	observeControls: function(element)
 	{
@@ -725,7 +727,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 				this.update.setLoading();
 				this.trigger('onAction', action, this.input.value);
 			break;
-			purge
+			
 			case 'reset':
 				this.reset(true);
 			break;

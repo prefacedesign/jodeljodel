@@ -997,11 +997,11 @@ class BuroBurocrataHelper extends XmlTagHelper
 		);
 		extract($options);
 		
-		if (!isset($texts['new_item']))			$texts['new_item'] = __('Burocrata: create a new related item', true);
-		if (!isset($texts['edit_item']))		$texts['edit_item'] = __('Burocrata: edit related data', true);
-		if (!isset($texts['nothing_found']))	$texts['nothing_found'] = __('Burocrata: nothing found on autocomplete', true);
-		if (!isset($texts['reset_item']))		$texts['reset_item'] = __('Burocrata: choose another related item', true);
-		if (!isset($texts['bring_last_item']))	$texts['bring_last_item'] = __('Burocrata: Bring last item back', true);
+		if (!isset($texts['new_item']))		$texts['new_item'] = __('Burocrata: create a new related item', true);
+		if (!isset($texts['edit_item']))	$texts['edit_item'] = __('Burocrata: edit related data', true);
+		if (!isset($texts['nothing_found']))$texts['nothing_found'] = __('Burocrata: nothing found on autocomplete', true);
+		if (!isset($texts['reset_item']))	$texts['reset_item'] = __('Burocrata: choose another related item', true);
+		if (!isset($texts['undo_reset']))	$texts['undo_reset'] = __('Burocrata: Bring last item back', true);
 		
 		if (isset($new_item_text))	$texts['new_item'] = $new_item_text;
 		if (isset($edit_item_text))	$texts['edit_item'] = $edit_item_text;
@@ -1062,16 +1062,15 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		
 		// "Create a new item" link
-		
-		$out .= $this->inputAutocompleteMessage(
-			array('class' => 'action'),
-			array('escape' => false),
-			$this->Bl->a(array('buro:action' => 'new', 'href' => ''), array(), $texts['new_item'])
-		);
+		if (in_array('create', $allow))
+			$out .= $this->inputAutocompleteMessage(
+				array('class' => 'action'),
+				array('escape' => false),
+				$this->Bl->a(array('buro:action' => 'new', 'href' => ''), array(), $texts['new_item'])
+			);
 		
 		
 		// Hidden input that holds the related data ID
-		
 		$out .= $this->input(array('id' => $hidden_input_id), array('type' => 'hidden', 'fieldName' => $fieldName));
 		
 		
@@ -1095,7 +1094,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		);
 		
 		$links = array(
-			$this->Bl->a(array('buro:action' => 'edit', 'href' => ''), array(), $texts['edit_item']),
+			in_array('edit', $allow) ? $this->Bl->a(array('buro:action' => 'edit', 'href' => ''), array(), $texts['edit_item']) : '',
 			$this->Bl->a(array('buro:action' => 'reset', 'href' => ''), array(), $texts['reset_item']),
 			$this->Bl->a(array('buro:action' => 'undo_reset', 'href' => ''), array(), $texts['undo_reset'])
 		);
