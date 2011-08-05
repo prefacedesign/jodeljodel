@@ -134,6 +134,9 @@ class Grid
 	//tem o -1.0 como default pois é muito comum que se tenha 10 módulos - 1!
 	function size ($size, $write_unit = true)
 	{
+		if (is_string($size))
+			$size = $this->parseToArray($size);
+		
 		if ($size == null)
 		{
 			$size = $this->standard_size;
@@ -184,6 +187,24 @@ class Grid
 		}
 		
 		return $t;
+	}
+
+/**
+ * Transforms strings like '1M-3g' into array('M' => 1, 'g' => -3).
+ * Pparses 'M', 'g', 'm', 'u'
+ * 
+ * @access public
+ * @param string $string The string to parse
+ * @return array
+ */
+	function parseToArray($string = '')
+	{
+		$array = array();
+		foreach (array('M', 'm', 'g', 'u') as $token)
+			if (preg_match("/(-?)([0-9]*)$token/", $string, $match))
+				$array[$token] = (empty($match[1]) ? 1 : -1) * (empty($match[2]) ? 1 : $match[2]);
+		
+		return $array;
 	}
 	
 	//@todo Never used function.
