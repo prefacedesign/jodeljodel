@@ -272,6 +272,8 @@ class TypeBricklayerHelper extends AppHelper
 		
 		foreach($paras as $para)
 		{
+			if (empty($para)) continue;
+			
 			$t .= $this->sp($attr, $options);
 			if (isset($options['escape']) && $options['escape'])
 				$t .= h($para);
