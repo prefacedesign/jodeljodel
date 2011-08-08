@@ -201,7 +201,7 @@ class Grid
 	{
 		$array = array();
 		foreach (array('M', 'm', 'g', 'u') as $token)
-			if (preg_match("/(-?)([0-9]*)$token/", $string, $match))
+			if (preg_match("/(-?)([0-9\.]*)$token/", $string, $match))
 				$array[$token] = (empty($match[1]) ? 1 : -1) * (empty($match[2]) ? 1 : $match[2]);
 		
 		return $array;
