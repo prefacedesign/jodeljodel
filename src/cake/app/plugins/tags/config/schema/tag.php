@@ -22,7 +22,7 @@
  * @subpackage	plugins.tags.config
  */
 
-class AppSchema extends CakeSchema {
+class TagSchema extends CakeSchema {
 
 /**
  * Name
@@ -30,7 +30,7 @@ class AppSchema extends CakeSchema {
  * @var string
  * @access public
  */
-	public $name = 'App';
+	public $name = 'Tag';
 
 /**
  * Before callback
