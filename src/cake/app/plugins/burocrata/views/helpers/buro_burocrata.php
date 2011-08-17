@@ -297,6 +297,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$this->_addFormAttribute('modelAlias', $this->modelAlias);
 		$this->_addFormAttribute('data', $options['data'] ? $options['data'] : $View->data);
 		
+		$this->data = $View->data = $this->_readFormAttribute('data');
+		
 		if ($this->modelAlias)
 			$this->Form->create($this->modelAlias, array('url' => $options['url']));
 		
