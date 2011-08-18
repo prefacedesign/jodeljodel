@@ -33,12 +33,31 @@ class TypeStylesheetController extends TypographerAppController
 	
 	function style($layout_scheme = 'standard', $type = 'main')
 	{
+		$this->autoRender = false;
 		$this->TypeLayoutSchemePicker->pick($layout_scheme);
+		
+		$element = $layout_scheme . '_css';
+		
+		$this->set(compact('element'));
+		$content = $this->render();
+		$this->output = null;
+		
+		$assetFile = implode(DS, array(ROOT, 'app', 'plugins', 'typographer', 'views', 'elements', $element . $this->ext));
+		$assetFilemTime = filemtime($assetFile);
+		
+		$eTag = Security::hash( $assetFilemTime . $content);
+		
+		if (env('HTTP_IF_NONE_MATCH') && env('HTTP_IF_NONE_MATCH') == $eTag)
+			header("HTTP/1.1 304 Not Modified");
+		
+		header("Last-Modified: " . gmdate("D, j M Y G:i:s ", $assetFilemTime) . 'GMT');
+		header("Etag: " . $eTag);
+		header('Content-type: text/css');
+		print $content;
 	}
 	
 	function beforeRender()
 	{
-		//faz nada - isto � para evitar o afterFilter do pai, que n�o tem nada a ver por aqui.
+		//faz nada - isto é para evitar o beforeRender do pai, que não tem nada a ver por aqui.
 	}
 }
-?>
