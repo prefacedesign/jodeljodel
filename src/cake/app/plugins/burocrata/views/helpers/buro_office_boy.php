@@ -85,6 +85,10 @@ class BuroOfficeBoyHelper extends AppHelper
 			'onShowForm' => 'function(id){%s}',
 			'onAction' => 'function(action,id,type){%s}',
 			'onError' => 'function(json){%s}',
+		),
+		'color' => array(
+			'onPickColor' => 'function(ev){%s}',
+			'onDragPicker' => 'function(ev){%s}',
 		)
 	);
 
@@ -112,7 +116,9 @@ class BuroOfficeBoyHelper extends AppHelper
 			$this->Html->script('prototype', array('inline' => false));
 			$this->Html->script('effects', array('inline' => false));
 			$this->Html->script('controls', array('inline' => false));
+			$this->Html->script('slider', array('inline' => false));
 			$this->Html->script('/burocrata/js/burocrata.js', array('inline' => false));
+			$this->Html->script('/burocrata/js/color-picker.js', array('inline' => false));
 			$this->Html->scriptBlock('var debug = ' . Configure::read() . ';', array('inline' => false));
 
 			$script = implode("\n", $this->scripts);
@@ -296,6 +302,26 @@ class BuroOfficeBoyHelper extends AppHelper
 		extract(am($defaults, $options));
 		
 		$script = sprintf("new BuroTextile('%s')", $baseID);
+		
+		return $this->addHtmlEmbScript($script);
+	}
+
+/**
+ * Creates the JS object for the input.
+ * 
+ * @access public
+ * @param array $options
+ * @return string|void The the result of addHtmlEmbScript
+ * @see BuroOfficeBoyHelper::addHtmlEmbScript()
+ */
+	public function color($options)
+	{
+		$options += array('callbacks' => array(), 'baseID' => uniqid());
+		extract($options);
+		
+		$script = sprintf("new BuroColorPicker('%s')", $baseID);
+		if(!empty($callbacks) && is_array($callbacks))
+			$script .= sprintf('.addCallbacks(%s)', $this->formatCallbacks('upload', $callbacks));
 		
 		return $this->addHtmlEmbScript($script);
 	}

@@ -1994,3 +1994,45 @@ var BuroTextile = Class.create(BuroCallbackable, {
 		this.getSelection();
 	}
 });
+
+
+
+/**
+ * 
+ * 
+ * @access 
+ */
+var CP;
+var BuroColorPicker = Class.create(BuroCallbackable, {
+	initialize: function(id_base)
+	{
+		if (!(this.input = $('inp'+id_base)))
+			return;
+		if (!CP)
+			CP = new ColorPicker();
+		this.input.observe('focus', this.openCP.bind(this));
+		this.input.observe('keyup', this.keyup.bind(this));
+		this.sample = $('samp'+id_base);
+	},
+	openCP: function(ev)
+	{
+		CP.open(this.input);
+		CP.callbacks.change = this.change.bind(this);
+		if (!this.input.value.blank())
+			CP.setHex(this.input.value);
+	},
+	change: function(color)
+	{
+		this.input.value = color.toHEX();
+		this.sample.setStyle({
+			backgroundColor: this.input.value
+		});
+	},
+	keyup: function(ev)
+	{
+		CP.setHex(this.input.value);
+		this.sample.setStyle({
+			backgroundColor: this.input.value
+		});
+	}
+});

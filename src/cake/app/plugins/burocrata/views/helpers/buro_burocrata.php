@@ -2513,5 +2513,34 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		return $this->Popup->popup($id, $popup_config);
 	}
+
+
+/**
+ * Creates a input with a colorpicker.
+ * 
+ * @access public
+ */
+	public function inputColor($options)
+	{
+		$baseID = $this->baseID();
+		$htmlAttributes = array(
+			'id' => 'inp' . $baseID
+		);
+		
+		unset($options['options']);
+		
+		
+		$out = $this->label(array(), array(), $options['label']);
+		
+		$out .= $this->Bl->div(array('id' => 'samp' . $baseID, 'class' => 'sample'));
+		
+		$options['type'] = 'text';
+		$options['container'] = false;
+		$options['label'] = false;
+		$out .= $this->input($htmlAttributes, $options);
+		$out .= $this->BuroOfficeBoy->color(compact('baseID'));
+		
+		return $out;
+	}
 }
 

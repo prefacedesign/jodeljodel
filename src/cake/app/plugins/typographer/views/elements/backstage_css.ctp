@@ -291,6 +291,10 @@
 			//'position' => 'absolute',
 	));
 	
+	
+	
+	// Input autocomplete
+	
 	$width -= $hg->size(array('m' => 2), false);
 	$this->Decorator->rule(
 		'.autocomplete.list .nothing_found', array(
@@ -313,6 +317,34 @@
 			'background-color' => $palette['selection']->write(),
 	));
 	
+	
+	
+	// Color input
+	$border_size = 1;
+	$padding_top = $vg->size('m', false);
+	$padding_size = $vg->size('2m', false);
+	$sample_size = $hg->size('1.5g',false) - 2*$border_size - $padding_top;
+	$this->Decorator->rule(
+		'.input_color .sample', array(
+			'height' => $u->t($sample_size),
+			'width' => $u->t($sample_size),
+			'border' => sprintf('%s solid black', $u->t($border_size)),
+			'float' => 'left',
+			'padding' => $u->t($padding_top),
+			'margin-top' => $vg->size('m'),
+			'margin-right' => $hg->size('m')
+	));
+	
+	// Copied from 
+	$input_width = $hg->size('5M-g',false) - 2*($border_size + $padding_size);
+	$input_width -= $hg->size('1.5g',false) + 2*$border_size;
+	$input_width -= $hg->size('m');
+	$input_width -= 2;
+	
+	$this->Decorator->rule(
+		'.input_color input', array(
+			'width' => $u->t($input_width) . ' !important',
+	));
 	
 	$this->Decorator->rule(
 		'.error_box', array(
@@ -1318,3 +1350,10 @@
 	));
 	
 ?>
+.cpk-cont {position: absolute; z-index: 51; background-color: white; border: 1px solid black; padding: 10px; -moz-box-shadow:4px 4px 15px 1px #666; box-shadow:4px 4px 15px 1px #666;}
+.cpk-color {width: 256px; height: 256px; position: absolute; top: 10px; left:10px; border: 1px solid black;}
+.cpk-croma {width: 256px; height: 256px; background: url(/burocrata/img/cpk/croma.png); position: absolute; top:11px; left:11px;}
+.cpk-h {height: 256px; width: 20px; background: url(/burocrata/img/cpk/hue.png); margin-left: 262px; border: 1px solid black; position: relative;}
+.cpk-h > div {height: 1px;}
+.cpk-hdrag {border:1px solid black; height:5px; width: 26px; margin-left: -3px; float: left;}
+.cpk-picker {border: 1px solid black; height: 3px; width: 3px; position: absolute;}

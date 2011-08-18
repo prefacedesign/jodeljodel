@@ -43,8 +43,24 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 				)
 			);
 			
-		echo $this->Buro->einput();
+			echo $this->Buro->input(array(),
+				array(
+					'label' => __d('buro_user','Color input', true),
+					'fieldName' => 'color',
+					'type' => 'color'
+				)
+			);
 			
+		echo $this->Buro->einput();
+		
+		echo $this->Buro->input(array(),
+				array(
+					'label' => __d('buro_user','Another color input', true),
+					'fieldName' => 'another_color',
+					'type' => 'color'
+				)
+			);
+		
 		echo $this->Buro->input(array(),
 			array(
 				'label' => __d('buro_user','Something about this gallery', true),
