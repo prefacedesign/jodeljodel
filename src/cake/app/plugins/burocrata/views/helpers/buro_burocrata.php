@@ -1907,8 +1907,11 @@ class BuroBurocrataHelper extends XmlTagHelper
 	public function inputTags(array $options)
 	{
 		if (!isset($options['options']['type']))
+		{
 			trigger_error('BuroBurocrataHelper::inputTags - The tag input must receive the [options][type] configuration.');
-			
+			return false;
+		}
+		
 		$input_type = $options['options']['type'];
 		unset($options['options']['type']);
 		unset($options['type']);
@@ -1940,28 +1943,21 @@ class BuroBurocrataHelper extends XmlTagHelper
 	{
 		$input_options = $options;
 		$options = $options['options'];
-		$defaults = array(
+		unset($input_options['options']);
+		
+		$options += array(
 			'model' => false,
 			'assocName' => false,
 			'baseID' => $this->baseID(),
 		);
-		$options = am($defaults, $options);
 
-		$input_options_defaults = array(
+		$input_options += array(
 			'fieldName' => 'tags'
 		);
-		$input_options = am($input_options_defaults, $input_options);
 
 		$out = $this->input(
-			array(
-				'class' => 'comma',
-			), 
-			array(
-				'label' => $input_options['label'], 
-				'instructions' => $input_options['instructions'], 
-				'type' => 'text', 
-				'fieldName' => $input_options['fieldName'],
-			)
+			array('class' => 'comma',), 
+			array('type' => 'text', 'container' => false) + $input_options
 		);
  		
  		return $out;

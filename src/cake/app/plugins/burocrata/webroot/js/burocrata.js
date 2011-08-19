@@ -409,6 +409,7 @@ var BuroAutocomplete = Class.create(BuroCallbackable, {
 	
 	onShowTrap: function(element, update)
 	{
+		this.autocomplete.update.setOpacity(1);
 		this.onShow(element, update);
 		this.trigger('onShow');
 	},
