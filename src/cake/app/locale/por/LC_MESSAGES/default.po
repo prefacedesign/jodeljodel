@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2011-06-16 22:57-0300\n"
-"PO-Revision-Date: 2011-06-17 13:50-0400\n"
+"PO-Revision-Date: 2011-08-19 01:07-0400\n"
 "Last-Translator: Daniel <daniel@preface.com.br>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -175,11 +175,11 @@ msgstr "Editar"
 
 #: \plugins\burocrata\views\helpers\buro_burocrata.php:1635
 msgid "Burocrata: view related data"
-msgstr ""
+msgstr "Ver dados completos"
 
 #: \plugins\burocrata\views\helpers\buro_burocrata.php:1636
 msgid "Burocrata: delete related data"
-msgstr ""
+msgstr "Remover associação"
 
 #: \plugins\burocrata\views\helpers\buro_burocrata.php:2098
 msgid "Burocrata::inputUpload - Change file"

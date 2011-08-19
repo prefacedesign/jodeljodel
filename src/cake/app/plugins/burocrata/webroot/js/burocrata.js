@@ -210,8 +210,6 @@ var BuroForm = Class.create(BuroCallbackable, {
 			this.form.lock = this.lockForm.bind(this);
 			this.form.unlock = this.unlockForm.bind(this);
 			this.form.observe('keypress', this.keyPress.bind(this));
-			
-			this.inputs = $$('[buro\\:form="'+this.id_base+'"]');
 
 			BuroCR.set(this.form.id, this);
 			
@@ -274,8 +272,10 @@ var BuroForm = Class.create(BuroCallbackable, {
 	},
 	submits: function(ev)
 	{
-		var data = Form.serializeElements(this.inputs);
-		var params = this.params.toQueryString();
+		this.inputs = $$('[buro\\:form="'+this.id_base+'"]');
+		
+		var data = Form.serializeElements(this.inputs),
+			params = this.params.toQueryString();
 		if (!params.blank())
 			data+='&'+params;
 		
@@ -1498,6 +1498,88 @@ var BuroListOfItemsItem = Class.create(BuroCallbackable, {
  * @access public
  */
 var BuroEditableList = Class.create(BuroCallbackable, {
+	baseFxDuration: 0.3,
+	initialize: function(id_base, autocompleter_id_base, content, callbacks)
+	{
+		this.id_base = id_base;
+		this.ids = [];
+		BuroCR.set(this.id_base, this);
+		
+		this.inputs = $('inputs'+id_base);
+		this.items = $('items'+id_base);
+		this.templates = content.templates;
+		this.texts = content.texts;
+		this.autocomplete = BuroCR.get(autocompleter_id_base);
+		this.observeControls(this.autocomplete.autocompleter.update.down('.action a'));
+		
+		this.addCallbacks(callbacks);
+		
+		
+	},
+	observeControls: function(element)
+	{
+		if (Object.isElement(element) || Object.isElement(element = $(element)))
+			element.observe('click', this.controlClick.bindAsEventListener(this, element));
+		return this;
+	},
+	controlClick: function(ev, element)
+	{
+		ev.stop();
+		var action = element.readAttribute('buro:action');
+		switch (action)
+		{
+			case 'delete':
+				var div = element.up('div');
+				if (div && Object.isElement(input = div.retrieve('input')))
+				{
+					input.remove();
+					new Effect.Fade(div, {
+						duration: this.baseFxDuration, 
+						afterFinish: function(eff) {
+							window.setTimeout(Element.remove.curry(eff.element), 1000);
+						}
+					});
+				}
+			break;
+		}
+	},
+	addNewItem: function(pair)
+	{
+		if (this.ids.indexOf(pair.id) != -1)
+			return;
+		
+		this.ids.push(pair.id);
+		var input = new Element('div').insert(this.templates.input.interpolate(pair)).down(),
+			item = new Element('div').insert(this.templates.item.interpolate($H(pair).merge(this.texts).toObject())).down();
+		this.inputs.insert(input);
+		this.items.insert(item);
+		item.down('.controls').select('a').each(this.observeControls.bind(this));
+		item.store('input', input);
+	},
+	actionError: function(json)
+	{
+	},
+	actionSuccess: function(json)
+	{
+		switch (json.action)
+		{
+		}
+	},
+	ACSelected: function(pair)
+	{
+		this.addNewItem(pair);
+		this.autocomplete.input.value = '';
+	},
+	ACUpdated: function()
+	{
+		var new_item = this.autocomplete.autocompleter.update.down('.action');
+		if (new_item)
+			new_item.show();
+	}
+});
+
+
+var BuroEditableListOld = Class.create(BuroCallbackable, {
 	initialize: function(id_base, autocompleter_id_base, callbacks, view_item_text, edit_item_text, delete_item_text)
 	{
 		this.id_base = id_base;

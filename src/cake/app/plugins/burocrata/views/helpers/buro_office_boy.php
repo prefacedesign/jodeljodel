@@ -223,11 +223,13 @@ class BuroOfficeBoyHelper extends AppHelper
  */
 	public function relationalEditableList($options)
 	{
-		$defaults = array('callbacks' => array());
-		extract(am($defaults, $options));
+		$options += array('callbacks' => array());
+		extract($options);
 		
+		$content = $this->Js->object(compact('texts', 'templates', 'contents'));
 		$callbacks = $this->formatCallbacks('relational_editable', $callbacks);
-		$script = sprintf("new BuroEditableList('%s','%s'%s,'%s','%s','%s');", $baseID, $autocomplete_baseID, (empty($callbacks) ? '':','.$callbacks), (empty($edit_item_text) ? '':''.$edit_item_text), (empty($view_item_text) ? '':''.$view_item_text), $delete_item_text);
+		$script = sprintf("new BuroEditableList('%s','%s',%s,%s)", $baseID, $autocomplete_baseID, $content, $callbacks);
+		
 		return $this->addHtmlEmbScript($script);
 		
 	}
