@@ -6,6 +6,10 @@
 		case 'preview':
 			$object['content'] = $this->Jodel->insertModule($model_class_name, array('buro', 'preview'), $data);
 		break;
+
+		case 'add':
+			$object['content'] = $this->Jodel->insertModule($model_class_name, array('buro', 'editable_list', 'view'), $data);
+		break;
 		
 		case 'new':
 		case 'edit':

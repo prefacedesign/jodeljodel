@@ -1500,7 +1500,6 @@ var BuroListOfItemsItem = Class.create(BuroCallbackable, {
  */
 var BuroEditableList = Class.create(BuroCallbackable, {
 	baseFxDuration: 0.3,
-	
 	initialize: function(id_base, autocompleter_id_base, content, callbacks)
 	{
 		this.id_base = id_base;
@@ -1579,9 +1578,8 @@ var BuroEditableList = Class.create(BuroCallbackable, {
 				this.trigger('onAction', action, element.up('div').retrieve('input').value);
 			break;
 			
-			case 'delete':
-				var div = element.up('div');
-				if (div && Object.isElement(input = div.retrieve('input')))
+			case 'unlink':
+				if (confirm(this.texts.confirm_unlink) && (div = element.up('div')) && Object.isElement(input = div.retrieve('input')))
 				{
 					this.ids.splice(this.ids.indexOf(input.value), 1);
 					input.remove();
@@ -1612,6 +1610,7 @@ var BuroEditableList = Class.create(BuroCallbackable, {
 	},
 	actionError: function(json)
 	{
+		this.trigger('onError');
 	},
 	actionSuccess: function(json)
 	{
@@ -1619,25 +1618,42 @@ var BuroEditableList = Class.create(BuroCallbackable, {
 			this.form.purge();
 		this.form = false;
 		
-		var iHeight = this.update.show().unsetLoading().getHeight(),
-			fHeight = this.update.update(json.content).getHeight();
-		
-		this.update.setStyle({height: iHeight+'px', overflow: 'hidden'});
-		
-		new Effect.Morph(this.update, {
-			duration: this.baseFxDuration, 
-			queue: this.queue, 
-			style: {height: fHeight+'px'},
-			afterFinish: function(fx){
-				this.update.setStyle({height: '', overflow: ''});
-				this.observeForm();
-			}.bind(this)
-		});
+		switch (json.action)
+		{
+			case 'add':
+				this.addNewItem(json);
+				this.items.unsetLoading();
+			break;
+			
+			case 'preview':
+			case 'edit':
+			default:
+				var iHeight = this.update.show().unsetLoading().getHeight(),
+					fHeight = this.update.update(json.content).getHeight();
+				
+				this.update.setStyle({height: iHeight+'px', overflow: 'hidden'});
+				
+				new Effect.Morph(this.update, {
+					duration: this.baseFxDuration, 
+					queue: this.queue, 
+					style: {height: fHeight+'px'},
+					afterFinish: function(fx){
+						this.update.setStyle({height: '', overflow: ''});
+						this.observeForm();
+					}.bind(this)
+				});
+			break;
+		}
 	},
 	ACSelected: function(pair)
 	{
-		this.addNewItem(pair);
 		this.autocomplete.input.value = '';
+		
+		if (this.ids.indexOf(pair.id) != -1)
+			return;
+		
+		this.trigger('onAction', 'add', pair.id);
+		this.items.setLoading();
 	},
 	ACUpdated: function()
 	{

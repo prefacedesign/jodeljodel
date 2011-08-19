@@ -1650,7 +1650,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'new_item' => __('Burocrata: create a new related item', true),
 			'edit_item' => __('Burocrata: edit related data', true),
 			'view_item' => __('Burocrata: view related data', true),
-			'delete_item' => __('Burocrata: delete related data', true)
+			'unlink_item' => __('Burocrata: unlink related data', true),
+			'confirm_unlink' => __('Burocrata: confirm unlinking', true)
 		);
 		extract($options);
 		
@@ -1793,7 +1794,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		if (in_array('preview', $options['allow']))
 			$links[]  = $this->a(array('buro:action' => 'preview', 'href' => ''), array(), '#{view_item}');
 
-		$links[]  = $this->a(array('buro:action' => 'delete', 'href' => ''), array(), '#{delete_item}');
+		$links[]  = $this->a(array('buro:action' => 'unlink', 'href' => ''), array(), '#{unlink_item}');
 	
 		$out = $this->Bl->span(array('class' => 'name'), array(), '#{content}');
 		$out .= ' ';

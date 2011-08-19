@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-06-16 23:23-0300\n"
+"POT-Creation-Date: 2011-08-19 15:20-0300\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -85,8 +85,8 @@ msgstr ""
 
 #: \plugins\backstage\views\elements\language_edit_select.ctp:28
 #: \plugins\backstage\views\elements\language_show_edited_language.ctp:28
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:33;47
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:676
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:52;66
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:689
 msgid "anchorList or"
 msgstr ""
 
@@ -98,171 +98,187 @@ msgstr ""
 msgid " the %s version."
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:20
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:39
 msgid "Save"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:21
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:40
 msgid "Save box: cancel this change."
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:35
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:54
 msgid "mark it as ready"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:36
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:55
 msgid "remove it"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:41
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:60
 msgid "Version marked as draft. You can %s."
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:306
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:319
 msgid "Burocrata: default save button"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:576
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:589
 msgid "Burocrata::submit - Submit label"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:587;666
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:600;679
 msgid "Burocrata::okOrCancel - Cancel label"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:648
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:661
 msgid "Burocrata::okOrCancel - OK label"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:886
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:899
 msgid "Burocrata: nothing found on autocomplete."
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:986;1633
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1002;1650
 msgid "Burocrata: create a new related item"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:987;1634
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1003;1651
 msgid "Burocrata: edit related data"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1381
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1004
+msgid "Burocrata: nothing found on autocomplete"
+msgstr ""
+
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1005
+msgid "Burocrata: choose another related item"
+msgstr ""
+
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1006
+msgid "Burocrata: Bring last item back"
+msgstr ""
+
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1396
 msgid "Burocrata::orderdItensMenu - close list"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1476
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1492
 msgid "Burocrata::orderedItensControls - up"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1482
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1498
 msgid "Burocrata::orderedItensControls - down"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1488
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1504
 msgid "Burocrata::orderedItensControls - delete"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1494
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1510
 msgid "Burocrata::orderedItensControls - duplicate"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1500
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1516
 msgid "Burocrata::orderedItensControls - edit"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1635
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1652
 msgid "Burocrata: view related data"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1636
-msgid "Burocrata: delete related data"
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1653
+msgid "Burocrata: unlink related data"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2098
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1654
+msgid "Burocrata: confirm unlinking"
+msgstr ""
+
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2084
 msgid "Burocrata::inputUpload - Change file"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2126
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2112
 msgid "Burocrata::inputUpload - Download file"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2130
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2116
 msgid "Burocrata::inputUpload - File: "
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2159
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2146
 msgid "Burocrata::inputImage - Change image"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2161
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2148
 msgid "Burocrata::inputImage - Remove  image"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2200
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2187
 msgid "Burocrata::inputImage - or "
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2280
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2267
 msgid "Burocrata::inputTextile - Preview"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2321
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2308
 msgid "Burocrata::_popupTextileLink - Instructions for link"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2322
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2309
 msgid "Burocrata::_popupTextileLink - What is the text for this link"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2323
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2310
 msgid "Burocrata::_popupTextileLink - What is the URL of this link"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2324
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2311
 msgid "Burocrata::_popupTextileLink - Title of link popup"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2356
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2343
 msgid "Burocrata::_popupTextileTitle - Instructions for link"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2357
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2344
 msgid "Burocrata::_popupTextileTitle - What is the type of this title"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2358
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2345
 msgid "Burocrata::_popupTextileTitle - Title"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2359
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2346
 msgid "Burocrata::_popupTextileTitle - Subtitle"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2360
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2347
 msgid "Burocrata::_popupTextileTitle - What is the title"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2361
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2348
 msgid "Burocrata::_popupTextileTitle - Title of title popup"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2405
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2392
 msgid "Burocrata::_popupTextilePreview - Title of preview popup"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2430
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2417
 msgid "Burocrata::_popupTextileFile - Title of `add file` popup"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2431
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2418
 msgid "Burocrata::_popupTextileFile - Label of file input"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2469
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2456
 msgid "Burocrata::_popupTextileImage - Title of `add image` popup"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2470
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2457
 msgid "Burocrata::_popupTextileImage - Label of file input"
 msgstr ""
 
@@ -421,18 +437,6 @@ msgstr ""
 
 #: \plugins\dashboard\views\dash_dashboard\index.ctp:299;310
 msgid "Dashboard: Edit"
-msgstr ""
-
-#: \plugins\jj_users\views\user_users\login.ctp:6
-msgid "Login page: username label"
-msgstr ""
-
-#: \plugins\jj_users\views\user_users\login.ctp:9
-msgid "Login page: password label"
-msgstr ""
-
-#: \plugins\jj_users\views\user_users\login.ctp:11
-msgid "Login page: Enter"
 msgstr ""
 
 #: \plugins\jj_utils\vendors\shells\jj_console.php:13
