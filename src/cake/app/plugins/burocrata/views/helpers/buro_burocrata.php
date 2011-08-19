@@ -1718,11 +1718,26 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		// Hidden input that holds the related data ID
 		$templates['input'] = $this->input(
-			array('value' => '#{id}', 'name' => "data[$model][$model][]"),
+			array('value' => '#{id}', 'name' => "data[$assocName][$assocName][]"),
 			array('type' => 'hidden')
 		);
 		$templates['item'] = $this->inputRelationalEditableListItem(compact('allow'));
-	
+		
+		$type= am(BuroBurocrataHelper::$defaultSupertype, 'editable_list', 'view');
+		
+		$contents = array();
+		if (!empty($this->data[$assocName]) && Set::numeric(array_keys($this->data[$assocName])))
+		{
+			$Model =& ClassRegistry::init($model_class_name);
+			foreach ($this->data[$assocName] as $data)
+			{
+				$data = array($model => $data);
+				$contents[] = array(
+					'content' => $this->Jodel->insertModule($model_class_name, $type, $data),
+					'id' => $data[$assocName][$Model->primaryKey]
+				);
+			}
+		}
 		
 		// Controls + Error message
 		$out .= $this->Bl->sdiv(array('class' => 'controls'));
@@ -1751,7 +1766,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$officeboy_options = array();
 		$officeboy_options['baseID'] = $baseID;
 		$officeboy_options['autocomplete_baseID'] = $acplt_baseID;
-		$officeboy_options += compact('texts', 'baseID', 'templates');
+		$officeboy_options += compact('texts', 'baseID', 'templates', 'contents');
 		$officeboy_options['callbacks'] = array(
 			'onAction' => array('ajax' => $ajax_options)
 		);
@@ -1780,7 +1795,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 
 		$links[]  = $this->a(array('buro:action' => 'delete', 'href' => ''), array(), '#{delete_item}');
 	
-		$out = $this->Bl->span(array('class' => 'name'), array(), '#{value}');
+		$out = $this->Bl->span(array('class' => 'name'), array(), '#{content}');
 		$out .= ' ';
 		$out .= $this->Bl->span(array('class' => 'controls'), array(), implode(' ', $links));
 		

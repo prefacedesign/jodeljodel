@@ -11,6 +11,11 @@
 		case 'buro':
 			switch($type[1])
 			{
+				case 'editable_list':
+					if ($type[2] == 'view')
+						echo $data['Person']['name'];
+				break;
+				
 				case 'form':
 				case 'admin_form':
 				case 'subform':

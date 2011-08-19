@@ -1516,6 +1516,10 @@ var BuroEditableList = Class.create(BuroCallbackable, {
 		this.observeControls(this.autocomplete.autocompleter.update.down('.action a'));
 		
 		this.addCallbacks(callbacks);
+		
+		if (this.contents)
+			this.contents.each(this.addNewItem.bind(this));
+		
 		this.queue = {position:'end', scope: this.id_base};
 	},
 	observeControls: function(element)
@@ -1592,15 +1596,17 @@ var BuroEditableList = Class.create(BuroCallbackable, {
 			break;
 		}
 	},
-	addNewItem: function(pair)
+	addNewItem: function(data)
 	{
-		if (this.ids.indexOf(pair.id) != -1)
+		if (this.ids.indexOf(data.id) != -1)
 			return;
+
+		this.ids.push(data.id);
+		var input = new Element('div').insert(this.templates.input.interpolate(data)).down(),
+			item = new Element('div').insert(this.templates.item.interpolate($H(data).merge(this.texts).toObject())).down();
 		
-		this.ids.push(pair.id);
-		var input = new Element('div').insert(this.templates.input.interpolate(pair)).down(),
-			item = new Element('div').insert(this.templates.item.interpolate($H(pair).merge(this.texts).toObject())).down();
 		this.items.insert(input).insert(item);
+		
 		item.down('.controls').select('a').each(this.observeControls.bind(this));
 		item.store('input', input);
 	},
