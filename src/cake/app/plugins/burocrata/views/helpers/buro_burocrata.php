@@ -1743,8 +1743,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		// Controls + Error message
 		$out .= $this->Bl->sdiv(array('class' => 'controls'));
 			$out .= $this->Bl->div(array('id' => $items));
+			$out .= $this->Bl->br();
 			$out .= $this->Bl->div(array('id' => $update));
-			$out .= $this->Bl->floatBreak();
 		$out .= $this->Bl->ediv();
 		
 		
@@ -1800,7 +1800,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out .= ' ';
 		$out .= $this->Bl->span(array('class' => 'controls'), array(), implode(' ', $links));
 		
-		return $this->Bl->divDry($out);
+		return $this->Bl->div(array('buro:id' => '#{id}'), array(), $out);
 	}
 	
 /**

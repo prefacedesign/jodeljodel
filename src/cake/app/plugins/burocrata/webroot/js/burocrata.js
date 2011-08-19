@@ -1503,7 +1503,7 @@ var BuroEditableList = Class.create(BuroCallbackable, {
 	initialize: function(id_base, autocompleter_id_base, content, callbacks)
 	{
 		this.id_base = id_base;
-		this.ids = [];
+		this.itemsList = $H({});
 		this.form = false;
 		Object.extend(this,content);
 		
@@ -1554,8 +1554,22 @@ var BuroEditableList = Class.create(BuroCallbackable, {
 			style: {height: '0px'}
 		});
 	},
-	formSaved: function()
+	formSaved: function(form, response, json, saved)
 	{
+		this.form.form.unsetLoading().unlock();
+		new Effect.SlideUp(this.update, {
+			duration: this.baseFxDuration, queue: this.queue,
+			afterFinish: function()
+			{
+				if (this.form)
+				{
+					this.form.purge();
+					this.form = false;
+				}
+			}.bind(this)
+		});
+		this.trigger('onAction', 'add', saved);
+		this.items.setLoading();
 	},
 	controlClick: function(ev, element)
 	{
@@ -1575,38 +1589,44 @@ var BuroEditableList = Class.create(BuroCallbackable, {
 			case 'edit':
 			case 'preview':
 				this.update.update().setLoading();
-				this.trigger('onAction', action, element.up('div').retrieve('input').value);
+				this.trigger('onAction', action, element.up('div').readAttribute('buro:id'));
 			break;
 			
 			case 'unlink':
-				if (confirm(this.texts.confirm_unlink) && (div = element.up('div')) && Object.isElement(input = div.retrieve('input')))
-				{
-					this.ids.splice(this.ids.indexOf(input.value), 1);
-					input.remove();
-					div.store('input', null);
-					new Effect.Fade(div, {
-						duration: this.baseFxDuration, 
-						afterFinish: function(eff) {
-							window.setTimeout(Element.remove.curry(eff.element), 1000);
-						}
-					});
-				}
+				if (confirm(this.texts.confirm_unlink))
+					this.removeItem(element.up('div').readAttribute('buro:id'), true);
 			break;
 		}
 	},
 	addNewItem: function(data)
 	{
-		if (this.ids.indexOf(data.id) != -1)
-			return;
-
-		this.ids.push(data.id);
+		this.removeItem(data.id);
 		var input = new Element('div').insert(this.templates.input.interpolate(data)).down(),
 			item = new Element('div').insert(this.templates.item.interpolate($H(data).merge(this.texts).toObject())).down();
 		
+		this.itemsList.set(data.id, {input: input, item:item});
 		this.items.insert(input).insert(item);
 		
 		item.down('.controls').select('a').each(this.observeControls.bind(this));
-		item.store('input', input);
+	},
+	removeItem: function(id, animate)
+	{
+		var obj = this.itemsList.get(id);
+		if (obj)
+		{
+			this.itemsList.unset(obj.input.value);
+			
+			obj.input.remove();
+			if (animate)
+				new Effect.Fade(obj.item, {
+					duration: this.baseFxDuration, 
+					afterFinish: function(eff) {
+						window.setTimeout(Element.remove.curry(eff.element), 1000);
+					}
+				});
+			else
+				Element.remove(obj.item);
+		}
 	},
 	actionError: function(json)
 	{
@@ -1649,7 +1669,7 @@ var BuroEditableList = Class.create(BuroCallbackable, {
 	{
 		this.autocomplete.input.value = '';
 		
-		if (this.ids.indexOf(pair.id) != -1)
+		if (this.itemsList.get(pair.id))
 			return;
 		
 		this.trigger('onAction', 'add', pair.id);
