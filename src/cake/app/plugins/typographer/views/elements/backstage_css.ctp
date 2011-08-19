@@ -664,13 +664,13 @@
 		)
 	);
 	
-	$this->Decorator->rule(
-		'a:visited',
-		array(
-			'color' => $palette['visited_links']->write(),
-			'border-color' => $palette['visited_links']->write()
-		)
-	);
+	// $this->Decorator->rule(
+		// 'a:visited',
+		// array(
+			// 'color' => $palette['visited_links']->write(),
+			// 'border-color' => $palette['visited_links']->write()
+		// )
+	// );
 	
 	$this->Decorator->rule(
 		'a:hover, a:active',
