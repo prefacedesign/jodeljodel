@@ -1998,9 +1998,10 @@ var BuroTextile = Class.create(BuroCallbackable, {
 
 
 /**
+ * Create a input that comes with a color palette.
  * 
- * 
- * @access 
+ * @access public
+ * @param string id_base
  */
 var CP;
 var BuroColorPicker = Class.create(BuroCallbackable, {
@@ -2013,6 +2014,8 @@ var BuroColorPicker = Class.create(BuroCallbackable, {
 		this.input.observe('focus', this.openCP.bind(this));
 		this.input.observe('keyup', this.keyup.bind(this));
 		this.sample = $('samp'+id_base);
+		if (!this.input.value.blank())
+			this.updateSample();
 	},
 	openCP: function(ev)
 	{
@@ -2024,13 +2027,15 @@ var BuroColorPicker = Class.create(BuroCallbackable, {
 	change: function(color)
 	{
 		this.input.value = color.toHEX();
-		this.sample.setStyle({
-			backgroundColor: this.input.value
-		});
+		this.updateSample();
 	},
 	keyup: function(ev)
 	{
 		CP.setHex(this.input.value);
+		this.updateSample();
+	},
+	updateSample: function()
+	{
 		this.sample.setStyle({
 			backgroundColor: this.input.value
 		});
