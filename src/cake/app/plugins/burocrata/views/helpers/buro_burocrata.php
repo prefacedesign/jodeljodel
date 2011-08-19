@@ -1684,7 +1684,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$out = '';
 		$items = 'items'.$baseID;
-		$inputs = 'inputs'.$baseID;
+		$update = 'update'.$baseID;
 		$acplt_baseID = $this->baseID();
 		$edit_call_baseID = $this->baseID();
 		
@@ -1727,12 +1727,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 		// Controls + Error message
 		$out .= $this->Bl->sdiv(array('class' => 'controls'));
 			$out .= $this->Bl->div(array('id' => $items));
-			$out .= $this->Bl->div(array('id' => $inputs));
+			$out .= $this->Bl->div(array('id' => $update));
 			$out .= $this->Bl->floatBreak();
 		$out .= $this->Bl->ediv();
 		
 		
-		$url = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'editable_item');
+		$url = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'editable_list');
 		$ajax_options = array(
 			'url' => $url,
 			'params' => array(
@@ -1771,10 +1771,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 	public function inputRelationalEditableListItem($options)
 	{
 		$links = array();
+		
 		if (in_array('modify', $options['allow']))
 			$links[]  = $this->a(array('buro:action' => 'edit', 'href' => ''), array(), '#{edit_item}');
-		if (in_array('view', $options['allow']))
-			$links[]  = $this->a(array('buro:action' => 'view', 'href' => ''), array(), '#{view_item}');
+		
+		if (in_array('preview', $options['allow']))
+			$links[]  = $this->a(array('buro:action' => 'preview', 'href' => ''), array(), '#{view_item}');
 
 		$links[]  = $this->a(array('buro:action' => 'delete', 'href' => ''), array(), '#{delete_item}');
 	

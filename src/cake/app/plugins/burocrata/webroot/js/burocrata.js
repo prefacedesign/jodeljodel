@@ -1500,22 +1500,23 @@ var BuroListOfItemsItem = Class.create(BuroCallbackable, {
  */
 var BuroEditableList = Class.create(BuroCallbackable, {
 	baseFxDuration: 0.3,
+	
 	initialize: function(id_base, autocompleter_id_base, content, callbacks)
 	{
 		this.id_base = id_base;
 		this.ids = [];
+		this.form = false;
+		Object.extend(this,content);
+		
 		BuroCR.set(this.id_base, this);
 		
-		this.inputs = $('inputs'+id_base);
+		this.update = $('update'+id_base);
 		this.items = $('items'+id_base);
-		this.templates = content.templates;
-		this.texts = content.texts;
 		this.autocomplete = BuroCR.get(autocompleter_id_base);
 		this.observeControls(this.autocomplete.autocompleter.update.down('.action a'));
 		
 		this.addCallbacks(callbacks);
-		
-		
+		this.queue = {position:'end', scope: this.id_base};
 	},
 	observeControls: function(element)
 	{
@@ -1523,17 +1524,64 @@ var BuroEditableList = Class.create(BuroCallbackable, {
 			element.observe('click', this.controlClick.bindAsEventListener(this, element));
 		return this;
 	},
+	observeForm: function()
+	{
+		var form_id = false,
+			div_form = this.update.down('.buro_form');
+		
+		if (Object.isElement(div_form))
+			if (form_id = div_form.readAttribute('id'))
+				this.form = BuroCR.get(form_id).addCallbacks({
+					onStart: function(form){form.setLoading().lock();},
+					onCancel: this.formCancel.bind(this),
+					onSave: this.formSaved.bind(this)
+				});
+	},
+	formCancel: function()
+	{
+		var content = this.update.innerHTML,
+			iHeight = this.update.show().getHeight(),
+			fHeight = this.update.update().setLoading().getHeight();
+		
+		this.update.unsetLoading().update(content).setStyle({height: iHeight+'px', overflow: 'hidden'});
+		
+		new Effect.Morph(this.update, {
+			duration: this.baseFxDuration, 
+			queue: this.queue, 
+			style: {height: '0px'}
+		});
+	},
+	formSaved: function()
+	{
+	},
 	controlClick: function(ev, element)
 	{
 		ev.stop();
+		if (this.form)
+			this.form.purge();
+		this.form = false;
+		
 		var action = element.readAttribute('buro:action');
 		switch (action)
 		{
+			case 'new':
+				this.update.update().setLoading();
+				this.trigger('onAction', action);
+			break;
+			
+			case 'edit':
+			case 'preview':
+				this.update.update().setLoading();
+				this.trigger('onAction', action, element.up('div').retrieve('input').value);
+			break;
+			
 			case 'delete':
 				var div = element.up('div');
 				if (div && Object.isElement(input = div.retrieve('input')))
 				{
+					this.ids.splice(this.ids.indexOf(input.value), 1);
 					input.remove();
+					div.store('input', null);
 					new Effect.Fade(div, {
 						duration: this.baseFxDuration, 
 						afterFinish: function(eff) {
@@ -1552,8 +1600,7 @@ var BuroEditableList = Class.create(BuroCallbackable, {
 		this.ids.push(pair.id);
 		var input = new Element('div').insert(this.templates.input.interpolate(pair)).down(),
 			item = new Element('div').insert(this.templates.item.interpolate($H(pair).merge(this.texts).toObject())).down();
-		this.inputs.insert(input);
-		this.items.insert(item);
+		this.items.insert(input).insert(item);
 		item.down('.controls').select('a').each(this.observeControls.bind(this));
 		item.store('input', input);
 	},
@@ -1562,9 +1609,24 @@ var BuroEditableList = Class.create(BuroCallbackable, {
 	},
 	actionSuccess: function(json)
 	{
-		switch (json.action)
-		{
-		}
+		if (this.form)
+			this.form.purge();
+		this.form = false;
+		
+		var iHeight = this.update.show().unsetLoading().getHeight(),
+			fHeight = this.update.update(json.content).getHeight();
+		
+		this.update.setStyle({height: iHeight+'px', overflow: 'hidden'});
+		
+		new Effect.Morph(this.update, {
+			duration: this.baseFxDuration, 
+			queue: this.queue, 
+			style: {height: fHeight+'px'},
+			afterFinish: function(fx){
+				this.update.setStyle({height: '', overflow: ''});
+				this.observeForm();
+			}.bind(this)
+		});
 	},
 	ACSelected: function(pair)
 	{

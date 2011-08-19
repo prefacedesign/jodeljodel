@@ -31,8 +31,8 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 		echo $this->Buro->input(array(), 
 			array(
 				'type' => 'tags',
-				'label' => 'Owner',
-				'instructions' => 'Digite as tags',
+				'label' => 'Algumas tags',
+				'instructions' => 'Enumere as tags separadas por vírgula',
 				'fieldName' => 'tags', // default tags
 				'options' => array(
 					'type' => 'comma', // (default comma)
@@ -67,7 +67,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 				'options' => array(
 					'type' => 'editable_list',
 					'model' => 'BurocrataUser.Person',
-					'allow' => array('create', 'modify', 'view', 'relate')
+					'allow' => array('create', 'modify', 'preview', 'relate')
 				)
 			)
 		);

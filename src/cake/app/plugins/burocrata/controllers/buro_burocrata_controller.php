@@ -283,29 +283,33 @@ class BuroBurocrataController extends BurocrataAppController
 
 	
 /**
- * Return a list to fill the autocomplete field.
+ * 
  *
  * @access public
  * @return json An javascript object that contains `error` and `content` properties
  * @todo Better conditions support
  * @todo Suport for order statment
  */
-	public function new_editable_item()
+	public function editable_list()
 	{
-		$error = false;
-		$content = '';
-		$Model = null;
-		
+		$id = $action = $Model = null;
 		$error = $this->_load($Model);
 		
-		if($error === false)
-		{	
-			$content = $Model->find('first', array('conditions' => array('id' => $this->buroData['id']), 'fields' => array('id', $Model->displayField)));
-			$content = $content[$Model->alias];
+		if ($error === false)
+		{
+			if (isset($this->buroData['action']))
+				$action = $this->buroData['action'];
 			
+			if (!empty($this->buroData['id']))
+				$id = $this->buroData['id'];
+			
+			extract($this->_getViewData());
+			$this->data = $data;
+			
+			$this->set(compact('data'));
 		}
 		
-		$this->set('jsonVars', compact('error', 'content'));
+		$this->set(compact('error', 'action', 'saved', 'id'));
 	}
 
 /**

@@ -67,6 +67,7 @@ class BuroOfficeBoyHelper extends AppHelper
 			'onShowPreview' => 'function(id){%s}'
 		),
 		'relational_editable' => array(
+			'onAction' => 'function(action, id){%s}',
 			'onShowForm' => 'function(to_edit){%s}',
 			'onShowPreview' => 'function(id){%s}',
 			'onAddNew' => 'function(id){%s}'
