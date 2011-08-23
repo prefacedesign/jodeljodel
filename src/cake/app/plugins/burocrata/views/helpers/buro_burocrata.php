@@ -1246,7 +1246,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$fieldName = $this->_name($foreign_key);
 			$parameters['fkBounding'] = array($fieldName => $this->data[$ParentModel->alias][$ParentModel->primaryKey]);
 			
-			if (!isset($this->data[$assocName]) || !is_array($this->data[$model_name]))
+			if (!isset($this->data[$assocName]) || !is_array($this->data[$assocName]))
 			{
 				$method_name = 'findAllBy' . Inflector::camelize($ParentModel->hasMany[$assocName]['foreignKey']);
 				$this->data[$assocName] = Set::extract("/$assocName/.", call_user_method($method_name, $AssocModel, $this->data[$ParentModel->alias][$ParentModel->primaryKey]));
