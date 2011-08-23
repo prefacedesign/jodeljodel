@@ -6,6 +6,7 @@ class ExemplosController extends BurocrataUserAppController {
 	
 	function index()
 	{
+		$this->Galery->recursive = 0;
 		$this->data = $this->Galery->findById(1);
 	}
 	
