@@ -64,6 +64,7 @@ class BackstageBuroBurocrataHelper extends BuroBurocrataHelper
 			echo $this->Bl->sp(array('class' => 'alternative_option'), array());
 				echo ', ';
 				echo __('anchorList or',true);
+				echo ' ';
 				echo $this->Bl->anchor(array(),array('url' => $options['cancelUrl']),$options['cancelLabel']);
 			echo $this->ep();
 			echo $this->Bl->floatBreak();

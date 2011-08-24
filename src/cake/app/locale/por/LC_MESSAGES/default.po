@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2011-08-24 09:31-0300\n"
-"PO-Revision-Date: 2011-08-24 08:34-0400\n"
+"PO-Revision-Date: 2011-08-24 09:31-0400\n"
 "Last-Translator: Daniel <daniel@preface.com.br>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -63,7 +63,7 @@ msgstr "Salvar"
 
 #: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:40
 msgid "Save box: cancel this change."
-msgstr "Cancelar a alteração"
+msgstr "cancelar a alteração"
 
 #: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:54
 msgid "mark it as ready"
