@@ -207,8 +207,8 @@ class BuroBurocrataController extends BurocrataAppController
 			
 			if($saved)
 			{
-				$saved = $Model->id;
-				$this->data = array();
+				$this->buroData['id'] = $saved = $Model->id;
+				$this->view();
 			}
 		}
 		
