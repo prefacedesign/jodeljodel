@@ -1,0 +1,63 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2011-08-24 09:32-0300\n"
+"PO-Revision-Date: 2011-08-24 08:43-0400\n"
+"Last-Translator: Daniel <daniel@preface.com.br>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: \plugins\backstage\views\back_contents\edit.ctp:5
+msgid "Editing a \""
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:18
+msgid "publish"
+msgstr "publicá-lo"
+
+#: \plugins\backstage\views\back_contents\edit.ctp:20;25
+msgid "Could not change publishing status: communication error."
+msgstr "Não pode mudar o estado de publicação. Houve um erro de comunicação."
+
+#: \plugins\backstage\views\back_contents\edit.ctp:21
+msgid "Now, this document is hidden. You can %s."
+msgstr "Neste momento o documento está oculto. Você pode %s."
+
+#: \plugins\backstage\views\back_contents\edit.ctp:23
+msgid "mark it as draft"
+msgstr "retirá-lo do ar"
+
+#: \plugins\backstage\views\back_contents\edit.ctp:26
+msgid "Now, this document is published. You can %s."
+msgstr "Este documento está publicado. Você pode %s."
+
+#: \plugins\backstage\views\back_contents\edit.ctp:58
+msgid "Your data cannot be saved - TITLE."
+msgstr "Falha ao salvar"
+
+#: \plugins\backstage\views\back_contents\edit.ctp:59
+msgid "Your data cannot be saved - TEXT."
+msgstr "Existem um ou mais campos cujo conteúdo não obedece os critérios editoriais. Estes campos estão em vermelho, com uma mensagem explicando o problema, corrija-os e salve de novo o documento."
+
+#: \plugins\backstage\views\back_contents\edit.ctp:66
+msgid "Your data has been saved - TITLE."
+msgstr "Sucesso"
+
+#: \plugins\backstage\views\back_contents\edit.ctp:67
+msgid "Your data has been saved - TEXT."
+msgstr "Os dados foram salvos com sucesso."
+
+#: \plugins\backstage\views\back_contents\edit.ctp:69
+msgid "Your data has been saved - BACK TO DASHBOARD"
+msgstr "Voltar à página do editor"
+
+#: \plugins\backstage\views\back_contents\edit.ctp:70
+msgid "Your data has been saved - CONTINUE EDITING"
+msgstr "Continuar editando"
+
