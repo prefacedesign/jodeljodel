@@ -1827,40 +1827,33 @@ class BuroBurocrataHelper extends XmlTagHelper
   * @todo Error handling
   */
 	public function inputRelationalCombo($options = array())
- 	{		
+ 	{
  		$input_options = $options;
  		$options = $options['options'];
- 		$defaults = array(
+ 		$options += array(
  			'model' => false,
  			'assocName' => false,
- 			'baseID' => $this->baseID(),
-			'filter_options' => array()
+			'filter_options' => array(),
+			'options' => array()
  		);
- 		$options = am($defaults, $options);
  		
-		$model =& ClassRegistry::init($options['model']);
-		if(method_exists($model, 'findFilteredOptions'))
-			$options_to_list = $model->{'findFilteredOptions'}($options['filter_options']);
-		else
-			$options_to_list = $model->find('list');
+		unset($input_options['options']);
+		unset($input_options['type']);
 		
-			
-
-
-		$out = $this->input(
-			array(
-				'class' => 'combo'
-			), 
+		$Model =& ClassRegistry::init($options['model']);
+		if(method_exists($Model, 'findFilteredOptions'))
+			$options_to_list = $Model->{'findFilteredOptions'}($options['filter_options']);
+		else
+			$options_to_list = $Model->find('list');
+		
+		return $this->input(
+			array('class' => 'combo'), 
 			array(
 				'options' => array('options' => $options_to_list),
-				'label' => $input_options['label'], 
-				'instructions' => $input_options['instructions'], 
-				'type' => 'select', 
-				'fieldName' => $input_options['fieldName'],
-			)
+				'type' => 'select',
+				'container' => false
+			) + $input_options
 		);
-
-		return $out;
 	}
 	
 	

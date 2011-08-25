@@ -52,6 +52,17 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 			);
 			
 		echo $this->Buro->einput();
+
+		echo $this->Buro->input(array(),
+			array(
+				'type' => 'relational',
+				'fieldName' => 'person_id',
+				'options' => array(
+					'type' => 'combo',
+					'model' => 'BuroUser.Person',
+				)
+			)
+		);
 		
 		echo $this->Buro->input(array(),
 				array(

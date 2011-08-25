@@ -975,7 +975,8 @@
 	
 	$this->Decorator->rule(
 		'select.buro.combo', array(
-			'height' => 'auto',
+			'height' => $vg->size('1.5gm-2u'),
+			'padding' => sprintf('%s 0', $vg->size('m')),
 			'width' => $u->t($hg->size(array('M' => 5, 'g' => -1),false))
 	));
 	
