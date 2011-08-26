@@ -45,8 +45,11 @@ class CorkHelper extends AppHelper
 	function tile ($htmlAttributes = array(), $options = array())
 	{
 		if (!isset($options['key']) && !isset($options['type']))
+		{
 			trigger_error("CorkHelper::tile One must at least specify 'key' and 'type'"); 
-
+			return null;
+		}
+		
 		$htmlAttributes = $this->Bl->_mergeAttributes(array('class' => array('cork')), $htmlAttributes);
 		
 		//@todo: Probably cache should emcompass all this: till the bottom todo
@@ -56,7 +59,7 @@ class CorkHelper extends AppHelper
 
 		$typeConfig = Configure::read('jj.modules.' . $options['type']);
 		
-		$View =& ClassRegistry::getObject("View");
+		$View =& ClassRegistry::getObject('view');
 
 		$t = $this->Bl->sdiv($htmlAttributes);
 		$t .=  $View->element(Inflector::underscore($typeConfig['model']), array(

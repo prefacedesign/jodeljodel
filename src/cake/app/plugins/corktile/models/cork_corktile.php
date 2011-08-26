@@ -43,26 +43,35 @@ class CorkCorktile extends CorktileAppModel
 	 */
 	function getData($options)
 	{
-		$defaultOptions = array(
+		$options += array(
 			'type' => 'text_cork',
 			'defaultContent' => array(),
 			'replaceOptions' => true,
 			'options' => array()
 		);
-		
-		$options = am($defaultOptions, $options);
 	
+		if (empty($options['type']))
+		{
+			trigger_error('CorkCorktile::getData - "type" not defined.');
+			return array();
+		}
+		
 		$typeConfig = Configure::read('jj.modules.' . $options['type']);
-		$pluginCamelName =  Inflector::camelize($typeConfig['plugin']);
-		$modelName = $typeConfig['model'];
+		if (empty($typeConfig))
+		{
+			trigger_error('CorkCorktile::getData - Module (jj.modules) configuration for "' . $options['type'] . '" not found.');
+			return array();
+		}
 		
-		$Model =& ClassRegistry::init($pluginCamelName . '.' . $modelName);
-		
-		$corktileData = $this->find('first',array('conditions' => array('id' => $options['key'], 'type' => $options['type'])));
-		
+		$corktileData = $this->find('first', array('conditions' => array('id' => $options['key'], 'type' => $options['type'])));
 		if (empty($corktileData))
 		{
 			$defaultContent = isset($options['defaultContent']) ? $options['defaultContent'] : array();
+			
+			$pluginCamelName =  Inflector::camelize($typeConfig['plugin']);
+			$modelName = $typeConfig['model'];
+			$Model =& ClassRegistry::init($pluginCamelName . '.' . $modelName);
+			
 			$contentId = $Model->saveCorkContent($defaultContent, $options, false);
 		
 			if($contentId === false)
