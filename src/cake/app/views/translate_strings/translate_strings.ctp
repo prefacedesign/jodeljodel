@@ -9,14 +9,14 @@ __('Backstage edit page: Editing a "Paper.PapPaper"');
 
 /** Dashboard special translation strings
  */
-__('Dashboard status: published');
-__('Dashboard status: draft');
+__d('dashboard', 'Dashboard status: published');
+__d('dashboard', 'Dashboard status: draft');
 
-__('Dashboard types: person');
-__('Dashboard types: corktile');
-__('Dashboard types: event');
-__('Dashboard types: new');
-__('Dashboard types: paper');
+__d('dashboard', 'Dashboard types: person');
+__d('dashboard', 'Dashboard types: corktile');
+__d('dashboard', 'Dashboard types: event');
+__d('dashboard', 'Dashboard types: new');
+__d('dashboard', 'Dashboard types: paper');
 
 __d('popup', 'Popup plugin error type');
 __d('popup', 'Popup plugin success type');
@@ -25,17 +25,17 @@ __d('popup', 'Popup plugin form type');
 
 /** Dashboard language names
  */
-__('Dashboard language abrev.: por');
-__('Dashboard language abrev.: eng');
-__('Dashboard language abrev.: nno');
-__('Dashboard language abrev.: lav');
-__('Dashboard language abrev.: gre');
-__('Dashboard language abrev.: ukr');
-__('Dashboard language abrev.: ger');
-__('Language name: por');
-__('Language name: eng');
-__('Language name: nno');
-__('Language name: lav');
-__('Language name: gre');
-__('Language name: ukr');
-__('Language name: ger');
+__d('dashboard','Dashboard language abrev.: por');
+__d('dashboard','Dashboard language abrev.: eng');
+__d('dashboard','Dashboard language abrev.: nno');
+__d('dashboard','Dashboard language abrev.: lav');
+__d('dashboard','Dashboard language abrev.: gre');
+__d('dashboard','Dashboard language abrev.: ukr');
+__d('dashboard','Dashboard language abrev.: ger');
+__d('dashboard','Language name: por');
+__d('dashboard','Language name: eng');
+__d('dashboard','Language name: nno');
+__d('dashboard','Language name: lav');
+__d('dashboard','Language name: gre');
+__d('dashboard','Language name: ukr');
+__d('dashboard','Language name: ger');

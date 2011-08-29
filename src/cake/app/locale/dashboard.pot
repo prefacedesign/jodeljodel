@@ -1,0 +1,212 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2011-08-29 16:10-0300\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:43
+msgid "Page title - Dashboard"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:49
+msgid "Add new content:"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:69
+msgid "or"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:70
+msgid "Close item list"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:75
+msgid "Open item list"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:111
+msgid "Notice of marking as draft success - TITLE"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:112
+msgid "Notice of marking as draft success - TEXT"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:119
+msgid "Notice of marking as draft failure - TITLE"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:120
+msgid "Notice of marking as draft failure - TEXT"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:126
+msgid "Notice of publishing success - TITLE"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:127
+msgid "Notice of publishing success - TEXT"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:134
+msgid "Notice of publishing failure - TITLE"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:135
+msgid "Notice of publishing failure - TEXT"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:141
+msgid "Notice of delete success - TITLE"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:142
+msgid "Notice of delete success - TEXT"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:149
+msgid "Notice of delete failure - TITLE"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:150
+msgid "Notice of delete failure - TEXT"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:170
+msgid "Dashboard header: Type"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:171
+msgid "Dashboard header: Status"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:172
+msgid "Dashboard header: Name"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:173
+msgid "Dashboard header: Extra info"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:174
+msgid "Dashboard header: Created"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:175
+msgid "Dashboard header: Modified"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:176
+msgid "Dashboard header: Translations"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:230
+msgid "Hide from public"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:243
+msgid "Publish to the great public"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:261
+msgid "Delete content"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:295;306
+msgid "Dashboard: Edit"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:12
+msgid "Dashboard status: published"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:13
+msgid "Dashboard status: draft"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:15
+msgid "Dashboard types: person"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:16
+msgid "Dashboard types: corktile"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:17
+msgid "Dashboard types: event"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:18
+msgid "Dashboard types: new"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:19
+msgid "Dashboard types: paper"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:28
+msgid "Dashboard language abrev.: por"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:29
+msgid "Dashboard language abrev.: eng"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:30
+msgid "Dashboard language abrev.: nno"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:31
+msgid "Dashboard language abrev.: lav"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:32
+msgid "Dashboard language abrev.: gre"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:33
+msgid "Dashboard language abrev.: ukr"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:34
+msgid "Dashboard language abrev.: ger"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:35
+msgid "Language name: por"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:36
+msgid "Language name: eng"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:37
+msgid "Language name: nno"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:38
+msgid "Language name: lav"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:39
+msgid "Language name: gre"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:40
+msgid "Language name: ukr"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:41
+msgid "Language name: ger"
+msgstr ""
+
