@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-08-29 17:10-0300\n"
+"POT-Creation-Date: 2011-08-29 17:37-0300\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -94,6 +94,14 @@ msgstr ""
 
 #: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:60
 msgid "Version marked as draft. You can %s."
+msgstr ""
+
+#: \plugins\jj_users\controllers\user_users_controller.php:9
+msgid "Login failed. Invalid username or password."
+msgstr ""
+
+#: \plugins\jj_users\controllers\user_users_controller.php:10
+msgid "You are not authorized to access that location."
 msgstr ""
 
 #: \plugins\jj_users\views\user_users\login.ctp:5
