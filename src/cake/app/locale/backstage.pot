@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-08-29 16:50-0300\n"
+"POT-Creation-Date: 2011-08-29 17:10-0300\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -56,6 +56,44 @@ msgstr ""
 
 #: \plugins\backstage\views\back_contents\edit.ctp:73
 msgid "Your data has been saved - CONTINUE EDITING"
+msgstr ""
+
+#: \plugins\backstage\views\elements\language_edit_select.ctp:14
+#: \plugins\backstage\views\elements\language_show_edited_language.ctp:14
+msgid "This content already has translations for %s."
+msgstr ""
+
+#: \plugins\backstage\views\elements\language_edit_select.ctp:34
+#: \plugins\backstage\views\elements\language_show_edited_language.ctp:34
+msgid "If you want you can create a version for %s"
+msgstr ""
+
+#: \plugins\backstage\views\elements\show_language_being_edited.ctp:9
+msgid "Editing"
+msgstr ""
+
+#: \plugins\backstage\views\elements\show_language_being_edited.ctp:10
+msgid " the %s version."
+msgstr ""
+
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:39
+msgid "Save"
+msgstr ""
+
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:40
+msgid "Save box: cancel this change."
+msgstr ""
+
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:54
+msgid "mark it as ready"
+msgstr ""
+
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:55
+msgid "remove it"
+msgstr ""
+
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:60
+msgid "Version marked as draft. You can %s."
 msgstr ""
 
 #: \plugins\jj_users\views\user_users\login.ctp:5

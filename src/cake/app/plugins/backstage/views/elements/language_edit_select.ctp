@@ -11,7 +11,7 @@
 	$tmp = $this->Bl->anchorList(array(),array('lastSeparator' => __('anchorList and', true), 'linkList' => $linkList));	
 	
 	echo $this->Bl->p(array('class' => 'small_text'), array('escape' => false),
-		sprintf (__('backstage','This content already has translations for %s.',true), $tmp));
+		sprintf (__d('backstage','This content already has translations for %s.',true), $tmp));
 	echo $this->Bl->brDry();
 		
 	$missingLanguages =	array_diff(Configure::read('Tradutore.languages'), $translatedLanguages);
@@ -31,7 +31,7 @@
 			array('class' => 'small_text'), 
 			array('escape' => false),
 			sprintf (
-				__('backstage','If you want you can create a version for %s',true),
+				__d('backstage','If you want you can create a version for %s',true),
 				$this->Bl->anchorList(array(),array('lastSeparator' => __('anchorList or', true), 'linkList' => $linkList))
 			)
 		);
