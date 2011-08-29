@@ -29,7 +29,7 @@
 	
 	// Title
 	$typeTitle = 'Popup plugin ' . $type . ' type';
-	$typeTitle = __d('popup', $typeTitle, true);
+	$typeTitle = trim(__d('popup', $typeTitle, true));
 	if (!empty($typeTitle))
 		$title = $typeTitle . ': ' . $title;
 	
