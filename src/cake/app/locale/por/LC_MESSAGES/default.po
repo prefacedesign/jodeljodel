@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-08-24 09:31-0300\n"
-"PO-Revision-Date: 2011-08-24 09:31-0400\n"
+"POT-Creation-Date: 2011-08-29 17:09-0300\n"
+"PO-Revision-Date: 2011-08-29 16:15-0400\n"
 "Last-Translator: Daniel <daniel@preface.com.br>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -13,243 +13,215 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: \config\bootstrap.php:143
+#: \config\bootstrap.php:50
+msgid "MODULE Person human name"
+msgstr ""
+
+#: \config\bootstrap.php:55
+msgid "MODULE Gallery human name"
+msgstr ""
+
+#: \config\bootstrap.php:62
+msgid "MODULE TextTextCork human name"
+msgstr ""
+
+#: \config\bootstrap.php:69
+msgid "MODULE CorkCorkTile human name"
+msgstr ""
+
+#: \config\bootstrap.php:125
 msgid "%d-%d de %s de %d"
 msgstr ""
 
-#: \config\bootstrap.php:153
+#: \config\bootstrap.php:135
 msgid "%d de %s a %d de %s de %d"
 msgstr ""
 
-#: \plugins\backstage\views\elements\language_edit_select.ctp:5;21
-#: \plugins\backstage\views\elements\language_show_edited_language.ctp:5;21
-#: \plugins\backstage\views\elements\show_language_being_edited.ctp:9
-msgid "Language name: "
-msgstr ""
-
-#: \plugins\backstage\views\elements\language_edit_select.ctp:7
-#: \plugins\backstage\views\elements\language_show_edited_language.ctp:7
+#: \plugins\backstage\views\elements\language_edit_select.ctp:11
+#: \plugins\backstage\views\elements\language_show_edited_language.ctp:11
 msgid "anchorList and"
 msgstr "e"
 
-#: \plugins\backstage\views\elements\language_edit_select.ctp:10
-#: \plugins\backstage\views\elements\language_show_edited_language.ctp:10
-msgid "This content already has translations for %s."
-msgstr ""
-
-#: \plugins\backstage\views\elements\language_edit_select.ctp:27
-#: \plugins\backstage\views\elements\language_show_edited_language.ctp:27
-msgid "Backstage edit page: If you want you can create a version for %s"
-msgstr ""
-
-#: \plugins\backstage\views\elements\language_edit_select.ctp:28
-#: \plugins\backstage\views\elements\language_show_edited_language.ctp:28
+#: \plugins\backstage\views\elements\language_edit_select.ctp:35
+#: \plugins\backstage\views\elements\language_show_edited_language.ctp:35
 #: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:52;66
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:689
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:700
 msgid "anchorList or"
 msgstr "ou"
 
-#: \plugins\backstage\views\elements\show_language_being_edited.ctp:8
-msgid "backstage edit page: Editing"
-msgstr ""
-
-#: \plugins\backstage\views\elements\show_language_being_edited.ctp:9
-msgid " the %s version."
-msgstr ""
-
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:39
-msgid "Save"
-msgstr "Salvar"
-
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:40
-msgid "Save box: cancel this change."
-msgstr "cancelar a alteração"
-
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:54
-msgid "mark it as ready"
-msgstr "marcar como pronto"
-
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:55
-msgid "remove it"
-msgstr "remover"
-
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:60
-msgid "Version marked as draft. You can %s."
-msgstr ""
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:319
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:330
 msgid "Burocrata: default save button"
 msgstr "Salvar"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:589
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:600
 msgid "Burocrata::submit - Submit label"
 msgstr "Enviar"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:600;679
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:611;690
 msgid "Burocrata::okOrCancel - Cancel label"
 msgstr "Cancelar"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:661
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:672
 msgid "Burocrata::okOrCancel - OK label"
 msgstr "Ok"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:899
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:910
 msgid "Burocrata: nothing found on autocomplete."
 msgstr "Nada encontrado."
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1002;1656
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1013;1667
 msgid "Burocrata: create a new related item"
 msgstr "Criar um novo"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1003;1657
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1014;1668
 msgid "Burocrata: edit related data"
 msgstr "Editar"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1004
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1015
 msgid "Burocrata: nothing found on autocomplete"
 msgstr "Nada encontrado."
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1005
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1016
 msgid "Burocrata: choose another related item"
 msgstr "Escolher um outro"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1006
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1017
 msgid "Burocrata: Bring last item back"
 msgstr "Usar último item"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1402
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1413
 msgid "Burocrata::orderdItensMenu - close list"
 msgstr "Fechar"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1498
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1509
 msgid "Burocrata::orderedItensControls - up"
 msgstr "Mover pra cima"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1504
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1515
 msgid "Burocrata::orderedItensControls - down"
 msgstr "Mover pra baixo"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1510
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1521
 msgid "Burocrata::orderedItensControls - delete"
 msgstr "Excluir"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1516
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1527
 msgid "Burocrata::orderedItensControls - duplicate"
 msgstr "Duplicar"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1522
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1533
 msgid "Burocrata::orderedItensControls - edit"
 msgstr "Editar"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1658
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1669
 msgid "Burocrata: view related data"
 msgstr "Ver dados completos"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1659
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1670
 msgid "Burocrata: unlink related data"
 msgstr "Remover"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1660
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1671
 msgid "Burocrata: confirm unlinking"
 msgstr "Deseja remover mesmo?"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2090
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2094
 msgid "Burocrata::inputUpload - Change file"
 msgstr "Alterar"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2118
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2122
 msgid "Burocrata::inputUpload - Download file"
 msgstr "Baixar arquivo"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2122
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2126
 msgid "Burocrata::inputUpload - File: "
 msgstr "Arquivo:"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2152
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2156
 msgid "Burocrata::inputImage - Change image"
 msgstr "Alterar essa imagem"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2154
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2158
 msgid "Burocrata::inputImage - Remove  image"
 msgstr "Remover essa imagem"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2193
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2197
 msgid "Burocrata::inputImage - or "
 msgstr " ou "
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2273
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2277
 msgid "Burocrata::inputTextile - Preview"
 msgstr "Visualizar"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2314
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2318
 msgid "Burocrata::_popupTextileLink - Instructions for link"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2315
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2319
 msgid "Burocrata::_popupTextileLink - What is the text for this link"
 msgstr "Qual é o texto para esse link?"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2316
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2320
 msgid "Burocrata::_popupTextileLink - What is the URL of this link"
 msgstr "Qual é o endereço para o link?"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2317
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2321
 msgid "Burocrata::_popupTextileLink - Title of link popup"
 msgstr "Link"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2349
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2353
 msgid "Burocrata::_popupTextileTitle - Instructions for link"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2350
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2354
 msgid "Burocrata::_popupTextileTitle - What is the type of this title"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2351
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2355
 msgid "Burocrata::_popupTextileTitle - Title"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2352
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2356
 msgid "Burocrata::_popupTextileTitle - Subtitle"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2353
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2357
 msgid "Burocrata::_popupTextileTitle - What is the title"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2354
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2358
 msgid "Burocrata::_popupTextileTitle - Title of title popup"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2398
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2402
 msgid "Burocrata::_popupTextilePreview - Title of preview popup"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2423
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2427
 msgid "Burocrata::_popupTextileFile - Title of `add file` popup"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2424
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2428
 msgid "Burocrata::_popupTextileFile - Label of file input"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2462
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2466
 msgid "Burocrata::_popupTextileImage - Title of `add image` popup"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2463
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:2467
 msgid "Burocrata::_popupTextileImage - Label of file input"
 msgstr ""
 
-#: \plugins\corktile\models\cork_corktile.php:70
+#: \plugins\corktile\models\cork_corktile.php:76
 msgid "CorkCorktile Model: Could not save the CorkContent"
 msgstr ""
 
-#: \plugins\corktile\models\cork_corktile.php:86
+#: \plugins\corktile\models\cork_corktile.php:92
 msgid "CorkCorktile Model: Could not save the Cork meta data"
 msgstr ""
 
-#: \plugins\corktile\models\cork_corktile.php:107
+#: \plugins\corktile\models\cork_corktile.php:113
 msgid "CorkCorktile Model: Could not update the Cork meta data"
 msgstr ""
 
@@ -273,129 +245,8 @@ msgstr ""
 msgid "Corktile edit page: Your data has been saved - TEXT."
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:43
 #: \plugins\dashboard\views\dash_dashboard\table_examples.ctp:4
 msgid "Backstage index page: Page title - Dashboard"
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:49
-msgid "Dashboard: Add new content:"
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:75
-msgid "or"
-msgstr "ou"
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:76
-msgid "Dashboard: Close item list"
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:81
-msgid "Dashboard: Open item list"
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:117
-msgid "Dashboard: Notice of marking as draft success - TITLE"
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:118
-msgid "Dashboard: Notice of marking as draft success - TEXT"
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:125
-msgid "Dashboard: Notice of marking as draft failure - TITLE"
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:126
-msgid "Dashboard: Notice of marking as draft failure - TEXT"
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:132
-msgid "Dashboard: Notice of publishing success - TITLE"
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:133
-msgid "Dashboard: Notice of publishing success - TEXT"
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:140
-msgid "Dashboard: Notice of publishing failure - TITLE"
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:141
-msgid "Dashboard: Notice of publishing failure - TEXT"
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:147
-msgid "Dashboard: Notice of delete success - TITLE"
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:148
-msgid "Dashboard: Notice of delete success - TEXT"
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:155
-msgid "Dashboard: Notice of delete failure - TITLE"
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:156
-msgid "Dashboard: Notice of delete failure - TEXT"
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:176
-msgid "Dashboard - dashboard header: Type"
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:177
-msgid "Dashboard - dashboard header: Status"
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:178
-msgid "Dashboard - dashboard header: Name"
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:179
-msgid "Dashboard - dashboard header: Extra info"
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:180
-msgid "Dashboard - dashboard header: Created"
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:181
-msgid "Dashboard - dashboard header: Modified"
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:182
-msgid "Dashboard - dashboard header: Translations"
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:204
-msgid "Dashboard language abrev.: "
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:208
-msgid "Dashboard types: "
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:209
-msgid "Dashboard status: "
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:231
-msgid "Dashboard: Hide from public"
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:245
-msgid "Dashboard: Publish to the great public"
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:264
-msgid "Dashboard: Delete content"
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:299;310
-msgid "Dashboard: Edit"
 msgstr ""
 
 #: \plugins\jj_utils\vendors\shells\jj_console.php:13
@@ -830,18 +681,6 @@ msgstr ""
 msgid "Section Two"
 msgstr ""
 
-#: \plugins\popup\views\elements\popup.ctp:31
-msgid "Popup plugin "
-msgstr ""
-
-#: \plugins\popup\views\helpers\popup.php:74
-msgid "PopupHelper::_form - Ok button"
-msgstr ""
-
-#: \plugins\popup\views\helpers\popup.php:75
-msgid "PopupHelper::_form - Cancel link"
-msgstr ""
-
 #: \plugins\tags\views\tags\admin_add.ctp:16
 msgid "Add %s"
 msgstr ""
@@ -1091,141 +930,24 @@ msgid ""
 "\t\tYou can also add some CSS styles for your pages at: %s"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:4
-msgid "Backstage edit page: Editing a \"Person.PersPerson\""
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:5
-msgid "Backstage edit page: Editing a \"Event.EveEvent\""
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:6
-msgid "Backstage edit page: Editing a \"New.NewsNew\""
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:7
-msgid "Backstage edit page: Editing a \"Paper.PapPaper\""
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:12
-msgid "Dashboard status: published"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:13
-msgid "Dashboard status: draft"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:15
-msgid "Dashboard types: person"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:16
-msgid "Dashboard types: corktile"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:17
-msgid "Dashboard types: event"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:18
-msgid "Dashboard types: new"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:19
-msgid "Dashboard types: paper"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:21
-msgid "MODULE PersPerson human name"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:22
-msgid "MODULE NewsNew human name"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:23
-msgid "MODULE PapPaper human name"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:24
-msgid "MODULE EveEvent human name"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:26
-msgid "Popup plugin error type"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:27
-msgid "Popup plugin success type"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:28
-msgid "Popup plugin notice type"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:29
-msgid "Popup plugin form type"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:33
-msgid "Dashboard language abrev.: por"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:34
-msgid "Dashboard language abrev.: eng"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:35
-msgid "Dashboard language abrev.: nno"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:36
-msgid "Dashboard language abrev.: lav"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:37
-msgid "Dashboard language abrev.: gre"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:38
-msgid "Dashboard language abrev.: ukr"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:39
-msgid "Dashboard language abrev.: ger"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:40
-msgid "Language name: por"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:41
-msgid "Language name: eng"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:42
-msgid "Language name: nno"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:43
-msgid "Language name: lav"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:44
-msgid "Language name: gre"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:45
-msgid "Language name: ukr"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:46
-msgid "Language name: ger"
-msgstr ""
-
 #: \webroot\test.php:88
 msgid "Debug setting does not allow access to this url."
 msgstr ""
+
+#~ msgid "Save"
+#~ msgstr "Salvar"
+
+#~ msgid "Save box: cancel this change."
+#~ msgstr "cancelar a alteração"
+
+#~ msgid "mark it as ready"
+#~ msgstr "marcar como pronto"
+
+#~ msgid "remove it"
+#~ msgstr "remover"
+
+#~ msgid "or"
+#~ msgstr "ou"
 
 #~ msgid "Burocrata: delete related data"
 #~ msgstr "Remover associação"
