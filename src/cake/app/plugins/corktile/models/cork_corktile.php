@@ -68,10 +68,7 @@ class CorkCorktile extends CorktileAppModel
 		{
 			$defaultContent = isset($options['defaultContent']) ? $options['defaultContent'] : array();
 			
-			$pluginCamelName =  Inflector::camelize($typeConfig['plugin']);
-			$modelName = $typeConfig['model'];
-			$Model =& ClassRegistry::init($pluginCamelName . '.' . $modelName);
-			
+			$Model =& ClassRegistry::init($typeConfig['model']);
 			$contentId = $Model->saveCorkContent($defaultContent, $options, false);
 		
 			if($contentId === false)
@@ -141,10 +138,8 @@ class CorkCorktile extends CorktileAppModel
 			return false;
 		
 		$typeConfig = Configure::read('jj.modules.' . $metaData['CorkCorktile']['type']);
-		$pluginCamelName =  Inflector::camelize($typeConfig['plugin']);
-		$modelName = $typeConfig['model'];
-		$Model =& ClassRegistry::init($pluginCamelName . '.' . $modelName);
 		
+		$Model =& ClassRegistry::init($typeConfig['model']);
 		$corkContent = $Model->getCorkContent($metaData['CorkCorktile']['content_id']);
 		
 		return am($metaData, $corkContent, array('ModuleInfo' => $typeConfig));
@@ -170,9 +165,7 @@ class CorkCorktile extends CorktileAppModel
 		//@todo Make this take only the main language.
 		
 		$typeConfig = Configure::read('jj.modules.' . $data['CorkCorktile']['type']);
-		$pluginCamelName =  Inflector::camelize($typeConfig['plugin']);
-		$modelName = $typeConfig['model'];
-		$Model =& ClassRegistry::init($pluginCamelName . '.' . $modelName);
+		$Model =& ClassRegistry::init($typeConfig['model']);
 		
 		if ($data == null)
 			return null;

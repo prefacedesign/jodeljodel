@@ -58,17 +58,20 @@ class CorkHelper extends AppHelper
 		$corkData = $CorkCorktile->getData($options); //This one handles all data logic.
 
 		$typeConfig = Configure::read('jj.modules.' . $options['type']);
+		list($model_name, $plugin_name) = pluginSplit($typeConfig['model']);
 		
-		$View =& ClassRegistry::getObject('view');
 
 		$t = $this->Bl->sdiv($htmlAttributes);
-		$t .=  $View->element(Inflector::underscore($typeConfig['model']), array(
-				'plugin' => Inflector::underscore($typeConfig['plugin']),
+		
+		$View =& ClassRegistry::getObject('view');
+		$t .=  $View->element(Inflector::underscore($model_name), array(
+				'plugin' => Inflector::underscore($plugin_name),
 				'type' => array('cork'),
 				'options' => isset($options['options']) ? $options['options'] : array(),
 				'data' => $corkData
 			)
 		);
+		
 		$t .= $this->Bl->ediv();
 		
 		//@todo: Probably cache should emcompass all this. till here

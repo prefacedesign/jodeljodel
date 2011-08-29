@@ -46,45 +46,27 @@
   */
  Configure::write('jj.modules', array(
 		'person' => array(
-			'plugin' => 'person',
-			'prefix' => 'pers',
-			'model' => 'PersPerson',
-			'humanName' => 'MODULE PersPerson human name', //it will be translated
+			'model' => 'BurocrataUser.Person',
+			'humanName' => __('MODULE PersPerson human name', true),
 			'plugged' => array('dashboard','backstage') //the tools and functionality it plugs into.
 		),
-		'new' => array(
-			'plugin' => 'new',
-			'prefix' => 'news',
-			'model' => 'NewsNew',
-			'humanName' => 'MODULE NewsNew human name',
-			'plugged' => array('dashboard','backstage')
-		),
-		'paper' => array(
-			'plugin' => 'paper',
-			'prefix' => 'pap',
-			'model' => 'PapPaper',
-			'humanName' => 'MODULE PapPaper human name',
-			'plugged' => array('dashboard','backstage')
-		),
-		'event' => array(
-			'plugin' => 'event',
-			'prefix' => 'eve',
-			'model' => 'EveEvent',
-			'humanName' => 'MODULE EveEvent human name',
+		'gallery' => array(
+			'model' => 'BurocrataUser.Galery',
+			'humanName' => __('MODULE NewsNew human name', true),
 			'plugged' => array('dashboard','backstage')
 		),
 		'text_cork' => array(
 			'plugin' => 'text_cork',
 			'prefix' => 'text',
 			'model' => 'TextTextCork',
-			'humanName' => 'MODULE TextTextCork human name',
+			'humanName' => __('MODULE TextTextCork human name', true),
 			'plugged' => array('corktile')
 		),
 		'corktile' => array(
 			'plugin' => 'corktile',
 			'prefix' => 'cork',
 			'model' => 'CorkCorktile',
-			'humanName' => 'MODULE CorkCorkTile human name',
+			'humanName' => __('MODULE CorkCorkTile human name', true),
 			'plugged' => array('dashboard', 'backstage')
 		)
  ));

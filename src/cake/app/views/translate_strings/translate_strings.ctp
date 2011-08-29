@@ -18,11 +18,6 @@ __('Dashboard types: event');
 __('Dashboard types: new');
 __('Dashboard types: paper');
 
-__('MODULE PersPerson human name');
-__('MODULE NewsNew human name');
-__('MODULE PapPaper human name');
-__('MODULE EveEvent human name');
-
 __('Popup plugin error type');
 __('Popup plugin success type');
 __('Popup plugin notice type');

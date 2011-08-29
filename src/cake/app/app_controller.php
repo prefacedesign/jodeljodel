@@ -48,12 +48,6 @@ class AppController extends Controller {
 	);
 	
 	
-	function beforeFilter()
-	{
-		parent::beforeFilter();		
-		$this->set('jjModules', Configure::read('jj.modules'));
-	}
-	
 	function beforeRender()
 	{
 		parent::beforeRender();		

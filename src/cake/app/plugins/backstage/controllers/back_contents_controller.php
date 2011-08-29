@@ -44,12 +44,14 @@ class BackContentsController extends BackstageAppController
  * @param string $modelName The model name to be edited, in underscore format.
  * @param mixed $id The id of the row to be edited. If "null" it means that a new will be created.
  */
-    function edit($contentPlugin = false, $modelName = false, $id = null)
+    function edit($type = false, $id = null)
     {
-		if (empty($contentPlugin) || empty($modelName))
+		if (empty($type) || !($config = Configure::read('jj.modules.'.$type)))
 			$this->cakeError('error404');
 		
-        $fullModelName = Inflector::camelize($contentPlugin) . '.' . Inflector::camelize($modelName);
+		list($contentPlugin, $modelName) = pluginSplit($config['model']);
+		
+        $fullModelName = $config['model'];
         $Model =& ClassRegistry::init($fullModelName);
         
         if (is_null($id))
@@ -57,11 +59,14 @@ class BackContentsController extends BackstageAppController
             if (method_exists($Model, 'createEmpty'))
 			{
                 if ($Model->createEmpty())
-					$this->redirect(array($contentPlugin, $modelName, $Model->id));
+					$this->redirect(array($type, $Model->id));
 				elseif (Configure::read())
-					die ('Could not create an empty record.');
+					trigger_error('Could not create an empty record.') and die;
 			}
-			$this->redirect(array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'index'));
+			else
+			{
+				trigger_error('Method '.$modelName.'::createEmpty() on '.$contentPlugin.' not found!') and die;
+			}
         }
         else
         {
@@ -71,9 +76,7 @@ class BackContentsController extends BackstageAppController
                 $this->data = $Model->findById($id);
         }
         
-        $this->set('contentPlugin', $contentPlugin);
-        $this->set('modelName', Inflector::camelize($modelName));
-        $this->set('fullModelName', $fullModelName);
+		$this->set(compact('contentPlugin', 'modelName', 'fullModelName'));
     }
 	
 /** 
@@ -84,16 +87,21 @@ class BackContentsController extends BackstageAppController
  * @param string $contentPlugin The plugin name in underscore format.
  * @param string $modelName The model name to be edited, in underscore format.
  */
-	function set_publishing_status($contentPlugin, $modelName, $id, $status)
+	function set_publishing_status($type, $id, $status)
 	{
-		$this->view = 'JjUtils.Json';
-	
-		$fullModelName = Inflector::camelize($contentPlugin) . '.' . Inflector::camelize($modelName);
+		if (empty($type) || !($config = Configure::read('jj.modules.'.$type)))
+			$this->cakeError('error404');
+		
+		list($contentPlugin, $modelName) = pluginSplit($config['model']);
+		
+		$fullModelName = $config['model'];
 		$Model =& ClassRegistry::init($fullModelName);
 		
 		if ($Model->setStatus($id, array('publishing_status' => $status)))
 			$this->set('jsonVars', array('success' => true));
 		else
 			$this->set('jsonVars', array('success' => false));
+		
+		$this->view = 'JjUtils.Json';
 	}
 }

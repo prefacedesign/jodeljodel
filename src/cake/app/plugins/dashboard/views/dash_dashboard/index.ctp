@@ -49,26 +49,20 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 				echo $this->Bl->h3Dry(__('Dashboard: Add new content:', true));
 				$linklist = array();
 				
-				foreach($jjModules as $k => $module)
+				foreach(Configure::read('jj.modules') as $moduleName => $module)
 				{
 					if (isset($module['plugged']))
 					{
-						$curSettings = isset($itemSettings[$k]) ? $itemSettings[$k] : $itemSettings['default'];
+						$curSettings = isset($itemSettings[$moduleName]) ? $itemSettings[$moduleName] : $itemSettings['default'];
 					
 						if (in_array('dashboard', $module['plugged']) && in_array('create', $curSettings['actions']))
 						{
-							
-							$linkList[] = $this->Bl->anchor(array(), array('url' => array(
-										'language' => $mainLanguage,
-										'plugin' => 'backstage',
-										'controller' => 'back_contents',
-										'action' => 'edit',
-										$module['plugin'],
-										Inflector::underscore($module['model'])
-									)
-								),
-								__($module['humanName'],true)
+							$url = array(
+								'language' => $mainLanguage,
+								'plugin' => 'backstage','controller' => 'back_contents',
+								'action' => 'edit', $moduleName
 							);
+							$linkList[] = $this->Bl->anchor(array(), compact('url'), $module['humanName']);
 						}
 					}
 				}
@@ -232,9 +226,8 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 					array(
 						'plugin' => 'backstage',
 						'controller' => 'back_contents',
-						'action' => 'set_publishing_status', 
-						$jjModules[$item['DashDashboardItem']['type']]['plugin'],
-						Inflector::underscore($jjModules[$item['DashDashboardItem']['type']]['model']),
+						'action' => 'set_publishing_status',
+						$item['DashDashboardItem']['type'],
 						$item['DashDashboardItem']['dashable_id'], 'draft'
 					), array(
 						'complete' => "if(request.responseJSON.success) {showPopup('draft_alert_ok');} else {showPopup('draft_alert_failure');}",
@@ -247,8 +240,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 						'plugin' => 'backstage', 
 						'controller' => 'back_contents',
 						'action' => 'set_publishing_status',
-						$jjModules[$item['DashDashboardItem']['type']]['plugin'],
-						Inflector::underscore($jjModules[$item['DashDashboardItem']['type']]['model']),
+						$item['DashDashboardItem']['type'],
 						$item['DashDashboardItem']['dashable_id'],'published'
 					), array(
 						'complete' => "if(request.responseJSON.success) {showPopup('publish_alert_ok');} else {showPopup('publish_alert_failure');}",
@@ -292,8 +284,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 									'plugin' => 'backstage',
 									'controller' => 'back_contents',
 									'action' => 'edit',
-									$jjModules[$item['DashDashboardItem']['type']]['plugin'],
-									Inflector::underscore($jjModules[$item['DashDashboardItem']['type']]['model']),
+									$item['DashDashboardItem']['type'],
 									$item['DashDashboardItem']['dashable_id']
 							 )
 						 ), __('Dashboard: Edit', true)

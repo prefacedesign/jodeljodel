@@ -92,7 +92,7 @@ class DashDashboardItem extends AppModel
 			return false;
 		
 		$module = Configure::read('jj.modules.' . $item['DashDashboardItem']['type']);	
-		$dashableModel = ClassRegistry::init(Inflector::camelize($module['plugin']).'.'.$module['model'], 'Model');
+		$dashableModel = ClassRegistry::init($module['model']);
 		
 		if (method_exists($dashableModel, 'dashDelete'))
 			$return = $dashableModel->dashDelete($item['DashDashboardItem']['dashable_id']);
