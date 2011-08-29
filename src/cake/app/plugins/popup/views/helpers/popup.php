@@ -71,8 +71,8 @@ class PopupHelper extends AppHelper
 	protected function _form($options)
 	{
 		$options['actions'] = $options['actions'] + array(
-			'ok' => __('PopupHelper::_form - Ok button', true),
-			'cancel' => __('PopupHelper::_form - Cancel link', true)
+			'ok' => __d('popup','PopupHelper::_form - Ok button', true),
+			'cancel' => __d('popup','PopupHelper::_form - Cancel link', true)
 		);
 		
 		$buttonHtmlAttributes = array(

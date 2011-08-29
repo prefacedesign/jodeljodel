@@ -18,10 +18,10 @@ __('Dashboard types: event');
 __('Dashboard types: new');
 __('Dashboard types: paper');
 
-__('Popup plugin error type');
-__('Popup plugin success type');
-__('Popup plugin notice type');
-__('Popup plugin form type');
+__d('popup', 'Popup plugin error type');
+__d('popup', 'Popup plugin success type');
+__d('popup', 'Popup plugin notice type');
+__d('popup', 'Popup plugin form type');
 
 /** Dashboard language names
  */

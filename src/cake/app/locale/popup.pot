@@ -1,0 +1,40 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2011-08-29 16:10-0300\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: \plugins\popup\views\helpers\popup.php:74
+msgid "PopupHelper::_form - Ok button"
+msgstr ""
+
+#: \plugins\popup\views\helpers\popup.php:75
+msgid "PopupHelper::_form - Cancel link"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:21
+msgid "Popup plugin error type"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:22
+msgid "Popup plugin success type"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:23
+msgid "Popup plugin notice type"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:24
+msgid "Popup plugin form type"
+msgstr ""
+
