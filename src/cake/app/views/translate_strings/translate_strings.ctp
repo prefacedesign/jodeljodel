@@ -1,10 +1,10 @@
 <?php
 /** Backstage special translation strings
  */
-__('Backstage edit page: Editing a "Person.PersPerson"');
-__('Backstage edit page: Editing a "Event.EveEvent"');
-__('Backstage edit page: Editing a "New.NewsNew"');
-__('Backstage edit page: Editing a "Paper.PapPaper"');
+__d('backstage', 'Editing a person');
+__d('backstage', 'Editing a gallery');
+__d('backstage', 'Editing a new');
+__d('backstage', 'Editing a paper');
 
 
 /** Dashboard special translation strings
@@ -32,10 +32,14 @@ __d('dashboard','Dashboard language abrev.: lav');
 __d('dashboard','Dashboard language abrev.: gre');
 __d('dashboard','Dashboard language abrev.: ukr');
 __d('dashboard','Dashboard language abrev.: ger');
-__d('dashboard','Language name: por');
-__d('dashboard','Language name: eng');
-__d('dashboard','Language name: nno');
-__d('dashboard','Language name: lav');
-__d('dashboard','Language name: gre');
-__d('dashboard','Language name: ukr');
-__d('dashboard','Language name: ger');
+
+/**
+ * Language name (used on backstage and on dashboard)
+ */
+__d('backstage','Language name: por');
+__d('backstage','Language name: eng');
+__d('backstage','Language name: nno');
+__d('backstage','Language name: lav');
+__d('backstage','Language name: gre');
+__d('backstage','Language name: ukr');
+__d('backstage','Language name: ger');

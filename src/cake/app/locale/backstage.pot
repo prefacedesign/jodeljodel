@@ -1,0 +1,116 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2011-08-29 16:50-0300\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: \plugins\backstage\views\back_contents\edit.ctp:19
+msgid "publish"
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:21;27
+msgid "Could not change publishing status: communication error."
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:22
+msgid "Now, this document is hidden. You can %s."
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:25
+msgid "mark it as draft"
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:29
+msgid "Now, this document is published. You can %s."
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:61
+msgid "Your data cannot be saved - TITLE."
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:62
+msgid "Your data cannot be saved - TEXT."
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:69
+msgid "Your data has been saved - TITLE."
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:70
+msgid "Your data has been saved - TEXT."
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:72
+msgid "Your data has been saved - BACK TO DASHBOARD"
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:73
+msgid "Your data has been saved - CONTINUE EDITING"
+msgstr ""
+
+#: \plugins\jj_users\views\user_users\login.ctp:5
+msgid "Login page: username label"
+msgstr ""
+
+#: \plugins\jj_users\views\user_users\login.ctp:8
+msgid "Login page: password label"
+msgstr ""
+
+#: \plugins\jj_users\views\user_users\login.ctp:10
+msgid "Login page: Enter"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:4
+msgid "Editing a person"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:5
+msgid "Editing a gallery"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:6
+msgid "Editing a new"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:7
+msgid "Editing a paper"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:39
+msgid "Language name: por"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:40
+msgid "Language name: eng"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:41
+msgid "Language name: nno"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:42
+msgid "Language name: lav"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:43
+msgid "Language name: gre"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:44
+msgid "Language name: ukr"
+msgstr ""
+
+#: \views\translate_strings\translate_strings.ctp:45
+msgid "Language name: ger"
+msgstr ""
+

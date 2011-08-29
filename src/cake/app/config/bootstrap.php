@@ -47,12 +47,12 @@
  Configure::write('jj.modules', array(
 		'person' => array(
 			'model' => 'BurocrataUser.Person',
-			'humanName' => __('MODULE PersPerson human name', true),
+			'humanName' => __('MODULE Person human name', true),
 			'plugged' => array('dashboard','backstage') //the tools and functionality it plugs into.
 		),
 		'gallery' => array(
 			'model' => 'BurocrataUser.Galery',
-			'humanName' => __('MODULE NewsNew human name', true),
+			'humanName' => __('MODULE Gallery human name', true),
 			'plugged' => array('dashboard','backstage')
 		),
 		'text_cork' => array(

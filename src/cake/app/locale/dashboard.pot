@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-08-29 16:10-0300\n"
+"POT-Creation-Date: 2011-08-29 16:50-0300\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -180,33 +180,5 @@ msgstr ""
 
 #: \views\translate_strings\translate_strings.ctp:34
 msgid "Dashboard language abrev.: ger"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:35
-msgid "Language name: por"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:36
-msgid "Language name: eng"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:37
-msgid "Language name: nno"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:38
-msgid "Language name: lav"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:39
-msgid "Language name: gre"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:40
-msgid "Language name: ukr"
-msgstr ""
-
-#: \views\translate_strings\translate_strings.ctp:41
-msgid "Language name: ger"
 msgstr ""
 

@@ -76,7 +76,7 @@ class BackContentsController extends BackstageAppController
                 $this->data = $Model->findById($id);
         }
         
-		$this->set(compact('contentPlugin', 'modelName', 'fullModelName'));
+		$this->set(compact('contentPlugin', 'modelName', 'fullModelName', 'type'));
     }
 	
 /** 

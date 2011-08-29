@@ -59,7 +59,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 						{
 							$url = array(
 								'language' => $mainLanguage,
-								'plugin' => 'dashboard','controller' => 'back_contents',
+								'plugin' => 'backstage','controller' => 'back_contents',
 								'action' => 'edit', $moduleName
 							);
 							$linkList[] = $this->Bl->anchor(array(), compact('url'), $module['humanName']);
@@ -229,7 +229,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 			{
 				$draftLink = $ajax->link(__d('dashboard','Hide from public', true), 			
 					array(
-						'plugin' => 'dashboard',
+						'plugin' => 'backstage',
 						'controller' => 'back_contents',
 						'action' => 'set_publishing_status',
 						$item['DashDashboardItem']['type'],
@@ -242,7 +242,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 			
 				$publishLink = $ajax->link(__d('dashboard','Publish to the great public', true),
 					array(
-						'plugin' => 'dashboard', 
+						'plugin' => 'backstage', 
 						'controller' => 'back_contents',
 						'action' => 'set_publishing_status',
 						$item['DashDashboardItem']['type'],
@@ -283,10 +283,10 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 			
 			if (in_array('edit', $curSettings['actions']))
 			{
-				 if ($curSettings['edit_version'] == 'dashboard')
+				 if ($curSettings['edit_version'] == 'backstage')
 				 {
 					 $links .= $this->Bl->anchor(array('class' => 'link_button'), array('url' => array(
-									'plugin' => 'dashboard',
+									'plugin' => 'backstage',
 									'controller' => 'back_contents',
 									'action' => 'edit',
 									$item['DashDashboardItem']['type'],
