@@ -43,7 +43,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 	protected static $defaultSupertype = array('buro');
 	protected static $defaultContainerClass = 'buro';
 	protected static $defaultObjectClass = 'buro';
-
+	
+	protected static $aggregatedInput = array('radio', 'checkbox');
 
 	public function beforeRender()
 	{
@@ -63,7 +64,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function insertForm($modelClassName, $typeParams = array())
 	{
-		$type= am(BuroBurocrataHelper::$defaultSupertype, 'form', $typeParams);
+		$type= am(self::$defaultSupertype, 'form', $typeParams);
 		return $this->Jodel->insertModule($modelClassName, $type);
 	}
 
@@ -109,13 +110,20 @@ class BuroBurocrataHelper extends XmlTagHelper
 			
 			if (method_exists($this->Form, $options['type']))
 			{
-				if ($options['type'] != 'hidden' && $options['label'] !== false)
+				if ($options['label'] !== false && $options['type'] != 'hidden')
 				{
-					$labelHtmlAttributes = array();
-					if (!empty($htmlAttributes['id']))
-						$labelHtmlAttributes['for'] = $htmlAttributes['id'];
-					$out .= $this->label($labelHtmlAttributes, $options, $options['label']);
-					unset($labelHtmlAttributes);
+					if (in_array($options['type'], self::$aggregatedInput))
+					{
+						$out .= $this->Bl->h4Dry($options['label']);
+					}
+					else
+					{
+						$labelHtmlAttributes = array();
+						if (!empty($htmlAttributes['id']))
+							$labelHtmlAttributes['for'] = $htmlAttributes['id'];
+						$out .= $this->label($labelHtmlAttributes, $options, $options['label']);
+						unset($labelHtmlAttributes);
+					}
 				}
 				unset($options['label']);
 				
@@ -123,17 +131,20 @@ class BuroBurocrataHelper extends XmlTagHelper
 					$out .= $this->instructions(array(),array(),$options['instructions']);
 					unset($options['instructions']);
 				}
-				$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultObjectClass);
+				$htmlAttributes = $this->addClass($htmlAttributes, self::$defaultObjectClass);
 				$htmlAttributes = $this->addClass($htmlAttributes, $this->_readFormAttribute('baseID'), 'buro:form');
-				$inputOptions = am($htmlAttributes, $options['options'], array('label' => false, 'div' => false, 'type' => $options['type'], 'error' => $options['error']));
+				$inputOptions = am($htmlAttributes, $options['options'], array('label' => false, 'legend' => false, 'div' => false, 'type' => $options['type'], 'error' => $options['error']));
 				
-				if ($inputOptions['type'] == 'radio')
+				if ($inputOptions['type'] == 'radio' || $inputOptions['type'] == 'checkbox')
 					$inputOptions['label'] = true;
 				
 				if (!empty($options['fieldName']))
 					$out .= $this->Form->input($options['fieldName'], $inputOptions);
 				else
 					$out .= $this->Bl->input(Set::filter($inputOptions));
+				
+				if (in_array($options['type'], self::$aggregatedInput))
+					$out .= $this->Bl->floatBreak();
 			}
 			else
 			{
@@ -194,7 +205,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'for' => $this->domId($fieldName)
 		);
 		$htmlAttributes = am($htmlDefaults, $htmlAttributes);
-		$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultObjectClass);
+		$htmlAttributes = $this->addClass($htmlAttributes, self::$defaultObjectClass);
 		
 		if ($text === null) {
 			if (strpos($fieldName, '.') !== false) {
@@ -280,7 +291,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$options = am($defaults, $options);
 		$options['close_me'] = false;
 		
-		$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultContainerClass);
+		$htmlAttributes = $this->addClass($htmlAttributes, self::$defaultContainerClass);
 		$htmlAttributes = $this->addClass($htmlAttributes, 'buro_form');
 		$htmlAttributes['id'] = 'frm' . $options['baseID'];
 		
@@ -305,7 +316,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out = $this->Bl->sdiv($htmlAttributes);
 		if ($options['writeForm'] == true)
 		{
-			$elementOptions = array('type' => am(BuroBurocrataHelper::$defaultSupertype, 'form'));
+			$elementOptions = array('type' => am(self::$defaultSupertype, 'form'));
 			if ($this->modelPlugin)
 				$elementOptions['plugin'] = $this->modelPlugin;
 			
@@ -630,7 +641,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 	public function sbutton($htmlAttributes = array(), $options = array())
 	{
 		$htmlAttributes = $this->addClass($htmlAttributes, 'submit');
-		$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultContainerClass);
+		$htmlAttributes = $this->addClass($htmlAttributes, self::$defaultContainerClass);
 		
 		unset($options['close_me']);
 		return $this->Bl->sbutton($htmlAttributes, $options);
@@ -708,14 +719,14 @@ class BuroBurocrataHelper extends XmlTagHelper
 	{
 		$this->_nestedOrder++;
 		$this->_nestedInput = true;
-		$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultContainerClass);
+		$htmlAttributes = $this->addClass($htmlAttributes, self::$defaultContainerClass);
 		$htmlAttributes = $this->_mergeAttributes(array('class' => array('input','superfield')), $htmlAttributes);
 		
 		extract($options);
 		
 		$out = $this->Bl->sdiv($htmlAttributes);
 		if (isset($label))
-			$out .= $this->Bl->h6(array(),array('escape' => false), $label);
+			$out .= $this->Bl->h6Dry($label);
 			
 		if (isset($instructions))
 			$out .= $this->Bl->p(array(), isset($options['escape']) && $options['escape'] ? array('escape' => $options['escape']) : array(), $instructions); 
@@ -750,7 +761,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 	public function sinstructions($htmlAttributes = array(), $options = array())
 	{
 		$htmlAttributes = $this->addClass($htmlAttributes, 'instructions');
-		$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultObjectClass);
+		$htmlAttributes = $this->addClass($htmlAttributes, self::$defaultObjectClass);
 		
 		return $this->Bl->sspan($htmlAttributes, $options);
 	}
@@ -787,7 +798,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$defaults['class'] = 'input';
 		
 		$htmlAttributes = am($defaults, $htmlAttributes);
-		$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultContainerClass);
+		$htmlAttributes = $this->addClass($htmlAttributes, self::$defaultContainerClass);
 		$htmlAttributes = $this->addClass($htmlAttributes, 'input_' . Inflector::underscore($options['type']));
 		
 		if (isset($options['fieldName']))
@@ -914,7 +925,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function sinputAutocompleteMessage($htmlAttributes = array(), $options = array())
 	{
-		$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultObjectClass);
+		$htmlAttributes = $this->addClass($htmlAttributes, self::$defaultObjectClass);
 		$htmlAttributes = $this->addClass($htmlAttributes, 'autocomplete');
 		$htmlAttributes = $this->addClass($htmlAttributes, 'message');
 		$htmlAttributes = $this->addClass($htmlAttributes, 'display:none;', 'style');
@@ -1215,7 +1226,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		if(empty($input_options['label']) && $AssocModel)
 			$input_options['label'] = Inflector::humanize($AssocModel->table);
 		
-		$out = $this->Bl->h6(array(),array('escape' => false), $input_options['label']);
+		$out = $this->Bl->h4Dry($input_options['label']);
 		unset($input_options['label']);
 		
 		
@@ -1301,7 +1312,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		}
 		
 		list($model_plugin, $model_name) = pluginSplit($model_class_name);
-		$type= am(BuroBurocrataHelper::$defaultSupertype, 'many_children', 'view');
+		$type= am(self::$defaultSupertype, 'many_children', 'view');
 		
 		$contents = array();
 		$Model =& ClassRegistry::init($model_class_name);
@@ -1730,7 +1741,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		);
 		$templates['item'] = $this->inputRelationalEditableListItem(compact('allow'));
 		
-		$type= am(BuroBurocrataHelper::$defaultSupertype, 'editable_list', 'view');
+		$type= am(self::$defaultSupertype, 'editable_list', 'view');
 		
 		$contents = array();
 		if (!empty($this->data[$assocName]) && Set::numeric(array_keys($this->data[$assocName])))

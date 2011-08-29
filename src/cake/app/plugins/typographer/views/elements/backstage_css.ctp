@@ -793,7 +793,7 @@
 	));
 	
 	$this->Decorator->rule(
-		'.buro_form label.buro', array(
+		'.buro_form label.buro, .input.buro h4', array(
 			'font-weight' => 'bold',
 			'text-transform' => 'uppercase',
 			'line-height' => $u->t($line_height * 4/3),
