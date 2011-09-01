@@ -2,18 +2,9 @@
 
 echo $this->Buro->sform(array(),
 	array(
-		'model' => 'BurocrataUser.Person',
-		'callbacks' => array(
-			'onStart'	=> array('lockForm'),
-			'onComplete'=> array('unlockForm'),
-			'onReject'  => array('contentUpdate', 'popup' => 'Existe algum erro de validação.'),
-			'onFailure'	=> array('popup' => 'Erro de comunicação com o servidor!')
-		)
+		'model' => 'BurocrataUser.Person'
 	)
 );
-	echo $this->Bl->input(
-		array('value' => $baseID, 'name' => $this->Buro->internalParam('baseID'), 'type' => 'hidden')
-	);
 	
 	echo $this->Buro->input(
 		array(),

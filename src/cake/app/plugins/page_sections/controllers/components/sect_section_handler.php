@@ -92,8 +92,14 @@ class SectSectionHandlerComponent extends Object {
 			if (isset($currentSectionContext[$section]))
 			{
 				if (isset($currentSectionContext[$section]['pageTitle']))
+				{
+					if (!is_array($currentSectionContext[$section]['pageTitle']))
+					{
+						trigger_error('SectSectionsHandler::_mountPageTitleArray - pageTitle must be an array (section "'.$section.'")');
+						return false;
+					}
 					$this->addToPageTitleArray($currentSectionContext[$section]['pageTitle']);
-				
+				}
 				if (isset($currentSectionContext[$section]['subSections']))
 					$currentSectionContext =& $currentSectionContext[$section]['subSections'];
 				else

@@ -1,17 +1,14 @@
 <?php
 
-	//debug($this->data);
+echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 	
 	echo $this->Buro->sform(array('class' => 'azul'), // Parâmetros HTML
 		array(
 			'model' => 'BurocrataUser.Video', // Somente o Model pai, assim como no FormHelper::create
 			'callbacks' => array(
-				'onStart'	=> array('lockForm'),
-				'onComplete'=> array('unlockForm'),
-				'onSuccess' => array('contentUpdate' => 'replace'),
-				'onSave'    => array('popup' => 'Salvou a gabaça'),
-				'onError'   => array('js' => "if(code == E_NOT_JSON) alert('Não é json! Não é json!'); else alert(error);"),
-				'onFailure'	=> array('popup' => 'Erro de comunicação com o servidor!')
+				'onStart' => array('lockForm', 'js' => 'form.setLoading()'),
+				'onComplete' => array('unlockForm', 'js' => 'form.unsetLoading()'),
+				'onSave'    => array('popup' => 'Salvou a gabaça')
 			)
 		)
 	);
@@ -34,8 +31,8 @@
 		echo $this->Buro->input(array(), 
 			array(
 				'type' => 'tags',
-				'label' => 'Owner',
-				'instructions' => 'Digite as tags',
+				'label' => 'Algumas tags',
+				'instructions' => 'Enumere as tags separadas por vírgula',
 				'fieldName' => 'tags', // default tags
 				'options' => array(
 					'type' => 'comma', // (default comma)
@@ -70,7 +67,7 @@
 				'options' => array(
 					'type' => 'editable_list',
 					'model' => 'BurocrataUser.Person',
-					'allow' => array('create', 'modify', 'view', 'relate')
+					'allow' => array('create', 'modify', 'preview', 'relate')
 				)
 			)
 		);
@@ -80,4 +77,4 @@
 		
 	echo $this->Buro->eform();
 
-	
+echo $this->Bl->ebox();

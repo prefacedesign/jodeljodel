@@ -43,7 +43,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 	protected static $defaultSupertype = array('buro');
 	protected static $defaultContainerClass = 'buro';
 	protected static $defaultObjectClass = 'buro';
-
+	
+	protected static $aggregatedInput = array('radio', 'checkbox');
 
 	public function beforeRender()
 	{
@@ -63,13 +64,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function insertForm($modelClassName, $typeParams = array())
 	{
-		$type= am(BuroBurocrataHelper::$defaultSupertype, 'form', $typeParams);
-		list($plugin, $model_alias) = pluginSplit($modelClassName);
-		
-		$View = &$this->_getView();
-		$plugin = Inflector::underscore($plugin);
-		$element_name = Inflector::underscore($model_alias);
-		
+		$type= am(self::$defaultSupertype, 'form', $typeParams);
 		return $this->Jodel->insertModule($modelClassName, $type);
 	}
 
@@ -115,13 +110,20 @@ class BuroBurocrataHelper extends XmlTagHelper
 			
 			if (method_exists($this->Form, $options['type']))
 			{
-				if ($options['type'] != 'hidden' && $options['label'] !== false)
+				if ($options['label'] !== false && $options['type'] != 'hidden')
 				{
-					$labelHtmlAttributes = array();
-					if (!empty($htmlAttributes['id']))
-						$labelHtmlAttributes['for'] = $htmlAttributes['id'];
-					$out .= $this->label($labelHtmlAttributes, $options, $options['label']);
-					unset($labelHtmlAttributes);
+					if (in_array($options['type'], self::$aggregatedInput))
+					{
+						$out .= $this->Bl->h4Dry($options['label']);
+					}
+					else
+					{
+						$labelHtmlAttributes = array();
+						if (!empty($htmlAttributes['id']))
+							$labelHtmlAttributes['for'] = $htmlAttributes['id'];
+						$out .= $this->label($labelHtmlAttributes, $options, $options['label']);
+						unset($labelHtmlAttributes);
+					}
 				}
 				unset($options['label']);
 				
@@ -129,17 +131,20 @@ class BuroBurocrataHelper extends XmlTagHelper
 					$out .= $this->instructions(array(),array(),$options['instructions']);
 					unset($options['instructions']);
 				}
-				$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultObjectClass);
+				$htmlAttributes = $this->addClass($htmlAttributes, self::$defaultObjectClass);
 				$htmlAttributes = $this->addClass($htmlAttributes, $this->_readFormAttribute('baseID'), 'buro:form');
-				$inputOptions = am($htmlAttributes, $options['options'], array('label' => false, 'div' => false, 'type' => $options['type'], 'error' => $options['error']));
+				$inputOptions = am($htmlAttributes, $options['options'], array('label' => false, 'legend' => false, 'div' => false, 'type' => $options['type'], 'error' => $options['error']));
 				
-				if ($inputOptions['type'] == 'radio')
+				if ($inputOptions['type'] == 'radio' || $inputOptions['type'] == 'checkbox')
 					$inputOptions['label'] = true;
 				
 				if (!empty($options['fieldName']))
 					$out .= $this->Form->input($options['fieldName'], $inputOptions);
 				else
 					$out .= $this->Bl->input(Set::filter($inputOptions));
+				
+				if (in_array($options['type'], self::$aggregatedInput))
+					$out .= $this->Bl->floatBreak();
 			}
 			else
 			{
@@ -200,7 +205,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'for' => $this->domId($fieldName)
 		);
 		$htmlAttributes = am($htmlDefaults, $htmlAttributes);
-		$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultObjectClass);
+		$htmlAttributes = $this->addClass($htmlAttributes, self::$defaultObjectClass);
 		
 		if ($text === null) {
 			if (strpos($fieldName, '.') !== false) {
@@ -286,7 +291,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$options = am($defaults, $options);
 		$options['close_me'] = false;
 		
-		$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultContainerClass);
+		$htmlAttributes = $this->addClass($htmlAttributes, self::$defaultContainerClass);
 		$htmlAttributes = $this->addClass($htmlAttributes, 'buro_form');
 		$htmlAttributes['id'] = 'frm' . $options['baseID'];
 		
@@ -303,13 +308,15 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$this->_addFormAttribute('modelAlias', $this->modelAlias);
 		$this->_addFormAttribute('data', $options['data'] ? $options['data'] : $View->data);
 		
+		$this->data = $View->data = $this->_readFormAttribute('data');
+		
 		if ($this->modelAlias)
 			$this->Form->create($this->modelAlias, array('url' => $options['url']));
 		
 		$out = $this->Bl->sdiv($htmlAttributes);
 		if ($options['writeForm'] == true)
 		{
-			$elementOptions = array('type' => am(BuroBurocrataHelper::$defaultSupertype, 'form'));
+			$elementOptions = array('type' => am(self::$defaultSupertype, 'form'));
 			if ($this->modelPlugin)
 				$elementOptions['plugin'] = $this->modelPlugin;
 			
@@ -634,7 +641,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 	public function sbutton($htmlAttributes = array(), $options = array())
 	{
 		$htmlAttributes = $this->addClass($htmlAttributes, 'submit');
-		$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultContainerClass);
+		$htmlAttributes = $this->addClass($htmlAttributes, self::$defaultContainerClass);
 		
 		unset($options['close_me']);
 		return $this->Bl->sbutton($htmlAttributes, $options);
@@ -712,14 +719,14 @@ class BuroBurocrataHelper extends XmlTagHelper
 	{
 		$this->_nestedOrder++;
 		$this->_nestedInput = true;
-		$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultContainerClass);
+		$htmlAttributes = $this->addClass($htmlAttributes, self::$defaultContainerClass);
 		$htmlAttributes = $this->_mergeAttributes(array('class' => array('input','superfield')), $htmlAttributes);
 		
 		extract($options);
 		
 		$out = $this->Bl->sdiv($htmlAttributes);
 		if (isset($label))
-			$out .= $this->Bl->h6(array(),array('escape' => false), $label);
+			$out .= $this->Bl->h6Dry($label);
 			
 		if (isset($instructions))
 			$out .= $this->Bl->p(array(), isset($options['escape']) && $options['escape'] ? array('escape' => $options['escape']) : array(), $instructions); 
@@ -754,7 +761,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 	public function sinstructions($htmlAttributes = array(), $options = array())
 	{
 		$htmlAttributes = $this->addClass($htmlAttributes, 'instructions');
-		$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultObjectClass);
+		$htmlAttributes = $this->addClass($htmlAttributes, self::$defaultObjectClass);
 		
 		return $this->Bl->sspan($htmlAttributes, $options);
 	}
@@ -791,7 +798,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$defaults['class'] = 'input';
 		
 		$htmlAttributes = am($defaults, $htmlAttributes);
-		$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultContainerClass);
+		$htmlAttributes = $this->addClass($htmlAttributes, self::$defaultContainerClass);
 		$htmlAttributes = $this->addClass($htmlAttributes, 'input_' . Inflector::underscore($options['type']));
 		
 		if (isset($options['fieldName']))
@@ -918,7 +925,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function sinputAutocompleteMessage($htmlAttributes = array(), $options = array())
 	{
-		$htmlAttributes = $this->addClass($htmlAttributes, BuroBurocrataHelper::$defaultObjectClass);
+		$htmlAttributes = $this->addClass($htmlAttributes, self::$defaultObjectClass);
 		$htmlAttributes = $this->addClass($htmlAttributes, 'autocomplete');
 		$htmlAttributes = $this->addClass($htmlAttributes, 'message');
 		$htmlAttributes = $this->addClass($htmlAttributes, 'display:none;', 'style');
@@ -973,13 +980,13 @@ class BuroBurocrataHelper extends XmlTagHelper
  *
  * ### The options are:
  *
- * - `model` - The Alias used by related model (there is no default and MUST be passed).
- * - `type` - Type of form (can be 'autocomplete' or 'select'). Defaults to 'autocomplete'.
- * - `allow` - An array that contains the actions allowed - Defaults to array('create', 'modify', 'relate').
- * - `actions` - An array that defines all the URLs for CRUD actions Defaults to BuroBurocrataController actions.
- * - `callbacks` - An array with possible callbacks with Jodel Callbacks convention.
- * - `new_item_text` - The string that will be placed into the "Create a new item" link
- * - `edit_item_text` - The string that will be placed into the "Edit this item" link
+ * - `model` string - The Alias used by related model (there is no default and MUST be passed).
+ * - `allow` array - An array that contains the actions allowed - Defaults to array('create', 'modify', 'relate').
+ * - `actions` array - (NOT IMPLEMENTED) An array that defines all the URLs for CRUD actions Defaults to BuroBurocrataController actions.
+ * - `callbacks` array - An array with possible callbacks with Jodel Callbacks convention.
+ * - `texts` array - An array with non default texts for interface. Can have `new_item`, `edit_item` and `nothing_found` parameters
+ * - `new_item_text` string - Deprecated use [texts][new_item] instead!
+ * - `edit_item_text` string - Deprecated use [texts][edit_item] instead!
  *
  * @access public
  * @param array $options An array with non-defaults values
@@ -993,18 +1000,24 @@ class BuroBurocrataHelper extends XmlTagHelper
 	{
 		$input_options = $options;
 		$options = $options['options'];
-		$defaults = array(
+		$options += array(
 			'model' => false,
 			'assocName' => false,
 			'url' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'autocomplete'),
-			'type' => 'autocomplete',
 			'allow' => array('create', 'modify', 'relate'),
 			'baseID' => $this->baseID(),
-			'new_item_text' => __('Burocrata: create a new related item', true),
-			'edit_item_text' => __('Burocrata: edit related data', true)
+			'texts' => array()
 		);
-		$options = am($defaults, $options);
 		extract($options);
+		
+		if (!isset($texts['new_item']))		$texts['new_item'] = __('Burocrata: create a new related item', true);
+		if (!isset($texts['edit_item']))	$texts['edit_item'] = __('Burocrata: edit related data', true);
+		if (!isset($texts['nothing_found']))$texts['nothing_found'] = __('Burocrata: nothing found on autocomplete', true);
+		if (!isset($texts['reset_item']))	$texts['reset_item'] = __('Burocrata: choose another related item', true);
+		if (!isset($texts['undo_reset']))	$texts['undo_reset'] = __('Burocrata: Bring last item back', true);
+		
+		if (isset($new_item_text))	$texts['new_item'] = $new_item_text;
+		if (isset($edit_item_text))	$texts['edit_item'] = $edit_item_text;
 		
 		$model_class_name = $model;
 		list($plugin, $model) = pluginSplit($model);
@@ -1016,12 +1029,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 			return false; 
 		}
 		unset($options['assocName']);
-		unset($options['type']);
 		
 		// Usually the Cake core will display a "missing table" or "missing connection"
 		// if something went wrong on registring the model
-		$parent_model = $this->modelAlias;
-		$ParentModel =& ClassRegistry::init($this->modelPlugin . '.' . $parent_model);
+		$ParentModel =& ClassRegistry::init($this->modelPlugin . '.' . $this->modelAlias);
 		// But won't hurt test if went ok
 		if (!$ParentModel) {
 			trigger_error('BuroBurocrataHelper::inputRelationalUnitaryAutocomplete - Parent model could not be found.');
@@ -1033,18 +1044,20 @@ class BuroBurocrataHelper extends XmlTagHelper
 			trigger_error('BuroBurocrataHelper::inputRelationalUnitaryAutocomplete - Related model doesn\'t make a unitary relationship. Given \''.$assocName.'\', but availables are: \''.implode('\', \'', $availables).'\'');
 			return false;
 		}
-		$fieldName = implode('.', array($parent_model, $ParentModel->belongsTo[$assocName]['foreignKey']));
+		$fieldName = implode('.', array($this->modelAlias, $ParentModel->belongsTo[$assocName]['foreignKey']));
+		
+		
+		// if (isset($options['queryField']))
+			// $options['fieldName'] = $options['queryField'];
 		
 		// END OF PARSING PARAMS
 		
-		$out = '';
-		
 		$hidden_input_id = 'hii'.$baseID;
-		$link_id_new = 'lin'.$baseID;
-		$link_id_edit = 'lie'.$baseID;
 		$update = 'update'.$baseID;
 		$acplt_baseID = $this->baseID();
 		$edit_call_baseID = $this->baseID();
+		
+		$out = $this->Bl->sdiv(array('id' => 'div'.$baseID));
 		
 		// Input + Autocomplete list + Nothing found
 		
@@ -1053,48 +1066,56 @@ class BuroBurocrataHelper extends XmlTagHelper
 				'baseID' => $acplt_baseID,
 				'model' => $model_class_name,
 				'callbacks' => array(
-					'onUpdate' => array('js' => "$('$link_id_new').up().show()"),
-					'onSelect' => array(
-						'js' => "BuroCR.get('$baseID').selected(pair);"
-					)
+					'onUpdate' => array('js' => "BuroCR.get('$baseID').ACUpdated();"),
+					'onSelect' => array('js' => "BuroCR.get('$baseID').ACSelected(pair);")
 				)
 			)
 		);
-		
-		if (isset($options['queryField']))
-			$options['fieldName'] = $options['queryField'];
-		
 		$out .= $this->inputAutocomplete(am($input_options, $autocomplete_options));
 		
 		
 		// "Create a new item" link
-		
-		$out .= $this->inputAutocompleteMessage(
-			array('class' => 'action'),
-			array('escape' => false),
-			$this->Bl->a(array('id' => $link_id_new, 'href' => ''), array(), $options['new_item_text'])
-		);
+		if (in_array('create', $allow))
+			$out .= $this->inputAutocompleteMessage(
+				array('class' => 'action'),
+				array('escape' => false),
+				$this->Bl->a(array('buro:action' => 'new', 'href' => ''), array(), $texts['new_item'])
+			);
 		
 		
 		// Hidden input that holds the related data ID
-		
 		$out .= $this->input(array('id' => $hidden_input_id), array('type' => 'hidden', 'fieldName' => $fieldName));
 		
 		
 		// Controls + Error message
 		
+		$data = false;
+		if (isset($this->data[$assocName]))
+			$data = $this->data[$assocName];
+		elseif (isset($this->data[$this->modelAlias][$assocName]))
+			$data = $this->data[$this->modelAlias][$assocName];
+		
+		$module = '';
+		if ($data)
+			$module = $this->Jodel->insertModule($model_class_name, array('buro', 'belongsto_preview'), array($model => $data));
+		$error = $this->error(array(), compact('fieldName'));
+		
 		$updateble_div = $this->Bl->div(
 			array('id' => $update),
 			array('escape' => false),
-			$this->error(array(), compact('fieldName'))
+			$module.$error
 		);
 		
-		$links = $this->Bl->a(array('id' => $link_id_edit, 'href' => ''), array(), $options['edit_item_text']);
+		$links = array(
+			in_array('edit', $allow) ? $this->Bl->a(array('buro:action' => 'edit', 'href' => ''), array(), $texts['edit_item']) : '',
+			$this->Bl->a(array('buro:action' => 'reset', 'href' => ''), array(), $texts['reset_item']),
+			$this->Bl->a(array('buro:action' => 'undo_reset', 'href' => ''), array(), $texts['undo_reset'])
+		);
 		
 		$actions_div = $this->Bl->div(
-			array('class' => 'actions', 'style' => 'display:none;'),
+			array('class' => 'actions'),
 			array('escape' => false),
-			$links
+			implode(' ', $links)
 		);
 		
 		$out .= $this->Bl->sdiv(array('class' => 'controls'));
@@ -1103,45 +1124,34 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$out .= $this->Bl->floatBreak();
 		$out .= $this->Bl->ediv();
 		
-		
-		
-		
-		$url_view = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'view');
-		$open_prev_ajax = array(
-			'url' => $url_view,
-			'params' => array(
-				$this->securityParams($url_view, $plugin, $model),
-				$this->internalParam('id') => '#{id}'
-			),
-			'callbacks' => array(
-				'onSuccess' => array('unsetLoading' => $update, 'contentUpdate' => $update)
-			)
-		);
-		
-		$url_edit = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'edit');
-		$open_form_ajax = array(
+		// Ajax call and OfficeBoy call
+		$url = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'unitary');
+		$ajax_options = array(
 				'baseID' => $edit_call_baseID,
-				'url' => $url_edit,
+				'url' => $url,
 				'params' => array(
-					$this->securityParams($url_edit, $plugin, $model),
+					$this->securityParams($url, $plugin, $model),
 					$this->internalParam('id') => '#{id}',
+					$this->internalParam('action') => "#{action}",
 					$this->internalParam('baseID', $baseID)
 				),
 				'callbacks' => array(
-					'onSuccess' => array('unsetLoading' => $update, 'contentUpdate' => $update), 
-					'onComplete' => array('js' => "BuroCR.get('$baseID').openedForm()")
+					'onError' => array('js' => "BuroCR.get('$baseID').actionError(json||false);"),
+					'onSuccess' => array('js' => "BuroCR.get('$baseID').actionSuccess(json||false);"),
 				)
 			);
 		
 		
-		$officeboy_options = array();
-		$officeboy_options['baseID'] = $baseID;
-		$officeboy_options['autocomplete_baseID'] = $acplt_baseID;
-		$officeboy_options['callbacks'] = array(
-			'onShowForm' => array('setLoading' => $update, 'js' => "id = to_edit ? BuroCR.get('$baseID').input.value : null;", 'ajax' => $open_form_ajax),
-			'onShowPreview' => array('setLoading' => $update, 'ajax' => $open_prev_ajax)
+		$jsOptions = array();
+		$jsOptions['baseID'] = $baseID;
+		$jsOptions['update_on_load'] = empty($module);
+		$jsOptions['autocomplete_baseID'] = $acplt_baseID;
+		$jsOptions['callbacks'] = array(
+			'onAction' => array('ajax' => $ajax_options)
 		);
-		$out .= $this->BuroOfficeBoy->relationalUnitaryAutocomplete($officeboy_options);
+		$out .= $this->BuroOfficeBoy->relationalUnitaryAutocomplete($jsOptions);
+		
+		$out .= $this->Bl->ediv();
 		
 		return $out;
 	}
@@ -1216,7 +1226,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		if(empty($input_options['label']) && $AssocModel)
 			$input_options['label'] = Inflector::humanize($AssocModel->table);
 		
-		$out = $this->Bl->h6(array(),array('escape' => false), $input_options['label']);
+		$out = $this->Bl->h4Dry($input_options['label']);
 		unset($input_options['label']);
 		
 		
@@ -1246,6 +1256,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$foreign_key = $assocName.'.'.$ParentModel->hasMany[$assocName]['foreignKey'];
 			$fieldName = $this->_name($foreign_key);
 			$parameters['fkBounding'] = array($fieldName => $this->data[$ParentModel->alias][$ParentModel->primaryKey]);
+			
+			if (!isset($this->data[$assocName]) || !is_array($this->data[$assocName]))
+			{
+				$method_name = 'findAllBy' . Inflector::camelize($ParentModel->hasMany[$assocName]['foreignKey']);
+				$this->data[$assocName] = Set::extract("/$assocName/.", call_user_method($method_name, $AssocModel, $this->data[$ParentModel->alias][$ParentModel->primaryKey]));
+			}
 		}
 		
 		if (!$auto_order && isset($AssocModel->Behaviors->Ordered))
@@ -1349,12 +1365,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 		}
 		
 		list($model_plugin, $model_name) = pluginSplit($model_class_name);
-		$type= am(BuroBurocrataHelper::$defaultSupertype, 'many_children', 'view');
+		$type= am(self::$defaultSupertype, 'many_children', 'view');
 		
 		$contents = array();
+		$Model =& ClassRegistry::init($model_class_name);
 		foreach ($this->data[$model_name] as $n => $data)
 		{
-			$Model =& ClassRegistry::init($model_class_name);
 			$data = array($model_name => $data);
 			$contents[] = array(
 				'content' => $this->Jodel->insertModule($model_class_name, $type, $data),
@@ -1677,10 +1693,8 @@ class BuroBurocrataHelper extends XmlTagHelper
  * - `allow` - An array that contains the actions allowed - Defaults to array('create', 'modify', 'view', 'relate').
  * - `actions` - An array that defines all the URLs for CRUD actions Defaults to BuroBurocrataController actions.
  * - `callbacks` - An array with possible callbacks with Jodel Callbacks convention.
- * - `new_item_text` - The string that will be placed into the "Create a new item" link
- * - `edit_item_text` - The string that will be placed into the "Edit this item" link
- * - `view_item_text` - The string that will be placed into the "View this item" link
- * - `delete_item_text` - The string that will be placed into the "Delete this item" link
+ * - `query_field` - Name of database field that the autocomplete will perform a search
+ * - `texts` - An array of configurable texts (`new_item`, `edit_item`, `view_item`, `delete_item`)
  *
  * @access public
  * @param array $options An array with non-defaults values
@@ -1694,23 +1708,24 @@ class BuroBurocrataHelper extends XmlTagHelper
 	{
 		$input_options = $options;
 		$options = $options['options'];
-		$defaults = array(
+		$options += array(
 			'model' => false,
 			'assocName' => false,
 			'url' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'autocomplete'),
 			'allow' => array('create', 'modify', 'view', 'relate'),
 			'baseID' => $this->baseID(),
-			'new_item_text' => __('Burocrata: create a new related item', true),
-			'edit_item_text' => __('Burocrata: edit related data', true),
-			'view_item_text' => __('Burocrata: view related data', true),
-			'delete_item_text' => __('Burocrata: delete related data', true)
+			'texts' => array()
 		);
-		$options = am($defaults, $options);
+		$options['texts'] += array(
+			'new_item' => __('Burocrata: create a new related item', true),
+			'edit_item' => __('Burocrata: edit related data', true),
+			'view_item' => __('Burocrata: view related data', true),
+			'unlink_item' => __('Burocrata: unlink related data', true),
+			'confirm_unlink' => __('Burocrata: confirm unlinking', true)
+		);
 		extract($options);
 		
-		$Model =& ClassRegistry::init($options['model']);
-		
-		$model_class_name = $Model->alias;
+		$model_class_name = $model;
 		list($plugin, $model) = pluginSplit($model);
 		if (!$assocName && !empty($model))
 			$assocName = $model;
@@ -1723,8 +1738,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		// Usually the Cake core will display a "missing table" or "missing connection"
 		// if something went wrong on registring the model
-		$parent_model = $this->modelAlias;
-		$ParentModel =& ClassRegistry::init($this->modelPlugin . '.' . $parent_model);
+		$ParentModel =& ClassRegistry::init($this->modelPlugin . '.' . $this->modelAlias);
 		// But won't hurt test if went ok
 		if (!$ParentModel) {
 			trigger_error('BuroBurocrataHelper::inputRelationalUnitaryAutocomplete - Parent model could not be found.');
@@ -1736,155 +1750,127 @@ class BuroBurocrataHelper extends XmlTagHelper
 			trigger_error('BuroBurocrataHelper::inputRelationalUnitaryAutocomplete - Related model doesn\'t make a unitary relationship. Given \''.$assocName.'\', but availables are: \''.implode('\', \'', $availables).'\'');
 			return false;
 		}
-		$fieldName = $options['model'] . '.' .$options['model'];
 		
 		// END OF PARSING PARAMS
 		
 		$out = '';
-		
-		$hidden_input_id = 'hii'.$baseID;
-		$link_id_new = 'lin'.$baseID;
-		$link_id_edit = 'lie'.$baseID;
+		$items = 'items'.$baseID;
 		$update = 'update'.$baseID;
-		$adition = 'adition'.$baseID;
 		$acplt_baseID = $this->baseID();
 		$edit_call_baseID = $this->baseID();
 		
-		// Input + Autocomplete list + Nothing found
 		
+		// Input + Autocomplete list + Nothing found
 		$autocomplete_options = array(
 			'options' => array(
 				'baseID' => $acplt_baseID,
 				'model' => $model_class_name,
 				'callbacks' => array(
-					'onUpdate' => array('js' => "$('$link_id_new').up().show()"),
-					'onSelect' => array(
-						'js' => "BuroCR.get('$baseID').selected(pair);"
-					)
+					'onUpdate' => array('js' => "BuroCR.get('$baseID').ACUpdated();"),
+					'onSelect' => array('js' => "BuroCR.get('$baseID').ACSelected(pair);")
 				)
 			)
 		);
 		
 		if (isset($options['queryField']))
-			$options['fieldName'] = $options['queryField'];
+			$autocomplete_options['fieldName'] = $options['queryField'];
 		
 		$out .= $this->inputAutocomplete(am($input_options, $autocomplete_options));
 		
 		
 		// "Create a new item" link
 		if (in_array('create', $allow))
-		{
 			$out .= $this->inputAutocompleteMessage(
 				array('class' => 'action'),
 				array('escape' => false),
-				$this->Bl->a(array('id' => $link_id_new, 'href' => ''), array(), $options['new_item_text'])
+				$this->Bl->a(array('buro:action' => 'new', 'href' => ''), array(), $options['texts']['new_item'])
 			);
-		}
 		
 		
 		// Hidden input that holds the related data ID
-		
-		$options_to_list = $Model->find('list');
-			
-		$out .= $this->input(
-			array(
-				'multiple' => true,
-				'name' => 'data['.$model_class_name.']['.$model_class_name.']',
-				'style' => 'display: none',
-				'id' => $hidden_input_id
-			), 
-			array(
-				'options' => array('options' => $options_to_list),
-				'type' => 'select', 
-				'fieldName' => $model_class_name,
-				'container' => false,
-				'label' => false
-			)
+		$templates['input'] = $this->input(
+			array('value' => '#{id}', 'name' => "data[$assocName][$assocName][]"),
+			array('type' => 'hidden')
 		);
-	
+		$templates['item'] = $this->inputRelationalEditableListItem(compact('allow'));
+		
+		$type= am(self::$defaultSupertype, 'editable_list', 'view');
+		
+		$contents = array();
+		if (!empty($this->data[$assocName]) && Set::numeric(array_keys($this->data[$assocName])))
+		{
+			$Model =& ClassRegistry::init($model_class_name);
+			foreach ($this->data[$assocName] as $data)
+			{
+				$data = array($model => $data);
+				$contents[] = array(
+					'content' => $this->Jodel->insertModule($model_class_name, $type, $data),
+					'id' => $data[$assocName][$Model->primaryKey]
+				);
+			}
+		}
 		
 		// Controls + Error message
-		
-		$updateble_div = $this->Bl->div(
-			array('id' => $update),
-			array('escape' => false),
-			$this->error(array(), compact('fieldName'))
-		);
-		
-		$adition_div = $this->Bl->div(
-			array('id' => $adition),
-			array('escape' => false)
-		);
-				
-		$actions_div = $this->Bl->div(
-			array('class' => 'actions', 'style' => 'display:none;'),
-			array('escape' => false)
-		);
-		
 		$out .= $this->Bl->sdiv(array('class' => 'controls'));
-			$out .= $updateble_div;
-			$out .= $adition_div;
-			$out .= $actions_div;
-			$out .= $this->Bl->floatBreak();
+			$out .= $this->Bl->div(array('id' => $items));
+			$out .= $this->Bl->br();
+			$out .= $this->Bl->div(array('id' => $update));
 		$out .= $this->Bl->ediv();
 		
 		
-		$url_view = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'view');
-		$open_prev_ajax = array(
-			'url' => $url_view,
-			'params' => array($this->securityParams($url_view, $plugin, $model), $this->internalParam('id') => '@id@'),
+		$url = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'editable_list');
+		$ajax_options = array(
+			'url' => $url,
+			'params' => array(
+				$this->securityParams($url, $plugin, $model),
+				$this->internalParam('id') => "#{id}",
+				$this->internalParam('action') => "#{action}",
+				$this->internalParam('baseID', $baseID),
+			),
 			'callbacks' => array(
-				'onSuccess' => array('contentUpdate' => $adition)
+				'onError' => array('js' => "BuroCR.get('$baseID').actionError(json||false);"),
+				'onSuccess' => array('js' => "BuroCR.get('$baseID').actionSuccess(json||false);"),
 			)
 		);
-		
-		
-		
-		$url_add_new = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'new_editable_item');
-		$add_new_ajax = array(
-			'url' => $url_add_new,
-			'params' => array($this->securityParams($url_add_new, $plugin, $model), $this->internalParam('id') => '@id@'),
-			'callbacks' => array(
-				'onSuccess' => array('js' => "BuroCR.get('$baseID').addNew(response);")
-			)
-		);
-		
-		$url_edit = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'edit');
-		$open_form_ajax = array(
-				'baseID' => $edit_call_baseID,
-				'url' => $url_edit,
-				'params' => array(
-					$this->securityParams($url_edit, $plugin, $model),
-					$this->internalParam('id') => "@to_edit ? BuroCR.get('$baseID').master_input.value : null@",
-					$this->internalParam('baseID', $baseID)
-				),
-				'callbacks' => array(
-					'onSuccess' => array('contentUpdate' => $adition)
-				)
-			);
 		
 		
 		$officeboy_options = array();
 		$officeboy_options['baseID'] = $baseID;
 		$officeboy_options['autocomplete_baseID'] = $acplt_baseID;
-		if (in_array('modify', $allow))
-			$officeboy_options['edit_item_text'] = $options['edit_item_text'];
-		else
-			$officeboy_options['edit_item_text'] = '';
-		if (in_array('view', $allow))
-			$officeboy_options['view_item_text'] = $options['view_item_text'];
-		else
-			$officeboy_options['view_item_text'] = '';
-		$officeboy_options['delete_item_text'] = $options['delete_item_text'];
+		$officeboy_options += compact('texts', 'baseID', 'templates', 'contents');
 		$officeboy_options['callbacks'] = array(
-			'onShowForm' => array('ajax' => $open_form_ajax),
-			'onAddNew' => array('ajax' => $add_new_ajax),
-			'onShowPreview' => array('ajax' => $open_prev_ajax)
+			'onAction' => array('ajax' => $ajax_options)
 		);
 		
 		$out .= $this->BuroOfficeBoy->relationalEditableList($officeboy_options);
 		
 		return $out;
+	}
+
+/**
+ * Renders a template for a editable list item
+ * 
+ * @access public
+ * @param array $options
+ * @return string A HTML template
+ */
+	public function inputRelationalEditableListItem($options)
+	{
+		$links = array();
+		
+		if (in_array('modify', $options['allow']))
+			$links[]  = $this->a(array('buro:action' => 'edit', 'href' => ''), array(), '#{edit_item}');
+		
+		if (in_array('preview', $options['allow']))
+			$links[]  = $this->a(array('buro:action' => 'preview', 'href' => ''), array(), '#{view_item}');
+
+		$links[]  = $this->a(array('buro:action' => 'unlink', 'href' => ''), array(), '#{unlink_item}');
+	
+		$out = $this->Bl->span(array('class' => 'name'), array(), '#{content}');
+		$out .= ' ';
+		$out .= $this->Bl->span(array('class' => 'controls'), array(), implode(' ', $links));
+		
+		return $this->Bl->div(array('buro:id' => '#{id}'), array(), $out);
 	}
 	
 /**
@@ -1905,40 +1891,33 @@ class BuroBurocrataHelper extends XmlTagHelper
   * @todo Error handling
   */
 	public function inputRelationalCombo($options = array())
- 	{		
+ 	{
  		$input_options = $options;
  		$options = $options['options'];
- 		$defaults = array(
+ 		$options += array(
  			'model' => false,
  			'assocName' => false,
- 			'baseID' => $this->baseID(),
-			'filter_options' => array()
+			'filter_options' => array(),
+			'options' => array()
  		);
- 		$options = am($defaults, $options);
  		
-		$model =& ClassRegistry::init($options['model']);
-		if(method_exists($model, 'findFilteredOptions'))
-			$options_to_list = $model->{'findFilteredOptions'}($options['filter_options']);
-		else
-			$options_to_list = $model->find('list');
+		unset($input_options['options']);
+		unset($input_options['type']);
 		
-			
-
-
-		$out = $this->input(
-			array(
-				'class' => 'combo'
-			), 
+		$Model =& ClassRegistry::init($options['model']);
+		if(method_exists($Model, 'findFilteredOptions'))
+			$options_to_list = $Model->{'findFilteredOptions'}($options['filter_options']);
+		else
+			$options_to_list = $Model->find('list');
+		
+		return $this->input(
+			array('class' => 'combo'), 
 			array(
 				'options' => array('options' => $options_to_list),
-				'label' => $input_options['label'], 
-				'instructions' => $input_options['instructions'], 
-				'type' => 'select', 
-				'fieldName' => $input_options['fieldName'],
-			)
+				'type' => 'select',
+				'container' => false
+			) + $input_options
 		);
-
-		return $out;
 	}
 	
 	
@@ -2009,8 +1988,11 @@ class BuroBurocrataHelper extends XmlTagHelper
 	public function inputTags(array $options)
 	{
 		if (!isset($options['options']['type']))
+		{
 			trigger_error('BuroBurocrataHelper::inputTags - The tag input must receive the [options][type] configuration.');
-			
+			return false;
+		}
+		
 		$input_type = $options['options']['type'];
 		unset($options['options']['type']);
 		unset($options['type']);
@@ -2042,28 +2024,21 @@ class BuroBurocrataHelper extends XmlTagHelper
 	{
 		$input_options = $options;
 		$options = $options['options'];
-		$defaults = array(
+		unset($input_options['options']);
+		
+		$options += array(
 			'model' => false,
 			'assocName' => false,
 			'baseID' => $this->baseID(),
 		);
-		$options = am($defaults, $options);
 
-		$input_options_defaults = array(
+		$input_options += array(
 			'fieldName' => 'tags'
 		);
-		$input_options = am($input_options_defaults, $input_options);
 
 		$out = $this->input(
-			array(
-				'class' => 'comma',
-			), 
-			array(
-				'label' => $input_options['label'], 
-				'instructions' => $input_options['instructions'], 
-				'type' => 'text', 
-				'fieldName' => $input_options['fieldName'],
-			)
+			array('class' => 'comma',), 
+			array('type' => 'text', 'container' => false) + $input_options
 		);
  		
  		return $out;
@@ -2129,6 +2104,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 	protected function _upload($gen_options, $file_input_options)
 	{
 		$packed = SecureParams::pack(array($gen_options['version'], $file_input_options['fieldName'], $gen_options['model']));
+		list($model_plugin, $model_name) = pluginSplit($gen_options['model']);
 		
 		$out = '';
 		
@@ -2136,7 +2112,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out .= $this->Bl->sdiv(array('id' => 'div' . $gen_options['baseID']));
 			$out .= $this->inputLayoutScheme();
 			$out .= $this->input(array('value' => $packed, 'name' => $this->internalParam('data')), array('type' => 'hidden'));
-			$out .= $this->input(array('id' => 'mi' . $gen_options['baseID']), array('type' => 'file', 'container' => false, 'fieldName' => 'SfilStoredFile.file') + $file_input_options);
+			$out .= $this->input(
+				array('id' => 'mi' . $gen_options['baseID']),
+				array('type' => 'file', 'container' => false, 'fieldName' => $model_name.'.file') + $file_input_options
+			);
 		$out .= $this->Bl->ediv();
 		$this->eform();
 		
@@ -2562,6 +2541,35 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$popup_config['content'] .= $this->eform();
 		
 		return $this->Popup->popup($id, $popup_config);
+	}
+
+
+/**
+ * Creates a input with a colorpicker.
+ * 
+ * @access public
+ */
+	public function inputColor($options)
+	{
+		$baseID = $this->baseID();
+		$htmlAttributes = array(
+			'id' => 'inp' . $baseID
+		);
+		
+		unset($options['options']);
+		
+		
+		$out = $this->label(array(), array(), $options['label']);
+		
+		$out .= $this->Bl->div(array('id' => 'samp' . $baseID, 'class' => 'sample'));
+		
+		$options['type'] = 'text';
+		$options['container'] = false;
+		$options['label'] = false;
+		$out .= $this->input($htmlAttributes, $options);
+		$out .= $this->BuroOfficeBoy->color(compact('baseID'));
+		
+		return $out;
 	}
 }
 

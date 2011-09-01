@@ -36,8 +36,8 @@ class BackstageBuroBurocrataHelper extends BuroBurocrataHelper
 			'class' => array('save_box')
 		);
 		$defaultOptions = array(
-			'submitLabel' => __('Save', true),
-			'cancelLabel' => __('Save box: cancel this change.',true),
+			'submitLabel' => __d('backstage','Save', true),
+			'cancelLabel' => __d('backstage','Save box: cancel this change.',true),
 			'publishControls' => false,
 			'cancelUrl' => array('plugin' => 'dashboard', 'controller' => 'dash_dashboard')
 		);
@@ -51,19 +51,20 @@ class BackstageBuroBurocrataHelper extends BuroBurocrataHelper
 				$tmp = $this->Bl->anchorList(array(),array(
 						'lastSeparator' => __('anchorList or', true),
 						'linkList' => array(
-							array('name' => __('mark it as ready',true), 'url' => "www.google.com.br"),
-							array('name' => __('remove it',true), 'url' => "www.google.com.br")
+							array('name' => __d('backstage','mark it as ready',true), 'url' => "www.google.com.br"),
+							array('name' => __d('backstage','remove it',true), 'url' => "www.google.com.br")
 						)
 					)
 				);
 				echo $this->Bl->p(array('class' => 'small_text'), array('escape' => false),
-						sprintf(__('Version marked as draft. You can %s.',true), $tmp));
+						sprintf(__d('backstage','Version marked as draft. You can %s.',true), $tmp));
 			}	
 			echo $this->submit(array(), array('label' => $options['submitLabel']));
 			
 			echo $this->Bl->sp(array('class' => 'alternative_option'), array());
 				echo ', ';
 				echo __('anchorList or',true);
+				echo ' ';
 				echo $this->Bl->anchor(array(),array('url' => $options['cancelUrl']),$options['cancelLabel']);
 			echo $this->ep();
 			echo $this->Bl->floatBreak();

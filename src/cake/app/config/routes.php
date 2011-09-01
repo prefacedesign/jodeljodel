@@ -29,10 +29,27 @@
  */
 	Router::connect('/', array('controller' => 'principal', 'action' => 'index'));
 
+
 /**
- * ...and connect the rest of 'Pages' controller's urls.
+ * Adding `language` to the parsed named parameters
+ *
+ * Without this, URLs with `language:something` will fail at reverse routing!
+ * The deafult option setted to true is necessary so it doesnt override the defaults named args.
  */
-	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
+	Router::connectNamed(array('language'), array('default' => true));
+
+/**
+ * Connecting the two responsible plugins for admin actions
+ */
+	Router::connect('/admin', array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'index'));
+	Router::connect('/admin/index/*', array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'index'));
+	Router::connect('/admin/:action/*', array('plugin' => 'backstage', 'controller' => 'back_contents'));
+
+/**
+ * Connecting the `login` and `logout` action of user plugin
+ */
+	Router::connect('/login/*', array('plugin' => 'jj_users', 'controller' => 'user_users', 'action' => 'login'));
+	Router::connect('/logout/*', array('plugin' => 'jj_users', 'controller' => 'user_users', 'action' => 'logout'));
 
 /**
  * Connecting '/dl' for forcing download of upload files and '/vw' for just viewing

@@ -31,9 +31,9 @@ class ExemplosController extends BurocrataUserAppController {
 	{
 	}
 	
-	function video()
+	function video($id = 1)
 	{
-		$this->data = $this->Video->findById(6);
+		$this->data = $this->Video->findById($id);
 	}
 }
 ?>

@@ -1,0 +1,253 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2011-08-29 17:37-0300\n"
+"PO-Revision-Date: 2011-08-29 16:38-0400\n"
+"Last-Translator: Daniel <daniel@preface.com.br>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: \plugins\backstage\views\back_contents\edit.ctp:19
+msgid "publish"
+msgstr "publicá-lo"
+
+#: \plugins\backstage\views\back_contents\edit.ctp:21;27
+msgid "Could not change publishing status: communication error."
+msgstr "Não foi possível mudar o estado de publicação. Houve um erro de comunicação."
+
+#: \plugins\backstage\views\back_contents\edit.ctp:22
+msgid "Now, this document is hidden. You can %s."
+msgstr "Neste momento o documento está oculto. Você pode %s."
+
+#: \plugins\backstage\views\back_contents\edit.ctp:25
+msgid "mark it as draft"
+msgstr "retirá-lo do ar"
+
+#: \plugins\backstage\views\back_contents\edit.ctp:29
+msgid "Now, this document is published. You can %s."
+msgstr "Este documento está publicado. Você pode %s."
+
+#: \plugins\backstage\views\back_contents\edit.ctp:61
+msgid "Your data cannot be saved - TITLE."
+msgstr "Falha ao salvar"
+
+#: \plugins\backstage\views\back_contents\edit.ctp:62
+msgid "Your data cannot be saved - TEXT."
+msgstr "Existem um ou mais campos cujo conteúdo não obedece os critérios editoriais. Estes campos estão em vermelho, com uma mensagem explicando o problema, corrija-os e salve de novo o documento."
+
+#: \plugins\backstage\views\back_contents\edit.ctp:69
+msgid "Your data has been saved - TITLE."
+msgstr "Sucesso"
+
+#: \plugins\backstage\views\back_contents\edit.ctp:70
+msgid "Your data has been saved - TEXT."
+msgstr "Os dados foram salvos com sucesso."
+
+#: \plugins\backstage\views\back_contents\edit.ctp:72
+msgid "Your data has been saved - BACK TO DASHBOARD"
+msgstr "Voltar à página do editor"
+
+#: \plugins\backstage\views\back_contents\edit.ctp:73
+msgid "Your data has been saved - CONTINUE EDITING"
+msgstr "Continuar editando"
+
+#: \plugins\backstage\views\elements\language_edit_select.ctp:14
+#: \plugins\backstage\views\elements\language_show_edited_language.ctp:14
+msgid "This content already has translations for %s."
+msgstr "Este conteúdo já possui traduções para %s."
+
+#: \plugins\backstage\views\elements\language_edit_select.ctp:34
+#: \plugins\backstage\views\elements\language_show_edited_language.ctp:34
+msgid "If you want you can create a version for %s"
+msgstr "Se desejar, você pode criar uma versão em %s"
+
+#: \plugins\backstage\views\elements\show_language_being_edited.ctp:9
+msgid "Editing"
+msgstr "Editando"
+
+#: \plugins\backstage\views\elements\show_language_being_edited.ctp:10
+msgid " the %s version."
+msgstr "a versão %s."
+
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:39
+msgid "Save"
+msgstr "Salvar"
+
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:40
+msgid "Save box: cancel this change."
+msgstr "cancelar a alteração"
+
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:54
+msgid "mark it as ready"
+msgstr "sinalizar documento pronto"
+
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:55
+msgid "remove it"
+msgstr "excluir"
+
+#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:60
+msgid "Version marked as draft. You can %s."
+msgstr "Documento marcado como rascunho. Você pode %s."
+
+#: \plugins\jj_users\controllers\user_users_controller.php:9
+msgid "Login failed. Invalid username or password."
+msgstr "Nome de usuário ou senha inválidos."
+
+#: \plugins\jj_users\controllers\user_users_controller.php:10
+msgid "You are not authorized to access that location."
+msgstr "Faça o login para continuar."
+
+#: \plugins\jj_users\views\user_users\login.ctp:5
+msgid "Login page: username label"
+msgstr "Usuário"
+
+#: \plugins\jj_users\views\user_users\login.ctp:8
+msgid "Login page: password label"
+msgstr "Senha"
+
+#: \plugins\jj_users\views\user_users\login.ctp:10
+msgid "Login page: Enter"
+msgstr "Entrar"
+
+#: \views\translate_strings\translate_strings.ctp:4
+msgid "Editing a person"
+msgstr "Editando um participante"
+
+#: \views\translate_strings\translate_strings.ctp:5
+msgid "Editing a gallery"
+msgstr "Editando uma galeria de fotos"
+
+#: \views\translate_strings\translate_strings.ctp:6
+msgid "Editing a new"
+msgstr "Editando uma notícia"
+
+#: \views\translate_strings\translate_strings.ctp:7
+msgid "Editing a paper"
+msgstr "Editando uma publicação"
+
+#: \views\translate_strings\translate_strings.ctp:39
+msgid "Language name: por"
+msgstr "português"
+
+#: \views\translate_strings\translate_strings.ctp:40
+msgid "Language name: eng"
+msgstr "inglês"
+
+#: \views\translate_strings\translate_strings.ctp:41
+msgid "Language name: nno"
+msgstr "norueguês"
+
+#: \views\translate_strings\translate_strings.ctp:42
+msgid "Language name: lav"
+msgstr "letão"
+
+#: \views\translate_strings\translate_strings.ctp:43
+msgid "Language name: gre"
+msgstr "grego"
+
+#: \views\translate_strings\translate_strings.ctp:44
+msgid "Language name: ukr"
+msgstr "ucraniano"
+
+#: \views\translate_strings\translate_strings.ctp:45
+msgid "Language name: ger"
+msgstr "alemão"
+
+#~ msgid "Page title - Dashboard"
+#~ msgstr "Página do editor"
+
+#~ msgid "Add new content:"
+#~ msgstr "Adicione novo conteúdo"
+
+#~ msgid "or"
+#~ msgstr "ou"
+
+#~ msgid "Close item list"
+#~ msgstr "Cancelar"
+
+#~ msgid "Open item list"
+#~ msgstr "Adicione novo conteúdo"
+
+#~ msgid "Notice of marking as draft success - TITLE"
+#~ msgstr "Conteúdo marcado como rascunho"
+
+#~ msgid "Notice of marking as draft success - TEXT"
+#~ msgstr ""
+#~ "O conteúdo foi marcado como rascunho com sucesso, ele não aparecerá mais "
+#~ "na página pública."
+
+#~ msgid "Notice of marking as draft failure - TITLE"
+#~ msgstr "Falha em marcar como rascunho"
+
+#~ msgid "Notice of marking as draft failure - TEXT"
+#~ msgstr ""
+#~ "Não foi possível marcar como rascunho este conteúdo. Tente de novo mais "
+#~ "uma vez. É possível que você não tenha permissão de executar esta "
+#~ "operação."
+
+#~ msgid "Notice of publishing success - TITLE"
+#~ msgstr "Conteúdo publicado"
+
+#~ msgid "Notice of publishing success - TEXT"
+#~ msgstr "O conteúdo foi publicado com sucesso."
+
+#~ msgid "Notice of publishing failure - TITLE"
+#~ msgstr "Falha ao publicar conteúdo"
+
+#~ msgid "Notice of publishing failure - TEXT"
+#~ msgstr ""
+#~ "Não foi possível publicar este conteúdo. Tente de novo mais uma vez. É "
+#~ "possível que você não tenha permissão de executar esta operação."
+
+#~ msgid "Notice of delete success - TITLE"
+#~ msgstr "Conteúdo excluído"
+
+#~ msgid "Notice of delete success - TEXT"
+#~ msgstr "Sucesso ao excluir conteúdo."
+
+#~ msgid "Notice of delete failure - TITLE"
+#~ msgstr "Falha na exclusão"
+
+#~ msgid "Notice of delete failure - TEXT"
+#~ msgstr ""
+#~ "Não foi possível excluir este conteúdo. Tente de novo uma segunda vez. É "
+#~ "possível que você não tenha permissão para excluir conteúdos."
+
+#~ msgid "Dashboard header: Type"
+#~ msgstr "Tipo"
+
+#~ msgid "Dashboard header: Status"
+#~ msgstr "Status"
+
+#~ msgid "Dashboard header: Name"
+#~ msgstr "Nome"
+
+#~ msgid "Dashboard header: Extra info"
+#~ msgstr "Informação extra"
+
+#~ msgid "Dashboard header: Created"
+#~ msgstr "Criado"
+
+#~ msgid "Dashboard header: Modified"
+#~ msgstr "Modificado"
+
+#~ msgid "Dashboard header: Translations"
+#~ msgstr "Traduções"
+
+#~ msgid "Hide from public"
+#~ msgstr "Tirar do ar"
+
+#~ msgid "Publish to the great public"
+#~ msgstr "Publicar"
+
+#~ msgid "Delete content"
+#~ msgstr "Excluir"
+
+#~ msgid "Dashboard: Edit"
+#~ msgstr "Editar"

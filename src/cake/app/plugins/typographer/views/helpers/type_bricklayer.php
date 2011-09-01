@@ -272,6 +272,8 @@ class TypeBricklayerHelper extends AppHelper
 		
 		foreach($paras as $para)
 		{
+			if (empty($para)) continue;
+			
 			$t .= $this->sp($attr, $options);
 			if (isset($options['escape']) && $options['escape'])
 				$t .= h($para);
@@ -343,12 +345,17 @@ class TypeBricklayerHelper extends AppHelper
 	}
 	
 	
-	function anchor($attr = array(), $options = array(), $name = '')
+	function sanchor($attr = array(), $options = array())
 	{
 		if (isset($options['url']))
 			$attr['href'] = Router::url($options['url']);
 		
-		return $this->a($attr, $options, $name);
+		return $this->sa($attr, $options);
+	}
+	
+	function eanchor()
+	{
+		return $this->ea();
 	}
 	
 	/** anchorList

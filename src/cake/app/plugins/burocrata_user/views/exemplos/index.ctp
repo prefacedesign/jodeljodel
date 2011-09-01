@@ -43,8 +43,35 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 				)
 			);
 			
-		echo $this->Buro->einput();
+			echo $this->Buro->input(array(),
+				array(
+					'label' => __d('buro_user','Color input', true),
+					'fieldName' => 'color',
+					'type' => 'color'
+				)
+			);
 			
+		echo $this->Buro->einput();
+
+		echo $this->Buro->input(array(),
+			array(
+				'type' => 'relational',
+				'fieldName' => 'person_id',
+				'options' => array(
+					'type' => 'combo',
+					'model' => 'BuroUser.Person',
+				)
+			)
+		);
+		
+		echo $this->Buro->input(array(),
+				array(
+					'label' => __d('buro_user','Another color input', true),
+					'fieldName' => 'another_color',
+					'type' => 'color'
+				)
+			);
+		
 		echo $this->Buro->input(array(),
 			array(
 				'label' => __d('buro_user','Something about this gallery', true),
@@ -65,7 +92,14 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 				'instructions' => __d('buro_user','First, search if he/she already has a account, using his/her name. If does not, you will be able to create a new one.', true),
 				'options' => array(
 					'type' => 'unitary_autocomplete',
-					'model' => 'BurocrataUser.Person'
+					'model' => 'BurocrataUser.Person',
+					'texts' => array(
+						'new_item' => __d('buro_user', 'Create a new person', true),
+						'edit_item' => __d('buro_user', 'Edit this person', true),
+						'reset_item' => __d('buro_user', 'Choose another person', true),
+						'undo_reset' => __d('buro_user', 'Bring last person back', true),
+						'nothing_found' => __d('buro_user', 'Person not found', true),
+					)
 				)
 			)
 		);

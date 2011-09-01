@@ -40,45 +40,39 @@ $html->scriptBlock("
 ", array('inline' => false));
 
 echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
-	echo $this->Bl->h1Dry(__('Backstage index page: Page title - Dashboard', true));
+	echo $this->Bl->h1Dry(__d('dashboard','Page title - Dashboard', true));
 	
 	echo $this->Bl->sboxContainer(array('class' => 'dash_toolbox'),array('size' => array('M' => 12, 'g' => -1)));
 				
 		echo $this->Bl->sdiv(array('class' => array('dash_additem')));
 			echo $this->Bl->sdiv(array('class' => 'dash_itemlist'));
-				echo $this->Bl->h3Dry(__('Dashboard: Add new content:', true));
+				echo $this->Bl->h3Dry(__d('dashboard','Add new content:', true));
 				$linklist = array();
 				
-				foreach($jjModules as $k => $module)
+				foreach(Configure::read('jj.modules') as $moduleName => $module)
 				{
 					if (isset($module['plugged']))
 					{
-						$curSettings = isset($itemSettings[$k]) ? $itemSettings[$k] : $itemSettings['default'];
+						$curSettings = isset($itemSettings[$moduleName]) ? $itemSettings[$moduleName] : $itemSettings['default'];
 					
 						if (in_array('dashboard', $module['plugged']) && in_array('create', $curSettings['actions']))
 						{
-							
-							$linkList[] = $this->Bl->anchor(array(), array('url' => array(
-										'language' => $mainLanguage,
-										'plugin' => 'backstage',
-										'controller' => 'back_contents',
-										'action' => 'edit',
-										$module['plugin'],
-										Inflector::underscore($module['model'])
-									)
-								),
-								__($module['humanName'],true)
+							$url = array(
+								'language' => $mainLanguage,
+								'plugin' => 'backstage','controller' => 'back_contents',
+								'action' => 'edit', $moduleName
 							);
+							$linkList[] = $this->Bl->anchor(array(), compact('url'), $module['humanName']);
 						}
 					}
 				}
-				echo $this->Text->toList($linkList, ' '.__('or', true).' ');
-				echo $this->Bl->anchor(array('id' => 'close_dash_additem'),array(), __('Dashboard: Close item list',true));
+				echo $this->Text->toList($linkList, ' '.__d('dashboard','or', true).' ');
+				echo $this->Bl->anchor(array('id' => 'close_dash_additem'),array(), __d('dashboard','Close item list',true));
 			echo $this->Bl->ediv();
 		echo $this->Bl->ediv();
 		
 		echo $this->Bl->sdiv(array('class' => array('dash_link_to_additem','expanded')));
-			echo $this->Bl->anchor(array('id' => 'open_dash_additem'),array(),__('Dashboard: Open item list',true));
+			echo $this->Bl->anchor(array('id' => 'open_dash_additem'),array(),__d('dashboard','Open item list',true));
 		echo $this->Bl->ediv();
 		echo $html->scriptBlock("
 				$('open_dash_additem').observe('click', function (ev) { ev.stop(); dashOpenAdditem();});
@@ -114,46 +108,46 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 	// The popups called after success or failure of "Mark as draft" or "Publish"
 	echo $this->Popup->popup('draft_alert_ok', array(
 				'type' => 'notice',
-				'title' => __('Dashboard: Notice of marking as draft success - TITLE',true),
-				'content' => __('Dashboard: Notice of marking as draft success - TEXT',true),
+				'title' => __d('dashboard','Notice of marking as draft success - TITLE',true),
+				'content' => __d('dashboard','Notice of marking as draft success - TEXT',true),
 				'actions' => array('ok' => 'OK'),
 				'callback' => "if (action == 'ok') window.location.reload();"
 			));
 			
 	echo $this->Popup->popup('draft_alert_failure', array(
 				'type' => 'error',
-				'title' => __('Dashboard: Notice of marking as draft failure - TITLE',true),
-				'content' => __('Dashboard: Notice of marking as draft failure - TEXT',true),
+				'title' => __d('dashboard','Notice of marking as draft failure - TITLE',true),
+				'content' => __d('dashboard','Notice of marking as draft failure - TEXT',true),
 				'actions' => array('ok' => 'OK')
 			));
 			
 	echo $this->Popup->popup('publish_alert_ok', array(
 				'type' => 'notice',
-				'title' => __('Dashboard: Notice of publishing success - TITLE',true),
-				'content' => __('Dashboard: Notice of publishing success - TEXT',true),
+				'title' => __d('dashboard','Notice of publishing success - TITLE',true),
+				'content' => __d('dashboard','Notice of publishing success - TEXT',true),
 				'actions' => array('ok' => 'OK'),
 				'callback' => "if (action == 'ok') window.location.reload();"
 			));
 			
 	echo $this->Popup->popup('publish_alert_failure', array(
 				'type' => 'error',
-				'title' => __('Dashboard: Notice of publishing failure - TITLE',true),
-				'content' => __('Dashboard: Notice of publishing failure - TEXT',true),
+				'title' => __d('dashboard','Notice of publishing failure - TITLE',true),
+				'content' => __d('dashboard','Notice of publishing failure - TEXT',true),
 				'actions' => array('ok' => 'OK')
 			));
 			
 	echo $this->Popup->popup('delete_alert_ok', array(
 				'type' => 'notice',
-				'title' => __('Dashboard: Notice of delete success - TITLE',true),
-				'content' => __('Dashboard: Notice of delete success - TEXT',true),
+				'title' => __d('dashboard','Notice of delete success - TITLE',true),
+				'content' => __d('dashboard','Notice of delete success - TEXT',true),
 				'actions' => array('ok' => 'OK'),
 				'callback' => "if (action == 'ok') window.location.reload();"
 			));
 			
 	echo $this->Popup->popup('delete_alert_failure', array(
 				'type' => 'error',
-				'title' => __('Dashboard: Notice of delete failure - TITLE',true),
-				'content' => __('Dashboard: Notice of delete failure - TEXT',true),
+				'title' => __d('dashboard','Notice of delete failure - TITLE',true),
+				'content' => __d('dashboard','Notice of delete failure - TEXT',true),
 				'actions' => array('ok' => 'OK')
 			));
 	
@@ -173,13 +167,13 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 		)
 	));
 		echo $this->Bl->smartTableHeaderDry(array(
-			__('Dashboard - dashboard header: Type',true), 
-			$this->Paginator->sort(__('Dashboard - dashboard header: Status',true),'status'), 
-			$this->Paginator->sort(__('Dashboard - dashboard header: Name',true),'name'),
-			__('Dashboard - dashboard header: Extra info',true),
-			$this->Paginator->sort(__('Dashboard - dashboard header: Created',true),'created'),
-			$this->Paginator->sort(__('Dashboard - dashboard header: Modified',true),'modified'),
-			__('Dashboard - dashboard header: Translations',true),
+			__d('dashboard','Dashboard header: Type',true), 
+			$this->Paginator->sort(__d('dashboard','Dashboard header: Status',true),'status'), 
+			$this->Paginator->sort(__d('dashboard','Dashboard header: Name',true),'name'),
+			__d('dashboard','Dashboard header: Extra info',true),
+			$this->Paginator->sort(__d('dashboard','Dashboard header: Created',true),'created'),
+			$this->Paginator->sort(__d('dashboard','Dashboard header: Modified',true),'modified'),
+			__d('dashboard','Dashboard header: Translations',true),
 		));
 		
 		
@@ -201,12 +195,17 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 			if (is_array($item['DashDashboardItem']['idiom']))
 			{
 				foreach ($item['DashDashboardItem']['idiom'] as $lang)
-					$languageStr .= __('Dashboard language abrev.: '. $lang, true) . ' ';
+				{
+					$lang = 'Dashboard language abrev.: '. $lang;
+					$languageStr .= __d('dashboard',$lang, true) . ' ';
+				}
 			}
 			
+			$type = 'Dashboard types: ' . $item['DashDashboardItem']['type'];
+			$status = 'Dashboard status: ' . $item['DashDashboardItem']['status'];
 			echo $this->Bl->smartTableRowDry(array(
-				__('Dashboard types: ' . $item['DashDashboardItem']['type'], true), 
-				__('Dashboard status: ' . $item['DashDashboardItem']['status'], true),
+				__d('dashboard', $type, true), 
+				__d('dashboard', $status, true),
 				$item['DashDashboardItem']['name'],
 				$item['DashDashboardItem']['info'],
 				strftime("%d/%m/%y", strtotime($item['DashDashboardItem']['created'])),
@@ -228,13 +227,12 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 			//Does this entry has publishing and drafting capabilities?
 			if (in_array('publish_draft',$curSettings['actions']))
 			{
-				$draftLink = $ajax->link(__('Dashboard: Hide from public', true), 			
+				$draftLink = $ajax->link(__d('dashboard','Hide from public', true), 			
 					array(
 						'plugin' => 'backstage',
 						'controller' => 'back_contents',
-						'action' => 'set_publishing_status', 
-						$jjModules[$item['DashDashboardItem']['type']]['plugin'],
-						Inflector::underscore($jjModules[$item['DashDashboardItem']['type']]['model']),
+						'action' => 'set_publishing_status',
+						$item['DashDashboardItem']['type'],
 						$item['DashDashboardItem']['dashable_id'], 'draft'
 					), array(
 						'complete' => "if(request.responseJSON.success) {showPopup('draft_alert_ok');} else {showPopup('draft_alert_failure');}",
@@ -242,13 +240,12 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 					)
 				);
 			
-				$publishLink = $ajax->link(__('Dashboard: Publish to the great public', true),
+				$publishLink = $ajax->link(__d('dashboard','Publish to the great public', true),
 					array(
 						'plugin' => 'backstage', 
 						'controller' => 'back_contents',
 						'action' => 'set_publishing_status',
-						$jjModules[$item['DashDashboardItem']['type']]['plugin'],
-						Inflector::underscore($jjModules[$item['DashDashboardItem']['type']]['model']),
+						$item['DashDashboardItem']['type'],
 						$item['DashDashboardItem']['dashable_id'],'published'
 					), array(
 						'complete' => "if(request.responseJSON.success) {showPopup('publish_alert_ok');} else {showPopup('publish_alert_failure');}",
@@ -261,7 +258,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 			
 			if (in_array('delete', $curSettings['actions']))
 			{
-				$links .= $ajax->link(__('Dashboard: Delete content', true),
+				$links .= $ajax->link(__d('dashboard','Delete content', true),
 						array(
 							'plugin' => 'dashboard',
 							'controller' => 'dash_dashboard',
@@ -281,7 +278,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 			
 			if (in_array('see_on_page', $curSettings['actions']))
 			{
-				//$this->Bl->anchor(array('class' => 'link_button'), array('url' => ''), __('Dashboard: See on the page', true))
+				//$this->Bl->anchor(array('class' => 'link_button'), array('url' => ''), __d('dashboard','Dashboard: See on the page', true))
 			}
 			
 			if (in_array('edit', $curSettings['actions']))
@@ -292,11 +289,10 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 									'plugin' => 'backstage',
 									'controller' => 'back_contents',
 									'action' => 'edit',
-									$jjModules[$item['DashDashboardItem']['type']]['plugin'],
-									Inflector::underscore($jjModules[$item['DashDashboardItem']['type']]['model']),
+									$item['DashDashboardItem']['type'],
 									$item['DashDashboardItem']['dashable_id']
 							 )
-						 ), __('Dashboard: Edit', true)
+						 ), __d('dashboard','Dashboard: Edit', true)
 					 );
 				 }
 				 elseif ($curSettings['edit_version'] == 'corktile')
@@ -307,7 +303,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 									'action' => 'edit',
 									$item['DashDashboardItem']['dashable_id']
 							 )
-						 ), __('Dashboard: Edit', true)
+						 ), __d('dashboard','Dashboard: Edit', true)
 					 );
 				}
 			}

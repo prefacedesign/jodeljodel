@@ -62,10 +62,12 @@ class BuroOfficeBoyHelper extends AppHelper
 			'onError' => 'function(code, error, json){%s}'
 		),
 		'relational_unitary' => array(
+			'onAction' => 'function(action, id){%s}',
 			'onShowForm' => 'function(to_edit){%s}',
 			'onShowPreview' => 'function(id){%s}'
 		),
 		'relational_editable' => array(
+			'onAction' => 'function(action, id){%s}',
 			'onShowForm' => 'function(to_edit){%s}',
 			'onShowPreview' => 'function(id){%s}',
 			'onAddNew' => 'function(id){%s}'
@@ -84,6 +86,10 @@ class BuroOfficeBoyHelper extends AppHelper
 			'onShowForm' => 'function(id){%s}',
 			'onAction' => 'function(action,id,type){%s}',
 			'onError' => 'function(json){%s}',
+		),
+		'color' => array(
+			'onPickColor' => 'function(ev){%s}',
+			'onDragPicker' => 'function(ev){%s}',
 		)
 	);
 
@@ -111,7 +117,9 @@ class BuroOfficeBoyHelper extends AppHelper
 			$this->Html->script('prototype', array('inline' => false));
 			$this->Html->script('effects', array('inline' => false));
 			$this->Html->script('controls', array('inline' => false));
+			$this->Html->script('slider', array('inline' => false));
 			$this->Html->script('/burocrata/js/burocrata.js', array('inline' => false));
+			$this->Html->script('/burocrata/js/color-picker.js', array('inline' => false));
 			$this->Html->scriptBlock('var debug = ' . Configure::read() . ';', array('inline' => false));
 
 			$script = implode("\n", $this->scripts);
@@ -198,7 +206,7 @@ class BuroOfficeBoyHelper extends AppHelper
 		extract(am($defaults, $options));
 		
 		$callbacks = $this->formatCallbacks('relational_unitary', $callbacks);
-		$script = sprintf("new BuroBelongsTo('%s','%s'%s);", $baseID, $autocomplete_baseID, (empty($callbacks) ? '':','.$callbacks));
+		$script = sprintf("new BuroBelongsTo('%s','%s',%s%s);", $baseID, $autocomplete_baseID, $update_on_load?'true':'false', (empty($callbacks) ? '':','.$callbacks));
 		return $this->addHtmlEmbScript($script);
 	}
 
@@ -216,11 +224,13 @@ class BuroOfficeBoyHelper extends AppHelper
  */
 	public function relationalEditableList($options)
 	{
-		$defaults = array('callbacks' => array());
-		extract(am($defaults, $options));
+		$options += array('callbacks' => array());
+		extract($options);
 		
+		$content = $this->Js->object(compact('texts', 'templates', 'contents'));
 		$callbacks = $this->formatCallbacks('relational_editable', $callbacks);
-		$script = sprintf("new BuroEditableList('%s','%s'%s,'%s','%s','%s');", $baseID, $autocomplete_baseID, (empty($callbacks) ? '':','.$callbacks), (empty($edit_item_text) ? '':''.$edit_item_text), (empty($view_item_text) ? '':''.$view_item_text), $delete_item_text);
+		$script = sprintf("new BuroEditableList('%s','%s',%s,%s)", $baseID, $autocomplete_baseID, $content, $callbacks);
+		
 		return $this->addHtmlEmbScript($script);
 		
 	}
@@ -295,6 +305,26 @@ class BuroOfficeBoyHelper extends AppHelper
 		extract(am($defaults, $options));
 		
 		$script = sprintf("new BuroTextile('%s')", $baseID);
+		
+		return $this->addHtmlEmbScript($script);
+	}
+
+/**
+ * Creates the JS object for the input.
+ * 
+ * @access public
+ * @param array $options
+ * @return string|void The the result of addHtmlEmbScript
+ * @see BuroOfficeBoyHelper::addHtmlEmbScript()
+ */
+	public function color($options)
+	{
+		$options += array('callbacks' => array(), 'baseID' => uniqid());
+		extract($options);
+		
+		$script = sprintf("new BuroColorPicker('%s')", $baseID);
+		if(!empty($callbacks) && is_array($callbacks))
+			$script .= sprintf('.addCallbacks(%s)', $this->formatCallbacks('upload', $callbacks));
 		
 		return $this->addHtmlEmbScript($script);
 	}

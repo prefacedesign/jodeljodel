@@ -114,7 +114,9 @@ var BuroCallbackable = Class.create({
 	{
 		if (Object.isUndefined(name))
 		{
-			this.callbacks = $H({});
+			this.callbacks.keys().each(function(key) {
+				this.callbacks.unset(key);
+			}.bind(this));
 		}
 		else
 		{
@@ -158,7 +160,7 @@ var BuroCallbackable = Class.create({
 			args.push(arguments[i]);
 		
 		try {
-			this.callbacks.get(name).each(this.apply_function.bind(this, args));
+			this.callbacks.get(name).each(this.applyFunction.bind(this, args));
 		} catch(e)
 		{
 			if (debug && console && console.error)
@@ -167,7 +169,7 @@ var BuroCallbackable = Class.create({
 		
 		return true;
 	},
-	apply_function: function(args, _function)
+	applyFunction: function(args, _function)
 	{
 		_function.apply(this, args);
 	}
@@ -208,8 +210,6 @@ var BuroForm = Class.create(BuroCallbackable, {
 			this.form.lock = this.lockForm.bind(this);
 			this.form.unlock = this.unlockForm.bind(this);
 			this.form.observe('keypress', this.keyPress.bind(this));
-			
-			this.inputs = $$('[buro\\:form="'+this.id_base+'"]');
 
 			BuroCR.set(this.form.id, this);
 			
@@ -254,10 +254,12 @@ var BuroForm = Class.create(BuroCallbackable, {
 	lockForm: function()
 	{
 		this.inputs.each(Form.Element.disable);
+		return this;
 	},
 	unlockForm: function()
 	{
 		this.inputs.each(Form.Element.enable);
+		return this;
 	},
 	keyPress: function(ev){
 		var element = ev.findElement().nodeName.toLowerCase();
@@ -270,8 +272,10 @@ var BuroForm = Class.create(BuroCallbackable, {
 	},
 	submits: function(ev)
 	{
-		var data = Form.serializeElements(this.inputs);
-		var params = this.params.toQueryString();
+		this.inputs = $$('[buro\\:form="'+this.id_base+'"]');
+		
+		var data = Form.serializeElements(this.inputs),
+			params = this.params.toQueryString();
 		if (!params.blank())
 			data+='&'+params;
 		
@@ -309,6 +313,19 @@ var BuroForm = Class.create(BuroCallbackable, {
 	{
 		ev.stop();
 		this.trigger('onCancel', this.form);
+	},
+	purge: function()
+	{
+		BuroCR.unset(this.id_base);
+		this.form.stopObserving('keypress');
+		if (this.submit)
+			this.submit.stopObserving('click');
+		if (this.cancel)
+			this.cancel.stopObserving('click');
+		if (this.form.up('body'))
+			this.form.remove();
+		this.removeCallback();
+		this.cancel = this.submit = this.form = null;
 	}
 });
 
@@ -392,6 +409,7 @@ var BuroAutocomplete = Class.create(BuroCallbackable, {
 	
 	onShowTrap: function(element, update)
 	{
+		this.autocomplete.update.setOpacity(1);
 		this.onShow(element, update);
 		this.trigger('onShow');
 	},
@@ -624,7 +642,9 @@ var BuroAjax = Class.create(BuroCallbackable, {
 
 
 /**
- * 
+ * How it works: on load, if passed true on update_on_load, it will try to update the 
+ * display div and hide the autocomplete input. Else, it will hide the autocomplete
+ * input.
  *
  * Callbacks:
  * - `onInitilize` function (response){}
@@ -636,8 +656,10 @@ var BuroAjax = Class.create(BuroCallbackable, {
  * @access public
  */
 var BuroBelongsTo = Class.create(BuroCallbackable, {
-	initialize: function(id_base, autocompleter_id_base, callbacks)
+	baseFxDuration: 0.3,
+	initialize: function(id_base, autocompleter_id_base, update_on_load, callbacks)
 	{
+		this.form = false;
 		this.id_base = id_base;
 		BuroCR.set(this.id_base, this);
 		this.autocomplete = BuroCR.get(autocompleter_id_base);
@@ -646,55 +668,172 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		
 		this.input = $('hii'+id_base);
 		this.update = $('update'+id_base);
+		this.actions = this.update.next('.actions');
+		this.actions.select('a').each(this.observeControls.bind(this));
+		this.observeControls(this.autocomplete.autocompleter.update.down('.action a'));
 		
-		$('lie'+this.id_base).observe('click', function(ev){ev.stop(); this.showForm(true);}.bind(this));
-		$('lin'+this.id_base).observe('click', function(ev){ev.stop(); this.showForm(false);}.bind(this));
+		if (this.input.value.empty())
+		{
+			this.reset(false).setActions('');
+		}
+		else
+		{
+			if (!update_on_load)
+				this.setActions('edit reset').hideAutocomplete();
+			else
+				this.showPreview();
+		}
+		this.queue = {position:'end', scope: this.id_base};
+	},
+	reset: function(animate)
+	{
+		if (!this.input.value.blank())
+			this.backup_id = this.input.value;
+		this.input.value = this.autocomplete.input.value = '';
+		this.autocomplete.input.show();
 		
-		if (!this.input.value.empty())
-			this.showPreview(this.input.value);
+		this.setActions('undo_reset');
+		
+		if (!animate)
+		{
+			this.update.hide();
+		}
+		else
+		{
+			this.update.setStyle({height: (this.update.getHeight()-this.autocomplete.input.getHeight())+'px'});
+			new Effect.BlindUp(this.update, {duration: this.baseFxDuration, queue: this.queue});
+		}
+		
+		return this;
 	},
-	showForm: function(to_edit)
+	observeControls: function(element)
 	{
-		this.trigger('onShowForm', to_edit);
-		this.update.next('.actions').hide();
+		if (Object.isElement(element) || Object.isElement(element = $(element)))
+			element.observe('click', this.controlClick.bindAsEventListener(this, element));
+		return this;
 	},
-	openedForm: function()
+	controlClick: function(ev, element)
 	{
-		// timeout for the AjaxRequest have time to evaluate all js and register the Form object on BuroCR
-		window.setTimeout(this.observeForm.bind(this), 100);
+		ev.stop();
+		this.setActions('');
+		var action = element.readAttribute('buro:action');
+		switch (action)
+		{
+			case 'new':
+				this.update.setLoading();
+				this.trigger('onAction', action);
+			break;
+			
+			case 'edit':
+				this.update.setLoading();
+				this.trigger('onAction', action, this.input.value);
+			break;
+			
+			case 'reset':
+				this.reset(true);
+			break;
+			
+			case 'undo_reset':
+				this.input.value = this.backup_id;
+				this.hideAutocomplete().showPreview();
+			break;
+		}
+	},
+	actionSuccess: function(json)
+	{
+		if (this.form)
+			this.form.purge();
+		this.form = false;
+		
+		var iHeight = this.update.show().unsetLoading().getHeight(),
+			fHeight = this.update.update(json.content).getHeight();
+		
+		this.update.setStyle({height: iHeight+'px', overflow: 'hidden'});
+		
+		new Effect.Morph(this.update, {
+			duration: this.baseFxDuration, 
+			queue: this.queue, 
+			style: {height: fHeight+'px'},
+			afterFinish: function(action, fx){
+				this.update.setStyle({height: '', overflow: ''});
+				this.observeForm();
+				if (action == 'preview')
+					this.setActions('edit reset').hideAutocomplete();
+				else
+					this.setActions('');
+			}.bind(this, json.action)
+		});
+	},
+	actionError: function(json)
+	{
+		this.trigger('onError');
 	},
 	observeForm: function()
 	{
-		var form_id = this.update.down('.buro_form').readAttribute('id');
-		BuroCR.get(form_id).addCallbacks({
-			onCancel: this.cancel.bind(this),
-			onSave: this.saved.bind(this)
-		})
+		var form_id = false,
+			div_form = this.update.down('.buro_form');
+		
+		if (Object.isElement(div_form))
+			if (form_id = div_form.readAttribute('id'))
+				this.form = BuroCR.get(form_id).addCallbacks({
+					onStart: function(form){form.setLoading().lock();},
+					onCancel: this.cancel.bind(this),
+					onSave: this.saved.bind(this)
+				});
 	},
-	showPreview: function(id)
+	showPreview: function()
 	{
-		this.trigger('onShowPreview', id);
-		this.update.next('.actions').show();
-	},
-	selected: function(pair)
-	{
-		if (pair.id > 0)
-		{
-			this.update.update();
-			this.saved(null, null, null, pair.id);
-			this.autocomplete.input.value = pair.value;
-		}
+		this.update.update().show().setLoading();
+		this.trigger('onAction', 'preview', this.input.value);
 	},
 	saved: function(form, response, json, saved)
 	{
+		this.form.form.unsetLoading().unlock();
 		this.autocomplete.input.value = '';
 		this.input.value = saved;
-		this.showPreview(saved);
+		this.showPreview();
 	},
 	cancel: function()
 	{
-		this.showPreview(this.input.value);
-	}
+		var content = this.update.innerHTML,
+			iHeight = this.update.show().getHeight(),
+			fHeight = this.update.update().setLoading().getHeight();
+		
+		this.update.unsetLoading().update(content).setStyle({height: iHeight+'px', overflow: 'hidden'});
+		
+		new Effect.Morph(this.update, {
+			duration: this.baseFxDuration, 
+			queue: this.queue, 
+			style: {height: fHeight+'px'},
+			afterFinish: function(fx) {
+				this.showPreview();
+			}.bind(this)
+		});
+	},
+	ACUpdated: function()
+	{
+		var new_item = this.autocomplete.autocompleter.update.down('.action');
+		if (new_item)
+			new_item.show();
+	},
+	ACSelected: function(pair)
+	{
+		this.hideAutocomplete();
+		this.input.value = pair.id;
+		this.showPreview();
+	},
+	setActions: function(filter)
+	{
+		var links = this.actions.select('a'),
+			filter = function(filter, link) {
+				return $w(filter).indexOf(link.readAttribute('buro:action')) != -1;
+			}.curry(filter);
+		
+		links.invoke('hide').findAll(filter).invoke('show');
+		return this;
+	},
+	showAutocomplete: function() {this.autocomplete.input.show(); return this;},
+	hideAutocomplete: function() {this.autocomplete.input.hide(); return this;},
 });
 
 
@@ -1360,150 +1499,189 @@ var BuroListOfItemsItem = Class.create(BuroCallbackable, {
  * @access public
  */
 var BuroEditableList = Class.create(BuroCallbackable, {
-	initialize: function(id_base, autocompleter_id_base, callbacks, view_item_text, edit_item_text, delete_item_text)
+	baseFxDuration: 0.3,
+	initialize: function(id_base, autocompleter_id_base, content, callbacks)
 	{
 		this.id_base = id_base;
-		this.view_item_text = view_item_text;
-		this.edit_item_text = edit_item_text;
-		this.delete_item_text = delete_item_text;
+		this.itemsList = $H({});
+		this.form = false;
+		Object.extend(this,content);
+		
 		BuroCR.set(this.id_base, this);
+		
+		this.update = $('update'+id_base);
+		this.items = $('items'+id_base);
 		this.autocomplete = BuroCR.get(autocompleter_id_base);
+		this.observeControls(this.autocomplete.autocompleter.update.down('.action a'));
 		
 		this.addCallbacks(callbacks);
 		
-		this.input = $('hii'+id_base);
-		this.master_input = $('hii'+id_base+'_');
-		this.update = $('update'+id_base);
-		this.adition = $('adition'+id_base);
-		if ($('lin'+this.id_base))
-			$('lin'+this.id_base).observe('click', function(ev){ev.stop(); this.showForm(false);}.bind(this));
+		if (this.contents)
+			this.contents.each(this.addNewItem.bind(this));
 		
-		var i;
-		for (i = this.input.length - 1; i>=0; i--) 
-		{
-			if (this.input.options[i].selected) 
-				new BuroEditableListItem(this, this.id_base, this.input.options[i].value, this.input.options[i].text, this.view_item_text, this.edit_item_text, this.delete_item_text);
-		}
-
+		this.queue = {position:'end', scope: this.id_base};
 	},
-	addNew: function(response)
-	{		
-		if (!response.getAllHeaders())
-			this.trigger('onFailure', this.form, response); // No server response
-		
-		if (!response.responseJSON) {
-			this.trigger('onError', E_NOT_JSON);
-			return;
-		}
-		
-		this.json = response.responseJSON;
-		if (this.json.error != false)
-		{
-			this.trigger('onError', E_JSON, this.json.error);
-			return;
-		}
-		if (Object.isArray(this.json.content))
-			this.json.content = {};
-		this.foundContent = $H(this.json.content);
-		
-		this.foundContent = $H(this.json.content);
-		var keys = this.foundContent.keys();
-
-		new_id = this.foundContent.get(keys[0]);
-		new_item = this.foundContent.get(keys[(1)]);
-		
-		this.adition.update();
-		new BuroEditableListItem(this, this.id_base, new_id, new_item, this.view_item_text, this.edit_item_text, this.delete_item_text);
-	},
-	showForm: function(to_edit)
+	observeControls: function(element)
 	{
-		this.update.next('.actions').hide();
-		this.trigger('onShowForm', to_edit);
+		if (Object.isElement(element) || Object.isElement(element = $(element)))
+			element.observe('click', this.controlClick.bindAsEventListener(this, element));
+		return this;
 	},
-	showPreview: function(id)
+	observeForm: function()
 	{
-		this.update.next('.actions').show();
-		this.trigger('onShowPreview', id);
+		var form_id = false,
+			div_form = this.update.down('.buro_form');
+		
+		if (Object.isElement(div_form))
+			if (form_id = div_form.readAttribute('id'))
+				this.form = BuroCR.get(form_id).addCallbacks({
+					onStart: function(form){form.setLoading().lock();},
+					onCancel: this.formCancel.bind(this),
+					onSave: this.formSaved.bind(this)
+				});
 	},
-	selected: function(pair)
+	formCancel: function()
 	{
-		if (pair.id > 0)
+		var content = this.update.innerHTML,
+			iHeight = this.update.show().getHeight(),
+			fHeight = this.update.update().setLoading().getHeight();
+		
+		this.update.unsetLoading().update(content).setStyle({height: iHeight+'px', overflow: 'hidden'});
+		
+		new Effect.Morph(this.update, {
+			duration: this.baseFxDuration, 
+			queue: this.queue, 
+			style: {height: '0px'}
+		});
+	},
+	formSaved: function(form, response, json, saved)
+	{
+		this.form.form.unsetLoading().unlock();
+		new Effect.SlideUp(this.update, {
+			duration: this.baseFxDuration, queue: this.queue,
+			afterFinish: function()
+			{
+				if (this.form)
+				{
+					this.form.purge();
+					this.form = false;
+				}
+			}.bind(this)
+		});
+		this.trigger('onAction', 'add', saved);
+		this.items.setLoading();
+	},
+	controlClick: function(ev, element)
+	{
+		ev.stop();
+		if (this.form)
+			this.form.purge();
+		this.form = false;
+		
+		var action = element.readAttribute('buro:action');
+		switch (action)
 		{
-			this.saved(pair.id, pair.value);
-			this.autocomplete.input.value = '';
+			case 'new':
+				this.update.update().setLoading();
+				this.trigger('onAction', action);
+			break;
 			
-			new BuroEditableListItem(this, this.id_base, pair.id, pair.value, this.view_item_text, this.edit_item_text, this.delete_item_text);
+			case 'edit':
+			case 'preview':
+				this.update.update().setLoading();
+				this.trigger('onAction', action, element.up('div').readAttribute('buro:id'));
+			break;
+			
+			case 'unlink':
+				if (confirm(this.texts.confirm_unlink))
+					this.removeItem(element.up('div').readAttribute('buro:id'), true);
+			break;
 		}
 	},
-	saved: function(id, value)
+	addNewItem: function(data)
 	{
+		this.removeItem(data.id);
+		var input = new Element('div').insert(this.templates.input.interpolate(data)).down(),
+			item = new Element('div').insert(this.templates.item.interpolate($H(data).merge(this.texts).toObject())).down();
 		
+		this.itemsList.set(data.id, {input: input, item:item});
+		this.items.insert(input).insert(item);
+		
+		item.down('.controls').select('a').each(this.observeControls.bind(this));
+	},
+	removeItem: function(id, animate)
+	{
+		var obj = this.itemsList.get(id);
+		if (obj)
+		{
+			this.itemsList.unset(obj.input.value);
+			
+			obj.input.remove();
+			if (animate)
+				new Effect.Fade(obj.item, {
+					duration: this.baseFxDuration, 
+					afterFinish: function(eff) {
+						window.setTimeout(Element.remove.curry(eff.element), 1000);
+					}
+				});
+			else
+				Element.remove(obj.item);
+		}
+	},
+	actionError: function(json)
+	{
+		this.trigger('onError');
+	},
+	actionSuccess: function(json)
+	{
+		if (this.form)
+			this.form.purge();
+		this.form = false;
+		
+		switch (json.action)
+		{
+			case 'add':
+				this.addNewItem(json);
+				this.items.unsetLoading();
+			break;
+			
+			case 'preview':
+			case 'edit':
+			default:
+				var iHeight = this.update.show().unsetLoading().getHeight(),
+					fHeight = this.update.update(json.content).getHeight();
+				
+				this.update.setStyle({height: iHeight+'px', overflow: 'hidden'});
+				
+				new Effect.Morph(this.update, {
+					duration: this.baseFxDuration, 
+					queue: this.queue, 
+					style: {height: fHeight+'px'},
+					afterFinish: function(fx){
+						this.update.setStyle({height: '', overflow: ''});
+						this.observeForm();
+					}.bind(this)
+				});
+			break;
+		}
+	},
+	ACSelected: function(pair)
+	{
 		this.autocomplete.input.value = '';
 		
-		if (!value)
-		{
-			var elOptNew = document.createElement('option');
-			elOptNew.text = value;
-			elOptNew.value = id;
-			try {
-				this.input.add(elOptNew, null); // standards compliant; doesn't work in IE
-			}
-			catch(ex) {
-				this.input.add(elOptNew); // IE only
-			}
-		}
+		if (this.itemsList.get(pair.id))
+			return;
 		
-		this.input.down('option[value='+id+']').selected = 'selected';
-		
-		if (!value)
-			this.trigger('onAddNew', id);
-		
-	}
-});
-
-
-var BuroEditableListItem = Class.create(BuroCallbackable, {
-	initialize: function(master, id_base, id, value, edit_item_text, view_item_text, delete_item_text)
-	{
-		this.id_base = id_base;
-		this.id = id;
-		this.value = value;
-		this.view_item_text = view_item_text;
-		this.edit_item_text = edit_item_text;
-		this.delete_item_text = delete_item_text;
-		this.master = master;
-		
-		this.input = $('hii'+id_base);
-		this.master_input = $('hii'+id_base+'_');
-		this.update = $('update'+id_base);
-		this.adition = $('adition'+id_base);
-		
-		if (this.edit_item_text != '')
-			this.edit_item_text = '<a href="" id="edit_control_editable_list_'+this.id+'">'+this.edit_item_text+'</a>';
-		if (this.view_item_text != '')
-			this.view_item_text = '<a href="" id="view_control_editable_list_'+this.id+'">'+this.view_item_text+'</a>';
-		
-		this.edited_item = $('editable_list_selected_'+this.id);
-		
-		if (this.edited_item)
-			this.edited_item.update('<span class="name">'+this.value+'</span><span class="controls">'+this.edit_item_text+''+this.view_item_text+'<a href="" id="delete_control_editable_list_'+this.id+'">'+this.delete_item_text+'</a></span>');
-		else
-			this.update.insert('<div id="editable_list_selected_'+this.id+'"><span class="name">'+this.value+'</span>'+this.edit_item_text+''+this.view_item_text+'<a href="" id="delete_control_editable_list_'+this.id+'">'+this.delete_item_text+'</a></span></div>');
-			
-		if (this.view_item_text != '')
-			$('view_control_editable_list_'+this.id).observe('click', function(ev){ev.stop(); this.master.showPreview(this.id);}.bind(this));
-		if (this.edit_item_text != '')
-			$('edit_control_editable_list_'+this.id).observe('click', function(ev){ev.stop(); this.master_input.value = this.id; this.master.showForm(true);}.bind(this));
-		$('delete_control_editable_list_'+this.id).observe('click', function(ev){ ev.stop(); this.removeItem(this.id);}.bind(this));
-			
+		this.trigger('onAction', 'add', pair.id);
+		this.items.setLoading();
 	},
-	removeItem: function(id)
+	ACUpdated: function()
 	{
-		this.input.down('option[value='+id+']').selected = '';
-		$('editable_list_selected_'+id).remove();
+		var new_item = this.autocomplete.autocompleter.update.down('.action');
+		if (new_item)
+			new_item.show();
 	}
 });
-
 
 
 
@@ -1854,5 +2032,52 @@ var BuroTextile = Class.create(BuroCallbackable, {
 			range.select();
 		}
 		this.getSelection();
+	}
+});
+
+
+
+/**
+ * Create a input that comes with a color palette.
+ * 
+ * @access public
+ * @param string id_base
+ */
+var CP;
+var BuroColorPicker = Class.create(BuroCallbackable, {
+	initialize: function(id_base)
+	{
+		if (!(this.input = $('inp'+id_base)))
+			return;
+		if (!CP)
+			CP = new ColorPicker();
+		this.input.observe('focus', this.openCP.bind(this));
+		this.input.observe('keyup', this.keyup.bind(this));
+		this.sample = $('samp'+id_base);
+		if (!this.input.value.blank())
+			this.updateSample();
+	},
+	openCP: function(ev)
+	{
+		CP.open(this.input);
+		CP.callbacks.change = this.change.bind(this);
+		if (!this.input.value.blank())
+			CP.setHex(this.input.value);
+	},
+	change: function(color)
+	{
+		this.input.value = color.toHEX();
+		this.updateSample();
+	},
+	keyup: function(ev)
+	{
+		CP.setHex(this.input.value);
+		this.updateSample();
+	},
+	updateSample: function()
+	{
+		this.sample.setStyle({
+			backgroundColor: this.input.value
+		});
 	}
 });

@@ -4,9 +4,10 @@
 	{
 		echo $this->Bl->scontrolBox();
 			
-			echo $this->Bl->h3(array(), array('escape' => false), $this->Bl->spanDry(
-				__('backstage edit page: Editing', true))
-				.  sprintf(__(' the %s version.',true),__('Language name: '.$this->Session->read('Tradutore.currentLanguage'),true))
+			$lang = 'Language name: '.$this->Session->read('Tradutore.currentLanguage');
+			echo $this->Bl->h3Dry(
+				$this->Bl->spanDry(__d('backstage','Editing', true))
+				.  sprintf(__d('backstage',' the %s version.',true),__d('backstage',$lang,true))
 			);
 
 			/* When we will have the ready versions
