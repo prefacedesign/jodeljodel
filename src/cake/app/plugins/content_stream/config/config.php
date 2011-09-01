@@ -4,18 +4,11 @@
  * Here all types of stream content are defined.
  */
 Configure::write('ContentStream.streams', array(
-	'text' => array(
-		'model' => 'Texto',			// Default: tabelize of key
-		'plugin' => 'texto',		// Default: key
-		'controller' => 'texts',	// Default: pluralize of key
-		'titulo' => 'Text'			// Default: Humanize of key
-	),
-	'image' => array(
-		'controller' => 'imagens',
-		'model' => 'ImagemFluxo'
-	),
-	'file' => array(
-		'model' => 'ArquivoFluxo'
+	'cs_image','cs_file',
+	'cs_text' => array(
+		'model' => 'CsText.CsText',		// Default: Text.Text (Camelize.Tabelize)
+		'controller' => 'texts',	// Default: Texts (pluralize)
+		'title' => 'Text'			// Default: Humanize of key
 	)
 ));
 

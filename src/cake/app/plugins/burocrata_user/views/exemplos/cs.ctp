@@ -29,7 +29,10 @@
 			array(
 				'type' => 'content_stream',
 				'instructions' => __d('buro_user', 'Instructions for content_stream', true),
-				'label' => __d('buro_user', 'Document body', true)
+				'label' => __d('buro_user', 'Document body', true),
+				'options' => array(
+					
+				)
 			)
 		);
 		
