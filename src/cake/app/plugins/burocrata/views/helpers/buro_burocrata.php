@@ -1279,6 +1279,17 @@ class BuroBurocrataHelper extends XmlTagHelper
 /**
  * Content stream input.
  * 
+ * Most of configuraiton must be done on behavior attching and on content_stream configuration.
+ * This method assumes that all configuration errors were corrected by behavior and needs only 
+ * the foreignKey column name where the content stream ID is stored.
+ * 
+ * ### The options:
+ * - baseID - Well know already. (optional)
+ * - foreignKey - The column name. (Defaults to `cs_content_stream_id`)
+ * - texts - Very similar to manyChilrend input format. (Defaults similiar too)
+ * - callbaks - An array in burocratas callback format. (Defaults to nothing)
+ * 
+ * @access public
  * @access public
  */
 	public function inputContentStream($options = array())
@@ -1287,8 +1298,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$options = $options['options'];
 		$options += $defaults = array(
 			'baseID' => $this->baseID(),
-			'assocName' => false,
-			'type' => null,
+			'foreignKey' => 'cs_content_stream_id',
 			'callbacks' => array(),
 			'texts' => array('confirm' => array())
 		);
@@ -1319,11 +1329,18 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		
 		// Instructions
-		if (isset($input_options['instructions']))
-		{
+		if (isset($input_options['instructions'])) {
 			$out .= $this->instructions(array(), array('close_me' => false), $input_options['instructions']);
 			unset($input_options['instructions']);
 		}
+		
+		// Loads configuration
+		$config = Configure::read('ContentStream');
+		
+		$model_class_name = 'ContentStream.CsItem';
+		$out .= $this->sform(array(), array('model' => 'ContentStream.CsContentStream'));
+		$out .= $this->_orderedItens(compact('texts','model_class_name','foreign_key', 'parameters','allowed_content','baseID','callbacks', 'auto_order'));
+		$out .= $this->eform();
 		
 		return $out;
 	}
@@ -1358,12 +1375,14 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$options += array('model_class_name' => false, 'auto_order' => false, 'callbacks' => array());
 		extract($options);
 		
-		if (empty($model_class_name))
-		{
+		if (empty($model_class_name)) {
 			trigger_error('BuroBurocrataHelper::_orderedItens - model_class_name wasn\'t set.');
 			return false;
 		}
-		
+		if (!isset($options['allowed_content']) || !is_array($options['allowed_content'])) {
+			trigger_error('BuroBurocrataHelper::_orderedItens - No allowed_content list specified. It must be an array.');
+			return false;
+		}
 		list($model_plugin, $model_name) = pluginSplit($model_class_name);
 		$type= am(self::$defaultSupertype, 'many_children', 'view');
 		
@@ -1440,10 +1459,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 	{
 		$htmlAttributes = $this->addClass($htmlAttributes, self::$defaultContainerClass);
 		$htmlAttributes = $this->addClass($htmlAttributes, 'ordered_list_menu');
-		$options = $options + array('allowed_content' => false);
-		
-		if (!is_array($options['allowed_content']))
-			trigger_error('BuroBurocrataHelper::sorderedItensMenu - No allowed_content list specified.');
+		$options = $options + array('allowed_content' => array());
 		
 		$htmlAttributes['buro:order'] = '#{order}';
 		$out = $this->Bl->sdiv($htmlAttributes); // to be closed on BuroBurocrataHelper::sorderedItensMenu
