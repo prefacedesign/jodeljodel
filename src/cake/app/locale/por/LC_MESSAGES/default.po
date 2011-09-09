@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2011-08-29 17:09-0300\n"
-"PO-Revision-Date: 2011-08-29 16:15-0400\n"
+"PO-Revision-Date: 2011-09-09 11:47-0300\n"
 "Last-Translator: Daniel <daniel@preface.com.br>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -91,7 +91,7 @@ msgstr "Usar último item"
 
 #: \plugins\burocrata\views\helpers\buro_burocrata.php:1413
 msgid "Burocrata::orderdItensMenu - close list"
-msgstr "Fechar"
+msgstr "Cancelar"
 
 #: \plugins\burocrata\views\helpers\buro_burocrata.php:1509
 msgid "Burocrata::orderedItensControls - up"

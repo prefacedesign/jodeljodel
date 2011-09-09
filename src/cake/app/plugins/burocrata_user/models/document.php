@@ -8,8 +8,9 @@ class Document extends BurocrataUserAppModel {
 			'streams' => array(
 				'content_stream_id' => 'document',
 				// 'content_stream_id' => array('type' => 'document')
-				// 'content_stream_id' => array('allowedContents' => array('text', 'image')
 				// 'content_stream_id' => array('type' => 'document', 'callbacks' => array('create' => array('controller' => 'x')))
+				// 'content_stream_id' => array('allowedContents' => array('text', 'image'))
+				// 'content_stream_id' => array('allowedContents' => array(array('model' => 'Text', 'title' => 'Text'), 'image'))
 			)
 		)
 	);

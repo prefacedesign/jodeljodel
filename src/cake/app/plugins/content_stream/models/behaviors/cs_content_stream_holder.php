@@ -18,8 +18,22 @@
  */
 class CsContentStreamHolderBehavior extends ModelBehavior
 {
+/**
+ * Bahavior property that holds all settings. 
+ * This property is populated on setup() and is accessed on BuroBurocrataHelper
+ * 
+ * @var array
+ * @access public
+ */
 	var $settings;
-	
+
+/**
+ * Invoke the normalization method and populates the $settings property.
+ * 
+ * @oaram model $Model
+ * @param array $options
+ * @access public
+ */
 	function setup(&$Model, $options)
 	{
 		if (!isset($options['streams']) || empty($options['streams']) || !is_array($options['streams']) || Set::numeric(array_keys($options['streams'])))
@@ -35,26 +49,39 @@ class CsContentStreamHolderBehavior extends ModelBehavior
 		{
 			if (!is_array($stream)) 
 				$stream = array('type' => $stream);
-			$stream['assocName'] = empty($stream['type']) ? Inflector::camelize($fk) : Inflector::camelize($stream['type']);
 			
 			if (isset($options['allowedContents']))
 				$stream['allowedContents'] = $options['allowedContents'];
-			elseif (isset($stream['type']) && isset($config['types'][$stream['type']]))
+			elseif (isset($stream['type']) && is_string($stream['type']) && isset($config['types'][$stream['type']]))
 				$stream['allowedContents'] = $config['types'][$stream['type']];
 			else
-				return !trigger_error('CsContentStreamHolderBehavior - It must be set `allowedContents` or `type`. In case of `type` set, it must be configured on content_stream plugin.');
+				return !trigger_error('CsContentStreamHolderBehavior - It must be set `allowedContents`(array) or `type`(string). In case of `type` set, it must be configured on content_stream plugin.');
 			
+			foreach ($stream['allowedContents'] as &$allowedContent)
+			{
+				if (is_string($allowedContent))
+				{
+					if (isset($config['streams'][$allowedContent]))
+						$allowedContent = $config['streams'][$allowedContent];
+					else
+						return !trigger_error('CsContentStreamHolderBehavior - Content type `'.$allowedContent.'` not known.');
+				}
+			}
+			
+			$stream['assocName'] = empty($stream['type']) ? Inflector::camelize($fk) : Inflector::camelize($stream['type']);
 			$Model->belongsTo[$stream['assocName']] = array(
 				'className' => 'ContentStream.CsContentStream',
 				'foreignKey' => $fk,
 			);
 		}
+		
 		$this->settings[$Model->alias] = $options;
 		$Model->__createLinks();
 	}
 
 /**
  * Creates all parameters on configuration using defaults, if not set.
+ * The configuration is stored back in the Configure class.
  * 
  * @access public
  * @return boolean Return true if succefully nomalized, false, if not.

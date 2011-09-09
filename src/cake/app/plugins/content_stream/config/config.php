@@ -6,9 +6,9 @@
 Configure::write('ContentStream.streams', array(
 	'cs_image','cs_file',
 	'cs_text' => array(
-		'model' => 'CsText.CsText',		// Default: Text.Text (Camelize.Tabelize)
-		'controller' => 'texts',	// Default: Texts (pluralize)
-		'title' => 'Text'			// Default: Humanize of key
+		'model' => 'CsText.CsText',	// Default: "CsText.CsText" (Camelize.Classify of key)
+		'controller' => 'texts',	// Default: "CsTexts" (Pluralize of key)
+		'title' => 'Text'			// Default: "Cs Text" (Humanize of key)
 	)
 ));
 
@@ -19,10 +19,10 @@ Configure::write('ContentStream.streams', array(
  * @todo Type validation? Like "can´t publish gallery if number of images is less than X"
  */
 Configure::write('ContentStream.types', array(
-	'document' => array('text', 'image', 'file'),
-	'gallery' => array('image'),
-	'folder' => array('file'),
-	'article' => array('text', 'image'),
+	'document' => array('cs_text', 'cs_image', 'cs_file'),
+	'gallery' => array('cs_image'),
+	'folder' => array('cs_file'),
+	'article' => array('cs_text', 'cs_image'),
 ));
 
 /**

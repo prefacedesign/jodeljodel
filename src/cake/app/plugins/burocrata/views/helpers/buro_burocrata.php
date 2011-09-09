@@ -1460,6 +1460,14 @@ class BuroBurocrataHelper extends XmlTagHelper
 /**
  * Starts an ordered list menu
  * 
+ * Must receive a parameter named 'allowed_content' that will be used to create the menu options
+ * This parameter format is as follows:
+ * {{{
+ * 	array(
+ * 		array('model' => 'Plugin.Model', 'label' => 'Some label')
+ * 	)
+ * }}}
+ * 
  * @access public
  * @param array $htmlAttributes
  * @param array $options
@@ -1475,22 +1483,25 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out = $this->Bl->sdiv($htmlAttributes); // to be closed on BuroBurocrataHelper::sorderedItensMenu
 		
 		// A menu made of list of content
-		$out .= $this->Bl->sdiv(array('class' => 'ordered_list_menu_list'));
+		$linkList = array();
 		foreach ($options['allowed_content'] as $content)
 		{
-			if (!is_array($content))
-				$content = array('model' => $content);
+			if (!is_array($content)) $content = array('model' => $content);
+			$content += array('title' => Inflector::humanize($content['model']));
 			
-			$content += array('label' => Inflector::humanize($content['model']));
-			
-			$out .= $this->Bl->anchor(
-				array('href' => '/', 'class' => 'ordered_list_menu_link', 'buro:type' => $content['model']),
-				array(), 
-				$content['label']
+			$linkList[] = array(
+				'attr' => array('href' => '/','class' => 'ordered_list_menu_link', 'buro:type' => $content['model']),
+				'name' => $content['title']
 			);
 		}
-		$out .= $this->Bl->anchor(array('class' => 'ordered_list_menu_close', 'href' => '/'), array(), __('Burocrata::orderdItensMenu - close list', true));
-		$out .= $this->Bl->ediv();
+		$linkList[] = array(
+			'attr' => array('class' => 'ordered_list_menu_close', 'href' => '/'),
+			'name' => __('Burocrata::orderdItensMenu - close list', true)
+		);
+		$lastSeparator = ' '.__('anchorList or',true).' ';
+		
+		$anchorList = $this->Bl->anchorList(array(), compact('linkList', 'lastSeparator'));
+		$out .= $this->Bl->div(array('class' => 'ordered_list_menu_list'), array(), $anchorList);
 		
 		// Button that shows the list of content (if more then one item)
 		$out .= $this->Bl->button(array('class' => 'ordered_list_menu_add'), array(), $this->Bl->spanDry('+'));
