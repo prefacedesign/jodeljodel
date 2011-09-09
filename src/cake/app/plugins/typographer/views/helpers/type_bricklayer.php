@@ -382,20 +382,20 @@ class TypeBricklayerHelper extends AppHelper
 	 */
 	function anchorList($attr = array(), $options = array(), $content = null)
 	{
-		$standardOptions = array(
+		$options += array(
 			'lastSeparator' => ', ',
 			'separator' => ', '
 		);
-		
-		$options = am($standardOptions, $options);
 		extract($options);
-	
+		
+		if (!isset($linkList))
+			return !trigger_error('TypeBricklayerHelper::anchorList() - \'anchorList\' must be set on $options.');
+		
+		$linksCount = count($linkList);
 		$r = $this->sspan($attr, $options);
 		
 		foreach($linkList as $key => $link)
 		{
-			
-		
 			$curAttr = array();
 			if (isset($link['attr']))
 				$curAttr = $link['attr'];
@@ -403,14 +403,15 @@ class TypeBricklayerHelper extends AppHelper
 			$curOptions = array();
 			if (isset($link['options']))
 				$curOptions = $link['options'];
-				
-			$curOptions['url'] = $link['url'];
+			
+			if (isset($link['url']))
+				$curOptions['url'] = $link['url'];
 			
 			$r .= $this->anchor($curAttr, $curOptions, $link['name']);
 			
-			if ($key == count($linkList) - 2) 
+			if ($key == $linksCount - 2) 
 				$r .= $lastSeparator;
-			elseif ($key != count($linkList) - 1) 
+			elseif ($key != $linksCount - 1) 
 				$r .= $separator;			
 		}
 		return $r . $this->espan();
