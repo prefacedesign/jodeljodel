@@ -1319,6 +1319,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 			return false;
 		}
 		
+		// Loads configuration and settings
+		$config = Configure::read('ContentStream');
+		
+		$settings = $ParentModel->Behaviors->CsContentStreamHolder->settings[$ParentModel->alias];
+		$allowed_content = $settings['streams'][$options['foreignKey']]['allowedContents'];
+		
 		
 		// Label
 		if(empty($input_options['label']) && $AssocModel)
@@ -1334,15 +1340,13 @@ class BuroBurocrataHelper extends XmlTagHelper
 			unset($input_options['instructions']);
 		}
 		
-		// Loads configuration
-		$config = Configure::read('ContentStream');
 		
 		$model_class_name = 'ContentStream.CsItem';
 		$out .= $this->sform(array(), array('model' => 'ContentStream.CsContentStream'));
 		$out .= $this->_orderedItens(compact('texts','model_class_name','foreign_key', 'parameters','allowed_content','baseID','callbacks', 'auto_order'));
 		$out .= $this->eform();
 		
-		return $out;
+		return $this->Bl->div(array('id' => 'div' . $baseID, 'class' => 'content_stream'), array(), $out);
 	}
 
 
@@ -1372,7 +1376,12 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	protected function _orderedItens($options)
 	{
-		$options += array('model_class_name' => false, 'auto_order' => false, 'callbacks' => array());
+		$options += array(
+			'model_class_name' => false, 
+			'auto_order' => false, 
+			'callbacks' => array(),
+			'parameters' => array()
+		);
 		extract($options);
 		
 		if (empty($model_class_name)) {
@@ -1388,15 +1397,16 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$contents = array();
 		$Model =& ClassRegistry::init($model_class_name);
-		foreach ($this->data[$model_name] as $n => $data)
-		{
-			$data = array($model_name => $data);
-			$contents[] = array(
-				'content' => $this->Jodel->insertModule($model_class_name, $type, $data),
-				'id' => $data[$Model->alias][$Model->primaryKey],
-				'title' => ''
-			);
-		}
+		if (!empty($this->data[$model_name]))
+			foreach ($this->data[$model_name] as $n => $data)
+			{
+				$data = array($model_name => $data);
+				$contents[] = array(
+					'content' => $this->Jodel->insertModule($model_class_name, $type, $data),
+					'id' => $data[$Model->alias][$Model->primaryKey],
+					'title' => ''
+				);
+			}
 		
 		// Javascripts
 		$url_edit = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'list_of_items');

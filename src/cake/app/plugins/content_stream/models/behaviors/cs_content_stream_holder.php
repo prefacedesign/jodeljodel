@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin main behavior
+ * Main behavior for this plugin
  *
  * PHP versions 5
  * 
@@ -22,19 +22,35 @@ class CsContentStreamHolderBehavior extends ModelBehavior
 	
 	function setup(&$Model, $options)
 	{
-		if (!isset($options['type']) || empty($options['type']) || !is_array($options['type']) || Set::numeric(array_keys($options['type'])))
-		{
-			trigger_error('CsContentStreamHolderBehavior::setup - The `type` parameter must be set on format: \'foreign_key\' => \'type\'');
-			return false;
-		}
+		if (!isset($options['streams']) || empty($options['streams']) || !is_array($options['streams']) || Set::numeric(array_keys($options['streams'])))
+			return !trigger_error('CsContentStreamHolderBehavior::setup - The `streams` parameter must be set on format: \'foreign_key\' => \'type\'');
+		
 		if (!$this->normalizeConfig())
 			return false;
 		
 		$config = Configure::read('ContentStream');
 		
-		$Model->belongsTo['ContentStream'] = array(
+		$type = $have = $callbacks = $assocName = null;
+		foreach ($options['streams'] as $fk => &$stream)
+		{
+			if (!is_array($stream)) 
+				$stream = array('type' => $stream);
+			$stream['assocName'] = empty($stream['type']) ? Inflector::camelize($fk) : Inflector::camelize($stream['type']);
 			
-		);
+			if (isset($options['allowedContents']))
+				$stream['allowedContents'] = $options['allowedContents'];
+			elseif (isset($stream['type']) && isset($config['types'][$stream['type']]))
+				$stream['allowedContents'] = $config['types'][$stream['type']];
+			else
+				return !trigger_error('CsContentStreamHolderBehavior - It must be set `allowedContents` or `type`. In case of `type` set, it must be configured on content_stream plugin.');
+			
+			$Model->belongsTo[$stream['assocName']] = array(
+				'className' => 'ContentStream.CsContentStream',
+				'foreignKey' => $fk,
+			);
+		}
+		$this->settings[$Model->alias] = $options;
+		$Model->__createLinks();
 	}
 
 /**
@@ -47,10 +63,7 @@ class CsContentStreamHolderBehavior extends ModelBehavior
 	{
 		$config = Configure::read('ContentStream');
 		if (Configure::read() && (!is_array($config['streams']) || Set::numeric(array_keys($config['streams']))))
-		{
-			trigger_error('CsContentStreamHolderBehavior::normalizeConfig - ContentStream.streams must be a array indexed by type of content stream.');
-			return false;
-		}
+			return !trigger_error('CsContentStreamHolderBehavior::normalizeConfig - ContentStream.streams must be a array indexed by type of content stream.');
 		
 		$config['streams'] = Set::normalize($config['streams']);
 		foreach ($config['streams'] as $type => &$stream)

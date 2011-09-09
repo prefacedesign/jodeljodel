@@ -111,30 +111,30 @@
 	));
 	
 	$this->Decorator->rule(
-		'.ordered_list .buro_form div.input', array(
+		'.ordered_list .buro_form div.input, .content_stream .buro_form div.input', array(
 			'border' => 0,
 			'padding-bottom' => $vg->size(array('g' => 1))
 	));
 	
 	$this->Decorator->rule(
-		'.ordered_list .buro_form label.buro', array(
+		'.ordered_list .buro_form label.buro, .content_stream .buro_form label.buro', array(
 			'text-transform' => 'none'
 	));
 	
 	$this->Decorator->rule(
-		'.ordered_list button', array(
+		'.ordered_list button, .content_stream button', array(
 			'overflow' => 'hidden',
 			'position' => 'relative',
 			'cursor' => 'pointer'
 	));
 
 	$this->Decorator->rule(
-		'.ordered_list button[disabled]', array(
+		'.ordered_list button[disabled], .content_stream button[disabled]', array(
 			'cursor' => 'default'
 	));
 	
 	$this->Decorator->rule(
-		'.ordered_list button span', array(
+		'.ordered_list button span, .content_stream button span', array(
 			'top' => '100%',
 			'position' => 'absolute',
 	));
@@ -144,13 +144,13 @@
 	
 	
 	$this->Decorator->rule(
-		'.ordered_list .ordered_list_menu', array(
+		'.ordered_list_menu', array(
 			'border-top' => '1px dashed black',
 			'position' => 'relative'
 	));
 	
 	$this->Decorator->rule(
-		'.ordered_list .ordered_list_item', array(
+		'.ordered_list_item', array(
 			'margin' => sprintf('%s %s', $hg->size(array('g' => 0.5)), 0)
 	));
 	
