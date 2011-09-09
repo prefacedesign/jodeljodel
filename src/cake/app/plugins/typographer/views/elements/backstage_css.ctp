@@ -103,7 +103,7 @@
 	// Input List of Items
 	
 	$this->Decorator->rule(
-		'.ordered_list .buro_form', array(
+		'.many_children .buro_form', array(
 			'background-color' => $palette['subform']->write(),
 			'margin' => sprintf('%s %s', $hg->size(array('g' => 1)), 0),
 			'margin-left' => $hg->size(array('g' => -1)),
@@ -111,30 +111,30 @@
 	));
 	
 	$this->Decorator->rule(
-		'.ordered_list .buro_form div.input, .content_stream .buro_form div.input', array(
+		'.many_children .buro_form div.input, .content_stream .buro_form div.input', array(
 			'border' => 0,
 			'padding-bottom' => $vg->size(array('g' => 1))
 	));
 	
 	$this->Decorator->rule(
-		'.ordered_list .buro_form label.buro, .content_stream .buro_form label.buro', array(
+		'.many_children .buro_form label.buro, .content_stream .buro_form label.buro', array(
 			'text-transform' => 'none'
 	));
 	
 	$this->Decorator->rule(
-		'.ordered_list button, .content_stream button', array(
+		'.many_children button, .content_stream button', array(
 			'overflow' => 'hidden',
 			'position' => 'relative',
 			'cursor' => 'pointer'
 	));
 
 	$this->Decorator->rule(
-		'.ordered_list button[disabled], .content_stream button[disabled]', array(
+		'.many_children button[disabled], .content_stream button[disabled]', array(
 			'cursor' => 'default'
 	));
 	
 	$this->Decorator->rule(
-		'.ordered_list button span, .content_stream button span', array(
+		'.many_children button span, .content_stream button span', array(
 			'top' => '100%',
 			'position' => 'absolute',
 	));
@@ -155,13 +155,13 @@
 	));
 	
 	$this->Decorator->rule(
-		'.ordered_list .ordered_list_item.auto_order', array(
+		'.many_children .ordered_list_item.auto_order', array(
 			'padding-bottom' => $hg->size(array('g' => 0.5)),
 			'border-bottom' => '1px dashed black'
 	));
 	
 	$this->Decorator->rule(
-		'.ordered_list .ordered_list_item.auto_order.last_item', array(
+		'.many_children .ordered_list_item.auto_order.last_item', array(
 			'border-bottom' => '0px'
 	));
 	

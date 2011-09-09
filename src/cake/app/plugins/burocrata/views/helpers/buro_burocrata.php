@@ -1272,7 +1272,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$out .= $this->_orderedItens(compact('texts','model_class_name','foreign_key', 'parameters','allowed_content','baseID','callbacks', 'auto_order'));
 		
-		return $this->Bl->div(array('id' => 'div' . $baseID, 'class' => 'ordered_list'), array(), $out);
+		return $this->Bl->div(array('id' => 'div' . $baseID, 'class' => 'many_children'), array(), $out);
 	}
 
 
