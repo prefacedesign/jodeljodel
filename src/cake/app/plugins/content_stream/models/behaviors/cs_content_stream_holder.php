@@ -57,15 +57,15 @@ class CsContentStreamHolderBehavior extends ModelBehavior
 			else
 				return !trigger_error('CsContentStreamHolderBehavior - It must be set `allowedContents`(array) or `type`(string). In case of `type` set, it must be configured on content_stream plugin.');
 			
-			foreach ($stream['allowedContents'] as &$allowedContent)
+			foreach ($stream['allowedContents'] as $k=>$allowedContent)
 			{
-				if (is_string($allowedContent))
-				{
-					if (isset($config['streams'][$allowedContent]))
-						$allowedContent = $config['streams'][$allowedContent];
-					else
-						return !trigger_error('CsContentStreamHolderBehavior - Content type `'.$allowedContent.'` not known.');
-				}
+				if (!is_string($allowedContent))
+					return !trigger_error('CsContentStreamHolderBehavior - Parameter allowed content must be an string.');
+				elseif (!isset($config['streams'][$allowedContent]))
+					return !trigger_error('CsContentStreamHolderBehavior - Content type `'.$allowedContent.'` not known.');
+				
+				$stream['allowedContents'][$allowedContent] = $config['streams'][$allowedContent];
+				unset($stream['allowedContents'][$k]);
 			}
 			
 			$stream['assocName'] = empty($stream['type']) ? Inflector::camelize($fk) : Inflector::camelize($stream['type']);
@@ -74,7 +74,6 @@ class CsContentStreamHolderBehavior extends ModelBehavior
 				'foreignKey' => $fk,
 			);
 		}
-		
 		$this->settings[$Model->alias] = $options;
 		$Model->__createLinks();
 	}
