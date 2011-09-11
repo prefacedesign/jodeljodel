@@ -1414,7 +1414,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'baseID' => $this->baseID(),
 			'url' => $url_edit,
 			'params' => array(
-				$this->securityParams($url_edit, $model_plugin, $model_name),
+				$this->internalParam('request') => "#{request}",
 				$this->internalParam('id') => "#{id}",
 				$this->internalParam('action') => "#{action}",
 				$this->internalParam('baseID', $baseID),
@@ -1424,6 +1424,16 @@ class BuroBurocrataHelper extends XmlTagHelper
 				'onSuccess' => array('js' => "BuroCR.get('$baseID').actionSuccess(json||false);"),
 			)
 		);
+		$types = array();
+		foreach($allowed_content as $type=>$content)
+		{
+			list ($content_plugin, $content_model) = pluginSplit($content['model']);
+			$types[$type] = array(
+				'request' => $this->security($url_edit, $content_plugin, $content_model),
+				'title' => $content['title']
+			);
+		}
+		
 		if ($auto_order)
 			$ajax_call['params'][$this->internalParam('foreign_key')] = $foreign_key;
 		$jsOptions['callbacks'] = array('onAction' => array('ajax' => $ajax_call))+$options['callbacks'];
@@ -1431,7 +1441,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$jsOptions['templates']['menu'] = $this->orderedItensMenu(array(), array('allowed_content' => $allowed_content));
 		$jsOptions['templates']['item'] = $this->orderedItensItem(array('class' => $auto_order?'auto_order':''));
 		$jsOptions['contents'] = $contents;
-		$jsOptions += compact('auto_order', 'parameters', 'texts', 'baseID');
+		$jsOptions += compact('auto_order', 'parameters', 'texts', 'baseID', 'types');
 		
 		
 		$out = $this->Bl->br();
@@ -1486,13 +1496,14 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		// A menu made of list of content
 		$linkList = array();
-		foreach ($options['allowed_content'] as $content)
+		foreach ($options['allowed_content'] as $type => $content)
 		{
-			if (!is_array($content)) $content = array('model' => $content);
-			$content += array('title' => Inflector::humanize($content['model']));
+			if (!is_array($content)) 
+				return !trigger_error('BuroBurocrataHelper::sorderedItensMenu - allowed_content must be an array of arrays.');
+			$content += array('title' => Inflector::humanize($type));
 			
 			$linkList[] = array(
-				'attr' => array('href' => '/','class' => 'ordered_list_menu_link', 'buro:type' => $content['model']),
+				'attr' => array('href' => '/','class' => 'ordered_list_menu_link', 'buro:type' => $type),
 				'name' => $content['title']
 			);
 		}

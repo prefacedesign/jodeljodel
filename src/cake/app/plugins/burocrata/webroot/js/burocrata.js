@@ -868,17 +868,17 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
  */
 var BuroListOfItems = Class.create(BuroCallbackable, {
 	baseFxDuration: 0.3, //in seconds
-	initialize: function(id_base, parameters, content, types)
+	initialize: function(id_base, parameters, content)
 	{
-		this.texts = content.texts || {};
 		this.templates = content.templates || {menu: '', item: ''};
 		this.contents = content.contents || [];
+		this.texts = content.texts || {};
+		this.types = content.types || {}
 		this.parameters = parameters || {};
 		
 		this.menus = [];
 		this.items = [];
 		
-		this.types = types;
 		this.id_base = id_base;
 		BuroCR.set(this.id_base, this);
 		
@@ -988,7 +988,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	newItem: function(menuObj, type)
 	{
 		if (this.placesForm(menuObj))
-			this.trigger('onAction', 'edit', '', type);
+			this.trigger('onAction', 'edit', '', this.types[type].request);
 	},
 	placesForm: function(obj)
 	{
