@@ -1359,8 +1359,10 @@ var BuroListOfItemsMenu = Class.create(BuroCallbackable, {
 		this.links = this.menu.select('a.ordered_list_menu_link');
 		this.links.each(function(lnk){lnk.observe('click', this.lnkClick.bind(this))}.bind(this));
 		
-		this.close_link = this.div.down('a.ordered_list_menu_close');
+		this.close_link = this.div.down('.ordered_list_menu_close>a');
 		this.close_link.observe('click', function(ev){ ev.stop(); this.close();}.bind(this));
+		
+		this.border = this.div.down('.border');
 		
 		this.enable().close();
 	},
@@ -1388,6 +1390,7 @@ var BuroListOfItemsMenu = Class.create(BuroCallbackable, {
 		this.menu.show();
 		this.close_link.up().show();
 		this.plus_button.hide();
+		this.border.hide();
 		return this;
 	},
 	close: function(ev)
@@ -1395,6 +1398,7 @@ var BuroListOfItemsMenu = Class.create(BuroCallbackable, {
 		this.close_link.up().hide();
 		this.menu.hide();
 		this.plus_button.show();
+		this.border.show();
 		return this;
 	},
 	setOrder: function(order)

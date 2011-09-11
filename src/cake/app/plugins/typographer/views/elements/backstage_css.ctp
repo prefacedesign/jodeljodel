@@ -140,14 +140,7 @@
 	));
 	
 	
-	
-	
-	
-	$this->Decorator->rule(
-		'.ordered_list_menu', array(
-			'border-top' => '1px dashed black',
-			'position' => 'relative'
-	));
+
 	
 	$this->Decorator->rule(
 		'.ordered_list_item', array(
@@ -180,6 +173,32 @@
 		)
 	);
 	
+	$this->Decorator->rule(
+		'.ordered_list_menu', array(
+			'position' => 'relative',
+			'clear' => 'both'
+	));
+	
+	$this->Decorator->rule(
+		'.ordered_list_menu .ordered_list_menu_list', array(
+			'background-color' => $palette['subform']->write(),
+			'margin-left' => $hg->size('-g'),
+			'padding' => sprintf('%s %s', 0, $hg->size('g')),
+			'height' => $u->t($line_height*1.5),
+			'line-height' => $u->t($line_height*1.5)
+	));
+	
+	$this->Decorator->rule(
+		'.ordered_list_menu .ordered_list_menu_close', array(
+			'float' => 'right'
+	));
+	
+	$this->Decorator->rule(
+		'.ordered_list_menu .border', array(
+			'border-top' => '1px dashed black',
+			'margin-top' => '-1px'
+	));
+	
 	$bg_pos = $u->t(15);
 	$this->Decorator->rule(
 		'.ordered_list_menu button.ordered_list_menu_add', array(
@@ -190,6 +209,7 @@
 			'right' => $u->t(-15),
 			'top' => $u->t(-ceil($arrow_size/2))
 	));
+	
 	$this->Decorator->rule(
 		'.ordered_list_menu button.ordered_list_menu_add[disabled]', array(
 			'background-position' => sprintf('%s bottom', $bg_pos)
@@ -454,7 +474,7 @@
 	$this->Decorator->rule(
 		'.box',	array(
 			'float' => 'left',
-			'margin-left' => $hg->size(array('g' => 1))
+			'margin-left' => $hg->size('g')
 	));
 	
 	$this->Decorator->rule(
@@ -893,12 +913,6 @@
 		'div.dash_additem div', array(
 			'margin-left' => $hg->size(array('g' => 1)),
 			'padding-top' => $hg->size(array('m' => 1))
-	));
-	
-	$this->Decorator->rule(
-		'div.dash_additem div', array(
-			'margin-left' => $hg->size(array('g' => 1)),
-			'padding-top' => $hg->size(array('m' => 1)),
 	));
 	
 	$this->Decorator->rule(

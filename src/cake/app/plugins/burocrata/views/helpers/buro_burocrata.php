@@ -1482,6 +1482,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$htmlAttributes['buro:order'] = '#{order}';
 		$out = $this->Bl->sdiv($htmlAttributes); // to be closed on BuroBurocrataHelper::sorderedItensMenu
 		
+		$out .= $this->Bl->div(array('class' => 'border'));
+		
 		// A menu made of list of content
 		$linkList = array();
 		foreach ($options['allowed_content'] as $content)
@@ -1494,14 +1496,20 @@ class BuroBurocrataHelper extends XmlTagHelper
 				'name' => $content['title']
 			);
 		}
-		$linkList[] = array(
-			'attr' => array('class' => 'ordered_list_menu_close', 'href' => '/'),
-			'name' => __('Burocrata::orderdItensMenu - close list', true)
-		);
 		$lastSeparator = ' '.__('anchorList or',true).' ';
-		
 		$anchorList = $this->Bl->anchorList(array(), compact('linkList', 'lastSeparator'));
-		$out .= $this->Bl->div(array('class' => 'ordered_list_menu_list'), array(), $anchorList);
+		$cancelLink = $this->Bl->span(array('class' => 'ordered_list_menu_close'), array(),
+			$this->Bl->anchor(
+				array('href' => '/'),
+				array(),
+				__('Burocrata::orderdItensMenu - close list', true)
+		));
+		
+		$out .= $this->Bl->div(
+			array('class' => 'ordered_list_menu_list'),
+			array(), 
+			$anchorList . ' ' . $cancelLink
+		);
 		
 		// Button that shows the list of content (if more then one item)
 		$out .= $this->Bl->button(array('class' => 'ordered_list_menu_add'), array(), $this->Bl->spanDry('+'));
