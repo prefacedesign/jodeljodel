@@ -8,6 +8,8 @@
  * @subpackage	jodel.content_stream.models
  */
 
+App::import('Lib', 'ContentStream.CsConfigurator');
+
 /**
  * CsContentStreamHolderBehavior.
  *
@@ -39,10 +41,7 @@ class CsContentStreamHolderBehavior extends ModelBehavior
 		if (!isset($options['streams']) || empty($options['streams']) || !is_array($options['streams']) || Set::numeric(array_keys($options['streams'])))
 			return !trigger_error('CsContentStreamHolderBehavior::setup - The `streams` parameter must be set on format: \'foreign_key\' => \'type\'');
 		
-		if (!$this->normalizeConfig())
-			return false;
-		
-		$config = Configure::read('ContentStream');
+		$config = CsConfigurator::getConfig();
 		
 		$type = $have = $callbacks = $assocName = null;
 		foreach ($options['streams'] as $fk => &$stream)
@@ -76,32 +75,5 @@ class CsContentStreamHolderBehavior extends ModelBehavior
 		}
 		$this->settings[$Model->alias] = $options;
 		$Model->__createLinks();
-	}
-
-/**
- * Creates all parameters on configuration using defaults, if not set.
- * The configuration is stored back in the Configure class.
- * 
- * @access public
- * @return boolean Return true if succefully nomalized, false, if not.
- */
-	function normalizeConfig()
-	{
-		$config = Configure::read('ContentStream');
-		if (Configure::read() && (!is_array($config['streams']) || Set::numeric(array_keys($config['streams']))))
-			return !trigger_error('CsContentStreamHolderBehavior::normalizeConfig - ContentStream.streams must be a array indexed by type of content stream.');
-		
-		$config['streams'] = Set::normalize($config['streams']);
-		foreach ($config['streams'] as $type => &$stream)
-		{
-			if (!isset($stream['model'])) $stream['model'] = Inflector::camelize($type) . '.' . Inflector::classify($type);
-			if (!isset($stream['controller'])) $stream['controller'] = Inflector::pluralize($type);
-			if (!isset($stream['title'])) $stream['title'] = Inflector::humanize($type);
-			
-			$config['callbacks'] += array($type => array());
-		}
-		
-		Configure::write('ContentStream', $config);
-		return true;
 	}
 }

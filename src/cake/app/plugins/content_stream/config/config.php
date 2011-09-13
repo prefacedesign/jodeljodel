@@ -24,15 +24,3 @@ Configure::write('ContentStream.types', array(
 	'folder' => array('cs_file'),
 	'article' => array('cs_text', 'cs_image'),
 ));
-
-/**
- * Configure of some callbacks on content stream editing events
- * Can be "observed" here or on atach the content stream behavior.
- */
-Configure::write('ContentStream.callbacks', array(
-	'document' => array(
-		'create' => array('controller' => 'documents', 'action' => 'created'),
-		'update' => array('controller' => 'documents', 'action' => 'updated'),
-		'delete' => array('controller' => 'documents', 'action' => 'deleted')
-	)
-));
