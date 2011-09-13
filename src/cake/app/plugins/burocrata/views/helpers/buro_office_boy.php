@@ -84,7 +84,7 @@ class BuroOfficeBoyHelper extends AppHelper
 		),
 		'listOfItems' => array(
 			'onShowForm' => 'function(id){%s}',
-			'onAction' => 'function(action,id,request){%s}',
+			'onAction' => 'function(action,id, type){%s}',
 			'onError' => 'function(json){%s}',
 		),
 		'color' => array(

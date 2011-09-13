@@ -353,7 +353,7 @@ class BuroBurocrataController extends BurocrataAppController
  */
 	public function list_of_items()
 	{
-		$id = $action = $Model = null;
+		$item_type = $id = $action = $Model = null;
 		$error = $this->_load($Model);
 		
 		if($error === false)
@@ -371,6 +371,9 @@ class BuroBurocrataController extends BurocrataAppController
 			
 			if (isset($this->buroData['action']))
 				$action = $this->buroData['action'];
+			
+			if (isset($this->buroData['type']))
+				$item_type = $this->buroData['type'];
 			
 			switch ($action)
 			{
@@ -488,7 +491,7 @@ class BuroBurocrataController extends BurocrataAppController
 		
 		}
 		
-		$this->set(compact('error', 'action', 'saved', 'id'));
+		$this->set(compact('error', 'action', 'saved', 'id', 'item_type'));
 	}
 
 

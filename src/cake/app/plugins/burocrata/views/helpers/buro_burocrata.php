@@ -1245,9 +1245,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$auto_order = !($AssocModel && $AssocModel->Behaviors->attached('Ordered'));
 		
 		$allowed_content = array(array(
-			'model' => $model,
-			'label' => $model,
-			'title' => $title,
+			'model' => $model_class_name,
+			'title' => ife ($title,$title,' '),
 		));
 		
 		$parameters = array();
@@ -1398,15 +1397,16 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$contents = array();
 		$Model =& ClassRegistry::init($model_class_name);
 		if (!empty($this->data[$model_name]))
+		{
 			foreach ($this->data[$model_name] as $n => $data)
 			{
 				$data = array($model_name => $data);
 				$contents[] = array(
 					'content' => $this->Jodel->insertModule($model_class_name, $type, $data),
-					'id' => $data[$Model->alias][$Model->primaryKey],
-					'title' => ''
+					'id' => $data[$Model->alias][$Model->primaryKey]
 				);
 			}
+		}
 		
 		// Javascripts
 		$url_edit = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'list_of_items');
@@ -1414,9 +1414,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'baseID' => $this->baseID(),
 			'url' => $url_edit,
 			'params' => array(
-				$this->internalParam('request') => "#{request}",
+				$this->securityParams($url_edit, $model_plugin, $model_name),
 				$this->internalParam('id') => "#{id}",
 				$this->internalParam('action') => "#{action}",
+				$this->internalParam('type') => "#{type}",
 				$this->internalParam('baseID', $baseID),
 			),
 			'callbacks' => array(
@@ -1424,15 +1425,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 				'onSuccess' => array('js' => "BuroCR.get('$baseID').actionSuccess(json||false);"),
 			)
 		);
+		
 		$types = array();
 		foreach($allowed_content as $type=>$content)
-		{
-			list ($content_plugin, $content_model) = pluginSplit($content['model']);
-			$types[$type] = array(
-				'request' => $this->security($url_edit, $content_plugin, $content_model),
-				'title' => $content['title']
-			);
-		}
+			$types[$type] = array('title' => $content['title']);
 		
 		if ($auto_order)
 			$ajax_call['params'][$this->internalParam('foreign_key')] = $foreign_key;
@@ -1504,6 +1500,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			
 			$linkList[] = array(
 				'attr' => array('href' => '/','class' => 'ordered_list_menu_link', 'buro:type' => $type),
+				'options' => array('close_me' => false),
 				'name' => $content['title']
 			);
 		}
