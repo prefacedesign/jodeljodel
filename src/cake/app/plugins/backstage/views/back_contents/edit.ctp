@@ -4,7 +4,7 @@ echo $this->Bl->sbox(array(), array('size'=> array('M' => 12, 'g' => -1)));
 
 	$editing = 'Editing a '. $type;
 	$h1Text = __d('backstage', $editing, true);
-
+	
 	if (isset($this->data[$modelName]['publishing_status']))
 	{
 		$publishStyle = $draftStyle = '';

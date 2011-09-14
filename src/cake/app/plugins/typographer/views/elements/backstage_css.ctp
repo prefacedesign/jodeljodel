@@ -675,9 +675,9 @@
 	$this->Decorator->rule(
 		'a:hover, a:active',
 		array(
-			'color' => $palette['bg']->write(),
-			'background-color' => $palette['text']->write(),
-			'border-color' => $palette['text']->write()
+			'color' => $palette['bg']->write() . ' !important',
+			'background-color' => $palette['text']->write() . ' !important',
+			'border-color' => $palette['text']->write() . ' !important'
 		)
 	);
 	
@@ -763,9 +763,9 @@
 	
 	$this->Decorator->rule(
 		'.dashboard th a:hover, .dashboard th a:active, .control_box a:hover, .control_box a:active', array(
-			'color' => $palette['control_box_bg']->write(),
-			'background-color' => $palette['control_box_fg']->write(),
-			'border-color' =>  $palette['control_box_bg']->write()
+			'color' => $palette['control_box_bg']->write() . ' !important',
+			'background-color' => $palette['control_box_fg']->write() . ' !important',
+			'border-color' =>  $palette['control_box_bg']->write() . ' !important'
 		)
 	);
 	
@@ -818,35 +818,50 @@
 	
 	// Pagination
 	
+	$this->Decorator->rule(
+		'.pagination', array(
+			'position' => 'absolute',
+			'right' => 0,
+			'top' => $u->t(-82),
+			'z-index' => 1
+	));
+	
 	$padding_left = $hg->size(array('m' => 0.75), false);
 	$this->Decorator->rule(
 		'.pagination span', array(
 			'display' => 'block',
 			'float' => 'left',
-			'text-align' => 'right',
+			'text-align' => 'center',
 			'margin-left' => $hg->size(array('m' => 0.75)),
-			'min-width' => $hg->size(array('m' => 4.5, 'u' => $u->t(-$padding_left))),
-			'padding' => $hg->size(array('m' => 0.5)) . ' ' . $u->t( $padding_left),
+			'min-width' => $hg->size(array('m' => 5)),
+			'height' => $vg->size(array('g' => 1, 'm' => 0.6)),
 			'border' => $hg->size(array('u' => 1)) . ' solid ' .  $palette['menu_border']->write(),
+			'padding-top' => $vg->size(array('m' => 0.6)),
 			'font-weight' => 'bold'
 	));
 	
 	$this->Decorator->rule(
-		'.pagination span.current, body div.pagination span:hover, body div.pagination span:hover a, body div.pagination span:hover a:visited, body div.pagination span:hover a:hover', array(
+		'.pagination span.current, body div.pagination span:hover, body div.pagination span:hover, body div.pagination span:hover', array(
 			'border-color' =>     $palette['internal_selection']->write(),
 			'background-color' => $palette['internal_selection']->write(),
 			'background-color' => $palette['internal_selection']->write(),
-			'color' => $palette['bg']->write()
+			'color' => $palette['bg']->write(),
+			'cursor' => 'pointer'
 	));
 	
 	$this->Decorator->rule(
 		'body div.pagination span a', array(			
-			'color' => $palette['text']->write()
+			'color' => $palette['text']->write(),
+			'display' => 'block',
+			'height' => $vg->size(array('g' => 1, 'm' => 1)),
+			'margin-top' => $u->t(-2),
+			'padding-top' => $vg->size(array('m' => 0.6)),
+			
 	));
 	
 	$this->Decorator->rule(
 		'body div.pagination span a, body div.pagination span a:hover, body div.pagination span a:visited, body div.pagination span a:hover', array(
-			'border' => 0, 'background' => 'transparent'
+			'border' => 0, 'background' => 'transparent !important'
 	));
 	
 	$this->Decorator->rule(
@@ -857,6 +872,7 @@
 	$this->Decorator->rule(
 		'div.dash_additem', array(
 			'position' => 'absolute',
+			'z-index' => 5,
 			'height' => $vg->size(array('m' => 6)),
 			'width' => $hg->size(array('M' => 12, 'g' => 1)),
 			'margin-left' => $hg->size(array('g' => -1)),
@@ -895,7 +911,9 @@
 	
 	$this->Decorator->rule(
 		'div.dash_toolbox', array(
-			'height' => $vg->size(array('u' => ($line_height * 2)))
+			'border-bottom' => $u->t(1) . ' solid black',
+			'padding-bottom' => $vg->size(array('g' => 0.8)),
+			'height' => $vg->size(array('m' => 6)),
 	));
 	
 	$this->Decorator->rule(
@@ -905,14 +923,43 @@
 	));
 	
 	$this->Decorator->rule(
-		'div.dash_additem div', array(
-			'margin-left' => $hg->size(array('g' => 1)),
-			'padding-top' => $hg->size(array('m' => 1)),
+		'.dash_additem h3', array(
+			'font-size' => $vg->size(array('u' => $line_height* 13/18)),
+			'display' => 'inline',
+			'margin-right' => $hg->size(array('m' => 1)),
+			'text-transform' => 'uppercase',
+			'letter-spacing' => $letterSpacing
 	));
 	
 	$this->Decorator->rule(
-		'.dash_additem h3', array(
-			'font-size' => $vg->size(array('u' => $line_height* 13/18)),
+		'.dash_filter', array(
+			'margin-top' => $vg->size(array('m' => 3)),
+			'margin-bottom' => $vg->size(array('m' => 2)),
+			'font-size' => $vg->size(array('u' => $line_height* 11/18)),
+	));
+	
+	$this->Decorator->rule(
+		'#dash_filter_list .filters', array(
+			'float' => 'left',
+			'margin-right' => $hg->size(array('g' => 1))
+	));
+	
+	$this->Decorator->rule(
+		'#dash_filter_list a', array(
+			'color' => $palette['text']->write(),
+			'border-bottom' => 'none',
+			'background-color' => $palette['bg']->write(),
+	));
+	
+	$this->Decorator->rule(
+		'#dash_filter_list a:hover, #dash_filter_list a.selected', array(
+			'color' => $palette['bg']->write() . ' !important',
+			'background-color' => $palette['internal_selection']->write() . ' !important',
+	));
+	
+	$this->Decorator->rule(
+		'.dash_filter h4', array(
+			'font-size' => $vg->size(array('u' => $line_height* 11/18)),
 			'display' => 'inline',
 			'margin-right' => $hg->size(array('m' => 1)),
 			'text-transform' => 'uppercase',
@@ -1129,6 +1176,12 @@
 			'border-top' => $outer_border,
 			'width' => '100%',
 			'font-size' => $vg->size(array('u' => ($line_height * 11/18)))
+	));
+	
+	$this->Decorator->rule(
+		'#dashboard_table', array(
+			'clear' => 'both',
+			'position' => 'relative'
 	));
 	
 	//First IE specific:
@@ -1349,6 +1402,26 @@
 			'text-transform' => 'uppercase',
 			'letter-spacing' => $letterSpacing
 	));
+	
+	$this->Decorator->rule(
+		'.asc', array(
+			'background' => "url('".Router::url('/img/matrixes/seta_baixo.png')."') right 0px no-repeat",
+			'padding-right' => $u->t(16)
+		
+	));
+	
+	$this->Decorator->rule(
+		'.asc:hover, .desc:hover', array(
+			'background-position' => "right -10px",
+	));
+	
+	$this->Decorator->rule(
+		'.desc', array(
+			'background' => "url('".Router::url('/img/matrixes/seta_cima.png')."') right 0px no-repeat",
+			'padding-right' => $u->t(16)
+		
+	));
+	
 	
 ?>
 .cpk-cont {position: absolute; z-index: 51; background-color: white; border: 1px solid black; padding: 10px; -moz-box-shadow:4px 4px 15px 1px #666; box-shadow:4px 4px 15px 1px #666;}

@@ -8,6 +8,9 @@ Configure::write('Dashboard.itemSettings',array(
 		'corktile' => array(
 			'actions' => array('edit'),
 			'edit_version' => 'corktile'
-		)
+		),
 	)
 );
+
+Configure::write('Dashboard.limitSize', 20);
+Configure::write('Dashboard.statusOptions', array('published', 'draft'));
