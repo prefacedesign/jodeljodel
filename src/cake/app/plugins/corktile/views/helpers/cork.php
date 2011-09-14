@@ -58,7 +58,7 @@ class CorkHelper extends AppHelper
 		$corkData = $CorkCorktile->getData($options); //This one handles all data logic.
 
 		$typeConfig = Configure::read('jj.modules.' . $options['type']);
-		list($model_name, $plugin_name) = pluginSplit($typeConfig['model']);
+		list($plugin_name, $model_name) = pluginSplit($typeConfig['model']);
 		
 
 		$t = $this->Bl->sdiv($htmlAttributes);

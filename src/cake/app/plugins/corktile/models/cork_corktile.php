@@ -63,12 +63,13 @@ class CorkCorktile extends CorktileAppModel
 			return array();
 		}
 		
+		$Model =& ClassRegistry::init($typeConfig['model']);
 		$corktileData = $this->find('first', array('conditions' => array('id' => $options['key'], 'type' => $options['type'])));
 		if (empty($corktileData))
 		{
 			$defaultContent = isset($options['defaultContent']) ? $options['defaultContent'] : array();
 			
-			$Model =& ClassRegistry::init($typeConfig['model']);
+			$Model->create();
 			$contentId = $Model->saveCorkContent($defaultContent, $options, false);
 		
 			if($contentId === false)
@@ -142,6 +143,7 @@ class CorkCorktile extends CorktileAppModel
 		$Model =& ClassRegistry::init($typeConfig['model']);
 		$corkContent = $Model->getCorkContent($metaData['CorkCorktile']['content_id']);
 		
+		list($typeConfig['plugin'],$typeConfig['model']) = pluginSplit($typeConfig['model']);
 		return am($metaData, $corkContent, array('ModuleInfo' => $typeConfig));
 	}
 	

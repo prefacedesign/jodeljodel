@@ -1,8 +1,6 @@
 <?php
 // @todo Maybe, there is no need of a component, maybe just adding an extra layer between
 //    Controller and AppController can solve this issue.
-App::import('Vendors', 'Estilista.tools');
-App::import('Config', 'Estilista.config');
 
 class TypeLayoutSchemePickerComponent extends Object 
 {
