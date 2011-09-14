@@ -675,9 +675,9 @@
 	$this->Decorator->rule(
 		'a:hover, a:active',
 		array(
-			'color' => $palette['bg']->write() . ' !important',
-			'background-color' => $palette['text']->write() . ' !important',
-			'border-color' => $palette['text']->write() . ' !important'
+			'color' => $palette['bg']->write(), 
+			'background-color' => $palette['text']->write(),
+			'border-color' => $palette['text']->write()
 		)
 	);
 	

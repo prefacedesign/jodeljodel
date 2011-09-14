@@ -133,7 +133,8 @@
 						), array(
 							'complete' => "if(request.responseJSON.success) {showPopup('delete_alert_ok');} else {showPopup('delete_alert_failure');}",
 							'class' => 'link_button'
-						)
+						),
+						__d('dashboard','Are you sure that desires delete this item?', true)
 				);
 			}
 			
