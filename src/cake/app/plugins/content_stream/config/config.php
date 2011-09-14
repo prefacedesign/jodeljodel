@@ -2,6 +2,13 @@
 
 /**
  * Here all types of stream content are defined.
+ * 
+ * ### Options availables are:
+ * - `model` string - Model´s fullname (including plugin) (defults to 'TheKey.TheKey')
+ * - `title` string - The name that will be used on interface to indentify this stream (Defaults to 'The Key')
+ * 
+ * All options are optional and must be indexed by a indentifier key (that will be used on next config).
+ * If no option are given, it is possible to list just the key.
  */
 Configure::write('ContentStream.streams', array(
 	'cs_image','cs_file',
