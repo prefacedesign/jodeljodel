@@ -32,7 +32,7 @@ class BuroBurocrataController extends BurocrataAppController
 /**
  * List of components
  *
- * @var string
+ * @var array
  * @access public
  */
 	public $components = array('Typographer.TypeLayoutSchemePicker', 'Burocrata.BuroBurocrata', 'RequestHandler');
