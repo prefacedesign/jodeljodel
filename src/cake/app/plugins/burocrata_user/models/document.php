@@ -13,4 +13,10 @@ class Document extends BurocrataUserAppModel {
 			)
 		)
 	);
+	
+	function createEmpty()
+	{
+		$this->create(array('Document' => array('name' => '')));
+		return $this->save();
+	}
 }

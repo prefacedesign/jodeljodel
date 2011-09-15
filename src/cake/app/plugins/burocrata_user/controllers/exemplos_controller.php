@@ -27,8 +27,18 @@ class ExemplosController extends BurocrataUserAppController {
 		);
 	}
 	
-	function cs()
+	function cs($id = 1)
 	{
+		$this->loadModel('BurocrataUser.Document');
+		$data = $this->Document->findById($id);
+		if (empty($data))
+		{
+			if($this->Document->createEmpty())
+				$this->redirect(array($this->Document->id));
+			else
+				die ('Couldnt create a empty Document.');
+		}
+		$this->data = $data;
 	}
 	
 	function video($id = 1)

@@ -32,7 +32,7 @@ class CsContentStreamHolderBehavior extends ModelBehavior
 /**
  * Invoke the normalization method and populates the $settings property.
  * 
- * @oaram model $Model
+ * @param model $Model
  * @param array $options
  * @access public
  */
@@ -67,7 +67,7 @@ class CsContentStreamHolderBehavior extends ModelBehavior
 				unset($stream['allowedContents'][$k]);
 			}
 			
-			$stream['assocName'] = empty($stream['type']) ? Inflector::camelize($fk) : Inflector::camelize($stream['type']);
+			$stream['assocName'] = empty($stream['type']) ? Inflector::camelize($fk) : Inflector::camelize('cs_'.$stream['type']);
 			$Model->belongsTo[$stream['assocName']] = array(
 				'className' => 'ContentStream.CsContentStream',
 				'foreignKey' => $fk,
@@ -75,5 +75,40 @@ class CsContentStreamHolderBehavior extends ModelBehavior
 		}
 		$this->settings[$Model->alias] = $options;
 		$Model->__createLinks();
+	}
+
+/**
+ * beforeSave callback, used for creating a new ContentStream.
+ * 
+ * @param model $Model
+ * @access public
+ */
+	function beforeSave(&$Model)
+	{
+		if (empty($Model->data[$Model->alias][$Model->primaryKey]))
+		{
+			$dbo = $Model->getDataSource();
+			$dbo->begin($Model);
+			foreach ($this->settings[$Model->alias]['streams'] as $fk => $stream)
+				if ($Model->{$stream['assocName']}->createEmpty($stream['type']))
+					$Model->data[$Model->alias][$fk] = $Model->{$stream['assocName']}->id;
+		}
+		
+		return true;
+	}
+
+/**
+ * afterSave callback method. This callback is used to finalize the transation started on beforeSave
+ * 
+ * @access public
+ */
+	function afterSave($Model, $created)
+	{
+		$dbo = $Model->getDataSource();
+		if ($dbo->_transactionStarted)
+		{
+			if ($created) $dbo->commit($Model);
+			else		  $dbo->rollback($Model);
+		}
 	}
 }

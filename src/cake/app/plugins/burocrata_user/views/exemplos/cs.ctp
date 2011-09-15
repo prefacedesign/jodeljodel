@@ -6,15 +6,19 @@
 		array(
 			'model' => 'BurocrataUser.Document', // Somente o Model pai, assim como no FormHelper::create
 			'callbacks' => array(
-				'onStart'	=> array('lockForm'),
-				'onComplete'=> array('unlockForm'),
+				'onStart'	=> array('lockForm', 'js' => 'form.setLoading()'),
+				'onComplete'=> array('unlockForm', 'js' => 'form.unsetLoading()'),
 				'onSave'    => array('popup' => 'Salvou a gabaça'),
 				'onError'   => array('js' => "if(code == E_NOT_JSON) alert('Não é json! Não é json!'); else if(code == E_JSON) alert(error); else if(code == E_NOT_AUTH) alert('Você não tem autorização para isso.');"),
 				'onFailure'	=> array('popup' => 'Erro de comunicação com o servidor!'),
 			)
 		)
 	);
-	
+		echo $this->Buro->input(
+			array(),
+			array('type' => 'hidden', 'fieldName' => 'id')
+		);
+		
 		echo $this->Buro->input(
 			array(),
 			array(
