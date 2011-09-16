@@ -276,7 +276,7 @@
 	));
 	
 	$this->Decorator->rule(
-		'.input_relational .controls div div div', array(
+		'.input_relational .controls div div div.buro_form', array(
 			'border-top' => '0 !important',
 			'margin-top' => '0 !important',
 			'padding-top' => '0 !important',
