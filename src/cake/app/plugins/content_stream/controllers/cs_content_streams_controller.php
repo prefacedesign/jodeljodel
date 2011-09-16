@@ -15,10 +15,10 @@ App::import('Lib', 'JjUtils.SecureParams');
 /**
  * BuroBurocrataController.
  *
- * All burocrata`s ajax requests points here by default.
+ * All content_stream`s ajax requests points here by default.
  *
  * @package       jodel
- * @subpackage    jodel.burocrata.controllers
+ * @subpackage    jodel.content_stream.controllers
  */
 class CsContentStreamsController extends ContentStreamAppController
 {
@@ -80,6 +80,27 @@ class CsContentStreamsController extends ContentStreamAppController
 					extract($this->BuroBurocrata->getViewData($this));
 					$this->data = $data;
 					$this->set(compact('data'));
+				break;
+				
+				case 'save':
+					$saved = false;
+					$methodName = $this->BuroBurocrata->getSaveMethod($Model, $type);
+					debug($Model->alias);
+					break;
+					if ($methodName !== false)
+						$saved = $Model->{$methodName}($this->data) !== false;
+					else
+						$saved = $Model->save($this->data) !== false;
+					
+					if($saved)
+					{
+						$this->buroData['id'] = $saved = $Model->id;
+						$data = $this->BuroBurocrata->getViewData($this);
+						$this->data = $data['data'];
+						$this->set($data);
+					}
+					
+					$this->set(compact('saved', 'error'));
 				break;
 			}
 		}

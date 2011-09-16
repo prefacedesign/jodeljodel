@@ -163,4 +163,32 @@ class BuroBurocrataComponent extends Object
 		}
 		return compact('error', 'data');
 	}
+
+/**
+ * 
+ * 
+ * @access public
+ */
+	public function getSaveMethod(&$Model, $type = array())
+	{
+		if (!empty($type))
+			$type = array_reverse(explode('|',$type));
+		
+		$methodName = 'saveBurocrata';   //Tries specific saves related to the type
+		
+		foreach($type as $k => $subType)
+		{
+			for ($i = count($type) - 1; $i >= $k; $i--)
+				$methodName .= Inflector::camelize($type[$i]);
+				
+			if (method_exists($Model, $methodName))
+				break;
+			else
+				$methodName = 'saveBurocrata';
+		}
+		
+		if (method_exists($Model, $methodName))
+			return $methodName;
+		return false;
+	}
 }

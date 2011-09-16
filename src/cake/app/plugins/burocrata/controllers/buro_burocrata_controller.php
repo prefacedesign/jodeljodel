@@ -122,33 +122,14 @@ class BuroBurocrataController extends BurocrataAppController
 		$Model = null;
 		$error = $this->BuroBurocrata->loadPostedModel($this, $Model);
 		
-		if (!empty($type))
-			$type = array_reverse(explode('|',$type));
-		else
-			$type = array();
-	
-		
 		if($error === false)
 		{
-			$methodName = 'saveBurocrata';   //Tries specific saves related to the type
+			$methodName = $this->BuroBurocrata->getSaveMethod($Model, $type);
 			
-			foreach($type as $k => $subType)
-			{
-				for ($i = count($type) - 1; $i >= $k; $i--)
-					$methodName .= Inflector::camelize($type[$i]);
-					
-				if (method_exists($Model, $methodName))
-					break;
-				else
-					$methodName = 'saveBurocrata';
-			}
-		
-			if(method_exists($Model, $methodName))
+			if ($methodName !== false)
 				$saved = $Model->{$methodName}($this->data) !== false;
 			else
 				$saved = $Model->save($this->data) !== false;
-			
-			
 			
 			if($saved)
 			{
