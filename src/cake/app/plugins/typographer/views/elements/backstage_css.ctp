@@ -261,10 +261,11 @@
 			'background-position' => sprintf('%s bottom', 0)
 	));
 	
+		
 	// Input belongsTo
 	$this->Decorator->rule(
 		'.input_relational .controls .actions', array(
-			'margin-top' => $vg->size(array('g' => 1))
+			'margin-bottom' => $vg->size(array('g' => 1))
 	));
 
 	$this->Decorator->rule(
@@ -276,7 +277,12 @@
 	));
 	
 	$this->Decorator->rule(
-		'.input_relational .controls div div div.buro_form', array(
+		'.input_relational .controls div.buro_form div.buro_form, .ordered_list .input_relational div.buro_form', array(
+			'background-color' => $palette['subform2']->write() . ' !important',
+	));
+	
+	$this->Decorator->rule(
+		'.input_relational .controls div div div.buro_form, .ordered_list .input_relational div.buro_form', array(
 			'border-top' => '0 !important',
 			'margin-top' => '0 !important',
 			'padding-top' => '0 !important',
@@ -286,8 +292,10 @@
 		'.input_relational .controls div div div.input', array(
 			'padding-bottom' => '0',
 			'border' => '0',
+			//'position' => 'absolute',
 	));
-
+	
+	
 	
 	// Input autocomplete
 	
@@ -421,12 +429,20 @@
 	
 	
 	// Textile input
+	
+	$this->Decorator->rule(
+		'.buro .input_textile textarea', array(
+			'margin-top' => $hg->size(array('m' => 2))
+	));
+	
+	
 	$this->Decorator->rule(
 		'a.link_button.buro_textile', array(
 			'width' => $hg->size(array('M' => 1)),
 			'height' => $vg->size(array('g' => 1)),
 			'line-height' => $vg->size(array('g' => 1)),
-			'overflow' => 'hidden'
+			'overflow' => 'hidden',
+			'margin-top' => $hg->size(array('m' => 1))
 	));
 	
 	$this->Decorator->rule(
@@ -1060,6 +1076,11 @@
 			'width' => $hg->size(array('M' => 5, 'g' => -1, 'u' => -$padding_size-2*$border_size)),
 			'margin-right' => $hg->size(array('g' => 1)),
 			'height' => 'auto'
+	));
+	
+	$this->Decorator->rule(
+		'.buro_form .superfield p', array(
+			'font-size' => $u->t($line_height * 11/18),
 	));
 	
 	$this->Decorator->rule(
