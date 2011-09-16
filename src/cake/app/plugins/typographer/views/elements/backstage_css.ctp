@@ -261,23 +261,12 @@
 			'background-position' => sprintf('%s bottom', 0)
 	));
 	
-	
-	
-	
-	
 	// Input belongsTo
 	$this->Decorator->rule(
 		'.input_relational .controls .actions', array(
 			'margin-top' => $vg->size(array('g' => 1))
 	));
-	/*
-	$this->Decorator->rule(
-		'.input_relational .controls div div.buro_form', array(
-			'border-top' => $u->t(1) . ' dotted ' . $palette['text']->write(),
-			'margin-top' => $vg->size(array('g' => 1)),
-			'padding-top' => $vg->size(array('g' => 1)),
-	));
-	*/
+
 	$this->Decorator->rule(
 		'.input_relational .controls div div.buro_form', array(
 			'background-color' => $palette['subform']->write(),
@@ -288,19 +277,17 @@
 	
 	$this->Decorator->rule(
 		'.input_relational .controls div div div', array(
-			'border-top' => '0',
-			'margin-top' => '0',
-			'padding-top' => '0',
+			'border-top' => '0 !important',
+			'margin-top' => '0 !important',
+			'padding-top' => '0 !important',
 	));
 	
 	$this->Decorator->rule(
 		'.input_relational .controls div div div.input', array(
 			'padding-bottom' => '0',
 			'border' => '0',
-			//'position' => 'absolute',
 	));
-	
-	
+
 	
 	// Input autocomplete
 	
