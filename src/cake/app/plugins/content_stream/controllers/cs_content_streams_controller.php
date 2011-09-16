@@ -61,6 +61,30 @@ class CsContentStreamsController extends ContentStreamAppController
  */
 	function action()
 	{
+		$item_type = $id = $action = $Model = null;
+		$error = $this->BuroBurocrata->loadPostedModel($this, $Model);
+		
+		if (!$error)
+		{
+			if (isset($this->buroData['action']))
+				$action = $this->buroData['action'];
+			
+			if (isset($this->buroData['type']))
+				$item_type = $this->buroData['type'];
+			
+			switch ($action)
+			{
+				case 'edit':
+					if (!empty($this->buroData['id']))
+						$id = $this->buroData['id'];
+					extract($this->BuroBurocrata->getViewData($this));
+					$this->data = $data;
+					$this->set(compact('data'));
+				break;
+			}
+		}
+		
+		$this->set(compact('error', 'action', 'saved', 'id', 'item_type'));
 	}
 
 /**

@@ -131,4 +131,36 @@ class BuroBurocrataComponent extends Object
 		
 		return $error;
 	}
+
+/**
+ * Used to find data on database using burocratas conventions
+ * based on passed id.
+ * 
+ * @access protected
+ * @param $id mixed If empty will be used $controller->buroData['id']
+ * @return array An array with two index: `data` and `error`
+ */
+	public function getViewData(&$controller, $id = null)
+	{
+		$error = false;
+		$data = array();
+		$Model = null;
+		
+		if (empty($id) && !empty($controller->buroData['id']))
+			$id = $controller->buroData['id'];
+		
+		if(($error = $this->loadPostedModel($controller, $Model)) === false && !empty($id))
+		{
+			if (method_exists($Model, 'findBurocrata'))
+				$data = $Model->findBurocrata($id);
+			else
+				$data = $Model->find('first', array(
+					'recursive' => -1,
+					'conditions' => array(
+						$Model->alias.'.'.$Model->primaryKey => $id
+					)
+				));
+		}
+		return compact('error', 'data');
+	}
 }

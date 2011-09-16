@@ -186,7 +186,7 @@ class BuroBurocrataController extends BurocrataAppController
  */
 	public function view()
 	{
-		$data = $this->_getViewData();
+		$data = $this->BuroBurocrata->getViewData($this);
 		$this->data = $data['data'];
 		$this->set($data);
 	}
@@ -248,7 +248,7 @@ class BuroBurocrataController extends BurocrataAppController
 			if (!empty($this->buroData['id']))
 				$id = $this->buroData['id'];
 			
-			extract($this->_getViewData());
+			extract($this->BuroBurocrata->getViewData($this));
 			$this->data = $data;
 			
 			$this->set(compact('data'));
@@ -400,7 +400,7 @@ class BuroBurocrataController extends BurocrataAppController
 								$saved = $id;
 							}
 							$this->set('old_id', $this->buroData['id']);
-							$buroData = $this->_getViewData($id);
+							$buroData = $this->BuroBurocrata->getViewData($this,$id);
 							extract($buroData);
 							$this->set(compact('data'));
 						}
@@ -410,7 +410,7 @@ class BuroBurocrataController extends BurocrataAppController
 				case 'edit':
 					if (!empty($this->buroData['id']))
 						$id = $this->buroData['id'];
-					extract($this->_getViewData());
+					extract($this->BuroBurocrata->getViewData($this));
 					$this->data = $data;
 					$this->set(compact('data'));
 				break;
@@ -418,7 +418,7 @@ class BuroBurocrataController extends BurocrataAppController
 				case 'afterEdit':
 					if (!empty($this->buroData['id']))
 						$id = $this->buroData['id'];
-					extract($this->_getViewData());
+					extract($this->BuroBurocrata->getViewData($this));
 					
 					if (!$ordered)
 					{
@@ -458,46 +458,13 @@ class BuroBurocrataController extends BurocrataAppController
 			if (!empty($this->buroData['id']))
 				$id = $this->buroData['id'];
 			
-			extract($this->_getViewData());
+			extract($this->BuroBurocrata->getViewData($this));
 			$this->data = $data;
 			
 			$this->set(compact('data'));
 		}
 		
 		$this->set(compact('error', 'action', 'saved', 'id'));
-	}
-
-
-/**
- * Used to find data on database using burocratas conventions
- * based on passed id.
- * 
- * @access protected
- * @param $id mixed If empty will be used $this->buroData['id']
- * @return array An array with two index: `data` and `error`
- */
-	protected function _getViewData($id = null)
-	{
-		$error = false;
-		$data = array();
-		$Model = null;
-		
-		if (empty($id) && !empty($this->buroData['id']))
-			$id = $this->buroData['id'];
-		
-		if(($error = $this->BuroBurocrata->loadPostedModel($this, $Model)) === false && !empty($id))
-		{
-			if (method_exists($Model, 'findBurocrata'))
-				$data = $Model->findBurocrata($id);
-			else
-				$data = $Model->find('first', array(
-					'recursive' => -1,
-					'conditions' => array(
-						$Model->alias.'.'.$Model->primaryKey => $id
-					)
-				));
-		}
-		return compact('error', 'data');
 	}
 
 
