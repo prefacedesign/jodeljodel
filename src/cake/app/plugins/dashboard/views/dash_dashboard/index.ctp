@@ -63,7 +63,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 								'plugin' => 'backstage','controller' => 'back_contents',
 								'action' => 'edit', $moduleName
 							);
-							$linkList[] = $this->Bl->anchor(array(), compact('url'), $module['humanName']);
+							$linkList[] = $this->Bl->anchor(array(), compact('url'), __($module['humanName'], true));
 						}
 					}
 				}
@@ -130,7 +130,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 								$class = '';
 								if ($filter == $moduleName)
 									$class = 'selected';
-								$filterLink = $ajax->link(__d('dashboard', $module['humanName'], true), 			
+								$filterLink = $ajax->link(__($module['humanName'], true), 			
 									array(
 										'plugin' => 'dashboard',
 										'controller' => 'dash_dashboard',
