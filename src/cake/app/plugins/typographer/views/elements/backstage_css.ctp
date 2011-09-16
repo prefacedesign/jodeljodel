@@ -113,7 +113,7 @@
 	$this->Decorator->rule(
 		'.ordered_list .buro_form div.input', array(
 			'border' => 0,
-			'padding-bottom' => $vg->size(array('g' => 1))
+			'padding-bottom' => $vg->size(array('g' => 0.5))
 	));
 	
 	$this->Decorator->rule(
