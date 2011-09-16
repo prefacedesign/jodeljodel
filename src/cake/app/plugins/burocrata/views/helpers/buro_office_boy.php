@@ -255,7 +255,7 @@ class BuroOfficeBoyHelper extends AppHelper
 		unset($options);
 		
 		$parameters = $this->Js->object($parameters);
-		$content = $this->Js->object(compact('texts', 'templates', 'contents', 'types'));
+		$content = $this->Js->object(compact('texts', 'templates', 'contents', 'types', 'url'));
 		
 		$className = $auto_order ? 'BuroListOfItemsAutomatic' : 'BuroListOfItems';
 		

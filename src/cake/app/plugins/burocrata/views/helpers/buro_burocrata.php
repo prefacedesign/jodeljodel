@@ -1342,8 +1342,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		}
 		
 		$model_class_name = 'ContentStream.CsItem';
-		$parameters['fkBounding'] = array($this->_name($foreignKey) => $this->data[$ParentModel->alias][$ParentModel->primaryKey]);
-		
+		$parameters['fkBounding'] = array($this->_name($foreignKey) => $this->data[$ParentModel->alias][$options['foreignKey']]);
+		$parameters['buroAction'] = array($this->internalParam('action') => 'save');
 		
 		$out .= $this->sform(array(), array('model' => 'ContentStream.CsContentStream'));
 		$out .= $this->_orderedItens(compact('url', 'texts','model_class_name','foreign_key', 'parameters','allowed_content','baseID','callbacks', 'auto_order'));
@@ -1413,6 +1413,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			}
 		}
 		
+		
 		// Javascripts
 		$ajax_call = array(
 			'baseID' => $this->baseID(),
@@ -1430,6 +1431,9 @@ class BuroBurocrataHelper extends XmlTagHelper
 			)
 		);
 		
+		$url = $this->url($url);
+		$parameters['request'] = array($this->internalParam('request') => $this->security($url, $model_plugin, $model_name));
+		
 		$types = array();
 		foreach($allowed_content as $type=>$content)
 			$types[$type] = array('title' => $content['title']);
@@ -1441,7 +1445,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$jsOptions['templates']['menu'] = $this->orderedItensMenu(array(), array('allowed_content' => $allowed_content));
 		$jsOptions['templates']['item'] = $this->orderedItensItem(array('class' => $auto_order?'auto_order':''));
 		$jsOptions['contents'] = $contents;
-		$jsOptions += compact('auto_order', 'parameters', 'texts', 'baseID', 'types');
+		$jsOptions += compact('auto_order', 'parameters', 'texts', 'baseID', 'types', 'url');
 		
 		
 		$out = $this->Bl->br();

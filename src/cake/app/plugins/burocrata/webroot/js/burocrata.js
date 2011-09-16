@@ -863,8 +863,8 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
  *  
  * @access public
  * @param string id_base The master ID used to find one specific instance of this class and elements on HTML
- * @param object content A object with 3 properties: texts (object), templates (object) and contents (array)
- * @param object types A list of allowed types for putting on this input
+ * @param object parameters A list of parameters to be sent with all requests.
+ * @param object content A object with 3 properties: texts (object), templates (object), contents (array)
  */
 var BuroListOfItems = Class.create(BuroCallbackable, {
 	baseFxDuration: 0.3, //in seconds
@@ -873,8 +873,9 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 		this.templates = content.templates || {menu: '', item: ''};
 		this.contents = content.contents || [];
 		this.texts = content.texts || {};
-		this.types = content.types || {}
+		this.types = content.types || {};
 		this.parameters = parameters || {};
+		this.url = content.url;
 		
 		this.menus = [];
 		this.items = [];
@@ -1047,6 +1048,9 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 		var form_id = this.divForm.down('.buro_form') && this.divForm.down('.buro_form').readAttribute('id');
 		var OpenedForm = BuroCR.get(form_id);
 		if (OpenedForm) {
+			OpenedForm.url = this.url;
+			OpenedForm.addParameters(this.parameters.request);
+			OpenedForm.addParameters(this.parameters.buroAction);
 			OpenedForm.addParameters(this.parameters.fkBounding);
 			if (this.editing.order && this.parameters.orderField)
 				OpenedForm.addParameters(this.parameters.orderField, {order: Number(this.editing.order)+1});
@@ -1147,6 +1151,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 				this.addNewItem(json, json.order, true);
 			break;
 			
+			case 'save':
 			case 'edit':
 				if (json.id && (item = this.getItem(json.id)))
 				{
@@ -1332,6 +1337,7 @@ var BuroListOfItemsAutomatic = Class.create(BuroListOfItems, {
 		this.checkLast();
 	}
 });
+
 
 
 /**
