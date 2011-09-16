@@ -2,7 +2,7 @@
 
 Configure::write('Dashboard.itemSettings',array(
 		'default' => array(
-			'actions' => array('publish_draft','delete','edit', 'create'),
+			'actions' => array('publish_draft','delete','edit', 'create', 'see_on_page'),
 			'edit_version' => 'backstage'
 		),
 		'corktile' => array(

@@ -18,6 +18,7 @@
 ./cake acl create aco page_sections_test section1
 ./cake acl create aco page_sections_test section2
 ./cake acl create aco section2 section21
+./cake acl create aco public_page view_drafts
 
 #granting permission
 ./cake acl grant all_users public_page all
@@ -27,3 +28,4 @@
 ./cake acl grant redactors backstage_area create
 ./cake acl grant techies backstage_area all
 ./cake acl grant superusers all_pages all
+./cake acl grant admin view_drafts all

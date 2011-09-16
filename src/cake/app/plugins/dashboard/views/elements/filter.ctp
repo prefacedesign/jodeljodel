@@ -143,9 +143,28 @@
 				 $links .= $item['DashDashboardItem']['status'] == 'published' ? $draftLink : $publishLink;
 			}
 			
+			$modules = Configure::read('jj.modules');
+			$standardUrl = array(
+				'controller' => (!empty($modules[$item['DashDashboardItem']['type']]['prefix']) ? $modules[$item['DashDashboardItem']['type']]['prefix'] . '_' : '') . Inflector::pluralize($modules[$item['DashDashboardItem']['type']]['plugin']),
+				'action' => 'view'
+			);
+			
+			if (isset($modules[$item['DashDashboardItem']['type']]['viewUrl']))
+				$standardUrl = am($standardUrl, $modules[$item['DashDashboardItem']['type']]['viewUrl']);
+			
+			
 			if (in_array('see_on_page', $curSettings['actions']))
 			{
-				//$this->Bl->anchor(array('class' => 'link_button'), array('url' => ''), __d('dashboard','Dashboard: See on the page', true))
+				if ($curSettings['edit_version'] != 'corktile')
+				{
+					$links .= $this->Bl->anchor(array('class' => 'link_button'), array('url' => array(
+							'plugin' => $modules[$item['DashDashboardItem']['type']]['plugin'],
+							'controller' => $standardUrl['controller'],
+							'action' => $standardUrl['action'], $item['DashDashboardItem']['dashable_id']
+						)), 
+						__('Dashboard: See on the page', true)
+					);
+				}
 			}
 			
 			if (in_array('edit', $curSettings['actions']))

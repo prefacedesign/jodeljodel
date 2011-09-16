@@ -146,6 +146,7 @@ class BuroBurocrataController extends BurocrataAppController
 			$this->layout_scheme = $this->buroData['layout_scheme'];
 			unset($this->buroData['layout_scheme']);
 		}
+		StatusBehavior::setGlobalActiveStatuses(array('publishing_status' => array('active' => array('published','draft'), 'overwrite' => false)));
 	}
 
 

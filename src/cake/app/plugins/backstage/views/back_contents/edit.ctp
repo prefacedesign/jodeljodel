@@ -63,6 +63,16 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 		)
 	);
 	$dashboard_url = $this->Html->url(array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'index'));
+	$modules = Configure::read('jj.modules');
+	$standardUrl = array(
+		'controller' => (!empty($modules[Inflector::underscore($modelName)]['prefix']) ? $modules[Inflector::underscore($modelName)]['prefix'] . '_' : '') . Inflector::pluralize($modules[Inflector::underscore($modelName)]['plugin']),
+		'action' => 'view',
+		'plugin' => (!empty($modules[Inflector::underscore($modelName)]['plugin']) ? $modules[Inflector::underscore($modelName)]['plugin'] : '')
+	);
+	if (isset($modules[Inflector::underscore($modelName)]['viewUrl']))
+		$standardUrl = am($standardUrl, $modules[Inflector::underscore($modelName)]['viewUrl']);
+	$view_url = $this->Html->url(array('plugin' => $standardUrl['plugin'], 'controller' => $standardUrl['controller'], 'action' => $standardUrl['action'], $this->data[$modelName]['id']));
+
 	echo $this->Popup->popup('notice',
 		array(
 			'type' => 'notice',
@@ -70,9 +80,10 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 			'content' => __d('backstage', 'Your data has been saved - TEXT.',true),
 			'actions' => array(
 				'ok' => __d('backstage', 'Your data has been saved - BACK TO DASHBOARD', true), 
-				'edit' => __d('backstage', 'Your data has been saved - CONTINUE EDITING', true)
+				'edit' => __d('backstage', 'Your data has been saved - CONTINUE EDITING', true),
+				'view' => __d('backstage', 'Your data has been saved - VIEW THIS ON THE PUBLIC PAGE', true)
 			),
-			'callback' => "if (action=='ok') window.location = '$dashboard_url';"
+			'callback' => "if (action=='ok') window.location = '$dashboard_url'; if (action=='view') window.location = '$view_url';"
 		)
 	);
 	

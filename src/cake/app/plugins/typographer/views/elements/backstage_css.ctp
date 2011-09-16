@@ -267,25 +267,34 @@
 	
 	// Input belongsTo
 	$this->Decorator->rule(
-		'.input_belongs_to .controls .actions', array(
+		'.input_relational .controls .actions', array(
 			'margin-top' => $vg->size(array('g' => 1))
 	));
-	
+	/*
 	$this->Decorator->rule(
-		'.input_belongs_to .controls div div', array(
+		'.input_relational .controls div div.buro_form', array(
 			'border-top' => $u->t(1) . ' dotted ' . $palette['text']->write(),
 			'margin-top' => $vg->size(array('g' => 1)),
 			'padding-top' => $vg->size(array('g' => 1)),
 	));
-	
+	*/
 	$this->Decorator->rule(
-		'.input_belongs_to .controls div div div', array(
-			'border-top' => '0',
-			'margin-top' => '0'
+		'.input_relational .controls div div.buro_form', array(
+			'background-color' => $palette['subform']->write(),
+			'margin' => sprintf('%s %s', $hg->size(array('g' => 1)), 0),
+			'margin-left' => $hg->size(array('g' => -1)),
+			'padding' => sprintf('%s %s', $vg->size(array('g' => 0.5)), $hg->size(array('g' => 1)))
 	));
 	
 	$this->Decorator->rule(
-		'.input_belongs_to .controls div div div.input', array(
+		'.input_relational .controls div div div', array(
+			'border-top' => '0',
+			'margin-top' => '0',
+			'padding-top' => '0',
+	));
+	
+	$this->Decorator->rule(
+		'.input_relational .controls div div div.input', array(
 			'padding-bottom' => '0',
 			'border' => '0',
 			//'position' => 'absolute',
@@ -788,7 +797,7 @@
 	));
 	
 	$this->Decorator->rule(
-		'.buro_form div.input_belongs_to', array(
+		'.buro_form div.input_relational', array(
 			'position' => 'static',
 	));
 	
@@ -982,6 +991,13 @@
 			'margin-bottom' => $u->t($margin_bottom),
 			'font-size' => $u->t($line_height * 13/18),
 			'line-height' => $u->t($line_height)
+	));
+	
+	
+	$this->Decorator->rule(
+		'.buro_form input[disabled]', array(
+			'border' => 'none',
+			'background-color' => $palette['read_only_bg']->write(),
 	));
 	
 	$this->Decorator->rule(

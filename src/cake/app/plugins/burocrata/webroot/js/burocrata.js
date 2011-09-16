@@ -693,6 +693,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 			this.backup_id = this.input.value;
 		this.input.value = this.autocomplete.input.value = '';
 		this.autocomplete.input.show();
+		this.autocomplete.input.removeAttribute('disabled');
 		
 		this.setActions('undo_reset');
 		
@@ -758,11 +759,6 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 			queue: this.queue, 
 			style: {height: fHeight+'px'},
 			afterFinish: function(action, fx){
-				if (action == 'edit')
-				{
-					this.divBase.down(0).hide();
-					this.divBase.down(1).hide();
-				}
 				if (action == 'new')
 				{
 					//find the field with the same name of the autocompleter,
@@ -772,20 +768,14 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 					inputs = document.getElementsByName(name);
 					inputs[0].value = this.autocomplete.input.value;
 					inputs[0].focus();
-					//hide the autocomplete field
-					this.autocomplete.input.hide();
-					//hide the labels os the autocomplete field
-					this.divBase.down(0).hide();
-					this.divBase.down(1).hide();
+					//disable the autocomplete field
+					this.autocomplete.input.writeAttribute('disabled', 'disabled');
 				}
 				this.update.setStyle({height: '', overflow: ''});
 				this.observeForm();
 				if (action == 'preview')
 				{
 					this.setActions('edit reset').hideAutocomplete();
-					//show the labels of the autocomplet, because the form related now is hidden
-					this.divBase.down(0).show();
-					this.divBase.down(1).show();
 				}
 				else
 					this.setActions('');

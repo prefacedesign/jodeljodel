@@ -331,15 +331,28 @@ class StatusBehavior extends ModelBehavior
 	 */
 	function setGlobalActiveStatuses($options = array())
 	{	
+		$defaultSingleOptions = array(
+			'overwrite' => false,
+			'mergeWithCurrentActiveStatuses' => false
+		);
+	
 		//@todo Overwrite the current configurations. NOT the default ones.
 		//@todo Allow for a pile of configurations. FIFO. For one to be able to set it and return to previous configuration.
 		$default_config = Configure::read('StatusBehavior.options');
 		foreach($options as $index => $data)
 		{
+			$data = am($defaultSingleOptions, $data);
+		
 			if (!isset($default_config[$index]))
 				die('Error. The name set of the index isnt a valid name, verify if exists a config type set with this name.');
 			else
 			{
+				if ($data['mergeWithCurrentActiveStatuses'])
+				{
+					$currentConfig = Configure::read('StatusBehavior.options.'.$index);
+					$data['active'] = am($currentConfig['active'], $data['active']);
+				}
+				
 				$default_config[$index]['active'] = $data['active'];
 				$default_config[$index]['overwrite'] = $data['overwrite'];
 				
@@ -348,7 +361,6 @@ class StatusBehavior extends ModelBehavior
 			}
 		}
 		return $default_config;
-		
 	}
 	
 	
