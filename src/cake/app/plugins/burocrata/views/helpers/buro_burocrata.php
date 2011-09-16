@@ -1320,7 +1320,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		}
 		
 		// Loads configuration and settings
-		$config = Configure::read('ContentStream');
+		App::import('Lib', 'ContentStream.CsConfigurator');
+		$config = CsConfigurator::getConfig();
 		
 		$settings = $ParentModel->Behaviors->CsContentStreamHolder->settings[$ParentModel->alias];
 		$allowed_content = $settings['streams'][$options['foreignKey']]['allowedContents'];
