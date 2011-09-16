@@ -699,7 +699,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		
 		if (!animate)
 		{
-			this.update.hide();
+			//this.update.hide();
 		}
 		else
 		{
