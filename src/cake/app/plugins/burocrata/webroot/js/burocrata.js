@@ -943,15 +943,17 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	
 	addNewItem: function(data, order, animate)
 	{
+		var type; // @todo Get type from somewhere
+		// this.types[type].title
 		var item,
-			content = {content: data.content, title: this.texts.title, id: data.id},
+			content = {content: data.content, title: 'asdasd', id: data.id},
 			div = new Element('div').insert(this.templates.item.interpolate(content)).down();
 		
 		this.addNewMenu(order);
 		if (this.menus[order])
 			this.menus[order].div.insert({after: div});
 		
-		item = new BuroListOfItemsItem(div).addCallbacks({'buro:controlClick': this.routeAction.bind(this)})
+		item = new BuroListOfItemsItem(div, type).addCallbacks({'buro:controlClick': this.routeAction.bind(this)})
 		this.items.push(item);
 		this.updateSiblings(item);
 		
@@ -988,7 +990,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	newItem: function(menuObj, type)
 	{
 		if (this.placesForm(menuObj))
-			this.trigger('onAction', 'edit', '', this.types[type].request);
+			this.trigger('onAction', 'edit', '', type);
 	},
 	placesForm: function(obj)
 	{
@@ -1034,7 +1036,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 					this.editing.div.show();
 				this.editing = false;
 				this.menus.each(function(menu){
-					menu.enable();
+					menu.close().enable();
 				});
 				this.divForm.update().hide().setStyle({overflow: ''});
 			}.bind(this)
@@ -1443,7 +1445,7 @@ var BuroListOfItemsMenu = Class.create(BuroCallbackable, {
  * @param element div The div containing the item
  */
 var BuroListOfItemsItem = Class.create(BuroCallbackable, {
-	initialize: function (div)
+	initialize: function (div, type)
 	{
 		this.div = $(div);
 		this.id = this.div.readAttribute('buro:id');

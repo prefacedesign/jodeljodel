@@ -1299,7 +1299,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'baseID' => $this->baseID(),
 			'foreignKey' => 'cs_content_stream_id',
 			'callbacks' => array(),
-			'texts' => array('confirm' => array())
+			'texts' => array('confirm' => array()),
+			'url' => array('plugin' => 'content_stream', 'controller' => 'cs_content_streams', 'action' => 'action')
 		);
 		extract($options);
 		
@@ -1339,10 +1340,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 			unset($input_options['instructions']);
 		}
 		
-		
 		$model_class_name = 'ContentStream.CsItem';
+		$parameters['fkBounding'] = array($this->_name($foreignKey) => $this->data[$ParentModel->alias][$ParentModel->primaryKey]);
+		
+		
 		$out .= $this->sform(array(), array('model' => 'ContentStream.CsContentStream'));
-		$out .= $this->_orderedItens(compact('texts','model_class_name','foreign_key', 'parameters','allowed_content','baseID','callbacks', 'auto_order'));
+		$out .= $this->_orderedItens(compact('url', 'texts','model_class_name','foreign_key', 'parameters','allowed_content','baseID','callbacks', 'auto_order'));
 		$out .= $this->eform();
 		
 		return $this->Bl->div(array('id' => 'div' . $baseID, 'class' => 'content_stream'), array(), $out);
@@ -1379,7 +1382,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'model_class_name' => false, 
 			'auto_order' => false, 
 			'callbacks' => array(),
-			'parameters' => array()
+			'parameters' => array(),
+			'url' =>array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'list_of_items')
 		);
 		extract($options);
 		
@@ -1409,12 +1413,11 @@ class BuroBurocrataHelper extends XmlTagHelper
 		}
 		
 		// Javascripts
-		$url_edit = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'list_of_items');
 		$ajax_call = array(
 			'baseID' => $this->baseID(),
-			'url' => $url_edit,
+			'url' => $options['url'],
 			'params' => array(
-				$this->securityParams($url_edit, $model_plugin, $model_name),
+				$this->securityParams($options['url'], $model_plugin, $model_name),
 				$this->internalParam('id') => "#{id}",
 				$this->internalParam('action') => "#{action}",
 				$this->internalParam('type') => "#{type}",
