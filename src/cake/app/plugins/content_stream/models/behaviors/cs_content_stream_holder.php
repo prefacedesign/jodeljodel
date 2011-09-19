@@ -32,8 +32,15 @@ class CsContentStreamHolderBehavior extends ModelBehavior
 /**
  * Invoke the normalization method and populates the $settings property.
  * 
- * @param model $Model
- * @param array $options
+ * After populates the settings, with all used values (with default values when not set),
+ * this method create one belongsTo relationship with CsContentStream model for each
+ * ContentStream.
+ * 
+ * ### The options:
+ * - 
+ * 
+ * @param model $Model The model where this behavior is attached
+ * @param array $options Configuration options.
  * @access public
  */
 	function setup(&$Model, $options)
@@ -78,10 +85,14 @@ class CsContentStreamHolderBehavior extends ModelBehavior
 	}
 
 /**
- * beforeSave callback, used for creating a new ContentStream.
+ * beforeSave callback
  * 
- * @param model $Model
+ * Here is created a new ContentStream if not created yet for each stream.
+ * Also, is started a Transaction that is completed on afterSave.
+ * 
  * @access public
+ * @param model $Model
+ * @return boolean Always true, allowing the saving proccess to be continued
  */
 	function beforeSave(&$Model)
 	{
@@ -98,9 +109,13 @@ class CsContentStreamHolderBehavior extends ModelBehavior
 	}
 
 /**
- * afterSave callback method. This callback is used to finalize the transation started on beforeSave
+ * afterSave callback method.
+ * 
+ * This callback is used to finalize the transation started on beforeSave
  * 
  * @access public
+ * @param Model $Model
+ * @param boolean $created
  */
 	function afterSave($Model, $created)
 	{
