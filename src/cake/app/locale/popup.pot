@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-08-29 16:10-0300\n"
+"POT-Creation-Date: 2011-09-19 20:47+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -22,19 +22,19 @@ msgstr ""
 msgid "PopupHelper::_form - Cancel link"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:21
+#: \views\translate_strings\translate_strings.ctp:32
 msgid "Popup plugin error type"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:22
+#: \views\translate_strings\translate_strings.ctp:33
 msgid "Popup plugin success type"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:23
+#: \views\translate_strings\translate_strings.ctp:34
 msgid "Popup plugin notice type"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:24
+#: \views\translate_strings\translate_strings.ctp:35
 msgid "Popup plugin form type"
 msgstr ""
 

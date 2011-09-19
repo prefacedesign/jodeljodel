@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-08-19 15:21-0300\n"
+"POT-Creation-Date: 2011-09-19 20:46+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -42,71 +42,71 @@ msgstr ""
 msgid "Color input"
 msgstr ""
 
-#: \plugins\burocrata_user\views\exemplos\index.ctp:58
+#: \plugins\burocrata_user\views\exemplos\index.ctp:69
 msgid "Another color input"
 msgstr ""
 
-#: \plugins\burocrata_user\views\exemplos\index.ctp:66
+#: \plugins\burocrata_user\views\exemplos\index.ctp:77
 msgid "Something about this gallery"
 msgstr ""
 
-#: \plugins\burocrata_user\views\exemplos\index.ctp:80
+#: \plugins\burocrata_user\views\exemplos\index.ctp:91
 msgid "Owner of this gallery"
 msgstr ""
 
-#: \plugins\burocrata_user\views\exemplos\index.ctp:81
+#: \plugins\burocrata_user\views\exemplos\index.ctp:92
 msgid "First, search if he/she already has a account, using his/her name. If does not, you will be able to create a new one."
 msgstr ""
 
-#: \plugins\burocrata_user\views\exemplos\index.ctp:86
+#: \plugins\burocrata_user\views\exemplos\index.ctp:97
 msgid "Create a new person"
 msgstr ""
 
-#: \plugins\burocrata_user\views\exemplos\index.ctp:87
+#: \plugins\burocrata_user\views\exemplos\index.ctp:98
 msgid "Edit this person"
 msgstr ""
 
-#: \plugins\burocrata_user\views\exemplos\index.ctp:88
+#: \plugins\burocrata_user\views\exemplos\index.ctp:99
 msgid "Choose another person"
 msgstr ""
 
-#: \plugins\burocrata_user\views\exemplos\index.ctp:89
+#: \plugins\burocrata_user\views\exemplos\index.ctp:100
 msgid "Bring last person back"
 msgstr ""
 
-#: \plugins\burocrata_user\views\exemplos\index.ctp:90
+#: \plugins\burocrata_user\views\exemplos\index.ctp:101
 msgid "Person not found"
 msgstr ""
 
-#: \plugins\burocrata_user\views\exemplos\index.ctp:98
+#: \plugins\burocrata_user\views\exemplos\index.ctp:109
 msgid "Pictures for this gallery"
 msgstr ""
 
-#: \plugins\burocrata_user\views\exemplos\index.ctp:100
+#: \plugins\burocrata_user\views\exemplos\index.ctp:111
 msgid "Click on plus sign (on right) to add more pictures. You can also change the order of appearance, edit, delete and duplicate each picture."
 msgstr ""
 
-#: \plugins\burocrata_user\views\exemplos\index.ctp:109
+#: \plugins\burocrata_user\views\exemplos\index.ctp:120
 msgid "Do you really want to delete this image?"
 msgstr ""
 
-#: \plugins\burocrata_user\views\exemplos\index.ctp:111
+#: \plugins\burocrata_user\views\exemplos\index.ctp:122
 msgid "Image"
 msgstr ""
 
-#: \plugins\burocrata_user\views\exemplos\index.ctp:119
+#: \plugins\burocrata_user\views\exemplos\index.ctp:130
 msgid "Something else for this gallery"
 msgstr ""
 
-#: \plugins\burocrata_user\views\exemplos\index.ctp:121
+#: \plugins\burocrata_user\views\exemplos\index.ctp:132
 msgid "Some instructions here."
 msgstr ""
 
-#: \plugins\burocrata_user\views\exemplos\index.ctp:130
+#: \plugins\burocrata_user\views\exemplos\index.ctp:141
 msgid "Do you really want to delete this thing?"
 msgstr ""
 
-#: \plugins\burocrata_user\views\exemplos\index.ctp:132
+#: \plugins\burocrata_user\views\exemplos\index.ctp:143
 msgid "Something"
 msgstr ""
 

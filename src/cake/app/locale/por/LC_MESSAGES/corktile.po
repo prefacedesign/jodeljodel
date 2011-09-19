@@ -1,0 +1,45 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2011-09-19 20:46+0000\n"
+"PO-Revision-Date: 2011-09-19 17:50-0300\n"
+"Last-Translator: Rodrigo  <rodrigo@preface.com.br>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Poedit-Language: Portuguese\n"
+"X-Poedit-Country: BRAZIL\n"
+
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:4
+msgid "Corktile edit page: Editing a fixed content"
+msgstr "Editando um conteúdo fixo"
+
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:20
+msgid "Corktile edit page: Your data cannot be saved - TITLE."
+msgstr "Erro"
+
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:21
+msgid "Corktile edit page: Your data cannot be saved - TEXT."
+msgstr "Os dados não puderam ser salvos."
+
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:27
+msgid "Corktile edit page: Your data has been saved - TITLE."
+msgstr "Dados salvos"
+
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:28
+msgid "Corktile edit page: Your data has been saved - TEXT."
+msgstr "Os dados foram salvos com sucesso."
+
+#: \plugins\corktile\views\elements\location_of_cork.ctp:7
+msgid "Location in the site"
+msgstr "Localização no site"
+
+#: \plugins\corktile\views\elements\location_of_cork.ctp:31
+msgid "Description"
+msgstr "descrição"
+

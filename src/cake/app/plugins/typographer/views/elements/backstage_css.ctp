@@ -1446,6 +1446,29 @@
 		
 	));
 	
+	$this->Decorator->rule(
+		'.big_info_box', array(
+			'background-color' => $palette['normal_popin']->write(),
+			'margin-top' => $vg->size(array('g' => 1)),
+			'margin-bottom' => $vg->size(array('g' => 1)),
+			'padding-top' => $vg->size(array('m' => 2)),
+			'padding-bottom' => $vg->size(array('m' => 2)),
+		
+	));
+	
+	$this->Decorator->rule(
+		'.big_info_box .subtitle', array(
+			'font-weight' => 'bold'
+		
+	));
+	
+	$this->Decorator->rule(
+		'.big_info_box .info', array(
+			'font-size' => $u->t(11),
+			'margin-top' => $vg->size(array('g' => 1)),
+		
+	));
+	
 	
 ?>
 .cpk-cont {position: absolute; z-index: 51; background-color: white; border: 1px solid black; padding: 10px; -moz-box-shadow:4px 4px 15px 1px #666; box-shadow:4px 4px 15px 1px #666;}
