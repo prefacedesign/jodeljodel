@@ -43,7 +43,7 @@ class BackstageBuroBurocrataHelper extends BuroBurocrataHelper
 		);
 		$htmlAttributes = $this->_mergeAttributes($defaultHtmlAttr, $htmlAttributes);
 		$options = am($defaultOptions, $options);
-	
+		
 		echo $this->Bl->scontrolBox($htmlAttributes);
 
 			if ($options['publishControls'])

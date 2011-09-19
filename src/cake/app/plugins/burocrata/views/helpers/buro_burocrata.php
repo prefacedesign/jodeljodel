@@ -311,7 +311,9 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$this->data = $View->data = $this->_readFormAttribute('data');
 		
 		if ($this->modelAlias)
+		{
 			$this->Form->create($this->modelAlias, array('url' => $options['url']));
+		}
 		
 		$out = $this->Bl->sdiv($htmlAttributes);
 		if ($options['writeForm'] == true)
@@ -330,6 +332,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 				$out .= $this->submit(array(), array('label' => __d('burocrata', 'Burocrata: default save button', true)));
 		}
 		return $out;
+		
 	}
 
 

@@ -302,7 +302,9 @@ var BuroForm = Class.create(BuroCallbackable, {
 					if (this.json.saved !== false)
 						this.trigger('onSave', this.form, response, this.json, this.json.saved);
 					else
+					{
 						this.trigger('onReject', this.form, response, this.json, this.json.saved);
+					}
 					
 					this.trigger('onSuccess', this.form, response, this.json);
 				}.bind(this)
@@ -743,10 +745,12 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		}
 	},
 	actionSuccess: function(json)
-	{
+	{		
 		if (this.form)
 			this.form.purge();
+			
 		this.form = false;
+		
 		
 		
 		var iHeight = this.update.show().unsetLoading().getHeight(),
@@ -798,7 +802,8 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 				this.form = BuroCR.get(form_id).addCallbacks({
 					onStart: function(form){form.setLoading().lock();},
 					onCancel: this.cancel.bind(this),
-					onSave: this.saved.bind(this)
+					onSave: this.saved.bind(this),
+					onReject: this.reject.bind(this)
 				});
 	},
 	showPreview: function()
@@ -812,6 +817,10 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		this.autocomplete.input.value = '';
 		this.input.value = saved;
 		this.showPreview();
+	},
+	reject: function(form, response, json, saved)
+	{
+		this.form.form.unsetLoading().unlock();
 	},
 	cancel: function()
 	{
