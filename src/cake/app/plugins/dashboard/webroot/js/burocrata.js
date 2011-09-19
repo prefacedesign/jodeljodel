@@ -302,9 +302,7 @@ var BuroForm = Class.create(BuroCallbackable, {
 					if (this.json.saved !== false)
 						this.trigger('onSave', this.form, response, this.json, this.json.saved);
 					else
-					{
 						this.trigger('onReject', this.form, response, this.json, this.json.saved);
-					}
 					
 					this.trigger('onSuccess', this.form, response, this.json);
 				}.bind(this)
@@ -664,13 +662,11 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		this.form = false;
 		this.id_base = id_base;
 		BuroCR.set(this.id_base, this);
-		
 		this.autocomplete = BuroCR.get(autocompleter_id_base);
 		
 		this.addCallbacks(callbacks);
 		
 		this.input = $('hii'+id_base);
-		this.divBase = $('div'+id_base);
 		this.update = $('update'+id_base);
 		this.actions = this.update.next('.actions');
 		this.actions.select('a').each(this.observeControls.bind(this));
@@ -695,13 +691,12 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 			this.backup_id = this.input.value;
 		this.input.value = this.autocomplete.input.value = '';
 		this.autocomplete.input.show();
-		this.autocomplete.input.removeAttribute('disabled');
 		
 		this.setActions('undo_reset');
 		
 		if (!animate)
 		{
-			//this.update.hide();
+			this.update.hide();
 		}
 		else
 		{
@@ -745,12 +740,10 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		}
 	},
 	actionSuccess: function(json)
-	{		
+	{
 		if (this.form)
 			this.form.purge();
-			
 		this.form = false;
-		
 		
 		
 		var iHeight = this.update.show().unsetLoading().getHeight(),
@@ -765,22 +758,13 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 			afterFinish: function(action, fx){
 				if (action == 'new')
 				{
-					//find the field with the same name of the autocompleter,
-					//to populate it with autocomplete content
-					name = this.autocomplete.input.name.substring(22, this.autocomplete.input.name.length)
-					name = 'data'+name;
-					inputs = document.getElementsByName(name);
-					inputs[0].value = this.autocomplete.input.value;
-					inputs[0].focus();
-					//disable the autocomplete field
-					this.autocomplete.input.writeAttribute('disabled', 'disabled');
+					this.update.firstDescendant().down(2).down('input').value = this.autocomplete.input.value;
+					this.update.firstDescendant().down(2).down('input').focus();
 				}
 				this.update.setStyle({height: '', overflow: ''});
 				this.observeForm();
 				if (action == 'preview')
-				{
 					this.setActions('edit reset').hideAutocomplete();
-				}
 				else
 					this.setActions('');
 			}.bind(this, json.action)
@@ -802,8 +786,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 				this.form = BuroCR.get(form_id).addCallbacks({
 					onStart: function(form){form.setLoading().lock();},
 					onCancel: this.cancel.bind(this),
-					onSave: this.saved.bind(this),
-					onReject: this.reject.bind(this)
+					onSave: this.saved.bind(this)
 				});
 	},
 	showPreview: function()
@@ -817,10 +800,6 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		this.autocomplete.input.value = '';
 		this.input.value = saved;
 		this.showPreview();
-	},
-	reject: function(form, response, json, saved)
-	{
-		this.form.form.unsetLoading().unlock();
 	},
 	cancel: function()
 	{
@@ -892,23 +871,22 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
  *  
  * @access public
  * @param string id_base The master ID used to find one specific instance of this class and elements on HTML
- * @param object parameters A list of parameters to be sent with all requests.
- * @param object content A object with 3 properties: texts (object), templates (object), contents (array)
+ * @param object content A object with 3 properties: texts (object), templates (object) and contents (array)
+ * @param object types A list of allowed types for putting on this input
  */
 var BuroListOfItems = Class.create(BuroCallbackable, {
 	baseFxDuration: 0.3, //in seconds
-	initialize: function(id_base, parameters, content)
+	initialize: function(id_base, parameters, content, types)
 	{
+		this.texts = content.texts || {};
 		this.templates = content.templates || {menu: '', item: ''};
 		this.contents = content.contents || [];
-		this.texts = content.texts || {};
-		this.types = content.types || {};
 		this.parameters = parameters || {};
-		this.url = content.url;
 		
 		this.menus = [];
 		this.items = [];
 		
+		this.types = types;
 		this.id_base = id_base;
 		BuroCR.set(this.id_base, this);
 		
@@ -973,17 +951,15 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	
 	addNewItem: function(data, order, animate)
 	{
-		var type; // @todo Get type from somewhere
-		// this.types[type].title
 		var item,
-			content = {content: data.content, title: 'asdasd', id: data.id},
+			content = {content: data.content, title: this.texts.title, id: data.id},
 			div = new Element('div').insert(this.templates.item.interpolate(content)).down();
 		
 		this.addNewMenu(order);
 		if (this.menus[order])
 			this.menus[order].div.insert({after: div});
 		
-		item = new BuroListOfItemsItem(div, type).addCallbacks({'buro:controlClick': this.routeAction.bind(this)})
+		item = new BuroListOfItemsItem(div).addCallbacks({'buro:controlClick': this.routeAction.bind(this)})
 		this.items.push(item);
 		this.updateSiblings(item);
 		
@@ -1066,7 +1042,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 					this.editing.div.show();
 				this.editing = false;
 				this.menus.each(function(menu){
-					menu.close().enable();
+					menu.enable();
 				});
 				this.divForm.update().hide().setStyle({overflow: ''});
 			}.bind(this)
@@ -1077,9 +1053,6 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 		var form_id = this.divForm.down('.buro_form') && this.divForm.down('.buro_form').readAttribute('id');
 		var OpenedForm = BuroCR.get(form_id);
 		if (OpenedForm) {
-			OpenedForm.url = this.url;
-			OpenedForm.addParameters(this.parameters.request);
-			OpenedForm.addParameters(this.parameters.buroAction);
 			OpenedForm.addParameters(this.parameters.fkBounding);
 			if (this.editing.order && this.parameters.orderField)
 				OpenedForm.addParameters(this.parameters.orderField, {order: Number(this.editing.order)+1});
@@ -1180,7 +1153,6 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 				this.addNewItem(json, json.order, true);
 			break;
 			
-			case 'save':
 			case 'edit':
 				if (json.id && (item = this.getItem(json.id)))
 				{
@@ -1368,7 +1340,6 @@ var BuroListOfItemsAutomatic = Class.create(BuroListOfItems, {
 });
 
 
-
 /**
  * Class for the menu of a list of items. It triggers the `buro:newItem` callback 
  * when the creation of a new item is requested. If it has a list of contents, it triggers 
@@ -1396,10 +1367,8 @@ var BuroListOfItemsMenu = Class.create(BuroCallbackable, {
 		this.links = this.menu.select('a.ordered_list_menu_link');
 		this.links.each(function(lnk){lnk.observe('click', this.lnkClick.bind(this))}.bind(this));
 		
-		this.close_link = this.div.down('.ordered_list_menu_close>a');
+		this.close_link = this.div.down('a.ordered_list_menu_close');
 		this.close_link.observe('click', function(ev){ ev.stop(); this.close();}.bind(this));
-		
-		this.border = this.div.down('.border');
 		
 		this.enable().close();
 	},
@@ -1427,7 +1396,6 @@ var BuroListOfItemsMenu = Class.create(BuroCallbackable, {
 		this.menu.show();
 		this.close_link.up().show();
 		this.plus_button.hide();
-		this.border.hide();
 		return this;
 	},
 	close: function(ev)
@@ -1435,7 +1403,6 @@ var BuroListOfItemsMenu = Class.create(BuroCallbackable, {
 		this.close_link.up().hide();
 		this.menu.hide();
 		this.plus_button.show();
-		this.border.show();
 		return this;
 	},
 	setOrder: function(order)
@@ -1480,7 +1447,7 @@ var BuroListOfItemsMenu = Class.create(BuroCallbackable, {
  * @param element div The div containing the item
  */
 var BuroListOfItemsItem = Class.create(BuroCallbackable, {
-	initialize: function (div, type)
+	initialize: function (div)
 	{
 		this.div = $(div);
 		this.id = this.div.readAttribute('buro:id');

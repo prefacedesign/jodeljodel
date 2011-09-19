@@ -43,7 +43,7 @@ class BackstageBuroBurocrataHelper extends BuroBurocrataHelper
 		);
 		$htmlAttributes = $this->_mergeAttributes($defaultHtmlAttr, $htmlAttributes);
 		$options = am($defaultOptions, $options);
-	
+		
 		echo $this->Bl->scontrolBox($htmlAttributes);
 
 			if ($options['publishControls'])
@@ -51,8 +51,8 @@ class BackstageBuroBurocrataHelper extends BuroBurocrataHelper
 				$tmp = $this->Bl->anchorList(array(),array(
 						'lastSeparator' => __('anchorList or', true),
 						'linkList' => array(
-							array('name' => __d('backstage','mark it as ready',true), 'url' => "www.google.com.br"),
-							array('name' => __d('backstage','remove it',true), 'url' => "www.google.com.br")
+							array('name' => __d('backstage','mark it as ready',true), 'url' => "#"),
+							array('name' => __d('backstage','remove it',true), 'url' => "#")
 						)
 					)
 				);

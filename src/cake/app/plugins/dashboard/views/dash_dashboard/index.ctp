@@ -1,5 +1,6 @@
 <?php
 $this->Html->script('prototype', array('inline' => false));
+$this->Html->script('/dashboard/js/burocrata.js', array('inline' => false));
 
 $html->scriptBlock("
 	var theExpandedRow = false;
@@ -43,11 +44,11 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 	echo $this->Bl->h1Dry(__d('dashboard','Page title - Dashboard', true));
 	
 	echo $this->Bl->sboxContainer(array('class' => 'dash_toolbox'),array('size' => array('M' => 12, 'g' => -1)));
-				
+	
 		echo $this->Bl->sdiv(array('class' => array('dash_additem')));
 			echo $this->Bl->sdiv(array('class' => 'dash_itemlist'));
 				echo $this->Bl->h3Dry(__d('dashboard','Add new content:', true));
-				$linklist = array();
+				$linkList = array();
 				
 				foreach(Configure::read('jj.modules') as $moduleName => $module)
 				{
@@ -62,7 +63,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 								'plugin' => 'backstage','controller' => 'back_contents',
 								'action' => 'edit', $moduleName
 							);
-							$linkList[] = $this->Bl->anchor(array(), compact('url'), $module['humanName']);
+							$linkList[] = $this->Bl->anchor(array(), compact('url'), __($module['humanName'], true));
 						}
 					}
 				}
@@ -93,14 +94,166 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 			array('inline' => false)
 		);
 		
-		echo $this->Bl->sdiv(array('class' => 'pagination'));
-			echo $this->Paginator->first('<<');
-			if ($this->Paginator->hasPrev())
-				echo $this->Paginator->prev('<');	
-			echo $this->Paginator->numbers(array('modulus' => 9, 'separator' => ''));
-			if ($this->Paginator->hasPrev())
-				echo $this->Paginator->prev('>');
-			echo $this->Paginator->last('>>');
+		
+		
+		
+		
+		echo $bl->floatBreak();
+		
+	echo $this->Bl->eboxContainer();
+	
+	echo $this->Bl->sboxContainer(array(),array('size' => array('M' => 12, 'g' => -1)));
+		echo $this->Bl->sdiv(array('class' => array('dash_filter')));
+			echo $this->Bl->sdiv(array('id' => 'dash_filter_list'));
+				echo $this->Bl->sdiv(array('class' => 'filters'));
+					echo $this->Bl->h4Dry(__d('dashboard','Type', true));
+					$linkFilters = array();
+					
+					$modulesCount = 0;
+					foreach(Configure::read('jj.modules') as $moduleName => $module)
+					{
+						if (isset($module['plugged']) || $moduleName == 'corktile') 
+						{
+							$curSettings = isset($itemSettings[$moduleName]) ? $itemSettings[$moduleName] : $itemSettings['default'];
+							if ((in_array('dashboard', $module['plugged']) && in_array('create', $curSettings['actions'])) || $moduleName == 'corktile')
+								$modulesCount++;
+
+						}
+					}
+					foreach(Configure::read('jj.modules') as $moduleName => $module)
+					{
+						if (isset($module['plugged']) || $moduleName == 'corktile')
+						{
+							$curSettings = isset($itemSettings[$moduleName]) ? $itemSettings[$moduleName] : $itemSettings['default'];
+							if ((in_array('dashboard', $module['plugged']) && in_array('create', $curSettings['actions'])) || $moduleName == 'corktile')
+							{
+								$class = '';
+								if ($filter == $moduleName)
+									$class = 'selected';
+								$filterLink = $ajax->link(__($module['humanName'], true), 			
+									array(
+										'plugin' => 'dashboard',
+										'controller' => 'dash_dashboard',
+										'action' => 'filter',
+										$moduleName
+									), 
+									array(
+										'before' => "$('dashboard_table').setLoading();",
+										'complete' => "
+											$('dashboard_table').unsetLoading();
+											for (var i = 1; i <= ". ($modulesCount * 2) ."; i++) {
+												$('dash_filter_list').down('.filters', 0).down(i).removeClassName('selected');
+												i++;
+											}
+											$('filter_all').removeClassName('selected');
+											$('filter_".$moduleName."').addClassName('selected');
+										",
+										'id' => 'filter_'.$moduleName,
+										'class' => $class,
+										'update' => 'dashboard_table'
+									)
+								);
+								$linkFilters[] = $filterLink;
+							}
+
+						}
+					}
+					$class = '';
+					if ($filter == 'all')
+						$class = 'selected';
+					$filterLink = $ajax->link(__d('dashboard','Show All', true), 			
+						array(
+							'plugin' => 'dashboard',
+							'controller' => 'dash_dashboard',
+							'action' => 'filter',
+							'all'
+						), 
+						array(
+							'before' => "$('dashboard_table').setLoading();",
+							'complete' => "
+								$('dashboard_table').unsetLoading();
+								for (var i = 1; i < ". ($modulesCount*2) ."; i++) {
+									$('dash_filter_list').down('.filters', 0).down(i).removeClassName('selected');
+									i++;
+								}
+								$('filter_all').addClassName('selected');
+							",
+							'id' => 'filter_all',
+							'class' => $class,
+							'update' => 'dashboard_table'
+						)
+					);
+					$linkFilters[] = $filterLink;
+					echo $this->Text->toList($linkFilters, ' ', ' ');
+				echo $this->Bl->ediv();
+				
+				echo $this->Bl->sdiv(array('class' => 'filters'));
+					echo $this->Bl->h4Dry(__d('dashboard','Status', true));
+					$linkFilters = array();
+					$modulesCount = 0;
+					foreach($statusOptions as $module)
+						$modulesCount++;
+					foreach($statusOptions as $module)
+					{
+
+						$class = '';
+						if ($filter_status == $module)
+							$class = 'selected';
+						$filterLink = $ajax->link(__d('dashboard', 'Dashboard status: ' . $module, true), 			
+							array(
+								'plugin' => 'dashboard',
+								'controller' => 'dash_dashboard',
+								'action' => 'filter_published_draft',
+								$module
+							), 
+							array(
+								'before' => "$('dashboard_table').setLoading();",
+								'complete' => "
+									$('dashboard_table').unsetLoading();
+									for (var i = 1; i < ". ($modulesCount*2) ."; i++) {
+										$('dash_filter_list').down('.filters', 1).down(i).removeClassName('selected');
+										i++;
+									}
+									$('filter_published_draft_all').removeClassName('selected');
+									$('filter_published_draft_".$module."').addClassName('selected');
+								",
+								'id' => 'filter_published_draft_'.$module,
+								'class' => $class,
+								'update' => 'dashboard_table'
+							)
+						);
+						$linkFilters[] = $filterLink;
+					}
+					$class = '';
+					if ($filter_status == 'all')
+						$class = 'selected';
+					$filterLink = $ajax->link(__d('dashboard','Show All', true), 			
+						array(
+							'plugin' => 'dashboard',
+							'controller' => 'dash_dashboard',
+							'action' => 'filter_published_draft',
+							'all'
+						), 
+						array(
+							'before' => "$('dashboard_table').setLoading();",
+							'complete' => "
+								$('dashboard_table').unsetLoading();
+								for (var i = 1; i < ". ($modulesCount*2) ."; i++) {
+									$('dash_filter_list').down('.filters', 1).down(i).removeClassName('selected');
+									i++;
+								}
+								$('filter_published_draft_all').addClassName('selected');
+							",
+							'id' => 'filter_published_draft_all',
+							'class' => $class,
+							'update' => 'dashboard_table'
+						)
+					);
+					$linkFilters[] = $filterLink;
+					echo $this->Text->toList($linkFilters, ' ', ' ');
+				echo $this->Bl->ediv();
+				echo $this->Bl->floatbreak();
+			echo $this->Bl->ediv();
 		echo $this->Bl->ediv();
 		
 	echo $this->Bl->eboxContainer();
@@ -152,169 +305,9 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 			));
 	
 	
-	
-	echo $this->Bl->ssmartTable(array('class' => 'dashboard'), array(
-		'automaticColumnNumberHeaderClasses' => true, 
-		'automaticRowNumberClasses' => true, 
-		'rows' => array(
-			'every1of3' => array('class' => 'main_info'), 
-			'every2of3' => array('class' => 'extra_info'),
-			'every3of3' => array('class' => 'actions')
-		),
-		'columns' => array(
-			1 => array('class' => 'first_col'),
-			7 => array('class' => 'last_col')
-		)
-	));
-		echo $this->Bl->smartTableHeaderDry(array(
-			__d('dashboard','Dashboard header: Type',true), 
-			$this->Paginator->sort(__d('dashboard','Dashboard header: Status',true),'status'), 
-			$this->Paginator->sort(__d('dashboard','Dashboard header: Name',true),'name'),
-			__d('dashboard','Dashboard header: Extra info',true),
-			$this->Paginator->sort(__d('dashboard','Dashboard header: Created',true),'created'),
-			$this->Paginator->sort(__d('dashboard','Dashboard header: Modified',true),'modified'),
-			__d('dashboard','Dashboard header: Translations',true),
-		));
-		
-		
-		foreach ($this->data as $k => $item)
-		{
-			$row_number = $k*3 + 2;
-			
-			if (isset($itemSettings[$item['DashDashboardItem']['type']]))
-				$curSettings = $itemSettings[$item['DashDashboardItem']['type']];
-			else
-				$curSettings = $itemSettings['default'];
-		
-			$arrow = $this->Bl->sdiv(array('class' => 'arrow'))
-					 . $this->Bl->anchor(array(), array('url' => ''), ' ')
-					 . $this->Bl->ediv();
-					 
-			$languageStr = '';
-			
-			if (is_array($item['DashDashboardItem']['idiom']))
-			{
-				foreach ($item['DashDashboardItem']['idiom'] as $lang)
-				{
-					$lang = 'Dashboard language abrev.: '. $lang;
-					$languageStr .= __d('dashboard',$lang, true) . ' ';
-				}
-			}
-			
-			$type = 'Dashboard types: ' . $item['DashDashboardItem']['type'];
-			$status = 'Dashboard status: ' . $item['DashDashboardItem']['status'];
-			echo $this->Bl->smartTableRowDry(array(
-				__d('dashboard', $type, true), 
-				__d('dashboard', $status, true),
-				$item['DashDashboardItem']['name'],
-				$item['DashDashboardItem']['info'],
-				strftime("%d/%m/%y", strtotime($item['DashDashboardItem']['created'])),
-				strftime("%d/%m/%y", strtotime($item['DashDashboardItem']['modified'])),
-				array(array(), array('escape' => false), $arrow . $languageStr)
-			));
-	
-			//@todo Substitute this with an AJAX call.
-			echo $this->Bl->smartTableRowDry(array(
-				array(array(),array('colspan' => 3),' '), 
-				array(array('id' => 'item_info_$k'),array('colspan' => 4, 'rowspan' => 2), '')
-			));
-			
-			
-			echo $html->scriptBlock("
-				$$('tr.row_". $row_number . " .arrow a')[0].observe('click', function (ev) { ev.stop(); dashToggleExpandableRow(" . $row_number . ");});
-			", array('inline' => true));
-			
-			//Does this entry has publishing and drafting capabilities?
-			if (in_array('publish_draft',$curSettings['actions']))
-			{
-				$draftLink = $ajax->link(__d('dashboard','Hide from public', true), 			
-					array(
-						'plugin' => 'backstage',
-						'controller' => 'back_contents',
-						'action' => 'set_publishing_status',
-						$item['DashDashboardItem']['type'],
-						$item['DashDashboardItem']['dashable_id'], 'draft'
-					), array(
-						'complete' => "if(request.responseJSON.success) {showPopup('draft_alert_ok');} else {showPopup('draft_alert_failure');}",
-						'class' => 'link_button'
-					)
-				);
-			
-				$publishLink = $ajax->link(__d('dashboard','Publish to the great public', true),
-					array(
-						'plugin' => 'backstage', 
-						'controller' => 'back_contents',
-						'action' => 'set_publishing_status',
-						$item['DashDashboardItem']['type'],
-						$item['DashDashboardItem']['dashable_id'],'published'
-					), array(
-						'complete' => "if(request.responseJSON.success) {showPopup('publish_alert_ok');} else {showPopup('publish_alert_failure');}",
-						'class' => 'link_button'
-					)
-				);
-			}
-			
-			$links = $this->Bl->sdiv();
-			
-			if (in_array('delete', $curSettings['actions']))
-			{
-				$links .= $ajax->link(__d('dashboard','Delete content', true),
-						array(
-							'plugin' => 'dashboard',
-							'controller' => 'dash_dashboard',
-							'action' => 'delete_item',
-							$item['DashDashboardItem']['id']
-						), array(
-							'complete' => "if(request.responseJSON.success) {showPopup('delete_alert_ok');} else {showPopup('delete_alert_failure');}",
-							'class' => 'link_button'
-						)
-				);
-			}
-			
-			if (in_array('publish_draft', $curSettings['actions']))
-			{
-				 $links .= $item['DashDashboardItem']['status'] == 'published' ? $draftLink : $publishLink;
-			}
-			
-			if (in_array('see_on_page', $curSettings['actions']))
-			{
-				//$this->Bl->anchor(array('class' => 'link_button'), array('url' => ''), __d('dashboard','Dashboard: See on the page', true))
-			}
-			
-			if (in_array('edit', $curSettings['actions']))
-			{
-				 if ($curSettings['edit_version'] == 'backstage')
-				 {
-					 $links .= $this->Bl->anchor(array('class' => 'link_button'), array('url' => array(
-									'plugin' => 'backstage',
-									'controller' => 'back_contents',
-									'action' => 'edit',
-									$item['DashDashboardItem']['type'],
-									$item['DashDashboardItem']['dashable_id']
-							 )
-						 ), __d('dashboard','Dashboard: Edit', true)
-					 );
-				 }
-				 elseif ($curSettings['edit_version'] == 'corktile')
-				 {
-					 $links .= $this->Bl->anchor(array('class' => 'link_button'), array('url' => array(
-									'plugin' => 'corktile',
-									'controller' => 'cork_corktiles',
-									'action' => 'edit',
-									$item['DashDashboardItem']['dashable_id']
-							 )
-						 ), __d('dashboard','Dashboard: Edit', true)
-					 );
-				}
-			}
-				 
-			$links .= $this->Bl->ediv();
-			
-			echo $this->Bl->smartTableRowDry(array(
-				array(array(),array('escape' => false, 'colspan' => 3),$links)
-			));
-		}
-	echo $this->Bl->esmartTable();
+	echo $ajax->div('dashboard_table');
+		echo $this->element('filter');
+	echo $ajax->divEnd('dashboard_table');
 echo $this->Bl->ebox();
 
 ?>

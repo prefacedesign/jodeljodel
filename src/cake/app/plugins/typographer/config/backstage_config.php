@@ -30,6 +30,7 @@ $palette['button_bg_hover']    = new Color(234,255,207);
 $palette['button_bg_active']   = new Color(  0,  0,  0);
 $palette['subitem_title']	   = new Color(200,200,200);
 $palette['subform']            = new Color(216,229,255);
+$palette['subform2']           = new Color(196,209,235);
 $palette['wrong_tag_bg']       = new Color(255,223,199);
 $palette['tag_bg']             = new Color(229,235,213);
 $palette['input_fg']           = new Color(  0,  0,  0);	

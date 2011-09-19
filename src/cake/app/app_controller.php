@@ -48,6 +48,54 @@ class AppController extends Controller {
 	);
 	
 	
+	function beforeFilter()
+	{
+		parent::beforeFilter();		
+		$user = $this->Auth->user();
+		list($userPlugin, $userModel) = pluginSplit($this->Auth->userModel);
+		$user = $user[$userModel];
+		
+		App::Import('Behavior', 'Status.Status');
+		
+		//starts all status with nothing active
+		StatusBehavior::setGlobalActiveStatuses(array(
+			'publishing_status' => array('active' => array(), 'overwrite' => true, 'mergeWithCurrentActiveStatuses' => false),
+		));
+		
+		// in the applicationAppController or in each controller of a plugin (in beforeRender) is need to add the status, like this
+		/*
+			StatusBehavior::setGlobalActiveStatuses(array(
+				'publishing_status' => array('active' => array('published'), 'overwrite' => true, 'mergeWithCurrentActiveStatuses' => false),
+			));
+		*/
+		
+		$m = Configure::read('jj.modules');
+		if (isset($m[$this->params['plugin']]))
+			$controller = (!empty($m[$this->params['plugin']]['prefix']) ? $m[$this->params['plugin']]['prefix'] . '_' : '') . Inflector::pluralize($m[$this->params['plugin']]['plugin']);
+		else
+			$controller = 'controller';
+		$standardUrl = array(
+			'controller' => $controller,
+			'action' => 'view'
+		);
+		
+		if (isset($m[$this->params['plugin']]['viewUrl']))
+			$standardUrl = am($standardUrl, $m[$this->params['plugin']]['viewUrl']);
+		
+		if ($this->params['action'] == $standardUrl['action'] && $this->params['controller'] == $standardUrl['controller'])
+		{
+			if ($this->Acl->check($user['username'], 'view_drafts', 'read'))
+			{
+				//if the user have the permission view_drafts then the status are changed to published and draft
+				StatusBehavior::setGlobalActiveStatuses(array(
+					'publishing_status' => array('active' => array('published', 'draft'), 'overwrite' => true, 'mergeWithCurrentActiveStatuses' => true),
+				));
+				
+			}
+		}
+	}
+	
+	
 	function beforeRender()
 	{
 		parent::beforeRender();		

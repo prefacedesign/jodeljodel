@@ -311,7 +311,9 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$this->data = $View->data = $this->_readFormAttribute('data');
 		
 		if ($this->modelAlias)
+		{
 			$this->Form->create($this->modelAlias, array('url' => $options['url']));
+		}
 		
 		$out = $this->Bl->sdiv($htmlAttributes);
 		if ($options['writeForm'] == true)
@@ -327,9 +329,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$out .= $View->element(Inflector::underscore($this->modelAlias), $elementOptions);
 			
 			if (!$this->_readFormAttribute('submit'))
-				$out .= $this->submit(array(), array('label' => __('Burocrata: default save button', true)));
+				$out .= $this->submit(array(), array('label' => __d('burocrata', 'Burocrata: default save button', true)));
 		}
 		return $out;
+		
 	}
 
 
@@ -597,7 +600,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 	{
 		$options += array(
 			'cancel' => false,
-			'label' => __('Burocrata::submit - Submit label', true),
+			'label' => __d('burocrata', 'Burocrata::submit - Submit label', true),
 			'baseID' => $this->_readFormAttribute('baseID')
 		);
 		
@@ -608,7 +611,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		{
 			$options['cancel'] += array(
 				'htmlAttributes' => array(),
-				'label' => __('Burocrata::okOrCancel - Cancel label', true)
+				'label' => __d('burocrata', 'Burocrata::okOrCancel - Cancel label', true)
 			);
 			$options['cancel']['htmlAttributes']['id'] = 'cncl' . $options['baseID'];
 			$this->_addFormAttribute('cancel', $options['cancel']['htmlAttributes']['id']);
@@ -669,7 +672,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 	public function sokOrCancel($htmlAttributes = array(), $options = array())
 	{
 		$options = $options + array(
-			'label' => __('Burocrata::okOrCancel - OK label', true),
+			'label' => __d('burocrata', 'Burocrata::okOrCancel - OK label', true),
 			'type' => 'button',
 			'src' => null,
 			'cancel' => false,
@@ -687,7 +690,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		{
 			$cancelOptions += array(
 				'htmlAttributes' => array(),
-				'label' => __('Burocrata::okOrCancel - Cancel label', true),
+				'label' => __d('burocrata', 'Burocrata::okOrCancel - Cancel label', true),
 				'url' => ''
 			);
 			$cancelHtmlAttributes = $cancelOptions['htmlAttributes'] + array('id' => 'cncl'+$options['baseID']);
@@ -697,7 +700,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			
 			$out .= $this->Bl->sp(array('class' => 'alternative_option'));
 				$out .= ', ';
-				$out .= __('anchorList or', true);
+				$out .= __d('burocrata','anchorList or', true);
 				$out .= ' ';
 				$out .= $this->Bl->anchor($cancelHtmlAttributes, $cancelOptions, $cancelLabel);
 			$out .= $this->Bl->ep();
@@ -907,7 +910,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out .= $this->inputAutocompleteMessage(
 			array('class' => 'nothing_found'),
 			array(),
-			__('Burocrata: nothing found on autocomplete.', true)
+			__d('burocrata','Burocrata: nothing found on autocomplete.', true)
 		);
 		$out .= $this->BuroOfficeBoy->autocomplete($autocomplete_options);
 		
@@ -1010,11 +1013,11 @@ class BuroBurocrataHelper extends XmlTagHelper
 		);
 		extract($options);
 		
-		if (!isset($texts['new_item']))		$texts['new_item'] = __('Burocrata: create a new related item', true);
-		if (!isset($texts['edit_item']))	$texts['edit_item'] = __('Burocrata: edit related data', true);
-		if (!isset($texts['nothing_found']))$texts['nothing_found'] = __('Burocrata: nothing found on autocomplete', true);
-		if (!isset($texts['reset_item']))	$texts['reset_item'] = __('Burocrata: choose another related item', true);
-		if (!isset($texts['undo_reset']))	$texts['undo_reset'] = __('Burocrata: Bring last item back', true);
+		if (!isset($texts['new_item']))		$texts['new_item'] = __d('burocrata','Burocrata: create a new related item', true);
+		if (!isset($texts['edit_item']))	$texts['edit_item'] = __d('burocrata','Burocrata: edit related data', true);
+		if (!isset($texts['nothing_found']))$texts['nothing_found'] = __d('burocrata','Burocrata: nothing found on autocomplete', true);
+		if (!isset($texts['reset_item']))	$texts['reset_item'] = __d('burocrata','Burocrata: choose another related item', true);
+		if (!isset($texts['undo_reset']))	$texts['undo_reset'] = __d('burocrata','Burocrata: Bring last item back', true);
 		
 		if (isset($new_item_text))	$texts['new_item'] = $new_item_text;
 		if (isset($edit_item_text))	$texts['edit_item'] = $edit_item_text;
@@ -1107,7 +1110,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		);
 		
 		$links = array(
-			in_array('edit', $allow) ? $this->Bl->a(array('buro:action' => 'edit', 'href' => ''), array(), $texts['edit_item']) : '',
+			in_array('modify', $allow) ? $this->Bl->a(array('buro:action' => 'edit', 'href' => ''), array(), $texts['edit_item']) : '',
 			$this->Bl->a(array('buro:action' => 'reset', 'href' => ''), array(), $texts['reset_item']),
 			$this->Bl->a(array('buro:action' => 'undo_reset', 'href' => ''), array(), $texts['undo_reset'])
 		);
@@ -1518,7 +1521,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$this->Bl->anchor(
 				array('href' => '/'),
 				array(),
-				__('Burocrata::orderdItensMenu - close list', true)
+				__d('burocrata','Burocrata::orderdItensMenu - close list', true)
 		));
 		
 		$out .= $this->Bl->div(
@@ -1620,31 +1623,31 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out = $this->Bl->sdiv($htmlAttributes);
 		
 		$controls = array();
-		$label = __('Burocrata::orderedItensControls - up', true);
+		$label = __d('burocrata','Burocrata::orderedItensControls - up', true);
 		$controls[] = $this->Bl->button(
 			array('class' => 'ordered_list_up', 'buro:action' => 'up'), 
 			array(), 
 			$this->Bl->spanDry($label));
 		
-		$label = __('Burocrata::orderedItensControls - down', true);
+		$label = __d('burocrata','Burocrata::orderedItensControls - down', true);
 		$controls[] = $this->Bl->button(
 			array('class' => 'ordered_list_down', 'buro:action' => 'down'),
 			array(), 
 			$this->Bl->spanDry($label));
 		
-		$label = __('Burocrata::orderedItensControls - delete', true);
+		$label = __d('burocrata','Burocrata::orderedItensControls - delete', true);
 		$controls[] = $this->Bl->button(
 			array('class' => 'ordered_list_delete', 'buro:action' => 'delete'), 
 			array(), 
 			$this->Bl->spanDry($label));
 		
-		$label = __('Burocrata::orderedItensControls - duplicate', true);
+		$label = __d('burocrata','Burocrata::orderedItensControls - duplicate', true);
 		$controls[] = $this->Bl->anchor(
 			array('class' => 'ordered_list_duplicate', 'buro:action' => 'duplicate'),
 			array('url' => ''), 
 			$label);
 			
-		$label = __('Burocrata::orderedItensControls - edit', true);
+		$label = __d('burocrata','Burocrata::orderedItensControls - edit', true);
 		$controls[] = $this->Bl->anchor(
 			array('class' => 'ordered_list_edit', 'buro:action' => 'edit'), 
 			array('url' => ''),
@@ -1778,11 +1781,11 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'texts' => array()
 		);
 		$options['texts'] += array(
-			'new_item' => __('Burocrata: create a new related item', true),
-			'edit_item' => __('Burocrata: edit related data', true),
-			'view_item' => __('Burocrata: view related data', true),
-			'unlink_item' => __('Burocrata: unlink related data', true),
-			'confirm_unlink' => __('Burocrata: confirm unlinking', true)
+			'new_item' => __d('burocrata','Burocrata: create a new related item', true),
+			'edit_item' => __d('burocrata','Burocrata: edit related data', true),
+			'view_item' => __d('burocrata','Burocrata: view related data', true),
+			'unlink_item' => __d('burocrata','Burocrata: unlink related data', true),
+			'confirm_unlink' => __d('burocrata','Burocrata: confirm unlinking', true)
 		);
 		extract($options);
 		
@@ -2205,7 +2208,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		extract($this->_uploadParams($options));
 		
 		if (empty($gen_options['change_file_text']))
-			$gen_options['change_file_text'] = __('Burocrata::inputUpload - Change file', true);
+			$gen_options['change_file_text'] = __d('burocrata','Burocrata::inputUpload - Change file', true);
 		
 		$ids = array('act', 'prv', 'lnk', 'chg');
 		foreach ($ids as $id)
@@ -2233,11 +2236,11 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		// Div for previews
 		$out .= $this->Bl->sdiv(array('id' => $prv_id));
-			$filename = __('Burocrata::inputUpload - Download file', true);
+			$filename = __d('burocrata','Burocrata::inputUpload - Download file', true);
 			$htmlAttributes = array('id' => $lnk_id);
 			if (!empty($value))
 				$htmlAttributes['href'] = $this->Bl->fileURL($value, '', true);
-			$out .= $this->Bl->pDry(__('Burocrata::inputUpload - File: ', true) . $this->Bl->a($htmlAttributes, array(), $filename));
+			$out .= $this->Bl->pDry(__d('burocrata','Burocrata::inputUpload - File: ', true) . $this->Bl->a($htmlAttributes, array(), $filename));
 		$out .= $this->Bl->ediv();
 		
 		// Div for actions ID must be `'act' . $gen_options['baseID']`
@@ -2267,9 +2270,9 @@ class BuroBurocrataHelper extends XmlTagHelper
 		extract($this->_uploadParams($options));
 		
 		if (empty($gen_options['change_file_text']))
-			$gen_options['change_file_text'] = __('Burocrata::inputImage - Change image', true);
+			$gen_options['change_file_text'] = __d('burocrata','Burocrata::inputImage - Change image', true);
 		if (empty($gen_options['remove_file_text']))
-			$gen_options['remove_file_text'] = __('Burocrata::inputImage - Remove  image', true);
+			$gen_options['remove_file_text'] = __d('burocrata','Burocrata::inputImage - Remove  image', true);
 		
 		$value = $this->Form->value($file_input_options['fieldName']);
 		
@@ -2308,7 +2311,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out .= $this->Bl->sdiv(array('id' => $act_id));
 			$change_link = $this->Bl->a(array('href' => '#', 'id' => $chg_id), array(), $gen_options['change_file_text']);
 			$remove_link = $this->Bl->a(array('href' => '#', 'id' => $rmv_id), array(), $gen_options['remove_file_text']);
-			$out .= $this->Bl->pDry($change_link . __('Burocrata::inputImage - or ', true) . $remove_link);
+			$out .= $this->Bl->pDry($change_link . __d('burocrata','Burocrata::inputImage - or ', true) . $remove_link);
 		$out .= $this->Bl->ediv();
 		
 		return $out;
@@ -2374,7 +2377,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 				$out .= $this->Bl->a(
 					array('href' => '', 'class' => 'link_button buro_textile '.$button.'_textile', 'id' => ${"l{$button}_id"}),
 					array(),
-					__(sprintf('Burocrata::inputTextile - Add %s', $button), true)
+					__d('burocrata',sprintf('Burocrata::inputTextile - Add %s', $button), true)
 				);
 				$popup_method = '_popupTextile'.Inflector::camelize($button);
 				if (method_exists($this, $popup_method))
@@ -2388,7 +2391,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$out .= $this->Bl->a(
 				array('href' => '', 'class' => 'link_button buro_textile prev_textile', 'id' => $lprev_id), 
 				array(), 
-				__('Burocrata::inputTextile - Preview', true)
+				__d('burocrata','Burocrata::inputTextile - Preview', true)
 			);
 			$out .= $this->_popupTextilePreview($prev_id, $options);
 			$ajax_options = array(
@@ -2429,10 +2432,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 	protected function _popupTextileLink($id, $options)
 	{
 		$popup_link_txt = array(
-			'instructions'	=> __('Burocrata::_popupTextileLink - Instructions for link', true),
-			'label_text'	=> __('Burocrata::_popupTextileLink - What is the text for this link', true),
-			'label_link'	=> __('Burocrata::_popupTextileLink - What is the URL of this link', true),
-			'title' 		=> __('Burocrata::_popupTextileLink - Title of link popup', true)
+			'instructions'	=> __d('burocrata','Burocrata::_popupTextileLink - Instructions for link', true),
+			'label_text'	=> __d('burocrata','Burocrata::_popupTextileLink - What is the text for this link', true),
+			'label_link'	=> __d('burocrata','Burocrata::_popupTextileLink - What is the URL of this link', true),
+			'title' 		=> __d('burocrata','Burocrata::_popupTextileLink - Title of link popup', true)
 		);
 		
 		$itlink = 'itlink' . $options['baseID'];
@@ -2464,12 +2467,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 	protected function _popupTextileTitle($id, $options)
 	{
 		$popup_title_txt = array(
-			'instructions'	 => __('Burocrata::_popupTextileTitle - Instructions for link', true),
-			'label_type'	 => __('Burocrata::_popupTextileTitle - What is the type of this title', true),
-			'label_type_tit' => __('Burocrata::_popupTextileTitle - Title', true),
-			'label_type_sub' => __('Burocrata::_popupTextileTitle - Subtitle', true),
-			'label_text'	 => __('Burocrata::_popupTextileTitle - What is the title', true),
-			'title' 		 => __('Burocrata::_popupTextileTitle - Title of title popup', true)
+			'instructions'	 => __d('burocrata','Burocrata::_popupTextileTitle - Instructions for link', true),
+			'label_type'	 => __d('burocrata','Burocrata::_popupTextileTitle - What is the type of this title', true),
+			'label_type_tit' => __d('burocrata','Burocrata::_popupTextileTitle - Title', true),
+			'label_type_sub' => __d('burocrata','Burocrata::_popupTextileTitle - Subtitle', true),
+			'label_text'	 => __d('burocrata','Burocrata::_popupTextileTitle - What is the title', true),
+			'title' 		 => __d('burocrata','Burocrata::_popupTextileTitle - Title of title popup', true)
 		);
 		
 		$iilink = 'itititle' . $options['baseID'];
@@ -2513,7 +2516,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 	protected function _popupTextilePreview($id, $options)
 	{
 		$popup_title_txt = array(
-			'title' => __('Burocrata::_popupTextilePreview - Title of preview popup', true)
+			'title' => __d('burocrata','Burocrata::_popupTextilePreview - Title of preview popup', true)
 		);
 		
 		$popup_config['type'] = 'notice';
@@ -2538,8 +2541,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 	protected function _popupTextileFile($id, $options)
 	{
 		$popup_file_txt = array(
-			'title'			=> __('Burocrata::_popupTextileFile - Title of `add file` popup', true),
-			'label_input'	=> __('Burocrata::_popupTextileFile - Label of file input', true),
+			'title'			=> __d('burocrata','Burocrata::_popupTextileFile - Title of `add file` popup', true),
+			'label_input'	=> __d('burocrata','Burocrata::_popupTextileFile - Label of file input', true),
 		);
 		
 		$baseID = $this->baseID();
@@ -2577,8 +2580,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 	protected function _popupTextileImage($id, $options)
 	{
 		$popup_file_txt = array(
-			'title'			=> __('Burocrata::_popupTextileImage - Title of `add image` popup', true),
-			'label_input'	=> __('Burocrata::_popupTextileImage - Label of file input', true),
+			'title'			=> __d('burocrata','Burocrata::_popupTextileImage - Title of `add image` popup', true),
+			'label_input'	=> __d('burocrata','Burocrata::_popupTextileImage - Label of file input', true),
 		);
 		
 		$baseID = $this->baseID();
