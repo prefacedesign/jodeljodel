@@ -973,10 +973,9 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	
 	addNewItem: function(data, order, animate)
 	{
-		var type; // @todo Get type from somewhere
-		// this.types[type].title
+		var type;
 		var item,
-			content = {content: data.content, title: 'asdasd', id: data.id},
+			content = {content: data.content, title: data.title, id: data.id},
 			div = new Element('div').insert(this.templates.item.interpolate(content)).down();
 		
 		this.addNewMenu(order);

@@ -1419,7 +1419,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 				$contents[] = array(
 					'content' => $this->Jodel->insertModule($model_class_name, $type, $data),
 					'id' => $data[$Model->alias][$Model->primaryKey],
-					'title' => 'Something here'
+					'title' => $data[$Model->alias]['title']
 				);
 			}
 		}

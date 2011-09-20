@@ -5,15 +5,15 @@ switch ($type[0])
 		switch ($type[1])
 		{
 			case 'form':
-				echo $this->Buro->sform(array('class' => 'azul'), // Par‚metros HTML
+				echo $this->Buro->sform(array('class' => 'azul'), // Par√¢metros HTML
 					array(
 						'model' => 'BurocrataUser.Document', // Somente o Model pai, assim como no FormHelper::create
 						'callbacks' => array(
 							'onStart'	=> array('lockForm', 'js' => 'form.setLoading()'),
 							'onComplete'=> array('unlockForm', 'js' => 'form.unsetLoading()'),
-							'onSave'    => array('popup' => 'Salvou a gabaÁa'),
-							'onError'   => array('js' => "if(code == E_NOT_JSON) alert('N„o È json! N„o È json!'); else if(code == E_JSON) alert(error); else if(code == E_NOT_AUTH) alert('VocÍ n„o tem autorizaÁ„o para isso.');"),
-							'onFailure'	=> array('popup' => 'Erro de comunicaÁ„o com o servidor!'),
+							'onSave'    => array('popup' => 'Salvou a gaba√ßa'),
+							'onError'   => array('js' => "if(code == E_NOT_JSON) alert('N√£o √© json! N√£o √© json!'); else if(code == E_JSON) alert(error); else if(code == E_NOT_AUTH) alert('Voc√™ n√£o tem autoriza√ß√£o para isso.');"),
+							'onFailure'	=> array('popup' => 'Erro de comunica√ß√£o com o servidor!'),
 						)
 					)
 				);
