@@ -31,11 +31,16 @@ class DashDashboardController extends DashboardAppController
  * 
  * @todo Enable to select the page where a certain id is located.
  */
-	function index()
+	function index($page = null)
 	{
 		
 		$this->set('itemSettings', Configure::read('Dashboard.itemSettings'));
 		$this->set('statusOptions', Configure::read('Dashboard.statusOptions'));
+		
+		if (isset($this->params['named']['page']))
+			$this->Session->write('page', $this->params['named']['page']);
+		else
+			$this->Session->write('page', 0);
 		
 		$conditions = array();
 		$status = $this->Session->read('filter_status');
@@ -45,14 +50,29 @@ class DashDashboardController extends DashboardAppController
 		if ($filter != 'all' && !empty($filter))
 			$conditions['type'] = $filter;
 		
-		$this->paginate = array(
-			'DashDashboardItem' => array(
-				'limit' => LIMIT,
-				'contain' => false,
-				'order' => 'modified DESC',
-				'conditions' => $conditions
-			)
-		);
+		if ($page)
+		{
+			$this->paginate = array(
+				'DashDashboardItem' => array(
+					'limit' => LIMIT,
+					'page' => $page,
+					'contain' => false,
+					'order' => 'modified DESC',
+					'conditions' => $conditions
+				)
+			);
+		}
+		else
+		{
+			$this->paginate = array(
+				'DashDashboardItem' => array(
+					'limit' => LIMIT,
+					'contain' => false,
+					'order' => 'modified DESC',
+					'conditions' => $conditions
+				)
+			);
+		}
 		$this->set('filter', $filter);
 		$this->set('filter_status', $status);
 		$this->data = $this->paginate('DashDashboardItem');
@@ -62,6 +82,12 @@ class DashDashboardController extends DashboardAppController
             $this->render('filter');            
         } 
 
+	}
+	
+	function after_delete()
+	{
+		$page = $this->Session->read('page');
+		$this->index($page);
 	}
 	
 	function filter($module)

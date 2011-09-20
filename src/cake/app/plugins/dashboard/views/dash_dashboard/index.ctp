@@ -260,50 +260,82 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 	
 	// The popups called after success or failure of "Mark as draft" or "Publish"
 	echo $this->Popup->popup('draft_alert_ok', array(
-				'type' => 'notice',
-				'title' => __d('dashboard','Notice of marking as draft success - TITLE',true),
-				'content' => __d('dashboard','Notice of marking as draft success - TEXT',true),
-				'actions' => array('ok' => 'OK'),
-				'callback' => "if (action == 'ok') window.location.reload();"
-			));
+		'type' => 'notice',
+		'title' => __d('dashboard','Notice of marking as draft success - TITLE',true),
+		'content' => __d('dashboard','Notice of marking as draft success - TEXT',true),
+		'actions' => array('ok' => 'OK'),
+		'callback' => "if (action == 'ok') window.location.reload();"
+	));
 			
 	echo $this->Popup->popup('draft_alert_failure', array(
-				'type' => 'error',
-				'title' => __d('dashboard','Notice of marking as draft failure - TITLE',true),
-				'content' => __d('dashboard','Notice of marking as draft failure - TEXT',true),
-				'actions' => array('ok' => 'OK')
-			));
+		'type' => 'error',
+		'title' => __d('dashboard','Notice of marking as draft failure - TITLE',true),
+		'content' => __d('dashboard','Notice of marking as draft failure - TEXT',true),
+		'actions' => array('ok' => 'OK')
+	));
 			
 	echo $this->Popup->popup('publish_alert_ok', array(
-				'type' => 'notice',
-				'title' => __d('dashboard','Notice of publishing success - TITLE',true),
-				'content' => __d('dashboard','Notice of publishing success - TEXT',true),
-				'actions' => array('ok' => 'OK'),
-				'callback' => "if (action == 'ok') window.location.reload();"
-			));
+		'type' => 'notice',
+		'title' => __d('dashboard','Notice of publishing success - TITLE',true),
+		'content' => __d('dashboard','Notice of publishing success - TEXT',true),
+		'actions' => array('ok' => 'OK'),
+		'callback' => "if (action == 'ok') window.location.reload();"
+	));
 			
 	echo $this->Popup->popup('publish_alert_failure', array(
-				'type' => 'error',
-				'title' => __d('dashboard','Notice of publishing failure - TITLE',true),
-				'content' => __d('dashboard','Notice of publishing failure - TEXT',true),
-				'actions' => array('ok' => 'OK')
-			));
-			
-	echo $this->Popup->popup('delete_alert_ok', array(
-				'type' => 'notice',
-				'title' => __d('dashboard','Notice of delete success - TITLE',true),
-				'content' => __d('dashboard','Notice of delete success - TEXT',true),
-				'actions' => array('ok' => 'OK'),
-				'callback' => "if (action == 'ok') window.location.reload();"
-			));
-			
-	echo $this->Popup->popup('delete_alert_failure', array(
-				'type' => 'error',
-				'title' => __d('dashboard','Notice of delete failure - TITLE',true),
-				'content' => __d('dashboard','Notice of delete failure - TEXT',true),
-				'actions' => array('ok' => 'OK')
-			));
+		'type' => 'error',
+		'title' => __d('dashboard','Notice of publishing failure - TITLE',true),
+		'content' => __d('dashboard','Notice of publishing failure - TEXT',true),
+		'actions' => array('ok' => 'OK')
+	));
 	
+	
+	echo $this->Popup->popup('delete_alert_confirmation', array(
+		'type' => 'notice',
+		'title' => __d('dashboard','Confirm the delete - TITLE',true),
+		'content' => __d('dashboard','Confirm the delete - TEXT',true),
+		'actions' => array('yes' => __d('dashboard','DELETE - YES',true), 'no' => __d('dashboard','DELETE - NO',true)),
+		'callback' => "
+			if (action == 'yes')
+			{
+				new Ajax.Request(deleteID, { 
+					parameters: {
+						format: 'json',
+					},
+					onLoading : function() { $('dashboard_table').setLoading(); },
+					onSuccess: function (response,json) { 
+						$('dashboard_table').unsetLoading();
+						if (response.responseJSON.success)
+							showPopup('delete_alert_ok'); 
+						else
+							showPopup('delete_alert_failure');
+					}
+				});
+			}"
+	));
+	
+	$ajax_request = $ajax->remoteFunction(array(
+		'url' => array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'after_delete'),
+		'update' => 'dashboard_table',
+		'loading' => "$('dashboard_table').setLoading();",
+		'complete' => "$('dashboard_table').unsetLoading();"
+	));
+	
+	echo $this->Popup->popup('delete_alert_ok', array(
+		'type' => 'notice',
+		'title' => __d('dashboard','Notice of delete success - TITLE',true),
+		'content' => __d('dashboard','Notice of delete success - TEXT',true),
+		'actions' => array('ok' => 'OK'),
+		'callback' => "if (action == 'ok') { ".$ajax_request." }"
+	));
+	
+	
+	echo $this->Popup->popup('delete_alert_failure', array(
+		'type' => 'error',
+		'title' => __d('dashboard','Notice of delete failure - TITLE',true),
+		'content' => __d('dashboard','Notice of delete failure - TEXT',true),
+		'actions' => array('ok' => 'OK')
+	));
 	
 	echo $ajax->div('dashboard_table');
 		echo $this->element('filter');

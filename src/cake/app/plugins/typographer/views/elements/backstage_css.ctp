@@ -853,7 +853,7 @@
 	));
 	
 	$this->Decorator->rule(
-		'.pagination span.current, body div.pagination span:hover, body div.pagination span:hover, body div.pagination span:hover', array(
+		'.pagination span.current, body div.pagination span:hover', array(
 			'border-color' =>     $palette['internal_selection']->write(),
 			'background-color' => $palette['internal_selection']->write(),
 			'background-color' => $palette['internal_selection']->write(),
@@ -873,7 +873,12 @@
 	
 	$this->Decorator->rule(
 		'body div.pagination span a, body div.pagination span a:hover, body div.pagination span a:visited, body div.pagination span a:hover', array(
-			'border' => 0, 'background' => 'transparent !important'
+			'border' => 0, 'background' => 'transparent !important',
+	));
+	
+	$this->Decorator->rule(
+		'body div.pagination span a:hover, body div.pagination span a:visited', array(
+			'color' => $palette['bg']->write() . ' !important',
 	));
 	
 	$this->Decorator->rule(

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-09-19 20:46+0000\n"
+"POT-Creation-Date: 2011-09-20 19:07+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -82,19 +82,35 @@ msgstr ""
 msgid "Notice of publishing failure - TEXT"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:294
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:295
+msgid "Confirm the delete - TITLE"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:296
+msgid "Confirm the delete - TEXT"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:297
+msgid "DELETE - YES"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:297
+msgid "DELETE - NO"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:326
 msgid "Notice of delete success - TITLE"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:295
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:327
 msgid "Notice of delete success - TEXT"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:302
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:335
 msgid "Notice of delete failure - TITLE"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:303
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:336
 msgid "Notice of delete failure - TEXT"
 msgstr ""
 
@@ -122,23 +138,23 @@ msgstr ""
 msgid "Dashboard header: Modified"
 msgstr ""
 
-#: \plugins\dashboard\views\elements\filter.ctp:96
+#: \plugins\dashboard\views\elements\filter.ctp:97
 msgid "Hide from public"
 msgstr ""
 
-#: \plugins\dashboard\views\elements\filter.ctp:109
+#: \plugins\dashboard\views\elements\filter.ctp:110
 msgid "Publish to the great public"
 msgstr ""
 
-#: \plugins\dashboard\views\elements\filter.ctp:127
+#: \plugins\dashboard\views\elements\filter.ctp:128
 msgid "Delete content"
 msgstr ""
 
-#: \plugins\dashboard\views\elements\filter.ctp:137
+#: \plugins\dashboard\views\elements\filter.ctp:138
 msgid "Are you sure that desires delete this item?"
 msgstr ""
 
-#: \plugins\dashboard\views\elements\filter.ctp:181;192
+#: \plugins\dashboard\views\elements\filter.ctp:182;193
 msgid "Dashboard: Edit"
 msgstr ""
 
