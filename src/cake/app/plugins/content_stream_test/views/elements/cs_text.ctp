@@ -14,6 +14,10 @@
 		case 'form':
 			echo $this->Buro->sform(array(), array('model' => 'ContentStreamTest.CsText'));
 				echo $this->Buro->input(array(), array(
+					'fieldName' => 'id',
+					'type' => 'hidden'
+				));
+				echo $this->Buro->input(array(), array(
 					'label' => 'Some text',
 					'fieldName' => 'text',
 					'type' => 'textarea'

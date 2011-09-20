@@ -20,6 +20,7 @@
 					)
 				));
 			echo $this->Buro->eform();
+			echo $this->Bl->floatBreak();
 		break;
 		
 		case 'view':
@@ -33,6 +34,7 @@
 					$data['SfilStoredFile']['original_filename']
 				)
 			);
+			echo $this->Bl->paraDry(explode("\n", $data['CsFile']['description']));
 		break;
 	}
 	
