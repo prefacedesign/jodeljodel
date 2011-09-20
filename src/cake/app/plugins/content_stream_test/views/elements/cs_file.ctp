@@ -14,16 +14,25 @@
 		case 'form':
 			echo $this->Buro->sform(array(), array('model' => 'ContentStreamTest.CsFile'));
 				echo $this->Buro->submit(array(), array(
-					'label' => 'Salva',
+					'label' => 'Save',
 					'cancel' => array(
-						'label' => 'Cancelar'
+						'label' => 'cancel'
 					)
 				));
 			echo $this->Buro->eform();
 		break;
 		
 		case 'view':
-			echo 'file preview';
+			echo $this->Bl->pDry(
+				'Uploaded file: '.
+				$this->Bl->anchor(
+					array(),
+					array(
+						'url' => $this->Bl->fileUrl($data['SfilStoredFile']['id'], '', true)
+					),
+					$data['SfilStoredFile']['original_filename']
+				)
+			);
 		break;
 	}
 	

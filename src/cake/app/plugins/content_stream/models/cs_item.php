@@ -87,7 +87,7 @@ class CsItem extends ContentStreamAppModel
 
 		if (empty($data) || !is_array($data))
 		{
-			trigger_error('CsItem::getContent() - It was not possible to get CsItem content.');
+			trigger_error('CsItem::getContent() - I found an CsItem without content ('.$item['id'].'), but it was not meant to happen.');
 			return $item;
 		}
 
