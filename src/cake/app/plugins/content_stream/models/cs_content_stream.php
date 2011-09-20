@@ -32,7 +32,12 @@ class CsContentStream extends ContentStreamAppModel
  * @var array
  * @access public
  */
-	public $hasMany = array('ContentStream.CsItem');
+	public $hasMany = array(
+		'CsItem' => array(
+			'className' => 'ContentStream.CsItem',
+			'order' => 'CsItem.order'
+		)
+	);
 
 /**
  * This method creates a new (and empty) Content Stream
@@ -48,11 +53,20 @@ class CsContentStream extends ContentStreamAppModel
 	}
 
 /**
+ * afterFind callback.
  * 
+ * Used to retreive all content from CsItems
  * 
  * @access public
  */
-	public function afterFind($primary)
+	public function afterFind($results, $primary)
 	{
+		if($primary)
+			foreach($results as &$result)
+				if(isset($result['CsItem']))
+					foreach($result['CsItem'] as &$item)
+						$item += $this->CsItem->getContent($item);
+		
+		return $results;
 	}
 }
