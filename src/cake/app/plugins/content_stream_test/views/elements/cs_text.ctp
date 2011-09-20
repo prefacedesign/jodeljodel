@@ -29,7 +29,7 @@
 		break;
 		
 		case 'view':
-			echo 'file preview';
+			echo $this->Bl->paraDry(explode("\n", $data['CsText']['text']));
 		break;
 	}
 	

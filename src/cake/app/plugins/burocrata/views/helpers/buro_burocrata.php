@@ -1355,7 +1355,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$parameters['fkBounding'] = array($this->_name($foreignKey) => $this->data[$ParentModel->alias][$options['foreignKey']]);
 		$parameters['buroAction'] = array($this->internalParam('action') => 'save');
 		
-		$out .= $this->sform(array(), array('model' => $settings['assocName']));
+		$out .= $this->sform(array(), array('model' => $settings['assocName'], 'data' => $data));
 		$out .= $this->_orderedItens(compact('url', 'texts','model_class_name','foreign_key', 'parameters','allowed_content','baseID','callbacks', 'auto_order'));
 		$out .= $this->eform();
 		
@@ -1418,7 +1418,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 				$data = array($model_name => $data);
 				$contents[] = array(
 					'content' => $this->Jodel->insertModule($model_class_name, $type, $data),
-					'id' => $data[$Model->alias][$Model->primaryKey]
+					'id' => $data[$Model->alias][$Model->primaryKey],
+					'title' => 'Something here'
 				);
 			}
 		}
