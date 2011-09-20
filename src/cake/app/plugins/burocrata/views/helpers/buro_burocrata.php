@@ -1322,13 +1322,20 @@ class BuroBurocrataHelper extends XmlTagHelper
 			return false;
 		}
 		
-		// Loads configuration and settings
+		// Loads configuration, settings and data
 		App::import('Lib', 'ContentStream.CsConfigurator');
 		$config = CsConfigurator::getConfig();
 		
 		$settings = $ParentModel->Behaviors->CsContentStreamHolder->settings[$ParentModel->alias];
-		$allowed_content = $settings['streams'][$options['foreignKey']]['allowedContents'];
+		$settings = $settings['streams'][$options['foreignKey']];
+		$allowed_content = $settings['allowedContents'];
 		
+		if (empty($this->data[$ParentModel->alias][$options['foreignKey']])) {
+			trigger_error('BuroBurocrataHelper::inputContentStream - It is mandatory that the `'.$options['foreignKey'].'` field aint empty.');
+			return false;
+		}
+			
+		$data = $ParentModel->{$settings['assocName']}->findById($this->data[$ParentModel->alias][$options['foreignKey']]);
 		
 		// Label
 		if(empty($input_options['label']) && $AssocModel)
@@ -1348,7 +1355,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$parameters['fkBounding'] = array($this->_name($foreignKey) => $this->data[$ParentModel->alias][$options['foreignKey']]);
 		$parameters['buroAction'] = array($this->internalParam('action') => 'save');
 		
-		$out .= $this->sform(array(), array('model' => 'ContentStream.CsContentStream'));
+		$out .= $this->sform(array(), array('model' => $settings['assocName']));
 		$out .= $this->_orderedItens(compact('url', 'texts','model_class_name','foreign_key', 'parameters','allowed_content','baseID','callbacks', 'auto_order'));
 		$out .= $this->eform();
 		
