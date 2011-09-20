@@ -38,6 +38,9 @@ class BuroBurocrataComponent extends Object
 			unset($controller->data['_b']);
 		}
 		
+		if(isset($controller->buroData['type']))
+			$controller->set('type', $controller->buroData['type']);
+		
 		if(isset($controller->buroData['baseID']))
 			$controller->set('baseID', $controller->buroData['baseID']);
 		

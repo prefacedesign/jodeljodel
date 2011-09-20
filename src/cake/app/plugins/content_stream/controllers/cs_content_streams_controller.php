@@ -61,17 +61,29 @@ class CsContentStreamsController extends ContentStreamAppController
  */
 	function action()
 	{
-		$item_type = $id = $action = $Model = null;
+		$content_type = $id = $action = $Model = null;
 		$error = $this->BuroBurocrata->loadPostedModel($this, $Model);
+		
+		if (!$error && !App::import('Lib', 'ContentStream.CsConfigurator'))
+			$error = 'CsContentStreamController::action() - Couldn\'t load the content stream config';
 		
 		if (!$error)
 		{
 			if (isset($this->buroData['action']))
 				$action = $this->buroData['action'];
 			
-			if (isset($this->buroData['type']))
-				$item_type = $this->buroData['type'];
+			$streams = CsConfigurator::getConfig('streams');
 			
+			if (!isset($this->buroData['content_type']))
+				$error = 'CsContentStreamController::action() - parameter `content_type` not found.';
+			elseif (!isset($streams[$this->buroData['content_type']]))
+				$error = 'CsContentStreamController::action() - Configuration for `'.$this->buroData['content_type'].'`not found.';
+			else
+				$content_type = $this->buroData['content_type'];
+		}
+		
+		if (!$error)
+		{
 			switch ($action)
 			{
 				case 'edit':
@@ -84,7 +96,7 @@ class CsContentStreamsController extends ContentStreamAppController
 				
 				case 'save':
 					$saved = false;
-					$methodName = $this->BuroBurocrata->getSaveMethod($Model, $type);
+					$methodName = $this->BuroBurocrata->getSaveMethod($Model, $this->buroData['type']);
 					debug($Model->alias);
 					break;
 					if ($methodName !== false)
@@ -105,15 +117,6 @@ class CsContentStreamsController extends ContentStreamAppController
 			}
 		}
 		
-		$this->set(compact('error', 'action', 'saved', 'id', 'item_type'));
-	}
-
-/**
- * 
- * 
- * @access 
- */
-	function save()
-	{
+		$this->set(compact('error', 'action', 'saved', 'id', 'content_type'));
 	}
 }

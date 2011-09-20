@@ -1017,10 +1017,10 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 		if (next) next.checkSiblings();
 	},
 	
-	newItem: function(menuObj, type)
+	newItem: function(menuObj, content_type)
 	{
 		if (this.placesForm(menuObj))
-			this.trigger('onAction', 'edit', '', type);
+			this.trigger('onAction', 'edit', '', content_type);
 	},
 	placesForm: function(obj)
 	{
@@ -1081,6 +1081,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			OpenedForm.addParameters(this.parameters.request);
 			OpenedForm.addParameters(this.parameters.buroAction);
 			OpenedForm.addParameters(this.parameters.fkBounding);
+			OpenedForm.addParameters(this.parameters.contentType);
 			if (this.editing.order && this.parameters.orderField)
 				OpenedForm.addParameters(this.parameters.orderField, {order: Number(this.editing.order)+1});
 			OpenedForm.addCallbacks({

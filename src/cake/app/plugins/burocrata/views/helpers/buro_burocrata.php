@@ -1432,7 +1432,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 				$this->securityParams($options['url'], $model_plugin, $model_name),
 				$this->internalParam('id') => "#{id}",
 				$this->internalParam('action') => "#{action}",
-				$this->internalParam('type') => "#{type}",
+				$this->internalParam('content_type') => "#{content_type}",
 				$this->internalParam('baseID', $baseID),
 			),
 			'callbacks' => array(

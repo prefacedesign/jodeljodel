@@ -8,10 +8,10 @@
 		$streams = CsConfigurator::getConfig('streams');
 		$type = array('buro', 'content_stream', 'form');
 		
-		if (!isset($streams[$item_type]))
-			trigger_error('ContentStream - Type `'.$item_type.'` not known.');
+		if (!isset($streams[$content_type]))
+			trigger_error('ContentStream - Type `'.$content_type.'` not known.');
 		else
-			$object['content'] = $this->Jodel->insertModule($streams[$item_type]['model'], $type);
+			$object['content'] = $this->Jodel->insertModule($streams[$content_type]['model'], $type);
 	}
 	
 	echo $this->Js->object($object);
