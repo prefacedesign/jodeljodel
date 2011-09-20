@@ -49,6 +49,25 @@ class CsItem extends ContentStreamAppModel
 	);
 
 /**
+ * afterFind callback.
+ * 
+ * Used to retreive all content from CsItems
+ * 
+ * @access public
+ * @param array $results
+ * @param boolean $primary
+ * @return array The complete results
+ */
+	function afterFind($results, $primary)
+	{
+		if (isset($results[0]))
+			foreach ($results as &$result)
+				$result['CsItem'] += $this->getContent($result['CsItem']);
+		
+		return $results;
+	}
+
+/**
  * Method that completes the content of an CsItem record.
  * 
  * @access public
@@ -109,7 +128,7 @@ class CsItem extends ContentStreamAppModel
 		App::import('Lib', 'ContentStream.CsConfigurator');
 		$config = CsConfigurator::getConfig();
 		
-		$stream_config = $config['streams'][$item['type']];
+		$stream_config = $config['streams'][$item[$this->alias]['type']];
 		$Model = ClassRegistry::init($stream_config['model']);
 		return $Model->delete($item[$this->alias]['foreign_key']);
 	}

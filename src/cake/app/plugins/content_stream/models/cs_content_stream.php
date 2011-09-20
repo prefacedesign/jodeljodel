@@ -51,22 +51,4 @@ class CsContentStream extends ContentStreamAppModel
 		$this->create(array($this->alias => compact('type')));
 		return $this->save();
 	}
-
-/**
- * afterFind callback.
- * 
- * Used to retreive all content from CsItems
- * 
- * @access public
- */
-	public function afterFind($results, $primary)
-	{
-		if($primary)
-			foreach($results as &$result)
-				if(isset($result['CsItem']))
-					foreach($result['CsItem'] as &$item)
-						$item += $this->CsItem->getContent($item);
-		
-		return $results;
-	}
 }
