@@ -88,8 +88,8 @@ class BuroBurocrataComponent extends Object
  * Loads the model especified in controller POSTed data.
  *
  * @access public
- * @param $var An variable to be filled with Model Object
- * @return mixed true when single model found and instance created, error returned if model not found.
+ * @param mixed $var An variable to be filled with Model Object
+ * @return mixed true when single model found and instance created, error message returned if model not found.
  */
 	public function loadPostedModel(&$controller, &$var)
 	{
@@ -140,7 +140,8 @@ class BuroBurocrataComponent extends Object
  * based on passed id.
  * 
  * @access protected
- * @param $id mixed If empty will be used $controller->buroData['id']
+ * @param object $controller The controller 
+ * @param mixed $id If empty will be used $controller->buroData['id']
  * @return array An array with two index: `data` and `error`
  */
 	public function getViewData(&$controller, $id = null)
@@ -168,30 +169,40 @@ class BuroBurocrataComponent extends Object
 	}
 
 /**
+ * Searches specific saves methods related to the type on $Model object
+ * If it doesnt find any specific method, it returns the save method
  * 
  * 
  * @access public
+ * @param object $controller The controller 
+ * @param object $Model The model where this method will search
+ * @access public
  */
-	public function getSaveMethod(&$Model, $type = array())
+	public function getSaveMethod(&$controller, &$Model)
 	{
-		if (!empty($type))
-			$type = array_reverse(explode('|',$type));
+		$type = array();
+		if (isset($controller->buroData['type']))
+			$type = explode('|', $controller->buroData['type']);
 		
-		$methodName = 'saveBurocrata';   //Tries specific saves related to the type
+		// Find what kind of buro/form we are dealing
+		while (isset($array[0]) && in_array($type[0], array('buro', 'form')))
+			array_shift($type);
 		
+		$methodName = '';
 		foreach($type as $k => $subType)
 		{
+			$methodName = 'saveBurocrata';
 			for ($i = count($type) - 1; $i >= $k; $i--)
 				$methodName .= Inflector::camelize($type[$i]);
-				
+			debug($methodName);
 			if (method_exists($Model, $methodName))
-				break;
-			else
-				$methodName = 'saveBurocrata';
+				return $methodName;
 		}
 		
+		$methodName = 'saveBurocrata';
 		if (method_exists($Model, $methodName))
 			return $methodName;
-		return false;
+		
+		return 'save';
 	}
 }
