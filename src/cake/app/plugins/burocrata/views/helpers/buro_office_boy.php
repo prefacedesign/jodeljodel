@@ -183,6 +183,9 @@ class BuroOfficeBoyHelper extends AppHelper
 		if(!empty($callbacks) && is_array($callbacks))
 			$script .= sprintf('.addCallbacks(%s)', $this->formatCallbacks('form', $callbacks));
 		
+		if (!empty($parameters))
+			$script .= sprintf('.addParameters(%s)', $this->Js->object($parameters));
+		
 		return $this->addHtmlEmbScript($script);
 	}
 

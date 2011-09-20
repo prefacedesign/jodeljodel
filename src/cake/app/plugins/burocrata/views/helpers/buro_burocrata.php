@@ -312,6 +312,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		if ($this->modelAlias)
 		{
+			$this->Form->data = $this->_readFormAttribute('data');
 			$this->Form->create($this->modelAlias, array('url' => $options['url']));
 		}
 		
@@ -525,12 +526,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$url = $this->_readFormAttribute('url');
 		
 		if (!empty($modelAlias))
-			$out .= $this->input(array(
-				'name' => $this->internalParam('request'),
-				'value' => $this->security($url, $modelPlugin, $modelAlias),
-				), array('type' => 'hidden', 'close_me' => true)
-			);
+			$this->_addFormAttribute('parameters', array($this->internalParam('request') => $this->security($url, $modelPlugin, $modelAlias)));
 		
+		// $View = $this->_getView();
+		// if (isset($View->viewVars['type']) && is_array($View->viewVars['type']))
+			// $this->_addFormAttribute('parameters', array($this->internalParam('type') => implode('|', $View->viewVars['type'])));
+			
 		$out .= $this->inputLayoutScheme();
 		$out .= $this->Bl->ediv();
 		$out .= $this->BuroOfficeBoy->newForm($this->_readFormAttributes());
