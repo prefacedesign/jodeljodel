@@ -40,6 +40,7 @@
 			__d('dashboard','Dashboard header: Extra info',true),
 			$this->Paginator->sort(__d('dashboard','Dashboard header: Created',true),'created'),
 			$this->Paginator->sort(__d('dashboard','Dashboard header: Modified',true),'modified'),
+			__('Dashboard - dashboard header: Translations',true),
 		));
 		
 		
@@ -76,7 +77,7 @@
 				$item['DashDashboardItem']['info'],
 				strftime("%d/%m/%y", strtotime($item['DashDashboardItem']['created'])),
 				$arrow . strftime("%d/%m/%y", strtotime($item['DashDashboardItem']['modified'])),
-				//array(array(), array('escape' => false), $arrow . $languageStr)
+				array(array(), array('escape' => false), $arrow . $languageStr)
 			));
 	
 			//@todo Substitute this with an AJAX call.
