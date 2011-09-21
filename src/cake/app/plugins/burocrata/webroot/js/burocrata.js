@@ -995,13 +995,17 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	removeItem: function(item)
 	{
 		this.items.splice(this.items.indexOf(item), 1);
+		
 		item.div.unsetLoading();
 		new Effect.BlindUp(item.div, {
 			queue: this.queue,
 			duration: this.baseFxDuration,
 			afterFinish: function(item, eff) {
+				var prev = this.getItem(item.getPrev()), 
+					next = this.getItem(item.getNext());
 				item.div.remove();
-				this.updateSiblings(item);
+				if (prev) prev.checkSiblings();
+				if (next) next.checkSiblings();
 			}.bind(this, item)
 		});
 		return this;
