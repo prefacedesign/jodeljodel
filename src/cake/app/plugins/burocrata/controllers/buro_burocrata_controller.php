@@ -118,7 +118,7 @@ class BuroBurocrataController extends BurocrataAppController
  * @access public
  * @return json An javascript object that contains `error`, `content` and `saved` properties
  */
-	public function save($type = '')
+	public function save()
 	{
 		$saved = false;
 		$Model = null;
@@ -126,12 +126,8 @@ class BuroBurocrataController extends BurocrataAppController
 		
 		if($error === false)
 		{
-			$methodName = $this->BuroBurocrata->getSaveMethod($Model, $type);
-			
-			if ($methodName !== false)
-				$saved = $Model->{$methodName}($this->data) !== false;
-			else
-				$saved = $Model->save($this->data) !== false;
+			$methodName = $this->BuroBurocrata->getSaveMethod($this, $Model);
+			$saved = $Model->{$methodName}($this->data) !== false;
 			
 			if($saved)
 			{
