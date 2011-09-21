@@ -39,6 +39,32 @@ class CsContentStreamHolderBehavior extends ModelBehavior
  * ### The options:
  * - 
  * 
+ * After this method executed, the settings should be like:
+ * {{{
+ * 	[ModelAlias] => array(
+ *		[streams] => array
+ *			[one_foreign_key] => array(
+ *				[assocName] => array(
+ *				[allowedContents] => array(
+ *					[content_type_one] => array(
+ *						'model' => 'ContentPlugin.ContentModel',
+ *						'title' => 'Content title',
+ *					),
+ *					[content_type_two] => array( ... ),
+ *					.
+ *					.
+ *					.
+ *				)
+ *			),
+ *			[another_foreign_key] => array(
+ *				.
+ *				.
+ *				.
+ *			)
+ *		)
+ *	)
+ * }}}
+ * 
  * @param model $Model The model where this behavior is attached
  * @param array $options Configuration options.
  * @access public
