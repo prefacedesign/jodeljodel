@@ -1062,7 +1062,8 @@
 	$this->Decorator->rule(
 		'.input_radio input+label', array(
 			'font-weight' => 'normal !important',
-			'float' => 'left'
+			'float' => 'left',
+			'margin-top' => $u->t(9)
 	));
 	
 	$this->Decorator->rule(
