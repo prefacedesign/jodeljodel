@@ -68,6 +68,55 @@ class CsItem extends ContentStreamAppModel
 	}
 
 /**
+ * 
+ * 
+ * @access public
+ */
+	function saveBurocrata($data)
+	{
+		$contentType = false;
+		
+		// If CsItem is already created
+		if (!empty($data['CsItem']['id']))
+		{
+			$this->id = $data['CsItem']['id'];
+			$contentType = $this->field('type');
+		}
+		// Else, need to create one item
+		else if (isset($data[$this->alias]['type']))
+		{
+			$contentType = $data[$this->alias]['type'];
+		}
+		
+		if (!$contentType)
+			return false;
+		
+		// Start the transaction
+		$dbo = $this->getDataSource();
+		$dbo->begin($this);
+		
+		// Loads the config
+		App::import('Lib', 'ContentStream.CsConfigurator');
+		$config = CsConfigurator::getConfig();
+		
+		$stream_config = $config['streams'][$contentType];
+		$Model = ClassRegistry::init($stream_config['model']);
+		
+		if ($Model->save($data))
+		{
+			$data[$this->alias]['foreign_key'] = $Model->id;
+			if ($this->save($data))
+			{
+				$dbo->commit($this);
+				return true;
+			}
+		}
+		
+		$dbo->rollback($this);
+		return false;
+	}
+
+/**
  * Method that completes the content of an CsItem record.
  * 
  * @access public
@@ -78,6 +127,9 @@ class CsItem extends ContentStreamAppModel
 	{
 		App::import('Lib', 'ContentStream.CsConfigurator');
 		$config = CsConfigurator::getConfig();
+		
+		if (!isset($item['type']))
+			return array();
 		
 		if (!isset($config['streams'][$item['type']])) {
 			trigger_error('CsItem::getContent() - Found a item of an unknown type `'.$item['type'].'`.');
@@ -105,10 +157,7 @@ class CsItem extends ContentStreamAppModel
 		}
 
 		if (empty($data) || !is_array($data))
-		{
-			trigger_error('CsItem::getContent() - I found an CsItem without content ('.$item['id'].'), but it was not meant to happen.');
 			return $item;
-		}
 
 		return $item+$data;
 	}

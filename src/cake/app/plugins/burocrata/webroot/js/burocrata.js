@@ -974,8 +974,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	{
 		var type;
 		var item,
-			content = {content: data.content, title: data.title, id: data.id},
-			div = new Element('div').insert(this.templates.item.interpolate(content)).down();
+			div = new Element('div').insert(this.templates.item.interpolate(data)).down();			
 		
 		this.addNewMenu(order);
 		if (this.menus[order])
@@ -1015,10 +1014,11 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 		if (next) next.checkSiblings();
 	},
 	
-	newItem: function(menuObj, content_type)
+	newItem: function(menuObj, contentType)
 	{
+		this.currentContentType = contentType;
 		if (this.placesForm(menuObj))
-			this.trigger('onAction', 'edit', '', content_type);
+			this.trigger('onAction', 'edit', '', contentType);
 	},
 	placesForm: function(obj)
 	{
@@ -1074,14 +1074,24 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	{
 		var form_id = this.divForm.down('.buro_form') && this.divForm.down('.buro_form').readAttribute('id');
 		var OpenedForm = BuroCR.get(form_id);
-		if (OpenedForm) {
+		if (OpenedForm)
+		{
 			OpenedForm.url = this.url;
 			OpenedForm.addParameters(this.parameters.request);
 			OpenedForm.addParameters(this.parameters.buroAction);
 			OpenedForm.addParameters(this.parameters.fkBounding);
-			OpenedForm.addParameters(this.parameters.contentType);
+			
+			if (this.currentContentType && this.parameters.contentType);
+				OpenedForm.addParameters(this.parameters.contentType, {content_type: this.currentContentType});
+			
+			// If it doens't exists (creating)
 			if (this.editing.order && this.parameters.orderField)
 				OpenedForm.addParameters(this.parameters.orderField, {order: Number(this.editing.order)+1});
+			
+			// If it already exists (editing)
+			if (this.editing.id)
+				OpenedForm.addParameters(this.parameters.contentId, {id: this.editing.id});
+			
 			OpenedForm.addCallbacks({
 				onStart: function(form) {
 					form.lock();

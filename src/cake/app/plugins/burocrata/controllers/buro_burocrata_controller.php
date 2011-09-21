@@ -296,8 +296,8 @@ class BuroBurocrataController extends BurocrataAppController
 			if (isset($this->buroData['action']))
 				$action = $this->buroData['action'];
 			
-			if (isset($this->buroData['type']))
-				$item_type = $this->buroData['type'];
+			if (isset($this->buroData['content_type']))
+				$content_type = $this->buroData['content_type'];
 			
 			switch ($action)
 			{
@@ -394,6 +394,13 @@ class BuroBurocrataController extends BurocrataAppController
 					$this->set(compact('data'));
 				break;
 				
+				case 'save':
+					if (!empty($this->buroData['id']))
+						$this->data[$Model->alias][$Model->primaryKey] = $id = $this->buroData['id'];
+					
+					$this->save();
+				break;
+				
 				case 'afterEdit':
 					if (!empty($this->buroData['id']))
 						$id = $this->buroData['id'];
@@ -415,7 +422,7 @@ class BuroBurocrataController extends BurocrataAppController
 		
 		}
 		
-		$this->set(compact('error', 'action', 'saved', 'id', 'item_type'));
+		$this->set(compact('error', 'action', 'saved', 'id', 'content_type'));
 	}
 
 

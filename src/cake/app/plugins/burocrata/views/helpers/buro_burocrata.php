@@ -1304,7 +1304,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'foreignKey' => 'cs_content_stream_id',
 			'callbacks' => array(),
 			'texts' => array('confirm' => array()),
-			'url' => array('plugin' => 'content_stream', 'controller' => 'cs_content_streams', 'action' => 'action')
+			'url' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'list_of_items')
 		);
 		extract($options);
 		
@@ -1328,19 +1328,24 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$config = CsConfigurator::getConfig();
 		
 		$settings = $ParentModel->Behaviors->CsContentStreamHolder->settings[$ParentModel->alias];
-		$settings = $settings['streams'][$options['foreignKey']];
-		$allowed_content = $settings['allowedContents'];
+		if (isset($settings['streams'][$options['foreignKey']]))
+		{
+			$settings = $settings['streams'][$options['foreignKey']];
+			$allowed_content = $settings['allowedContents'];
+		}
 		
 		if (empty($this->data[$ParentModel->alias][$options['foreignKey']])) {
-			trigger_error('BuroBurocrataHelper::inputContentStream - It is mandatory that the `'.$options['foreignKey'].'` field aint empty.');
+			trigger_error('BuroBurocrataHelper::inputContentStream - It is mandatory that the $this->data['.$ParentModel->alias.']['.$options['foreignKey'].'] field be filled.');
 			return false;
 		}
-			
-		$data = $ParentModel->{$settings['assocName']}->findById($this->data[$ParentModel->alias][$options['foreignKey']]);
+		
+		$ContentStream = &$ParentModel->{$settings['assocName']};
+		$content_stream_id = $this->data[$ParentModel->alias][$options['foreignKey']];
+		$data = $ContentStream->findById($content_stream_id);
 		
 		// Label
-		if(empty($input_options['label']) && $AssocModel)
-			$input_options['label'] = Inflector::humanize($AssocModel->table);
+		if(empty($input_options['label']))
+			$input_options['label'] = Inflector::humanize($streams);
 		
 		$out = $this->Bl->h6(array(),array('escape' => false), $input_options['label']);
 		unset($input_options['label']);
@@ -1352,9 +1357,17 @@ class BuroBurocrataHelper extends XmlTagHelper
 			unset($input_options['instructions']);
 		}
 		
+		// Configuration for _orderedItens method call
 		$model_class_name = 'ContentStream.CsItem';
-		$parameters['fkBounding'] = array($this->_name($foreignKey) => $this->data[$ParentModel->alias][$options['foreignKey']]);
+		$parameters['fkBounding'] = array($this->_name('CsItem.cs_content_stream_id') => $content_stream_id);
+		$parameters['contentType'] = array($this->_name('CsItem.type') => '#{content_type}');
 		$parameters['buroAction'] = array($this->internalParam('action') => 'save');
+		
+		if ($ContentStream->CsItem->Behaviors->attached('Ordered'))
+		{
+			$fieldName = $this->_name('CsItem.'.$ContentStream->CsItem->Behaviors->Ordered->settings['CsItem']['field']);
+			$parameters['orderField'] = array($fieldName => '#{order}');
+		}
 		
 		$out .= $this->sform(array(), array('model' => $settings['assocName'], 'data' => $data));
 		$out .= $this->_orderedItens(compact('url', 'texts','model_class_name','foreign_key', 'parameters','allowed_content','baseID','callbacks', 'auto_order'));
@@ -1445,10 +1458,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$url = $this->url($url);
 		$parameters['request'] = array($this->internalParam('request') => $this->security($url, $model_plugin, $model_name));
-		
-		$types = array();
-		foreach($allowed_content as $type=>$content)
-			$types[$type] = array('title' => $content['title']);
+		$parameters['contentId'] = array($this->internalParam('id') => '#{id}');
 		
 		if ($auto_order)
 			$ajax_call['params'][$this->internalParam('foreign_key')] = $foreign_key;
@@ -1457,7 +1467,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$jsOptions['templates']['menu'] = $this->orderedItensMenu(array(), array('allowed_content' => $allowed_content));
 		$jsOptions['templates']['item'] = $this->orderedItensItem(array('class' => $auto_order?'auto_order':''));
 		$jsOptions['contents'] = $contents;
-		$jsOptions += compact('auto_order', 'parameters', 'texts', 'baseID', 'types', 'url');
+		$jsOptions += compact('auto_order', 'parameters', 'texts', 'baseID', 'url');
 		
 		
 		$out = $this->Bl->br();

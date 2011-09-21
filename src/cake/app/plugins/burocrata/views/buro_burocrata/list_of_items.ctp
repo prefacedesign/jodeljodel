@@ -17,6 +17,11 @@
 		$object['content'] = $this->Jodel->insertModule($model_class_name, $type, $data);
 	}
 	
+	if ($action == 'save')
+	{
+		$object += compact('saved');
+	}
+	
 	if ($action == 'afterEdit')
 	{
 		$type = array('buro', 'many_children', 'view');
