@@ -902,7 +902,6 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 		this.templates = content.templates || {menu: '', item: ''};
 		this.contents = content.contents || [];
 		this.texts = content.texts || {};
-		this.types = content.types || {};
 		this.parameters = parameters || {};
 		this.url = content.url;
 		

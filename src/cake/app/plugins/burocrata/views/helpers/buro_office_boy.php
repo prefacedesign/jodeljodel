@@ -84,7 +84,7 @@ class BuroOfficeBoyHelper extends AppHelper
 		),
 		'listOfItems' => array(
 			'onShowForm' => 'function(id){%s}',
-			'onAction' => 'function(action,id, content_type){%s}',
+			'onAction' => 'function(action, id, content_type){%s}',
 			'onError' => 'function(json){%s}',
 		),
 		'color' => array(
@@ -253,12 +253,12 @@ class BuroOfficeBoyHelper extends AppHelper
  */
 	public function listOfItems($options)
 	{
-		$options += array('callbacks' => array(), 'baseID' => uniqid(), 'types' => array(), 'texts' => array());
+		$options += array('callbacks' => array(), 'baseID' => uniqid(), 'texts' => array());
 		extract($options);
 		unset($options);
 		
 		$parameters = $this->Js->object($parameters);
-		$content = $this->Js->object(compact('texts', 'templates', 'contents', 'types', 'url'));
+		$content = $this->Js->object(compact('texts', 'templates', 'contents', 'url'));
 		
 		$className = $auto_order ? 'BuroListOfItemsAutomatic' : 'BuroListOfItems';
 		
