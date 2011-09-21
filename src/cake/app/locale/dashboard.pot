@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-09-20 19:07+0000\n"
+"POT-Creation-Date: 2011-09-21 18:09+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -138,6 +138,10 @@ msgstr ""
 msgid "Dashboard header: Modified"
 msgstr ""
 
+#: \plugins\dashboard\views\elements\filter.ctp:43
+msgid "Dashboard - dashboard header: Translations"
+msgstr ""
+
 #: \plugins\dashboard\views\elements\filter.ctp:97
 msgid "Hide from public"
 msgstr ""
@@ -146,15 +150,15 @@ msgstr ""
 msgid "Publish to the great public"
 msgstr ""
 
-#: \plugins\dashboard\views\elements\filter.ctp:128
+#: \plugins\dashboard\views\elements\filter.ctp:135
 msgid "Delete content"
 msgstr ""
 
-#: \plugins\dashboard\views\elements\filter.ctp:138
-msgid "Are you sure that desires delete this item?"
+#: \plugins\dashboard\views\elements\filter.ctp:163
+msgid "Dashboard: See on the page"
 msgstr ""
 
-#: \plugins\dashboard\views\elements\filter.ctp:182;193
+#: \plugins\dashboard\views\elements\filter.ctp:179;190
 msgid "Dashboard: Edit"
 msgstr ""
 

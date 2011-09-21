@@ -40,7 +40,7 @@
 			__d('dashboard','Dashboard header: Extra info',true),
 			$this->Paginator->sort(__d('dashboard','Dashboard header: Created',true),'created'),
 			$this->Paginator->sort(__d('dashboard','Dashboard header: Modified',true),'modified'),
-			__('Dashboard - dashboard header: Translations',true),
+			__d('dashboard', 'Dashboard - dashboard header: Translations',true),
 		));
 		
 		
@@ -125,17 +125,14 @@
 			
 			if (in_array('delete', $curSettings['actions']))
 			{
-				$links .= $ajax->link(__d('dashboard','Delete content', true),
-						array(
-							'plugin' => 'dashboard',
-							'controller' => 'dash_dashboard',
-							'action' => 'delete_item',
-							$item['DashDashboardItem']['id']
-						), array(
-							'complete' => "if(request.responseJSON.success) {showPopup('delete_alert_ok');} else {showPopup('delete_alert_failure');}",
-							'class' => 'link_button'
-						),
-						__d('dashboard','Are you sure that desires delete this item?', true)
+				$delete_url = $this->Html->url(array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'delete_item', $item['DashDashboardItem']['id']));
+				$links .= $this->Bl->anchor(
+					array(
+						'class' => 'link_button',
+						'onclick' => "deleteID = '". $delete_url . "'; showPopup('delete_alert_confirmation');",
+					), 
+					array('url' => "#"),
+					__d('dashboard','Delete content', true)
 				);
 			}
 			
@@ -163,7 +160,7 @@
 							'controller' => $standardUrl['controller'],
 							'action' => $standardUrl['action'], $item['DashDashboardItem']['dashable_id']
 						)), 
-						__('Dashboard: See on the page', true)
+						__d('dashboard', 'Dashboard: See on the page', true)
 					);
 				}
 			}
@@ -203,6 +200,5 @@
 		}
 		
 	echo $this->Bl->esmartTable();
-
 
 ?>

@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-09-20 19:07+0000\n"
-"PO-Revision-Date: 2011-09-20 16:09-0300\n"
+"POT-Creation-Date: 2011-09-21 18:09+0000\n"
+"PO-Revision-Date: 2011-09-21 15:11-0300\n"
 "Last-Translator: Rodrigo  <rodrigo@preface.com.br>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -137,6 +137,10 @@ msgstr "Criado"
 msgid "Dashboard header: Modified"
 msgstr "Modificado"
 
+#: \plugins\dashboard\views\elements\filter.ctp:43
+msgid "Dashboard - dashboard header: Translations"
+msgstr "Linguagens"
+
 #: \plugins\dashboard\views\elements\filter.ctp:97
 msgid "Hide from public"
 msgstr "Tirar do ar"
@@ -145,15 +149,15 @@ msgstr "Tirar do ar"
 msgid "Publish to the great public"
 msgstr "Publicar"
 
-#: \plugins\dashboard\views\elements\filter.ctp:128
+#: \plugins\dashboard\views\elements\filter.ctp:135
 msgid "Delete content"
 msgstr "Excluir"
 
-#: \plugins\dashboard\views\elements\filter.ctp:138
-msgid "Are you sure that desires delete this item?"
-msgstr "Você deseja excluir este item?"
+#: \plugins\dashboard\views\elements\filter.ctp:163
+msgid "Dashboard: See on the page"
+msgstr "Visualizar"
 
-#: \plugins\dashboard\views\elements\filter.ctp:182;193
+#: \plugins\dashboard\views\elements\filter.ctp:179;190
 msgid "Dashboard: Edit"
 msgstr "Editar"
 
@@ -220,8 +224,8 @@ msgstr "pt"
 msgid "Dashboard language abrev.: ger"
 msgstr "pt"
 
-#~ msgid "Dashboard: See on the page"
-#~ msgstr "Visualizar"
+#~ msgid "Are you sure that desires delete this item?"
+#~ msgstr "Você deseja excluir este item?"
 
 #~ msgid "Dashboard types: cerveja_avaliacao"
 #~ msgstr "Avaliação"
@@ -231,9 +235,6 @@ msgstr "pt"
 
 #~ msgid "Dashboard types: cerveja_cerveja"
 #~ msgstr "Cerveja"
-
-#~ msgid "Dashboard header: Translations"
-#~ msgstr "Traduções"
 
 #~ msgid "Language name: por"
 #~ msgstr "português"

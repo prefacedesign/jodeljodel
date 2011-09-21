@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-09-20 19:07+0000\n"
+"POT-Creation-Date: 2011-09-21 18:09+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -63,14 +63,6 @@ msgstr ""
 
 #: \plugins\dashboard\views\dash_dashboard\table_examples.ctp:4
 msgid "Backstage index page: Page title - Dashboard"
-msgstr ""
-
-#: \plugins\dashboard\views\elements\filter.ctp:43
-msgid "Dashboard - dashboard header: Translations"
-msgstr ""
-
-#: \plugins\dashboard\views\elements\filter.ctp:166
-msgid "Dashboard: See on the page"
 msgstr ""
 
 #: \plugins\jj_utils\vendors\shells\jj_console.php:13
