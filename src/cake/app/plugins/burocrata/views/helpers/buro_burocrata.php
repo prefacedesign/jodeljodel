@@ -135,8 +135,11 @@ class BuroBurocrataHelper extends XmlTagHelper
 				$htmlAttributes = $this->addClass($htmlAttributes, $this->_readFormAttribute('baseID'), 'buro:form');
 				$inputOptions = am($htmlAttributes, $options['options'], array('label' => false, 'legend' => false, 'div' => false, 'type' => $options['type'], 'error' => $options['error']));
 				
-				if ($inputOptions['type'] == 'radio' || $inputOptions['type'] == 'checkbox')
+				if ($inputOptions['type'] == 'radio') 
 					$inputOptions['label'] = true;
+				if ($inputOptions['type'] == 'checkbox')
+					if (isset($options['options']['label']))
+						$inputOptions['label'] = $options['options']['label'];
 				
 				if (!empty($options['fieldName']))
 					$out .= $this->Form->input($options['fieldName'], $inputOptions);
