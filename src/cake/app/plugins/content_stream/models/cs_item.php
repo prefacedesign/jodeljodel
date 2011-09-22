@@ -68,9 +68,14 @@ class CsItem extends ContentStreamAppModel
 	}
 
 /**
+ * Method called by the BuroBurocrataController
  * 
+ * This method receive the data from the ContentStream input and creates/updates
+ * an CsItem.
  * 
  * @access public
+ * @param array $data
+ * @return boolean True if succefully saved. False otherwise.
  */
 	function saveBurocrata($data)
 	{
@@ -102,10 +107,12 @@ class CsItem extends ContentStreamAppModel
 		$stream_config = $config['streams'][$contentType];
 		$Model = ClassRegistry::init($stream_config['model']);
 		
-		if ($Model->save($data))
+		$Model->create($data);
+		if ($Model->save())
 		{
 			$data[$this->alias]['foreign_key'] = $Model->id;
-			if ($this->save($data))
+			$this->create($data);
+			if ($this->save())
 			{
 				$dbo->commit($this);
 				return true;
@@ -114,6 +121,45 @@ class CsItem extends ContentStreamAppModel
 		
 		$dbo->rollback($this);
 		return false;
+	}
+
+/**
+ * Logic of duplicating an CsItem (and its content)
+ * 
+ * @access public
+ * @param string $item_id
+ * @return boolean True if succefully duplicated. False otherwise.
+ */
+	function duplicate($item_id)
+	{
+		$this->contain();
+		$item = $this->findById($item_id);
+		
+		if (empty($item))
+			return false;
+		
+		App::import('Lib', 'ContentStream.CsConfigurator');
+		$config = CsConfigurator::getConfig();
+		$Model = ClassRegistry::init($config['streams'][$item[$this->alias]['type']]['model']);
+		
+		
+		$item[$Model->alias] = $item[$this->alias][$Model->alias];
+		unset($item[$this->alias][$Model->alias]);
+		if (method_exists($Model, 'duplicate'))
+		{
+			if (!$Model->duplicate($item[$Model->alias][$Model->primaryKey]))
+				return false;
+			
+			$item[$Model->alias][$Model->primaryKey] = $Model->id;
+		}
+		else
+		{
+			unset($item[$Model->alias][$Model->primaryKey]);
+		}
+		unset($item[$this->alias][$this->primaryKey]);
+		unset($item[$this->alias]['foreign_key']);
+		
+		return $this->saveBurocrata($item);
 	}
 
 /**

@@ -345,7 +345,7 @@ class BuroBurocrataController extends BurocrataAppController
 					{
 						if (method_exists($Model, 'duplicate'))
 						{
-							if (!$Model->duplicate($$this->buroData['id']))
+							if (!$Model->duplicate($this->buroData['id']))
 								$error = $debug?'BuroBurocrataController - Model::duplicate() failed.':true;
 							else
 								$id = $Model->id;
@@ -373,15 +373,13 @@ class BuroBurocrataController extends BurocrataAppController
 						
 						if (!$error)
 						{
-							if ($ordered)
-							{
-								$this->set('order', $order+1);
-								$saved = $id;
-							}
 							$this->set('old_id', $this->buroData['id']);
-							$buroData = $this->BuroBurocrata->getViewData($this,$id);
+							$buroData = $this->BuroBurocrata->getViewData($this, $id);
+							$orderField = $Model->Behaviors->Ordered->settings[$Model->alias]['field'];
+							
 							extract($buroData);
-							$this->set(compact('data'));
+							$order = $data[$Model->alias][$orderField];
+							$this->set(compact('data','order'));
 						}
 					}
 				break;
