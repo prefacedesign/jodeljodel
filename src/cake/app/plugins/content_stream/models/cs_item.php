@@ -184,7 +184,7 @@ class CsItem extends ContentStreamAppModel
 		
 		$stream_config = $config['streams'][$item['type']];
 		$Model = ClassRegistry::init($stream_config['model']);
-		$item['title'] = $stream_config['title'];
+		$item['__title'] = $stream_config['title'];
 		
 		if (!$Model) {
 			trigger_error('CsItem::getContent() - Model `'.$stream_config['model'].'` could´n be initialized.');

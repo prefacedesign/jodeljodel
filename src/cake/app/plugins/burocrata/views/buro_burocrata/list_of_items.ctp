@@ -26,8 +26,8 @@
 	{
 		$type = array('buro', 'many_children', 'view');
 		$object['content'] = $this->Jodel->insertModule($model_class_name, $type, $data);
-		if (isset($data[$model_name]['title']))
-			$object['title'] = $data[$model_name]['title'];
+		if (isset($data[$model_name]['__title']))
+			$object['title'] = $data[$model_name]['__title'];
 		if (isset($id_order))
 			$object['id_order'] = $id_order;
 	}

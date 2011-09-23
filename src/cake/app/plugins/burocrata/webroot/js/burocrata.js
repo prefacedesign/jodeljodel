@@ -972,15 +972,18 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	
 	addNewItem: function(data, order, animate)
 	{
-		var type;
-		var item,
-			div = new Element('div').insert(this.templates.item.interpolate(data)).down();			
+		var item,content, div;
+		if ((!data.title || data.title.blank()) && this.texts.title)
+			data.title = this.texts.title;
+		
+		content = this.templates.item.interpolate(data),
+		div = new Element('div').insert(content).down();			
 		
 		this.addNewMenu(order);
 		if (this.menus[order])
 			this.menus[order].div.insert({after: div});
 		
-		item = new BuroListOfItemsItem(div, type).addCallbacks({'buro:controlClick': this.routeAction.bind(this)})
+		item = new BuroListOfItemsItem(div).addCallbacks({'buro:controlClick': this.routeAction.bind(this)})
 		this.items.push(item);
 		this.updateSiblings(item);
 		

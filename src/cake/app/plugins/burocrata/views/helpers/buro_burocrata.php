@@ -1361,7 +1361,6 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$model_class_name = 'ContentStream.CsItem';
 		$parameters['fkBounding'] = array($this->_name('CsItem.cs_content_stream_id') => $content_stream_id);
 		$parameters['contentType'] = array($this->_name('CsItem.type') => '#{content_type}');
-		$parameters['buroAction'] = array($this->internalParam('action') => 'save');
 		
 		if ($ContentStream->CsItem->Behaviors->attached('Ordered'))
 		{
@@ -1433,7 +1432,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 				$contents[] = array(
 					'content' => $this->Jodel->insertModule($model_class_name, $type, $data),
 					'id' => $data[$Model->alias][$Model->primaryKey],
-					'title' => $data[$Model->alias]['title']
+					'title' => isset($data[$Model->alias]['__title']) ? $data[$Model->alias]['__title'] : ''
 				);
 			}
 		}
@@ -1459,6 +1458,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$url = $this->url($url);
 		$parameters['request'] = array($this->internalParam('request') => $this->security($url, $model_plugin, $model_name));
 		$parameters['contentId'] = array($this->internalParam('id') => '#{id}');
+		$parameters['buroAction'] = array($this->internalParam('action') => 'save');
 		
 		if ($auto_order)
 			$ajax_call['params'][$this->internalParam('foreign_key')] = $foreign_key;
