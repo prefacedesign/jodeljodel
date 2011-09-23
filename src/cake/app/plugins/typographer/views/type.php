@@ -53,6 +53,22 @@ class TypeView extends View
 		
 		return $loaded_helpers;
 	}
-}
 
-?>
+/**
+ * Overwrites the View::element() function so we can deal with the $type parameter
+ * 
+ * @access public
+ * @return string The result of View::element()
+ */
+	function element($name, $params = array(), $loadHelpers = false)
+	{
+		$typeBkp = $this->getVar('type');;
+		if (isset($params['type']))
+			$this->viewVars['type'] = $params['type'];
+		
+		$out = parent::element($name, $params, $loadHelpers);
+		
+		$this->viewVars['type'] = $typeBkp;		
+		return $out;
+	}
+}
