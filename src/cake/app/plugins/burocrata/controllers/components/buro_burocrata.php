@@ -194,7 +194,7 @@ class BuroBurocrataComponent extends Object
 			$methodName = 'saveBurocrata';
 			for ($i = count($type) - 1; $i >= $k; $i--)
 				$methodName .= Inflector::camelize($type[$i]);
-			debug($methodName);
+			
 			if (method_exists($Model, $methodName))
 				return $methodName;
 		}
