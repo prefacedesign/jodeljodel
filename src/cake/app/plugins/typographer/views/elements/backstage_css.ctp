@@ -100,10 +100,10 @@
 	));
 	
 	
-	// Input List of Items
+	// Input Many Children AND ContentStream
 	
 	$this->Decorator->rule(
-		'.many_children .buro_form', array(
+		'.many_children .buro_form, .content_stream .buro_form', array(
 			'background-color' => $palette['subform']->write(),
 			'margin' => sprintf('%s %s', $hg->size(array('g' => 1)), 0),
 			'margin-left' => $hg->size(array('g' => -1)),
@@ -173,6 +173,9 @@
 		)
 	);
 	
+	
+	// Ordered List
+	
 	$this->Decorator->rule(
 		'.ordered_list_menu', array(
 			'position' => 'relative',
@@ -185,11 +188,12 @@
 			'margin-left' => $hg->size('-g'),
 			'padding' => sprintf('%s %s', 0, $hg->size('g')),
 			'height' => $u->t($line_height*1.5),
-			'line-height' => $u->t($line_height*1.5)
+			'line-height' => $u->t($line_height*1.5),
+			'width' => '100%'
 	));
 	
 	$this->Decorator->rule(
-		'.ordered_list_menu .ordered_list_menu_close', array(
+		'.ordered_list_menu .ordered_list_menu_list_list', array(
 			'float' => 'right'
 	));
 	
@@ -272,7 +276,7 @@
 			'background-position' => sprintf('%s bottom', 0)
 	));
 	
-		
+
 	// Input belongsTo
 	$this->Decorator->rule(
 		'.input_relational .controls .actions', array(

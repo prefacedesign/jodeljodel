@@ -384,7 +384,9 @@ class TypeBricklayerHelper extends AppHelper
 	{
 		$options += array(
 			'lastSeparator' => ', ',
-			'separator' => ', '
+			'separator' => ', ',
+			'before' => '',
+			'after' => ''
 		);
 		extract($options);
 		
@@ -393,6 +395,9 @@ class TypeBricklayerHelper extends AppHelper
 		
 		$linksCount = count($linkList);
 		$r = $this->sspan($attr, $options);
+		
+		if (!empty($before))
+			$r .= $before;
 		
 		foreach($linkList as $key => $link)
 		{
@@ -414,6 +419,10 @@ class TypeBricklayerHelper extends AppHelper
 			elseif ($key != $linksCount - 1) 
 				$r .= $separator;			
 		}
+		
+		if (!empty($after))
+			$r .= $after;
+		
 		return $r . $this->espan();
 	}
 

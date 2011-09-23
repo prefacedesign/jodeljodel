@@ -1293,7 +1293,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  * - callbaks - An array in burocratas callback format. (Defaults to nothing)
  * 
  * @access public
- * @access public
+ * @return string All stuff to make it works
  */
 	public function inputContentStream($options = array())
 	{
@@ -1368,9 +1368,9 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$parameters['orderField'] = array($fieldName => '#{order}');
 		}
 		
-		$out .= $this->sform(array(), array('model' => $settings['assocName'], 'data' => $data));
+		$this->sform(array(), array('model' => $settings['assocName'], 'data' => $data));
 		$out .= $this->_orderedItens(compact('url', 'texts','model_class_name','foreign_key', 'parameters','allowed_content','baseID','callbacks', 'auto_order'));
-		$out .= $this->eform();
+		$this->eform();
 		
 		return $this->Bl->div(array('id' => 'div' . $baseID, 'class' => 'content_stream'), array(), $out);
 	}
@@ -1535,7 +1535,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 			);
 		}
 		$lastSeparator = ' '.__('anchorList or',true).' ';
-		$anchorList = $this->Bl->anchorList(array(), compact('linkList', 'lastSeparator'));
+		$before = $this->Bl->span(array('class' => 'caption'), array(), __d('burocrata', 'Burocrata::orderdItensMenu - list caption:', true) . ' ');
+		$anchorList = $this->Bl->anchorList(array('class' => 'ordered_list_menu_list_list'), compact('linkList', 'lastSeparator', 'before'));
 		$cancelLink = $this->Bl->span(array('class' => 'ordered_list_menu_close'), array(),
 			$this->Bl->anchor(
 				array('href' => '/'),
@@ -1546,7 +1547,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out .= $this->Bl->div(
 			array('class' => 'ordered_list_menu_list'),
 			array(), 
-			$anchorList . ' ' . $cancelLink
+			$cancelLink . ' ' . $anchorList
 		);
 		
 		// Button that shows the list of content (if more then one item)
