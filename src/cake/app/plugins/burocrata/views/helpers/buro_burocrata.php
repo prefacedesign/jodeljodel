@@ -1522,14 +1522,14 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		// A menu made of list of content
 		$linkList = array();
-		foreach ($options['allowed_content'] as $type => $content)
+		foreach ($options['allowed_content'] as $content_type => $content)
 		{
 			if (!is_array($content)) 
 				return !trigger_error('BuroBurocrataHelper::sorderedItensMenu - allowed_content must be an array of arrays.');
-			$content += array('title' => Inflector::humanize($type));
+			$content += array('title' => Inflector::humanize($content_type));
 			
 			$linkList[] = array(
-				'attr' => array('href' => '/','class' => 'ordered_list_menu_link', 'buro:type' => $type),
+				'attr' => array('href' => '/','class' => 'ordered_list_menu_link', 'buro:content_type' => $content_type),
 				'options' => array('close_me' => false),
 				'name' => $content['title']
 			);

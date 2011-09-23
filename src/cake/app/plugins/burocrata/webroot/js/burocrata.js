@@ -1435,7 +1435,7 @@ var BuroListOfItemsMenu = Class.create(BuroCallbackable, {
 	},
 	getType: function(lnk)
 	{
-		return lnk.readAttribute('buro:type');
+		return lnk.readAttribute('buro:content_type');
 	},
 	open: function()
 	{
