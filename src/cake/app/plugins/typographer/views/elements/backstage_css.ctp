@@ -193,6 +193,11 @@
 	));
 	
 	$this->Decorator->rule(
+		'.ordered_list_menu span.caption', array(
+			'text-transform' => 'uppercase'
+	));
+	
+	$this->Decorator->rule(
 		'.ordered_list_menu .ordered_list_menu_list_list', array(
 			'float' => 'right'
 	));
