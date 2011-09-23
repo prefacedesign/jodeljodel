@@ -268,20 +268,13 @@ class BuroBurocrataHelper extends XmlTagHelper
  * @param  array $htmlAttributes Controls the HTML parameters
  * @param  array $options 
  * @return string The HTML well formated
- * @todo Fix `type` parameter implementation
  */
 	public function sform($htmlAttributes = array(), $options = array())
 	{
 		$View =& $this->_getView();
 		
-		$url = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'save');
-		if (isset($options['type']))
-		{
-			$url[] = implode('|', $options['type']);
-		}
-		
 		$defaults = array(
-			'url' => $url,
+			'url' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'save'),
 			'writeForm' => false, 
 			'model' => false,
 			'baseID' => $this->baseID(),
@@ -317,23 +310,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		}
 		
 		$out = $this->Bl->sdiv($htmlAttributes);
-		if ($options['writeForm'] == true)
-		{
-			$elementOptions = array('type' => am(self::$defaultSupertype, 'form'));
-			if ($this->modelPlugin)
-				$elementOptions['plugin'] = $this->modelPlugin;
-			
-			$data = $this->_readFormAttribute('data');
-			if ($data)
-				$elementOptions['data'] = $data;
-				
-			$out .= $View->element(Inflector::underscore($this->modelAlias), $elementOptions);
-			
-			if (!$this->_readFormAttribute('submit'))
-				$out .= $this->submit(array(), array('label' => __d('burocrata', 'Burocrata: default save button', true)));
-		}
 		return $out;
-		
 	}
 
 
@@ -381,7 +358,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 				$map =& $map[$form_id]['subforms'];
 			} else {
 				if ($append && isset($map[$form_id][$attribute])) {
-					$map[$form_id][$attribute] = am($map[$form_id][$attribute], array($value));
+					$map[$form_id][$attribute] = am($map[$form_id][$attribute], $value);
 				} else {
 					$map[$form_id][$attribute] = $value;
 				}
@@ -519,21 +496,26 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function eform()
 	{
-		$out = '';
-		
 		$modelAlias = $this->_readFormAttribute('modelAlias');
 		$modelPlugin = $this->_readFormAttribute('modelPlugin');
 		$url = $this->_readFormAttribute('url');
+		$View = $this->_getView();
 		
+		// Internal parameter: REQUEST
 		if (!empty($modelAlias))
 			$this->_addFormAttribute('parameters', array($this->internalParam('request') => $this->security($url, $modelPlugin, $modelAlias)));
 		
-		// $View = $this->_getView();
-		// if (isset($View->viewVars['type']) && is_array($View->viewVars['type']))
-			// $this->_addFormAttribute('parameters', array($this->internalParam('type') => implode('|', $View->viewVars['type'])));
-			
-		$out .= $this->inputLayoutScheme();
-		$out .= $this->Bl->ediv();
+		// Internal parameter: TYPE
+		$type = $View->getVar('type');
+		if (is_array($type))
+			$this->_addFormAttribute('parameters', array($this->internalParam('type') => implode('|', $type)));
+		
+		// Internal parameter: LAYOUT_SCHEME
+		$layout_scheme = $View->getVar('layout_scheme');
+		if (!empty($layout_scheme))
+			$this->_addFormAttribute('parameters', array($this->internalParam('layout_scheme') => $layout_scheme));
+		
+		$out = $this->Bl->ediv();
 		$out .= $this->BuroOfficeBoy->newForm($this->_readFormAttributes());
 		
 		array_pop($this->_nestedForm);
@@ -550,34 +532,6 @@ class BuroBurocrataHelper extends XmlTagHelper
 		}
 		
 		return $out;
-	}
-
-
-/**
- * Creates a hidden input that transports the current layout_scheme
- * There is no options for this function.
- * 
- * @access public
- * @param array $htmlAttributes
- * @param array $options
- * @return string The HTML of <input> tag
- */
-	public function sinputLayoutScheme($htmlAttributes = array(), $options = array())
-	{
-		$View = $this->_getView();
-		
-		$htmlDefaults = array(
-			'name' => $this->internalParam('layout_scheme'),
-			'value' => $View->viewVars['layout_scheme'],
-		);
-		$htmlAttributes = (empty($htmlAttributes) ? array() : $htmlAttributes) + $htmlDefaults;
-		unset ($htmlDefaults);
-		
-		$defaults = array('type' => 'hidden', 'close_me' => true);
-		$options = (empty($options) ? array() : $options) + $defaults;
-		unset ($defaults);
-		
-		return $this->input($htmlAttributes, $options);
 	}
 
 
@@ -1420,7 +1374,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			return false;
 		}
 		list($model_plugin, $model_name) = pluginSplit($model_class_name);
-		$type= am(self::$defaultSupertype, 'many_children', 'view');
+		$type= am(self::$defaultSupertype, 'view', 'many_children');
 		
 		$contents = array();
 		$Model =& ClassRegistry::init($model_class_name);
@@ -1878,7 +1832,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		);
 		$templates['item'] = $this->inputRelationalEditableListItem(compact('allow'));
 		
-		$type= am(self::$defaultSupertype, 'editable_list', 'view');
+		$type= am(self::$defaultSupertype, 'view', 'editable_list');
 		
 		$contents = array();
 		if (!empty($this->data[$assocName]) && Set::numeric(array_keys($this->data[$assocName])))

@@ -4,14 +4,16 @@
 	switch ($action)
 	{
 		case 'preview':
-			$object['content'] = $this->Jodel->insertModule($model_class_name, array('buro', 'belongsto_preview'), $data);
+			$type = array('buro', 'preview', 'belongsto');
+			$object['content'] = $this->Jodel->insertModule($model_class_name, $type, $data);
 		break;
 		
 		case 'new':
 		case 'edit':
 			if (!isset($data))
 				$data = array();
-			$object['content'] = $this->Jodel->insertModule($model_class_name, array('buro', 'belongsto_form'), $data);
+			$type = array('buro', 'form', 'belongsto');
+			$object['content'] = $this->Jodel->insertModule($model_class_name, $type, $data);
 		break;
 	}
 	
