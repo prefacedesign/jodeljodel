@@ -81,20 +81,22 @@ class CsItem extends ContentStreamAppModel
 	{
 		$contentType = false;
 		
-		// If CsItem is already created
+		// If CsItem is already created, get its type
 		if (!empty($data['CsItem']['id']))
 		{
 			$this->id = $data['CsItem']['id'];
 			$contentType = $this->field('type');
 		}
-		// Else, need to create one item
-		else if (isset($data[$this->alias]['type']))
+		// Else, need to get the type from the passed data
+		else if (!empty($data[$this->alias]['type']))
 		{
 			$contentType = $data[$this->alias]['type'];
 		}
 		
 		if (!$contentType)
 			return false;
+		
+		$data[$this->alias]['type'] = $contentType;
 		
 		// Start the transaction
 		$dbo = $this->getDataSource();
@@ -174,7 +176,7 @@ class CsItem extends ContentStreamAppModel
 		App::import('Lib', 'ContentStream.CsConfigurator');
 		$config = CsConfigurator::getConfig();
 		
-		if (!isset($item['type']))
+		if (empty($item['type']) || empty($item['foreign_key']))
 			return array();
 		
 		if (!isset($config['streams'][$item['type']])) {
