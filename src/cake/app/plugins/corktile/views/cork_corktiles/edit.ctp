@@ -1,15 +1,10 @@
 <?php
 
 echo $this->Bl->sbox(array(), array('size'=> array('M' => 12, 'g' => -1)));
-	echo $this->Bl->h1Dry(__('Corktile edit page: Editing a fixed content', true));
-	
+	echo $this->Bl->h1Dry(__d('corktile', 'Corktile edit page: Editing a fixed content', true));
 	echo $this->Bl->sbigInfoBox();
-		//debug($this->data['CorkCorktile']);
-		//@todo Create the big blue box with Meta Information!
-		/*echo $this->Bl->propertyDry(array(
-		);*/
+		echo $this->element('location_of_cork', array('plugin' => 'corktile'));
 	echo $this->Bl->ebigInfoBox();
-	
 echo $this->Bl->ebox();
 
 echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
@@ -22,15 +17,15 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 	echo $this->Popup->popup('error',
 		array(
 			'type' => 'error',
-			'title' => __('Corktile edit page: Your data cannot be saved - TITLE.',true),
-			'content' => __('Corktile edit page: Your data cannot be saved - TEXT.', true)
+			'title' => __d('corktile', 'Corktile edit page: Your data cannot be saved - TITLE.',true),
+			'content' => __d('corktile', 'Corktile edit page: Your data cannot be saved - TEXT.', true)
 		)
 	);
 	echo $this->Popup->popup('notice',
 		array(
 			'type' => 'notice',
-			'title' => __('Corktile edit page: Your data has been saved - TITLE.',true),
-			'content' => __('Corktile edit page: Your data has been saved - TEXT.',true),
+			'title' => __d('corktile', 'Corktile edit page: Your data has been saved - TITLE.',true),
+			'content' => __d('corktile', 'Corktile edit page: Your data has been saved - TEXT.',true),
 			'actions' => array('ok' => 'ok'),
 			'callback' => "if (action=='ok') window.location = '/dashboard/dash_dashboard';"
 		)

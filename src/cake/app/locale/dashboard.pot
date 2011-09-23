@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-08-29 16:50-0300\n"
+"POT-Creation-Date: 2011-09-21 18:09+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,171 +14,207 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:43
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:44
 msgid "Page title - Dashboard"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:49
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:50
 msgid "Add new content:"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:69
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:70
 msgid "or"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:70
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:71
 msgid "Close item list"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:75
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:76
 msgid "Open item list"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:111
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:109
+msgid "Type"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:164;230
+msgid "Show All"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:191
+msgid "Status"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:202
+msgid "Dashboard status: "
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:264
 msgid "Notice of marking as draft success - TITLE"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:112
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:265
 msgid "Notice of marking as draft success - TEXT"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:119
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:272
 msgid "Notice of marking as draft failure - TITLE"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:120
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:273
 msgid "Notice of marking as draft failure - TEXT"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:126
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:279
 msgid "Notice of publishing success - TITLE"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:127
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:280
 msgid "Notice of publishing success - TEXT"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:134
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:287
 msgid "Notice of publishing failure - TITLE"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:135
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:288
 msgid "Notice of publishing failure - TEXT"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:141
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:295
+msgid "Confirm the delete - TITLE"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:296
+msgid "Confirm the delete - TEXT"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:297
+msgid "DELETE - YES"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:297
+msgid "DELETE - NO"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:326
 msgid "Notice of delete success - TITLE"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:142
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:327
 msgid "Notice of delete success - TEXT"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:149
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:335
 msgid "Notice of delete failure - TITLE"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:150
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:336
 msgid "Notice of delete failure - TEXT"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:170
+#: \plugins\dashboard\views\elements\filter.ctp:37
 msgid "Dashboard header: Type"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:171
+#: \plugins\dashboard\views\elements\filter.ctp:38
 msgid "Dashboard header: Status"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:172
+#: \plugins\dashboard\views\elements\filter.ctp:39
 msgid "Dashboard header: Name"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:173
+#: \plugins\dashboard\views\elements\filter.ctp:40
 msgid "Dashboard header: Extra info"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:174
+#: \plugins\dashboard\views\elements\filter.ctp:41
 msgid "Dashboard header: Created"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:175
+#: \plugins\dashboard\views\elements\filter.ctp:42
 msgid "Dashboard header: Modified"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:176
-msgid "Dashboard header: Translations"
+#: \plugins\dashboard\views\elements\filter.ctp:43
+msgid "Dashboard - dashboard header: Translations"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:230
+#: \plugins\dashboard\views\elements\filter.ctp:97
 msgid "Hide from public"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:243
+#: \plugins\dashboard\views\elements\filter.ctp:110
 msgid "Publish to the great public"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:261
+#: \plugins\dashboard\views\elements\filter.ctp:135
 msgid "Delete content"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:295;306
+#: \plugins\dashboard\views\elements\filter.ctp:163
+msgid "Dashboard: See on the page"
+msgstr ""
+
+#: \plugins\dashboard\views\elements\filter.ctp:179;190
 msgid "Dashboard: Edit"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:12
+#: \views\translate_strings\translate_strings.ctp:23
 msgid "Dashboard status: published"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:13
+#: \views\translate_strings\translate_strings.ctp:24
 msgid "Dashboard status: draft"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:15
+#: \views\translate_strings\translate_strings.ctp:26
 msgid "Dashboard types: person"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:16
+#: \views\translate_strings\translate_strings.ctp:27
 msgid "Dashboard types: corktile"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:17
+#: \views\translate_strings\translate_strings.ctp:28
 msgid "Dashboard types: event"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:18
+#: \views\translate_strings\translate_strings.ctp:29
 msgid "Dashboard types: new"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:19
+#: \views\translate_strings\translate_strings.ctp:30
 msgid "Dashboard types: paper"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:28
+#: \views\translate_strings\translate_strings.ctp:39
 msgid "Dashboard language abrev.: por"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:29
+#: \views\translate_strings\translate_strings.ctp:40
 msgid "Dashboard language abrev.: eng"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:30
+#: \views\translate_strings\translate_strings.ctp:41
 msgid "Dashboard language abrev.: nno"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:31
+#: \views\translate_strings\translate_strings.ctp:42
 msgid "Dashboard language abrev.: lav"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:32
+#: \views\translate_strings\translate_strings.ctp:43
 msgid "Dashboard language abrev.: gre"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:33
+#: \views\translate_strings\translate_strings.ctp:44
 msgid "Dashboard language abrev.: ukr"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:34
+#: \views\translate_strings\translate_strings.ctp:45
 msgid "Dashboard language abrev.: ger"
 msgstr ""
 

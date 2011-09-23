@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-08-29 17:37-0300\n"
+"POT-Creation-Date: 2011-09-21 18:09+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -42,20 +42,24 @@ msgstr ""
 msgid "Your data cannot be saved - TEXT."
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:69
+#: \plugins\backstage\views\back_contents\edit.ctp:79
 msgid "Your data has been saved - TITLE."
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:70
+#: \plugins\backstage\views\back_contents\edit.ctp:80
 msgid "Your data has been saved - TEXT."
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:72
+#: \plugins\backstage\views\back_contents\edit.ctp:82
 msgid "Your data has been saved - BACK TO DASHBOARD"
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:73
+#: \plugins\backstage\views\back_contents\edit.ctp:83
 msgid "Your data has been saved - CONTINUE EDITING"
+msgstr ""
+
+#: \plugins\backstage\views\back_contents\edit.ctp:84
+msgid "Your data has been saved - VIEW THIS ON THE PUBLIC PAGE"
 msgstr ""
 
 #: \plugins\backstage\views\elements\language_edit_select.ctp:14
@@ -132,31 +136,31 @@ msgstr ""
 msgid "Editing a paper"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:39
+#: \views\translate_strings\translate_strings.ctp:50
 msgid "Language name: por"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:40
+#: \views\translate_strings\translate_strings.ctp:51
 msgid "Language name: eng"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:41
+#: \views\translate_strings\translate_strings.ctp:52
 msgid "Language name: nno"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:42
+#: \views\translate_strings\translate_strings.ctp:53
 msgid "Language name: lav"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:43
+#: \views\translate_strings\translate_strings.ctp:54
 msgid "Language name: gre"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:44
+#: \views\translate_strings\translate_strings.ctp:55
 msgid "Language name: ukr"
 msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:45
+#: \views\translate_strings\translate_strings.ctp:56
 msgid "Language name: ger"
 msgstr ""
 

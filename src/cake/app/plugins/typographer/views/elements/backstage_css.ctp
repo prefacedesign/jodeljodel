@@ -864,7 +864,7 @@
 	));
 	
 	$this->Decorator->rule(
-		'.pagination span.current, body div.pagination span:hover, body div.pagination span:hover, body div.pagination span:hover', array(
+		'.pagination span.current, body div.pagination span:hover', array(
 			'border-color' =>     $palette['internal_selection']->write(),
 			'background-color' => $palette['internal_selection']->write(),
 			'background-color' => $palette['internal_selection']->write(),
@@ -884,7 +884,12 @@
 	
 	$this->Decorator->rule(
 		'body div.pagination span a, body div.pagination span a:hover, body div.pagination span a:visited, body div.pagination span a:hover', array(
-			'border' => 0, 'background' => 'transparent !important'
+			'border' => 0, 'background' => 'transparent !important',
+	));
+	
+	$this->Decorator->rule(
+		'body div.pagination span a:hover, body div.pagination span a:visited', array(
+			'color' => $palette['bg']->write() . ' !important',
 	));
 	
 	$this->Decorator->rule(
@@ -1068,7 +1073,8 @@
 	$this->Decorator->rule(
 		'.input_radio input+label', array(
 			'font-weight' => 'normal !important',
-			'float' => 'left'
+			'float' => 'left',
+			'margin-top' => $u->t(9)
 	));
 	
 	$this->Decorator->rule(
@@ -1454,6 +1460,29 @@
 		'.desc', array(
 			'background' => "url('".Router::url('/img/matrixes/seta_cima.png')."') right 0px no-repeat",
 			'padding-right' => $u->t(16)
+		
+	));
+	
+	$this->Decorator->rule(
+		'.big_info_box', array(
+			'background-color' => $palette['normal_popin']->write(),
+			'margin-top' => $vg->size(array('g' => 1)),
+			'margin-bottom' => $vg->size(array('g' => 1)),
+			'padding-top' => $vg->size(array('m' => 2)),
+			'padding-bottom' => $vg->size(array('m' => 2)),
+		
+	));
+	
+	$this->Decorator->rule(
+		'.big_info_box .subtitle', array(
+			'font-weight' => 'bold'
+		
+	));
+	
+	$this->Decorator->rule(
+		'.big_info_box .info', array(
+			'font-size' => $u->t(11),
+			'margin-top' => $vg->size(array('g' => 1)),
 		
 	));
 	

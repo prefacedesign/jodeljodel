@@ -751,8 +751,6 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 			
 		this.form = false;
 		
-		
-		
 		var iHeight = this.update.show().unsetLoading().getHeight(),
 			fHeight = this.update.update(json.content).getHeight();
 		
@@ -809,7 +807,8 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 	showPreview: function()
 	{
 		this.update.update().show().setLoading();
-		this.trigger('onAction', 'preview', this.input.value);
+		if (this.input.value != '')
+			this.trigger('onAction', 'preview', this.input.value);
 	},
 	saved: function(form, response, json, saved)
 	{
@@ -823,19 +822,19 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		this.form.form.unsetLoading().unlock();
 	},
 	cancel: function()
-	{
-		var content = this.update.innerHTML,
-			iHeight = this.update.show().getHeight(),
-			fHeight = this.update.update().setLoading().getHeight();
-		
-		this.update.unsetLoading().update(content).setStyle({height: iHeight+'px', overflow: 'hidden'});
-		
+	{	
+		this.update.setLoading();
+		var iHeight = this.update.getHeight();
+		this.update.setStyle({height: iHeight+'px', overflow: 'hidden'});
 		new Effect.Morph(this.update, {
 			duration: this.baseFxDuration, 
 			queue: this.queue, 
-			style: {height: fHeight+'px'},
+			style: {height: '0px'},
 			afterFinish: function(fx) {
-				this.showPreview();
+				this.autocomplete.input.show();
+				this.autocomplete.input.removeAttribute('disabled');
+				this.update.unsetLoading();
+				this.update.update('');
 			}.bind(this)
 		});
 	},
