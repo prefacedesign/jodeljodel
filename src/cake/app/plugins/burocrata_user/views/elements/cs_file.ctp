@@ -6,13 +6,13 @@
 			switch ($type[1])
 			{
 				case 'content_stream':
-					echo $this->Jodel->insertModule('ContentStreamTest.CsFile', array($type[2]), $data);
+					echo $this->Jodel->insertModule('BurocrataUser.CsFile', array($type[2]), $data);
 				break;
 			}
 		break;
 		
 		case 'form':
-			echo $this->Buro->sform(array(), array('model' => 'ContentStreamTest.CsFile'));
+			echo $this->Buro->sform(array(), array('model' => 'BurocrataUser.CsFile'));
 				echo $this->Buro->submit(array(), array(
 					'label' => 'Save',
 					'cancel' => array(

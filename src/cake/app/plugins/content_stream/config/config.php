@@ -12,15 +12,15 @@
  */
 Configure::write('ContentStream.streams', array(
 	'cs_image' => array(
-		'model' => 'ContentStreamTest.CsImage',
+		'model' => 'BurocrataUser.CsImage',
 		'title' => 'Image'
 	),
 	'cs_file' => array(
-		'model' => 'ContentStreamTest.CsFile',
+		'model' => 'BurocrataUser.CsFile',
 		'title' => 'File'
 	),
 	'cs_text' => array(
-		'model' => 'ContentStreamTest.CsText',
+		'model' => 'BurocrataUser.CsText',
 		'title' => 'Text'
 	)
 ));

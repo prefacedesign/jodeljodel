@@ -6,13 +6,13 @@
 			switch ($type[1])
 			{
 				case 'content_stream':
-					echo $this->Jodel->insertModule('ContentStreamTest.CsText', array($type[2]), $data);
+					echo $this->Jodel->insertModule('BurocrataUser.CsText', array($type[2]), $data);
 				break;
 			}
 		break;
 		
 		case 'form':
-			echo $this->Buro->sform(array(), array('model' => 'ContentStreamTest.CsText'));
+			echo $this->Buro->sform(array(), array('model' => 'BurocrataUser.CsText'));
 				echo $this->Buro->input(array(), array(
 					'fieldName' => 'id',
 					'type' => 'hidden'

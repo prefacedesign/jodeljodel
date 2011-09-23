@@ -1,5 +1,5 @@
 <?php
-class CsFile extends ContentStreamTestAppModel
+class CsFile extends BurocrataUserAppModel
 {
 	var $name = 'CsFile';
 	var $actsAs = array('Containable');
