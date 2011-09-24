@@ -4,10 +4,21 @@ switch ($type[0])
 	case 'buro':
 		App::import('Lib', 'ContentStream.CsConfigurator');
 		$streams = CsConfigurator::getConfig('streams');
-		
-		// If is NOT a request for an empty form, get the type from $data
+
+		$content_type = null;
+		// If is NOT a request for an empty form, tries to get the type from $data
 		if (!empty($data))
+		{
 			$content_type = $data['CsItem']['type'];
+		}
+		
+		// If $content_type stills empty here, tries to get directly from database, based on POST
+		if (empty($content_type) && !empty($this->data['CsItem']['id']))
+		{
+			$CsItem = ClassRegistry::init($model_class_name);
+			$CsItem->id = $this->data['CsItem']['id'];
+			$content_type = $CsItem->field('type');
+		}
 		
 		if (!isset($streams[$content_type]))
 		{

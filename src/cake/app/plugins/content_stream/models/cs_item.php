@@ -80,23 +80,24 @@ class CsItem extends ContentStreamAppModel
 	function saveBurocrata($data)
 	{
 		$contentType = false;
+		$this->data = $data;
 		
 		// If CsItem is already created, get its type
-		if (!empty($data['CsItem']['id']))
+		if (!empty($this->data['CsItem']['id']))
 		{
-			$this->id = $data['CsItem']['id'];
+			$this->id = $this->data['CsItem']['id'];
 			$contentType = $this->field('type');
 		}
 		// Else, need to get the type from the passed data
-		else if (!empty($data[$this->alias]['type']))
+		else if (!empty($this->data[$this->alias]['type']))
 		{
-			$contentType = $data[$this->alias]['type'];
+			$contentType = $this->data[$this->alias]['type'];
 		}
 		
 		if (!$contentType)
 			return false;
 		
-		$data[$this->alias]['type'] = $contentType;
+		$this->data[$this->alias]['type'] = $contentType;
 		
 		// Start the transaction
 		$dbo = $this->getDataSource();
@@ -109,11 +110,11 @@ class CsItem extends ContentStreamAppModel
 		$stream_config = $config['streams'][$contentType];
 		$Model = ClassRegistry::init($stream_config['model']);
 		
-		$Model->create($data);
+		$Model->create($this->data);
 		if ($Model->save())
 		{
-			$data[$this->alias]['foreign_key'] = $Model->id;
-			$this->create($data);
+			$this->data[$this->alias]['foreign_key'] = $Model->id;
+			$this->create($this->data);
 			if ($this->save())
 			{
 				$dbo->commit($this);

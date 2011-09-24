@@ -1,12 +1,13 @@
 <?php
 	$object = compact('error', 'action', 'id');
 	
+	if (!isset($data)) 
+		$data = array();
+	
 	switch ($action)
 	{
 		case 'duplicate':
 			$type = array('buro', 'view', 'many_children');
-			if (!isset($data)) 
-				$data = array();
 			
 			$object['content'] = $this->Jodel->insertModule($model_class_name, $type, $data);
 			
@@ -17,13 +18,14 @@
 		break;
 	
 		case 'edit':
+		case 'save':
 			$type = array('buro', 'form', 'many_children');
 			$object['content'] = $this->Jodel->insertModule($model_class_name, $type, $data);
+			
+			if (isset($saved))
+				$object += compact('saved');
 		break;
 	
-		case 'save':
-			$object += compact('saved');
-		break;
 	
 		case 'afterEdit':
 			$type = array('buro', 'view', 'many_children');
