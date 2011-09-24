@@ -8,4 +8,11 @@ class Something extends BurocrataUserAppModel
 	var $belongsTo = array(
 		'Galery' => array('className' => 'BurocrataUser.Galery')
 	);
+	
+	var $validate = array(
+		'some_text' => array(
+			'rule' => 'notEmpty',
+			'required' => true
+		)
+	);
 }

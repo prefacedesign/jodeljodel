@@ -5,11 +5,6 @@ echo $this->Buro->sform(
 );
 
 	echo $this->Buro->input(
-		array('value' => $baseID, 'name' => $this->Buro->internalParam('baseID')),
-		array('type' => 'hidden')
-	);
-	
-	echo $this->Buro->input(
 		array(),
 		array('fieldName' => 'id', 'type' => 'hidden')
 	);
