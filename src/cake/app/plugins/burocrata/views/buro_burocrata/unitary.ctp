@@ -4,7 +4,7 @@
 	switch ($action)
 	{
 		case 'preview':
-			$type = array('buro', 'preview', 'belongsto');
+			$type = array('buro', 'view', 'belongsto');
 			$object['content'] = $this->Jodel->insertModule($model_class_name, $type, $data);
 		break;
 		

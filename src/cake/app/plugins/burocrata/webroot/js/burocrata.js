@@ -697,7 +697,8 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		this.autocomplete.input.show();
 		this.autocomplete.input.removeAttribute('disabled');
 		
-		this.setActions('undo_reset');
+		if (!this.input.value.blank())
+			this.setActions('undo_reset');
 		
 		if (!animate)
 		{
@@ -745,48 +746,41 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		}
 	},
 	actionSuccess: function(json)
-	{		
+	{
 		if (this.form)
 			this.form.purge();
-			
 		this.form = false;
-		
-		
 		
 		var iHeight = this.update.show().unsetLoading().getHeight(),
 			fHeight = this.update.update(json.content).getHeight();
 		
-		this.update.setStyle({height: iHeight+'px', overflow: 'hidden'});
+		//disable the autocomplete field
+		this.autocomplete.input.disable();
 		
+		//find the field with the same name of the autocompleter,
+		//to populate it with autocomplete content
+		var name, input;
+		if (json.action == 'new')
+		{
+			name = 'data'+this.autocomplete.input.name.substr(22);
+			if (input = this.update.down('input[name="'+name+'"]'))
+				input.value = this.autocomplete.input.value;
+		}
+		
+		this.update.setStyle({height: iHeight+'px', overflow: 'hidden'});
 		new Effect.Morph(this.update, {
 			duration: this.baseFxDuration, 
 			queue: this.queue, 
 			style: {height: fHeight+'px'},
-			afterFinish: function(action, fx){
-				if (action == 'new')
-				{
-					//find the field with the same name of the autocompleter,
-					//to populate it with autocomplete content
-					name = this.autocomplete.input.name.substring(22, this.autocomplete.input.name.length)
-					name = 'data'+name;
-					inputs = document.getElementsByName(name);
-					inputs[0].value = this.autocomplete.input.value;
-					inputs[0].focus();
-					//disable the autocomplete field
-					this.autocomplete.input.writeAttribute('disabled', 'disabled');
-				}
+			afterFinish: function(action, fx) {
 				this.update.setStyle({height: '', overflow: ''});
 				this.observeForm();
 				if (action == 'preview')
-				{
 					this.setActions('edit reset').hideAutocomplete();
-				}
 				else
 					this.setActions('');
 			}.bind(this, json.action)
 		});
-		
-		
 	},
 	actionError: function(json)
 	{
@@ -820,7 +814,8 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 	},
 	reject: function(form, response, json, saved)
 	{
-		this.form.form.unsetLoading().unlock();
+		this.form.purge();
+		this.update.update(json.content);
 	},
 	cancel: function()
 	{
@@ -835,7 +830,10 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 			queue: this.queue, 
 			style: {height: fHeight+'px'},
 			afterFinish: function(fx) {
-				this.showPreview();
+				if (!this.input.value.blank())
+					this.showPreview();
+				else
+					this.reset();
 			}.bind(this)
 		});
 	},

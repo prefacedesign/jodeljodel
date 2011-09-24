@@ -1054,8 +1054,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$data = $this->data[$this->modelAlias][$assocName];
 		
 		$module = '';
-		if ($data)
-			$module = $this->Jodel->insertModule($model_class_name, array('buro', 'belongsto_preview'), array($model => $data));
+		if ($data && !empty($data[$ParentModel->{$assocName}->primaryKey]))
+			$module = $this->Jodel->insertModule($model_class_name, array('buro', 'view', 'belongsto'), array($model => $data));
 		$error = $this->error(array(), compact('fieldName'));
 		
 		$updateble_div = $this->Bl->div(

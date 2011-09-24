@@ -39,7 +39,7 @@ class BuroBurocrataComponent extends Object
 		}
 		
 		if(isset($controller->buroData['type']))
-			$controller->set('type', $controller->buroData['type']);
+			$controller->set('type', $controller->buroData['type'] = explode('|', $controller->buroData['type']));
 		
 		if(isset($controller->buroData['baseID']))
 			$controller->set('baseID', $controller->buroData['baseID']);
@@ -182,7 +182,7 @@ class BuroBurocrataComponent extends Object
 	{
 		$type = array();
 		if (isset($controller->buroData['type']))
-			$type = explode('|', $controller->buroData['type']);
+			$type = $controller->buroData['type'];
 		
 		// Find what kind of buro/form we are dealing
 		while (isset($array[0]) && in_array($type[0], array('buro', 'form')))

@@ -284,11 +284,6 @@
 
 	// Input belongsTo
 	$this->Decorator->rule(
-		'.input_relational .controls .actions', array(
-			'margin-bottom' => $vg->size(array('g' => 1))
-	));
-
-	$this->Decorator->rule(
 		'.input_relational .controls div div.buro_form', array(
 			'background-color' => $palette['subform']->write(),
 			'margin' => sprintf('%s %s', $hg->size(array('g' => 1)), 0),
