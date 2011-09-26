@@ -5,7 +5,9 @@ switch ($type[0])
 		App::import('Lib', 'ContentStream.CsConfigurator');
 		$streams = CsConfigurator::getConfig('streams');
 
-		$content_type = null;
+		if (!isset($content_type))
+			$content_type = null;
+		
 		// If is NOT a request for an empty form, tries to get the type from $data
 		if (!empty($data))
 		{

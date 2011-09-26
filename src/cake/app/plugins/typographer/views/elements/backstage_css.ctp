@@ -187,7 +187,6 @@
 			'background-color' => $palette['subform']->write(),
 			'margin-left' => $hg->size('-g'),
 			'padding' => sprintf('%s %s', 0, $hg->size('g')),
-			'height' => $u->t($line_height*1.5),
 			'line-height' => $u->t($line_height*1.5),
 			'width' => '100%'
 	));
@@ -199,7 +198,8 @@
 	
 	$this->Decorator->rule(
 		'.ordered_list_menu .ordered_list_menu_list_list', array(
-			'float' => 'right'
+			'float' => 'right',
+			'max-width' => $hg->size('5M')
 	));
 	
 	$this->Decorator->rule(

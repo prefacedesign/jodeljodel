@@ -1501,7 +1501,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out .= $this->Bl->div(
 			array('class' => 'ordered_list_menu_list'),
 			array(), 
-			$cancelLink . ' ' . $anchorList
+			$cancelLink . ' ' . $anchorList . $this->Bl->floatBreak()
 		);
 		
 		// Button that shows the list of content (if more then one item)
