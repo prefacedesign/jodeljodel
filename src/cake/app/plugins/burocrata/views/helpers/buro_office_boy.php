@@ -120,6 +120,7 @@ class BuroOfficeBoyHelper extends AppHelper
 			$this->Html->script('slider', array('inline' => false));
 			$this->Html->script('/burocrata/js/burocrata.js', array('inline' => false));
 			$this->Html->script('/burocrata/js/color-picker.js', array('inline' => false));
+			$this->Html->script('/popup/js/popup.js', array('inline' => false));
 			$this->Html->scriptBlock('var debug = ' . Configure::read() . ';', array('inline' => false));
 
 			$script = implode("\n", $this->scripts);

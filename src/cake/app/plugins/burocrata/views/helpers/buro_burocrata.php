@@ -564,6 +564,9 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		if (!empty($options['cancel']))
 		{
+			if (!is_array($options['cancel']))
+				$options['cancel'] = array();
+			
 			$options['cancel'] += array(
 				'htmlAttributes' => array(),
 				'label' => __d('burocrata', 'Burocrata::okOrCancel - Cancel label', true)
@@ -2330,11 +2333,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$out = '';
 		// Label
-		if ($options['label'])
-		{
-			$out .= $this->label(array('for' => $npt_id), $options, $options['label']);
-			$options['label'] = false;
-		}
+		if (!isset($options['label']))
+			$options['label'] = null;
+		$out .= $this->label(array('for' => $npt_id), $options, $options['label']);
+		$options['label'] = false;
 		
 		// Instructions
 		if (!empty($options['instructions']))

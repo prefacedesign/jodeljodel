@@ -1449,7 +1449,10 @@ var BuroListOfItemsMenu = Class.create(BuroCallbackable, {
 		this.close_link.up().hide();
 		this.plus_button.show();
 		this.border.show();
-		new Effect.SlideUp(this.menu, {duration: 0.15});
+		
+		if (ev)	new Effect.SlideUp(this.menu, {duration: 0.15});
+		else	this.menu.hide();
+		
 		return this;
 	},
 	setOrder: function(order)
