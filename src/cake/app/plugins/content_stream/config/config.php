@@ -11,17 +11,25 @@
  * If no option are given, it is possible to list just the key.
  */
 Configure::write('ContentStream.streams', array(
-	'cs_image' => array(
-		'model' => 'BurocrataUser.CsImage',
-		'title' => 'Image'
+	'pie_image' => array(
+		'model' => 'PieImage.PieImage',
+		'title' => __d('content_stream', 'Title for PieImage content', true)
 	),
-	'cs_file' => array(
-		'model' => 'BurocrataUser.CsFile',
-		'title' => 'File'
+	'pie_file' => array(
+		'model' => 'PieFile.PieFile',
+		'title' => __d('content_stream', 'Title for PieFile content', true)
 	),
-	'cs_text' => array(
-		'model' => 'BurocrataUser.CsText',
-		'title' => 'Text'
+	'pie_text' => array(
+		'model' => 'PieText.PieText',
+		'title' => __d('content_stream', 'Title for PieText content', true)
+	),
+	'pie_divider' => array(
+		'model' => 'PieDivider.PieDivider',
+		'title' => __d('content_stream', 'Title for PieDivider content', true)
+	),
+	'pie_title' => array(
+		'model' => 'PieTitle.PieTitle',
+		'title' => __d('content_stream', 'Title for PieTitle content', true)
 	)
 ));
 
@@ -32,8 +40,8 @@ Configure::write('ContentStream.streams', array(
  * @todo Type validation? Like "can´t publish gallery if number of images is less than X"
  */
 Configure::write('ContentStream.types', array(
-	'document' => array('cs_text', 'cs_image', 'cs_file'),
-	'gallery' => array('cs_image'),
-	'folder' => array('cs_file'),
-	'article' => array('cs_text', 'cs_image'),
+	'document' => array('pie_text', 'pie_image', 'pie_file', 'pie_divider'),
+	'gallery' => array('pie_image'),
+	'folder' => array('pie_file'),
+	'article' => array('pie_text', 'pie_image'),
 ));
