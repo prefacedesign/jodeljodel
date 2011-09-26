@@ -34,39 +34,6 @@ CREATE  TABLE IF NOT EXISTS `cs_items` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `cs_texts`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `cs_texts` (
-  `id` VARCHAR(36) NOT NULL ,
-  `mexc_textile_id` TEXT NULL ,
-  PRIMARY KEY (`id`) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `cs_files`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `cs_files` (
-  `id` VARCHAR(36) NOT NULL ,
-  `file_id` INT NOT NULL ,
-  PRIMARY KEY (`id`) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `cs_images`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `cs_images` (
-  `id` VARCHAR(36) NOT NULL ,
-  `file_id` INT NOT NULL ,
-  `title` VARCHAR(255) NULL ,
-  `subtitle` TEXT NULL ,
-  PRIMARY KEY (`id`) )
-ENGINE = InnoDB;
-
-
-
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
