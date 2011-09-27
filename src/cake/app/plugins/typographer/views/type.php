@@ -3,9 +3,20 @@
 //@todo documentate this in English
 class TypeView extends View
 {
+/**
+ * 
+ * 
+ * @access public
+ */
 	function &_loadHelpers(&$loaded, $helpers, $parent = null) 
-	{		
-		$layout_scheme = $this->viewVars['layout_scheme'];
+	{
+		$layout_scheme = $this->getVar('layout_scheme');
+		if (empty($layout_scheme))
+		{
+			trigger_error('TypeView::_loadHelpers() - `layout_scheme` was not send to view by controller.');
+			return parent::_loadHelpers($loaded, $helpers, $parent);
+		}
+		
 		$c_layout_scheme = Inflector::camelize($layout_scheme);
 		
 		$helpers_list = $helpers;
