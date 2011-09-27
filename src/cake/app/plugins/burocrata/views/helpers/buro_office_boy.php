@@ -283,12 +283,13 @@ class BuroOfficeBoyHelper extends AppHelper
 		extract(am($defaults, $options));
 		unset($defaults);
 		
-		if (!empty($error))
-			$error = $this->Js->object($error);
-		else 
-			$error = '{}';
+		if (!empty($error)) $error = $this->Js->object($error);
+		else $error = '{}';
 		
-		$script = sprintf("new BuroUpload('%s', '%s', %s)", $baseID, $url, $error);
+		if (!empty($parameters)) $parameters = $this->Js->object($parameters);
+		else $parameters = '{}';
+		
+		$script = sprintf("new BuroUpload('%s', '%s', %s, %s)", $baseID, $url, $error, $parameters);
 		if(!empty($callbacks) && is_array($callbacks))
 			$script .= sprintf('.addCallbacks(%s)', $this->formatCallbacks('upload', $callbacks));
 		

@@ -2096,13 +2096,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 	protected function _uploadParams($options)
 	{
 		$modelAlias = $this->_readFormAttribute('modelAlias');
-		//todo: trigger error
 		if (!$modelAlias)
 			trigger_error('Can\'t create a upload file that is not inside a buro form.', E_USER_WARNING);
 		
 		$file_input_options = array_filter($options);
 		unset($file_input_options['options']);
-		$file_input_options = $file_input_options + array('fieldName' => $modelAlias . '.sfil_sored_file_id');
+		$file_input_options += array('fieldName' => $modelAlias . '.sfil_sored_file_id');
 		if (strpos($file_input_options['fieldName'], '.') === false)
 			$file_input_options['fieldName'] = $modelAlias . '.' . $file_input_options['fieldName'];
 		
@@ -2110,11 +2109,19 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'baseID' => $this->baseID(),
 			'url' => $this->url(array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'upload')),
 			'error' => array(),
+			'parameters' => array(),
 			'version' => '',
 			'model' => 'JjMedia.SfilStoredFile'
 		);
-
+		
 		$gen_options = $options['options'] + $defaults;
+		
+		// Temporary warning
+		if ($gen_options['model'] != 'JjMedia.SfilStoredFile')
+		{
+			trigger_error('BuroBurocrataHelper::_uploadParams() - Changing the upload model is not supported yet! Using the default.');
+			$gen_options['model'] = 'JjMedia.SfilStoredFile';
+		}
 	
 		if (isset($file_input_options['error']))
 		{
@@ -2144,15 +2151,17 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	protected function _upload($gen_options, $file_input_options)
 	{
+		$View = $this->_getView();
 		$packed = SecureParams::pack(array($gen_options['version'], $file_input_options['fieldName'], $gen_options['model']));
 		list($model_plugin, $model_name) = pluginSplit($gen_options['model']);
+		
+		$gen_options['parameters'] += array($this->internalParam('layout_scheme') => $View->getVar('layout_scheme'));
+		$gen_options['parameters'] += array($this->internalParam('data') => $packed);
 		
 		$out = '';
 		
 		$this->sform(array(), array('url' => ''));
 		$out .= $this->Bl->sdiv(array('id' => 'div' . $gen_options['baseID']));
-			$out .= $this->inputLayoutScheme();
-			$out .= $this->input(array('value' => $packed, 'name' => $this->internalParam('data')), array('type' => 'hidden'));
 			$out .= $this->input(
 				array('id' => 'mi' . $gen_options['baseID']),
 				array('type' => 'file', 'container' => false, 'fieldName' => $model_name.'.file') + $file_input_options
@@ -2195,7 +2204,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		if (empty($gen_options['callbacks']['onSave']['js']))
 			$gen_options['callbacks']['onSave']['js'] = '';
-		$gen_options['callbacks']['onSave']['js'] .= "$('{$lnk_id}').update(json.filename).writeAttribute({href: json.url}); $('{$act_id}').show(); $('{$prv_id}').show();";
+		$gen_options['callbacks']['onSave']['js'] .= "$('{$lnk_id}').update(json.filename).writeAttribute({href: json.dlurl}); $('{$act_id}').show(); $('{$prv_id}').show();";
 		
 		if (empty($gen_options['callbacks']['onRestart']['js']))
 			$gen_options['callbacks']['onRestart']['js'] = '';

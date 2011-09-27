@@ -1756,7 +1756,7 @@ var BuroEditableList = Class.create(BuroCallbackable, {
  * @access public
  */
 var BuroUpload = Class.create(BuroCallbackable, {
-	initialize: function(id_base, url, errors)
+	initialize: function(id_base, url, errors, parameters)
 	{
 		if (Prototype.Browser.IE)
 		{
@@ -1771,6 +1771,7 @@ var BuroUpload = Class.create(BuroCallbackable, {
 		this.id_base = id_base;
 		this.url = url;
 		this.errors = errors;
+		this.parameters = $H(parameters);
 		
 		BuroCR.set(this.id_base, this);
 		
@@ -1830,6 +1831,10 @@ var BuroUpload = Class.create(BuroCallbackable, {
 		this.div_hidden.select('input[type=hidden]').each(function(input)
 		{
 			this.form.insert(input.clone());
+		}.bind(this));
+		
+		this.parameters.each(function(pair) {
+			this.form.insert(new Element('input', {name: pair.key, value: pair.value}));
 		}.bind(this));
 		
 		this.form.insert(this.tmp_input).submit();
