@@ -4,15 +4,18 @@ class ExemplosController extends BurocrataUserAppController {
 	var $name = 'Exemplos';
 	var $uses = array('JjMedia.SfilStoredFile', 'BurocrataUser.Video', 'BurocrataUser.Galery');
 	
-	function index()
+	function index($gallery_id = 1)
 	{
-		$this->Galery->recursive = 0;
-		$this->data = $this->Galery->findById(1);
+		$this->data = $this->Galery->findById($gallery_id);
+		if (empty($this->data))
+		{
+			if ($this->Galery->save(array('id' => $gallery_id), false))
+				$this->data = $this->Galery->findById($gallery_id);
+		}
 	}
 	
 	function teste()
 	{
-		
 		$this->data = array(
 			'PersPerson' => array(
 				'adsas' => 'Podemos já vislumbrar o modo pelo qual o novo modelo estrutural aqui preconizado talvez venha a ressaltar a relatividade dos procedimentos normalmente adotados.',
@@ -22,6 +25,20 @@ class ExemplosController extends BurocrataUserAppController {
 				'ssda' => 'A certificação de metodologias que nos auxiliam a lidar com o escopo das preferências de consumo representa uma abertura para a melhoria do aceite do cliente inegavelmente apropriado.'
 			)
 		);
+	}
+	
+	function cs($id = 1)
+	{
+		$this->loadModel('BurocrataUser.Document');
+		$data = $this->Document->findById($id);
+		if (empty($data))
+		{
+			if($this->Document->createEmpty())
+				$this->redirect(array($this->Document->id));
+			else
+				die ('Couldnt create a empty Document.');
+		}
+		$this->data = $data;
 	}
 	
 	function video($id = 1)

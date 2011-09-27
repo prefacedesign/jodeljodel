@@ -6,11 +6,8 @@
  * PHP versions 5
  *
  * @package       jodel
- * @subpackage    jodel.burocrata.views.helpers
+ * @subpackage    jodel.burocrata.controllers
  */
- 
-App::import('Lib', 'JjUtils.SecureParams');
-
 
 /**
  * BuroBurocrataController.
@@ -35,10 +32,10 @@ class BuroBurocrataController extends BurocrataAppController
 /**
  * List of components
  *
- * @var string
+ * @var array
  * @access public
  */
-	public $components = array('Typographer.TypeLayoutSchemePicker', 'RequestHandler');
+	public $components = array('Typographer.TypeLayoutSchemePicker', 'Burocrata.BuroBurocrata', 'RequestHandler');
 
 
 /**
@@ -63,44 +60,41 @@ class BuroBurocrataController extends BurocrataAppController
  * Name of the current model
  *
  * @var string
- * @access protected
+ * @access public
  */
-	protected $model_name = null;
+	public $model_name = null;
 
 
 /**
  * Plugin of the current model
  *
  * @var string
- * @access protected
+ * @access public
  */
-	protected $model_plugin = null;
+	public $model_plugin = null;
 
 
 /**
  * Current layout scheme
  *
  * @var string
- * @access protected
+ * @access public
  */
-	protected $layout_scheme = null;
+	public $layout_scheme = null;
 
 
 /**
- * Holds some POSTed data
+ * Holds some POSTed data (filled by BuroBurocrataComponent)
  *
  * @var array
- * @access protected
+ * @access public
  */
-	protected $buroData = array();
+	public $buroData = array();
 
 
 /**
  * beforeFilter callback
  * For while, it allows everyone to have access even if AuthComponent is set.
- * If is set $this->data['_b'], its data is passed to $this->buroData
- * If was POSTed a `baseID`, it repasses for the view.
- * And, finally, if is set a `layout_scheme`, it loads the Typographer helpers
  * 
  * @access public
  * @todo Better user filtering
@@ -110,55 +104,7 @@ class BuroBurocrataController extends BurocrataAppController
 		parent::beforeFilter();
 		$this->Auth->allow('*');
 		
-		if(isset($this->data['_b']))
-		{
-			$this->buroData = $this->data['_b'];
-			unset($this->data['_b']);
-		}
-		
-		if(isset($this->buroData['baseID']))
-			$this->set('baseID', $this->buroData['baseID']);
-		
-		if(isset($this->buroData['layout_scheme']))
-		{
-			$this->helpers = am($this->helpers,
-				array(
-					'Typographer.TypeDecorator' => array(
-						'name' => 'decorator',
-						'compact' => false,
-						'receive_tools' => true
-					),
-					'Typographer.*TypeStyleFactory' => array(
-						'name' => 'styleFactory', 
-						'receive_automatic_classes' => true, 
-						'receive_tools' => true,
-						'generate_automatic_classes' => false
-					),
-					'Typographer.*TypeBricklayer' => array(
-						'name' => 'Bl',
-						'receive_tools' => true,
-					),
-					'Burocrata.*BuroBurocrata' => array(
-						'name' => 'Buro'
-					)
-				)
-			);
-			$this->layout_scheme = $this->buroData['layout_scheme'];
-			unset($this->buroData['layout_scheme']);
-		}
 		StatusBehavior::setGlobalActiveStatuses(array('publishing_status' => array('active' => array('published','draft'), 'overwrite' => false)));
-	}
-
-
-/**
- * beforeRender callback
- *
- * @access public
- */
-	public function beforeRender()
-	{
-		if($this->layout_scheme)
-			$this->TypeLayoutSchemePicker->pick($this->layout_scheme);
 	}
 
 
@@ -172,39 +118,16 @@ class BuroBurocrataController extends BurocrataAppController
  * @access public
  * @return json An javascript object that contains `error`, `content` and `saved` properties
  */
-	public function save($type = '')
+	public function save()
 	{
 		$saved = false;
 		$Model = null;
-		$error = $this->_load($Model);
-		
-		if (!empty($type))
-			$type = array_reverse(explode('|',$type));
-		else
-			$type = array();
-	
+		$error = $this->BuroBurocrata->loadPostedModel($this, $Model);
 		
 		if($error === false)
 		{
-			$methodName = 'saveBurocrata';   //Tries specific saves related to the type
-			
-			foreach($type as $k => $subType)
-			{
-				for ($i = count($type) - 1; $i >= $k; $i--)
-					$methodName .= Inflector::camelize($type[$i]);
-					
-				if (method_exists($Model, $methodName))
-					break;
-				else
-					$methodName = 'saveBurocrata';
-			}
-		
-			if(method_exists($Model, $methodName))
-				$saved = $Model->{$methodName}($this->data) !== false;
-			else
-				$saved = $Model->save($this->data) !== false;
-			
-			
+			$methodName = $this->BuroBurocrata->getSaveMethod($this, $Model);
+			$saved = $Model->{$methodName}($this->data) !== false;
 			
 			if($saved)
 			{
@@ -242,7 +165,7 @@ class BuroBurocrataController extends BurocrataAppController
  */
 	public function view()
 	{
-		$data = $this->_getViewData();
+		$data = $this->BuroBurocrata->getViewData($this);
 		$this->data = $data['data'];
 		$this->set($data);
 	}
@@ -262,7 +185,7 @@ class BuroBurocrataController extends BurocrataAppController
 		$content = '';
 		$Model = null;
 		
-		$error = $this->_load($Model);
+		$error = $this->BuroBurocrata->loadPostedModel($this, $Model);
 		
 		if($error === false)
 		{
@@ -294,7 +217,7 @@ class BuroBurocrataController extends BurocrataAppController
 	public function editable_list()
 	{
 		$id = $action = $Model = null;
-		$error = $this->_load($Model);
+		$error = $this->BuroBurocrata->loadPostedModel($this, $Model);
 		
 		if ($error === false)
 		{
@@ -304,7 +227,7 @@ class BuroBurocrataController extends BurocrataAppController
 			if (!empty($this->buroData['id']))
 				$id = $this->buroData['id'];
 			
-			extract($this->_getViewData());
+			extract($this->BuroBurocrata->getViewData($this));
 			$this->data = $data;
 			
 			$this->set(compact('data'));
@@ -354,8 +277,8 @@ class BuroBurocrataController extends BurocrataAppController
  */
 	public function list_of_items()
 	{
-		$id = $action = $Model = null;
-		$error = $this->_load($Model);
+		$item_type = $id = $action = $Model = null;
+		$error = $this->BuroBurocrata->loadPostedModel($this, $Model);
 		
 		if($error === false)
 		{
@@ -372,6 +295,9 @@ class BuroBurocrataController extends BurocrataAppController
 			
 			if (isset($this->buroData['action']))
 				$action = $this->buroData['action'];
+			
+			if (isset($this->buroData['content_type']))
+				$content_type = $this->buroData['content_type'];
 			
 			switch ($action)
 			{
@@ -419,7 +345,7 @@ class BuroBurocrataController extends BurocrataAppController
 					{
 						if (method_exists($Model, 'duplicate'))
 						{
-							if (!$Model->duplicate($$this->buroData['id']))
+							if (!$Model->duplicate($this->buroData['id']))
 								$error = $debug?'BuroBurocrataController - Model::duplicate() failed.':true;
 							else
 								$id = $Model->id;
@@ -447,15 +373,13 @@ class BuroBurocrataController extends BurocrataAppController
 						
 						if (!$error)
 						{
-							if ($ordered)
-							{
-								$this->set('order', $order+1);
-								$saved = $id;
-							}
 							$this->set('old_id', $this->buroData['id']);
-							$buroData = $this->_getViewData($id);
+							$buroData = $this->BuroBurocrata->getViewData($this, $id);
+							$orderField = $Model->Behaviors->Ordered->settings[$Model->alias]['field'];
+							
 							extract($buroData);
-							$this->set(compact('data'));
+							$order = $data[$Model->alias][$orderField];
+							$this->set(compact('data','order'));
 						}
 					}
 				break;
@@ -463,15 +387,22 @@ class BuroBurocrataController extends BurocrataAppController
 				case 'edit':
 					if (!empty($this->buroData['id']))
 						$id = $this->buroData['id'];
-					extract($this->_getViewData());
+					extract($this->BuroBurocrata->getViewData($this));
 					$this->data = $data;
 					$this->set(compact('data'));
+				break;
+				
+				case 'save':
+					if (!empty($this->buroData['id']))
+						$this->data[$Model->alias][$Model->primaryKey] = $id = $this->buroData['id'];
+					
+					$this->save();
 				break;
 				
 				case 'afterEdit':
 					if (!empty($this->buroData['id']))
 						$id = $this->buroData['id'];
-					extract($this->_getViewData());
+					extract($this->BuroBurocrata->getViewData($this));
 					
 					if (!$ordered)
 					{
@@ -489,7 +420,7 @@ class BuroBurocrataController extends BurocrataAppController
 		
 		}
 		
-		$this->set(compact('error', 'action', 'saved', 'id'));
+		$this->set(compact('error', 'action', 'saved', 'id', 'content_type'));
 	}
 
 
@@ -501,7 +432,7 @@ class BuroBurocrataController extends BurocrataAppController
 	public function unitary()
 	{
 		$id = $action = $Model = null;
-		$error = $this->_load($Model);
+		$error = $this->BuroBurocrata->loadPostedModel($this, $Model);
 		
 		if ($error === false)
 		{
@@ -511,98 +442,13 @@ class BuroBurocrataController extends BurocrataAppController
 			if (!empty($this->buroData['id']))
 				$id = $this->buroData['id'];
 			
-			extract($this->_getViewData());
+			extract($this->BuroBurocrata->getViewData($this));
 			$this->data = $data;
 			
 			$this->set(compact('data'));
 		}
 		
 		$this->set(compact('error', 'action', 'saved', 'id'));
-	}
-
-
-/**
- * Used to find data on database using burocratas conventions
- * based on passed id.
- * 
- * @access protected
- * @param $id mixed If empty will be used $this->buroData['id']
- * @return array An array with two index: `data` and `error`
- */
-	protected function _getViewData($id = null)
-	{
-		$error = false;
-		$data = array();
-		$Model = null;
-		
-		if (empty($id) && !empty($this->buroData['id']))
-			$id = $this->buroData['id'];
-		
-		if(($error = $this->_load($Model)) === false && !empty($id))
-		{
-			if (method_exists($Model, 'findBurocrata'))
-				$data = $Model->findBurocrata($id);
-			else
-				$data = $Model->find('first', array(
-					'recursive' => -1,
-					'conditions' => array(
-						$Model->alias.'.'.$Model->primaryKey => $id
-					)
-				));
-		}
-		return compact('error', 'data');
-	}
-
-
-/**
- * Loads the model especified in $this->data POST.
- *
- * @access protected
- * @param $var An variable to be filled with Model Object
- * @return mixed true when single model found and instance created, error returned if model not found.
- */
-	protected function _load(&$var)
-	{
-		$debug = Configure::read()>0;
-		$error = false;
-		
-		if(!isset($this->buroData['request']))
-			$error = $debug?'BuroBurocrataController::_load - Request security field not defined':true;
-
-		if($error === false)
-		{
-			// The counter-part of this code is in BuroBurocrataHelper::_security method
-			@list($secure, $model_plugin, $model_alias) = SecureParams::unpack($this->buroData['request']);
-			
-			$hash = substr(Security::hash($this->here), -5);
-			if($secure != $hash)
-				$error = $debug?'BuroBurocrataController::_load - POST Destination check failed.':true;
-		}
-
-		if($error === false)
-		{
-			$model_class_name = $model_alias;
-			if(!empty($model_plugin))
-				$model_class_name = $model_plugin . '.' . $model_class_name;
-			
-			if(!$this->loadModel($model_class_name))
-				$error = $debug?'BuroBurocrataController::_load - Couldn\'t load model.':true;
-		}
-		
-		if($error === false)
-		{
-			$this->model_name = $model_alias;
-			$this->model_plugin = $model_plugin;
-			
-			$this->set('model_name', $this->model_name);
-			$this->set('model_plugin', $this->model_plugin);
-			$this->set('model_class_name', $model_class_name);
-			$this->set('fullModelName', $model_class_name);
-			
-			$var = $this->{$model_alias};
-		}
-		
-		return $error;
 	}
 
 

@@ -100,10 +100,10 @@
 	));
 	
 	
-	// Input List of Items
+	// Input Many Children AND ContentStream
 	
 	$this->Decorator->rule(
-		'.ordered_list .buro_form', array(
+		'.many_children .buro_form, .content_stream .buro_form', array(
 			'background-color' => $palette['subform']->write(),
 			'margin' => sprintf('%s %s', $hg->size(array('g' => 1)), 0),
 			'margin-left' => $hg->size(array('g' => -1)),
@@ -111,66 +111,50 @@
 	));
 	
 	$this->Decorator->rule(
-		'.ordered_list .buro_form div.input', array(
+		'.many_children .buro_form div.input, .content_stream .buro_form div.input', array(
 			'border' => 0,
 			'padding-bottom' => $vg->size(array('g' => 0.5))
 	));
 	
 	$this->Decorator->rule(
-		'.ordered_list .buro_form label.buro', array(
+		'.many_children .buro_form label.buro, .content_stream .buro_form label.buro', array(
 			'text-transform' => 'none'
 	));
 	
 	$this->Decorator->rule(
-		'.ordered_list button', array(
+		'.many_children button, .content_stream button', array(
 			'overflow' => 'hidden',
 			'position' => 'relative',
 			'cursor' => 'pointer'
 	));
 
 	$this->Decorator->rule(
-		'.ordered_list button[disabled]', array(
+		'.many_children button[disabled], .content_stream button[disabled]', array(
 			'cursor' => 'default'
 	));
 	
 	$this->Decorator->rule(
-		'.ordered_list button span', array(
+		'.many_children button span, .content_stream button span', array(
 			'top' => '100%',
 			'position' => 'absolute',
 	));
+	
+	
 
-	$this->Decorator->rule(
-		'.ordered_list h6', array(
-		    'font-size' => '13px',
-			'font-weight' => 'bold',
-			'letter-spacing' => '0.135ex',
-			'line-height' => '24px',
-			'text-transform' => 'uppercase'
-	));
-	
-	
-	
-	
 	
 	$this->Decorator->rule(
-		'.ordered_list .ordered_list_menu', array(
-			'border-top' => '1px dashed black',
-			'position' => 'relative'
-	));
-	
-	$this->Decorator->rule(
-		'.ordered_list .ordered_list_item', array(
+		'.ordered_list_item', array(
 			'margin' => sprintf('%s %s', $hg->size(array('g' => 0.5)), 0)
 	));
 	
 	$this->Decorator->rule(
-		'.ordered_list .ordered_list_item.auto_order', array(
+		'.many_children .ordered_list_item.auto_order', array(
 			'padding-bottom' => $hg->size(array('g' => 0.5)),
 			'border-bottom' => '1px dashed black'
 	));
 	
 	$this->Decorator->rule(
-		'.ordered_list .ordered_list_item.auto_order.last_item', array(
+		'.many_children .ordered_list_item.auto_order.last_item', array(
 			'border-bottom' => '0px'
 	));
 	
@@ -189,6 +173,41 @@
 		)
 	);
 	
+	
+	// Ordered List
+	
+	$this->Decorator->rule(
+		'.ordered_list_menu', array(
+			'position' => 'relative',
+			'clear' => 'both'
+	));
+	
+	$this->Decorator->rule(
+		'.ordered_list_menu .ordered_list_menu_list', array(
+			'background-color' => $palette['subform']->write(),
+			'margin-left' => $hg->size('-g'),
+			'padding' => sprintf('%s %s', 0, $hg->size('g')),
+			'line-height' => $u->t($line_height*1.5),
+			'width' => '100%'
+	));
+	
+	$this->Decorator->rule(
+		'.ordered_list_menu span.caption', array(
+			'text-transform' => 'uppercase'
+	));
+	
+	$this->Decorator->rule(
+		'.ordered_list_menu .ordered_list_menu_list_list', array(
+			'float' => 'right',
+			'max-width' => $hg->size('5M')
+	));
+	
+	$this->Decorator->rule(
+		'.ordered_list_menu .border', array(
+			'border-top' => '1px dashed black',
+			'margin-top' => '-1px'
+	));
+	
 	$bg_pos = $u->t(15);
 	$this->Decorator->rule(
 		'.ordered_list_menu button.ordered_list_menu_add', array(
@@ -199,6 +218,7 @@
 			'right' => $u->t(-15),
 			'top' => $u->t(-ceil($arrow_size/2))
 	));
+	
 	$this->Decorator->rule(
 		'.ordered_list_menu button.ordered_list_menu_add[disabled]', array(
 			'background-position' => sprintf('%s bottom', $bg_pos)
@@ -261,13 +281,8 @@
 			'background-position' => sprintf('%s bottom', 0)
 	));
 	
-		
-	// Input belongsTo
-	$this->Decorator->rule(
-		'.input_relational .controls .actions', array(
-			'margin-bottom' => $vg->size(array('g' => 1))
-	));
 
+	// Input belongsTo
 	$this->Decorator->rule(
 		'.input_relational .controls div div.buro_form', array(
 			'background-color' => $palette['subform']->write(),
@@ -475,7 +490,7 @@
 	$this->Decorator->rule(
 		'.box',	array(
 			'float' => 'left',
-			'margin-left' => $hg->size(array('g' => 1))
+			'margin-left' => $hg->size('g')
 	));
 	
 	$this->Decorator->rule(
@@ -1112,7 +1127,7 @@
 	));
 	
 	$this->Decorator->rule(
-		'.buro_form .superfield h6', array(
+		'.buro_form .superfield h6, .buro_form .input h6', array(
 			'font-weight' => 'bold',
 			'text-transform' => 'uppercase',
 			'line-height' => $u->t($line_height * 4/3),

@@ -3,9 +3,20 @@
 //@todo documentate this in English
 class TypeView extends View
 {
+/**
+ * 
+ * 
+ * @access public
+ */
 	function &_loadHelpers(&$loaded, $helpers, $parent = null) 
-	{		
-		$layout_scheme = $this->viewVars['layout_scheme'];
+	{
+		$layout_scheme = $this->getVar('layout_scheme');
+		if (empty($layout_scheme))
+		{
+			trigger_error('TypeView::_loadHelpers() - `layout_scheme` was not send to view by controller.');
+			return parent::_loadHelpers($loaded, $helpers, $parent);
+		}
+		
 		$c_layout_scheme = Inflector::camelize($layout_scheme);
 		
 		$helpers_list = $helpers;
@@ -53,6 +64,22 @@ class TypeView extends View
 		
 		return $loaded_helpers;
 	}
-}
 
-?>
+/**
+ * Overwrites the View::element() function so we can deal with the $type parameter
+ * 
+ * @access public
+ * @return string The result of View::element()
+ */
+	function element($name, $params = array(), $loadHelpers = false)
+	{
+		$typeBkp = $this->getVar('type');;
+		if (isset($params['type']))
+			$this->viewVars['type'] = $params['type'];
+		
+		$out = parent::element($name, $params, $loadHelpers);
+		
+		$this->viewVars['type'] = $typeBkp;		
+		return $out;
+	}
+}

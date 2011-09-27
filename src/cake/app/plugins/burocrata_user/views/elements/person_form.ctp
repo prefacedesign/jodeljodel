@@ -13,11 +13,6 @@ echo $this->Buro->sform(array(),
 	
 	echo $this->Buro->input(
 		array(),
-		array('fieldName' => 'name')
-	);
-	
-	echo $this->Buro->input(
-		array(),
 		array(
 			'fieldName' => 'birthdate', 
 			'type' => 'datetime', 
@@ -29,7 +24,12 @@ echo $this->Buro->sform(array(),
 			)
 		)
 	);
-
+	
+	echo $this->Buro->input(
+		array(),
+		array('fieldName' => 'name')
+	);
+	
 	echo $this->Buro->submit(
 		array(), 
 		array(

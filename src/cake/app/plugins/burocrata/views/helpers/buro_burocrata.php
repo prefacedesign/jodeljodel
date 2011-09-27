@@ -271,20 +271,13 @@ class BuroBurocrataHelper extends XmlTagHelper
  * @param  array $htmlAttributes Controls the HTML parameters
  * @param  array $options 
  * @return string The HTML well formated
- * @todo Fix `type` parameter implementation
  */
 	public function sform($htmlAttributes = array(), $options = array())
 	{
 		$View =& $this->_getView();
 		
-		$url = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'save');
-		if (isset($options['type']))
-		{
-			$url[] = implode('|', $options['type']);
-		}
-		
 		$defaults = array(
-			'url' => $url,
+			'url' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'save'),
 			'writeForm' => false, 
 			'model' => false,
 			'baseID' => $this->baseID(),
@@ -315,27 +308,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		if ($this->modelAlias)
 		{
+			$this->Form->data = $this->_readFormAttribute('data');
 			$this->Form->create($this->modelAlias, array('url' => $options['url']));
 		}
 		
 		$out = $this->Bl->sdiv($htmlAttributes);
-		if ($options['writeForm'] == true)
-		{
-			$elementOptions = array('type' => am(self::$defaultSupertype, 'form'));
-			if ($this->modelPlugin)
-				$elementOptions['plugin'] = $this->modelPlugin;
-			
-			$data = $this->_readFormAttribute('data');
-			if ($data)
-				$elementOptions['data'] = $data;
-				
-			$out .= $View->element(Inflector::underscore($this->modelAlias), $elementOptions);
-			
-			if (!$this->_readFormAttribute('submit'))
-				$out .= $this->submit(array(), array('label' => __d('burocrata', 'Burocrata: default save button', true)));
-		}
 		return $out;
-		
 	}
 
 
@@ -383,7 +361,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 				$map =& $map[$form_id]['subforms'];
 			} else {
 				if ($append && isset($map[$form_id][$attribute])) {
-					$map[$form_id][$attribute] = am($map[$form_id][$attribute], array($value));
+					$map[$form_id][$attribute] = am($map[$form_id][$attribute], $value);
 				} else {
 					$map[$form_id][$attribute] = $value;
 				}
@@ -521,21 +499,26 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function eform()
 	{
-		$out = '';
-		
 		$modelAlias = $this->_readFormAttribute('modelAlias');
 		$modelPlugin = $this->_readFormAttribute('modelPlugin');
 		$url = $this->_readFormAttribute('url');
+		$View = $this->_getView();
 		
+		// Internal parameter: REQUEST
 		if (!empty($modelAlias))
-			$out .= $this->input(array(
-				'name' => $this->internalParam('request'),
-				'value' => $this->security($url, $modelPlugin, $modelAlias),
-				), array('type' => 'hidden', 'close_me' => true)
-			);
+			$this->_addFormAttribute('parameters', array($this->internalParam('request') => $this->security($url, $modelPlugin, $modelAlias)));
 		
-		$out .= $this->inputLayoutScheme();
-		$out .= $this->Bl->ediv();
+		// Internal parameter: TYPE
+		$type = $View->getVar('type');
+		if (is_array($type))
+			$this->_addFormAttribute('parameters', array($this->internalParam('type') => implode('|', $type)));
+		
+		// Internal parameter: LAYOUT_SCHEME
+		$layout_scheme = $View->getVar('layout_scheme');
+		if (!empty($layout_scheme))
+			$this->_addFormAttribute('parameters', array($this->internalParam('layout_scheme') => $layout_scheme));
+		
+		$out = $this->Bl->ediv();
 		$out .= $this->BuroOfficeBoy->newForm($this->_readFormAttributes());
 		
 		array_pop($this->_nestedForm);
@@ -552,34 +535,6 @@ class BuroBurocrataHelper extends XmlTagHelper
 		}
 		
 		return $out;
-	}
-
-
-/**
- * Creates a hidden input that transports the current layout_scheme
- * There is no options for this function.
- * 
- * @access public
- * @param array $htmlAttributes
- * @param array $options
- * @return string The HTML of <input> tag
- */
-	public function sinputLayoutScheme($htmlAttributes = array(), $options = array())
-	{
-		$View = $this->_getView();
-		
-		$htmlDefaults = array(
-			'name' => $this->internalParam('layout_scheme'),
-			'value' => $View->viewVars['layout_scheme'],
-		);
-		$htmlAttributes = (empty($htmlAttributes) ? array() : $htmlAttributes) + $htmlDefaults;
-		unset ($htmlDefaults);
-		
-		$defaults = array('type' => 'hidden', 'close_me' => true);
-		$options = (empty($options) ? array() : $options) + $defaults;
-		unset ($defaults);
-		
-		return $this->input($htmlAttributes, $options);
 	}
 
 
@@ -612,6 +567,9 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		if (!empty($options['cancel']))
 		{
+			if (!is_array($options['cancel']))
+				$options['cancel'] = array();
+			
 			$options['cancel'] += array(
 				'htmlAttributes' => array(),
 				'label' => __d('burocrata', 'Burocrata::okOrCancel - Cancel label', true)
@@ -1102,8 +1060,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$data = $this->data[$this->modelAlias][$assocName];
 		
 		$module = '';
-		if ($data)
-			$module = $this->Jodel->insertModule($model_class_name, array('buro', 'belongsto_preview'), array($model => $data));
+		if ($data && !empty($data[$ParentModel->{$assocName}->primaryKey]))
+			$module = $this->Jodel->insertModule($model_class_name, array('buro', 'view', 'belongsto'), array($model => $data));
 		$error = $this->error(array(), compact('fieldName'));
 		
 		$updateble_div = $this->Bl->div(
@@ -1251,9 +1209,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$auto_order = !($AssocModel && $AssocModel->Behaviors->attached('Ordered'));
 		
 		$allowed_content = array(array(
-			'model' => $model,
-			'label' => $model,
-			'title' => $title,
+			'model' => $model_class_name,
+			'title' => ife ($title,$title,' '),
 		));
 		
 		$parameters = array();
@@ -1278,7 +1235,104 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$out .= $this->_orderedItens(compact('texts','model_class_name','foreign_key', 'parameters','allowed_content','baseID','callbacks', 'auto_order'));
 		
-		return $this->Bl->div(array('id' => 'div' . $baseID, 'class' => 'ordered_list'), array(), $out);
+		return $this->Bl->div(array('id' => 'div' . $baseID, 'class' => 'many_children'), array(), $out);
+	}
+
+
+/**
+ * Content stream input.
+ * 
+ * Most of configuraiton must be done on behavior attching and on content_stream configuration.
+ * This method assumes that all configuration errors were corrected by behavior and needs only 
+ * the foreignKey column name where the content stream ID is stored.
+ * 
+ * ### The options:
+ * - baseID - Well know already. (optional)
+ * - foreignKey - The column name. (Defaults to `cs_content_stream_id`)
+ * - texts - Very similar to manyChilrend input format. (Defaults similiar too)
+ * - callbaks - An array in burocratas callback format. (Defaults to nothing)
+ * 
+ * @access public
+ * @return string All stuff to make it works
+ */
+	public function inputContentStream($options = array())
+	{
+		$input_options = $options;
+		$options = $options['options'];
+		$options += $defaults = array(
+			'baseID' => $this->baseID(),
+			'foreignKey' => 'cs_content_stream_id',
+			'callbacks' => array(),
+			'texts' => array('confirm' => array()),
+			'url' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'list_of_items')
+		);
+		extract($options);
+		
+		// Usually the Cake core will display a "missing table" or "missing connection"
+		// if something went wrong on registering the model
+		$ParentModel =& ClassRegistry::init($this->modelPlugin . '.' . $this->modelAlias);
+		// But won't hurt test if went ok
+		if (!$ParentModel) {
+			trigger_error('BuroBurocrataHelper::inputContentStream - Parent model could not be found.');
+			return false;
+		}
+		
+		// Test if the parent model is ContentStreamed
+		if (!$ParentModel->Behaviors->attached('CsContentStreamHolder')) {
+			trigger_error('BuroBurocrataHelper::inputContentStream - The model need to be attached with ContentStream.CsContentStreamHolder behavior.');
+			return false;
+		}
+		
+		// Loads configuration, settings and data
+		App::import('Lib', 'ContentStream.CsConfigurator');
+		$config = CsConfigurator::getConfig();
+		
+		$settings = $ParentModel->Behaviors->CsContentStreamHolder->settings[$ParentModel->alias];
+		if (isset($settings['streams'][$options['foreignKey']]))
+		{
+			$settings = $settings['streams'][$options['foreignKey']];
+			$allowed_content = $settings['allowedContents'];
+		}
+		
+		if (empty($this->data[$ParentModel->alias][$options['foreignKey']])) {
+			trigger_error('BuroBurocrataHelper::inputContentStream - It is mandatory that the $this->data['.$ParentModel->alias.']['.$options['foreignKey'].'] field be filled.');
+			return false;
+		}
+		
+		$ContentStream = &$ParentModel->{$settings['assocName']};
+		$content_stream_id = $this->data[$ParentModel->alias][$options['foreignKey']];
+		$data = $ContentStream->findById($content_stream_id);
+		
+		// Label
+		if(empty($input_options['label']))
+			$input_options['label'] = Inflector::humanize($streams);
+		
+		$out = $this->Bl->h6(array(),array('escape' => false), $input_options['label']);
+		unset($input_options['label']);
+		
+		
+		// Instructions
+		if (isset($input_options['instructions'])) {
+			$out .= $this->instructions(array(), array('close_me' => false), $input_options['instructions']);
+			unset($input_options['instructions']);
+		}
+		
+		// Configuration for _orderedItens method call
+		$model_class_name = 'ContentStream.CsItem';
+		$parameters['fkBounding'] = array($this->_name('CsItem.cs_content_stream_id') => $content_stream_id);
+		$parameters['contentType'] = array($this->_name('CsItem.type') => '#{content_type}');
+		
+		if ($ContentStream->CsItem->Behaviors->attached('Ordered'))
+		{
+			$fieldName = $this->_name('CsItem.'.$ContentStream->CsItem->Behaviors->Ordered->settings['CsItem']['field']);
+			$parameters['orderField'] = array($fieldName => '#{order}');
+		}
+		
+		$this->sform(array(), array('model' => $settings['assocName'], 'data' => $data));
+		$out .= $this->_orderedItens(compact('url', 'texts','model_class_name','foreign_key', 'parameters','allowed_content','baseID','callbacks', 'auto_order'));
+		$this->eform();
+		
+		return $this->Bl->div(array('id' => 'div' . $baseID, 'class' => 'content_stream'), array(), $out);
 	}
 
 
@@ -1308,39 +1362,51 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	protected function _orderedItens($options)
 	{
-		$options += array('model_class_name' => false, 'auto_order' => false, 'callbacks' => array());
+		$options += array(
+			'model_class_name' => false, 
+			'auto_order' => false, 
+			'callbacks' => array(),
+			'parameters' => array(),
+			'url' =>array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'list_of_items')
+		);
 		extract($options);
 		
-		if (empty($model_class_name))
-		{
+		if (empty($model_class_name)) {
 			trigger_error('BuroBurocrataHelper::_orderedItens - model_class_name wasn\'t set.');
 			return false;
 		}
-		
+		if (!isset($options['allowed_content']) || !is_array($options['allowed_content'])) {
+			trigger_error('BuroBurocrataHelper::_orderedItens - No allowed_content list specified. It must be an array.');
+			return false;
+		}
 		list($model_plugin, $model_name) = pluginSplit($model_class_name);
-		$type= am(self::$defaultSupertype, 'many_children', 'view');
+		$type= am(self::$defaultSupertype, 'view', 'many_children');
 		
 		$contents = array();
 		$Model =& ClassRegistry::init($model_class_name);
-		foreach ($this->data[$model_name] as $n => $data)
+		if (!empty($this->data[$model_name]))
 		{
-			$data = array($model_name => $data);
-			$contents[] = array(
-				'content' => $this->Jodel->insertModule($model_class_name, $type, $data),
-				'id' => $data[$Model->alias][$Model->primaryKey],
-				'title' => ''
-			);
+			foreach ($this->data[$model_name] as $n => $data)
+			{
+				$data = array($model_name => $data);
+				$contents[] = array(
+					'content' => $this->Jodel->insertModule($model_class_name, $type, $data),
+					'id' => $data[$Model->alias][$Model->primaryKey],
+					'title' => isset($data[$Model->alias]['__title']) ? $data[$Model->alias]['__title'] : ''
+				);
+			}
 		}
 		
+		
 		// Javascripts
-		$url_edit = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'list_of_items');
 		$ajax_call = array(
 			'baseID' => $this->baseID(),
-			'url' => $url_edit,
+			'url' => $options['url'],
 			'params' => array(
-				$this->securityParams($url_edit, $model_plugin, $model_name),
+				$this->securityParams($options['url'], $model_plugin, $model_name),
 				$this->internalParam('id') => "#{id}",
 				$this->internalParam('action') => "#{action}",
+				$this->internalParam('content_type') => "#{content_type}",
 				$this->internalParam('baseID', $baseID),
 			),
 			'callbacks' => array(
@@ -1348,6 +1414,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 				'onSuccess' => array('js' => "BuroCR.get('$baseID').actionSuccess(json||false);"),
 			)
 		);
+		
+		$url = $this->url($url);
+		$parameters['request'] = array($this->internalParam('request') => $this->security($url, $model_plugin, $model_name));
+		$parameters['contentId'] = array($this->internalParam('id') => '#{id}');
+		$parameters['buroAction'] = array($this->internalParam('action') => 'save');
+		
 		if ($auto_order)
 			$ajax_call['params'][$this->internalParam('foreign_key')] = $foreign_key;
 		$jsOptions['callbacks'] = array('onAction' => array('ajax' => $ajax_call))+$options['callbacks'];
@@ -1355,7 +1427,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$jsOptions['templates']['menu'] = $this->orderedItensMenu(array(), array('allowed_content' => $allowed_content));
 		$jsOptions['templates']['item'] = $this->orderedItensItem(array('class' => $auto_order?'auto_order':''));
 		$jsOptions['contents'] = $contents;
-		$jsOptions += compact('auto_order', 'parameters', 'texts', 'baseID');
+		$jsOptions += compact('auto_order', 'parameters', 'texts', 'baseID', 'url');
 		
 		
 		$out = $this->Bl->br();
@@ -1384,6 +1456,14 @@ class BuroBurocrataHelper extends XmlTagHelper
 /**
  * Starts an ordered list menu
  * 
+ * Must receive a parameter named 'allowed_content' that will be used to create the menu options
+ * This parameter format is as follows:
+ * {{{
+ * 	array(
+ * 		array('model' => 'Plugin.Model', 'label' => 'Some label')
+ * 	)
+ * }}}
+ * 
  * @access public
  * @param array $htmlAttributes
  * @param array $options
@@ -1393,31 +1473,42 @@ class BuroBurocrataHelper extends XmlTagHelper
 	{
 		$htmlAttributes = $this->addClass($htmlAttributes, self::$defaultContainerClass);
 		$htmlAttributes = $this->addClass($htmlAttributes, 'ordered_list_menu');
-		$options = $options + array('allowed_content' => false);
-		
-		if (!is_array($options['allowed_content']))
-			trigger_error('BuroBurocrataHelper::sorderedItensMenu - No allowed_content list specified.');
+		$options = $options + array('allowed_content' => array());
 		
 		$htmlAttributes['buro:order'] = '#{order}';
 		$out = $this->Bl->sdiv($htmlAttributes); // to be closed on BuroBurocrataHelper::sorderedItensMenu
 		
+		$out .= $this->Bl->div(array('class' => 'border'));
+		
 		// A menu made of list of content
-		$out .= $this->Bl->sdiv(array('class' => 'ordered_list_menu_list'));
-		foreach ($options['allowed_content'] as $content)
+		$linkList = array();
+		foreach ($options['allowed_content'] as $content_type => $content)
 		{
-			if (!is_array($content))
-				$content = array('model' => $content);
+			if (!is_array($content)) 
+				return !trigger_error('BuroBurocrataHelper::sorderedItensMenu - allowed_content must be an array of arrays.');
+			$content += array('title' => Inflector::humanize($content_type));
 			
-			$content += array('label' => Inflector::humanize($content['model']));
-			
-			$out .= $this->Bl->anchor(
-				array('href' => '/', 'class' => 'ordered_list_menu_link', 'buro:type' => $content['model']),
-				array(), 
-				$content['label']
+			$linkList[] = array(
+				'attr' => array('href' => '/','class' => 'ordered_list_menu_link', 'buro:content_type' => $content_type),
+				'options' => array('close_me' => false),
+				'name' => $content['title']
 			);
 		}
-		$out .= $this->Bl->anchor(array('class' => 'ordered_list_menu_close', 'href' => '/'), array(), __d('burocrata','Burocrata::orderdItensMenu - close list', true));
-		$out .= $this->Bl->ediv();
+		$lastSeparator = ' '.__('anchorList or',true).' ';
+		$before = $this->Bl->span(array('class' => 'caption'), array(), __d('burocrata', 'Burocrata::orderdItensMenu - list caption:', true) . ' ');
+		$anchorList = $this->Bl->anchorList(array('class' => 'ordered_list_menu_list_list'), compact('linkList', 'lastSeparator', 'before'));
+		$cancelLink = $this->Bl->span(array('class' => 'ordered_list_menu_close'), array(),
+			$this->Bl->anchor(
+				array('href' => '/'),
+				array(),
+				__d('burocrata','Burocrata::orderdItensMenu - close list', true)
+		));
+		
+		$out .= $this->Bl->div(
+			array('class' => 'ordered_list_menu_list'),
+			array(), 
+			$cancelLink . ' ' . $anchorList . $this->Bl->floatBreak()
+		);
 		
 		// Button that shows the list of content (if more then one item)
 		$out .= $this->Bl->button(array('class' => 'ordered_list_menu_add'), array(), $this->Bl->spanDry('+'));
@@ -1753,7 +1844,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		);
 		$templates['item'] = $this->inputRelationalEditableListItem(compact('allow'));
 		
-		$type= am(self::$defaultSupertype, 'editable_list', 'view');
+		$type= am(self::$defaultSupertype, 'view', 'editable_list');
 		
 		$contents = array();
 		if (!empty($this->data[$assocName]) && Set::numeric(array_keys($this->data[$assocName])))
@@ -2026,13 +2117,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 	protected function _uploadParams($options)
 	{
 		$modelAlias = $this->_readFormAttribute('modelAlias');
-		//todo: trigger error
 		if (!$modelAlias)
 			trigger_error('Can\'t create a upload file that is not inside a buro form.', E_USER_WARNING);
 		
 		$file_input_options = array_filter($options);
 		unset($file_input_options['options']);
-		$file_input_options = $file_input_options + array('fieldName' => $modelAlias . '.sfil_sored_file_id');
+		$file_input_options += array('fieldName' => $modelAlias . '.sfil_sored_file_id');
 		if (strpos($file_input_options['fieldName'], '.') === false)
 			$file_input_options['fieldName'] = $modelAlias . '.' . $file_input_options['fieldName'];
 		
@@ -2040,11 +2130,19 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'baseID' => $this->baseID(),
 			'url' => $this->url(array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'upload')),
 			'error' => array(),
+			'parameters' => array(),
 			'version' => '',
 			'model' => 'JjMedia.SfilStoredFile'
 		);
-
+		
 		$gen_options = $options['options'] + $defaults;
+		
+		// Temporary warning
+		if ($gen_options['model'] != 'JjMedia.SfilStoredFile')
+		{
+			trigger_error('BuroBurocrataHelper::_uploadParams() - Changing the upload model is not supported yet! Using the default.');
+			$gen_options['model'] = 'JjMedia.SfilStoredFile';
+		}
 	
 		if (isset($file_input_options['error']))
 		{
@@ -2074,15 +2172,17 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	protected function _upload($gen_options, $file_input_options)
 	{
+		$View = $this->_getView();
 		$packed = SecureParams::pack(array($gen_options['version'], $file_input_options['fieldName'], $gen_options['model']));
 		list($model_plugin, $model_name) = pluginSplit($gen_options['model']);
+		
+		$gen_options['parameters'] += array($this->internalParam('layout_scheme') => $View->getVar('layout_scheme'));
+		$gen_options['parameters'] += array($this->internalParam('data') => $packed);
 		
 		$out = '';
 		
 		$this->sform(array(), array('url' => ''));
 		$out .= $this->Bl->sdiv(array('id' => 'div' . $gen_options['baseID']));
-			$out .= $this->inputLayoutScheme();
-			$out .= $this->input(array('value' => $packed, 'name' => $this->internalParam('data')), array('type' => 'hidden'));
 			$out .= $this->input(
 				array('id' => 'mi' . $gen_options['baseID']),
 				array('type' => 'file', 'container' => false, 'fieldName' => $model_name.'.file') + $file_input_options
@@ -2125,7 +2225,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		if (empty($gen_options['callbacks']['onSave']['js']))
 			$gen_options['callbacks']['onSave']['js'] = '';
-		$gen_options['callbacks']['onSave']['js'] .= "$('{$lnk_id}').update(json.filename).writeAttribute({href: json.url}); $('{$act_id}').show(); $('{$prv_id}').show();";
+		$gen_options['callbacks']['onSave']['js'] .= "$('{$lnk_id}').update(json.filename).writeAttribute({href: json.dlurl}); $('{$act_id}').show(); $('{$prv_id}').show();";
 		
 		if (empty($gen_options['callbacks']['onRestart']['js']))
 			$gen_options['callbacks']['onRestart']['js'] = '';
@@ -2263,11 +2363,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$out = '';
 		// Label
-		if ($options['label'])
-		{
-			$out .= $this->label(array('for' => $npt_id), $options, $options['label']);
-			$options['label'] = false;
-		}
+		if (!isset($options['label']))
+			$options['label'] = null;
+		$out .= $this->label(array('for' => $npt_id), $options, $options['label']);
+		$options['label'] = false;
 		
 		// Instructions
 		if (!empty($options['instructions']))

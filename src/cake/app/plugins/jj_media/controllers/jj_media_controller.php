@@ -28,7 +28,6 @@ class JjMediaController extends JjMediaAppController {
  */
 	var $name = 'JjMedia';
 
-
 /**
  * Dont uses models, a priori.
  * 
@@ -37,24 +36,21 @@ class JjMediaController extends JjMediaAppController {
  */
 	var $uses = array();
 
-
 /**
  * List of components
  *
  * @var string
  * @access public
  */
-	public $components = array('Typographer.TypeLayoutSchemePicker', 'RequestHandler');
-
+	public $components = array('Typographer.TypeLayoutSchemePicker', 'RequestHandler', 'Burocrata.BuroBurocrata');
 
 /**
- * Current layout scheme
- *
+ * Layout Scheme
+ * 
  * @var string
- * @access protected
+ * @access public
  */
-	protected $layout_scheme = null;
-
+	public $layout_scheme;
 
 /**
  * beforeFilter callback for allow anyone to have access
@@ -66,52 +62,9 @@ class JjMediaController extends JjMediaAppController {
 	function beforeFilter()
 	{
 		parent::beforeFilter();
-		$this->Auth->allow('*');
-		
-		if(isset($this->data['_b']))
-		{
-			$this->buroData = $this->data['_b'];
-			unset($this->data['_b']);
-		}
-		
-		if(isset($this->buroData['layout_scheme']))
-		{
-			$this->helpers = am($this->helpers,
-				array(
-					'Typographer.TypeDecorator' => array(
-						'name' => 'decorator',
-						'compact' => false,
-						'receive_tools' => true
-					),
-					'Typographer.*TypeStyleFactory' => array(
-						'name' => 'styleFactory', 
-						'receive_automatic_classes' => true, 
-						'receive_tools' => true,
-						'generate_automatic_classes' => false
-					),
-					'Typographer.*TypeBricklayer' => array(
-						'name' => 'Bl',
-						'receive_tools' => true,
-					)
-				)
-			);
-			$this->layout_scheme = $this->buroData['layout_scheme'];
-			unset($this->buroData['layout_scheme']);
-		}
+		if ($this->Auth)
+			$this->Auth->allow('*');
 	}
-
-
-/**
- * beforeRender callback
- *
- * @access public
- */
-	public function beforeRender()
-	{
-		if($this->layout_scheme)
-			$this->TypeLayoutSchemePicker->pick($this->layout_scheme);
-	}
-
 
 /**
  * index action
@@ -243,6 +196,7 @@ class JjMediaController extends JjMediaAppController {
 			}
 		}
 		$this->layout = 'ajax';
+		$this->view = 'Typographer.Type';
 		$this->set(compact('error', 'validationErrors', 'saved', 'version', 'filename'));
 	}
 }

@@ -3,13 +3,12 @@
 	$object = compact('error', 'saved');
 	$object['content'] = null;
 	
+	
 	if(!$error)
 	{
-		$class_name = $model_name;
-		if(!empty($model_plugin))
-			$class_name = $model_plugin . '.' . $class_name;
-		
-		$object['content'] = $this->Buro->insertForm($class_name);
+		if (!isset($data))
+			$data = array();
+		$object['content'] = $this->Jodel->insertModule($model_class_name, $type, $data);
 	}
 	
 	echo $this->Js->object($object);

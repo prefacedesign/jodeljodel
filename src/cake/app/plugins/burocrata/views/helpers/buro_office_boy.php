@@ -84,7 +84,7 @@ class BuroOfficeBoyHelper extends AppHelper
 		),
 		'listOfItems' => array(
 			'onShowForm' => 'function(id){%s}',
-			'onAction' => 'function(action,id,type){%s}',
+			'onAction' => 'function(action, id, content_type){%s}',
 			'onError' => 'function(json){%s}',
 		),
 		'color' => array(
@@ -120,6 +120,7 @@ class BuroOfficeBoyHelper extends AppHelper
 			$this->Html->script('slider', array('inline' => false));
 			$this->Html->script('/burocrata/js/burocrata.js', array('inline' => false));
 			$this->Html->script('/burocrata/js/color-picker.js', array('inline' => false));
+			$this->Html->script('/popup/js/popup.js', array('inline' => false));
 			$this->Html->scriptBlock('var debug = ' . Configure::read() . ';', array('inline' => false));
 
 			$script = implode("\n", $this->scripts);
@@ -182,6 +183,9 @@ class BuroOfficeBoyHelper extends AppHelper
 		
 		if(!empty($callbacks) && is_array($callbacks))
 			$script .= sprintf('.addCallbacks(%s)', $this->formatCallbacks('form', $callbacks));
+		
+		if (!empty($parameters))
+			$script .= sprintf('.addParameters(%s)', $this->Js->object($parameters));
 		
 		return $this->addHtmlEmbScript($script);
 	}
@@ -250,12 +254,12 @@ class BuroOfficeBoyHelper extends AppHelper
  */
 	public function listOfItems($options)
 	{
-		$options += array('callbacks' => array(), 'baseID' => uniqid(), 'types' => array(), 'texts' => array());
+		$options += array('callbacks' => array(), 'baseID' => uniqid(), 'texts' => array());
 		extract($options);
 		unset($options);
 		
 		$parameters = $this->Js->object($parameters);
-		$content = $this->Js->object(compact('texts', 'templates', 'contents'));
+		$content = $this->Js->object(compact('texts', 'templates', 'contents', 'url'));
 		
 		$className = $auto_order ? 'BuroListOfItemsAutomatic' : 'BuroListOfItems';
 		
@@ -279,12 +283,13 @@ class BuroOfficeBoyHelper extends AppHelper
 		extract(am($defaults, $options));
 		unset($defaults);
 		
-		if (!empty($error))
-			$error = $this->Js->object($error);
-		else 
-			$error = '{}';
+		if (!empty($error)) $error = $this->Js->object($error);
+		else $error = '{}';
 		
-		$script = sprintf("new BuroUpload('%s', '%s', %s)", $baseID, $url, $error);
+		if (!empty($parameters)) $parameters = $this->Js->object($parameters);
+		else $parameters = '{}';
+		
+		$script = sprintf("new BuroUpload('%s', '%s', %s, %s)", $baseID, $url, $error, $parameters);
 		if(!empty($callbacks) && is_array($callbacks))
 			$script .= sprintf('.addCallbacks(%s)', $this->formatCallbacks('upload', $callbacks));
 		
