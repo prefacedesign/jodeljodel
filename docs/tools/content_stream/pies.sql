@@ -30,7 +30,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `pie_images` (
   `id` VARCHAR(36) NOT NULL ,
-  `sfil_stored_file_id` INT NULL ,
+  `file_id` INT NULL ,
   `title` VARCHAR(255) NULL ,
   `subtitle` TEXT NULL ,
   PRIMARY KEY (`id`) )
@@ -42,7 +42,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `pie_files` (
   `id` VARCHAR(36) NOT NULL ,
-  `sfilt_stored_file_id` INT NULL ,
+  `file_id` INT NULL ,
   `title` VARCHAR(255) NULL ,
   `description` TEXT NULL ,
   PRIMARY KEY (`id`) )
