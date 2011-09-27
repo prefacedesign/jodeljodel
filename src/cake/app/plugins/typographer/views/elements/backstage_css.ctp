@@ -1030,6 +1030,11 @@
 	));
 	
 	$this->Decorator->rule(
+		'.buro_form .input_textile textarea:focus', array(
+			'margin' => implode(' ', array($u->t(8), $u->t(-1), $u->t($margin_bottom-1), $u->t(-1)))
+	));
+	
+	$this->Decorator->rule(
 		'#login_box input[type=text], #login_box input[type=password]', array(
 			'width' => $u->t($hg->size(array('M' => 4, 'g' => -1),false) - 2*($border_size + $padding_size))
 	));
@@ -1067,7 +1072,7 @@
 	));
 	
 	$this->Decorator->rule(
-		'input.buro.radio', array(
+		'input.buro.radio, input.buro.checkbox', array(
 			'height' => 'auto',
 			'width' => $u->t($hg->size(array('g' => 1),false)),
 			'clear' => 'both',
@@ -1082,12 +1087,29 @@
 	));
 	
 	$this->Decorator->rule(
+		'.input_checkbox label', array(
+			'font-weight' => 'normal !important',
+			'float' => 'left',
+			'margin-left' => $hg->size(array('m' => 2)),
+			'margin-top' => $hg->size(array('g' => 0.5))
+	));
+	
+	$this->Decorator->rule(
 		'.input_radio input.buro', array(
 			'float' => 'left',
 			'clear' => 'left',
 			'width' => 'auto',
 			'height' => $u->t($line_height),
 			'margin' => sprintf('%s %s 0', $hg->size(array('g' => 0.5)), $hg->size(array('g' => 0.5)))
+	));
+	
+	$this->Decorator->rule(
+		'.input_checkbox input.buro', array(
+			'float' => 'left',
+			'clear' => 'left',
+			'width' => 'auto',
+			'height' => $u->t($line_height),
+			'margin' => sprintf('%s 0', $hg->size(array('g' => 0.5)))
 	));
 	
 	$this->Decorator->rule(

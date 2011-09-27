@@ -11,8 +11,9 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 	if (isset($this->data[$this->data['ModuleInfo']['model']]['languages']))
 	{
 		echo $this->element('language_edit_select', array('plugin' => 'backstage', 'translatedLanguages' => $this->data[$this->data['ModuleInfo']['model']]['languages']));
+		echo $this->element('show_language_being_edited',array('plugin' => 'backstage'));
 	}	
-	echo $this->element('show_language_being_edited',array('plugin' => 'backstage'));
+	
 	
 	echo $this->Popup->popup('error',
 		array(

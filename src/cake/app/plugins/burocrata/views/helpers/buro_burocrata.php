@@ -135,8 +135,11 @@ class BuroBurocrataHelper extends XmlTagHelper
 				$htmlAttributes = $this->addClass($htmlAttributes, $this->_readFormAttribute('baseID'), 'buro:form');
 				$inputOptions = am($htmlAttributes, $options['options'], array('label' => false, 'legend' => false, 'div' => false, 'type' => $options['type'], 'error' => $options['error']));
 				
-				if ($inputOptions['type'] == 'radio' || $inputOptions['type'] == 'checkbox')
+				if ($inputOptions['type'] == 'radio') 
 					$inputOptions['label'] = true;
+				if ($inputOptions['type'] == 'checkbox')
+					if (isset($options['options']['label']))
+						$inputOptions['label'] = $options['options']['label'];
 				
 				if (!empty($options['fieldName']))
 					$out .= $this->Form->input($options['fieldName'], $inputOptions);
@@ -1680,10 +1683,16 @@ class BuroBurocrataHelper extends XmlTagHelper
  		$options = am($defaults, $options);
  		
 		$model =& ClassRegistry::init($options['model']);
+		$conditions = array();
+		if (isset($model->Behaviors->TempTemp->__settings[$model->alias]))
+		{
+			$sets = $model->Behaviors->TempTemp->__settings[$model->alias];
+			$conditions = array($model->alias.'.'.$sets['field'] => false);
+		}
 		if(method_exists($model, 'findFilteredOptions'))
 			$options_to_list = $model->{'findFilteredOptions'}($options['filter_options']);
 		else
-			$options_to_list = $model->find('list');
+			$options_to_list = $model->find('list', array('conditions' => $conditions));
 
  			
 		if ($options['multiple'])
@@ -1946,10 +1955,16 @@ class BuroBurocrataHelper extends XmlTagHelper
 		unset($input_options['type']);
 		
 		$Model =& ClassRegistry::init($options['model']);
+		$conditions = array();
+		if (isset($Model->Behaviors->TempTemp->__settings[$Model->alias]))
+		{
+			$sets = $Model->Behaviors->TempTemp->__settings[$Model->alias];
+			$conditions = array($Model->alias.'.'.$sets['field'] => false);
+		}
 		if(method_exists($Model, 'findFilteredOptions'))
 			$options_to_list = $Model->{'findFilteredOptions'}($options['filter_options']);
 		else
-			$options_to_list = $Model->find('list');
+			$options_to_list = $model->find('list', array('conditions' => $conditions));
 		
 		return $this->input(
 			array('class' => 'combo'), 
@@ -1995,10 +2010,16 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$options = am($defaults, $options);
 
 		$model =& ClassRegistry::init($options['model']);
+		$conditions = array();
+		if (isset($model->Behaviors->TempTemp->__settings[$model->alias]))
+		{
+			$sets = $model->Behaviors->TempTemp->__settings[$model->alias];
+			$conditions = array($model->alias.'.'.$sets['field'] => false);
+		}
 		if(method_exists($model, 'findFilteredOptions'))
 			$options_to_list = $model->{'findFilteredOptions'}($options['filter_options']);
 		else
-			$options_to_list = $model->find('list');
+			$options_to_list = $model->find('list', array('conditions' => $conditions));
 
 		$out = $this->input(
 			array(

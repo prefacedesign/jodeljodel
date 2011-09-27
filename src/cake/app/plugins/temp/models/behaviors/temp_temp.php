@@ -118,11 +118,13 @@ class TempTempBehavior extends ModelBehavior
 		}
 		if ($clean)
 		{
-			$data = strtotime('-'.$modifiedBefore. ' days');
-			$data = date('Y-m-d H:i:s', $data);
-			$this->cleanTempRows($Model, $data);
+			$date = strtotime('-'.$modifiedBefore. ' days');
+			$date = date('Y-m-d H:i:s', $date);
+			$this->cleanTempRows($Model, $date);
 		}
 		
+		if (isset($Model->data[$Model->name]['id']))
+			$Model->id = $Model->data[$Model->name]['id'];
 		return true;
 	}
 	
@@ -137,8 +139,19 @@ class TempTempBehavior extends ModelBehavior
 	
 	function cleanTempRows(&$Model, $modifiedBefore = null)
 	{
+		
 		if ($modifiedBefore)
-			$Model->deleteAll(array($Model->alias.'.is_temp' => true, $Model->alias.'.modified <=' => $modifiedBefore));
+		{
+			if (method_exists($Model, 'dashDelete'))
+			{
+				$to_delete = $Model->find('all', array('conditions' => array($Model->alias.'.is_temp' => true, $Model->alias.'.modified <=' => $modifiedBefore)));
+				foreach($to_delete as $delete)
+					$Model->{'dashDelete'}($delete[$Model->alias]['id']);
+			}
+			else
+				$Model->deleteAll(array($Model->alias.'.is_temp' => true, $Model->alias.'.modified <=' => $modifiedBefore), true);
+		}
+		
 	}
 }
 ?>

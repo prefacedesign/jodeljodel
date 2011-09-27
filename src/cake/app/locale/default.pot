@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-09-23 16:04-0300\n"
+"POT-Creation-Date: 2011-09-26 16:23+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -46,7 +46,6 @@ msgstr ""
 #: \plugins\backstage\views\elements\language_edit_select.ctp:35
 #: \plugins\backstage\views\elements\language_show_edited_language.ctp:35
 #: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:52;66
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1537
 msgid "anchorList or"
 msgstr ""
 
@@ -622,14 +621,6 @@ msgstr ""
 
 #: \plugins\text_cork\models\text_text_cork.php:37
 msgid "TextTextCork Model: This text hasn't been written yet. It's up to the site content editor to write it."
-msgstr ""
-
-#: \plugins\text_cork\views\elements\text_text_cork.ctp:43;52
-msgid "Cork Form - TextTextCork.text"
-msgstr ""
-
-#: \plugins\text_cork\views\elements\text_text_cork.ctp:44;53
-msgid "Cork Form - TextTextCork.text - instructions"
 msgstr ""
 
 #: \plugins\typographer\views\elements\backstage_layout.ctp:18
