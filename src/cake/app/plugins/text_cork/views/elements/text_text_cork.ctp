@@ -40,8 +40,8 @@
 						echo $buro->input(array(),array(
 							'type' => 'textile',
 							'fieldName' => 'text',
-							'label' => __('Cork Form - TextTextCork.text',true),
-							'instructions' => __('Cork Form - TextTextCork.text - instructions',true)
+							'label' => __d('corktile', 'Cork Form - TextTextCork.text',true),
+							'instructions' => __d('corktile','Cork Form - TextTextCork.text - instructions',true)
 						));
 					}
 					else
@@ -49,8 +49,8 @@
 						echo $buro->input(array(),array(
 							'type' => 'textarea',
 							'fieldName' => 'text',
-							'label' => __('Cork Form - TextTextCork.text',true),
-							'instructions' => __('Cork Form - TextTextCork.text - instructions',true)
+							'label' => __d('corktile','Cork Form - TextTextCork.text',true),
+							'instructions' => __d('corktile','Cork Form - TextTextCork.text - instructions',true)
 						));
 					}
 					

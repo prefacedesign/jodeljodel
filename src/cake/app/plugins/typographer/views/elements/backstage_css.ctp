@@ -1015,6 +1015,11 @@
 	));
 	
 	$this->Decorator->rule(
+		'.buro_form .input_textile textarea:focus', array(
+			'margin' => implode(' ', array($u->t(8), $u->t(-1), $u->t($margin_bottom-1), $u->t(-1)))
+	));
+	
+	$this->Decorator->rule(
 		'#login_box input[type=text], #login_box input[type=password]', array(
 			'width' => $u->t($hg->size(array('M' => 4, 'g' => -1),false) - 2*($border_size + $padding_size))
 	));

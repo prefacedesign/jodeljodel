@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-09-19 20:46+0000\n"
-"PO-Revision-Date: 2011-09-19 17:50-0300\n"
+"POT-Creation-Date: 2011-09-26 16:23+0000\n"
+"PO-Revision-Date: 2011-09-26 13:23-0300\n"
 "Last-Translator: Rodrigo  <rodrigo@preface.com.br>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -19,19 +19,19 @@ msgstr ""
 msgid "Corktile edit page: Editing a fixed content"
 msgstr "Editando um conteúdo fixo"
 
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:20
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:21
 msgid "Corktile edit page: Your data cannot be saved - TITLE."
 msgstr "Erro"
 
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:21
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:22
 msgid "Corktile edit page: Your data cannot be saved - TEXT."
 msgstr "Os dados não puderam ser salvos."
 
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:27
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:28
 msgid "Corktile edit page: Your data has been saved - TITLE."
 msgstr "Dados salvos"
 
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:28
+#: \plugins\corktile\views\cork_corktiles\edit.ctp:29
 msgid "Corktile edit page: Your data has been saved - TEXT."
 msgstr "Os dados foram salvos com sucesso."
 
@@ -42,4 +42,12 @@ msgstr "Localização no site"
 #: \plugins\corktile\views\elements\location_of_cork.ctp:31
 msgid "Description"
 msgstr "descrição"
+
+#: \plugins\text_cork\views\elements\text_text_cork.ctp:43;52
+msgid "Cork Form - TextTextCork.text"
+msgstr "Conteúdo"
+
+#: \plugins\text_cork\views\elements\text_text_cork.ctp:44;53
+msgid "Cork Form - TextTextCork.text - instructions"
+msgstr " "
 
