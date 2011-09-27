@@ -53,6 +53,19 @@ Configure::write('Media.filter_plus.textile', array(
 		)
 	)
 )); 
+
+Configure::write('Media.filter_plus.content_stream', array(
+	'fields' => array('PieImage.file_id'),
+	'image' => array(
+		'backstage_preview' => array(
+			'fitCrop' => array(
+				$backstageTools['hg']->size(array('M' => 4, 'g' => -1), false),
+				$backstageTools['vg']->size(array('M' => 4, 'g' => -1), false)
+			)
+		)
+	)
+));
+
 Configure::write('Media.filter_plus.picture', array(
 	'fields' => array('Picture.file_upload_id'),
 	'image' => array(
