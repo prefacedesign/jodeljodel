@@ -9,6 +9,14 @@ switch ($type[0])
 				echo $this->Buro->sform(array(), array('model' => 'PieText.PieText'));
 					
 					echo $this->Buro->input(
+						array(),
+						array(
+							'fieldName' => 'id',
+							'type' => 'hidden'
+						)
+					);
+					
+					echo $this->Buro->input(
 						array(), 
 						array(
 							'fieldName' => 'text',
