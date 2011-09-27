@@ -9,7 +9,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 CREATE  TABLE IF NOT EXISTS `pie_texts` (
   `id` VARCHAR(36) NOT NULL ,
   `text` TEXT NULL ,
-  `procceseed_text` TEXT NULL ,
+  `processed_text` TEXT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = MyISAM;
 
