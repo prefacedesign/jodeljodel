@@ -1,5 +1,11 @@
 ﻿<?php
 
+	$this->Decorator->rule(
+		'html', array(
+			'overflow-y' => 'scroll'
+		)
+	);
+	
 	$box_shadow = '0 '.$vg->size(array('u' => 3)).' '. $vg->size(array('u' => 10)). ' ' . $palette['popin_shadow']->write();
 	$this->Decorator->rule(
 		'.box_popup', array(

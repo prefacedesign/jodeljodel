@@ -76,23 +76,23 @@
 				$item['DashDashboardItem']['name'],
 				$item['DashDashboardItem']['info'],
 				strftime("%d/%m/%y", strtotime($item['DashDashboardItem']['created'])),
-				$arrow . strftime("%d/%m/%y", strtotime($item['DashDashboardItem']['modified'])),
-				array(array(), array('escape' => false), $arrow . $languageStr)
+				strftime("%d/%m/%y", strtotime($item['DashDashboardItem']['modified'])),
+				array(array(), array('escape' => false), $arrow . ' ' . $languageStr)
 			));
 	
 			//@todo Substitute this with an AJAX call.
 			echo $this->Bl->smartTableRowDry(array(
 				array(array(),array('colspan' => 3),' '), 
-				array(array('id' => 'item_info_$k'),array('colspan' => 4, 'rowspan' => 2), '')
+				array(array('id' => "item_info_$k"),array('colspan' => 4, 'rowspan' => 2), '')
 			));
 			
 			
 			echo $html->scriptBlock("
-				$$('tr.row_". $row_number . " .arrow a')[0].observe('click', function (ev) { ev.stop(); dashToggleExpandableRow(" . $row_number . ");});
+				$$('tr.row_$row_number .arrow a')[0].observe('click', function (ev) { ev.stop(); dashToggleExpandableRow(" . $row_number . ");});
 			", array('inline' => true));
 			
-			//Does this entry has publishing and drafting capabilities?
-			if (in_array('publish_draft',$curSettings['actions']))
+			// Does this entry has publishing and drafting capabilities?
+			if (in_array('publish_draft', $curSettings['actions']))
 			{
 				$draftLink = $ajax->link(__d('dashboard','Hide from public', true), 			
 					array(
@@ -138,28 +138,38 @@
 			
 			if (in_array('publish_draft', $curSettings['actions']))
 			{
-				 $links .= $item['DashDashboardItem']['status'] == 'published' ? $draftLink : $publishLink;
+				$links .= $item['DashDashboardItem']['status'] == 'published' ? $draftLink : $publishLink;
 			}
 			
-			$modules = Configure::read('jj.modules');
-			$standardUrl = array(
-				'controller' => (!empty($modules[$item['DashDashboardItem']['type']]['prefix']) ? $modules[$item['DashDashboardItem']['type']]['prefix'] . '_' : '') . Inflector::pluralize($modules[$item['DashDashboardItem']['type']]['plugin']),
-				'action' => 'view'
+			// Default view action
+			$curModule = Configure::read('jj.modules.'.$item['DashDashboardItem']['type']);
+			
+			if (empty($curModule))
+				trigger_error('Module type `'.$item['DashDashboardItem']['type'].'` not known.');
+
+			list($plugin, $model) = pluginSplit($curModule['model']);
+			
+			if (!isset($curModule['viewUrl']))
+				$curModule['viewUrl'] = array();
+			
+			$standardUrl = array();
+			if (!is_array($curModule['viewUrl']))
+				trigger_error('`viewUrl` configuration must be an array.');
+			else
+				$standardUrl = $curModule['viewUrl'];
+			
+			$standardUrl += array(
+				'plugin' => $plugin, 'controller' => Inflector::pluralize($plugin),
+				'action' => 'view', $item['DashDashboardItem']['dashable_id']
 			);
-			
-			if (isset($modules[$item['DashDashboardItem']['type']]['viewUrl']))
-				$standardUrl = am($standardUrl, $modules[$item['DashDashboardItem']['type']]['viewUrl']);
-			
 			
 			if (in_array('see_on_page', $curSettings['actions']))
 			{
 				if ($curSettings['edit_version'] != 'corktile')
 				{
-					$links .= $this->Bl->anchor(array('class' => 'link_button'), array('url' => array(
-							'plugin' => $modules[$item['DashDashboardItem']['type']]['plugin'],
-							'controller' => $standardUrl['controller'],
-							'action' => $standardUrl['action'], $item['DashDashboardItem']['dashable_id']
-						)), 
+					$links .= $this->Bl->anchor(
+						array('class' => 'link_button'),
+						array('url' => $standardUrl), 
 						__d('dashboard', 'Dashboard: See on the page', true)
 					);
 				}
