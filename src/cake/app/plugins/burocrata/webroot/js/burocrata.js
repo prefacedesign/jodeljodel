@@ -812,8 +812,9 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 	},
 	reject: function(form, response, json, saved)
 	{
-		this.form.purge();
+		this.form.form.unsetLoading().purge();
 		this.update.update(json.content);
+		this.observeForm.bind(this).delay(0.1);
 	},
 	cancel: function()
 	{
