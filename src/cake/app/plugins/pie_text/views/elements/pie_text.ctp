@@ -21,6 +21,8 @@ switch ($type[0])
 						array(
 							'fieldName' => 'text',
 							'type' => 'textile',
+							'label' => __d('content_stream', 'PieText.text label', true),
+							'instructions' => __d('content_stream', 'PieText.text instructions', true),
 							'options' => array(
 								'enabled_buttons' => array('bold', 'italic', 'link'),
 								'allow_preview' => false

@@ -140,7 +140,11 @@
 	));
 	
 	
-
+	
+	$this->Decorator->rule(
+		'.ordered_list_content hr', array(
+			'border' => '1px solid black'
+	));
 	
 	$this->Decorator->rule(
 		'.ordered_list_item', array(
