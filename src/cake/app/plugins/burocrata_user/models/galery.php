@@ -16,6 +16,13 @@ class Galery extends BurocrataUserAppModel {
 				'message' => 'Title missing',
 				'required' => true
 			)
+		),
+		'person_id' => array(
+			'notempty' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Person missing',
+				'required' => true
+			)
 		)
 	);
 

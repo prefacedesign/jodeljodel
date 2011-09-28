@@ -1017,7 +1017,6 @@ class BuroBurocrataHelper extends XmlTagHelper
 		// END OF PARSING PARAMS
 		
 		$hidden_input_id = 'hii'.$baseID;
-		$update = 'update'.$baseID;
 		$acplt_baseID = $this->baseID();
 		$edit_call_baseID = $this->baseID();
 		
@@ -1062,12 +1061,18 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$module = '';
 		if ($data && !empty($data[$ParentModel->{$assocName}->primaryKey]))
 			$module = $this->Jodel->insertModule($model_class_name, array('buro', 'view', 'belongsto'), array($model => $data));
-		$error = $this->error(array(), compact('fieldName'));
+		
 		
 		$updateble_div = $this->Bl->div(
-			array('id' => $update),
-			array('escape' => false),
-			$module.$error
+			array('id' => 'update' . $baseID),
+			array(),
+			$module
+		);
+		
+		$error_div = $this->Bl->div(
+			array('id' => 'error' . $baseID),
+			array(),
+			$this->error(array(), compact('fieldName'))
 		);
 		
 		$links = array(
@@ -1084,6 +1089,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$out .= $this->Bl->sdiv(array('class' => 'controls'));
 			$out .= $updateble_div;
+			$out .= $error_div;
 			$out .= $actions_div;
 			$out .= $this->Bl->floatBreak();
 		$out .= $this->Bl->ediv();

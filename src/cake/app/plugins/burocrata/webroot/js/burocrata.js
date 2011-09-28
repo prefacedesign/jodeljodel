@@ -670,6 +670,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		this.input = $('hii'+id_base);
 		this.divBase = $('div'+id_base);
 		this.update = $('update'+id_base);
+		this.error = $('error'+id_base);
 		this.actions = this.update.next('.actions');
 		this.actions.select('a').each(this.observeControls.bind(this));
 		this.observeControls(this.autocomplete.autocompleter.update.down('.action a'));
@@ -708,6 +709,8 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 			new Effect.BlindUp(this.update, {duration: this.baseFxDuration, queue: this.queue});
 		}
 		
+		this.error.show();
+		
 		return this;
 	},
 	observeControls: function(element)
@@ -740,6 +743,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 			case 'undo_reset':
 				this.input.value = this.backup_id;
 				this.hideAutocomplete().showPreview();
+				this.error.show();
 			break;
 		}
 	},
@@ -773,10 +777,11 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 			afterFinish: function(action, fx) {
 				this.update.setStyle({height: '', overflow: ''});
 				this.observeForm();
+				this.setActions('');
 				if (action == 'preview')
 					this.setActions('edit reset').hideAutocomplete();
-				else
-					this.setActions('');
+				if (action == 'preview' || action == 'new')
+					this.error.hide();
 			}.bind(this, json.action)
 		});
 	},
