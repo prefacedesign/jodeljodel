@@ -3,7 +3,7 @@
  *
  */
  
-App::import('Config','Dashboard.config');
+App::import('Config','Dashboard.dash');
 define ('LIMIT', Configure::read('Dashboard.limitSize'));
 
 /**
