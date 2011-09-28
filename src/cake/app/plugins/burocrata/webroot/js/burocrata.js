@@ -274,7 +274,7 @@ var BuroForm = Class.create(BuroCallbackable, {
 	{
 		this.inputs = $$('[buro\\:form="'+this.id_base+'"]');
 		
-		var data = Form.serializeElements(this.inputs, 'object');
+		var data = Form.serializeElements(this.inputs, {hash:true});
 		data = $H(data).merge(this.params);
 		
 		this.trigger('onStart', this.form);
