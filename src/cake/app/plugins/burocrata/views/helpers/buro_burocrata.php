@@ -1422,7 +1422,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		);
 		
 		$url = $this->url($url);
-		$parameters['request'] = array($this->internalParam('request') => $this->security($url, $model_plugin, $model_name));
+		$parameters['request'] = array($this->internalParam('request') => $this->security($options['url'], $model_plugin, $model_name));
 		$parameters['contentId'] = array($this->internalParam('id') => '#{id}');
 		$parameters['buroAction'] = array($this->internalParam('action') => 'save');
 		
