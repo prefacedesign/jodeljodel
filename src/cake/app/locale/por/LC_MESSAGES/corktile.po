@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2011-09-26 16:23+0000\n"
-"PO-Revision-Date: 2011-09-26 13:23-0300\n"
+"PO-Revision-Date: 2011-09-27 18:43-0300\n"
 "Last-Translator: Rodrigo  <rodrigo@preface.com.br>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -41,7 +41,7 @@ msgstr "Localização no site"
 
 #: \plugins\corktile\views\elements\location_of_cork.ctp:31
 msgid "Description"
-msgstr "descrição"
+msgstr "Descrição"
 
 #: \plugins\text_cork\views\elements\text_text_cork.ctp:43;52
 msgid "Cork Form - TextTextCork.text"

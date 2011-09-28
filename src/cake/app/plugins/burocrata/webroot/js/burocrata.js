@@ -274,7 +274,7 @@ var BuroForm = Class.create(BuroCallbackable, {
 	{
 		this.inputs = $$('[buro\\:form="'+this.id_base+'"]');
 		
-		var data = Form.serializeElements(this.inputs),
+		var data = Form.serializeElements(this.inputs, 'object'),
 			params = this.params.toQueryString();
 		if (!params.blank())
 			data+='&'+params;
