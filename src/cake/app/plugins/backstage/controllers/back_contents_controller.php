@@ -40,13 +40,12 @@ class BackContentsController extends BackstageAppController
  * the element model_name with 'type' => array('burocrata','form').
  *
  * @access public
- * @param string $contentPlugin The plugin name in underscore format.
- * @param string $modelName The model name to be edited, in underscore format.
+ * @param string $moduleName Module name, configured on bootstrap.php
  * @param mixed $id The id of the row to be edited. If "null" it means that a new will be created.
  */
-    function edit($type = false, $id = null)
+    function edit($moduleName = false, $id = null)
     {
-		if (empty($type) || !($config = Configure::read('jj.modules.'.$type)))
+		if (empty($moduleName) || !($config = Configure::read('jj.modules.'.$moduleName)))
 			$this->cakeError('error404');
 		
 		list($contentPlugin, $modelName) = pluginSplit($config['model']);
@@ -59,7 +58,7 @@ class BackContentsController extends BackstageAppController
             if (method_exists($Model, 'createEmpty'))
 			{
                 if ($Model->createEmpty())
-					$this->redirect(array($type, $Model->id));
+					$this->redirect(array($moduleName, $Model->id));
 				elseif (Configure::read())
 					trigger_error('Could not create an empty record.') and die;
 			}
@@ -76,7 +75,7 @@ class BackContentsController extends BackstageAppController
                 $this->data = $Model->findById($id);
         }
         
-		$this->set(compact('contentPlugin', 'modelName', 'fullModelName', 'type'));
+		$this->set(compact('contentPlugin', 'modelName', 'fullModelName', 'moduleName'));
     }
 	
 /** 
@@ -84,12 +83,16 @@ class BackContentsController extends BackstageAppController
  * a JSON, with {"sucess":true} if the status change has success.
  *
  * @access public
- * @param string $contentPlugin The plugin name in underscore format.
- * @param string $modelName The model name to be edited, in underscore format.
+ * @param string $moduleName Module name, configured on bootstrap.php
+ * @param string $id The id of the row to set a new status to.
+ * @param string $status The status that can be either 'draft' or 'published'.
  */
-	function set_publishing_status($type, $id, $status)
+	function set_publishing_status($moduleName = false, $id = false, $status = false)
 	{
-		if (empty($type) || !($config = Configure::read('jj.modules.'.$type)))
+		if (empty($moduleName) || empty($d) || empty($status))
+			$this->cakeError('error404');
+		
+		if (!($config = Configure::read('jj.modules.'.$moduleName)))
 			$this->cakeError('error404');
 		
 		list($contentPlugin, $modelName) = pluginSplit($config['model']);

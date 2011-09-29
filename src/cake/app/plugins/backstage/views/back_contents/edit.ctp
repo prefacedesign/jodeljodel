@@ -2,7 +2,7 @@
 
 echo $this->Bl->sbox(array(), array('size'=> array('M' => 12, 'g' => -1)));
 
-	$editing = 'Editing a '. $type;
+	$editing = 'Editing a '. $moduleName;
 	$h1Text = __d('backstage', $editing, true);
 	
 	if (isset($this->data[$modelName]['publishing_status']))
@@ -17,13 +17,13 @@ echo $this->Bl->sbox(array(), array('size'=> array('M' => 12, 'g' => -1)));
 		//@todo Publish option should only be available when the document is validated.
 		
 		$draftLink = $ajax->link(__d('backstage', 'publish', true), 
-			array('action' => 'set_publishing_status', $type, $this->data[$modelName]['id'],'published'),
+			array('action' => 'set_publishing_status', $moduleName, $this->data[$modelName]['id'],'published'),
 			array('complete' => "if(request.responseJSON.success) { $('edit_page_title_draft').hide(); $('edit_page_title_published').show()} else {alert('".__d('backstage','Could not change publishing status: communication error.',true)."')}"));
 		$draftText = sprintf(__d('backstage', 'Now, this document is hidden. You can %s.', true), $draftLink);
 		
 		$publishLink = $ajax->link(
 			__d('backstage', 'mark it as draft', true), 
-			array('action' => 'set_publishing_status', $type, $this->data[$modelName]['id'],'draft'),
+			array('action' => 'set_publishing_status', $moduleName, $this->data[$modelName]['id'],'draft'),
 			array('complete' => "if(request.responseJSON.success) { $('edit_page_title_published').hide(); $('edit_page_title_draft').show()} else {alert('".__d('backstage', 'Could not change publishing status: communication error.',true)."')}")
 		);
 		$publishText = sprintf(__d('backstage', 'Now, this document is published. You can %s.',true), $publishLink);
@@ -63,15 +63,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 		)
 	);
 	$dashboard_url = $this->Html->url(array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'index'));
-	$modules = Configure::read('jj.modules');
-	$standardUrl = array(
-		'controller' => (!empty($modules[Inflector::underscore($modelName)]['prefix']) ? $modules[Inflector::underscore($modelName)]['prefix'] . '_' : '') . Inflector::pluralize($modules[Inflector::underscore($modelName)]['plugin']),
-		'action' => 'view',
-		'plugin' => (!empty($modules[Inflector::underscore($modelName)]['plugin']) ? $modules[Inflector::underscore($modelName)]['plugin'] : '')
-	);
-	if (isset($modules[Inflector::underscore($modelName)]['viewUrl']))
-		$standardUrl = am($standardUrl, $modules[Inflector::underscore($modelName)]['viewUrl']);
-	$view_url = $this->Html->url(array('plugin' => $standardUrl['plugin'], 'controller' => $standardUrl['controller'], 'action' => $standardUrl['action'], $this->data[$modelName]['id']));
+	$view_url = $this->Html->url($this->Bl->moduleViewURL($moduleName, $this->data[$modelName]['id']));
 
 	echo $this->Popup->popup('notice',
 		array(

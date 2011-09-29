@@ -4,13 +4,51 @@ App::import('Helper','Typographer.TypeBricklayer');
 
 class BackstageTypeBricklayerHelper extends TypeBricklayerHelper
 {
-	/* Handles the Backstage links.
-	 *
-	 * @access public
-	 * @param $attr The HTML attributes.
-	 * @param $options Extra element related options. Here, we are treating the 'text' superclass: array('superclass' => 'text');
-	 * @return 
-	 */
+/**
+ * Constructs the URL for the view of an specifc module
+ * 
+ * @access public
+ * @param string $moduleName The module name 
+ * @param string $id The module ID
+ * @return array|false Return the URL in array form, if could contruct it. And false otherwise.
+ */
+	function moduleViewURL($moduleName, $id)
+	{
+		$curModule = Configure::read('jj.modules.'.$moduleName);
+		
+		if (empty($curModule))
+		{
+			trigger_error('BackstageTypeBricklayerHelper::moduleView() - Module type `'.$item['DashDashboardItem']['type'].'` not known.');
+			return false;
+		}
+
+		list($plugin, $model) = pluginSplit($curModule['model']);
+	
+		if (!isset($curModule['viewUrl']))
+			$curModule['viewUrl'] = array();
+		
+		if (!is_array($curModule['viewUrl']))
+		{
+			trigger_error('BackstageTypeBricklayerHelper::moduleView() - `viewUrl` configuration must be an array.');
+			return false;
+		}
+		
+		$plugin = Inflector::underscore($plugin);
+		return $curModule['viewUrl'] + array(
+			'plugin' => $plugin, 
+			'controller' => Inflector::pluralize($plugin),
+			'action' => 'view',
+			$id
+		);
+	}
+
+/* Handles the Backstage links.
+ *
+ * @access public
+ * @param $attr The HTML attributes.
+ * @param $options Extra element related options. Here, we are treating the 'text' superclass: array('superclass' => 'text');
+ * @return 
+ */
 	function sa($attr = array(), $options = array())
 	{
 		/*$new_attr = array('class' => 'text');

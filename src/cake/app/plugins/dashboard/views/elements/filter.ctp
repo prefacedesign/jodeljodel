@@ -142,29 +142,10 @@
 			}
 			
 			// Default view action
-			$curModule = Configure::read('jj.modules.'.$item['DashDashboardItem']['type']);
-			
-			if (empty($curModule))
-				trigger_error('Module type `'.$item['DashDashboardItem']['type'].'` not known.');
-
-			list($plugin, $model) = pluginSplit($curModule['model']);
-			
-			if (!isset($curModule['viewUrl']))
-				$curModule['viewUrl'] = array();
-			
-			$standardUrl = array();
-			if (!is_array($curModule['viewUrl']))
-				trigger_error('`viewUrl` configuration must be an array.');
-			else
-				$standardUrl = $curModule['viewUrl'];
-			
-			$standardUrl += array(
-				'plugin' => $plugin, 'controller' => Inflector::pluralize($plugin),
-				'action' => 'view', $item['DashDashboardItem']['dashable_id']
-			);
-			
 			if (in_array('see_on_page', $curSettings['actions']))
 			{
+				$standardUrl = $this->Bl->moduleViewURL($item['DashDashboardItem']['type'],$item['DashDashboardItem']['dashable_id']);
+				
 				if ($curSettings['edit_version'] != 'corktile')
 				{
 					$links .= $this->Bl->anchor(

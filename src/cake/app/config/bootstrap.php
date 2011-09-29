@@ -46,30 +46,22 @@
   */
  Configure::write('jj.modules', array(
 		'person' => array(
-			'plugin' => 'burocrata_user',
-			'prefix' => '',
 			'model' => 'BurocrataUser.Person',
 			'humanName' => __('MODULE Person human name', true),
 			'plugged' => array('dashboard','backstage') //the tools and functionality it plugs into.
 		),
 		'gallery' => array(
-			'plugin' => 'burocrata_user',
-			'prefix' => '',
 			'model' => 'BurocrataUser.Galery',
 			'viewUrl' => array('action' => 'example_of_view', 'controller' => 'example_of_controller'),  //the default action is "view", and the default controller is the {prefix} . '_' . pluralize({plugin})  -> used to the see on page in the dashboard
 			'humanName' => __('MODULE Gallery human name', true),
 			'plugged' => array('dashboard','backstage')
 		),
 		'text_cork' => array(
-			'plugin' => 'text_cork',
-			'prefix' => 'text',
-			'model' => 'TextTextCork',
+			'model' => 'TextCorkTextTextCork',
 			'humanName' => __('MODULE TextTextCork human name', true),
 			'plugged' => array('corktile')
 		),
 		'corktile' => array(
-			'plugin' => 'corktile',
-			'prefix' => 'cork',
 			'model' => 'CorkCorktile',
 			'humanName' => __('MODULE CorkCorkTile human name', true),
 			'plugged' => array('dashboard', 'backstage')
