@@ -89,7 +89,7 @@ class BackContentsController extends BackstageAppController
  */
 	function set_publishing_status($moduleName = false, $id = false, $status = false)
 	{
-		if (empty($moduleName) || empty($d) || empty($status))
+		if (empty($moduleName) || empty($id) || empty($status))
 			$this->cakeError('error404');
 		
 		if (!($config = Configure::read('jj.modules.'.$moduleName)))
