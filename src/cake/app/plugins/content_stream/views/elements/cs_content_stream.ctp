@@ -2,7 +2,7 @@
 
 if (empty($data) || !is_string($data))
 {
-	tigger_error('ContentStream - must passed the content stream ID');
+	trigger_error('ContentStream - must passed the content stream ID');
 }
 else
 {
