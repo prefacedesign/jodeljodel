@@ -45,6 +45,7 @@ switch ($type[0])
 					echo $this->Buro->submit(array(), array('cancel' => true));
 					
 				echo $this->Buro->eform();
+				echo $this->Bl->floatBreak();
 			break;
 			
 			case 'view':
