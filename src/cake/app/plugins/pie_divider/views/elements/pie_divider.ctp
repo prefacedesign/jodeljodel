@@ -16,6 +16,14 @@ switch ($type[0])
 						)
 					);
 					
+					echo $this->Buro->input(
+						array(),
+						array(
+							'fieldName' => 'type',
+							'type' => 'hidden'
+						)	
+					);
+					
 					echo $this->Bl->pDry(__d('content_stream', 'PieDivider instructions', true));
 					
 					echo $this->Buro->submit(array(), array('cancel' => true));
