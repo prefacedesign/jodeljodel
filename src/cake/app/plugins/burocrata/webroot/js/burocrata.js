@@ -934,7 +934,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			prevMenu = this.menus[order];
 		
 		this.menus.each(function(order, menu) {
-			if (menu.order >= order)
+			if (Number(menu.order) >= order)
 				menu.setOrder(Number(menu.order)+1);
 		}.curry(order));
 		
@@ -968,7 +968,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 	reorderMenuList: function()
 	{
 		return this.menus = this.menus.sortBy(function(menu) {
-			return menu.order;
+			return Number(menu.order);
 		});
 	},
 	
