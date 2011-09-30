@@ -134,7 +134,7 @@ class CsContentStreamHolderBehavior extends ModelBehavior
 		{
 			$dbo = $Model->getDataSource();
 			
-			if (!$dbo->__transactionStarted)
+			if (!$dbo->_transactionStarted)
 			{
 				$this->transactionContentStream = true;
 				$dbo->begin($Model);
