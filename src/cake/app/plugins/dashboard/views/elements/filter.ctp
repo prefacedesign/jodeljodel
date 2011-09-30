@@ -129,9 +129,9 @@
 				$links .= $this->Bl->anchor(
 					array(
 						'class' => 'link_button',
-						'onclick' => "deleteID = '". $delete_url . "'; showPopup('delete_alert_confirmation');",
+						'onclick' => "deleteID = '". $delete_url . "'; showPopup('delete_alert_confirmation'); event.returnValue = false; return false;",
 					), 
-					array('url' => "#"),
+					array('url' => ''),
 					__d('dashboard','Delete content', true)
 				);
 			}

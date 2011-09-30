@@ -2,7 +2,18 @@
 
 class DashboardAppController extends AppController 
 {
+/**
+ * List of components
+ * 
+ * @access public
+ */
 	var $components = array('Typographer.TypeLayoutSchemePicker');
+
+/**
+ * List of helpers
+ * 
+ * @access public
+ */
 	var $helpers = array(
 		'Typographer.TypeDecorator' => array(
 			'name' => 'Decorator',
@@ -24,8 +35,32 @@ class DashboardAppController extends AppController
 		),
 		'Popup.Popup'
 	);
+
+/**
+ * Layout used.
+ * 
+ * @access 
+ */
 	var $layout = 'backstage';
-	
+
+/**
+ * Used to overwrite any configuration of StatusBehavior.
+ * 
+ * @access public
+ */
+	function beforeFilter()
+	{
+		parent::beforeFilter();
+		StatusBehavior::setGlobalActiveStatuses(array(
+			'publishing_status' => array('active' => array('published', 'draft'), 'overwrite' => true, 'mergeWithCurrentActiveStatuses' => false)
+		));
+	}
+
+/**
+ * Used to pick witch typographer layout to use and language.
+ * 
+ * @access public
+ */
 	function beforeRender()
 	{
 		parent::beforeRender();
@@ -34,5 +69,3 @@ class DashboardAppController extends AppController
 	}
 
 }
-
-?>
