@@ -30,6 +30,14 @@ class CsContentStreamHolderBehavior extends ModelBehavior
 	var $settings;
 
 /**
+ * This var is used to finish a transaction process when creating a new ContentStream
+ * 
+ * @var boolean
+ * @access protected
+ */
+	protected $transactionContentStream = false;
+
+/**
  * Invoke the normalization method and populates the $settings property.
  * 
  * After populates the settings, with all used values (with default values when not set),
@@ -125,7 +133,13 @@ class CsContentStreamHolderBehavior extends ModelBehavior
 		if (empty($Model->data[$Model->alias][$Model->primaryKey]))
 		{
 			$dbo = $Model->getDataSource();
-			$dbo->begin($Model);
+			
+			if (!$dbo->__transactionStarted)
+			{
+				$this->transactionContentStream = true;
+				$dbo->begin($Model);
+			}
+			
 			foreach ($this->settings[$Model->alias]['streams'] as $fk => $stream)
 				if ($Model->{$stream['assocName']}->createEmpty($stream['type']))
 					$Model->data[$Model->alias][$fk] = $Model->{$stream['assocName']}->id;
@@ -145,11 +159,12 @@ class CsContentStreamHolderBehavior extends ModelBehavior
  */
 	function afterSave($Model, $created)
 	{
-		$dbo = $Model->getDataSource();
-		if ($dbo->_transactionStarted)
+		if ($this->transactionContentStream)
 		{
+			$dbo = $Model->getDataSource();
 			if ($created) $dbo->commit($Model);
 			else		  $dbo->rollback($Model);
+			$this->transactionContentStream = false;
 		}
 	}
 }
