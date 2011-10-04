@@ -7,6 +7,7 @@ class SectSectionHandlerComponent extends Object {
 	var $sectionMap = array();
 	var $sections = array();
 	var $thisSection = null;
+	var $breadcrumb = array();
 	
 	/** Gets the controller action params, retrieves the configuration
 	 *  and fetchs the current section and the current pageTitleArray.
@@ -25,6 +26,7 @@ class SectSectionHandlerComponent extends Object {
 		$this->_setOurLocation($this->controller->params);		
 		$this->_mountPageTitleArray();		
 		$this->_populateThisSectionOptions();
+		$this->_createBreadcrumb();
 	}
 	
 	/**
@@ -78,7 +80,7 @@ class SectSectionHandlerComponent extends Object {
 	{
 		$this->pageTitleArray[] = $title;
 	}
-	
+
 	/** Uses the 'sections' array to set the pageTitleArray,
 	 *  according to OurLocation.
 	 * 
@@ -107,14 +109,15 @@ class SectSectionHandlerComponent extends Object {
 			}
 		}
 	}
-	
-	/** Uses the pageTitle array to get the PageTitle .
-	 * 
-	 * @return string With the pageTitle.
-	 */
+
+/** 
+ * Uses the pageTitle array to get the PageTitle.
+ * 
+ * @access protected
+ * @return string With the pageTitle.
+ */
 	function _getPageTitle()
 	{
-		
 		if (empty($this->pageTitleArray))
 			return '';
 		
@@ -127,10 +130,12 @@ class SectSectionHandlerComponent extends Object {
 		return $title;
 	}
 	
-	/** Sets $this->_thisSection with the current section options()
-	 * 
-	 * @return string With the pageTitle.
-	 */
+/** 
+ * Sets $this->_thisSection with the current section options()
+ * 
+ * @access protected
+ * @return string With the pageTitle.
+ */
 	function _populateThisSectionOptions()
 	{
 		$section =& $this->sections;
@@ -159,15 +164,15 @@ class SectSectionHandlerComponent extends Object {
 			$this->thisSection = null;
 	}
 	
-	/**
-	 * Sets the ourLocationArray, using the action parameters and the sectionMap.
-	 * If one sets the $forceLocation, it will be used instead of the calculated
-	 * location.
-	 * 
-	 * @param array $actionInfo Cake's action parameters.
-	 * @param array $forcedLocation Sets to the given location, instead of 
-	 * 		calculating it.
-	 */
+/**
+ * Sets the ourLocationArray, using the action parameters and the sectionMap.
+ * If one sets the $forceLocation, it will be used instead of the calculated
+ * location.
+ * 
+ * @param array $actionInfo Cake's action parameters.
+ * @param array $forcedLocation Sets to the given location, instead of 
+ * 		calculating it.
+ */
 	function _setOurLocation($actionInfo, $forcedLocation = null)
 	{
 		if ($forcedLocation !== null)
@@ -191,14 +196,14 @@ class SectSectionHandlerComponent extends Object {
 		}
 	}
 	
-	/**
-	 * Merges $over on $base, but does not include keys that aren't in $over.
-	 * The values that will merge are those that are set to null.
-	 *
-	 * @param array $base Base location.
-	 * @param array $over New location (if one value is null uses the base's equivalent position)
-	 */
-	
+/**
+ * Merges $over on $base, but does not include keys that aren't in $over.
+ * The values that will merge are those that are set to null.
+ *
+ * @access protected
+ * @param array $base Base location.
+ * @param array $over New location (if one value is null uses the base's equivalent position)
+ */
 	function _joinLocations($base, $over)
 	{
 		foreach($over as $k => $overItem)
@@ -207,20 +212,19 @@ class SectSectionHandlerComponent extends Object {
 				$over[$k] = $base[$k];
 		}
 		
-	
 		return $over;
 	}
-	
-	/**
-	 * Sets the ourLocationArray, using the action parameters and the sectionMap.
-	 * If one sets the $forceLocation, it will be used instead of the calculated
-	 * location.
-	 * 
-	 * @param array $actionInfo Cake's action parameters.
-	 * @param array $forcedLocation Sets to the given location, instead of 
-	 * 		calculating it.
-	 */
-	
+
+/**
+ * Sets the ourLocationArray, using the action parameters and the sectionMap.
+ * If one sets the $forceLocation, it will be used instead of the calculated
+ * location.
+ * 
+ * @access protected
+ * @param array $actionInfo Cake's action parameters.
+ * @param array $subSectionMap
+ * @return 
+ */
 	function _findTheActionsSection($actionInfo, &$subSectionMap)
 	{
 		foreach ($subSectionMap as $k => $sectionData)
@@ -230,14 +234,42 @@ class SectSectionHandlerComponent extends Object {
 		}
 		return false;
 	}
-	
-	/**
-	 * Sees whether the action params fits the matching rule.
-	 * 
-	 * @param array $actionInfo Cake's action parameters.
-	 * @param array $rules How should it be to match?
-	 */
-	
+
+/**
+ * Create an array with all nested section names and stores it on $this->breadcrumb
+ * 
+ * @access protected
+ * @return void
+ */
+	function _createBreadcrumb()
+	{
+		$breadcrumb = array();
+		$currentSectionContext =& $this->sections;
+		
+		foreach($this->ourLocation as $section)
+		{
+			if (isset($currentSectionContext[$section]))
+			{
+				if (isset($currentSectionContext[$section]['humanName']))
+					$breadcrumb[] = $currentSectionContext[$section]['humanName'];
+				
+				if (isset($currentSectionContext[$section]['subSections']))
+					$currentSectionContext =& $currentSectionContext[$section]['subSections'];
+				else
+					break;
+			}
+		}
+		$this->breadcrumb = $breadcrumb;
+	}
+
+/**
+ * Checks whether the action params fits the matching rule.
+ * 
+ * @access protected
+ * @param array $actionInfo Cake's action parameters.
+ * @param array $rules How should it be to match?
+ * @return boolean Returns true if matches, and false, otherwise.
+ */
 	function _matchActionData($actionInfo, $rules)
 	{
 		foreach($rules as $type => $rule)
@@ -250,20 +282,28 @@ class SectSectionHandlerComponent extends Object {
 		return true;
 	}
 	
-	/**
-	 * Send to the view, information about where we are now and sets the pageTitle.
-	 */
+/**
+ * Send to the view, information about where we are now and sets the pageTitle.
+ *
+ * @access protected
+ */
 	function _setTheViewVars()
 	{
 		$this->controller->set('title_for_layout', $this->_getPageTitle());
 		$this->controller->set('ourLocation', $this->ourLocation);
+		$this->controller->set('breadcrumb', $this->breadcrumb);
 		$this->controller->set('pageSections', $this->sections);
 		$this->controller->set('sectionInfo', $this->thisSection);
 	}
 	
-	/**
-	 * Fills the blanks in the sections' configurations.
-	 */
+/**
+ * Fills the blanks in the sections' configurations, recusively.
+ *
+ * @access protected
+ * @param array $sectionsContext
+ * @param int $depth
+ * @return void
+ */
 	function _insertDefaultsIntoSections(&$sectionsContext = null, $depth = 0)
 	{ 
 		if ($sectionsContext == null)
