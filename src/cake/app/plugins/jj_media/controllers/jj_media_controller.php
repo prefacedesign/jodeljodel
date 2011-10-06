@@ -137,6 +137,18 @@ class JjMediaController extends JjMediaAppController {
 				
 				$path .= $file_data[$model_alias]['dirname'] . DS;
 				
+				
+				// Check (via header) if the client already have an copy on cache
+				$assetFilemTime = filemtime($path . $id);
+				$eTag = Security::hash( $assetFilemTime . filesize($path . $id) );
+				
+				if (env('HTTP_IF_NONE_MATCH') && env('HTTP_IF_NONE_MATCH') == $eTag)
+				{
+					header("HTTP/1.1 304 Not Modified");
+					die;
+				}
+				header("Etag: " . $eTag);
+				
 				$this->set(compact('id', 'name', 'mimeType', 'download', 'path', 'extension', 'cache', 'modified'));
 			}
 		}
