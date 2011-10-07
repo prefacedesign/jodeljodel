@@ -8,9 +8,9 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `cs_content_streams` (
   `id` VARCHAR(36) NOT NULL ,
-  `type` VARCHAR(255) NULL ,
-  `created` DATETIME NULL ,
-  `modified` DATETIME NULL ,
+  `type` VARCHAR(255) NULL DEFAULT NULL ,
+  `created` DATETIME NULL DEFAULT NULL ,
+  `modified` DATETIME NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
@@ -21,9 +21,9 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `cs_items` (
   `id` VARCHAR(36) NOT NULL ,
   `cs_content_stream_id` VARCHAR(36) NOT NULL ,
-  `order` INT NULL ,
-  `foreign_key` VARCHAR(36) NULL ,
-  `type` VARCHAR(45) NULL ,
+  `order` INT NULL DEFAULT NULL ,
+  `foreign_key` VARCHAR(36) NULL DEFAULT NULL ,
+  `type` VARCHAR(45) NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_cs_items_cs_content_streams1` (`cs_content_stream_id` ASC) ,
   CONSTRAINT `fk_cs_items_cs_content_streams1`
@@ -32,6 +32,25 @@ CREATE  TABLE IF NOT EXISTS `cs_items` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cs_corks`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `cs_corks` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `cs_content_stream_id` VARCHAR(36) NOT NULL ,
+  `created` DATETIME NULL ,
+  `modified` DATETIME NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_cs_corks_cs_content_streams1` (`cs_content_stream_id` ASC) ,
+  CONSTRAINT `fk_cs_corks_cs_content_streams1`
+    FOREIGN KEY (`cs_content_stream_id` )
+    REFERENCES `cs_content_streams` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
