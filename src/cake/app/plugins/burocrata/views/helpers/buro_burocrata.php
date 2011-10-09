@@ -1869,6 +1869,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		}
 		
 		// Controls + Error message
+		$out .= $this->input(array('value' => ''), array('fieldName' => $assocName.'.'.$assocName, 'type' => 'hidden'));
 		$out .= $this->Bl->sdiv(array('class' => 'controls'));
 			$out .= $this->Bl->div(array('id' => $items));
 			$out .= $this->Bl->br();
