@@ -57,7 +57,7 @@
 			'plugged' => array('dashboard','backstage')
 		),
 		'text_cork' => array(
-			'model' => 'TextCorkTextTextCork',
+			'model' => 'TextCork.TextTextCork',
 			'humanName' => __('MODULE TextTextCork human name', true),
 			'plugged' => array('corktile')
 		),
