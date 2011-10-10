@@ -2,6 +2,10 @@
 
 switch ($type[0])
 {
+	case 'full':
+		echo $this->Bl->hr();
+	break;
+	
 	case 'buro':
 		switch ($type[1])
 		{

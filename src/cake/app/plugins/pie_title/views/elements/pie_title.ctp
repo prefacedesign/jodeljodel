@@ -2,6 +2,18 @@
 
 switch ($type[0])
 {
+	case 'full':
+		switch ($data['PieTitle']['level'])
+		{
+			case 1:
+				echo $this->Bl->h3Dry($data['PieTitle']['title']);
+			break;
+			case 2:
+				echo $this->Bl->h4Dry($data['PieTitle']['title']);
+			break;
+		}
+	break;
+	
 	case 'buro':
 		switch ($type[1])
 		{

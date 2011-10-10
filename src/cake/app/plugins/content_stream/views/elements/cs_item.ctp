@@ -33,10 +33,12 @@
 		$data_bkp = $this->data;
 		$this->data = $module_data;
 		
+		// Some hardcoded logic... ugly, but effective!
 		if ($type[0] == 'buro')
 			$type[2] = 'content_stream';
-		else
+		elseif ($type[1] != 'cork')
 			$type[] = 'content_stream';
+		
 		echo $this->Jodel->insertModule($streams[$content_type]['model'], $type, $module_data);
 		
 		$this->data = $data_bkp;

@@ -2,6 +2,29 @@
 
 switch ($type[0])
 {
+	case 'full':
+		echo $this->Bl->anchor(
+			array(),
+			array(
+				'url' => $this->Bl->fileUrl($data['SfilStoredFile']['id'], false, true)
+			),
+			$data['SfilStoredFile']['original_filename']
+		);
+		
+		// File size
+		$labels = array('', 'K', 'M', 'G');
+		$size = $data['SfilStoredFile']['size'];
+		$i = 0;
+		while ($size > 1000)
+		{
+			$size /= 1024;
+			$i++;
+		}
+		
+		$size = round($size, 3-log($size, 10)) . ' ' . $labels[$i] . 'B';
+		echo $this->Bl->spanDry($size);
+	break;
+	
 	case 'buro':
 		switch ($type[1])
 		{

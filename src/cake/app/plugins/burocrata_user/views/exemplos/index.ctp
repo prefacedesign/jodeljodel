@@ -1,10 +1,24 @@
 <?php
 echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 	
+	echo $this->Bl->pDry('First corktile:');
 	echo $this->Cork->tile(array(), array(
 		'key' => 'content_stream_test',
 		'type' => 'cs_cork',
-		'title' => 'Esse é um título'
+		'title' => 'Esse é um título',
+		'options' => array(
+			'type' => 'tipo_a', // type of module 
+			'cs_type' => 'document' // type of content stream
+		)
+	));
+	
+	echo $this->Bl->br();
+	echo $this->Bl->br();
+	echo $this->Bl->pDry('Second corktile:');
+	echo $this->Cork->tile(array(), array(
+		'key' => 'content_stream_test_2',
+		'type' => 'cs_cork',
+		'title' => 'Esse é um título',
 	));
 	
 	// echo $this->Jodel->insertModule('BurocrataUser.Galery', array('buro', 'form'));

@@ -2,6 +2,18 @@
 
 switch ($type[0])
 {
+	case 'full':
+		switch ($type[1])
+		{
+			case 'cork':
+				if (!empty($data['PieText']['processed_text']))
+					echo $data['PieText']['processed_text'];
+				else
+					echo $this->Bl->paraDry(explode("\n", $data['PieText']['text']));
+			break;
+		}
+	break;
+	
 	case 'buro':
 		switch ($type[1])
 		{
