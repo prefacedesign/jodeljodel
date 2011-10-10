@@ -1313,7 +1313,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		// Label
 		if(empty($input_options['label']))
-			$input_options['label'] = Inflector::humanize($streams);
+			$input_options['label'] = Inflector::humanize($settings['assocName']);
 		
 		$out = $this->Bl->h6(array(),array('escape' => false), $input_options['label']);
 		unset($input_options['label']);
