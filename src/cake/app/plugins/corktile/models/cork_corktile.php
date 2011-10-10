@@ -172,6 +172,10 @@ class CorkCorktile extends CorktileAppModel
 		if ($data == null)
 			return null;
 		
+		$info = '';
+		if (isset($data['CorkCorktile']['location'][0]))
+			$info = 'Location: ' . substr($data['CorkCorktile']['location'][0], 0, 20) . '...';
+		
 		$dashdata = array(
 			'dashable_id'    => $data['CorkCorktile']['id'],
 			'dashable_model' => $this->name,
@@ -180,7 +184,7 @@ class CorkCorktile extends CorktileAppModel
 			'created'        => $data['CorkCorktile']['created'],
 			'modified'       => $data['CorkCorktile']['modified'], 
 			'name'           => $data['CorkCorktile']['title'],
-			'info'           => 'Location: ' . substr($data['CorkCorktile']['location'][0], 0, 20) . '...',
+			'info'           => $info,
 			'idiom'          => isset($data[$Model->alias]['languages'])? $data[$Model->alias]['languages'] : array()
 		);
 		

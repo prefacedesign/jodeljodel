@@ -9,9 +9,9 @@
 		echo $this->Bl->ediv();
 		echo $this->Bl->sdiv();
 			echo  $this->Bl->sboxContainer(array(), array('size' => array('M' => 5, 'g' => -1)));
+				$linkList = array();
 				foreach($this->data['CorkCorktile']['location'] as $local)
 				{
-					
 					if (isset($modules[$local]['humanName']))
 						$linkList[] = array('name' => __($modules[$local]['humanName'], true), 'url' => $modules[$local]['url']);
 					else
@@ -21,7 +21,6 @@
 					}
 					$exLocal = $local;
 				}
-				//	echo $this->Bl->span(array(), array(), __d('corktile', 'Location in the site'));
 				echo $this->Bl->anchorList(array(),array('separator' => ' &rarr; ', 'lastSeparator' => ' &rarr; ', 'linkList' => $linkList));
 			echo $this->Bl->eboxContainer();
 		echo $this->Bl->ediv();

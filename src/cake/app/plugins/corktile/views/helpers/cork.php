@@ -54,6 +54,10 @@ class CorkHelper extends AppHelper
 		
 		//@todo: Probably cache should emcompass all this: till the bottom todo
 
+		$View = ClassRegistry::getObject('view');
+		if (!isset($options['location']))
+			$options['location'] = $View->getVar('ourLocation');
+		
 		$CorkCorktile = & ClassRegistry::init('Corktile.CorkCorktile');
 		$corkData = $CorkCorktile->getData($options); //This one handles all data logic.
 
