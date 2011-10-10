@@ -44,4 +44,5 @@ Configure::write('ContentStream.types', array(
 	'gallery' => array('pie_image'),
 	'folder' => array('pie_file'),
 	'article' => array('pie_text', 'pie_image'),
+	'cork' => array('pie_text', 'pie_image', 'pie_title', 'pie_divider'),
 ));

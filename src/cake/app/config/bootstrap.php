@@ -61,6 +61,11 @@
 			'humanName' => __('MODULE TextTextCork human name', true),
 			'plugged' => array('corktile')
 		),
+		'cs_cork' => array(
+			'model' => 'ContentStream.CsCork',
+			'humanName' => __('MODULE CsCork human name', true),
+			'plugged' => array('corktile')
+		),
 		'corktile' => array(
 			'model' => 'CorkCorktile',
 			'humanName' => __('MODULE CorkCorkTile human name', true),

@@ -1,7 +1,13 @@
 <?php
 echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 	
-	echo $this->Jodel->insertModule('BurocrataUser.Galery', array('buro', 'form'));
+	echo $this->Cork->tile(array(), array(
+		'key' => 'content_stream_test',
+		'type' => 'cs_cork',
+		'title' => 'Esse é um título'
+	));
+	
+	// echo $this->Jodel->insertModule('BurocrataUser.Galery', array('buro', 'form'));
 
 echo $this->Bl->ebox();
 

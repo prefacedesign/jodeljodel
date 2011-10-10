@@ -22,7 +22,7 @@ class BurocrataUserAppController extends AppController
 		'Burocrata.*BuroBurocrata' => array(
 			'name' => 'Buro'
 		),
-		'Popup.Popup'
+		'Popup.Popup', 'Corktile.Cork'
 	);
 	
 	var $layout = 'backstage';
