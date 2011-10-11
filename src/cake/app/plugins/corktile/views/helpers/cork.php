@@ -54,7 +54,7 @@ class CorkHelper extends AppHelper
 		
 		//@todo: Probably cache should emcompass all this: till the bottom todo
 
-		$View = ClassRegistry::getObject('view');
+		$View =& ClassRegistry::getObject('view');
 		if (!isset($options['location']))
 			$options['location'] = $View->getVar('ourLocation');
 		
@@ -67,7 +67,6 @@ class CorkHelper extends AppHelper
 
 		$t = $this->Bl->sdiv($htmlAttributes);
 		
-		$View =& ClassRegistry::getObject('view');
 		$t .=  $View->element(Inflector::underscore($model_name), array(
 				'plugin' => Inflector::underscore($plugin_name),
 				'type' => array('cork'),
