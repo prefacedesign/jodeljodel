@@ -40,6 +40,7 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `cs_corks` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `cs_content_stream_id` VARCHAR(36) NOT NULL ,
+  `type` VARCHAR(25) NULL ,
   `created` DATETIME NULL ,
   `modified` DATETIME NULL ,
   PRIMARY KEY (`id`) ,
