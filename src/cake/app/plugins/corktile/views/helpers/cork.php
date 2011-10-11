@@ -44,7 +44,13 @@ class CorkHelper extends AppHelper
 	 */
 	function tile ($htmlAttributes = array(), $options = array())
 	{
-		if (!isset($options['key']) && !isset($options['type']))
+		$options += array(
+			'key' => false,
+			'type' => false,
+			'options' => array()
+		);
+		
+		if (empty($options['key']) && empty($options['type']))
 		{
 			trigger_error("CorkHelper::tile One must at least specify 'key' and 'type'"); 
 			return null;
@@ -60,7 +66,8 @@ class CorkHelper extends AppHelper
 		
 		$CorkCorktile = & ClassRegistry::init('Corktile.CorkCorktile');
 		$corkData = $CorkCorktile->getData($options); //This one handles all data logic.
-
+		$options['options'] += $corkData[$CorkCorktile->alias]['options'];
+		
 		$typeConfig = Configure::read('jj.modules.' . $options['type']);
 		list($plugin_name, $model_name) = pluginSplit($typeConfig['model']);
 		
