@@ -167,4 +167,18 @@ class CsContentStreamHolderBehavior extends ModelBehavior
 			$this->transactionContentStream = false;
 		}
 	}
+
+/**
+ * afterDelete
+ * 
+ * Used to delete any content_stream register.
+ * 
+ * @access 
+ */
+	function afterDelete($Model)
+	{
+		foreach ($this->settings[$Model->alias]['streams'] as $fk => $stream)
+			if (!empty($Model->data[$Model->alias][$fk]))
+				$Model->{$stream['assocName']}->delete($Model->data[$Model->alias][$fk]);
+	}
 }

@@ -222,8 +222,31 @@ class CorkCorktile extends CorktileAppModel
 
 		return $result === false ? false : true;
 	}
-		
-	
-}
 
-?>
+/**
+ * If the corktile needs to be deleted, it deletes the related content, before.
+ * 
+ * @access public
+ * @param string $id
+ * @return boolean
+ */
+	function delete($id)
+	{
+		$this->id = $id;
+		$this->read();
+		return $this->deleteRelatedContent() && parent::delete();
+	}
+
+/**
+ * Deletes the related content
+ * 
+ * @access protected
+ * @return boolean
+ */
+	protected function deleteRelatedContent()
+	{
+		$typeConfig = Configure::read('jj.modules.' . $this->data[$this->alias]['type']);
+		$Model =& ClassRegistry::init($typeConfig['model']);
+		return $Model->delete($this->data[$this->alias]['content_id']);
+	}
+}
