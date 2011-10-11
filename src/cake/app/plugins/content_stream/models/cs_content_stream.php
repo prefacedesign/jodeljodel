@@ -35,7 +35,8 @@ class CsContentStream extends ContentStreamAppModel
 	public $hasMany = array(
 		'CsItem' => array(
 			'className' => 'ContentStream.CsItem',
-			'order' => 'CsItem.order'
+			'order' => 'CsItem.order',
+			'dependent' => true
 		)
 	);
 

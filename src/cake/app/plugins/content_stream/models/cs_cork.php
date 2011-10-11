@@ -101,8 +101,9 @@ class CsCork extends ContentStreamAppModel
  */
 	protected function attachContentStream($cs_type)
 	{
-		$this->Behaviors->attach('ContentStream.CsContentStreamHolder', array(
-			'streams' => array('cs_content_stream_id' => $cs_type)
-		));
+		if (!$this->Behaviors->attached('CsContentStreamHolder'))
+			$this->Behaviors->attach('ContentStream.CsContentStreamHolder', array(
+				'streams' => array('cs_content_stream_id' => $cs_type)
+			));
 	}
 }
