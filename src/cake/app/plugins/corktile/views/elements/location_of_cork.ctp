@@ -1,6 +1,4 @@
 <?php
-	$modules = Configure::read('PageSections.sections');
-	
 	echo  $this->Bl->sboxContainer(array(), array('size' => array('M' => 7, 'g' => -1)));
 		echo $this->Bl->sdiv();
 			echo  $this->Bl->sbox(array('class' => 'subtitle'), array('size' => array('M' => 2, 'g' => -1)));
@@ -9,19 +7,19 @@
 		echo $this->Bl->ediv();
 		echo $this->Bl->sdiv();
 			echo  $this->Bl->sboxContainer(array(), array('size' => array('M' => 5, 'g' => -1)));
+				
 				$linkList = array();
+				$moduleContext = &$pageSections;
 				foreach($this->data['CorkCorktile']['location'] as $local)
 				{
-					if (isset($modules[$local]['humanName']))
-						$linkList[] = array('name' => __($modules[$local]['humanName'], true), 'url' => $modules[$local]['url']);
-					else
-					{
-						$mod = $modules[$exLocal]['subSections'];
-						$linkList[] = array('name' => __($mod[$local]['humanName'], true), 'url' => $mod[$local]['url']);
-					}
-					$exLocal = $local;
+					if (isset($moduleContext[$local]['humanName']))
+						$linkList[] = array('name' => __($moduleContext[$local]['humanName'], true), 'url' => $moduleContext[$local]['url']);
+					
+					if (isset($moduleContext[$local]['subSections']))
+						$moduleContext = &$moduleContext[$local]['subSections'];
 				}
 				echo $this->Bl->anchorList(array(),array('separator' => ' &rarr; ', 'lastSeparator' => ' &rarr; ', 'linkList' => $linkList));
+				
 			echo $this->Bl->eboxContainer();
 		echo $this->Bl->ediv();
 		echo $this->Bl->floatBreak();
