@@ -258,13 +258,20 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 		
 	echo $this->Bl->eboxContainer();
 	
+	$ajax_request = $ajax->remoteFunction(array(
+		'url' => array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'after_delete'),
+		'update' => 'dashboard_table',
+		'loading' => "$('dashboard_table').setLoading();",
+		'complete' => "$('dashboard_table').unsetLoading();"
+	));
+	
 	// The popups called after success or failure of "Mark as draft" or "Publish"
 	echo $this->Popup->popup('draft_alert_ok', array(
 		'type' => 'notice',
 		'title' => __d('dashboard','Notice of marking as draft success - TITLE',true),
 		'content' => __d('dashboard','Notice of marking as draft success - TEXT',true),
 		'actions' => array('ok' => 'OK'),
-		'callback' => "if (action == 'ok') window.location.reload();"
+		'callback' => "if (action == 'ok') { ".$ajax_request." }"
 	));
 			
 	echo $this->Popup->popup('draft_alert_failure', array(
@@ -279,7 +286,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 		'title' => __d('dashboard','Notice of publishing success - TITLE',true),
 		'content' => __d('dashboard','Notice of publishing success - TEXT',true),
 		'actions' => array('ok' => 'OK'),
-		'callback' => "if (action == 'ok') window.location.reload();"
+		'callback' => "if (action == 'ok') { ".$ajax_request." }"
 	));
 			
 	echo $this->Popup->popup('publish_alert_failure', array(
@@ -312,13 +319,6 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 					}
 				});
 			}"
-	));
-	
-	$ajax_request = $ajax->remoteFunction(array(
-		'url' => array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'after_delete'),
-		'update' => 'dashboard_table',
-		'loading' => "$('dashboard_table').setLoading();",
-		'complete' => "$('dashboard_table').unsetLoading();"
 	));
 	
 	echo $this->Popup->popup('delete_alert_ok', array(
