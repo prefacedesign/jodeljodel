@@ -82,9 +82,7 @@ class CorkCorktile extends CorktileAppModel
 			$defaultContent = isset($options['defaultContent']) ? $options['defaultContent'] : array();
 			
 			$Model->create();
-			$contentId = $Model->saveCorkContent($defaultContent, $options, false);
-		
-			if($contentId === false)
+			if(!$Model->saveCorkContent($defaultContent, $options, false))
 			{
 				trigger_error(__('CorkCorktile Model: Could not save the CorkContent',true));
 				return false;
@@ -93,11 +91,11 @@ class CorkCorktile extends CorktileAppModel
 			$data = array('CorkCorktile' => array(
 				'id' => $options['key'],
 				'type' => $options['type'],
-				'content_id' => $contentId,
+				'content_id' => $Model->id,
 				'title' => isset($options['title']) ? $options['title'] : Inflector::humanize($options['key']),
 				'instructions' => isset($options['editorsRecommendations']) ? $options['editorsRecommendations'] : '',
 				'location' => isset($options['location']) ? $options['location'] : '',
-				'options' => isset($options['options']) ? $options['options'] : '' 
+				'options' => $options['options']
 			));
 			
 			if ($this->save($data) === false)
@@ -105,10 +103,8 @@ class CorkCorktile extends CorktileAppModel
 				trigger_error(__('CorkCorktile Model: Could not save the Cork meta data',true));
 				return false;
 			}
-			$corktileData['CorkCorktile']['content_id'] = $contentId;
 		}
-		
-		if ($options['replaceOptions'])
+		elseif ($options['replaceOptions'])
 		{
 			//@todo Check if something changed, and do something about it.
 			
@@ -118,18 +114,20 @@ class CorkCorktile extends CorktileAppModel
 				'content_id' => $corktileData['CorkCorktile']['content_id'],
 				'title' => isset($options['title']) ? $options['title'] : Inflector::humanize($options['key']),
 				'location' => isset($options['location']) ? $options['location'] : '',
-				'options' => isset($options['options']) ? $options['options'] : '' //@todo Make this a behavior
+				'options' => $options['options'] //@todo Make this a behavior
 			));
 			
-			if (($corktileData = $this->save($data)) === false)
+			if (!$this->save($data))
 			{
 				trigger_error(__('CorkCorktile Model: Could not update the Cork meta data',true));
 				return false;
 			}
-			
 		}
 		
-		return am($corktileData, $Model->getCorkContent($corktileData['CorkCorktile']['content_id'])); //Must always retrieve because the Model may have proccessed the data;
+		$corktileData = $this->read();
+		//Must always retrieve because the Model may have proccessed the data;
+		$contentData = $Model->getCorkContent($corktileData[$this->alias]['content_id']);
+		return $corktileData+$contentData;
 	}
 
 /** 
