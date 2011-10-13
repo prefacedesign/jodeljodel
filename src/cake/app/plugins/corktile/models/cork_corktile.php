@@ -77,7 +77,9 @@ class CorkCorktile extends CorktileAppModel
 		
 		$Model =& ClassRegistry::init($typeConfig['model']);
 		$corktileData = $this->find('first', array('conditions' => array('id' => $options['key'], 'type' => $options['type'])));
-		if (empty($corktileData))
+		$newCork = empty($corktileData);
+		
+		if ($newCork)
 		{
 			$defaultContent = isset($options['defaultContent']) ? $options['defaultContent'] : array();
 			
@@ -124,7 +126,9 @@ class CorkCorktile extends CorktileAppModel
 			}
 		}
 		
-		$corktileData = $this->read();
+		if ($newCork || $options['replaceOptions'])
+			$corktileData = $this->read();
+		
 		//Must always retrieve because the Model may have proccessed the data;
 		$contentData = $Model->getCorkContent($corktileData[$this->alias]['content_id']);
 		return $corktileData+$contentData;
