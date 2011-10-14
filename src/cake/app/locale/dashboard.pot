@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-09-26 16:23+0000\n"
+"POT-Creation-Date: 2011-10-14 21:17+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -34,83 +34,87 @@ msgstr ""
 msgid "Open item list"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:109
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:98
+msgid "or search for a content previously inserted"
+msgstr ""
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:127
 msgid "Type"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:164;230
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:182;248
 msgid "Show All"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:191
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:209
 msgid "Status"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:202
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:220
 msgid "Dashboard status: "
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:264
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:289
 msgid "Notice of marking as draft success - TITLE"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:265
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:290
 msgid "Notice of marking as draft success - TEXT"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:272
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:297
 msgid "Notice of marking as draft failure - TITLE"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:273
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:298
 msgid "Notice of marking as draft failure - TEXT"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:279
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:304
 msgid "Notice of publishing success - TITLE"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:280
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:305
 msgid "Notice of publishing success - TEXT"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:287
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:312
 msgid "Notice of publishing failure - TITLE"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:288
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:313
 msgid "Notice of publishing failure - TEXT"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:295
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:320
 msgid "Confirm the delete - TITLE"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:296
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:321
 msgid "Confirm the delete - TEXT"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:297
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:322
 msgid "DELETE - YES"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:297
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:322
 msgid "DELETE - NO"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:326
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:344
 msgid "Notice of delete success - TITLE"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:327
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:345
 msgid "Notice of delete success - TEXT"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:335
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:353
 msgid "Notice of delete failure - TITLE"
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:336
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:354
 msgid "Notice of delete failure - TEXT"
 msgstr ""
 
@@ -154,11 +158,11 @@ msgstr ""
 msgid "Delete content"
 msgstr ""
 
-#: \plugins\dashboard\views\elements\filter.ctp:163
+#: \plugins\dashboard\views\elements\filter.ctp:154
 msgid "Dashboard: See on the page"
 msgstr ""
 
-#: \plugins\dashboard\views\elements\filter.ctp:179;190
+#: \plugins\dashboard\views\elements\filter.ctp:170;181
 msgid "Dashboard: Edit"
 msgstr ""
 

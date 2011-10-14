@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-09-26 16:23+0000\n"
+"POT-Creation-Date: 2011-10-14 21:17+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -34,11 +34,11 @@ msgstr ""
 msgid "Corktile edit page: Your data has been saved - TEXT."
 msgstr ""
 
-#: \plugins\corktile\views\elements\location_of_cork.ctp:7
+#: \plugins\corktile\views\elements\location_of_cork.ctp:5
 msgid "Location in the site"
 msgstr ""
 
-#: \plugins\corktile\views\elements\location_of_cork.ctp:31
+#: \plugins\corktile\views\elements\location_of_cork.ctp:28
 msgid "Description"
 msgstr ""
 

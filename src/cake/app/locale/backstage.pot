@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-09-26 16:23+0000\n"
+"POT-Creation-Date: 2011-10-14 21:17+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -42,23 +42,23 @@ msgstr ""
 msgid "Your data cannot be saved - TEXT."
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:79
+#: \plugins\backstage\views\back_contents\edit.ctp:71
 msgid "Your data has been saved - TITLE."
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:80
+#: \plugins\backstage\views\back_contents\edit.ctp:72
 msgid "Your data has been saved - TEXT."
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:82
+#: \plugins\backstage\views\back_contents\edit.ctp:74
 msgid "Your data has been saved - BACK TO DASHBOARD"
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:83
+#: \plugins\backstage\views\back_contents\edit.ctp:75
 msgid "Your data has been saved - CONTINUE EDITING"
 msgstr ""
 
-#: \plugins\backstage\views\back_contents\edit.ctp:84
+#: \plugins\backstage\views\back_contents\edit.ctp:76
 msgid "Your data has been saved - VIEW THIS ON THE PUBLIC PAGE"
 msgstr ""
 

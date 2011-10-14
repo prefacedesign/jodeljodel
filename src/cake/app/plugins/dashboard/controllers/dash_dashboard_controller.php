@@ -43,6 +43,16 @@ class DashDashboardController extends DashboardAppController
 			$this->Session->write('page', 0);
 		
 		$conditions = array();
+		if (isset($this->params['named']['page']))
+		{
+			$c = $this->Session->read('search_options');
+			if ($c)
+				$conditions = $c;
+			else
+				$conditions = array();
+		}
+		else
+			$this->Session->write('search_options', array());
 		$status = $this->Session->read('filter_status');
 		$filter = $this->Session->read('filter');
 		if ($status != 'all' && !empty($status))
@@ -92,7 +102,11 @@ class DashDashboardController extends DashboardAppController
 	
 	function filter($module)
 	{
-		$conditions = array();
+		$c = $this->Session->read('search_options');
+		if ($c)
+			$conditions = $c;
+		else
+			$conditions = array();
 		$status = $this->Session->read('filter_status');
 		if ($status != 'all' && !empty($status))
 			$conditions['status'] = $status;
@@ -119,7 +133,11 @@ class DashDashboardController extends DashboardAppController
 	
 	function filter_published_draft($status)
 	{
-		$conditions = array();
+		$c = $this->Session->read('search_options');
+		if ($c)
+			$conditions = $c;
+		else
+			$conditions = array();
 		$filter = $this->Session->read('filter');
 		if ($filter != 'all' && !empty($filter))
 			$conditions['type'] = $filter;
@@ -138,6 +156,45 @@ class DashDashboardController extends DashboardAppController
 		$this->data = $this->paginate('DashDashboardItem');
 		$this->helpers['Paginator'] = array('ajax' => 'Ajax');
 		$this->set('itemSettings', Configure::read('Dashboard.itemSettings'));
+		$this->render('filter', 'ajax');
+	}
+	
+	
+	function search()
+	{
+		if (!empty($this->data['dash_search']))
+		{
+			$conditions['OR'] = array();
+			$conditions['OR'][] = array('name LIKE' => '%'.$this->data['dash_search'].'%');
+			$conditions['OR'][] = array('info LIKE' => '%'.$this->data['dash_search'].'%');
+		}
+		else
+			$conditions = array();
+		
+		$this->Session->write('search_options', $conditions);
+		
+		$status = $this->Session->read('filter_status');
+		$filter = $this->Session->read('filter');
+		if ($status != 'all' && !empty($status))
+			$conditions['status'] = $status;
+		if ($filter != 'all' && !empty($filter))
+			$conditions['type'] = $filter;
+			
+		
+		$this->paginate = array(
+			'DashDashboardItem' => array(
+				'limit' => LIMIT,
+				'contain' => false,
+				'order' => 'modified DESC',
+				'conditions' => $conditions
+			)
+		);
+		
+
+		$this->data = $this->paginate('DashDashboardItem');
+		$this->helpers['Paginator'] = array('ajax' => 'Ajax');
+		$this->set('itemSettings', Configure::read('Dashboard.itemSettings'));
+		$this->layout = 'ajax';
 		$this->render('filter', 'ajax');
 	}
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-09-26 16:23+0000\n"
+"POT-Creation-Date: 2011-10-14 21:17+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,27 +14,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: \config\bootstrap.php:52
+#: \config\bootstrap.php:50
 msgid "MODULE Person human name"
 msgstr ""
 
-#: \config\bootstrap.php:60
+#: \config\bootstrap.php:56
 msgid "MODULE Gallery human name"
 msgstr ""
 
-#: \config\bootstrap.php:67
+#: \config\bootstrap.php:61
 msgid "MODULE TextTextCork human name"
 msgstr ""
 
-#: \config\bootstrap.php:74
+#: \config\bootstrap.php:66
+msgid "MODULE CsCork human name"
+msgstr ""
+
+#: \config\bootstrap.php:71
 msgid "MODULE CorkCorkTile human name"
 msgstr ""
 
-#: \config\bootstrap.php:130
+#: \config\bootstrap.php:127
 msgid "%d-%d de %s de %d"
 msgstr ""
 
-#: \config\bootstrap.php:140
+#: \config\bootstrap.php:137
 msgid "%d de %s a %d de %s de %d"
 msgstr ""
 
@@ -46,6 +50,7 @@ msgstr ""
 #: \plugins\backstage\views\elements\language_edit_select.ctp:35
 #: \plugins\backstage\views\elements\language_show_edited_language.ctp:35
 #: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:52;66
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1505
 msgid "anchorList or"
 msgstr ""
 

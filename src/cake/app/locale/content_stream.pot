@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-09-26 19:27-0300\n"
+"POT-Creation-Date: 2011-10-14 21:17+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -32,5 +32,93 @@ msgstr ""
 
 #: \plugins\content_stream\config\config.php:32
 msgid "Title for PieTitle content"
+msgstr ""
+
+#: \plugins\pie_divider\views\elements\pie_divider.ctp:31
+msgid "PieDivider instructions"
+msgstr ""
+
+#: \plugins\pie_file\views\elements\pie_file.ctp:47
+msgid "PieFile.file_id label"
+msgstr ""
+
+#: \plugins\pie_file\views\elements\pie_file.ctp:48
+msgid "PieFile.file_id instructions"
+msgstr ""
+
+#: \plugins\pie_file\views\elements\pie_file.ctp:67
+msgid "PieFile.title label"
+msgstr ""
+
+#: \plugins\pie_file\views\elements\pie_file.ctp:68
+msgid "PieFile.title instructions"
+msgstr ""
+
+#: \plugins\pie_file\views\elements\pie_file.ctp:77
+msgid "PieFile.description label"
+msgstr ""
+
+#: \plugins\pie_file\views\elements\pie_file.ctp:78
+msgid "PieFile.description instructions"
+msgstr ""
+
+#: \plugins\pie_file\views\elements\pie_file.ctp:95
+msgid "PieFile - Download file:"
+msgstr ""
+
+#: \plugins\pie_image\views\elements\pie_image.ctp:39
+msgid "PieImage.file_id label"
+msgstr ""
+
+#: \plugins\pie_image\views\elements\pie_image.ctp:40
+msgid "PieImage.file_id instructions"
+msgstr ""
+
+#: \plugins\pie_image\views\elements\pie_image.ctp:52
+msgid "PieImage.title label"
+msgstr ""
+
+#: \plugins\pie_image\views\elements\pie_image.ctp:53
+msgid "PieImage.title instructions"
+msgstr ""
+
+#: \plugins\pie_image\views\elements\pie_image.ctp:62
+msgid "PieImage.subtitle label"
+msgstr ""
+
+#: \plugins\pie_image\views\elements\pie_image.ctp:63
+msgid "PieImage.subtitle instructions"
+msgstr ""
+
+#: \plugins\pie_text\views\elements\pie_text.ctp:36
+msgid "PieText.text label"
+msgstr ""
+
+#: \plugins\pie_text\views\elements\pie_text.ctp:37
+msgid "PieText.text instructions"
+msgstr ""
+
+#: \plugins\pie_title\views\elements\pie_title.ctp:36
+msgid "PieTitle.level label"
+msgstr ""
+
+#: \plugins\pie_title\views\elements\pie_title.ctp:37
+msgid "PieTitle.level instructions"
+msgstr ""
+
+#: \plugins\pie_title\views\elements\pie_title.ctp:40
+msgid "PieTitle level 1"
+msgstr ""
+
+#: \plugins\pie_title\views\elements\pie_title.ctp:41
+msgid "PieTitle level 2"
+msgstr ""
+
+#: \plugins\pie_title\views\elements\pie_title.ctp:52
+msgid "PieTitle.title label"
+msgstr ""
+
+#: \plugins\pie_title\views\elements\pie_title.ctp:53
+msgid "PieTitle.title instructions"
 msgstr ""
 

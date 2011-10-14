@@ -859,7 +859,7 @@
 		'.pagination', array(
 			'position' => 'absolute',
 			'right' => 0,
-			'top' => $u->t(-82),
+			'top' => $u->t(-109),
 			'z-index' => 1
 	));
 	
@@ -943,7 +943,25 @@
 		'.dash_link_to_additem', array(
 			'padding-top' => $hg->size(array('m' => 1, 'u' => -1)),
 			'font-weight' => 700,
-			'float' => 'left'
+			'float' => 'left',
+			'margin-bottom' => $hg->size(array('m' => 2))
+	));
+	
+	$this->Decorator->rule(
+		'.dash_search', array(
+			'width' => $hg->size(array('M' => 4, 'g' => -1)),
+			'margin-top' => $hg->size(array('g' => 1, 'm' => 3))
+	));
+	
+	$this->Decorator->rule(
+		'.dash_search input', array(
+			'width' => $hg->size(array('M' => 4, 'g' => -1.6)),
+			'border' => $u->t(1) . ' solid ' . $palette['input_borders']->write(),
+			'height' => $vg->size(array('g' => 0.9)),
+			'padding' => $vg->size(array('m' => 1)),
+			'font-style' => 'italic',
+			'font-size' => $vg->size(array('u' => $line_height* 11/18)),
+			'color'	=> $palette['input_fg']->write(),
 	));
 	
 	$this->Decorator->rule(
@@ -955,7 +973,7 @@
 		'div.dash_toolbox', array(
 			'border-bottom' => $u->t(1) . ' solid black',
 			'padding-bottom' => $vg->size(array('g' => 0.8)),
-			'height' => $vg->size(array('m' => 6)),
+			'height' => $vg->size(array('m' => 12)),
 	));
 	
 	$this->Decorator->rule(

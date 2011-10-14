@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-09-21 18:09+0000\n"
-"PO-Revision-Date: 2011-09-21 15:11-0300\n"
+"POT-Creation-Date: 2011-10-14 21:17+0000\n"
+"PO-Revision-Date: 2011-10-14 18:18-0300\n"
 "Last-Translator: Rodrigo  <rodrigo@preface.com.br>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -33,83 +33,87 @@ msgstr "Cancelar"
 msgid "Open item list"
 msgstr "Adicione novo conteúdo"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:109
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:98
+msgid "or search for a content previously inserted"
+msgstr "ou procure por um conteúdo já cadastrado"
+
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:127
 msgid "Type"
 msgstr "Tipo"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:164;230
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:182;248
 msgid "Show All"
 msgstr "Todos"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:191
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:209
 msgid "Status"
 msgstr "Status"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:202
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:220
 msgid "Dashboard status: "
 msgstr ""
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:264
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:289
 msgid "Notice of marking as draft success - TITLE"
 msgstr "Conteúdo marcado como rascunho"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:265
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:290
 msgid "Notice of marking as draft success - TEXT"
 msgstr "O conteúdo foi marcado como rascunho com sucesso, ele não aparecerá mais na página pública."
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:272
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:297
 msgid "Notice of marking as draft failure - TITLE"
 msgstr "Falha em marcar como rascunho"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:273
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:298
 msgid "Notice of marking as draft failure - TEXT"
 msgstr "Não foi possível marcar como rascunho este conteúdo. Tente de novo mais uma vez. É possível que você não tenha permissão de executar esta operação."
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:279
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:304
 msgid "Notice of publishing success - TITLE"
 msgstr "Conteúdo publicado"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:280
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:305
 msgid "Notice of publishing success - TEXT"
 msgstr "O conteúdo foi publicado com sucesso"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:287
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:312
 msgid "Notice of publishing failure - TITLE"
 msgstr "Falha ao publicar conteúdo"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:288
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:313
 msgid "Notice of publishing failure - TEXT"
 msgstr "Não foi possível publicar este conteúdo. Tente de novo mais uma vez. É possível que você não tenha permissão de executar esta operação."
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:295
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:320
 msgid "Confirm the delete - TITLE"
 msgstr "Confirmação de exclusão"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:296
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:321
 msgid "Confirm the delete - TEXT"
 msgstr "Você deseja realmente excluir este conteúdo? Todos os dados serão perdidos e não poderão mais ser recuperados."
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:297
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:322
 msgid "DELETE - YES"
 msgstr "Sim"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:297
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:322
 msgid "DELETE - NO"
 msgstr "Não"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:326
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:344
 msgid "Notice of delete success - TITLE"
 msgstr "Conteúdo excluído"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:327
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:345
 msgid "Notice of delete success - TEXT"
 msgstr "Sucesso ao excluir conteúdo."
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:335
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:353
 msgid "Notice of delete failure - TITLE"
 msgstr "Falha na exclusão"
 
-#: \plugins\dashboard\views\dash_dashboard\index.ctp:336
+#: \plugins\dashboard\views\dash_dashboard\index.ctp:354
 msgid "Notice of delete failure - TEXT"
 msgstr "Não foi possível excluir este conteúdo. Tente de novo uma segunda vez. É possível que você não tenha permissão para excluir conteúdos."
 
@@ -153,11 +157,11 @@ msgstr "Publicar"
 msgid "Delete content"
 msgstr "Excluir"
 
-#: \plugins\dashboard\views\elements\filter.ctp:163
+#: \plugins\dashboard\views\elements\filter.ctp:154
 msgid "Dashboard: See on the page"
 msgstr "Visualizar"
 
-#: \plugins\dashboard\views\elements\filter.ctp:179;190
+#: \plugins\dashboard\views\elements\filter.ctp:170;181
 msgid "Dashboard: Edit"
 msgstr "Editar"
 
