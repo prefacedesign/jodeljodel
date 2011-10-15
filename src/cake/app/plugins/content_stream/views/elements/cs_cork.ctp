@@ -29,6 +29,8 @@ switch ($type[0])
 		$type = array('full', 'cork');
 		if (!empty($options['type']))
 			$type[] = $options['type'];
+		else
+			$type[] = false;
 		
 		echo $this->Jodel->insertModule('ContentStream.CsContentStream', $type, $data['CsCork']['cs_content_stream_id']);
 	break;

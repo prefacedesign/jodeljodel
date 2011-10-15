@@ -6,12 +6,16 @@ switch ($type[0])
 		switch ($type[1])
 		{
 			case 'cork':
-				if (!empty($data['PieImage']['file_id']))
+				switch ($type[2])
 				{
-					echo $this->Bl->img(array(), array('id' => $data['PieImage']['file_id']));
-					echo $this->Bl->p(array('class' => 'subtitle'), array(),
-						$this->Bl->spanDry($data['PieImage']['title']) . ' ' . $data['PieImage']['subtitle']
-					);
+					default:
+						if (!empty($data['PieImage']['file_id']))
+						{
+							echo $this->Bl->img(array(), array('id' => $data['PieImage']['file_id']));
+							echo $this->Bl->p(array('class' => 'subtitle'), array(),
+								$this->Bl->spanDry($data['PieImage']['title']) . ' ' . $data['PieImage']['subtitle']
+							);
+						}
 				}
 			break;
 		}

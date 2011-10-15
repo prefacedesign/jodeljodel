@@ -848,16 +848,15 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$autocomplete_options['parameters'] = implode('&', $parameters);
 		
-		
+		$dataBkp = $this->Form->data;
+		$this->Form->data = array();
 		$out = $this->input(
 			array(
 				'class' => 'autocomplete',
 				'id' => 'input'.$autocomplete_options['baseID']
 			),
 			am(
-				array(
-					'container' => false
-				),
+				array('container' => false),
 				$options,
 				array(
 					'type' => 'text',
@@ -865,6 +864,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 				)
 			)
 		);
+		$this->Form->data = $dataBkp;
+		unset($dataBkp);
 		
 		$out .= $this->Bl->div(
 			array('id' => 'div'.$autocomplete_options['baseID'], 'class' => 'autocomplete list'),
