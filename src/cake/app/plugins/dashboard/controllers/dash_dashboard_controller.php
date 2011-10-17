@@ -33,28 +33,27 @@ class DashDashboardController extends DashboardAppController
  */
 	function index($page = null)
 	{
-		
 		$this->set('itemSettings', Configure::read('Dashboard.itemSettings'));
 		$this->set('statusOptions', Configure::read('Dashboard.statusOptions'));
 		
 		if (isset($this->params['named']['page']))
-			$this->Session->write('page', $this->params['named']['page']);
+			$this->Session->write('Dashboard.page', $this->params['named']['page']);
 		else
-			$this->Session->write('page', 0);
+			$this->Session->write('Dashboard.page', 0);
 		
 		$conditions = array();
 		if (isset($this->params['named']['page']))
 		{
-			$c = $this->Session->read('search_options');
+			$c = $this->Session->read('Dashboard.searchOptions');
 			if ($c)
 				$conditions = $c;
 			else
 				$conditions = array();
 		}
 		else
-			$this->Session->write('search_options', array());
-		$status = $this->Session->read('filter_status');
-		$filter = $this->Session->read('filter');
+			$this->Session->write('Dashboard.searchOptions', array());
+		$status = $this->Session->read('Dashboard.status');
+		$filter = $this->Session->read('Dashboard.filter');
 		if ($status != 'all' && !empty($status))
 			$conditions['status'] = $status;
 		if ($filter != 'all' && !empty($filter))
@@ -102,61 +101,15 @@ class DashDashboardController extends DashboardAppController
 	
 	function filter($module)
 	{
-		$c = $this->Session->read('search_options');
-		if ($c)
-			$conditions = $c;
-		else
-			$conditions = array();
-		$status = $this->Session->read('filter_status');
-		if ($status != 'all' && !empty($status))
-			$conditions['status'] = $status;
-		if ($module != 'all')
-			$conditions['type'] = $module;
-			
-		
-		$this->paginate = array(
-			'DashDashboardItem' => array(
-				'limit' => LIMIT,
-				'contain' => false,
-				'order' => 'modified DESC',
-				'conditions' => $conditions
-			)
-		);
-			
-		$this->Session->write('filter', $module);
-		$this->data = $this->paginate('DashDashboardItem');
-		$this->helpers['Paginator'] = array('ajax' => 'Ajax');
-		$this->set('itemSettings', Configure::read('Dashboard.itemSettings'));
-		$this->layout = 'ajax';
+		$this->Session->write('Dashboard.filter', $module);
+		$this->filter_and_search();
 	}
 	
 	
 	function filter_published_draft($status)
 	{
-		$c = $this->Session->read('search_options');
-		if ($c)
-			$conditions = $c;
-		else
-			$conditions = array();
-		$filter = $this->Session->read('filter');
-		if ($filter != 'all' && !empty($filter))
-			$conditions['type'] = $filter;
-		if ($status != 'all')
-			$conditions['status'] = $status;
-		
-		$this->paginate = array(
-			'DashDashboardItem' => array(
-				'limit' => LIMIT,
-				'contain' => false,
-				'order' => 'modified DESC',
-				'conditions' => $conditions
-			)
-		);
-		$this->Session->write('filter_status', $status);
-		$this->data = $this->paginate('DashDashboardItem');
-		$this->helpers['Paginator'] = array('ajax' => 'Ajax');
-		$this->set('itemSettings', Configure::read('Dashboard.itemSettings'));
-		$this->render('filter', 'ajax');
+		$this->Session->write('Dashboard.status', $status);
+		$this->filter_and_search();
 	}
 	
 	
@@ -171,16 +124,26 @@ class DashDashboardController extends DashboardAppController
 		else
 			$conditions = array();
 		
-		$this->Session->write('search_options', $conditions);
+		$this->Session->write('Dashboard.searchOptions', $conditions);
+		$this->filter_and_search();
+	}
+	
+	
+	function filter_and_search()
+	{
+		$c = $this->Session->read('Dashboard.searchOptions');
+		if ($c)
+			$conditions = $c;
+		else
+			$conditions = array();
 		
-		$status = $this->Session->read('filter_status');
-		$filter = $this->Session->read('filter');
+		$status = $this->Session->read('Dashboard.status');
+		$filter = $this->Session->read('Dashboard.filter');
 		if ($status != 'all' && !empty($status))
 			$conditions['status'] = $status;
 		if ($filter != 'all' && !empty($filter))
 			$conditions['type'] = $filter;
 			
-		
 		$this->paginate = array(
 			'DashDashboardItem' => array(
 				'limit' => LIMIT,
@@ -189,8 +152,6 @@ class DashDashboardController extends DashboardAppController
 				'conditions' => $conditions
 			)
 		);
-		
-
 		$this->data = $this->paginate('DashDashboardItem');
 		$this->helpers['Paginator'] = array('ajax' => 'Ajax');
 		$this->set('itemSettings', Configure::read('Dashboard.itemSettings'));
