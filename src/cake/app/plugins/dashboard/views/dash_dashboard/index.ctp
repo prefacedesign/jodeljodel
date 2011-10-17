@@ -1,6 +1,6 @@
 <?php
 $this->Html->script('prototype', array('inline' => false));
-$this->Html->script('/dashboard/js/burocrata.js', array('inline' => false));
+$this->Html->script('/dashboard/js/core.js', array('inline' => false));
 $this->Html->script('/dashboard/js/dashboard.js', array('inline' => false));
 
 $this->Html->scriptBlock($this->Js->domReady("
