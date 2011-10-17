@@ -5,6 +5,13 @@ var Dashboard = Class.create({
 	}
 });
 
+/**
+ * Manages the "Add content" list (opening and closing the list)
+ * 
+ * @access public
+ * @param string list_id The ID for the hidden div wrapping the list
+ * @param string link_to_add The ID for the div containing the close link
+ */
 var ItemList = Class.create({
 	initialize: function(list_id, link_to_add)
 	{
@@ -25,5 +32,31 @@ var ItemList = Class.create({
 		ev.stop();
 		this.link_to_add.addClassName('expanded');
 		this.list.removeClassName('expanded');
+	}
+});
+
+
+/**
+ * 
+ * 
+ * @access 
+ */
+var SearchInput = Class.create({
+	initialize: function(input_id)
+	{
+		this.input = $(input_id);
+		this.input.observe('focus', this.hideLabel.bind(this));
+		this.input.observe('blur', this.showLabel.bind(this));
+		
+		this.label = this.input.previous('label');
+	},
+	hideLabel: function(ev)
+	{
+		this.label.setStyle({visibility: 'hidden'});
+	},
+	showLabel: function(ev)
+	{
+		if (this.input.value.blank())
+			this.label.setStyle({visibility: ''});
 	}
 });

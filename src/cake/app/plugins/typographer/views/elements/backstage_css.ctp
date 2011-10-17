@@ -970,20 +970,27 @@
 	// SEARCH ON DASHBOARD
 	
 	$this->Decorator->rule(
-		'.dash_search', array(
-			'width' => $hg->size(array('M' => 4, 'g' => -1)),
-			'margin-top' => $hg->size(array('g' => 1, 'm' => 3))
+		'div.dash_search', array(
+			'width' => $hg->size('4M-g'),
+			'margin-top' => $hg->size('3mg')
 	));
 	
 	$this->Decorator->rule(
-		'.dash_search input', array(
-			'width' => $hg->size(array('M' => 4, 'g' => -1.6)),
-			'border' => $u->t(1) . ' solid ' . $palette['input_borders']->write(),
-			'height' => $vg->size(array('g' => 0.9)),
-			'padding' => $vg->size(array('m' => 1)),
+		'div.dash_search input', array(
+			'margin-top' => $vg->size('-6m-2u')
+	));
+	
+	$this->Decorator->rule(
+		'div.dash_search input, div.dash_search label', array(
+			'width' => $hg->size('4M-1.6g'),
+			'border' => sprintf('%s solid %s', $u->t(1), $palette['input_borders']->write()),
+			'height' => $vg->size('6m'),
+			'line-height' => $vg->size('6m'),
+			'padding' => sprintf('0 %s', $vg->size('m')),
 			'font-style' => 'italic',
 			'font-size' => $vg->size(array('u' => $line_height* 11/18)),
 			'color'	=> $palette['input_fg']->write(),
+			'display' => 'block'
 	));
 	
 	$this->Decorator->rule(

@@ -87,28 +87,26 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 			echo $this->Bl->anchor(array(), array('url' => ''), __d('dashboard','Open item list',true));
 		echo $this->Bl->ediv();
 		
+		
+		
+		// SEARCH INPUT
+		
+		$this->Html->scriptBlock($this->Js->domReady("
+			new SearchInput('dash_search');
+		"), array('inline' => false));
+		
 		echo $this->Bl->sdiv(array('class' => array('dash_search')));
-			echo $form->input('dash_search', array('value' => __d('dashboard','or search for a content previously inserted',true), 'label' => false));
+			echo $form->input('dash_search', array('label' => __d('dashboard','or search for a content previously inserted',true)));
 			echo $ajax->observeField('dash_search', 
 				array(
-					'url' => array( 'action' => 'search'),
+					'url' => array('action' => 'search'),
 					'frequency' => 2.5,
 					'loading' => "$('dashboard_table').setLoading(); ",
 					'complete' => "$('dashboard_table').unsetLoading();",
 					'update' => 'dashboard_table'
 				) 
 			); 
-			echo $javascript->codeBlock("
-				Event.observe('dash_search', 'focus', function ()
-				{
-					$('dash_search').select();
-					
-				});
-			");
 		echo $this->Bl->ediv();
-		
-		
-		
 		echo $bl->floatBreak();
 		
 	echo $this->Bl->eboxContainer();
