@@ -104,6 +104,97 @@ class TypeBricklayerHelper extends AppHelper
 		return array_merge_recursive($atr1, $atr2);
 	}
 
+	
+/**
+ * Creates a menu, given the menuLevel desired, and some options. It uses menuItem(), for each menuItem.
+ * 
+ * @access public
+ * @param array $htmlAttr
+ * @param array $options
+ * @return string
+ */
+	function menu($htmlAttr = array(), $options = array())
+	{
+		$options += array(
+			'menuLevel' => 0,
+			'writeCaptions' => true,
+			'specificClasses' => true,
+			'hiddenCaptions' => false,
+			'wrapTag' => 'div'
+		);
+		
+		extract($options);
+		$htmlAttr += array('class' => array('menu','menu_'.$menuLevel));
+		
+		$View = ClassRegistry::getObject('view');
+		$ourLocation = $View->getVar('ourLocation');
+		$sections = $View->getVar('pageSections');
+		
+		if (empty($ourLocation))
+		{
+			trigger_error('MexicoTypeBricklayerHelper::menu() - Unknown location. Check if you properly filled the $sectionMap on page_section plugin.config.');
+			return false;
+		}
+		
+		for ($i = 0; $i < $menuLevel; $i++)
+		{
+			if (isset($sections[$ourLocation[$i]]['subSections']))
+				$sections = $sections[$ourLocation[$i]]['subSections'];
+			else
+				return false;
+		}
+		
+		$t = '';
+		$t .= $this->stag($wrapTag, $htmlAttr);
+			foreach($sections as $sectionName => $sectionSettings)
+				if ($sectionSettings['active'] && $sectionSettings['display'])
+					$t .= $this->menuItem(array(), compact('sectionName','sectionSettings','writeCaptions','specificClasses','menuLevel','hiddenCaptions'));
+		$t .= $this->etag($wrapTag);
+		
+		return $t;
+	}
+	
+/**
+ * Creates a menuItem, given the menuLevel desired, and some options. Used by menu().,
+ * 
+ * @access public
+ * @param array $htmlAttr
+ * @param array $options
+ * @return string
+ */
+	function menuItem($htmlAttr = array(), $options = array())
+	{
+		$View = ClassRegistry::getObject('view');
+		$ourLocation = $View->getVar('ourLocation');
+	
+		$options += array(
+			'menuLevel' => 0,
+			'writeCaptions' => true,
+			'specificClasses' => true,
+			'hiddenCaptions' => false
+		);
+		extract($options);
+		
+		$defaultHtmlAttr = array();
+		if ($specificClasses)
+			$defaultHtmlAttr['class'][] = 'menu_item_' . $menuLevel . '_' . $sectionName;
+		
+		if ($ourLocation[$menuLevel] == $sectionName)
+			$defaultHtmlAttr['class'][] = 'selected';
+		
+		$htmlAttr += $defaultHtmlAttr;
+		if (!isset($anchorOptions))
+			$anchorOptions = array();
+		
+		$anchorOptions['url'] = $sectionSettings['url'];
+		$content = $writeCaptions ? $sectionSettings['linkCaption'] : ' ';
+		
+		if ($hiddenCaptions)
+			$content = $this->hiddenSpanDry($content);
+		
+		return $this->anchor($htmlAttr, $anchorOptions, $content);
+	}
+
 /**
  * Just an alias for fileURL
  *
