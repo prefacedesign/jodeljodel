@@ -149,7 +149,7 @@ class TypeBricklayerHelper extends AppHelper
 			foreach($sections as $sectionName => $sectionSettings)
 				if ($sectionSettings['active'] && $sectionSettings['display'])
 					$t .= $this->menuItem(array(), compact('sectionName','sectionSettings','writeCaptions','specificClasses','menuLevel','hiddenCaptions'));
-		$t .= $this->e($wrapTag);
+		$t .= $this->etag($wrapTag);
 		
 		return $t;
 	}
