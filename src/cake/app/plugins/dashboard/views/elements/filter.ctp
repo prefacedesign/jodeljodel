@@ -33,15 +33,19 @@
 		)
 	));
 		
-		echo $this->Bl->smartTableHeaderDry(array(
-			$this->Paginator->sort(__d('dashboard','Dashboard header: Type',true),'type'), 
-			$this->Paginator->sort(__d('dashboard','Dashboard header: Status',true),'status'), 
-			$this->Paginator->sort(__d('dashboard','Dashboard header: Name',true),'name'),
-			__d('dashboard','Dashboard header: Extra info',true),
-			$this->Paginator->sort(__d('dashboard','Dashboard header: Created',true),'created'),
-			$this->Paginator->sort(__d('dashboard','Dashboard header: Modified',true),'modified'),
-			__d('dashboard', 'Dashboard - dashboard header: Translations',true),
-		));
+		$languages = Configure::read('Tradutore.languages');
+		
+		$smartTableColumns = array();
+		$smartTableColumns[] = $this->Paginator->sort(__d('dashboard','Dashboard header: Type',true),'type');
+		$smartTableColumns[] = $this->Paginator->sort(__d('dashboard','Dashboard header: Status',true),'status');
+		$smartTableColumns[] = $this->Paginator->sort(__d('dashboard','Dashboard header: Name',true),'name');
+		$smartTableColumns[] = __d('dashboard','Dashboard header: Extra info',true);
+		$smartTableColumns[] = $this->Paginator->sort(__d('dashboard','Dashboard header: Created',true),'created');
+		$smartTableColumns[] = $this->Paginator->sort(__d('dashboard','Dashboard header: Modified',true),'modified');
+		if (count($languages) > 1)
+			$smartTableColumns[] = __d('dashboard', 'Dashboard - dashboard header: Translations',true);
+		
+		echo $this->Bl->smartTableHeaderDry($smartTableColumns);
 		
 		
 		foreach ($this->data as $k => $item)
@@ -70,15 +74,23 @@
 			
 			$type = 'Dashboard types: ' . $item['DashDashboardItem']['type'];
 			$status = 'Dashboard status: ' . $item['DashDashboardItem']['status'];
-			echo $this->Bl->smartTableRowDry(array(
-				__d('dashboard', $type, true), 
-				__d('dashboard', $status, true),
-				$item['DashDashboardItem']['name'],
-				$item['DashDashboardItem']['info'],
-				strftime("%d/%m/%y", strtotime($item['DashDashboardItem']['created'])),
-				strftime("%d/%m/%y", strtotime($item['DashDashboardItem']['modified'])),
-				array(array(), array('escape' => false), $arrow . ' ' . $languageStr)
-			));
+			
+			$smartTableRow = array();
+			$smartTableRow[] = __d('dashboard', $type, true);
+			$smartTableRow[] = __d('dashboard', $status, true);
+			$smartTableRow[] = $item['DashDashboardItem']['name'];
+			$smartTableRow[] = $item['DashDashboardItem']['info'];
+			$smartTableRow[] = strftime("%d/%m/%y", strtotime($item['DashDashboardItem']['created']));
+			if (count($languages) > 1)
+			{
+				$smartTableRow[] = strftime("%d/%m/%y", strtotime($item['DashDashboardItem']['modified']));
+				$smartTableRow[] = array(array(), array('escape' => false), $arrow . ' ' . $languageStr);
+			}
+			else
+				$smartTableRow[] = $arrow . strftime("%d/%m/%y", strtotime($item['DashDashboardItem']['modified']));
+			
+			
+			echo $this->Bl->smartTableRowDry($smartTableRow);
 	
 			//@todo Substitute this with an AJAX call.
 			echo $this->Bl->smartTableRowDry(array(
