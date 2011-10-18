@@ -14,7 +14,10 @@ class PieFile extends PieFileAppModel
  * 
  * @access public
  */
-	var $actsAs = array('Containable');
+	var $actsAs = array(
+		'Containable',
+		'JjMedia.StoredFileHolder' => array('file_id')
+	);
 
 /**
  * belongs to relatioship

@@ -10,6 +10,16 @@ class PieImage extends PieImageAppModel
 	var $name = 'PieImage';
 
 /**
+ * Behaviors
+ * 
+ * @access public
+ */
+	var $actsAs = array(
+		'Containable',
+		'JjMedia.StoredFileHolder' => array('file_id')
+	);
+
+/**
  * belongsTo relationship
  * 
  * @var array
