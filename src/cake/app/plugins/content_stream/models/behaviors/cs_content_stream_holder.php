@@ -27,7 +27,15 @@ class CsContentStreamHolderBehavior extends ModelBehavior
  * @var array
  * @access public
  */
-	var $settings;
+	public $settings;
+
+/**
+ * Bahavior property that holds all runtime variables. 
+ * 
+ * @var array
+ * @access protected
+ */
+	protected $runtime;
 
 /**
  * This var is used to finish a transaction process when creating a new ContentStream
@@ -116,6 +124,8 @@ class CsContentStreamHolderBehavior extends ModelBehavior
 		}
 		$this->settings[$Model->alias] = $options;
 		$Model->__createLinks();
+		
+		$this->runtime[$Model->alias] = array();
 	}
 
 /**
@@ -157,7 +167,7 @@ class CsContentStreamHolderBehavior extends ModelBehavior
  * @param Model $Model
  * @param boolean $created
  */
-	function afterSave($Model, $created)
+	function afterSave(&$Model, $created)
 	{
 		if ($this->transactionContentStream)
 		{
@@ -169,16 +179,44 @@ class CsContentStreamHolderBehavior extends ModelBehavior
 	}
 
 /**
+ * beforeDelete callback
+ * 
+ * Used to retreive each ContentStream and store on the runtime variable.
+ * 
+ * @access public
+ * @param Model $Model
+ * @param boolean $cascade
+ * @return true Always true, so de deleting proccess can be continued
+ */
+	function beforeDelete(&$Model, $cascade)
+	{
+		$this->runtime[$Model->alias]['delete'] = array();
+		$data = $Model->data;
+		
+		foreach ($this->settings[$Model->alias]['streams'] as $fk => $stream)
+		{
+			if (empty($data[$Model->alias][$fk]))
+				$data = $Model->read();
+			$this->runtime[$Model->alias]['delete'][$stream['assocName']] = $data[$Model->alias][$fk];
+		}
+		
+		return true;
+	}
+
+/**
  * afterDelete
  * 
  * Used to delete any content_stream register.
  * 
- * @access 
+ * @access public
+ * @param Model $Model
+ * @return void
  */
-	function afterDelete($Model)
+	function afterDelete(&$Model)
 	{
-		foreach ($this->settings[$Model->alias]['streams'] as $fk => $stream)
-			if (!empty($Model->data[$Model->alias][$fk]))
-				$Model->{$stream['assocName']}->delete($Model->data[$Model->alias][$fk]);
+		if (!empty($this->runtime[$Model->alias]['delete']))
+			foreach ($this->runtime[$Model->alias]['delete'] as $assocName => $cs_id)
+				$Model->{$assocName}->delete($cs_id);
+		unset($this->runtime[$Model->alias]['delete']);
 	}
 }
