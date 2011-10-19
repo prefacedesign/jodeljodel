@@ -122,15 +122,13 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 				echo $this->Bl->sdiv(array('class' => 'filters'));
 					echo $this->Bl->h4Dry(__d('dashboard','Status', true));
 					$linkFilters = array();
-					$modulesCount = 0;
-					foreach($statusOptions as $module)
-						$modulesCount++;
+					$modulesCount = count($statusOptions);
 					foreach($statusOptions as $module)
 					{
-
 						$class = '';
 						if ($filter_status == $module)
 							$class = 'selected';
+						
 						$filterLink = $ajax->link(__d('dashboard', 'Dashboard status: ' . $module, true), 			
 							array(
 								'plugin' => 'dashboard',
@@ -157,8 +155,9 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 						$linkFilters[] = $filterLink;
 					}
 					$class = '';
-					if ($filter_status == 'all')
+					if ($filter_status == 'all' || empty($filter_status))
 						$class = 'selected';
+					
 					$filterLink = $ajax->link(__d('dashboard','Show All', true), 			
 						array(
 							'plugin' => 'dashboard',
@@ -240,7 +239,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 						}
 					}
 					$class = '';
-					if ($filter == 'all')
+					if ($filter == 'all' || empty($filter))
 						$class = 'selected';
 					$filterLink = $ajax->link(__d('dashboard','Show All', true), 			
 						array(
