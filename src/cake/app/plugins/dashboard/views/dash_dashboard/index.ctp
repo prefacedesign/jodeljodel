@@ -1,6 +1,12 @@
 <?php
 $this->Html->script('prototype', array('inline' => false));
-$this->Html->script('/dashboard/js/burocrata.js', array('inline' => false));
+$this->Html->script('/dashboard/js/core.js', array('inline' => false));
+$this->Html->script('/dashboard/js/dashboard.js', array('inline' => false));
+
+$this->Html->scriptBlock($this->Js->domReady("
+	new Dashboard();
+	new ItemList('dash_additem', 'dash_link_to_additem');
+"), array('inline' => false));
 
 $html->scriptBlock("
 	var theExpandedRow = false;
@@ -45,7 +51,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 	
 	echo $this->Bl->sboxContainer(array('class' => 'dash_toolbox'),array('size' => array('M' => 12, 'g' => -1)));
 	
-		echo $this->Bl->sdiv(array('class' => array('dash_additem')));
+		echo $this->Bl->sdiv(array('id' => 'dash_additem'));
 			echo $this->Bl->sdiv(array('class' => 'dash_itemlist'));
 				echo $this->Bl->h3Dry(__d('dashboard','Add new content:', true));
 				$linkList = array();
@@ -68,54 +74,39 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 					}
 				}
 				echo $this->Text->toList($linkList, ' '.__d('dashboard','or', true).' ');
-				echo $this->Bl->anchor(array('id' => 'close_dash_additem'),array(), __d('dashboard','Close item list',true));
 			echo $this->Bl->ediv();
+			
+			echo $this->Bl->sspan();
+				echo $this->Bl->anchor(array(), array('url' => ''), __d('dashboard','Close item list',true));
+			echo $this->Bl->espan();
+			
+			echo $this->Bl->floatBreak();
 		echo $this->Bl->ediv();
 		
-		echo $this->Bl->sdiv(array('class' => array('dash_link_to_additem','expanded')));
-			echo $this->Bl->anchor(array('id' => 'open_dash_additem'),array(),__d('dashboard','Open item list',true));
+		echo $this->Bl->sdiv(array('id' => 'dash_link_to_additem', 'class' => 'expanded'));
+			echo $this->Bl->anchor(array(), array('url' => ''), __d('dashboard','Open item list',true));
 		echo $this->Bl->ediv();
-		echo $html->scriptBlock("
-				$('open_dash_additem').observe('click', function (ev) { ev.stop(); dashOpenAdditem();});
-				$('close_dash_additem').observe('click', function (ev) { ev.stop(); dashCloseAdditem();});
-			", array('inline' => true));
-		echo $html->scriptBlock("
-				function dashCloseAdditem()
-				{
-					$$('.dash_link_to_additem')[0].addClassName('expanded');
-					$$('.dash_additem')[0].removeClassName('expanded');
-				}
-				
-				function dashOpenAdditem()
-				{
-					$$('.dash_link_to_additem')[0].removeClassName('expanded');
-					$$('.dash_additem')[0].addClassName('expanded');
-				}", 
-			array('inline' => false)
-		);
+		
+		
+		
+		// SEARCH INPUT
+		
+		$this->Html->scriptBlock($this->Js->domReady("
+			new SearchInput('dash_search');
+		"), array('inline' => false));
 		
 		echo $this->Bl->sdiv(array('class' => array('dash_search')));
-			echo $form->input('dash_search', array('value' => __d('dashboard','or search for a content previously inserted',true), 'label' => false));
+			echo $form->input('dash_search', array('label' => __d('dashboard','or search for a content previously inserted',true)));
 			echo $ajax->observeField('dash_search', 
 				array(
-					'url' => array( 'action' => 'search'),
+					'url' => array('action' => 'search'),
 					'frequency' => 2.5,
 					'loading' => "$('dashboard_table').setLoading(); ",
 					'complete' => "$('dashboard_table').unsetLoading();",
 					'update' => 'dashboard_table'
 				) 
 			); 
-			echo $javascript->codeBlock("
-				Event.observe('dash_search', 'focus', function ()
-				{
-					$('dash_search').select();
-					
-				});
-			");
 		echo $this->Bl->ediv();
-		
-		
-		
 		echo $bl->floatBreak();
 		
 	echo $this->Bl->eboxContainer();
@@ -270,7 +261,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 					$linkFilters[] = $filterLink;
 					echo $this->Text->toList($linkFilters, ' ', ' ');
 				echo $this->Bl->ediv();
-				echo $this->Bl->floatbreak();
+				echo $this->Bl->floatBreak();
 			echo $this->Bl->ediv();
 		echo $this->Bl->ediv();
 		

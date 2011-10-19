@@ -911,61 +911,85 @@
 			'float' => 'right'
 	));
 	
+	
+	
+	// LIST OF CONTENT TO CREATE
+	
 	$this->Decorator->rule(
-		'div.dash_additem', array(
+		'#dash_additem', array(
 			'position' => 'absolute',
 			'z-index' => 5,
-			'height' => $vg->size(array('m' => 6)),
-			'width' => $hg->size(array('M' => 12, 'g' => 1)),
-			'margin-left' => $hg->size(array('g' => -1)),
-			'background' => $palette['selection']->write()
+			'line-height' => $vg->size('6m'),
+			'width' => $hg->size('12Mg'),
+			'margin-left' => $hg->size('-g'),
+			'background' => $palette['selection']->write(),
 	));
 	
 	$this->Decorator->rule(
-		'#close_dash_additem', array(
-			'display' => 'block',
-			'position' => 'absolute',
-			'top' => $vg->size(array('m' => 1)),
-			'right' => $hg->size(array('g' => 1)),
+		'#dash_link_to_additem', array(
+			'padding-top' => $hg->size('m-u'),
+			'font-weight' => 700,
+			'float' => 'left',
+			'margin-bottom' => $hg->size('2m')
 	));
 	
 	$this->Decorator->rule(
-		'.dash_toolbox a', array(
-			'cursor' => 'pointer'
-	));
-	
-	$this->Decorator->rule(
-		'.dash_additem, .dash_link_to_additem', array(
+		'#dash_additem, #dash_link_to_additem', array(
 			'display' => 'none'
 	));
 	
 	$this->Decorator->rule(
-		'.dash_link_to_additem', array(
-			'padding-top' => $hg->size(array('m' => 1, 'u' => -1)),
-			'font-weight' => 700,
+		'#dash_additem.expanded, #dash_link_to_additem.expanded', array(
+			'display' => 'block'
+	));
+	
+	$this->Decorator->rule(
+		'#dash_additem div.dash_itemlist', array(
 			'float' => 'left',
-			'margin-bottom' => $hg->size(array('m' => 2))
+			'margin-left' => $hg->size('g'),
+			'max-width' => $hg->size('10M-g'),
 	));
 	
 	$this->Decorator->rule(
-		'.dash_search', array(
-			'width' => $hg->size(array('M' => 4, 'g' => -1)),
-			'margin-top' => $hg->size(array('g' => 1, 'm' => 3))
+		'#dash_additem h3', array(
+			'font-size' => $vg->size(array('u' => $line_height* 13/18)),
+			'display' => 'inline',
+			'margin-right' => $hg->size('m'),
+			'text-transform' => 'uppercase',
+			'letter-spacing' => $letterSpacing
 	));
 	
 	$this->Decorator->rule(
-		'.dash_search input', array(
-			'width' => $hg->size(array('M' => 4, 'g' => -1.6)),
-			'border' => $u->t(1) . ' solid ' . $palette['input_borders']->write(),
-			'height' => $vg->size(array('g' => 0.9)),
-			'padding' => $vg->size(array('m' => 1)),
+		'#dash_additem > span', array(
+			'float' => 'right',
+			'margin-right' => $hg->size('g'),
+			'max-width' => $hg->size('2M-g')
+	));
+	
+	
+	// SEARCH ON DASHBOARD
+	
+	$this->Decorator->rule(
+		'div.dash_search', array(
+			'width' => $hg->size('4M-g'),
+			'margin-top' => $hg->size('3mg')
+	));
+	
+	$this->Decorator->rule(
+		'div.dash_search input', array(
+			'margin-top' => $vg->size('-6m-2u')
+	));
+	
+	$this->Decorator->rule(
+		'div.dash_search input, div.dash_search label', array(
+			'width' => $hg->size('4M-1.6g'),
+			'border' => sprintf('%s solid %s', $u->t(1), $palette['input_borders']->write()),
+			'height' => $vg->size('6m'),
+			'line-height' => $vg->size('6m'),
+			'padding' => sprintf('0 %s', $vg->size('m')),
 			'font-style' => 'italic',
 			'font-size' => $vg->size(array('u' => $line_height* 11/18)),
 			'color'	=> $palette['input_fg']->write(),
-	));
-	
-	$this->Decorator->rule(
-		'.dash_additem.expanded, .dash_link_to_additem.expanded', array(
 			'display' => 'block'
 	));
 	
@@ -974,21 +998,6 @@
 			'border-bottom' => $u->t(1) . ' solid black',
 			'padding-bottom' => $vg->size(array('g' => 0.8)),
 			'height' => $vg->size(array('m' => 12)),
-	));
-	
-	$this->Decorator->rule(
-		'div.dash_additem div', array(
-			'margin-left' => $hg->size(array('g' => 1)),
-			'padding-top' => $hg->size(array('m' => 1))
-	));
-	
-	$this->Decorator->rule(
-		'.dash_additem h3', array(
-			'font-size' => $vg->size(array('u' => $line_height* 13/18)),
-			'display' => 'inline',
-			'margin-right' => $hg->size(array('m' => 1)),
-			'text-transform' => 'uppercase',
-			'letter-spacing' => $letterSpacing
 	));
 	
 	$this->Decorator->rule(
