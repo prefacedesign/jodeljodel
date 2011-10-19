@@ -69,18 +69,43 @@ class AppController extends Controller {
 			));
 		*/
 		
-		$m = Configure::read('jj.modules');
-		if (isset($m[$this->params['plugin']]))
-			$controller = (!empty($m[$this->params['plugin']]['prefix']) ? $m[$this->params['plugin']]['prefix'] . '_' : '') . Inflector::pluralize($m[$this->params['plugin']]['plugin']);
+		$curModule = array();
+		if ($this->params['plugin'])
+		{
+			$curModule = Configure::read('jj.modules.'.$this->params['plugin']);
+			if (empty($curModule))
+			{
+				$module = split('_', $this->params['plugin']);
+				if (isset($module[1]))
+					$curModule = Configure::read('jj.modules.'.$module[1]);
+			}
+		}
+		if (!empty($curModule))
+		{
+			list($plugin, $model) = pluginSplit($curModule['model']);
+			if (!isset($curModule['viewUrl']))
+				$curModule['viewUrl'] = array();
+			if (!is_array($curModule['viewUrl']))
+			{
+				trigger_error('BackstageTypeBricklayerHelper::moduleView() - `viewUrl` configuration must be an array.');
+				return false;
+			}
+			
+			$plugin = Inflector::underscore($plugin);
+			
+			$standardUrl = $curModule['viewUrl'] + array(
+				'plugin' => $plugin, 
+				'controller' => Inflector::pluralize($plugin),
+				'action' => 'view'
+			);
+		}
 		else
-			$controller = 'controller';
-		$standardUrl = array(
-			'controller' => $controller,
-			'action' => 'view'
-		);
-		
-		if (isset($m[$this->params['plugin']]['viewUrl']))
-			$standardUrl = am($standardUrl, $m[$this->params['plugin']]['viewUrl']);
+		{
+			$standardUrl = array(
+				'controller' => 'controller',
+				'action' => 'view'
+			);
+		}
 		
 		if ($this->params['action'] == $standardUrl['action'] && $this->params['controller'] == $standardUrl['controller'])
 		{
