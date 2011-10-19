@@ -14,8 +14,8 @@
 		if ($this->Paginator->hasPrev())
 			echo $this->Paginator->prev('<');	
 		echo $this->Paginator->numbers(array('modulus' => 9, 'separator' => ''));
-		if ($this->Paginator->hasPrev())
-			echo $this->Paginator->prev('>');
+		if ($this->Paginator->hasNext())
+			echo $this->Paginator->next('>');
 		echo $this->Paginator->last('>>');
 	echo $this->Bl->ediv();
 	
