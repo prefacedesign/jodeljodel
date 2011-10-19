@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-10-14 21:17+0000\n"
+"POT-Creation-Date: 2011-10-19 12:17+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -66,27 +66,27 @@ msgstr ""
 msgid "PieFile - Download file:"
 msgstr ""
 
-#: \plugins\pie_image\views\elements\pie_image.ctp:39
+#: \plugins\pie_image\views\elements\pie_image.ctp:43
 msgid "PieImage.file_id label"
 msgstr ""
 
-#: \plugins\pie_image\views\elements\pie_image.ctp:40
+#: \plugins\pie_image\views\elements\pie_image.ctp:44
 msgid "PieImage.file_id instructions"
 msgstr ""
 
-#: \plugins\pie_image\views\elements\pie_image.ctp:52
+#: \plugins\pie_image\views\elements\pie_image.ctp:56
 msgid "PieImage.title label"
 msgstr ""
 
-#: \plugins\pie_image\views\elements\pie_image.ctp:53
+#: \plugins\pie_image\views\elements\pie_image.ctp:57
 msgid "PieImage.title instructions"
 msgstr ""
 
-#: \plugins\pie_image\views\elements\pie_image.ctp:62
+#: \plugins\pie_image\views\elements\pie_image.ctp:66
 msgid "PieImage.subtitle label"
 msgstr ""
 
-#: \plugins\pie_image\views\elements\pie_image.ctp:63
+#: \plugins\pie_image\views\elements\pie_image.ctp:67
 msgid "PieImage.subtitle instructions"
 msgstr ""
 

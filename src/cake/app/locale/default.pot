@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-10-14 21:17+0000\n"
+"POT-Creation-Date: 2011-10-19 12:17+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -50,19 +50,19 @@ msgstr ""
 #: \plugins\backstage\views\elements\language_edit_select.ctp:35
 #: \plugins\backstage\views\elements\language_show_edited_language.ctp:35
 #: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:52;66
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1505
+#: \plugins\burocrata\views\helpers\buro_burocrata.php:1506
 msgid "anchorList or"
 msgstr ""
 
-#: \plugins\corktile\models\cork_corktile.php:77
+#: \plugins\corktile\models\cork_corktile.php:89
 msgid "CorkCorktile Model: Could not save the CorkContent"
 msgstr ""
 
-#: \plugins\corktile\models\cork_corktile.php:93
+#: \plugins\corktile\models\cork_corktile.php:105
 msgid "CorkCorktile Model: Could not save the Cork meta data"
 msgstr ""
 
-#: \plugins\corktile\models\cork_corktile.php:114
+#: \plugins\corktile\models\cork_corktile.php:124
 msgid "CorkCorktile Model: Could not update the Cork meta data"
 msgstr ""
 

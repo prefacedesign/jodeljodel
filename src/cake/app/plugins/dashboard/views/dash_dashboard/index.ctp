@@ -87,26 +87,6 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 			echo $this->Bl->anchor(array(), array('url' => ''), __d('dashboard','Open item list',true));
 		echo $this->Bl->ediv();
 		
-		
-		
-		// SEARCH INPUT
-		
-		$this->Html->scriptBlock($this->Js->domReady("
-			new SearchInput('dash_search');
-		"), array('inline' => false));
-		
-		echo $this->Bl->sdiv(array('class' => array('dash_search')));
-			echo $form->input('dash_search', array('label' => __d('dashboard','or search for a content previously inserted',true)));
-			echo $ajax->observeField('dash_search', 
-				array(
-					'url' => array('action' => 'search'),
-					'frequency' => 2.5,
-					'loading' => "$('dashboard_table').setLoading(); ",
-					'complete' => "$('dashboard_table').unsetLoading();",
-					'update' => 'dashboard_table'
-				) 
-			); 
-		echo $this->Bl->ediv();
 		echo $bl->floatBreak();
 		
 	echo $this->Bl->eboxContainer();
@@ -115,86 +95,29 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 		echo $this->Bl->sdiv(array('class' => array('dash_filter')));
 			echo $this->Bl->sdiv(array('id' => 'dash_filter_list'));
 				echo $this->Bl->sdiv(array('class' => 'filters'));
-					echo $this->Bl->h4Dry(__d('dashboard','Type', true));
-					$linkFilters = array();
+				
+					// SEARCH INPUT		
+					$this->Html->scriptBlock($this->Js->domReady("
+						new SearchInput('dash_search');
+					"), array('inline' => false));
 					
-					$modulesCount = 0;
-					foreach(Configure::read('jj.modules') as $moduleName => $module)
-					{
-						if (isset($module['plugged']) || $moduleName == 'corktile') 
-						{
-							$curSettings = isset($itemSettings[$moduleName]) ? $itemSettings[$moduleName] : $itemSettings['default'];
-							if ((in_array('dashboard', $module['plugged']) && in_array('create', $curSettings['actions'])) || $moduleName == 'corktile')
-								$modulesCount++;
-
-						}
-					}
-					foreach(Configure::read('jj.modules') as $moduleName => $module)
-					{
-						if (isset($module['plugged']) || $moduleName == 'corktile')
-						{
-							$curSettings = isset($itemSettings[$moduleName]) ? $itemSettings[$moduleName] : $itemSettings['default'];
-							if ((in_array('dashboard', $module['plugged']) && in_array('create', $curSettings['actions'])) || $moduleName == 'corktile')
-							{
-								$class = '';
-								if ($filter == $moduleName)
-									$class = 'selected';
-								$filterLink = $ajax->link(__($module['humanName'], true), 			
-									array(
-										'plugin' => 'dashboard',
-										'controller' => 'dash_dashboard',
-										'action' => 'filter',
-										$moduleName
-									), 
-									array(
-										'before' => "$('dashboard_table').setLoading();",
-										'complete' => "
-											$('dashboard_table').unsetLoading();
-											for (var i = 1; i <= ". ($modulesCount * 2) ."; i++) {
-												$('dash_filter_list').down('.filters', 0).down(i).removeClassName('selected');
-												i++;
-											}
-											$('filter_all').removeClassName('selected');
-											$('filter_".$moduleName."').addClassName('selected');
-										",
-										'id' => 'filter_'.$moduleName,
-										'class' => $class,
-										'update' => 'dashboard_table'
-									)
-								);
-								$linkFilters[] = $filterLink;
-							}
-
-						}
-					}
-					$class = '';
-					if ($filter == 'all')
-						$class = 'selected';
-					$filterLink = $ajax->link(__d('dashboard','Show All', true), 			
-						array(
-							'plugin' => 'dashboard',
-							'controller' => 'dash_dashboard',
-							'action' => 'filter',
-							'all'
-						), 
-						array(
-							'before' => "$('dashboard_table').setLoading();",
-							'complete' => "
-								$('dashboard_table').unsetLoading();
-								for (var i = 1; i < ". ($modulesCount*2) ."; i++) {
-									$('dash_filter_list').down('.filters', 0).down(i).removeClassName('selected');
-									i++;
-								}
-								$('filter_all').addClassName('selected');
-							",
-							'id' => 'filter_all',
-							'class' => $class,
-							'update' => 'dashboard_table'
-						)
-					);
-					$linkFilters[] = $filterLink;
-					echo $this->Text->toList($linkFilters, ' ', ' ');
+					echo $this->Bl->h4Dry(__d('dashboard','Text', true));
+					
+					echo $this->Bl->sdiv(array('class' => array('dash_search')));
+						echo $form->input('dash_search', array('label' => __d('dashboard','or search for a content previously inserted',true)));
+						echo $ajax->observeField('dash_search', 
+							array(
+								'url' => array('action' => 'search'),
+								'frequency' => 2.5,
+								'loading' => "$('dashboard_table').setLoading(); ",
+								'complete' => "$('dashboard_table').unsetLoading();",
+								'update' => 'dashboard_table'
+							) 
+						); 
+					echo $this->Bl->ediv();
+					echo $bl->floatBreak();
 				echo $this->Bl->ediv();
+				
 				
 				echo $this->Bl->sdiv(array('class' => 'filters'));
 					echo $this->Bl->h4Dry(__d('dashboard','Status', true));
@@ -261,6 +184,90 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 					$linkFilters[] = $filterLink;
 					echo $this->Text->toList($linkFilters, ' ', ' ');
 				echo $this->Bl->ediv();
+				echo $bl->floatBreak();
+				echo $this->Bl->sdiv(array('class' => 'filters'));
+					
+					echo $this->Bl->h4Dry(__d('dashboard','Type', true));
+					$linkFilters = array();
+					
+					$modulesCount = 0;
+					foreach(Configure::read('jj.modules') as $moduleName => $module)
+					{
+						if (isset($module['plugged']) || $moduleName == 'corktile') 
+						{
+							$curSettings = isset($itemSettings[$moduleName]) ? $itemSettings[$moduleName] : $itemSettings['default'];
+							if ((in_array('dashboard', $module['plugged']) && in_array('create', $curSettings['actions'])) || $moduleName == 'corktile')
+								$modulesCount++;
+
+						}
+					}
+					foreach(Configure::read('jj.modules') as $moduleName => $module)
+					{
+						if (isset($module['plugged']) || $moduleName == 'corktile')
+						{
+							$curSettings = isset($itemSettings[$moduleName]) ? $itemSettings[$moduleName] : $itemSettings['default'];
+							if ((in_array('dashboard', $module['plugged']) && in_array('create', $curSettings['actions'])) || $moduleName == 'corktile')
+							{
+								$class = '';
+								if ($filter == $moduleName)
+									$class = 'selected';
+								$filterLink = $ajax->link(__($module['humanName'], true), 			
+									array(
+										'plugin' => 'dashboard',
+										'controller' => 'dash_dashboard',
+										'action' => 'filter',
+										$moduleName
+									), 
+									array(
+										'before' => "$('dashboard_table').setLoading();",
+										'complete' => "
+											$('dashboard_table').unsetLoading();
+											for (var i = 1; i <= ". ($modulesCount * 2) ."; i++) {
+												$('dash_filter_list').down('.filters', 2).down(i).removeClassName('selected');
+												i++;
+											}
+											$('filter_all').removeClassName('selected');
+											$('filter_".$moduleName."').addClassName('selected');
+										",
+										'id' => 'filter_'.$moduleName,
+										'class' => $class,
+										'update' => 'dashboard_table'
+									)
+								);
+								$linkFilters[] = $filterLink;
+							}
+
+						}
+					}
+					$class = '';
+					if ($filter == 'all')
+						$class = 'selected';
+					$filterLink = $ajax->link(__d('dashboard','Show All', true), 			
+						array(
+							'plugin' => 'dashboard',
+							'controller' => 'dash_dashboard',
+							'action' => 'filter',
+							'all'
+						), 
+						array(
+							'before' => "$('dashboard_table').setLoading();",
+							'complete' => "
+								$('dashboard_table').unsetLoading();
+								for (var i = 1; i < ". ($modulesCount*2) ."; i++) {
+									$('dash_filter_list').down('.filters', 2).down(i).removeClassName('selected');
+									i++;
+								}
+								$('filter_all').addClassName('selected');
+							",
+							'id' => 'filter_all',
+							'class' => $class,
+							'update' => 'dashboard_table'
+						)
+					);
+					$linkFilters[] = $filterLink;
+					echo $this->Text->toList($linkFilters, ' ', ' ');
+				echo $this->Bl->ediv();
+					
 				echo $this->Bl->floatBreak();
 			echo $this->Bl->ediv();
 		echo $this->Bl->ediv();

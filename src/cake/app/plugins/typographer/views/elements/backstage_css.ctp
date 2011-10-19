@@ -1,4 +1,15 @@
-﻿<?php
+<?php
+
+	$this->Decorator->rule(
+		'.space_tag', array(
+			'text-transform' => 'uppercase',
+			'border-radius' => '4px',
+			'padding' => '0 4px',
+			'font-size' => $u->t($line_height * 11/18),
+			'height' => $u->t($line_height),
+			'display' => 'inline-block',
+			'vertical-align' => 'bottom'
+	));
 
 	$this->Decorator->rule(
 		'html', array(
@@ -605,9 +616,9 @@
 			'height' => $vg->size(array('g' => 5)),
 			'background-image' => "url('". $ig->url(
 				array(
-						'w' => $hg->size(array('g' => (5/2)*3.743)),
-						'h' => $hg->size(array('g' => 5/2)),
-						'iw' => 826,
+						'w' => $hg->size(array('u' => 1600/4.844), false),
+						'h' => $hg->size(array('g' => 5/2), false),
+						'iw' => 1600,
 						'ih' => 218,
 						'base_name' => 'backstage_site_logo',
 						'layers' => array(
@@ -675,7 +686,8 @@
 			'width' => 'auto',
 			'background-color' => $palette['bg']->write(),
 			'border-top' => $u->t(1) . ' solid ' . $palette['menu_border']->write(),
-			'padding' => $vg->size(array('g' => 1)) . ' 0 ' . $vg->size(array('g' => 2)) . ' 0'
+			'padding' => $vg->size(array('g' => 1)) . ' 0 ' . $vg->size(array('g' => 2)) . ' 0',
+			'position' => 'relative'
 		)
 	);
 	
@@ -858,8 +870,8 @@
 	$this->Decorator->rule(
 		'.pagination', array(
 			'position' => 'absolute',
-			'right' => 0,
-			'top' => $u->t(-109),
+			'right' => $hg->size('g'),
+			'top' => $u->t(74),
 			'z-index' => 1
 	));
 	
@@ -972,7 +984,9 @@
 	$this->Decorator->rule(
 		'div.dash_search', array(
 			'width' => $hg->size('4M-g'),
-			'margin-top' => $hg->size('3mg')
+			'float' => 'left',
+			'margin-top' => $vg->size('-m-2u'),
+			'height' => $vg->size('8m')
 	));
 	
 	$this->Decorator->rule(
@@ -997,7 +1011,7 @@
 		'div.dash_toolbox', array(
 			'border-bottom' => $u->t(1) . ' solid black',
 			'padding-bottom' => $vg->size(array('g' => 0.8)),
-			'height' => $vg->size(array('m' => 12)),
+			'height' => $vg->size(array('m' => 4)),
 	));
 	
 	$this->Decorator->rule(
@@ -1013,11 +1027,13 @@
 			'margin-right' => $hg->size(array('g' => 1))
 	));
 	
+	
 	$this->Decorator->rule(
 		'#dash_filter_list a', array(
 			'color' => $palette['text']->write(),
 			'border-bottom' => 'none',
 			'background-color' => $palette['bg']->write(),
+			'margin-right' => $hg->size(array('m' => 1))
 	));
 	
 	$this->Decorator->rule(
@@ -1032,7 +1048,8 @@
 			'display' => 'inline',
 			'margin-right' => $hg->size(array('m' => 1)),
 			'text-transform' => 'uppercase',
-			'letter-spacing' => $letterSpacing
+			'letter-spacing' => $letterSpacing,
+			'float' => 'left'
 	));
 	
 	$border_size = 1;
@@ -1285,7 +1302,6 @@
 	$this->Decorator->rule(
 		'#dashboard_table', array(
 			'clear' => 'both',
-			'position' => 'relative'
 	));
 	
 	//First IE specific:
