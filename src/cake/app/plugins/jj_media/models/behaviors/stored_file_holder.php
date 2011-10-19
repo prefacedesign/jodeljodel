@@ -66,6 +66,49 @@ class StoredFileHolderBehavior extends ModelBehavior
 	}
 
 /**
+ * beforeSave callback
+ * 
+ * @access public
+ * @param array $options
+ * @return true Always return true.
+ */
+	function beforeSave(&$Model, $options)
+	{
+		$this->runtime[$Model->alias]['ids_bkp'] = false;
+		if ($Model->id)
+		{
+			$results = $Model->find('first', array(
+					'recursive' => -1, 
+					'fields' => $this->settings[$Model->alias]['keys'],
+					'conditions' => array($Model->alias . '.' . $Model->primaryKey => $Model->id)
+			));
+			$this->runtime[$Model->alias]['ids_bkp'] = $results[$Model->alias];
+		}
+		
+		return true;
+	}
+
+/**
+ * afterSave callback
+ * 
+ * If file_id changes, erases the old one.
+ * 
+ * @access public
+ * @param boolean $created If the register was created or was not.
+ */
+	function afterSave(&$Model, $created)
+	{
+		if (!$created && !empty($this->runtime[$Model->alias]['ids_bkp']))
+		{
+			$SfilStoredFile =& $this->getFileModel($Model);
+			
+			foreach ($this->settings[$Model->alias]['keys'] as $key)
+				if ($Model->data[$Model->alias][$key] != $this->runtime[$Model->alias]['ids_bkp'][$key])
+					$SfilStoredFile->delete($this->runtime[$Model->alias]['ids_bkp'][$key]);
+		}
+	}
+
+/**
  * beforeDelete
  * 
  * @access public
@@ -100,14 +143,26 @@ class StoredFileHolderBehavior extends ModelBehavior
 	{
 		if (!empty($this->runtime[$Model->alias]['delete']))
 		{
-			if (isset($Model->SfilStoredFile))
-				$SfilStoredFile =& $Model->SfilStoredFile;
-			else
-				$SfilStoredFile =& ClassRegistry::init('JjMedia.SfilStoredFile');
+			$SfilStoredFile =& $this->getFileModel($Model);
 			
 			foreach ($this->runtime[$Model->alias]['delete'] as $fk_id)
 				$SfilStoredFile->delete($fk_id);
 		}
 		unset($this->runtime[$Model->alias]['delete']);
+	}
+
+/**
+ * Function that searches the current model for the SfilStoredFile model, avoiding an ClassRegistry::init() call.
+ * 
+ * @access protected
+ */
+	protected function getFileModel(&$Model)
+	{
+		if (isset($Model->SfilStoredFile))
+			$SfilStoredFile =& $Model->SfilStoredFile;
+		else
+			$SfilStoredFile =& ClassRegistry::init('JjMedia.SfilStoredFile');
+		
+		return $SfilStoredFile;
 	}
 }
