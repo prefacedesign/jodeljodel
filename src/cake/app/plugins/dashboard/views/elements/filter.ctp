@@ -18,9 +18,6 @@
 			echo $this->Paginator->next('>');
 		echo $this->Paginator->last('>>');
 	echo $this->Bl->ediv();
-
-	$languages = Configure::read('Tradutore.languages');
-	$hasLanguages = count($languages) > 1;
 	
 	echo $this->Bl->ssmartTable(array('class' => 'dashboard'), array(
 		'automaticColumnNumberHeaderClasses' => true, 
@@ -32,10 +29,11 @@
 		),
 		'columns' => array(
 			1 => array('class' => 'first_col'),
-			($hasLanguages?7:6) => array('class' => 'last_col')
+			7 => array('class' => 'last_col')
 		)
 	));
 		
+		$languages = Configure::read('Tradutore.languages');
 		
 		$smartTableColumns = array();
 		$smartTableColumns[] = $this->Paginator->sort(__d('dashboard','Dashboard header: Type',true),'type');
@@ -44,7 +42,7 @@
 		$smartTableColumns[] = __d('dashboard','Dashboard header: Extra info',true);
 		$smartTableColumns[] = $this->Paginator->sort(__d('dashboard','Dashboard header: Created',true),'created');
 		$smartTableColumns[] = $this->Paginator->sort(__d('dashboard','Dashboard header: Modified',true),'modified');
-		if ($hasLanguages)
+		if (count($languages) > 1)
 			$smartTableColumns[] = __d('dashboard', 'Dashboard - dashboard header: Translations',true);
 		
 		echo $this->Bl->smartTableHeaderDry($smartTableColumns);
@@ -83,15 +81,14 @@
 			$smartTableRow[] = $item['DashDashboardItem']['name'];
 			$smartTableRow[] = $item['DashDashboardItem']['info'];
 			$smartTableRow[] = strftime("%d/%m/%y", strtotime($item['DashDashboardItem']['created']));
-			if ($hasLanguages)
+			if (count($languages) > 1)
 			{
 				$smartTableRow[] = strftime("%d/%m/%y", strtotime($item['DashDashboardItem']['modified']));
 				$smartTableRow[] = array(array(), array('escape' => false), $arrow . ' ' . $languageStr);
 			}
 			else
-			{
 				$smartTableRow[] = $arrow . strftime("%d/%m/%y", strtotime($item['DashDashboardItem']['modified']));
-			}
+			
 			
 			echo $this->Bl->smartTableRowDry($smartTableRow);
 	
@@ -101,6 +98,10 @@
 				array(array('id' => "item_info_$k"),array('colspan' => 4, 'rowspan' => 2), '')
 			));
 			
+			
+			echo $html->scriptBlock("
+				$$('tr.row_$row_number .arrow a')[0].observe('click', function (ev) { ev.stop(); dashToggleExpandableRow(" . $row_number . ");});
+			", array('inline' => true));
 			
 			// Does this entry has publishing and drafting capabilities?
 			if (in_array('publish_draft', $curSettings['actions']))
@@ -202,3 +203,5 @@
 		}
 		
 	echo $this->Bl->esmartTable();
+
+?>
