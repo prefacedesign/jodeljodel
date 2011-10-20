@@ -1,7 +1,45 @@
-
+/**
+ * Class that creates the interaction for the dashboard table.
+ * 
+ * @access public
+ */
 var Dashboard = Class.create({
-	initialize: function()
+	initialize: function(table_container)
 	{
+		this.table_container = $(table_container);
+		
+		this.toogleRowBinded = this.toogleRow.bind(this);
+		this.table_container.select('.arrow>a').invoke('observe', 'click', this.toogleRowBinded);
+		
+		this.currentExpandedRow = false;
+	},
+	toogleRow: function(ev)
+	{
+		ev.stop();
+		var row = ev.findElement('a').up('tr.main_info');
+		if (row == this.currentExpandedRow)
+		{
+			this.contract(row);
+			return;
+		}
+		
+		if (this.currentExpandedRow)
+			this.contract(this.currentExpandedRow);
+		this.expand(row);
+	},
+	expand: function (row)
+	{
+		row.addClassName('expanded');
+		row.next(0).addClassName('expanded');
+		row.next(1).addClassName('expanded');
+		this.currentExpandedRow = row;
+	},
+	contract: function (row)
+	{
+		row.removeClassName('expanded');
+		row.next(0).removeClassName('expanded');
+		row.next(1).removeClassName('expanded');
+		this.currentExpandedRow = false;
 	}
 });
 

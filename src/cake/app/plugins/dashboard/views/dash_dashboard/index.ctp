@@ -4,47 +4,9 @@ $this->Html->script('/dashboard/js/core.js', array('inline' => false));
 $this->Html->script('/dashboard/js/dashboard.js', array('inline' => false));
 
 $this->Html->scriptBlock($this->Js->domReady("
-	new Dashboard();
+	new Dashboard('dashboard_table');
 	new ItemList('dash_additem', 'dash_link_to_additem');
 "), array('inline' => false));
-
-$html->scriptBlock("
-	var theExpandedRow = false;
-
-	function dashExpandRow(row_number)
-	{
-		$$('tr.row_' + (0 + row_number))[0].addClassName('expanded');
-		$$('tr.row_' + (1 + row_number))[0].addClassName('expanded');
-		$$('tr.row_' + (2 + row_number))[0].addClassName('expanded');
-		theExpandedRow = row_number;
-	}
-	
-	function dashContractRow(row_number)
-	{
-		$$('tr.row_' + (0 + row_number))[0].removeClassName('expanded');
-		$$('tr.row_' + (1 + row_number))[0].removeClassName('expanded');
-		$$('tr.row_' + (2 + row_number))[0].removeClassName('expanded');
-		theExpandedRow = false;
-	}
-	
-	function dashToggleExpandableRow(row_number)
-	{
-		if (theExpandedRow === row_number)
-		{
-			dashContractRow(theExpandedRow);
-			return;
-		}
-		
-		if (theExpandedRow !== false)
-		{
-			dashContractRow(theExpandedRow);
-		}
-		
-		dashExpandRow(row_number);
-	}
-	
-	
-", array('inline' => false));
 
 echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 	echo $this->Bl->h1Dry(__d('dashboard','Page title - Dashboard', true));
