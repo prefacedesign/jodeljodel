@@ -420,6 +420,22 @@ class StatusBehavior extends ModelBehavior
 					$queryData['conditions'][$Model->alias.'.'.$options['field']] = $options['active'];
 			}
 		}
+		if (isset($Model->Behaviors->TempTemp->__settings))
+		{	
+			if (isset($this->__settings[$Model->alias]['publishing_status']))
+			{
+				if ($queryData['conditions'][$Model->alias.'.publishing_status'] != $this->__settings[$Model->alias]['publishing_status']['options'])
+				{
+					if (!isset($queryData['conditions'][$Model->alias.'.'.$Model->Behaviors->TempTemp->__settings[$Model->alias]['field']]))
+						$queryData['conditions'][$Model->alias.'.'.$Model->Behaviors->TempTemp->__settings[$Model->alias]['field']] = 0;
+				}
+			}
+			else
+			{
+				if (!isset($queryData['conditions'][$Model->alias.'.'.$Model->Behaviors->TempTemp->__settings[$Model->alias]['field']]))
+					$queryData['conditions'][$Model->alias.'.'.$Model->Behaviors->TempTemp->__settings[$Model->alias]['field']] = 0;
+			}
+		}
 	
 		if (!empty($sql_conditions))
 			$queryData['conditions'][] = $sql_conditions;
