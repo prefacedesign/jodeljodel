@@ -115,6 +115,7 @@ class CorkCorktile extends CorktileAppModel
 				'type' => $options['type'],
 				'content_id' => $corktileData['CorkCorktile']['content_id'],
 				'title' => isset($options['title']) ? $options['title'] : Inflector::humanize($options['key']),
+				'instructions' => isset($options['editorsRecommendations']) ? $options['editorsRecommendations'] : '',
 				'location' => isset($options['location']) ? $options['location'] : '',
 				'options' => $options['options'] //@todo Make this a behavior
 			));
