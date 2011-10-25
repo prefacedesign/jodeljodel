@@ -720,6 +720,7 @@
 			'height' => $vg->size(array('g' => 1.2)),
 			'background-color' => $palette['bg']->write(),
 			'color' => $palette['text']->write(),
+			'font-weight' => 'bold',
 			'margin-top' => $u->t(-6),
 			'padding-top' => $vg->size(array('m' => 1)),
 			'border' => $u->t(1) . ' solid ' . $palette['text']->write(),
