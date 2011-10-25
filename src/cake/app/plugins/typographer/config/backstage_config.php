@@ -16,6 +16,7 @@ $palette['bg_diagonal_lines']  = new Color(174,179,192);
 $palette['menu_border']        = new Color(155,153,146);
 $palette['selected_tab_bg']    = new Color(255,255,255);
 $palette['unselected_tab_bg']  = new Color(179,182,191);
+$palette['unselected_tab_text']  = new Color(239,237,237);
 $palette['meta_menu_bg']       = new Color(255,246,255);
 $palette['control_box_bg']     = new Color( 82, 80, 74);
 $palette['control_box_fg']     = new Color(255,255,255);

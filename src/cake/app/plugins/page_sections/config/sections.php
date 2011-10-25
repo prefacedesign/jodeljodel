@@ -276,6 +276,7 @@ $sections = array(
 					'controller' => 'user_users',
 					'action' => 'login'
 				),
+				'display' => false,
 				'acos' => array(),
 				'pageTitle' => array(null, __('Sections: login pageTitle',true)),
 				'headerCaption' => __('Sections: login headerCaption', true),
@@ -334,7 +335,7 @@ $sections = array(
 			'corktile_edit' => array(
 				'linkCaption' => __('Sections: corktile_edit linkCaption', true),
 				'url' => array(
-					'plugin' => 'cork',
+					'plugin' => 'corktile',
 					'controller' => 'cork_corktiles',
 					'action' => 'edit'
 				),
@@ -535,7 +536,7 @@ $sectionMap = array(
 		),
 	),
 	array(
-		'rule' => array('plugin' => 'cork', 'controller' => 'cork_corktiles', 'action' => 'edit'),
+		'rule' => array('plugin' => 'corktile', 'controller' => 'cork_corktiles', 'action' => 'edit'),
 		'location' => array('backstage','corktile_edit'),
 	),
 	array(

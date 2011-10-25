@@ -1,5 +1,5 @@
 <?php
-
+echo $bl->menu(array(), array('menuLevel' => 1));
 echo $this->Bl->sbox(array(), array('size'=> array('M' => 12, 'g' => -1)));
 
 	$editing = 'Editing a '. $moduleName;

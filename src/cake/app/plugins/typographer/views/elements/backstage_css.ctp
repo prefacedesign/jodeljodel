@@ -692,6 +692,42 @@
 	);
 	
 	$this->Decorator->rule(
+		'#content .menu',
+		array(
+			'position' => 'absolute',
+			'top' => $u->t(-21),
+			'left' => $hg->size(array('m' => 2))
+		)
+	);
+	
+	$this->Decorator->rule(
+		'#content .menu a',
+		array(
+			'float' => 'left',
+			'display' => 'block',
+			'height' => $vg->size(array('g' => 1)),
+			'background-color' => $palette['unselected_tab_bg']->write(),
+			'color' => $palette['unselected_tab_text']->write(),
+			'padding' => $vg->size(array('m' => 0.5)) . ' ' . $hg->size(array('g' => 0.5)) . ' 0 ' . $hg->size(array('g' => 0.5)),
+			'margin-right' => $hg->size(array('g' => 0.5)),
+			'border-bottom' => '0 !important'
+		)
+	);
+	
+	$this->Decorator->rule(
+		'#content .menu a.selected',
+		array(
+			'height' => $vg->size(array('g' => 1.2)),
+			'background-color' => $palette['bg']->write(),
+			'color' => $palette['text']->write(),
+			'margin-top' => $u->t(-6),
+			'padding-top' => $vg->size(array('m' => 1)),
+			'border' => $u->t(1) . ' solid ' . $palette['text']->write(),
+			'border-bottom' => '0 !important'
+		)
+	);
+	
+	$this->Decorator->rule(
 		'#footer div.box',
 		array(
 			'margin-top' => $vg->size(array('m' => 2))
