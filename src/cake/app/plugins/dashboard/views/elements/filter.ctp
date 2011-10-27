@@ -19,6 +19,12 @@
 		echo $this->Paginator->last('>>');
 	echo $this->Bl->ediv();
 	
+	$languages = Configure::read('Tradutore.languages');
+	if (count($languages) > 1)
+		$totalCols = 7;
+	else
+		$totalCols = 6;
+		
 	echo $this->Bl->ssmartTable(array('class' => 'dashboard'), array(
 		'automaticColumnNumberHeaderClasses' => true, 
 		'automaticRowNumberClasses' => true, 
@@ -29,11 +35,9 @@
 		),
 		'columns' => array(
 			1 => array('class' => 'first_col'),
-			7 => array('class' => 'last_col')
+			$totalCols => array('class' => 'last_col')
 		)
 	));
-		
-		$languages = Configure::read('Tradutore.languages');
 		
 		$smartTableColumns = array();
 		$smartTableColumns[] = $this->Paginator->sort(__d('dashboard','Dashboard header: Type',true),'type');
@@ -90,7 +94,7 @@
 				$smartTableRow[] = $arrow . strftime("%d/%m/%y", strtotime($item['DashDashboardItem']['modified']));
 			
 			
-			echo $this->Bl->smartTableRowDry($smartTableRow);
+			echo $this->Bl->smartTableRow(array('id' => 'row_'.$row_number), array(), $smartTableRow);
 	
 			//@todo Substitute this with an AJAX call.
 			echo $this->Bl->smartTableRowDry(array(
@@ -98,10 +102,9 @@
 				array(array('id' => "item_info_$k"),array('colspan' => 4, 'rowspan' => 2), '')
 			));
 			
-			
-			echo $html->scriptBlock("
-				$$('tr.row_$row_number .arrow a')[0].observe('click', function (ev) { ev.stop(); dashToggleExpandableRow(" . $row_number . ");});
-			", array('inline' => true));
+			$this->Html->scriptBlock($this->Js->domReady("
+				new TableRow('row_$row_number');
+			"), array('inline' => false));
 			
 			// Does this entry has publishing and drafting capabilities?
 			if (in_array('publish_draft', $curSettings['actions']))
