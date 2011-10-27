@@ -177,7 +177,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 								);
 								$linkFilters[] = $filterLink;
 								
-								if ($filter == $module)
+								if ($filter == $moduleName)
 									$selected = true;
 								else
 									$selected = false;
