@@ -155,6 +155,8 @@ class StatusBehavior extends ModelBehavior
 				if (!isset($default_config['active']))
 					$default_config['active'] = $default_config['options'];
 				$this->__settings[$Model->alias][$default_config['field']] = array_merge($this->__defaults, $default_config);
+				if (isset($default_config['default']))
+					$this->__settings[$Model->alias]['default'] = $default_config['default'];
 			}
 		}
 		foreach($config as $index => $data)
@@ -171,6 +173,8 @@ class StatusBehavior extends ModelBehavior
 					if (!isset($default_config[$data]['active']))
 						$default_config[$data]['active'] = $default_config[$data]['options'];
 					$this->__settings[$Model->alias][$data] = array_merge($this->__defaults, $default_config[$data]);
+					if (isset($default_config[$data]['default']))
+						$this->__settings[$Model->alias][$data]['default'] = $default_config[$data]['default'];
 				}
 			}
 			else
@@ -441,6 +445,27 @@ class StatusBehavior extends ModelBehavior
 			$this->__settings = $oldSettings;
 		return $queryData;
 	}
+	
+	
+	
+	/**
+	 * Run before a model is about to be save, put default status in new registers if no status is passed
+	 *
+	 * @param object $Model Model about to be found.
+	 * @param array  $queryData Data used to execute this query, i.e. conditions, order, etc.
+	 * @return array Return an array with data used to execute query
+	 * @access public
+	 */
+	function beforeSave(&$Model)
+    {	
+		if (!isset($Model->data[$Model->name]['id']))
+		{
+			foreach($this->__settings[$Model->name] as $settings)
+				if (!isset($Model->data[$Model->name][$settings['field']]) && isset($settings['default']))
+					$Model->data[$Model->name][$settings['field']] = $settings['default'];
+		}
+		return true;
+    }
 	
 	function afterFindCascata(&$Model, $results, $primary = false)
 	{

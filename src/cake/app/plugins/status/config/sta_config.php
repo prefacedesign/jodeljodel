@@ -10,6 +10,6 @@ Configure::write('StatusBehavior.options.etapa', array('options' => array('verde
 Configure::write('StatusBehavior.options.default', array('field' => 'status', 'options' => array('rascunho','publicado'), 'active' => array('publicado')));
 
 // Default
-Configure::write('StatusBehavior.options.publishing_status', array('field' => 'publishing_status', 'options' => array('published','draft'), 'active' => array('published', 'draft')));
+Configure::write('StatusBehavior.options.publishing_status', array('field' => 'publishing_status', 'options' => array('published','draft'), 'active' => array('published', 'draft'), 'default' => 'published'));
 
 ?>
