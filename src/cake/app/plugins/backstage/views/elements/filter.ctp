@@ -101,9 +101,9 @@
 			));
 			
 			
-			$this->Html->scriptBlock($this->Js->domReady("
+			echo $this->Html->scriptBlock("
 				new TableRow('row_$row_number');
-			"), array('inline' => false));
+			");
 			
 			// Does this entry has publishing and drafting capabilities?
 			if (in_array('publish_draft', $backstageSettings['actions']))

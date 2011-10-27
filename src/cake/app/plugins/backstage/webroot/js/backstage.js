@@ -42,7 +42,7 @@ var TableRow = Class.create({
 	{
 		ev.stop();
 
-		if (self.theExpandedRow)
+		if ($(self.theExpandedRow))
 		{
 			$(self.theExpandedRow).removeClassName('expanded');
 			$(self.theExpandedRow).next().removeClassName('expanded');

@@ -102,9 +102,9 @@
 				array(array('id' => "item_info_$k"),array('colspan' => 4, 'rowspan' => 2), '')
 			));
 			
-			$this->Html->scriptBlock($this->Js->domReady("
+			echo $this->Html->scriptBlock("
 				new TableRow('row_$row_number');
-			"), array('inline' => false));
+			");
 			
 			// Does this entry has publishing and drafting capabilities?
 			if (in_array('publish_draft', $curSettings['actions']))
