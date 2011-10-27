@@ -59,3 +59,40 @@ var TableRow = Class.create({
 			self.theExpandedRow = false;
 	}
 });
+
+
+/**
+ * 
+ * 
+ * @access 
+ */
+var StatusFilter = Class.create({
+	lastStatus: "",
+	initialize: function(status_id, selected)
+	{
+		this.status = $(status_id);
+		this.status.observe('click', this.selectStatus.bind(this));
+		
+		if(selected != '')
+		{
+			self.lastStatus = status_id;
+			this.status.addClassName('selected');
+		}
+	},
+	selectStatus: function(ev)
+	{
+		ev.stop();
+
+		if (self.lastStatus)
+		{
+			$(self.lastStatus).removeClassName('selected');
+		}
+		if (self.lastStatus != this.status.id)
+		{
+			self.lastStatus = this.status.id;
+			this.status.addClassName('selected');
+		}
+		else
+			self.lastStatus = false;
+	}
+});

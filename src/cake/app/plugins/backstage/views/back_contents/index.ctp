@@ -54,10 +54,6 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 					$modulesCount = count($backstageSettings['statusOptions']);
 					foreach($backstageSettings['statusOptions'] as $module)
 					{
-						$class = '';
-						if ($filter_status == $module)
-							$class = 'selected';
-						
 						$filterLink = $ajax->link(__d('dashboard', 'Dashboard status: ' . $module, true), 			
 							array(
 								'plugin' => 'backstage',
@@ -68,26 +64,20 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 							), 
 							array(
 								'before' => "$('backstage_custom_table').setLoading();",
-								'complete' => "
-									$('backstage_custom_table').unsetLoading();
-									for (var i = 1; i < ". ($modulesCount*2) ."; i++) {
-										$('dash_filter_list').down('.filters', 1).down(i).removeClassName('selected');
-										i++;
-									}
-									$('filter_published_draft_all').removeClassName('selected');
-									$('filter_published_draft_".$module."').addClassName('selected');
-								",
+								'complete' => "$('backstage_custom_table').unsetLoading();",
 								'id' => 'filter_published_draft_'.$module,
-								'class' => $class,
 								'update' => 'backstage_custom_table'
 							)
 						);
 						$linkFilters[] = $filterLink;
+						if ($filter_status == $module)
+							$selected = true;
+						else
+							$selected = false;
+						$this->Html->scriptBlock($this->Js->domReady("
+							new StatusFilter('filter_published_draft_$module', '$selected');
+						"), array('inline' => false));
 					}
-					$class = '';
-					if ($filter_status == 'all' || empty($filter_status))
-						$class = 'selected';
-					
 					$filterLink = $ajax->link(__d('dashboard','Show All', true), 			
 						array(
 							'plugin' => 'backstage',
@@ -98,20 +88,19 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 						), 
 						array(
 							'before' => "$('backstage_custom_table').setLoading();",
-							'complete' => "
-								$('backstage_custom_table').unsetLoading();
-								for (var i = 1; i < ". ($modulesCount*2) ."; i++) {
-									$('dash_filter_list').down('.filters', 1).down(i).removeClassName('selected');
-									i++;
-								}
-								$('filter_published_draft_all').addClassName('selected');
-							",
+							'complete' => "$('backstage_custom_table').unsetLoading();",
 							'id' => 'filter_published_draft_all',
-							'class' => $class,
 							'update' => 'backstage_custom_table'
 						)
 					);
 					$linkFilters[] = $filterLink;
+					if ($filter_status == 'all' || empty($filter_status))
+						$selected = true;
+					else
+						$selected = false;
+					$this->Html->scriptBlock($this->Js->domReady("
+						new StatusFilter('filter_published_draft_all', '$selected');
+					"), array('inline' => false));
 					echo $this->Text->toList($linkFilters, ' ', ' ');
 				echo $this->Bl->ediv();
 				echo $bl->floatBreak();
