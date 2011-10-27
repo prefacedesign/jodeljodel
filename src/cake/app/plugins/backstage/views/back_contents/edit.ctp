@@ -1,5 +1,7 @@
 <?php
-echo $bl->menu(array(), array('menuLevel' => 1));
+if (isset($location))
+	$ourLocation = $location;
+echo $bl->menu(array(), array('menuLevel' => 1),$ourLocation);
 echo $this->Bl->sbox(array(), array('size'=> array('M' => 12, 'g' => -1)));
 
 	$editing = 'Editing a '. $moduleName;
@@ -62,7 +64,10 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 			'content' => __d('backstage', 'Your data cannot be saved - TEXT.', true)
 		)
 	);
-	$dashboard_url = $this->Html->url(array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'index'));
+	if(!isset($location))
+		$dashboard_url = $this->Html->url(array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'index'));
+	else
+		$dashboard_url = $this->Html->url(array('plugin' => 'backstage', 'controller' => 'back_contents', 'action' => 'index', $moduleName));
 	$view_url = $this->Html->url($this->Bl->moduleViewURL($moduleName, $this->data[$modelName]['id']));
 
 	echo $this->Popup->popup('notice',

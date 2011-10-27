@@ -48,7 +48,7 @@
 		'person' => array(
 			'model' => 'BurocrataUser.Person',
 			'humanName' => __('MODULE Person human name', true),
-			'plugged' => array('dashboard','backstage') //the tools and functionality it plugs into.
+			'plugged' => array('backstage','backstage_custom') //the tools and functionality it plugs into.
 		),
 		'gallery' => array(
 			'model' => 'BurocrataUser.Galery',

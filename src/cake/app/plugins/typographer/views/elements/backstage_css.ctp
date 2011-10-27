@@ -834,21 +834,21 @@
 	);
 	
 	$this->Decorator->rule(
-		'.dashboard th a, .control_box a', array(
+		'.dashboard th a, .control_box a, table.backstage th a', array(
 			'color' => $palette['control_box_fg']->write(),
 			'border-color' =>  $palette['control_box_fg']->write()
 		)
 	);
 	
 	$this->Decorator->rule(
-		'.dashboard th a:visited, .control_box a:visited', array(
+		'.dashboard th a:visited, .control_box a:visited, table.backstage th a:visited', array(
 			'color' => $palette['control_box_fg']->write(),
 			'border-color' =>  $palette['control_box_fg']->write()			
 		)
 	);
 	
 	$this->Decorator->rule(
-		'.dashboard th a:hover, .dashboard th a:active, .control_box a:hover, .control_box a:active', array(
+		'.dashboard th a:hover, .dashboard th a:active, .control_box a:hover, .control_box a:active, table.backstage th a:hover, table.backstage th a:active', array(
 			'color' => $palette['control_box_bg']->write() . ' !important',
 			'background-color' => $palette['control_box_fg']->write() . ' !important',
 			'border-color' =>  $palette['control_box_bg']->write() . ' !important'
@@ -1337,28 +1337,44 @@
 	));
 	
 	$this->Decorator->rule(
+		'table.backstage', array(
+			'border-spacing' => 0,
+			'border-collapse' => 'collapse',
+			'text-align' => 'left',
+			'border-bottom' => $outer_border,
+			'border-top' => $outer_border,
+			'font-size' => $vg->size(array('u' => ($line_height * 11/18)))
+	));
+	
+	$this->Decorator->rule(
 		'#dashboard_table', array(
 			'clear' => 'both',
+	));
+	
+	$this->Decorator->rule(
+		'#backstage_custom_table', array(
+			'clear' => 'both',
+			'overflow' => 'auto'
 	));
 	
 	//First IE specific:
 	if ($browserInfo['name'] == 'Internet Explorer' && $browserInfo['version'] < 9)
 	{
 		$this->Decorator->rule(
-			'table.dashboard', array(
+			'table.dashboard, table.backstage', array(
 				'table-layout' => 'fixed',
 		));
 	}
 	
 	$this->Decorator->rule(
-		'table.dashboard th', array(
+		'table.dashboard th, table.backstage th', array(
 			'background-color' => $palette['control_box_bg']->write(),
 			'color' => $palette['control_box_fg']->write(),
 			'height' => $vg->size(array('m' => 6))
 	));
 	
 	$this->Decorator->rule(
-		'table.dashboard td, table.dashboard th', array(
+		'table.dashboard td, table.dashboard th, table.backstage td, table.backstage th', array(
 			'padding-left' => $u->t($cell_padding_left),
 			'padding-right' => $u->t($cell_padding_right),
 			'padding-bottom' => $vg->size(array('m'=> 1.5)),
@@ -1367,7 +1383,7 @@
 	));
 	
 	$this->Decorator->rule(
-		'table.dashboard tr', array(
+		'table.dashboard tr, table.backstage tr', array(
 			'border-left' => $outer_border,
 			'border-right' => $outer_border
 	));
@@ -1388,35 +1404,108 @@
 	));
 	
 	$this->Decorator->rule(
-		'table.dashboard tr.actions.expanded', array(
+		'table.dashboard tr.actions.expanded, table.backstage tr.actions.expanded', array(
 			'border-bottom' => $vg->size(array('u'=> 4)) . ' solid ' . $palette['internal_selection']->write()
 	));
 	
 	$this->Decorator->rule(
-		'table.dashboard tr.expanded', array(
+		'table.dashboard tr.expanded, table.backstage tr.expanded', array(
 			'border-left' => $hg->size(array('u'=> 4)) . ' solid ' . $palette['internal_selection']->write(),
 			'border-right' => $hg->size(array('u'=> 4)) . ' solid ' . $palette['internal_selection']->write()
 	));
 	
 	$this->Decorator->rule(
-		'table.dashboard tr.main_info, table.dashboard tr.actions', array(
+		'table.dashboard tr.main_info, table.dashboard tr.actions, table.backstage tr.main_info, table.backstage tr.actions', array(
 			'border-bottom' => $u->t($border_width) . ' dashed ' . $palette['text']->write()
 	));
 	
 	$this->Decorator->rule(
-		'table.dashboard td', array(
+		'table.dashboard td, table.backstage td', array(
 			'padding-top' => $vg->size(array('m'=> 2))
 	));
 	
 	$this->Decorator->rule(
-		'table.dashboard th', array(
+		'table.dashboard th, table.backstage th', array(
 			'padding-top' => $vg->size(array('m'=> 1.5)),
 			'border-right' => $u->t($border_width) . ' solid ' . $palette['control_box_fg']->write()
 	));
 	
 	$this->Decorator->rule(
-		'table.dashboard th.last_col', array(
+		'table.dashboard th.last_col, table.backstage th.last_col', array(
 			'border-right' => $u->t($border_width) . ' solid ' . $palette['text']->write()
+	));
+	
+	$this->Decorator->rule(
+		'table.backstage.w_3M', array(
+			'width' => $hg->size(array('M' => 3))
+	));
+	$this->Decorator->rule(
+		'table.backstage.w_4M', array(
+			'width' => $hg->size(array('M' => 4))
+	));
+	$this->Decorator->rule(
+		'table.backstage.w_5M', array(
+			'width' => $hg->size(array('M' => 5))
+	));
+	$this->Decorator->rule(
+		'table.backstage.w_6M', array(
+			'width' => $hg->size(array('M' => 6))
+	));
+	$this->Decorator->rule(
+		'table.backstage.w_7M', array(
+			'width' => $hg->size(array('M' => 7))
+	));
+	$this->Decorator->rule(
+		'table.backstage.w_8M', array(
+			'width' => $hg->size(array('M' => 8))
+	));
+	$this->Decorator->rule(
+		'table.backstage.w_9M', array(
+			'width' => $hg->size(array('M' => 9))
+	));
+	$this->Decorator->rule(
+		'table.backstage.w_10M', array(
+			'width' => $hg->size(array('M' => 10))
+	));
+	$this->Decorator->rule(
+		'table.backstage.w_11M', array(
+			'width' => $hg->size(array('M' => 11))
+	));
+	$this->Decorator->rule(
+		'table.backstage.w_12M', array(
+			'width' => $hg->size(array('M' => 12))
+	));
+	$this->Decorator->rule(
+		'table.backstage.w_13M', array(
+			'width' => $hg->size(array('M' => 13))
+	));
+	$this->Decorator->rule(
+		'table.backstage.w_14M', array(
+			'width' => $hg->size(array('M' => 14))
+	));
+	$this->Decorator->rule(
+		'table.backstage.w_15M', array(
+			'width' => $hg->size(array('M' => 15))
+	));
+	$this->Decorator->rule(
+		'table.backstage.w_16M', array(
+			'width' => $hg->size(array('M' => 16))
+	));
+	$this->Decorator->rule(
+		'table.backstage.w_17M', array(
+			'width' => $hg->size(array('M' => 17))
+	));
+	$this->Decorator->rule(
+		'table.backstage.w_18M', array(
+			'width' => $hg->size(array('M' => 18))
+	));
+	$this->Decorator->rule(
+		'table.backstage.w_19M', array(
+			'width' => $hg->size(array('M' => 19))
+	));
+	$this->Decorator->rule(
+		'table.backstage.w_20M', array(
+			'width' => $hg->size(array('M' => 20))
 	));
 	
 	$this->Decorator->rule(
@@ -1535,26 +1624,26 @@
 	));
 	
 	$this->Decorator->rule(
-		'table.dashboard a.link_button', array(
+		'table.dashboard a.link_button, table.backstage a.link_button', array(
 			'font-size' => $u->t($line_height * 13/18),
 			'padding-left' => $hg->size(array('m' => 1)),
 			'padding-right' => $hg->size(array('m' => 1))
 	));
 	
 	$this->Decorator->rule(
-		'table.dashboard tr.actions td, table.dashboard tr.actions td *', array(
+		'table.dashboard tr.actions td, table.dashboard tr.actions td *, table.backstage tr.actions td, table.backstage tr.actions td *', array(
 			'vertical-align' => 'text-bottom'
 	));
 	
 	$this->Decorator->rule(
-		'table.dashboard tr.actions td, table.dashboard tr.actions div', array(
+		'table.dashboard tr.actions td, table.dashboard tr.actions div, table.backstage tr.actions td, table.backstage tr.actions div', array(
 			'position' => 'relative',
 			'height' => '100%',
 			'bottom' => $hg->size(array('m' => 0.8))
 	)); 
 	
 	$this->Decorator->rule(
-		'table.dashboard th', array(
+		'table.dashboard th, table.backstage th', array(
 			'font-weight' => 'bold',
 			'text-transform' => 'uppercase',
 			'letter-spacing' => $letterSpacing

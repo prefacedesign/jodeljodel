@@ -8,6 +8,7 @@
  
 App::import('Core','ModelBehavior');
 App::import('Behavior','Status.Status');
+App::import('Config','Backstage.backstage');
 
 /**
  * SOME CLASS INFORMATIONS
@@ -32,6 +33,8 @@ class BackContentsController extends BackstageAppController
  * @var array
  */
     var $uses = array();
+	var $helpers = array('Text');
+	var $components = array('Session', 'RequestHandler');
 	
 /** 
  * Action to edit/create a model row. Model must have implemented
@@ -73,10 +76,200 @@ class BackContentsController extends BackstageAppController
                 $this->data = $Model->findBurocrata($id);
             else
                 $this->data = $Model->findById($id);
+				
+			$isPlugged = false;
+			foreach($config['plugged'] as $plugged)
+			{
+				if ($plugged == 'backstage_custom')
+					$isPlugged = true;
+			}
+			if ($isPlugged)
+				$this->set('location', array('backstage', $moduleName));
         }
         
 		$this->set(compact('contentPlugin', 'modelName', 'fullModelName', 'moduleName'));
     }
+	
+	function index($moduleName, $page = null)
+	{
+		$conditions = array();
+		$modules = Configure::read('jj.modules');
+		if (!isset($modules[$moduleName]))
+			trigger_error('BackContentsController::index - '.$moduleName.' not found in jj.modules') and die;
+		elseif (!isset($modules[$moduleName]['model']))
+			trigger_error('BackContentsController::index - '.$moduleName.'[`model`] not found in jj.modules') and die;
+		else
+		{
+			$isPlugged = false;
+			foreach($modules[$moduleName]['plugged'] as $plugged)
+			{
+				if ($plugged == 'backstage_custom')
+					$isPlugged = true;
+			}
+			if (!$isPlugged)
+				trigger_error('BackContentsController::index - '.$moduleName.' configured in jj.modules must have `backstage_custom` in plugged options') and die;
+			else
+			{
+				$backstageSettings = Configure::read('Backstage.itemSettings');
+				if (!isset($backstageSettings[$moduleName]))
+					trigger_error('BackContentsController::index - '.$moduleName.' configurations not found on backstage config') and die;
+				else
+				{
+					if (isset($this->params['named']['page']))
+						$this->Session->write('Backstage.page', $this->params['named']['page']);
+					else
+						$this->Session->write('Backstage.page', 0);
+						
+					if (isset($this->params['named']['page']))
+					{
+						$c = $this->Session->read('Backstage.searchOptions');
+						if ($c)
+							$conditions = $c;
+						else
+							$conditions = array();
+					}
+					else
+						$this->Session->write('Backstage.searchOptions', array());
+					
+					$limit = isset($backstageSettings[$moduleName]['limitSize']) ? $backstageSettings[$moduleName]['limitSize'] : 20;
+					$backstageModel = ClassRegistry::init(array('class' =>  $modules[$moduleName]['model']));
+
+					if (isset($backstageModel->Behaviors->TempTemp->__settings))
+						$conditions[$backstageModel->alias.'.'.$backstageModel->Behaviors->TempTemp->__settings[$backstageModel->alias]['field']] = 0;
+						
+					$status = $this->Session->read('Backstage.status');
+					if ($status != 'all' && !empty($status))
+						$conditions['publishing_status'] = $status;
+					
+					
+					if ($page)
+					{
+						$this->paginate = array(
+							$backstageModel->alias => array(
+								'limit' => $limit,
+								'page' => $page,
+								'contain' => false,
+								'order' => 'modified DESC',
+								'conditions' => $conditions
+							)
+						);
+					}
+					else
+					{
+						$this->paginate = array(
+							$backstageModel->alias => array(
+								'limit' => $limit,
+								'contain' => false,
+								'order' => 'modified DESC',
+								'conditions' => $conditions
+							)
+						);
+					}
+					
+					$this->set('backstageSettings', $backstageSettings[$moduleName]);
+					$this->set('moduleName', $moduleName);
+					$this->set('location', array('backstage', $moduleName));
+					$this->set('modelName', $backstageModel->alias);
+					$this->set('filter_status', $status);
+					$this->data = $this->paginate($backstageModel);
+					$this->helpers['Paginator'] = array('ajax' => 'Ajax');
+					
+					if($this->RequestHandler->isAjax()) {
+						$this->render('filter');            
+					}
+				}
+			}
+		}
+	}
+	
+	function filter_published_draft($status, $moduleName)
+	{
+		$this->Session->write('Backstage.status', $status);
+		$this->filter_and_search($moduleName);
+	}
+	
+	function after_delete($moduleName)
+	{
+		$page = $this->Session->read('page');
+		$this->index($moduleName, $page);
+	}
+	
+	function search($moduleName)
+	{
+		$backstageSettings = Configure::read('Backstage.itemSettings.'.$moduleName);
+		if (!empty($this->data['dash_search']))
+		{
+			$conditions['OR'] = array();
+			foreach($backstageSettings['columns'] as $col)
+				$conditions['OR'][] = array($col['field'] . ' LIKE' => '%'.$this->data['dash_search'].'%');
+		}
+		else
+			$conditions = array();
+		
+		$this->Session->write('Backstage.searchOptions', $conditions);
+		$this->filter_and_search($moduleName);
+	}
+	
+	
+	function filter_and_search($moduleName)
+	{
+		$c = $this->Session->read('Backstage.searchOptions');
+		if ($c)
+			$conditions = $c;
+		else
+			$conditions = array();
+		
+		$status = $this->Session->read('Backstage.status');
+		if ($status != 'all' && !empty($status))
+			$conditions['publishing_status'] = $status;
+		
+		$modules = Configure::read('jj.modules');
+		$backstageModel = ClassRegistry::init(array('class' =>  $modules[$moduleName]['model']));
+		$backstageSettings = Configure::read('Backstage.itemSettings');
+		$limit = isset($backstageSettings[$moduleName]['limitSize']) ? $backstageSettings[$moduleName]['limitSize'] : 20;
+		
+		if (isset($backstageModel->Behaviors->TempTemp->__settings))
+			$conditions[$backstageModel->alias.'.'.$backstageModel->Behaviors->TempTemp->__settings[$backstageModel->alias]['field']] = 0;
+			
+		$this->paginate = array(
+			$backstageModel->alias => array(
+				'limit' => $limit,
+				'contain' => false,
+				'order' => 'modified DESC',
+				'conditions' => $conditions
+			)
+		);
+			
+		
+		$this->data = $this->paginate($backstageModel);
+		$this->helpers['Paginator'] = array('ajax' => 'Ajax');
+		$this->set('backstageSettings', $backstageSettings[$moduleName]);
+		$this->set('moduleName', $moduleName);
+		$this->set('location', array('backstage', $moduleName));
+		$this->set('modelName', $backstageModel->alias);
+		$this->layout = 'ajax';
+		$this->render('filter', 'ajax');
+	}
+	
+	
+	function delete_item($moduleName, $id)
+	{
+		$this->view = 'JjUtils.Json';
+	
+		$modules = Configure::read('jj.modules');
+		$backstageModel = ClassRegistry::init(array('class' =>  $modules[$moduleName]['model']));
+		
+		if (method_exists($backstageModel, 'backDelete'))
+			$return = $backstageModel->backDelete($id);
+		else
+			$return = $backstageModel->delete($id);
+		
+		
+		if ($return)
+			$this->set('jsonVars', array('success' => true));
+		else
+			$this->set('jsonVars', array('success' => false));
+	}
 	
 /** 
  * To change the publishing status of a content. This action returns

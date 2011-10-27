@@ -282,14 +282,6 @@ $sections = array(
 				'headerCaption' => __('Sections: login headerCaption', true),
 				'humanName' => __('Sections: login humanName',true),
 			),
-			'example' => array(
-				'linkCaption' => __('Sections: example linkCaption', true),
-				'url' => array('plugin' => 'BurocrataUser','controller' => 'exemplos','action' => 'index'),
-				'acos' => array('backstage_area' => array('read')),
-				'pageTitle' => array(null, __('Sections: example pageTitle',true)),
-				'headerCaption' => __('Sections: example headerCaption', true),
-				'humanName' => __('Sections: example humanName',true),
-			),
 			'dashboard' => array(
 				'linkCaption' => __('Sections: dashboard linkCaption', true),
 				'url' => array(
@@ -301,6 +293,14 @@ $sections = array(
 				'pageTitle' => array(null, __('Sections: dashboard pageTitle',true)),
 				'headerCaption' => __('Sections: dashboard headerCaption', true),
 				'humanName' => __('Sections: dashboard humanName',true),
+			),
+			'example' => array(
+				'linkCaption' => __('Sections: example linkCaption', true),
+				'url' => array('plugin' => 'backstage','controller' => 'back_contents','action' => 'index', 'module_name'),
+				'acos' => array('backstage_area' => array('read', 'edit', 'create')),
+				'pageTitle' => array(null, __('Sections: example pageTitle',true)),
+				'headerCaption' => __('Sections: example headerCaption', true),
+				'humanName' => __('Sections: example humanName',true),
 			),
 			'burocrata_save' => array(
 				'linkCaption' => __('Sections: burocrata_save linkCaption', true),

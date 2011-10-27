@@ -113,7 +113,7 @@ class TypeBricklayerHelper extends AppHelper
  * @param array $options
  * @return string
  */
-	function menu($htmlAttr = array(), $options = array())
+	function menu($htmlAttr = array(), $options = array(), $location = array())
 	{
 		$options += array(
 			'menuLevel' => 0,
@@ -127,7 +127,12 @@ class TypeBricklayerHelper extends AppHelper
 		$htmlAttr += array('class' => array('menu','menu_'.$menuLevel));
 		
 		$View = ClassRegistry::getObject('view');
-		$ourLocation = $View->getVar('ourLocation');
+		
+		if (!empty($location))
+			$ourLocation = $location;
+		else
+			$ourLocation = $View->getVar('ourLocation');
+		
 		$sections = $View->getVar('pageSections');
 		
 		if (empty($ourLocation))
@@ -148,7 +153,7 @@ class TypeBricklayerHelper extends AppHelper
 		$t .= $this->stag($wrapTag, $htmlAttr);
 			foreach($sections as $sectionName => $sectionSettings)
 				if ($sectionSettings['active'] && $sectionSettings['display'])
-					$t .= $this->menuItem(array(), compact('sectionName','sectionSettings','writeCaptions','specificClasses','menuLevel','hiddenCaptions'));
+					$t .= $this->menuItem(array(), compact('sectionName','sectionSettings','writeCaptions','specificClasses','menuLevel','hiddenCaptions'), $ourLocation);
 		$t .= $this->etag($wrapTag);
 		
 		return $t;
@@ -162,10 +167,15 @@ class TypeBricklayerHelper extends AppHelper
  * @param array $options
  * @return string
  */
-	function menuItem($htmlAttr = array(), $options = array())
+	function menuItem($htmlAttr = array(), $options = array(), $location = array())
 	{
-		$View = ClassRegistry::getObject('view');
-		$ourLocation = $View->getVar('ourLocation');
+		if (!empty($location))
+			$ourLocation = $location;
+		else
+		{
+			$View = ClassRegistry::getObject('view');
+			$ourLocation = $View->getVar('ourLocation');
+		}
 	
 		$options += array(
 			'menuLevel' => 0,

@@ -42,7 +42,6 @@
  * Connecting the two responsible plugins for admin actions
  */
 	Router::connect('/admin', array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'index'));
-	Router::connect('/admin/index/*', array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'index'));
 	Router::connect('/admin/cork/:action/*', array('plugin' => 'corktile', 'controller' => 'cork_corktiles'));
 	Router::connect('/admin/:action/*', array('plugin' => 'backstage', 'controller' => 'back_contents'));
 
