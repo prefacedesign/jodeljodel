@@ -102,10 +102,6 @@
 				array(array('id' => "item_info_$k"),array('colspan' => 4, 'rowspan' => 2), '')
 			));
 			
-			echo $this->Html->scriptBlock("
-				new TableRow('row_$row_number');
-			");
-			
 			// Does this entry has publishing and drafting capabilities?
 			if (in_array('publish_draft', $curSettings['actions']))
 			{
@@ -203,6 +199,10 @@
 			echo $this->Bl->smartTableRowDry(array(
 				array(array(),array('escape' => false, 'colspan' => 3),$links)
 			));
+			
+			echo $this->Html->scriptBlock("
+				new TableRow('row_$row_number');
+			");
 		}
 		
 	echo $this->Bl->esmartTable();
