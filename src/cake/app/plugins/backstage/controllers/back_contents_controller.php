@@ -77,8 +77,6 @@ class BackContentsController extends BackstageAppController
             else
                 $this->data = $Model->findById($id);
 				
-			if (in_array('backstage_custom', $config['plugged']))
-				$this->set('location', array('backstage', $moduleName));
         }
         
 		$this->set(compact('contentPlugin', 'modelName', 'fullModelName', 'moduleName'));
@@ -94,7 +92,13 @@ class BackContentsController extends BackstageAppController
 			trigger_error('BackContentsController::index - '.$moduleName.'[`model`] not found in jj.modules') and die;
 		else
 		{
-			if (!in_array('backstage_custom', $config['plugged']))
+			$isPlugged = false;
+			foreach($modules[$moduleName]['plugged'] as $plugged)
+			{
+				if ($plugged == 'backstage_custom')
+					$isPlugged = true;
+			}
+			if (!$isPlugged)
 				trigger_error('BackContentsController::index - '.$moduleName.' configured in jj.modules must have `backstage_custom` in plugged options') and die;
 			else
 			{
@@ -156,7 +160,6 @@ class BackContentsController extends BackstageAppController
 					
 					$this->set('backstageSettings', $backstageSettings[$moduleName]);
 					$this->set('moduleName', $moduleName);
-					$this->set('location', array('backstage', $moduleName));
 					$this->set('modelName', $backstageModel->alias);
 					$this->set('filter_status', $status);
 					$this->data = $this->paginate($backstageModel);
@@ -184,18 +187,37 @@ class BackContentsController extends BackstageAppController
 	
 	function search($moduleName)
 	{
+		$modules = Configure::read('jj.modules');
+		$backstageModel = ClassRegistry::init(array('class' =>  $modules[$moduleName]['model']));
 		$backstageSettings = Configure::read('Backstage.itemSettings.'.$moduleName);
-		if (!empty($this->data['dash_search']))
-		{
-			$conditions['OR'] = array();
-			foreach($backstageSettings['columns'] as $col)
-				$conditions['OR'][] = array($col['field'] . ' LIKE' => '%'.$this->data['dash_search'].'%');
+		
+		if (method_exists($backstageModel, 'findBackstage'))
+		{	
+			$conditions = $backstageModel->findBackstage($this->data['dash_search']);
+			if (!is_array($conditions))
+				trigger_error('BackContentsController::search - conditions must be an array') and die;
+			if (isset($conditions['conditions']))
+			{
+				$conditions = $conditions['conditions'];
+				unset($conditions['conditions']);
+			}
+			$this->Session->write('Backstage.searchOptions', $conditions);
+			$this->filter_and_search($moduleName);
 		}
 		else
-			$conditions = array();
-		
-		$this->Session->write('Backstage.searchOptions', $conditions);
-		$this->filter_and_search($moduleName);
+		{	
+			if (!empty($this->data['dash_search']))
+			{
+				$conditions['OR'] = array();
+				foreach($backstageSettings['columns'] as $col)
+					$conditions['OR'][] = array($col['field'] . ' LIKE' => '%'.$this->data['dash_search'].'%');
+			}
+			else
+				$conditions = array();
+			
+			$this->Session->write('Backstage.searchOptions', $conditions);
+			$this->filter_and_search($moduleName);
+		}
 	}
 	
 	
@@ -233,7 +255,6 @@ class BackContentsController extends BackstageAppController
 		$this->helpers['Paginator'] = array('ajax' => 'Ajax');
 		$this->set('backstageSettings', $backstageSettings[$moduleName]);
 		$this->set('moduleName', $moduleName);
-		$this->set('location', array('backstage', $moduleName));
 		$this->set('modelName', $backstageModel->alias);
 		$this->layout = 'ajax';
 		$this->render('filter', 'ajax');
