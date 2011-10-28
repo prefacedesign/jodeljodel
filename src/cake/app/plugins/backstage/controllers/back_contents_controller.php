@@ -36,6 +36,18 @@ class BackContentsController extends BackstageAppController
 	var $helpers = array('Text');
 	var $components = array('Session', 'RequestHandler');
 	
+	var $backstageModel;
+	var $modules;
+	var $backstageSettings;
+	
+	function __construct()
+	{
+		parent::__construct();
+		$this->modules = Configure::read('jj.modules');
+		$this->backstageSettings = Configure::read('Backstage.itemSettings');
+	}
+	
+	
 /** 
  * Action to edit/create a model row. Model must have implemented
  * createEmpty (to create a new empty row) and. findBurocrata (to retrieve
@@ -46,6 +58,8 @@ class BackContentsController extends BackstageAppController
  * @param string $moduleName Module name, configured on bootstrap.php
  * @param mixed $id The id of the row to be edited. If "null" it means that a new will be created.
  */
+	
+	
     function edit($moduleName = false, $id = null)
     {
 		if (empty($moduleName) || !($config = Configure::read('jj.modules.'.$moduleName)))
@@ -85,25 +99,17 @@ class BackContentsController extends BackstageAppController
 	function index($moduleName, $page = null)
 	{
 		$conditions = array();
-		$modules = Configure::read('jj.modules');
-		if (!isset($modules[$moduleName]))
+		if (!isset($this->modules[$moduleName]))
 			trigger_error('BackContentsController::index - '.$moduleName.' not found in jj.modules') and die;
-		elseif (!isset($modules[$moduleName]['model']))
+		elseif (!isset($this->modules[$moduleName]['model']))
 			trigger_error('BackContentsController::index - '.$moduleName.'[`model`] not found in jj.modules') and die;
 		else
 		{
-			$isPlugged = false;
-			foreach($modules[$moduleName]['plugged'] as $plugged)
-			{
-				if ($plugged == 'backstage_custom')
-					$isPlugged = true;
-			}
-			if (!$isPlugged)
+			if (!in_array('backstage_custom',$this->modules[$moduleName]['plugged'])) 
 				trigger_error('BackContentsController::index - '.$moduleName.' configured in jj.modules must have `backstage_custom` in plugged options') and die;
 			else
 			{
-				$backstageSettings = Configure::read('Backstage.itemSettings');
-				if (!isset($backstageSettings[$moduleName]))
+				if (!isset($this->backstageSettings[$moduleName]))
 					trigger_error('BackContentsController::index - '.$moduleName.' configurations not found on backstage config') and die;
 				else
 				{
@@ -123,11 +129,11 @@ class BackContentsController extends BackstageAppController
 					else
 						$this->Session->write('Backstage.searchOptions', array());
 					
-					$limit = isset($backstageSettings[$moduleName]['limitSize']) ? $backstageSettings[$moduleName]['limitSize'] : 20;
-					$backstageModel = ClassRegistry::init(array('class' =>  $modules[$moduleName]['model']));
+					$limit = isset($this->backstageSettings[$moduleName]['limitSize']) ? $this->backstageSettings[$moduleName]['limitSize'] : 20;
+					$this->backstageModel = ClassRegistry::init(array('class' =>  $this->modules[$moduleName]['model']));
 
-					if (isset($backstageModel->Behaviors->TempTemp->__settings))
-						$conditions[$backstageModel->alias.'.'.$backstageModel->Behaviors->TempTemp->__settings[$backstageModel->alias]['field']] = 0;
+					if (isset($this->backstageModel->Behaviors->TempTemp->__settings))
+						$conditions[$this->backstageModel->alias.'.'.$this->backstageModel->Behaviors->TempTemp->__settings[$this->backstageModel->alias]['field']] = 0;
 						
 					$status = $this->Session->read('Backstage.status');
 					if ($status != 'all' && !empty($status))
@@ -137,7 +143,7 @@ class BackContentsController extends BackstageAppController
 					if ($page)
 					{
 						$this->paginate = array(
-							$backstageModel->alias => array(
+							$this->backstageModel->alias => array(
 								'limit' => $limit,
 								'page' => $page,
 								'contain' => false,
@@ -149,7 +155,7 @@ class BackContentsController extends BackstageAppController
 					else
 					{
 						$this->paginate = array(
-							$backstageModel->alias => array(
+							$this->backstageModel->alias => array(
 								'limit' => $limit,
 								'contain' => false,
 								'order' => 'modified DESC',
@@ -158,11 +164,11 @@ class BackContentsController extends BackstageAppController
 						);
 					}
 					
-					$this->set('backstageSettings', $backstageSettings[$moduleName]);
+					$this->set('backstageSettings', $this->backstageSettings[$moduleName]);
 					$this->set('moduleName', $moduleName);
-					$this->set('modelName', $backstageModel->alias);
+					$this->set('modelName', $this->backstageModel->alias);
 					$this->set('filter_status', $status);
-					$this->data = $this->paginate($backstageModel);
+					$this->data = $this->paginate($this->backstageModel);
 					$this->helpers['Paginator'] = array('ajax' => 'Ajax');
 					
 					if($this->RequestHandler->isAjax()) {
@@ -187,13 +193,11 @@ class BackContentsController extends BackstageAppController
 	
 	function search($moduleName)
 	{
-		$modules = Configure::read('jj.modules');
-		$backstageModel = ClassRegistry::init(array('class' =>  $modules[$moduleName]['model']));
-		$backstageSettings = Configure::read('Backstage.itemSettings.'.$moduleName);
+		$this->backstageModel = ClassRegistry::init(array('class' =>  $this->modules[$moduleName]['model']));
 		
-		if (method_exists($backstageModel, 'findBackstage'))
+		if (method_exists($this->backstageModel, 'findBackstage'))
 		{	
-			$conditions = $backstageModel->findBackstage($this->data['dash_search']);
+			$conditions = $this->backstageModel->findBackstage($this->data['dash_search']);
 			if (!is_array($conditions))
 				trigger_error('BackContentsController::search - conditions must be an array') and die;
 			if (isset($conditions['conditions']))
@@ -209,7 +213,7 @@ class BackContentsController extends BackstageAppController
 			if (!empty($this->data['dash_search']))
 			{
 				$conditions['OR'] = array();
-				foreach($backstageSettings['columns'] as $col)
+				foreach($this->backstageSettings['columns'] as $col)
 					$conditions['OR'][] = array($col['field'] . ' LIKE' => '%'.$this->data['dash_search'].'%');
 			}
 			else
@@ -233,16 +237,14 @@ class BackContentsController extends BackstageAppController
 		if ($status != 'all' && !empty($status))
 			$conditions['publishing_status'] = $status;
 		
-		$modules = Configure::read('jj.modules');
-		$backstageModel = ClassRegistry::init(array('class' =>  $modules[$moduleName]['model']));
-		$backstageSettings = Configure::read('Backstage.itemSettings');
-		$limit = isset($backstageSettings[$moduleName]['limitSize']) ? $backstageSettings[$moduleName]['limitSize'] : 20;
+		$this->backstageModel = ClassRegistry::init(array('class' =>  $this->modules[$moduleName]['model']));
+		$limit = isset($this->backstageSettings[$moduleName]['limitSize']) ? $this->backstageSettings[$moduleName]['limitSize'] : 20;
 		
-		if (isset($backstageModel->Behaviors->TempTemp->__settings))
-			$conditions[$backstageModel->alias.'.'.$backstageModel->Behaviors->TempTemp->__settings[$backstageModel->alias]['field']] = 0;
+		if (isset($this->backstageModel->Behaviors->TempTemp->__settings))
+			$conditions[$this->backstageModel->alias.'.'.$this->backstageModel->Behaviors->TempTemp->__settings[$this->backstageModel->alias]['field']] = 0;
 			
 		$this->paginate = array(
-			$backstageModel->alias => array(
+			$this->backstageModel->alias => array(
 				'limit' => $limit,
 				'contain' => false,
 				'order' => 'modified DESC',
@@ -251,11 +253,11 @@ class BackContentsController extends BackstageAppController
 		);
 			
 		
-		$this->data = $this->paginate($backstageModel);
+		$this->data = $this->paginate($this->backstageModel);
 		$this->helpers['Paginator'] = array('ajax' => 'Ajax');
-		$this->set('backstageSettings', $backstageSettings[$moduleName]);
+		$this->set('backstageSettings', $this->backstageSettings[$moduleName]);
 		$this->set('moduleName', $moduleName);
-		$this->set('modelName', $backstageModel->alias);
+		$this->set('modelName', $this->backstageModel->alias);
 		$this->layout = 'ajax';
 		$this->render('filter', 'ajax');
 	}
@@ -264,14 +266,12 @@ class BackContentsController extends BackstageAppController
 	function delete_item($moduleName, $id)
 	{
 		$this->view = 'JjUtils.Json';
-	
-		$modules = Configure::read('jj.modules');
-		$backstageModel = ClassRegistry::init(array('class' =>  $modules[$moduleName]['model']));
+		$this->backstageModel = ClassRegistry::init(array('class' =>  $this->modules[$moduleName]['model']));
 		
-		if (method_exists($backstageModel, 'backDelete'))
-			$return = $backstageModel->backDelete($id);
+		if (method_exists($this->backstageModel, 'backDelete'))
+			$return = $this->backstageModel->backDelete($id);
 		else
-			$return = $backstageModel->delete($id);
+			$return = $this->backstageModel->delete($id);
 		
 		
 		if ($return)
