@@ -77,13 +77,7 @@ class BackContentsController extends BackstageAppController
             else
                 $this->data = $Model->findById($id);
 				
-			$isPlugged = false;
-			foreach($config['plugged'] as $plugged)
-			{
-				if ($plugged == 'backstage_custom')
-					$isPlugged = true;
-			}
-			if ($isPlugged)
+			if (in_array('backstage_custom', $config['plugged']))
 				$this->set('location', array('backstage', $moduleName));
         }
         
@@ -100,13 +94,7 @@ class BackContentsController extends BackstageAppController
 			trigger_error('BackContentsController::index - '.$moduleName.'[`model`] not found in jj.modules') and die;
 		else
 		{
-			$isPlugged = false;
-			foreach($modules[$moduleName]['plugged'] as $plugged)
-			{
-				if ($plugged == 'backstage_custom')
-					$isPlugged = true;
-			}
-			if (!$isPlugged)
+			if (!in_array('backstage_custom', $config['plugged']))
 				trigger_error('BackContentsController::index - '.$moduleName.' configured in jj.modules must have `backstage_custom` in plugged options') and die;
 			else
 			{
