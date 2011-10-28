@@ -31,6 +31,7 @@ else
 					__('Logout', true)
 				);
 			echo $bl->ediv();
+			echo $bl->menu(array(), array('menuLevel' => 1));
 		echo $bl->ediv();
 		
 		echo $bl->sdiv(array('id' => 'content'));

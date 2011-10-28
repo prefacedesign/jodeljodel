@@ -3,8 +3,6 @@ $this->Html->script('prototype', array('inline' => false));
 $this->Html->script('/backstage/js/core.js', array('inline' => false));
 $this->Html->script('/backstage/js/backstage.js', array('inline' => false));
 
-
-echo $bl->menu(array(), array('menuLevel' => 1),$location);
 echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 	echo $this->Bl->h1Dry(__d('backstage','Page title header - BackstageCustom module '.$moduleName, true));
 	echo $this->Bl->sboxContainer(array('class' => 'dash_toolbox'),array('size' => array('M' => 12, 'g' => -1)));	

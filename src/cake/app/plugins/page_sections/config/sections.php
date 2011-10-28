@@ -514,6 +514,16 @@ $sectionMap = array(
 			array(
 				'rule' => array('controller' => 'back_contents', 'action' => 'edit'),
 				'location' => array(null,'edit'),
+				'subRules' => array(				
+					array(
+						'rule' => array('controller' => 'back_contents', 'action' => 'edit', 'pass' => array(0 => 'example')),
+						'location' => array(null,'example'),
+					),
+				)
+			),
+			array(
+				'rule' => array('controller' => 'back_contents', 'action' => 'index', 'pass' => array(0 => 'example')),
+				'location' => array(null,'example'),
 			),
 			array(
 				'rule' => array('controller' => 'back_contents', 'action' => 'set_publishing_status'),

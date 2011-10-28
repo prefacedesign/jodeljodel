@@ -18,7 +18,6 @@ class SectSectionHandlerComponent extends Object {
 		$this->controller =& $controller;
 		
 		App::import('Config', 'PageSections.sections');
-		
 		$this->sectionMap = Configure::read('PageSections.sectionMap');
 		$this->sections = Configure::read('PageSections.sections');
 		
@@ -276,8 +275,19 @@ class SectSectionHandlerComponent extends Object {
 		{
 			if (!isset($actionInfo[$type]))
 				return false;
-			if($actionInfo[$type] != $rule)
-				return false;
+			if (is_array($rule))
+			{
+				foreach($rule as $subType => $subRule)
+				{
+					if (isset($actionInfo[$type][$subType]) &&  $actionInfo[$type][$subType] != $subRule)
+						return false;
+				}
+			}
+			else
+			{
+				if($actionInfo[$type] != $rule)
+					return false;
+			}
 		}
 		return true;
 	}

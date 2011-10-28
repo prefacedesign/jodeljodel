@@ -607,7 +607,8 @@
 		'#header',
 		array(
 			'width' => 'auto',
-			'height' => $vg->size(array('g' => 6))
+			'height' => $vg->size(array('g' => 6)),
+			'position' => 'relative'
 		)
 	);
 	
@@ -687,21 +688,23 @@
 			'background-color' => $palette['bg']->write(),
 			'border-top' => $u->t(1) . ' solid ' . $palette['menu_border']->write(),
 			'padding' => $vg->size(array('g' => 1)) . ' 0 ' . $vg->size(array('g' => 2)) . ' 0',
-			'position' => 'relative'
+			'position' => 'relative',
+			'z-index' => 1
 		)
 	);
 	
 	$this->Decorator->rule(
-		'#content .menu',
+		'#header .menu',
 		array(
 			'position' => 'absolute',
-			'top' => $u->t(-21),
-			'left' => $hg->size(array('m' => 2))
+			'top' => $u->t(88),
+			'left' => $hg->size(array('m' => 2)),
+			'z-index' => 100
 		)
 	);
 	
 	$this->Decorator->rule(
-		'#content .menu a',
+		'#header .menu a',
 		array(
 			'float' => 'left',
 			'display' => 'block',
@@ -715,7 +718,7 @@
 	);
 	
 	$this->Decorator->rule(
-		'#content .menu a.selected',
+		'#header .menu a.selected',
 		array(
 			'height' => $vg->size(array('g' => 1.2)),
 			'background-color' => $palette['bg']->write(),

@@ -100,6 +100,7 @@
 				array(array('id' => "item_info_$k"),array('colspan' => 4, 'rowspan' => 2), '')
 			));
 			
+			
 			// Does this entry has publishing and drafting capabilities?
 			if (in_array('publish_draft', $backstageSettings['actions']))
 			{
