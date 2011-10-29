@@ -2434,6 +2434,16 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out .= $this->BuroOfficeBoy->textile($options);
 		
 		return $out;
+		
+		/** Textile gettext */
+		__d('burocrata','Burocrata::inputTextile - Add bold');
+		__d('burocrata','Burocrata::inputTextile - Add italic');
+		__d('burocrata','Burocrata::inputTextile - Add link');
+		__d('burocrata','Burocrata::inputTextile - Add title');
+		__d('burocrata','Burocrata::inputTextile - Add image');
+		__d('burocrata','Burocrata::inputTextile - Add file');
+		__d('burocrata','Burocrata::inputTextile - Add superscript');
+		__d('burocrata','Burocrata::inputTextile - Add subscript');
 	}
 
 

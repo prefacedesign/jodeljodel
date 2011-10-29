@@ -1,0 +1,216 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2011-10-29 00:57-0400\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: /views/helpers/buro_burocrata.php:563
+msgid "Burocrata::submit - Submit label"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:577;656
+msgid "Burocrata::okOrCancel - Cancel label"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:638
+msgid "Burocrata::okOrCancel - OK label"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:666
+msgid "anchorList or"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:877
+msgid "Burocrata: nothing found on autocomplete."
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:980;1779
+msgid "Burocrata: create a new related item"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:981;1780
+msgid "Burocrata: edit related data"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:982
+msgid "Burocrata: nothing found on autocomplete"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:983
+msgid "Burocrata: choose another related item"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:984
+msgid "Burocrata: Bring last item back"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:1507
+msgid "Burocrata::orderdItensMenu - list caption:"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:1513
+msgid "Burocrata::orderdItensMenu - close list"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:1615
+msgid "Burocrata::orderedItensControls - up"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:1621
+msgid "Burocrata::orderedItensControls - down"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:1627
+msgid "Burocrata::orderedItensControls - delete"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:1633
+msgid "Burocrata::orderedItensControls - duplicate"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:1639
+msgid "Burocrata::orderedItensControls - edit"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:1781
+msgid "Burocrata: view related data"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:1782
+msgid "Burocrata: unlink related data"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:1783
+msgid "Burocrata: confirm unlinking"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2228
+msgid "Burocrata::inputUpload - Change file"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2256
+msgid "Burocrata::inputUpload - Download file"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2260
+msgid "Burocrata::inputUpload - File: "
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2290
+msgid "Burocrata::inputImage - Change image"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2292
+msgid "Burocrata::inputImage - Remove  image"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2331
+msgid "Burocrata::inputImage - or "
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2410
+msgid "Burocrata::inputTextile - Preview"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2439
+msgid "Burocrata::inputTextile - Add bold"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2440
+msgid "Burocrata::inputTextile - Add italic"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2441
+msgid "Burocrata::inputTextile - Add link"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2442
+msgid "Burocrata::inputTextile - Add title"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2443
+msgid "Burocrata::inputTextile - Add image"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2444
+msgid "Burocrata::inputTextile - Add file"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2445
+msgid "Burocrata::inputTextile - Add superscript"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2446
+msgid "Burocrata::inputTextile - Add subscript"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2461
+msgid "Burocrata::_popupTextileLink - Instructions for link"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2462
+msgid "Burocrata::_popupTextileLink - What is the text for this link"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2463
+msgid "Burocrata::_popupTextileLink - What is the URL of this link"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2464
+msgid "Burocrata::_popupTextileLink - Title of link popup"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2496
+msgid "Burocrata::_popupTextileTitle - Instructions for link"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2497
+msgid "Burocrata::_popupTextileTitle - What is the type of this title"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2498
+msgid "Burocrata::_popupTextileTitle - Title"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2499
+msgid "Burocrata::_popupTextileTitle - Subtitle"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2500
+msgid "Burocrata::_popupTextileTitle - What is the title"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2501
+msgid "Burocrata::_popupTextileTitle - Title of title popup"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2545
+msgid "Burocrata::_popupTextilePreview - Title of preview popup"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2570
+msgid "Burocrata::_popupTextileFile - Title of `add file` popup"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2571
+msgid "Burocrata::_popupTextileFile - Label of file input"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2609
+msgid "Burocrata::_popupTextileImage - Title of `add image` popup"
+msgstr ""
+
+#: /views/helpers/buro_burocrata.php:2610
+msgid "Burocrata::_popupTextileImage - Label of file input"
+msgstr ""
+
