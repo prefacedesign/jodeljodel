@@ -37,7 +37,7 @@ switch ($type[0])
 							'instructions' => __d('content_stream', 'PieText.text instructions', true),
 							'options' => array(
 								'enabled_buttons' => array('bold', 'italic', 'link', 'subscript', 'superscript'),
-								'allow_preview' => true
+								'allow_preview' => false
 							)
 						)
 					);
