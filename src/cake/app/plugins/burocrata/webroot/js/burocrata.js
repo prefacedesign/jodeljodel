@@ -2022,6 +2022,7 @@ var BuroColorPicker = Class.create(BuroCallbackable, {
 		if (!CP)
 			CP = new ColorPicker();
 		this.input.observe('focus', this.openCP.bind(this));
+		this.input.observe('keydown', this.keydown.bind(this));
 		this.input.observe('keyup', this.keyup.bind(this));
 		this.sample = $('samp'+id_base);
 		if (!this.input.value.blank())
@@ -2034,10 +2035,20 @@ var BuroColorPicker = Class.create(BuroCallbackable, {
 		if (!this.input.value.blank())
 			CP.setHex(this.input.value);
 	},
+	closeCP: function()
+	{
+		CP.close();
+	},
 	change: function(color)
 	{
 		this.input.value = color.toHEX();
 		this.updateSample();
+	},
+	keydown: function(ev)
+	{
+		var code = ev.keyCode || ev.witch;
+		if (code == Event.KEY_TAB)
+			this.closeCP();
 	},
 	keyup: function(ev)
 	{
