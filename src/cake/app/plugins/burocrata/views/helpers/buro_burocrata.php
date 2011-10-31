@@ -1326,6 +1326,16 @@ class BuroBurocrataHelper extends XmlTagHelper
 			unset($input_options['instructions']);
 		}
 		
+		
+		// Hidden input
+		$out .= $this->input(
+			array(),
+			array(
+				'type' => 'hidden',
+				'fieldName' => $options['foreignKey']
+			)
+		);
+		
 		// Configuration for _orderedItens method call
 		$model_class_name = 'ContentStream.CsItem';
 		$parameters['fkBounding'] = array($this->_name('CsItem.cs_content_stream_id') => $content_stream_id);
