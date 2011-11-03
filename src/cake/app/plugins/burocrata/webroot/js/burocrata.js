@@ -1858,29 +1858,37 @@ var BuroTextile = Class.create(BuroCallbackable, {
 		this.id_base = id_base;
 		this.input = $('npt'+this.id_base);
 		
-		this.links = {};
-		var ids = ['link','bold','title','italic','file','image'];
-		for (var i = 0; i < ids.length; i++)
-			this.links[ids[i]] = $('l'+ids[i]+this.id_base);
-			
+		this.links = this.input.up().select('a.buro_textile');
+		this.links.invoke('observe', 'click', this.routeAction.bind(this));
+		
 		this.input.observe('keyup', this.getSelection.bind(this));
 		this.input.observe('mouseup', this.getSelection.bind(this));
-		
-		if (this.links['bold'])
-			this.links['bold'].observe('click', this.insertBold.bind(this));
-		if (this.links['italic'])
-			this.links['italic'].observe('click', this.insertItalic.bind(this));
-		if (this.links['link'])
-			this.links['link'].observe('click', this.openLinkDialog.bind(this));
-		if (this.links['title'])
-			this.links['title'].observe('click', this.openTitleDialog.bind(this));
-		if (this.links['file'])
-			this.links['file'].observe('click', this.openFileDialog.bind(this));
-		if (this.links['image'])
-			this.links['image'].observe('click', this.openImageDialog.bind(this));
-		
 		this.input.observe('focus', this.focus.bind(this));
 		this.input.observe('blur', this.blur.bind(this));
+	},
+	routeAction: function (ev)
+	{
+		ev.stop();
+		var action = ev.findElement('a').readAttribute('buro:action');
+		switch (action)
+		{
+			case 'bold': this.insertToken('*'); break;
+			case 'italic': this.insertToken('_'); break;
+			case 'superscript': this.insertToken('^'); break;
+			case 'subscript': this.insertToken('~'); break;
+			case 'link': 
+				$('itlink'+this.id_base).value = '';
+				$('iulink'+this.id_base).value = '';
+				var selection = this.getSelection(this.input);
+				if (selection.start != selection.end)
+					$('itlink'+this.id_base).value = this.input.value.substring(selection.start, selection.end);
+				
+			case 'image': 
+			case 'file': 
+			case 'title': 
+				showPopup(action+this.id_base);
+			break;
+		}
 	},
 	focus: function(ev)
 	{
@@ -1889,31 +1897,6 @@ var BuroTextile = Class.create(BuroCallbackable, {
 	blur: function(ev)
 	{
 		this.with_focus = false;
-	},
-	openLinkDialog: function(ev)
-	{
-		ev.stop();
-		$('itlink'+this.id_base).value = '';
-		$('iulink'+this.id_base).value = '';
-		var selection = this.getSelection(this.input);
-		if (selection.start != selection.end)
-			$('itlink'+this.id_base).value = this.input.value.substring(selection.start, selection.end);
-		showPopup('link'+this.id_base);
-	},
-	openTitleDialog: function(ev)
-	{
-		ev.stop();
-		showPopup('title'+this.id_base);
-	},
-	openFileDialog: function(ev)
-	{
-		ev.stop();
-		showPopup('file'+this.id_base);
-	},
-	openImageDialog: function(ev)
-	{
-		ev.stop();
-		showPopup('image'+this.id_base);
 	},
 	insertFile: function(fileJson)
 	{
@@ -1952,16 +1935,6 @@ var BuroTextile = Class.create(BuroCallbackable, {
 			header = '\n' + header;
 		
 		this.insert(header);
-	},
-	insertBold: function(ev)
-	{
-		ev.stop();
-		this.insertToken('*');
-	},
-	insertItalic: function(ev)
-	{
-		ev.stop();
-		this.insertToken('_');
 	},
 	insertToken: function(token)
 	{
@@ -2049,6 +2022,7 @@ var BuroColorPicker = Class.create(BuroCallbackable, {
 		if (!CP)
 			CP = new ColorPicker();
 		this.input.observe('focus', this.openCP.bind(this));
+		this.input.observe('keydown', this.keydown.bind(this));
 		this.input.observe('keyup', this.keyup.bind(this));
 		this.sample = $('samp'+id_base);
 		if (!this.input.value.blank())
@@ -2061,10 +2035,20 @@ var BuroColorPicker = Class.create(BuroCallbackable, {
 		if (!this.input.value.blank())
 			CP.setHex(this.input.value);
 	},
+	closeCP: function()
+	{
+		CP.close();
+	},
 	change: function(color)
 	{
 		this.input.value = color.toHEX();
 		this.updateSample();
+	},
+	keydown: function(ev)
+	{
+		var code = ev.keyCode || ev.witch;
+		if (code == Event.KEY_TAB)
+			this.closeCP();
 	},
 	keyup: function(ev)
 	{

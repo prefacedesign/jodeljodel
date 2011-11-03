@@ -37,9 +37,10 @@ var Popup = Class.create({
 	initialize: function(id, links)
 	{
 		this.id = id;
-		this.links = links;
+		this.links = $H(links);
 		this.divCont = $(this.id);
 		this.call_progress = false;
+		this.activeElement = false;
 		
 		this.callback = function(action){}
 		
@@ -54,7 +55,7 @@ var Popup = Class.create({
 		
 		document.body.insert(this.divCont);
 		
-		$H(this.links).each(function(pair)
+		this.links.each(function(pair)
 		{
 			var action = pair.key;
 			var link_id = pair.value;
@@ -82,6 +83,10 @@ var Popup = Class.create({
 			top: document.viewport.getScrollOffsets().top + (document.viewport.getHeight()/2-this.divCont.getHeight()/2)+'px',
 			left: document.viewport.getScrollOffsets().left + (document.viewport.getWidth()/2-this.divCont.getWidth()/2)+'px'
 		});
+		
+		this.activeElement = document.activeElement;
+		$(this.links.values().first()).focus();
+		
 		this.divCont.fire('popup:opened');
 	},
 	close: function()
@@ -90,6 +95,11 @@ var Popup = Class.create({
 		$$('.popup_maya_veil').each(Element.remove);
 		this.divCont.hide();
 		this.divCont.fire('popup:closed');
+		if (this.activeElement)
+		{
+			this.activeElement.focus();
+			this.activeElement = false;
+		}
 	},
 	addCallback: function(procedure)
 	{

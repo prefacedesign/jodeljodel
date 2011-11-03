@@ -8,7 +8,7 @@ class CorkHelper extends AppHelper
  * @var array
  * @access public
  */
-	public $helpers = array('Html', 'Form', 'Ajax', 'Js' => 'prototype', 'Burocrata.BuroOfficeBoy',
+	public $helpers = array('Html', 'Form', 'Ajax', 'Js' => 'prototype',
 		'Typographer.*TypeBricklayer' => array(
 			'name' => 'Bl'
 		)

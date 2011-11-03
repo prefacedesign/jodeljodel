@@ -111,7 +111,7 @@ class BuroOfficeBoyHelper extends AppHelper
 	public function afterRender()
 	{
 		$View = ClassRegistry::getObject('view');
-		if ($View && !$this->Ajax->isAjax() && !empty($this->scripts))
+		if ($View && !$this->Ajax->isAjax())
 		{
 			
 			$this->Html->script('prototype', array('inline' => false));
@@ -128,8 +128,7 @@ class BuroOfficeBoyHelper extends AppHelper
 			if (Configure::read('debug'))
 				$script = sprintf('try{ %s }catch(e){ console.log(e); }', $script);
 			
-			$view =& ClassRegistry::getObject('view');
-			$view->addScript($this->Html->scriptBlock($this->Js->domReady($script)));
+			$View->addScript($this->Html->scriptBlock($this->Js->domReady($script)));
 		}
 	}
 

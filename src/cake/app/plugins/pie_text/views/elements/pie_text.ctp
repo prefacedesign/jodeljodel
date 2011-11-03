@@ -36,7 +36,7 @@ switch ($type[0])
 							'label' => __d('content_stream', 'PieText.text label', true),
 							'instructions' => __d('content_stream', 'PieText.text instructions', true),
 							'options' => array(
-								'enabled_buttons' => array('bold', 'italic', 'link'),
+								'enabled_buttons' => array('bold', 'italic', 'link', 'subscript', 'superscript'),
 								'allow_preview' => false
 							)
 						)

@@ -7,16 +7,6 @@ __d('backstage', 'Editing a new');
 __d('backstage', 'Editing a paper');
 
 
-/** Burocrata fields of textile
- */
-__d('burocrata','Burocrata::inputTextile - Add bold');
-__d('burocrata','Burocrata::inputTextile - Add italic');
-__d('burocrata','Burocrata::inputTextile - Add link');
-__d('burocrata','Burocrata::inputTextile - Add title');
-__d('burocrata','Burocrata::inputTextile - Add image');
-__d('burocrata', 'Burocrata::inputTextile - Add file');
-
-
 
 /** Dashboard special translation strings
  */

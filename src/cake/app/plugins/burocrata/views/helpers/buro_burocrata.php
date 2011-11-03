@@ -1326,6 +1326,16 @@ class BuroBurocrataHelper extends XmlTagHelper
 			unset($input_options['instructions']);
 		}
 		
+		
+		// Hidden input
+		$out .= $this->input(
+			array(),
+			array(
+				'type' => 'hidden',
+				'fieldName' => $options['foreignKey']
+			)
+		);
+		
 		// Configuration for _orderedItens method call
 		$model_class_name = 'ContentStream.CsItem';
 		$parameters['fkBounding'] = array($this->_name('CsItem.cs_content_stream_id') => $content_stream_id);
@@ -2353,17 +2363,20 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function inputTextile($options)
 	{
-		$button_list = array('bold', 'italic', 'link', 'title', 'image', 'file');
+		$button_list = array('bold', 'italic', 'link', 'title', 'image', 'file', 'subscript', 'superscript');
+		
 		$config_options = $options['options'] + array('enabled_buttons' => $button_list, 'allow_preview' => true);
 		unset($options['options']);
 		
 		$baseID = $this->baseID();
 		$options = array('type' => 'textarea', 'container' => false) + $options + array('baseID' => $baseID);
 		
+		$config_options['enabled_buttons'] = array_intersect($config_options['enabled_buttons'], $button_list);
+		
 		// `npt` for input
 		// `{name}_id` for the popup
 		// `l{name}_id` is for the link
-		$ids = array('npt','link','llink','title','ltitle','file','prev','lbold', 'litalic','image', 'limage', 'lfile', 'lprev');
+		$ids = array('npt', 'prev', 'lprev');
 		foreach ($ids as $id)
 			${$id.'_id'} = $id . $options['baseID'];
 		
@@ -2388,17 +2401,14 @@ class BuroBurocrataHelper extends XmlTagHelper
 		// Buttons and theirs popups
 		foreach ($config_options['enabled_buttons'] as $button)
 		{
-			if (in_array($button, $button_list))
-			{
-				$out .= $this->Bl->a(
-					array('href' => '', 'class' => 'link_button buro_textile '.$button.'_textile', 'id' => ${"l{$button}_id"}),
-					array(),
-					__d('burocrata',sprintf('Burocrata::inputTextile - Add %s', $button), true)
-				);
-				$popup_method = '_popupTextile'.Inflector::camelize($button);
-				if (method_exists($this, $popup_method))
-					$out .= $this->{$popup_method}(${"{$button}_id"}, $options);
-			}
+			$out .= $this->Bl->anchor(
+				array('buro:action' => $button, 'class' => 'link_button buro_textile '.$button.'_textile'),
+				array('url' => ''),
+				__d('burocrata',sprintf('Burocrata::inputTextile - Add %s', $button), true)
+			);
+			$popup_method = '_popupTextile'.Inflector::camelize($button);
+			if (method_exists($this, $popup_method))
+				$out .= $this->{$popup_method}($button . $options['baseID'], $options);
 		}
 		
 		// Preview button, that has a special option
@@ -2434,6 +2444,16 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out .= $this->BuroOfficeBoy->textile($options);
 		
 		return $out;
+		
+		/** Textile gettext */
+		__d('burocrata','Burocrata::inputTextile - Add bold');
+		__d('burocrata','Burocrata::inputTextile - Add italic');
+		__d('burocrata','Burocrata::inputTextile - Add link');
+		__d('burocrata','Burocrata::inputTextile - Add title');
+		__d('burocrata','Burocrata::inputTextile - Add image');
+		__d('burocrata','Burocrata::inputTextile - Add file');
+		__d('burocrata','Burocrata::inputTextile - Add superscript');
+		__d('burocrata','Burocrata::inputTextile - Add subscript');
 	}
 
 

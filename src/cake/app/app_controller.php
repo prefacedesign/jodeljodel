@@ -31,7 +31,7 @@
  * @subpackage    cake.app
  */
 class AppController extends Controller {
-	var $helpers = array('Html', 'Form', 'Javascript', 'Session', 'Time');
+	var $helpers = array('Html', 'Form', 'Session', 'Time');
 	var $components = array(
 		'Acl',
 		'Tradutore.TradLanguageSelector',

@@ -33,7 +33,6 @@ var ColorPicker = Class.create({
 	},
 	close: function(ev) {
 		this.div.hide();
-		this.hue = false;
 		if (!ev)
 			return this;
 	},
