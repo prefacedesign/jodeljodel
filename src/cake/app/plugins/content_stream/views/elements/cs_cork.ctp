@@ -7,7 +7,14 @@ switch ($type[0])
 		{
 			$contentStreamLabel = 'Corktile input label for ' . $this->data['CsCork']['type'];
 			$contentStreamInstructions = 'Corktile input instructions for ' . $this->data['CsCork']['type'];
-			echo $this->Buro->sform(array(),array('model' => 'ContentStream.CsCork'));
+			echo $this->Buro->sform(array(),array(
+				'model' => 'ContentStream.CsCork',
+				'callbacks' => array(
+					'onStart' => array('js' => '$("content").setLoading();'), 
+					'onReject' => array('contentUpdate' => 'replace', 'js' => '$("content").unsetLoading(); $("content").down(".error").scrollTo(); showPopup("error");'),
+					'onSave' => array('js' => '$("content").unsetLoading(); $("content").scrollTo(); showPopup("notice");'),
+				)
+			));
 				echo $this->Buro->input(
 					array(),
 					array('fieldName' => 'id', 'type' => 'hidden')
@@ -21,6 +28,7 @@ switch ($type[0])
 						'instructions' => __d('content_stream', $contentStreamInstructions, true)
 					)
 				);
+				echo $this->Buro->submitBox(array(),array('publishControls' => false));
 			echo $this->Buro->eform();
 		}
 	break;
