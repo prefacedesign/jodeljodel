@@ -1,17 +1,6 @@
 <?php
 
 	$this->Decorator->rule(
-		'.space_tag', array(
-			'text-transform' => 'uppercase',
-			'border-radius' => '4px',
-			'padding' => '0 4px',
-			'font-size' => $u->t($line_height * 11/18),
-			'height' => $u->t($line_height),
-			'display' => 'inline-block',
-			'vertical-align' => 'bottom'
-	));
-
-	$this->Decorator->rule(
 		'html', array(
 			'overflow-y' => 'scroll'
 		)
