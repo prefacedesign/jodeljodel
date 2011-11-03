@@ -253,6 +253,27 @@ class BackContentsController extends BackstageAppController
 		);
 			
 		
+		//test to emulate paginate (possible to implement in future, with findBackstage)
+		/*
+		$count = $this->backstageModel->find('count', array('contain' => false, 'order' => 'modified DESC', 'conditions' => $conditions));
+		$this->data = $this->backstageModel->find('all', array('limit' => $limit, 'page' => 1, 'contain' => false, 'order' => 'modified DESC', 'conditions' => $conditions));
+		$page = 1;
+		$pageCount = intval(ceil($count / $limit));
+		$options['limit'] = $limit;
+		
+		$paging = array(
+			'page' => $page,
+			'current' => count($this->data),
+			'count' => $count,
+			'prevPage' => ($page > 1),
+			'nextPage' => ($count > ($page * $limit)),
+			'pageCount' => $pageCount,
+			'defaults' => array('limit' => $limit, 'step' => 1),
+			'options' => $options
+		);
+		$this->params['paging'][$this->backstageModel->alias] = $paging;
+		*/
+		
 		$this->data = $this->paginate($this->backstageModel);
 		$this->helpers['Paginator'] = array('ajax' => 'Ajax');
 		$this->set('backstageSettings', $this->backstageSettings[$moduleName]);
