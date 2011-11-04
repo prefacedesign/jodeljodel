@@ -2062,3 +2062,45 @@ var BuroColorPicker = Class.create(BuroCallbackable, {
 		});
 	}
 });
+
+var BuroDynamicTextarea = Class.create({
+	initialize: function(id)
+	{
+		this.input = $(id);
+		this.span = this.input.previous().down('span');
+		this.input.observe('input', this.update.bind(this))
+			.observe('focus', this.focus.bind(this))
+			.observe('blur', this.blur.bind(this));
+
+		this.update();
+	},
+	update: function(ev)
+	{
+		this.span.update(this.input.value);
+	},
+	focus: function(ev){this.input.up().addClassName('focus')},
+	blur: function(ev){this.input.up().removeClassName('focus')}
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

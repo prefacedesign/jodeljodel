@@ -108,7 +108,13 @@ class BuroBurocrataHelper extends XmlTagHelper
 				$out .= $this->sinputcontainer(is_array($container) ? $container : array(), $options);
 			
 			
-			if (method_exists($this->Form, $options['type']))
+			$method = Inflector::variable('input'.$options['type']);
+			if (method_exists($this, $method) && empty($options['forceForm']))
+			{
+				$options['_htmlAttributes'] = $htmlAttributes;
+				$out .= $this->{$method}($options);
+			}
+			elseif (method_exists($this->Form, $options['type']))
 			{
 				if ($options['label'] !== false && $options['type'] != 'hidden')
 				{
@@ -151,17 +157,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 			}
 			else
 			{
-				$method = Inflector::variable('input'.$options['type']);
-				if (method_exists($this, $method))
-				{
-					$options['_htmlAttributes'] = $htmlAttributes;
-					$out .= $this->{$method}($options);
-				}
-				else
-				{
-					trigger_error('BuroBurocrataHelper::sinput - input type `'.$options['type'].'` not implemented or known.');
-					return false;
-				}
+				trigger_error('BuroBurocrataHelper::sinput - input type `'.$options['type'].'` not implemented or known.');
+				return false;
 			}
 			
 			if ($options['type'] != 'hidden' && $container !== false)
@@ -585,8 +582,6 @@ class BuroBurocrataHelper extends XmlTagHelper
 
 
 
-
-
 /**
  * Overloadable functions for layout modifications
  */
@@ -787,6 +782,47 @@ class BuroBurocrataHelper extends XmlTagHelper
 	public function einputcontainer()
 	{
 		return $this->Bl->ediv();
+	}
+
+
+/**
+ * Method that creates an TEXTAREA that resizes automagically.
+ * 
+ * @access public
+ * @return string HTML with the needed JS
+ */
+	public function inputTextarea($options)
+	{
+		$out = '';
+		$inputOptions = array('type' => 'textarea', 'forceForm' => true, 'container' => false) + $options;
+		unset($inputOptions['options']);
+		
+		extract($options);
+		
+		$_htmlAttributes += array(
+			'id' => $this->baseID()
+		);
+		
+		// Label
+		$out .= $this->label(array(),compact('fieldName'), $label);
+		unset($label);
+		
+		// Instructions
+		if (!empty($instructions))
+		{
+			$out .= $this->instructions(array(), array('close_me' => false), $instructions);
+			unset($instructions);
+		}
+		
+		$out .= $this->Bl->div(
+			array('class' => array(self::$defaultContainerClass, 'textarea_container')),
+			array(),
+			$this->Bl->preDry($this->Bl->spanDry() . $this->Bl->br())
+			. $this->input($_htmlAttributes, $inputOptions)
+		);
+		
+		$out .= $this->BuroOfficeBoy->addHtmlEmbScript(sprintf("new BuroDynamicTextarea('%s')", $_htmlAttributes['id']));
+		return $out;
 	}
 
 

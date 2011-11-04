@@ -456,7 +456,7 @@
 	// Textile input
 	
 	$this->Decorator->rule(
-		'.buro .input_textile textarea', array(
+		'.buro .input_textile .textarea_container', array(
 			'margin-top' => $hg->size(array('m' => 2))
 	));
 	
@@ -1084,7 +1084,7 @@
 	$margin_bottom = $vg->size(array('g' => 0.5),false) - $margin_top;
 	$padding_top = $vg->size(array('m' => 1), false);
 	$this->Decorator->rule(
-		'.buro_form input, #login_box input[type=text], #login_box input[type=password], .buro_form textarea', array(
+		'.buro_form input, #login_box input[type=text], #login_box input[type=password]', array(
 			'border' => $u->t($border_size) . ' solid ' .  $palette['input_borders']->write(),
 			'background-color' => $palette['input_bg']->write(),
 			'color'	=> $palette['input_fg']->write(),
@@ -1104,24 +1104,19 @@
 	));
 	
 	$this->Decorator->rule(
-		'.buro_form input:focus, #login_box input[type=text]:focus, #login_box input[type=password]:focus, .buro_form textarea:focus', array(
+		'.buro_form input:focus, #login_box input[type=text]:focus, #login_box input[type=password]:focus, .buro_form .textarea_container.focus', array(
 			'border-width' => $u->t($border_size+1),
 			'margin' => implode(' ', array($u->t($margin_top-1), $u->t(-1), $u->t($margin_bottom-1), $u->t(-1)))
 	));
 	
 	$this->Decorator->rule(
-		'.buro_form .input_textile textarea:focus', array(
+		'.buro_form .input_textile .textarea_container.focus', array(
 			'margin' => implode(' ', array($u->t(8), $u->t(-1), $u->t($margin_bottom-1), $u->t(-1)))
 	));
 	
 	$this->Decorator->rule(
 		'#login_box input[type=text], #login_box input[type=password]', array(
 			'width' => $u->t($hg->size(array('M' => 4, 'g' => -1),false) - 2*($border_size + $padding_size))
-	));
-	
-	$this->Decorator->rule(
-		'.buro_form textarea', array(
-			'height' => $vg->size(array('g' => 8.5, 'u' => -2*$border_size - $padding_top))
 	));
 	
 	$this->Decorator->rule(
@@ -1275,6 +1270,62 @@
 			'background-color' => $palette['input_error_bg']->write(),
 			'color' => $palette['input_error_fg']->write(),
 	));
+	
+	
+	// Dinamic textarea
+	
+	$this->Decorator->rule(
+		'.buro_form .textarea_container', array(
+			'position' => 'relative',
+			'border' => $u->t($border_size) . ' solid ' .  $palette['input_borders']->write(),
+			'background-color' => $palette['input_bg']->write(),
+			'margin-top' => $u->t($margin_top),
+			'margin-bottom' => $u->t($margin_bottom),
+			'width' => $u->t($hg->size(array('M' => 5, 'g' => -1),false) - 2*($border_size + $padding_size)),
+			'min-height' => $u->t($line_height*5),
+	));
+	
+	$this->Decorator->rule(
+		'.buro_form .textarea_container textarea', array(
+			'position' => 'absolute',
+			'top' => 0,
+			'left' => 0,
+			'overflow' => 'hidden',
+			'height' => '100%',
+			'width' => '100%',
+	));
+	
+	$this->Decorator->rule(
+		'.buro_form .textarea_container pre, .textarea_container textarea', array(
+			'padding' => $u->t($padding_top) . ' ' . $u->t($padding_size),
+			'white-space' => 'pre-wrap',
+			'word-wrap' => 'break-word',
+			'resize' => 'none',
+			'background' => 'transparent',
+			'font-size' => $u->t($line_height * 13/18),
+			'line-height' => $u->t($line_height),
+			'-webkit-box-sizing' => 'border-box',
+			   '-moz-box-sizing' => 'border-box',
+			    '-ms-box-sizing' => 'border-box',
+			        'box-sizing' => 'border-box',
+	));
+	
+	
+	$this->Decorator->rule(
+		'.textarea_container pre', array(
+			'visibility' => 'hidden',
+			'display' => 'block'
+	));
+	
+	
+
+
+
+
+
+
+
+	
 	$this->Decorator->rule(
 		'.input.error', array(
 			'background-color' => $palette['input_error_bg']->write(),
