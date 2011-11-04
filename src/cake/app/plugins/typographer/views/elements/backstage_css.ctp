@@ -596,7 +596,8 @@
 		'#header',
 		array(
 			'width' => 'auto',
-			'height' => $vg->size(array('g' => 6))
+			'height' => $vg->size(array('g' => 6)),
+			'position' => 'relative'
 		)
 	);
 	
@@ -676,21 +677,23 @@
 			'background-color' => $palette['bg']->write(),
 			'border-top' => $u->t(1) . ' solid ' . $palette['menu_border']->write(),
 			'padding' => $vg->size(array('g' => 1)) . ' 0 ' . $vg->size(array('g' => 2)) . ' 0',
-			'position' => 'relative'
+			'position' => 'relative',
+			'z-index' => 1
 		)
 	);
 	
 	$this->Decorator->rule(
-		'#content .menu',
+		'#header .menu',
 		array(
 			'position' => 'absolute',
-			'top' => $u->t(-21),
-			'left' => $hg->size(array('m' => 2))
+			'top' => $u->t(88),
+			'left' => $hg->size(array('m' => 2)),
+			'z-index' => 100
 		)
 	);
 	
 	$this->Decorator->rule(
-		'#content .menu a',
+		'#header .menu a',
 		array(
 			'float' => 'left',
 			'display' => 'block',
@@ -704,7 +707,7 @@
 	);
 	
 	$this->Decorator->rule(
-		'#content .menu a.selected',
+		'#header .menu a.selected',
 		array(
 			'height' => $vg->size(array('g' => 1.2)),
 			'background-color' => $palette['bg']->write(),
@@ -1473,79 +1476,6 @@
 	$this->Decorator->rule(
 		'table.dashboard th.last_col, table.backstage th.last_col', array(
 			'border-right' => $u->t($border_width) . ' solid ' . $palette['text']->write()
-	));
-	
-	$this->Decorator->rule(
-		'table.backstage.w_3M', array(
-			'width' => $hg->size(array('M' => 3))
-	));
-	$this->Decorator->rule(
-		'table.backstage.w_4M', array(
-			'width' => $hg->size(array('M' => 4))
-	));
-	$this->Decorator->rule(
-		'table.backstage.w_5M', array(
-			'width' => $hg->size(array('M' => 5))
-	));
-	$this->Decorator->rule(
-		'table.backstage.w_6M', array(
-			'width' => $hg->size(array('M' => 6))
-	));
-	$this->Decorator->rule(
-		'table.backstage.w_7M', array(
-			'width' => $hg->size(array('M' => 7))
-	));
-	$this->Decorator->rule(
-		'table.backstage.w_8M', array(
-			'width' => $hg->size(array('M' => 8))
-	));
-	$this->Decorator->rule(
-		'table.backstage.w_9M', array(
-			'width' => $hg->size(array('M' => 9))
-	));
-	$this->Decorator->rule(
-		'table.backstage.w_10M', array(
-			'width' => $hg->size(array('M' => 10))
-	));
-	$this->Decorator->rule(
-		'table.backstage.w_11M', array(
-			'width' => $hg->size(array('M' => 11))
-	));
-	$this->Decorator->rule(
-		'table.backstage.w_12M', array(
-			'width' => $hg->size(array('M' => 12))
-	));
-	$this->Decorator->rule(
-		'table.backstage.w_13M', array(
-			'width' => $hg->size(array('M' => 13))
-	));
-	$this->Decorator->rule(
-		'table.backstage.w_14M', array(
-			'width' => $hg->size(array('M' => 14))
-	));
-	$this->Decorator->rule(
-		'table.backstage.w_15M', array(
-			'width' => $hg->size(array('M' => 15))
-	));
-	$this->Decorator->rule(
-		'table.backstage.w_16M', array(
-			'width' => $hg->size(array('M' => 16))
-	));
-	$this->Decorator->rule(
-		'table.backstage.w_17M', array(
-			'width' => $hg->size(array('M' => 17))
-	));
-	$this->Decorator->rule(
-		'table.backstage.w_18M', array(
-			'width' => $hg->size(array('M' => 18))
-	));
-	$this->Decorator->rule(
-		'table.backstage.w_19M', array(
-			'width' => $hg->size(array('M' => 19))
-	));
-	$this->Decorator->rule(
-		'table.backstage.w_20M', array(
-			'width' => $hg->size(array('M' => 20))
 	));
 	
 	$this->Decorator->rule(
