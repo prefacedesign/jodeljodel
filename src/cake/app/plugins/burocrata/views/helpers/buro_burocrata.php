@@ -794,9 +794,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 	public function inputTextarea($options)
 	{
 		$out = '';
-		$inputOptions = array('type' => 'textarea', 'forceForm' => true, 'container' => false) + $options;
+		$inputOptions = array('type' => 'textarea', 'forceForm' => true, 'container' => false, 'label' => false) + $options;
 		unset($inputOptions['options']);
-		
+		unset($inputOptions['instructions']);
+
 		extract($options);
 		
 		$_htmlAttributes += array(
