@@ -11,6 +11,8 @@ Configure::write('Backstage.itemSettings',array(
 				'created' => array('label' => __d('backstage', 'ModuleName header: created', true), 'field' => 'created', 'size' => '2'),
 				'modified' => array('label' => __d('backstage', 'ModuleName header: modified', true), 'field' => 'modified', 'size' => '2'),
 			),
+			'customRow' => false,
+			'contain' => array('ModelModel'),
 		),
 	)
 );
