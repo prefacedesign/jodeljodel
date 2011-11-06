@@ -39,6 +39,8 @@ class BackContentsController extends BackstageAppController
 	var $backstageModel;
 	var $modules;
 	var $backstageSettings;
+	var $limit = 20;
+	var $contain = false;
 	
 	function __construct()
 	{
@@ -129,7 +131,11 @@ class BackContentsController extends BackstageAppController
 					else
 						$this->Session->write('Backstage.searchOptions', array());
 					
-					$limit = isset($this->backstageSettings[$moduleName]['limitSize']) ? $this->backstageSettings[$moduleName]['limitSize'] : 20;
+					if (isset($this->backstageSettings[$moduleName]['limitSize']))
+						$this->limit = $this->backstageSettings[$moduleName]['limitSize'];
+					if (isset($this->backstageSettings[$moduleName]['contain']))
+						$this->contain = $this->backstageSettings[$moduleName]['contain'];
+						
 					$this->backstageModel = ClassRegistry::init(array('class' =>  $this->modules[$moduleName]['model']));
 
 					if (isset($this->backstageModel->Behaviors->TempTemp->__settings))
@@ -144,10 +150,9 @@ class BackContentsController extends BackstageAppController
 					{
 						$this->paginate = array(
 							$this->backstageModel->alias => array(
-								'limit' => $limit,
+								'limit' => $this->limit,
 								'page' => $page,
-								'contain' => false,
-								'order' => 'modified DESC',
+								'contain' => $this->contain,
 								'conditions' => $conditions
 							)
 						);
@@ -156,9 +161,8 @@ class BackContentsController extends BackstageAppController
 					{
 						$this->paginate = array(
 							$this->backstageModel->alias => array(
-								'limit' => $limit,
-								'contain' => false,
-								'order' => 'modified DESC',
+								'limit' => $this->limit,
+								'contain' => $this->contain,
 								'conditions' => $conditions
 							)
 						);
@@ -192,12 +196,12 @@ class BackContentsController extends BackstageAppController
 	}
 	
 	function search($moduleName)
-	{
+	{		
 		$this->backstageModel = ClassRegistry::init(array('class' =>  $this->modules[$moduleName]['model']));
 		
-		if (method_exists($this->backstageModel, 'findBackstage'))
+		if (method_exists($this->backstageModel, 'getBackstageFindConditions'))
 		{	
-			$conditions = $this->backstageModel->findBackstage($this->data['dash_search']);
+			$conditions = $this->backstageModel->getBackstageFindConditions($this->data['dash_search']);
 			if (!is_array($conditions))
 				trigger_error('BackContentsController::search - conditions must be an array') and die;
 			if (isset($conditions['conditions']))
@@ -238,16 +242,18 @@ class BackContentsController extends BackstageAppController
 			$conditions['publishing_status'] = $status;
 		
 		$this->backstageModel = ClassRegistry::init(array('class' =>  $this->modules[$moduleName]['model']));
-		$limit = isset($this->backstageSettings[$moduleName]['limitSize']) ? $this->backstageSettings[$moduleName]['limitSize'] : 20;
+		if (isset($this->backstageSettings[$moduleName]['limitSize']))
+			$this->limit = $this->backstageSettings[$moduleName]['limitSize'];
+		if (isset($this->backstageSettings[$moduleName]['contain']))
+			$this->contain = $this->backstageSettings[$moduleName]['contain'];
 		
 		if (isset($this->backstageModel->Behaviors->TempTemp->__settings))
 			$conditions[$this->backstageModel->alias.'.'.$this->backstageModel->Behaviors->TempTemp->__settings[$this->backstageModel->alias]['field']] = 0;
 			
 		$this->paginate = array(
 			$this->backstageModel->alias => array(
-				'limit' => $limit,
-				'contain' => false,
-				'order' => 'modified DESC',
+				'limit' => $this->limit,
+				'contain' => $this->contain,
 				'conditions' => $conditions
 			)
 		);

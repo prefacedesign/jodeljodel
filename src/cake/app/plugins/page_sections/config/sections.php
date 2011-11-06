@@ -513,7 +513,7 @@ $sectionMap = array(
 		'subRules' => array(
 			array(
 				'rule' => array('controller' => 'back_contents', 'action' => 'edit'),
-				'location' => array(null,'edit'),
+				'location' => array(null,'dashboard'),
 				'subRules' => array(				
 					array(
 						'rule' => array('controller' => 'back_contents', 'action' => 'edit', 'pass' => array(0 => 'example')),
