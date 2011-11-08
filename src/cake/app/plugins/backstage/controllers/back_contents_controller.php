@@ -40,7 +40,7 @@ class BackContentsController extends BackstageAppController
 	var $modules;
 	var $backstageSettings;
 	var $limit = 20;
-	var $contain = false;
+	var $status = false;
 	
 	function __construct()
 	{
@@ -98,6 +98,34 @@ class BackContentsController extends BackstageAppController
 		$this->set(compact('contentPlugin', 'modelName', 'fullModelName', 'moduleName'));
     }
 	
+	private function __getOptions($moduleName)
+	{
+		$defaultOptions = array();
+		$this->status = $this->Session->read('Backstage.status');
+		if ($this->status != 'all' && !empty($this->status))
+			$defaultOptions['conditions']['publishing_status'] = $this->status;
+		
+		$this->backstageModel = ClassRegistry::init(array('class' =>  $this->modules[$moduleName]['model']));
+		if (isset($this->backstageSettings[$moduleName]['limitSize']))
+			$defaultOptions['limit'] = $this->backstageSettings[$moduleName]['limitSize'];
+		else
+			$defaultOptions['limit'] = $this->limit;
+		if (isset($this->backstageSettings[$moduleName]['contain']))
+			$defaultOptions['contain'] = $this->backstageSettings[$moduleName]['contain'];
+		if (isset($this->backstageModel->Behaviors->TempTemp->__settings))
+			$defaultOptions['conditions'][$this->backstageModel->alias.'.'.$this->backstageModel->Behaviors->TempTemp->__settings[$this->backstageModel->alias]['field']] = 0;
+		
+		$options = array();
+		$op = $this->Session->read('Backstage.searchOptions');
+		if ($op)
+			$options = $op;
+		
+		$finalOptions = array_merge_recursive($options, $defaultOptions);
+		
+		return $finalOptions;
+	}
+	
+	
 	function index($moduleName, $page = null)
 	{
 		$conditions = array();
@@ -120,58 +148,19 @@ class BackContentsController extends BackstageAppController
 					else
 						$this->Session->write('Backstage.page', 0);
 						
-					if (isset($this->params['named']['page']))
-					{
-						$c = $this->Session->read('Backstage.searchOptions');
-						if ($c)
-							$conditions = $c;
-						else
-							$conditions = array();
-					}
-					else
+					if (!isset($this->params['named']['page']))
 						$this->Session->write('Backstage.searchOptions', array());
 					
-					if (isset($this->backstageSettings[$moduleName]['limitSize']))
-						$this->limit = $this->backstageSettings[$moduleName]['limitSize'];
-					if (isset($this->backstageSettings[$moduleName]['contain']))
-						$this->contain = $this->backstageSettings[$moduleName]['contain'];
-						
-					$this->backstageModel = ClassRegistry::init(array('class' =>  $this->modules[$moduleName]['model']));
-
-					if (isset($this->backstageModel->Behaviors->TempTemp->__settings))
-						$conditions[$this->backstageModel->alias.'.'.$this->backstageModel->Behaviors->TempTemp->__settings[$this->backstageModel->alias]['field']] = 0;
-						
-					$status = $this->Session->read('Backstage.status');
-					if ($status != 'all' && !empty($status))
-						$conditions['publishing_status'] = $status;
-					
-					
+					$options = $this->__getOptions($moduleName);
 					if ($page)
-					{
-						$this->paginate = array(
-							$this->backstageModel->alias => array(
-								'limit' => $this->limit,
-								'page' => $page,
-								'contain' => $this->contain,
-								'conditions' => $conditions
-							)
-						);
-					}
-					else
-					{
-						$this->paginate = array(
-							$this->backstageModel->alias => array(
-								'limit' => $this->limit,
-								'contain' => $this->contain,
-								'conditions' => $conditions
-							)
-						);
-					}
+						$options['page'] = $page;
+					
+					$this->paginate = array($this->backstageModel->alias => $options);
 					
 					$this->set('backstageSettings', $this->backstageSettings[$moduleName]);
 					$this->set('moduleName', $moduleName);
 					$this->set('modelName', $this->backstageModel->alias);
-					$this->set('filter_status', $status);
+					$this->set('filter_status', $this->status);
 					$this->data = $this->paginate($this->backstageModel);
 					$this->helpers['Paginator'] = array('ajax' => 'Ajax');
 					
@@ -199,31 +188,30 @@ class BackContentsController extends BackstageAppController
 	{		
 		$this->backstageModel = ClassRegistry::init(array('class' =>  $this->modules[$moduleName]['model']));
 		
-		if (method_exists($this->backstageModel, 'getBackstageFindConditions'))
+		if (method_exists($this->backstageModel, 'getBackstageFindOptions'))
 		{	
-			$conditions = $this->backstageModel->getBackstageFindConditions($this->data['dash_search']);
-			if (!is_array($conditions))
-				trigger_error('BackContentsController::search - conditions must be an array') and die;
-			if (isset($conditions['conditions']))
+			$options = $this->backstageModel->getBackstageFindOptions($this->data['dash_search']);
+			if (!is_array($options))
+				trigger_error('BackContentsController::search - options must be an array') and die;
+			else
 			{
-				$conditions = $conditions['conditions'];
-				unset($conditions['conditions']);
+				$this->Session->write('Backstage.searchOptions', $options);
+				$this->filter_and_search($moduleName);
 			}
-			$this->Session->write('Backstage.searchOptions', $conditions);
-			$this->filter_and_search($moduleName);
 		}
 		else
 		{	
 			if (!empty($this->data['dash_search']))
-			{
+			{	
 				$conditions['OR'] = array();
-				foreach($this->backstageSettings['columns'] as $col)
+				foreach($this->backstageSettings[$moduleName]['columns'] as $col)
 					$conditions['OR'][] = array($col['field'] . ' LIKE' => '%'.$this->data['dash_search'].'%');
+				$options = array('conditions' => $conditions);
 			}
 			else
-				$conditions = array();
+				$options = array();
 			
-			$this->Session->write('Backstage.searchOptions', $conditions);
+			$this->Session->write('Backstage.searchOptions', $options);
 			$this->filter_and_search($moduleName);
 		}
 	}
@@ -231,34 +219,9 @@ class BackContentsController extends BackstageAppController
 	
 	function filter_and_search($moduleName)
 	{
-		$c = $this->Session->read('Backstage.searchOptions');
-		if ($c)
-			$conditions = $c;
-		else
-			$conditions = array();
-		
-		$status = $this->Session->read('Backstage.status');
-		if ($status != 'all' && !empty($status))
-			$conditions['publishing_status'] = $status;
-		
-		$this->backstageModel = ClassRegistry::init(array('class' =>  $this->modules[$moduleName]['model']));
-		if (isset($this->backstageSettings[$moduleName]['limitSize']))
-			$this->limit = $this->backstageSettings[$moduleName]['limitSize'];
-		if (isset($this->backstageSettings[$moduleName]['contain']))
-			$this->contain = $this->backstageSettings[$moduleName]['contain'];
-		
-		if (isset($this->backstageModel->Behaviors->TempTemp->__settings))
-			$conditions[$this->backstageModel->alias.'.'.$this->backstageModel->Behaviors->TempTemp->__settings[$this->backstageModel->alias]['field']] = 0;
+		$options = $this->__getOptions($moduleName);
+		$this->paginate = array($this->backstageModel->alias => $options);
 			
-		$this->paginate = array(
-			$this->backstageModel->alias => array(
-				'limit' => $this->limit,
-				'contain' => $this->contain,
-				'conditions' => $conditions
-			)
-		);
-			
-		
 		//test to emulate paginate (possible to implement in future, with findBackstage)
 		/*
 		$count = $this->backstageModel->find('count', array('contain' => false, 'order' => 'modified DESC', 'conditions' => $conditions));
@@ -288,7 +251,6 @@ class BackContentsController extends BackstageAppController
 		$this->layout = 'ajax';
 		$this->render('filter', 'ajax');
 	}
-	
 	
 	function delete_item($moduleName, $id)
 	{
