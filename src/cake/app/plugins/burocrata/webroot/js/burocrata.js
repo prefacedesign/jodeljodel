@@ -1009,10 +1009,14 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			}.bind(this)
 		});
 	},
-	injectControlOnForm: function()
+	getOpenedForm: function()
 	{
 		var form_id = this.divForm.down('.buro_form') && this.divForm.down('.buro_form').readAttribute('id');
-		var OpenedForm = BuroCR.get(form_id);
+		return BuroCR.get(form_id);
+	},
+	injectControlOnForm: function()
+	{
+		var OpenedForm = this.getOpenedForm();
 		if (OpenedForm)
 		{
 			OpenedForm.url = this.url;
@@ -1044,6 +1048,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 				onError: this.formError.bind(this),
 				onReject: this.formRejected.bind(this)
 			});
+			this.trigger('onShowForm', OpenedForm);
 		}
 	},
 	formSaved: function(form, response, json)

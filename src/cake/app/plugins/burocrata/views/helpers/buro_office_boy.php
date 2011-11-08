@@ -83,7 +83,7 @@ class BuroOfficeBoyHelper extends AppHelper
 			'onError' => 'function(code, error, json){%s}'
 		),
 		'listOfItems' => array(
-			'onShowForm' => 'function(id){%s}',
+			'onShowForm' => 'function(form){%s}',
 			'onAction' => 'function(action, id, content_type){%s}',
 			'onError' => 'function(json){%s}',
 		),
