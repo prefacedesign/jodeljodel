@@ -528,7 +528,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$this->modelAlias = $options['modelAlias'];
 			$this->modelPlugin = $options['modelPlugin'];
 			$this->data = $options['data'];
-			$this->Form->data = $this->data;
+			$View->data = $this->Form->data = $this->data;
 			if ($this->modelAlias)
 				$this->Form->create($this->modelAlias, array('url' => $options['url']));
 		}
