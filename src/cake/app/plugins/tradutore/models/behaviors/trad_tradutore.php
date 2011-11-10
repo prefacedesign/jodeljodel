@@ -34,28 +34,33 @@ class TradTradutoreBehavior extends ModelBehavior
     var $settings;
 	var $already_done = array();
 	var $contained = array();
+	var $hasSetLanguage = array();
+	var $deleting = array();
 	
 	static $currentLanguage;
 	static $languageStack = array();
 	
-	var $hasSetLanguage = 0;
-	var $deleting = 0;
 
     function __setupUserSettings(&$Model, $settings)
     {
-        if (!isset($this->settings[$Model->name])) {
+        if (!isset($this->settings[$Model->alias])) {
             // Set default user settings.
-            $this->settings[$Model->name] = array(
+            $this->settings[$Model->alias] = array(
                 'className'       => $Model->name . 'Translation',
                 'foreignKey'      => Inflector::underscore($Model->name) . '_id',
                 'languageField'   => 'language',
                 'defaultLanguage' => Configure::read('Tradutore.mainLanguage')
             );
         }
-        $this->settings[$Model->name] = array_merge($this->settings[$Model->name], (array)$settings);
-
+        $this->settings[$Model->alias] = array_merge($this->settings[$Model->alias], (array)$settings);
+        
+        $this->already_done[$Model->alias] = array();
+        $this->contained[$Model->alias] = array();
+        $this->deleting[$Model->alias] = 0;
+        $this->hasSetLanguage = 0;
+        
         // On post setup time, the current language for model is the default language.
-        //$this->settings[$Model->name]['language'] = $this->settings[$Model->name]['defaultLanguage'];
+        //$this->settings[$Model->alias]['language'] = $this->settings[$Model->alias]['defaultLanguage'];
     }
     
 
@@ -77,10 +82,10 @@ class TradTradutoreBehavior extends ModelBehavior
 
     function __setupInternalSettings(&$Model)
     {
-        assert('isset($this->settings[$Model->name])');
+        assert('isset($this->settings[$Model->alias])');
         
-        if (!isset($this->__settings[$Model->name])) {
-            $settings = $this->settings[$Model->name];
+        if (!isset($this->__settings[$Model->alias])) {
+            $settings = $this->settings[$Model->alias];
 
             // Get info about translatable model: name, fields and primary key.
             $translatable = array(
@@ -125,7 +130,7 @@ class TradTradutoreBehavior extends ModelBehavior
             );
 
             // Set internal settings.
-            $this->__settings[$Model->name] = array(
+            $this->__settings[$Model->alias] = array(
                 'languageField' => array(
                     'translatable' => $this->__dotConcat($translatable['className'], $translation['languageField']),
                     'translation'  => $this->__dotConcat($translation['className'], $translation['languageField'])
@@ -149,9 +154,9 @@ class TradTradutoreBehavior extends ModelBehavior
 
     function setLanguage(&$Model, $language)
     {
-        assert('isset($this->__settings[$Model->name])');
+        assert('isset($this->__settings[$Model->alias])');
 		TradTradutoreBehavior::setGlobalLanguage($language);
-        $this->settings[$Model->name]['language'] = $language;
+        $this->settings[$Model->alias]['language'] = $language;
     }
 	
 	static function setGlobalLanguage($lang = null)
@@ -170,13 +175,13 @@ class TradTradutoreBehavior extends ModelBehavior
 
     function getLanguage(&$Model)
     {
-        assert('isset($this->__settings[$Model->name])');
-        return $this->settings[$Model->name]['language'];
+        assert('isset($this->__settings[$Model->alias])');
+        return $this->settings[$Model->alias]['language'];
     }
 	
 	function getLanguages(&$Model, $id)
     {
-		extract($this->settings[$Model->name]);
+		extract($this->settings[$Model->alias]);
         $data = $Model->{$className}->find(
 			'list', 
 			array(
@@ -192,7 +197,7 @@ class TradTradutoreBehavior extends ModelBehavior
 
     function __isLanguageField($Model, $field)
     {
-        assert('isset($this->__settings[$Model->name])');
+        assert('isset($this->__settings[$Model->alias])');
     }
 
     function __isTranslatableField($Model, $field)
@@ -202,10 +207,10 @@ class TradTradutoreBehavior extends ModelBehavior
 	
 	function __createQuery(&$Model, $query)
 	{
-		if (isset($this->__settings[$Model->name]))
+		if (isset($this->__settings[$Model->alias]))
 		{
-			$__settings = $this->__settings[$Model->name];
-			$settings   = $this->settings[$Model->name];
+			$__settings = $this->__settings[$Model->alias];
+			$settings   = $this->settings[$Model->alias];
 		}
 		
 		if (isset($__settings))
@@ -263,9 +268,9 @@ class TradTradutoreBehavior extends ModelBehavior
 		
 		foreach ($Model->belongsTo as $child)
 		{
-			if (in_array($child['className'], $this->already_done) === false) 
+			if (in_array($child['className'],$this->already_done[$Model->alias]) === false) 
 			{
-				$this->already_done[] = $child['className'];
+				$this->already_done[$Model->alias][] = $child['className'];
 				$query = $this->__createQuery($Model->{$child['className']}, $query);
 				
 				if (isset($Model->Behaviors->TradTradutore->__settings[$child['className']]))
@@ -338,9 +343,9 @@ class TradTradutoreBehavior extends ModelBehavior
 		
 		foreach ($Model->hasOne as $child)
 		{
-			if (in_array($child['className'], $this->already_done) === false) 
+			if (in_array($child['className'], $this->already_done[$Model->alias]) === false) 
 			{
-				$this->already_done[] = $child['className'];
+				$this->already_done[$Model->alias][] = $child['className'];
 				$query = $this->__createQuery($Model->{$child['className']}, $query);
 				
 				if (isset($Model->Behaviors->TradTradutore->__settings[$child['className']]))
@@ -417,10 +422,10 @@ class TradTradutoreBehavior extends ModelBehavior
 	
 	function __changeContain(&$Model, &$contain)
 	{
-		if (isset($this->__settings[$Model->name]))
+		if (isset($this->__settings[$Model->alias]))
 		{
-			$__settings = $this->__settings[$Model->name];
-			$settings   = $this->settings[$Model->name];
+			$__settings = $this->__settings[$Model->alias];
+			$settings   = $this->settings[$Model->alias];
 			$translatableFields        = $__settings['translatableFields']['translatable'];
 			$translatableFieldsInQuery = array();
 		}
@@ -497,7 +502,6 @@ class TradTradutoreBehavior extends ModelBehavior
 					}
 				}
 			}
-			
 			if (!empty($Model->{$settings['className']}->hasAndBelongsToMany))
 			{
 				foreach($Model->{$settings['className']}->hasAndBelongsToMany as $k => $m)
@@ -522,9 +526,9 @@ class TradTradutoreBehavior extends ModelBehavior
 			
 		foreach ($Model->hasMany as $child)
 		{
-			if (in_array($child['className'], $this->already_done) === false) 
+			if (in_array($child['className'], $this->already_done[$Model->alias]) === false) 
 			{
-				$this->already_done[] = $child['className'];
+				$this->already_done[$Model->alias][] = $child['className'];
 				if (isset($contain[$child['className']]))
 					$contain[$child['className']] = $this->__changeContain($Model->{$child['className']}, $contain[$child['className']]);
 			}
@@ -532,9 +536,9 @@ class TradTradutoreBehavior extends ModelBehavior
 		
 		foreach ($Model->belongsTo as $child)
 		{
-			if (in_array($child['className'], $this->already_done) === false) 
+			if (in_array($child['className'], $this->already_done[$Model->alias]) === false) 
 			{
-				$this->already_done[] = $child['className'];
+				$this->already_done[$Model->alias][] = $child['className'];
 				if (isset($contain[$child['className']]))
 					$contain[$child['className']] = $this->__changeContain($Model->{$child['className']}, $contain[$child['className']]);
 			}
@@ -542,9 +546,9 @@ class TradTradutoreBehavior extends ModelBehavior
 		
 		foreach ($Model->hasAndBelongsToMany as $child)
 		{
-			if (in_array($child['className'], $this->already_done) === false) 
+			if (in_array($child['className'], $this->already_done[$Model->alias]) === false) 
 			{
-				$this->already_done[] = $child['className'];
+				$this->already_done[$Model->alias][] = $child['className'];
 				if (isset($contain[$child['className']]))
 					$contain[$child['className']] = $this->__changeContain($Model->{$child['className']}, $contain[$child['className']]);
 			}
@@ -563,12 +567,12 @@ class TradTradutoreBehavior extends ModelBehavior
 					$linkModel =& $Model->{$assoc};
 					if (empty($linkedModels[$Model->alias . '/' . $type . '/' . $assoc])) 
 					{
-						if (!in_array($Model->alias . '.' . $linkModel->alias, $this->contained) && !in_array($linkModel->alias . '.' . $Model->alias , $this->contained) && !in_array($linkModel->alias, $this->contained)) 
+						if (!in_array($Model->alias . '.' . $linkModel->alias, $this->contained[$Model->alias]) && !in_array($linkModel->alias . '.' . $Model->alias , $this->contained[$Model->alias]) && !in_array($linkModel->alias, $this->contained[$Model->alias])) 
 						{
 							$contain[$Model->alias][$assoc] = array();
 							$linkedModels[$Model->alias . '/' . $type . '/' . $assoc] = true;
-							if (isset($this->settings[$Model->name]))
-								$settings   = $this->settings[$Model->name];
+							if (isset($this->settings[$Model->alias]))
+								$settings   = $this->settings[$Model->alias];
 							if (isset($settings['className']))
 								if (!empty($Model->hasOne[$settings['className']]))
 									$rec = $recursive;
@@ -577,7 +581,7 @@ class TradTradutoreBehavior extends ModelBehavior
 							else
 								$rec = $recursive - 1;
 							
-							array_push($this->contained, $Model->alias . '.' . $linkModel->alias  );
+							array_push($this->contained[$Model->alias], $Model->alias . '.' . $linkModel->alias  );
 							$this->generateContain($linkModel, $contain[$Model->alias], $linkedModels, $linkModel->__associations, $rec);	
 							
 						}
@@ -590,9 +594,9 @@ class TradTradutoreBehavior extends ModelBehavior
 	
     function beforeFind(&$Model, $query)
     {
-		$__settings = $this->__settings[$Model->name];
-        $settings   = $this->settings[$Model->name];
-		$this->contained = array();
+		$__settings = $this->__settings[$Model->alias];
+        $settings   = $this->settings[$Model->alias];
+		$this->contained[$Model->alias] = array();
 		
 		if (isset($query['contain']) && $query['contain'] === false)
 			$query['contain'] = array();
@@ -619,7 +623,7 @@ class TradTradutoreBehavior extends ModelBehavior
 			{
 				if ($query['recursive'] > 1)
 				{
-					array_push($this->contained, $Model->alias);
+					array_push($this->contained[$Model->alias], $Model->alias);
 					$contain = $this->generateContain($Model, $query['contain'], $linkedModels, $_associations, $query['recursive'] - 1);
 					$query['recursive'] += 1;
 					$query['contain'] = $contain[$Model->alias];
@@ -664,24 +668,24 @@ class TradTradutoreBehavior extends ModelBehavior
 		if (isset($query['language']))
 		{
 			$this->setLanguage($Model, $query['language']);
-			$this->hasSetLanguage++;
+			$this->hasSetLanguage[$Model->alias]++;
 		}
 		
-		if (!$this->deleting)
+		if (!$this->deleting[$Model->alias])
 		{
 			if (is_array($query['conditions']) || !isset($query['conditions']))
 				if (!(isset($query['emptyTranslation']) && $query['emptyTranslation'] == true))
 					$query['conditions']['NOT']['language'] = 'IS NOT NULL'; 
 		}
 		
-		$this->already_done = array();
+		$this->already_done[$Model->alias] = array();
 		$contain = $this->__changeContain($Model, $query['contain']);
 		$query['contain'] = $contain;
-		$this->already_done = array();
+		$this->already_done[$Model->alias] = array();
 		$query = $this->__createQuery($Model, $query);
 		
 		if (isset($settings['className']))
-		{
+		{       
 			if (!empty($Model->hasOne[$settings['className']]))
 			{
 				$c[$settings['className']] = array();
@@ -752,14 +756,14 @@ class TradTradutoreBehavior extends ModelBehavior
 
     function afterFind(&$Model, $results, $primary)
     {
-        $__settings = $this->__settings[$Model->name];
-        $settings   = $this->settings[$Model->name];
+        $__settings = $this->__settings[$Model->alias];
+        $settings   = $this->settings[$Model->alias];
 		
 		
-		if ($this->hasSetLanguage > 0)
+		if ($this->hasSetLanguage[$Model->alias] > 0)
 		{
 			$this->returnToPreviousGlobalLanguage();
-			$this->hasSetLanguage--;
+			$this->hasSetLanguage[$Model->alias]--;
 		}
 		
 		
@@ -826,8 +830,8 @@ class TradTradutoreBehavior extends ModelBehavior
 	
 	function beforeSave(&$Model)
     {	
-        $__settings = $this->__settings[$Model->name];
-        $settings   = $this->settings[$Model->name];
+        $__settings = $this->__settings[$Model->alias];
+        $settings   = $this->settings[$Model->alias];
 		
 		$translatableFields        = $__settings['translatableFields']['translatable'];
 		
@@ -869,8 +873,8 @@ class TradTradutoreBehavior extends ModelBehavior
 	
 	function afterSave(&$Model, $created)
 	{		
-		$__settings = $this->__settings[$Model->name];
-        $settings   = $this->settings[$Model->name];
+		$__settings = $this->__settings[$Model->alias];
+        $settings   = $this->settings[$Model->alias];
 		
 		$Model->data[$settings['className']][$settings['foreignKey']] = $Model->id;
 
@@ -882,13 +886,13 @@ class TradTradutoreBehavior extends ModelBehavior
 		else
 			$Model->data[$settings['className']][$lang] = $Model->data[$Model->name][$lang];
 		
-		$this->Translate = & ClassRegistry::init($settings['className']);
-		$this->Translate->id = false;
+		$Translate = & ClassRegistry::init($settings['className']);
+		$Translate->id = false;
 		
-		$exists = $this->Translate->find('first', array('conditions' => array($settings['foreignKey'] => $Model->id, $lang => $Model->data[$settings['className']][$lang])));
+		$exists = $Translate->find('first', array('conditions' => array($settings['foreignKey'] => $Model->id, $lang => $Model->data[$settings['className']][$lang])));
 		if ($exists)
 			$Model->data[$settings['className']]['id'] = $exists[$settings['className']]['id'];
-		if ($this->Translate->save($Model->data[$settings['className']]))
+		if ($Translate->save($Model->data[$settings['className']]))
 			return true;
 		else
 			return false;
@@ -897,9 +901,9 @@ class TradTradutoreBehavior extends ModelBehavior
 	
 	function beforeDelete(&$Model)
 	{		
-        $settings   = $this->settings[$Model->name];
+        $settings   = $this->settings[$Model->alias];
 		
-		$this->deleting = 1;
+		$this->deleting[$Model->alias] = 1;
 		if (!empty($Model->hasOne[$settings['className']]))
 			return ($Model->{$settings['className']}->deleteAll(array($settings['foreignKey'] => $Model->id)));
 		
@@ -908,7 +912,7 @@ class TradTradutoreBehavior extends ModelBehavior
 	
 	function afterDelete(&$Model)
 	{		
-		$this->deleting = 0;
+		$this->deleting[$Model->alias] = 0;
 		return true;
 	}
 }
