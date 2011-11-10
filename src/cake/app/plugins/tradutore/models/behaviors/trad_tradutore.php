@@ -671,7 +671,7 @@ class TradTradutoreBehavior extends ModelBehavior
 		{
 			if (is_array($query['conditions']) || !isset($query['conditions']))
 				if (!(isset($query['emptyTranslation']) && $query['emptyTranslation'] == true))
-					$query['conditions']['NOT']['language'] = null; 
+					$query['conditions']['NOT']['language'] = 'IS NOT NULL'; 
 		}
 		
 		$this->already_done = array();
