@@ -1665,8 +1665,8 @@
 ?>
 .cpk-cont {position: absolute; z-index: 51; background-color: white; border: 1px solid black; padding: 10px; -moz-box-shadow:4px 4px 15px 1px #666; box-shadow:4px 4px 15px 1px #666;}
 .cpk-color {width: 256px; height: 256px; position: absolute; top: 10px; left:10px; border: 1px solid black;}
-.cpk-croma {width: 256px; height: 256px; background: url(../burocrata/img/cpk/croma.png); position: absolute; top:11px; left:11px;}
+.cpk-croma {width: 256px; height: 256px; background: url(../burocrata/img/cpk/croma.png); position: absolute; top:11px; left:11px; overflow: hidden;}
 .cpk-h {height: 256px; width: 20px; background: url(../burocrata/img/cpk/hue.png); margin-left: 262px; border: 1px solid black; position: relative;}
 .cpk-h > div {height: 1px;}
 .cpk-hdrag {border:1px solid black; height:5px; width: 26px; margin-left: -3px; float: left;}
-.cpk-picker {border: 1px solid black; height: 3px; width: 3px; position: absolute;}
+.cpk-picker {background: black; height: 3px; width: 3px; position: absolute;}
