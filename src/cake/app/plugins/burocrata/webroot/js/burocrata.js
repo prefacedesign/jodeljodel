@@ -1863,7 +1863,7 @@ var BuroTextile = Class.create(BuroCallbackable, {
 		this.id_base = id_base;
 		this.input = $('npt'+this.id_base);
 		
-		this.links = this.input.up('.input_textile').select('a.buro_textile');
+		this.links = this.input.up('.textarea_container').up().select('a.buro_textile');
 		this.links.invoke('observe', 'click', this.routeAction.bind(this));
 		
 		this.input.observe('keyup', this.getSelection.bind(this));
