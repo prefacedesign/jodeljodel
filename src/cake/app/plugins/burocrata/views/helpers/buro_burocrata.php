@@ -1272,7 +1272,11 @@ class BuroBurocrataHelper extends XmlTagHelper
 			if (!isset($this->data[$assocName]) || !is_array($this->data[$assocName]))
 			{
 				$method_name = 'findAllBy' . Inflector::camelize($ParentModel->hasMany[$assocName]['foreignKey']);
-				$this->data[$assocName] = Set::extract("/$assocName/.", call_user_method($method_name, $AssocModel, $this->data[$ParentModel->alias][$ParentModel->primaryKey]));
+				$tmp_data = $ParentModel->find('first', array(
+					'conditions' => array($ParentModel->alias.'.'.$ParentModel->primaryKey => $this->data[$ParentModel->alias][$ParentModel->primaryKey]),
+					'contain' => $AssocModel->alias
+				));
+				$this->data[$assocName] = $tmp_data[$assocName];
 			}
 		}
 		
