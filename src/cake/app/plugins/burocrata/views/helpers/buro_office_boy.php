@@ -179,13 +179,15 @@ class BuroOfficeBoyHelper extends AppHelper
 		$options = am(array('callbacks' => array()), $options);
 		extract($options);
 		
-		$script = sprintf("new BuroForm('%s','%s')",$this->url($url), $baseID);
+		$script = sprintf("var f = new BuroForm('%s','%s')",$this->url($url), $baseID);
 		
 		if(!empty($callbacks) && is_array($callbacks))
 			$script .= sprintf('.addCallbacks(%s)', $this->formatCallbacks('form', $callbacks));
 		
 		if (!empty($parameters))
 			$script .= sprintf('.addParameters(%s)', $this->Js->object($parameters));
+		
+		$script .= '.updateLastSavedData()';
 		
 		return $this->addHtmlEmbScript($script);
 	}

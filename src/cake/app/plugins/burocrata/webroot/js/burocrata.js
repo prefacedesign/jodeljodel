@@ -2,6 +2,21 @@ var E_NOT_JSON = 1; // Not a JSON response
 var E_JSON = 2; // JSON tells me the error
 var E_NOT_AUTH = 3; // Server sended a 403 (Not Authorized) code
 
+
+document.observe('dom:loaded', function(ev){
+	Element.addMethods({
+		getForm: function(element)
+		{
+			if (!(element = $(element))) return;
+			if (!BuroCR) return;
+			if (!(id = element.readAttribute('buro:form'))) return;
+			
+			return BuroCR.get('frm'+id);
+		}
+	})
+})
+
+
 /**
  * A instance of a Hash-like class, without overwriting of values, to keep
  * a list of instace objects used to keep all created classes
@@ -161,6 +176,8 @@ var BuroForm = Class.create(BuroCallbackable, {
 		{
 			this.addParameters(arguments[4]);
 		}
+		
+		this.lastSavedData = this.serialize();
 	},
 	addParameters: function(params, pattern)
 	{
@@ -180,6 +197,8 @@ var BuroForm = Class.create(BuroCallbackable, {
 		}
 		
 		this.params = this.params.merge(params);
+
+		return this;
 	},
 	lockForm: function()
 	{
@@ -202,15 +221,12 @@ var BuroForm = Class.create(BuroCallbackable, {
 	},
 	submits: function(ev)
 	{
-		this.inputs = $$('[buro\\:form="'+this.id_base+'"]');
-		
-		var data = Form.serializeElements(this.inputs, {hash:true});
-		data = $H(data).merge(this.params);
+		this.updateLastSavedData();
 		
 		this.trigger('onStart', this.form);
 		new BuroAjax(
 			this.url,
-			{parameters: data},
+			{parameters: this.lastSavedData},
 			{
 				onError: function(code, error) {
 					this.trigger('onError', code, error);
@@ -238,11 +254,13 @@ var BuroForm = Class.create(BuroCallbackable, {
 				}.bind(this)
 			}
 		);
+		return this;
 	},
 	cancels: function(ev)
 	{
 		ev.stop();
 		this.trigger('onCancel', this.form);
+		return this;
 	},
 	purge: function()
 	{
@@ -256,6 +274,22 @@ var BuroForm = Class.create(BuroCallbackable, {
 			this.form.remove();
 		this.removeCallback();
 		this.cancel = this.submit = this.form = null;
+	},
+	updateLastSavedData: function()
+	{
+		this.lastSavedData = this.serialize();
+	},
+	serialize: function()
+	{
+		this.inputs = $$('[buro\\:form="'+this.id_base+'"]');
+		
+		var data = Form.serializeElements(this.inputs, {hash:true});
+		data = $H(data).merge(this.params);
+		return data;
+	},
+	changed: function()
+	{
+		return this.lastSavedData.toQueryString() != this.serialize().toQueryString();
 	}
 });
 
