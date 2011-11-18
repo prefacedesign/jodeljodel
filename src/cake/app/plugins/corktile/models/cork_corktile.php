@@ -212,6 +212,24 @@ class CorkCorktile extends CorktileAppModel
 	}
 
 /**
+ * This method creates an unique ID for use as a new corktile key
+ * 
+ * @access public
+ * @return string One unique ID that is available for use
+ */
+	function getAvailableUuid()
+	{
+		$conditions = array();
+		do {
+			$conditions[$this->alias.'.'.$this->primaryKey] = String::uuid();
+			$this->recursive = -1;
+		}
+		while($this->find('count', compact('conditions')));
+
+		return array_pop($conditions);
+	}
+
+/**
  * When data is deleted from the Dashboard. Part of the Dashboard contract.
  *
  * For now data from CorkCorktile won't be deletable through the Dashboard.
