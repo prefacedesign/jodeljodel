@@ -94,7 +94,8 @@ class BackContentsController extends BackstageAppController
                 $this->data = $Model->findById($id);
 				
         }
-        
+        if (isset($Model->Behaviors->TradTradutore->settings[$Model->alias]))
+			$this->set('translateModel', Inflector::camelize($Model->Behaviors->TradTradutore->settings[$Model->alias]['className']));
 		$this->set(compact('contentPlugin', 'modelName', 'fullModelName', 'moduleName'));
     }
 	
@@ -297,5 +298,27 @@ class BackContentsController extends BackstageAppController
 			$this->set('jsonVars', array('success' => false));
 		
 		$this->view = 'JjUtils.Json';
+	}
+	
+	
+	/** 
+	 * To create a empty translation register. This action calls
+	 * a createEmptytranlation method of TradTradutore Behavior
+	 *
+	 * @access public
+	 * @param string $moduleName Module name, configured on bootstrap.php
+	 * @param string $id The id of the row to set a new status to.
+	 */
+	
+	function create_empty_translation($modelName, $id = null)
+	{
+		list($contentPlugin, $modelName) = pluginSplit($config['model']);
+		
+        $fullModelName = $config['model'];
+        $Model =& ClassRegistry::init($fullModelName);
+		
+		if ($Model->createEmptyTranslation($id, $this->params['language']))
+			$this->redirect('edit/'.$contentPlugin.'/'.$modelName.'/'.$id);
+		
 	}
 }

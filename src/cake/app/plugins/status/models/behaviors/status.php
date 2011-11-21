@@ -439,10 +439,26 @@ class StatusBehavior extends ModelBehavior
 		
 		if (!empty($sql_conditions))
 			$queryData['conditions'][] = $sql_conditions;
-		
-		
 		if (isset($oldSettings))
 			$this->__settings = $oldSettings;
+			
+		if (isset($Model->Behaviors->TradTradutore))
+		{
+			if (isset($Model->Behaviors->TradTradutore->settings[$Model->alias]))
+			{
+				if (isset($this->__settings[$Model->Behaviors->TradTradutore->settings[$Model->alias]['className']]))
+				{
+					foreach($this->__settings[$Model->Behaviors->TradTradutore->settings[$Model->alias]['className']] as $index => $translatableStatus)
+					{
+						$active = Configure::read('StatusBehavior.options.'.$index);
+						$condition = array($Model->Behaviors->TradTradutore->settings[$Model->alias]['className'].'.'.$active['field'] => $active['active']);
+						$conditions = array($Model->hasOne[$Model->Behaviors->TradTradutore->settings[$Model->alias]['className']]['conditions'], $condition);
+						$Model->hasOne[$Model->Behaviors->TradTradutore->settings[$Model->alias]['className']]['conditions'] = $conditions;
+						$Model->hasOne[$Model->Behaviors->TradTradutore->settings[$Model->alias]['className']]['type'] = 'LEFT';
+					}
+				}
+			}	
+		}
 		return $queryData;
 	}
 	

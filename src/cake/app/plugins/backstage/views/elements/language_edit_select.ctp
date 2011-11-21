@@ -24,7 +24,7 @@
 			$lang = 'Language name: '.$lang;
 			$linkList[] = array(
 				'name' => __d('backstage', $lang, true),
-				'url' => am(array('language' => $lang), $this->params['pass'])
+				'url' => am(array('language' => $lang, 'action' => 'create_empty_translation'), $this->params['pass'])
 			);
 		}
 		echo $this->Bl->p(
