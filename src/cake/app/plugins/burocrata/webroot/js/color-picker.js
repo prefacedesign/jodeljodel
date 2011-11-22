@@ -10,7 +10,9 @@ var ColorPicker = Class.create({
 		 .insert(this.colorHolder = new Element('div', {className: 'cpk-color'}))
 		 .insert(this.croma = new Element('div', {className: 'cpk-croma'}))
 		 .insert(this.hdiv = new Element('div', {className: 'cpk-h'}))
-		 .insert(this.text = new Element('span'))
+		 .insert(this.textHex = new Element('span'))
+		 .insert('&ensp;')
+		 .insert(this.textRGB = new Element('span'))
 		;
 		
 		this.croma.insert(this.picker = new Element('div', {className: 'cpk-picker'}))
@@ -54,7 +56,8 @@ var ColorPicker = Class.create({
 	},
 	setColor: function(color) {
 		var HSV = color.toHSV();
-		this.text.update(color.toHEX());
+		this.textHex.update(color.toHEX());
+		this.textRGB.update(color.toRGB());
 		this.color = color;
 		if (this.hue === false) {
 			this.setHue(HSV.h);
@@ -63,7 +66,7 @@ var ColorPicker = Class.create({
 		this.picker.setStyle({
 			bottom: (this.croma.getHeight()*HSV.v/100-1)+'px',
 			left: (this.croma.getWidth()*HSV.s/100-1)+'px',
-			borderColor: HSV.v>50?'black':'white'
+			backgroundColor: HSV.v>50?'black':'white'
 		});
 	},
 	setHue: function(hue) {
@@ -98,6 +101,10 @@ var ColorPicker = Class.create({
 var RGB = Class.create({
 	initialize: function(r,g,b) {
 		this.setRGB(r,g,b);
+	},
+	toString: function()
+	{
+		return '(#{r},#{g},#{b})'.interpolate(this);
 	},
 	setRGB: function(r,g,b) {
 		this.r = r; this.g = g; this.b = b; return this;
@@ -134,6 +141,11 @@ var RGB = Class.create({
 			this.g = var_g * 255;
 			this.b = var_b * 255;
 		}
+		
+		this.r = Math.round(this.r);
+		this.g = Math.round(this.g);
+		this.b = Math.round(this.b);
+		
 		return this;
 	},
 	toHEX: function() {
@@ -205,5 +217,8 @@ var HSV = Class.create({
 	},
 	toHEX: function() {
 		return new RGB().setHSV(this).toHEX();
+	},
+	toRGB: function() {
+		return new RGB().setHSV(this);
 	}
 });

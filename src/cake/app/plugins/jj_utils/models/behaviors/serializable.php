@@ -55,8 +55,8 @@ class SerializableBehavior extends ModelBehavior {
 	function afterFind($Model, $results, $primary = false) {
 		$config = $this->settings[$Model->alias];
 		if (!empty($results)) {
-			foreach($results as $key => $result) {
-				$results[$key] = $Model->deserialize($result);
+			foreach($results as &$result) {
+				$result = $Model->deserialize($result);
 			}
 		}
 		return $results;
@@ -103,7 +103,7 @@ class SerializableBehavior extends ModelBehavior {
 					$data[$Model->alias][$config['field']] = array();
 				}
 			}
-		} else {
+		} elseif(isset($data[$Model->alias][$config['field']])) {
 			$data[$Model->alias][$config['field']] = array();
 		}
 		return $data;

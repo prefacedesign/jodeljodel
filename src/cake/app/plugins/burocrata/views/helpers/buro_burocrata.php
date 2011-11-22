@@ -232,7 +232,8 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function error($htmlAttributes = array(), $options = array())
 	{
-		return $this->Form->error($options['fieldName']);
+		$options += array('error' => null);
+		return $this->Form->error($options['fieldName'], $options['error']);
 	}
 
 
@@ -819,8 +820,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 			array('class' => array(self::$defaultContainerClass, 'textarea_container')),
 			array(),
 			$this->Bl->preDry($this->Bl->spanDry() . $this->Bl->br())
-			. $this->input($_htmlAttributes, $inputOptions)
+			. $this->input($_htmlAttributes, array('error' => false) + $inputOptions)
 		);
+		
+		$out .= $this->error(array(), $inputOptions);
 		
 		$out .= $this->BuroOfficeBoy->addHtmlEmbScript(sprintf("new BuroDynamicTextarea('%s')", $_htmlAttributes['id']));
 		return $out;
@@ -1269,7 +1272,11 @@ class BuroBurocrataHelper extends XmlTagHelper
 			if (!isset($this->data[$assocName]) || !is_array($this->data[$assocName]))
 			{
 				$method_name = 'findAllBy' . Inflector::camelize($ParentModel->hasMany[$assocName]['foreignKey']);
-				$this->data[$assocName] = Set::extract("/$assocName/.", call_user_method($method_name, $AssocModel, $this->data[$ParentModel->alias][$ParentModel->primaryKey]));
+				$tmp_data = $ParentModel->find('first', array(
+					'conditions' => array($ParentModel->alias.'.'.$ParentModel->primaryKey => $this->data[$ParentModel->alias][$ParentModel->primaryKey]),
+					'contain' => $AssocModel->alias
+				));
+				$this->data[$assocName] = $tmp_data[$assocName];
 			}
 		}
 		
