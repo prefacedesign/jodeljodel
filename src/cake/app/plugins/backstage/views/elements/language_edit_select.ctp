@@ -2,9 +2,9 @@
 	$linkList = array();
 	foreach($translatedLanguages as $lang)
 	{
-		$lang = 'Language name: '.$lang;
+		$langName = 'Language name: '.$lang;
 		$linkList[] = array(
-			'name' => __d('backstage', $lang, true),
+			'name' => __d('backstage', $langName, true),
 			'url' => am(array('language' => $lang), $this->params['pass'])
 		);
 	}
@@ -21,10 +21,10 @@
 		$linkList = array();
 		foreach($missingLanguages as $lang)
 		{
-			$lang = 'Language name: '.$lang;
+			$langName = 'Language name: '.$lang;
 			$linkList[] = array(
-				'name' => __d('backstage', $lang, true),
-				'url' => am(array('language' => $lang, 'action' => 'create_empty_translation'), $this->params['pass'])
+				'name' => __d('backstage', $langName, true),
+				'url' => Router::url(am(array('language' => $lang, 'action' => 'create_empty_translation'), $this->params['pass']))
 			);
 		}
 		echo $this->Bl->p(
