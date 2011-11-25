@@ -915,6 +915,28 @@ class TradTradutoreBehavior extends ModelBehavior
 		$this->deleting[$Model->alias] = 0;
 		return true;
 	}
+	
+	function createEmptyTranslation(&$Model, $id, $language)
+	{
+		$__settings = $this->__settings[$Model->alias];
+        $settings   = $this->settings[$Model->alias];
+		
+		$Model->data[$settings['className']][$settings['foreignKey']] = $id;
+
+		
+		$lang = explode('.', $__settings['languageField']['translation']);
+		$lang = $lang[1];
+
+		$Model->data[$settings['className']][$lang] = $language;
+		
+		$Translate = & ClassRegistry::init($settings['className']);
+		$Translate->id = false;
+
+		if ($Translate->save($Model->data[$settings['className']]))
+			return true;
+		else
+			return false;
+	}
 }
 
 ?>
