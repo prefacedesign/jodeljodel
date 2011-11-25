@@ -2570,6 +2570,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 				array(
 					'required' => true,
 					'container' => false,
+					'fieldName' => 'title',
 					'type' => 'select', 
 					'options' => array('options' => array('h2' => $popup_title_txt['label_type_tit'], 'h3' => $popup_title_txt['label_type_sub'])),
 					'label' => $popup_title_txt['label_type']

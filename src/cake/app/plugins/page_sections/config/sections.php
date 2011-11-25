@@ -286,7 +286,7 @@ $sections = array(
 				'linkCaption' => __('Sections: dashboard linkCaption', true),
 				'url' => array(
 					'plugin' => 'dashboard',
-					'controller' => 'dashboard',
+					'controller' => 'dash_dashboard',
 					'action' => 'index'
 				),
 				'acos' => array('backstage_area' => array('read')),
