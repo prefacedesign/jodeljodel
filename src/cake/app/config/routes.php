@@ -27,7 +27,7 @@
  * its action called 'display', and we pass a param to select the view file
  * to use (in this case, /app/views/pages/home.ctp)...
  */
-	//Router::connect('/', array('controller' => 'principal', 'action' => 'index'));
+	Router::connect('/', array('controller' => 'principal', 'action' => 'index'));
 
 
 /**
@@ -36,7 +36,7 @@
  * Without this, URLs with `language:something` will fail at reverse routing!
  * The deafult option setted to true is necessary so it doesnt override the defaults named args.
  */
-	Router::connectNamed(array('language'), array('default' => true));
+	//Router::connectNamed(array('language'), array('default' => true));
 
 /**
  * Connecting the two responsible plugins for admin actions
