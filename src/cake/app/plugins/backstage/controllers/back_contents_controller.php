@@ -310,15 +310,18 @@ class BackContentsController extends BackstageAppController
 	 * @param string $id The id of the row to set a new status to.
 	 */
 	
-	function create_empty_translation($modelName, $id = null)
+	function create_empty_translation($moduleName, $id = null)
 	{
+		if (empty($moduleName) || !($config = Configure::read('jj.modules.'.$moduleName)))
+			$this->cakeError('error404');
+		
 		list($contentPlugin, $modelName) = pluginSplit($config['model']);
 		
         $fullModelName = $config['model'];
         $Model =& ClassRegistry::init($fullModelName);
 		
 		if ($Model->createEmptyTranslation($id, $this->params['language']))
-			$this->redirect('edit/'.$contentPlugin.'/'.$modelName.'/'.$id);
+			$this->redirect('edit/'.$moduleName.'/'.$id);
 		
 	}
 }

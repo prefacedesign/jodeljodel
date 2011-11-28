@@ -115,7 +115,7 @@ class TradTradutoreBehavior extends ModelBehavior
             $untranslatableFields = $this->__dotConcat($translatable['className'], $translatable['fields']);
             
             // Not all fields in translation model are translatable.
-            $fieldsToIgnore = array($translation['primaryKey'], $translation['foreignKey'], $translation['languageField']);
+            $fieldsToIgnore = array($translation['primaryKey'], $translation['foreignKey'], $translation['languageField'], 'publishing_status');
             $fieldsDiff     = array_diff($translation['fields'], $fieldsToIgnore);
 
             // Build the join between translatable model and its translations.
@@ -268,7 +268,7 @@ class TradTradutoreBehavior extends ModelBehavior
 		
 		foreach ($Model->belongsTo as $child)
 		{
-			if (in_array($child['className'],$this->already_done[$Model->alias]) === false) 
+			if (isset($this->already_done[$Model->alias]) && in_array($child['className'],$this->already_done[$Model->alias]) === false) 
 			{
 				$this->already_done[$Model->alias][] = $child['className'];
 				$query = $this->__createQuery($Model->{$child['className']}, $query);
@@ -343,7 +343,7 @@ class TradTradutoreBehavior extends ModelBehavior
 		
 		foreach ($Model->hasOne as $child)
 		{
-			if (in_array($child['className'], $this->already_done[$Model->alias]) === false) 
+			if (isset($this->already_done[$Model->alias]) && in_array($child['className'],$this->already_done[$Model->alias]) === false) 
 			{
 				$this->already_done[$Model->alias][] = $child['className'];
 				$query = $this->__createQuery($Model->{$child['className']}, $query);
@@ -414,8 +414,6 @@ class TradTradutoreBehavior extends ModelBehavior
 				}
 			}
 		}
-		
-		
 		return $query;
 	}
 	
@@ -526,7 +524,7 @@ class TradTradutoreBehavior extends ModelBehavior
 			
 		foreach ($Model->hasMany as $child)
 		{
-			if (in_array($child['className'], $this->already_done[$Model->alias]) === false) 
+			if (isset($this->already_done[$Model->alias]) && in_array($child['className'], $this->already_done[$Model->alias]) === false) 
 			{
 				$this->already_done[$Model->alias][] = $child['className'];
 				if (isset($contain[$child['className']]))
@@ -536,7 +534,7 @@ class TradTradutoreBehavior extends ModelBehavior
 		
 		foreach ($Model->belongsTo as $child)
 		{
-			if (in_array($child['className'], $this->already_done[$Model->alias]) === false) 
+			if (isset($this->already_done[$Model->alias]) && in_array($child['className'], $this->already_done[$Model->alias]) === false) 
 			{
 				$this->already_done[$Model->alias][] = $child['className'];
 				if (isset($contain[$child['className']]))
@@ -546,7 +544,7 @@ class TradTradutoreBehavior extends ModelBehavior
 		
 		foreach ($Model->hasAndBelongsToMany as $child)
 		{
-			if (in_array($child['className'], $this->already_done[$Model->alias]) === false) 
+			if (isset($this->already_done[$Model->alias]) && in_array($child['className'], $this->already_done[$Model->alias]) === false) 
 			{
 				$this->already_done[$Model->alias][] = $child['className'];
 				if (isset($contain[$child['className']]))
@@ -760,7 +758,7 @@ class TradTradutoreBehavior extends ModelBehavior
         $settings   = $this->settings[$Model->alias];
 		
 		
-		if ($this->hasSetLanguage[$Model->alias] > 0)
+		if (isset($this->hasSetLanguage[$Model->alias]) && $this->hasSetLanguage[$Model->alias] > 0)
 		{
 			$this->returnToPreviousGlobalLanguage();
 			$this->hasSetLanguage[$Model->alias]--;
@@ -777,16 +775,40 @@ class TradTradutoreBehavior extends ModelBehavior
 					{
 						foreach($r[$settings['className']] as $k => $field)
 						{
-							if($k != 'id' && $k != $settings['foreignKey'])
-								$results[$i][$Model->alias][$ix][$k] = $field;	
+							if (isset($Model->{$settings['className']}->Behaviors->Status->__settings[$settings['className']]['publishing_status']))
+							{
+								if ($k == $Model->{$settings['className']}->Behaviors->Status->__settings[$settings['className']]['publishing_status']['field'])
+									$results[$i][$Model->alias][$ix]['translate_publishing_status'] = $field;
+								elseif($k == 'id')
+									$results[$i][$Model->alias][$ix]['translate_id'] = $field;
+								elseif($k != $settings['foreignKey'])
+									$results[$i][$Model->alias][$ix][$k] = $field;
+							}
+							else
+							{
+								if($k != 'id' && $k != $settings['foreignKey'])
+									$results[$i][$Model->alias][$ix][$k] = $field;	
+							}	
 						}
 					}
 					elseif(isset($r[$Model->alias][$settings['className']]))
 					{
 						foreach($r[$Model->alias][$settings['className']] as $k => $field)
 						{
-							if($k != 'id' && $k != $settings['foreignKey'])
-								$results[$i][$Model->alias][$ix][$k] = $field;
+							if (isset($Model->{$settings['className']}->Behaviors->Status->__settings[$settings['className']]['publishing_status']))
+							{
+								if ($k == $Model->{$settings['className']}->Behaviors->Status->__settings[$settings['className']]['publishing_status']['field'])
+									$results[$i][$Model->alias][$ix]['translate_publishing_status'] = $field;
+								elseif($k == 'id')
+									$results[$i][$Model->alias][$ix]['translate_id'] = $field;
+								elseif($k != $settings['foreignKey'])
+									$results[$i][$Model->alias][$ix][$k] = $field;
+							}
+							else
+							{
+								if($k != 'id' && $k != $settings['foreignKey'])
+									$results[$i][$Model->alias][$ix][$k] = $field;
+							}
 							unset($results[$i][$Model->alias][$ix][$settings['className']][$k]);
 						}
 						unset($results[$i][$Model->alias][$settings['className']]);
@@ -800,16 +822,40 @@ class TradTradutoreBehavior extends ModelBehavior
 				{
 					foreach($result[$settings['className']] as $k => $field)
 					{
-						if($k != 'id' && $k != $settings['foreignKey'])
-							$results[$i][$Model->alias][$k] = $field;
+						if (isset($Model->{$settings['className']}->Behaviors->Status->__settings[$settings['className']]['publishing_status']))
+						{
+							if ($k == $Model->{$settings['className']}->Behaviors->Status->__settings[$settings['className']]['publishing_status']['field'])
+								$results[$i][$Model->alias]['translate_publishing_status'] = $field;
+							elseif($k == 'id')
+								$results[$i][$Model->alias]['translate_id'] = $field;
+							elseif($k != $settings['foreignKey'])
+								$results[$i][$Model->alias][$k] = $field;
+						}
+						else
+						{
+							if($k != 'id' && $k != $settings['foreignKey'])
+								$results[$i][$Model->alias][$k] = $field;
+						}
 					}
 				}
 				elseif(isset($result[$Model->alias][$settings['className']]))
 				{
 					foreach($result[$Model->alias][$settings['className']] as $k => $field)
 					{
-						if($k != 'id' && $k != $settings['foreignKey'])
-							$results[$i][$Model->alias][$k] = $field;
+						if (isset($Model->{$settings['className']}->Behaviors->Status->__settings[$settings['className']]['publishing_status']))
+						{
+							if ($k == $Model->{$settings['className']}->Behaviors->Status->__settings[$settings['className']]['publishing_status']['field'])
+								$results[$i][$Model->alias]['translate_publishing_status'] = $field;
+							elseif($k == 'id')
+								$results[$i][$Model->alias]['translate_id'] = $field;
+							elseif($k != $settings['foreignKey'])
+								$results[$i][$Model->alias][$k] = $field;
+						}
+						else
+						{
+							if($k != 'id' && $k != $settings['foreignKey'])
+								$results[$i][$Model->alias][$k] = $field;
+						}
 						unset($results[$i][$Model->alias][$settings['className']][$k]);
 					}
 					unset($results[$i][$Model->alias][$settings['className']]);
