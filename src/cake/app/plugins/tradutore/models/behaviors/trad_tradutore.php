@@ -57,7 +57,7 @@ class TradTradutoreBehavior extends ModelBehavior
         $this->already_done[$Model->alias] = array();
         $this->contained[$Model->alias] = array();
         $this->deleting[$Model->alias] = 0;
-        $this->hasSetLanguage = 0;
+        $this->hasSetLanguage[$Model->alias] = 0;
         
         // On post setup time, the current language for model is the default language.
         //$this->settings[$Model->alias]['language'] = $this->settings[$Model->alias]['defaultLanguage'];
