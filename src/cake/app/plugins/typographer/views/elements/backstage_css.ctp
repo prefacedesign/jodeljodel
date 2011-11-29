@@ -1661,6 +1661,11 @@
 		
 	));
 	
+	$this->Decorator->rule(
+		'span.draft', array(
+			'color' => $palette['visited_links']->write()
+	));
+	
 	
 ?>
 .cpk-cont {position: absolute; z-index: 51; background-color: white; border: 1px solid black; padding: 10px; -moz-box-shadow:4px 4px 15px 1px #666; box-shadow:4px 4px 15px 1px #666;}

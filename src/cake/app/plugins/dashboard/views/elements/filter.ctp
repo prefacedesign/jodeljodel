@@ -69,10 +69,10 @@
 			
 			if (is_array($item['DashDashboardItem']['idiom']))
 			{
-				foreach ($item['DashDashboardItem']['idiom'] as $lang)
+				foreach ($item['DashDashboardItem']['idiom'] as $lang => $status)
 				{
-					$lang = 'Dashboard language abrev.: '. $lang;
-					$languageStr .= __d('dashboard',$lang, true) . ' ';
+					$l = 'Dashboard language abrev.: '. $lang;
+					$languageStr .= $this->Bl->anchor(array(), array('url' => array('language' => $lang, 'plugin' => 'backstage', 'controller' => 'back_contents', 'action' => 'edit', $item['DashDashboardItem']['type'], $item['DashDashboardItem']['dashable_id'])), $this->Bl->span(array('class' => $status), array(), __d('dashboard',$l, true))) . ' &nbsp;';
 				}
 			}
 			

@@ -1,6 +1,6 @@
 <?php
 	$linkList = array();
-	foreach($translatedLanguages as $lang)
+	foreach($translatedLanguages as $lang => $status)
 	{
 		$langName = 'Language name: '.$lang;
 		$linkList[] = array(
@@ -14,7 +14,7 @@
 		sprintf (__d('backstage','This content already has translations for %s.',true), $tmp));
 	echo $this->Bl->brDry();
 		
-	$missingLanguages =	array_diff(Configure::read('Tradutore.languages'), $translatedLanguages);
+	$missingLanguages =	array_diff(Configure::read('Tradutore.languages'), array_keys($translatedLanguages));
 	
 	if (!empty($missingLanguages))
 	{
