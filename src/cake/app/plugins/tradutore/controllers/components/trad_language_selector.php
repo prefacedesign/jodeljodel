@@ -4,40 +4,36 @@ App::import('Config','Tradutore.languages');
 class TradLanguageSelectorComponent extends Object
 {
 	var $components = array('Session');
-	var $controller;
+	var $Controller;
 	
 	
-    function initialize(&$controller)
+    function initialize(&$Controller)
     {
-		$this->controller =& $controller;
+		$this->Controller =& $Controller;
 		$main_language = Configure::read('Tradutore.mainLanguage');
-	
-		if (isset($controller->params['language']))
-			$lang = $controller->params['language'];
+		if (isset($Controller->params['language']))
+			$lang = $Controller->params['language'];
+		elseif (isset($Controller->params['named']['language']))
+			$lang = $Controller->params['named']['language'];
 		else
 			$lang = '';
-		//debug($lang);
+
 		if (!empty($lang))
 		{
-			
 			$languages = Configure::read('Tradutore.languages');
-			//debug($languages);
-			if (in_array($lang, $languages)) {
+			if (in_array($lang, $languages))
+			{
 				$this->setLanguage($lang);
-				//debug($lang);
 				$this->Session->write('Tradutore.currentLanguage', $lang);
 				return true;
 			}
 		}
-		if (!$this->Session->check('Tradutore.currentLanguage'))
-		{
-			$this->setLanguage($main_language);
-			$this->Session->write('Tradutore.currentLanguage', $main_language);
-		}
-		else
-			$this->setLanguage($this->Session->read('Tradutore.currentLanguage'));
 		
-		$this->controller->set('mainLanguage', $main_language);
+		if (!$this->Session->check('Tradutore.currentLanguage'))
+			$this->Session->write('Tradutore.currentLanguage', $main_language);
+
+		$this->setLanguage($this->Session->read('Tradutore.currentLanguage'));
+		$this->Controller->set('mainLanguage', $main_language);
 	}
    
     function setLanguage($lang = null)
@@ -45,14 +41,14 @@ class TradLanguageSelectorComponent extends Object
         $this->setInterfaceLanguage($lang);
 		$this->setModelLanguage($lang);
 	
-		$this->controller->set('currentLanguage', $lang);
+		$this->Controller->set('currentLanguage', $lang);
 	}
 	
 	function setInterfaceLanguage($lang = null)
     {
         Configure::write('Config.language', $lang);
 		
-		$this->controller->set('currentInterfaceLanguage', $lang);
+		$this->Controller->set('currentInterfaceLanguage', $lang);
 	}
 	
 	
@@ -61,7 +57,7 @@ class TradLanguageSelectorComponent extends Object
 		App::import('Behavior','Tradutore.TradTradutore');
         TradTradutoreBehavior::setGlobalLanguage($lang);
 		
-		$this->controller->set('currentModelLanguage', $lang);
+		$this->Controller->set('currentModelLanguage', $lang);
 	}
 }
 ?>
