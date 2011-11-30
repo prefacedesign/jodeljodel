@@ -24,12 +24,12 @@
 				}
 				
 				$draftLink = $ajax->link(__('Backstage edit page: publish', true), 
-					array('action' => 'set_publishing_status', Inflector::underscore($translateModel), $this->data[$modelName]['translate_id'],'published'),
+					array('controller' => 'back_contents', 'action' => 'set_publishing_status', $moduleName, $this->data[$modelName]['translate_id'], 'published'),
 					array('complete' => "if(request.responseJSON.success) { $('edit_page_translate_title_draft').hide(); $('edit_page_translate_title_published').show()} else {alert('".__('Backstage edit page: Could change publishing status: communication error.',true)."')}"));
 				$draftText = sprintf(__('Now, this version is hidden. You can %s.', true), $draftLink);
 				
 				$publishLink = $ajax->link(__('Backstage edit page: mark it as draft', true), 
-					array('action' => 'set_publishing_status', Inflector::underscore($translateModel), $this->data[$modelName]['translate_id'],'draft'),
+					array('controller' => 'back_contents', 'action' => 'set_publishing_status', $moduleName, $this->data[$modelName]['translate_id'],'draft'),
 					array('complete' => "if(request.responseJSON.success) { $('edit_page_translate_title_published').hide(); $('edit_page_translate_title_draft').show()} else {alert('".__('Backstage edit page: Could change publishing status: communication error.',true)."')}"));
 				$publishText = sprintf(__('Now, this version is published. You can %s.',true), $publishLink);
 				
