@@ -3,7 +3,7 @@
 	$paginator->options(
 		array(
 			'update'=>'dashboard_table', 
-			'url'=>array('controller'=>'DashDashboard', 'action'=>'index'), 
+			'url'=>array('controller'=>'dash_dashboard', 'action'=>'index'), 
 			'before' => "$('dashboard_table').setLoading();",
 			'complete' => "$('dashboard_table').unsetLoading();"
 		)
@@ -72,7 +72,12 @@
 				foreach ($item['DashDashboardItem']['idiom'] as $lang => $status)
 				{
 					$l = 'Dashboard language abrev.: '. $lang;
-					$languageStr .= $this->Bl->anchor(array(), array('url' => array('language' => $lang, 'plugin' => 'backstage', 'controller' => 'back_contents', 'action' => 'edit', $item['DashDashboardItem']['type'], $item['DashDashboardItem']['dashable_id'])), $this->Bl->span(array('class' => $status), array(), __d('dashboard',$l, true))) . ' &nbsp;';
+					$languageStr .= $this->Bl->anchor(
+							array(), 
+							array('url' => array('language' => $lang, 'plugin' => 'backstage', 'controller' => 'back_contents', 'action' => 'edit', $item['DashDashboardItem']['type'], $item['DashDashboardItem']['dashable_id'])),
+							$this->Bl->span(array('class' => $status), array(), __d('dashboard',$l, true))
+						) 
+						. ' &nbsp;';
 				}
 			}
 			
