@@ -184,17 +184,17 @@ class TradTradutoreBehavior extends ModelBehavior
 		extract($this->settings[$Model->alias]);
 		
 		$translateStatus = '';
-		$settings   = $this->settings[$Model->alias];
-		if (isset($Model->{$settings['className']}->Behaviors->Status->__settings[$settings['className']]['publishing_status']))
+		if (isset($Model->{$className}->Behaviors->Status->__settings[$className]['publishing_status']))
 		{
-			$translateStatus = $Model->{$settings['className']}->Behaviors->Status->__settings[$settings['className']]['publishing_status']['field'];
+			$translateStatus = $Model->{$className}->Behaviors->Status->__settings[$className]['publishing_status']['field'];
 			$fields = array($languageField, $translateStatus);
 		}
 		else
+		{
 			$fields = array($languageField, 'id');
+		}
 
-        $data = $Model->{$className}->find(
-			'list', 
+        $data = $Model->{$className}->find('list', 
 			array(
 				'conditions' => array(
 					$foreignKey => $id
