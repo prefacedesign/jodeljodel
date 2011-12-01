@@ -7,6 +7,7 @@
 			$lang = 'Language name: '.$this->Session->read('Tradutore.currentLanguage');
 			echo $this->Bl->h3Dry(
 				$this->Bl->spanDry(__d('backstage','Editing', true))
+				. ' '
 				.  sprintf(__d('backstage',' the %s version.',true),__d('backstage',$lang,true))
 			);
 
