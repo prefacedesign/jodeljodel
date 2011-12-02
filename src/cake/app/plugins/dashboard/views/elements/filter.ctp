@@ -72,12 +72,25 @@
 				foreach ($item['DashDashboardItem']['idiom'] as $lang => $status)
 				{
 					$l = 'Dashboard language abrev.: '. $lang;
-					$languageStr .= $this->Bl->anchor(
+					if ($curSettings['edit_version'] == 'corktile')
+					{
+						$languageStr .= $this->Bl->anchor(
+							array(), 
+							array('url' => array('language' => $lang, 'plugin' => 'corktile', 'controller' => 'cork_corktiles', 'action' => 'edit', $item['DashDashboardItem']['dashable_id'])),
+							$this->Bl->span(array('class' => $status), array(), __d('dashboard',$l, true))
+						) 
+						. ' &nbsp;';
+					}
+					else
+					{
+						$languageStr .= $this->Bl->anchor(
 							array(), 
 							array('url' => array('language' => $lang, 'plugin' => 'backstage', 'controller' => 'back_contents', 'action' => 'edit', $item['DashDashboardItem']['type'], $item['DashDashboardItem']['dashable_id'])),
 							$this->Bl->span(array('class' => $status), array(), __d('dashboard',$l, true))
 						) 
 						. ' &nbsp;';
+					}
+					
 				}
 			}
 			
