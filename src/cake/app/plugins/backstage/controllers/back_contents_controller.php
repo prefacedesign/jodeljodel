@@ -278,8 +278,9 @@ class BackContentsController extends BackstageAppController
  * @param string $moduleName Module name, configured on bootstrap.php
  * @param string $id The id of the row to set a new status to.
  * @param string $status The status that can be either 'draft' or 'published'.
+ * @param string $language The language being edited. If language is passed it will change only the status of translation.
  */
-	function set_publishing_status($moduleName = false, $id = false, $status = false)
+	function set_publishing_status($moduleName = false, $id = false, $status = false, $language = null)
 	{
 		if (empty($moduleName) || empty($id) || empty($status))
 			$this->cakeError('error404');
@@ -291,6 +292,11 @@ class BackContentsController extends BackstageAppController
 		
 		$fullModelName = $config['model'];
 		$Model =& ClassRegistry::init($fullModelName);
+		
+		if ($language)
+			if (isset($Model->Behaviors->TradTradutore->settings[$Model->alias]))
+				$Model =& ClassRegistry::init($contentPlugin.'.'.$Model->Behaviors->TradTradutore->settings[$Model->alias]['className']);
+		
 		
 		if ($Model->setStatus($id, array('publishing_status' => $status)))
 			$this->set('jsonVars', array('success' => true));
