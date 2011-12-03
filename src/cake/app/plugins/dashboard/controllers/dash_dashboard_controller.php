@@ -31,15 +31,15 @@ class DashDashboardController extends DashboardAppController
  * 
  * @todo Enable to select the page where a certain id is located.
  */
-	function index($page = 1)
+	function index($page = null)
 	{
 		$this->set('itemSettings', Configure::read('Dashboard.itemSettings'));
 		$this->set('statusOptions', Configure::read('Dashboard.statusOptions'));
 		
 		if (isset($this->params['named']['page']))
-			$page = $this->params['named']['page'];
-
-		$this->Session->write('Dashboard.page', $page);
+			$this->Session->write('Dashboard.page', $this->params['named']['page']);
+		else
+			$this->Session->write('Dashboard.page', 0);
 		
 		$conditions = array();
 		if (isset($this->params['named']['page']))
@@ -47,28 +47,41 @@ class DashDashboardController extends DashboardAppController
 			$c = $this->Session->read('Dashboard.searchOptions');
 			if ($c)
 				$conditions = $c;
+			else
+				$conditions = array();
 		}
 		else
 			$this->Session->write('Dashboard.searchOptions', array());
-		
 		$status = $this->Session->read('Dashboard.status');
 		$filter = $this->Session->read('Dashboard.filter');
-		
 		if ($status != 'all' && !empty($status))
 			$conditions['status'] = $status;
 		if ($filter != 'all' && !empty($filter))
 			$conditions['type'] = $filter;
 		
-		$this->paginate = array(
-			'DashDashboardItem' => array(
-				'limit' => LIMIT,
-				'page' => $page,
-				'contain' => false,
-				'order' => 'modified DESC',
-				'conditions' => $conditions
-			)
-		);
-
+		if ($page)
+		{
+			$this->paginate = array(
+				'DashDashboardItem' => array(
+					'limit' => LIMIT,
+					'page' => $page,
+					'contain' => false,
+					'order' => 'modified DESC',
+					'conditions' => $conditions
+				)
+			);
+		}
+		else
+		{
+			$this->paginate = array(
+				'DashDashboardItem' => array(
+					'limit' => LIMIT,
+					'contain' => false,
+					'order' => 'modified DESC',
+					'conditions' => $conditions
+				)
+			);
+		}
 		$this->set('filter', $filter);
 		$this->set('filter_status', $status);
 		$this->data = $this->paginate('DashDashboardItem');
@@ -77,11 +90,13 @@ class DashDashboardController extends DashboardAppController
 		if($this->RequestHandler->isAjax()) {
             $this->render('filter');            
         } 
+
 	}
 	
 	function after_delete()
 	{
-		$this->index($this->Session->read('page'));
+		$page = $this->Session->read('page');
+		$this->index($page);
 	}
 	
 	function filter($module)
@@ -89,7 +104,6 @@ class DashDashboardController extends DashboardAppController
 		$this->Session->write('Dashboard.filter', $module);
 		$this->filter_and_search();
 	}
-	
 	
 	function filter_published_draft($status)
 	{
@@ -100,13 +114,14 @@ class DashDashboardController extends DashboardAppController
 	
 	function search()
 	{
-		$conditions = array();
 		if (!empty($this->data['dash_search']))
 		{
 			$conditions['OR'] = array();
 			$conditions['OR'][] = array('name LIKE' => '%'.$this->data['dash_search'].'%');
 			$conditions['OR'][] = array('info LIKE' => '%'.$this->data['dash_search'].'%');
 		}
+		else
+			$conditions = array();
 		
 		$this->Session->write('Dashboard.searchOptions', $conditions);
 		$this->filter_and_search();
@@ -115,10 +130,11 @@ class DashDashboardController extends DashboardAppController
 	
 	function filter_and_search()
 	{
-		$conditions = array();
 		$c = $this->Session->read('Dashboard.searchOptions');
 		if ($c)
 			$conditions = $c;
+		else
+			$conditions = array();
 		
 		$status = $this->Session->read('Dashboard.status');
 		$filter = $this->Session->read('Dashboard.filter');
