@@ -307,27 +307,27 @@ class BackContentsController extends BackstageAppController
 	}
 	
 	
-	/** 
-	 * To create a empty translation register. This action calls
-	 * a createEmptytranlation method of TradTradutore Behavior
-	 *
-	 * @access public
-	 * @param string $moduleName Module name, configured on bootstrap.php
-	 * @param string $id The id of the row to set a new status to.
-	 */
-	
+/** 
+ * To create a empty translation register. This action calls
+ * a createEmptytranlation method of TradTradutore Behavior
+ *
+ * @access public
+ * @param string $moduleName Module name, configured on bootstrap.php
+ * @param string $id The id of the row to set a new status to.
+ */
 	function create_empty_translation($moduleName, $id = null)
 	{
 		if (empty($moduleName) || !($config = Configure::read('jj.modules.'.$moduleName)))
 			$this->cakeError('error404');
 		
-		list($contentPlugin, $modelName) = pluginSplit($config['model']);
-		
-        $fullModelName = $config['model'];
-        $Model =& ClassRegistry::init($fullModelName);
-		
-		if ($Model->createEmptyTranslation($id, $this->params['language']))
-			$this->redirect('edit/'.$moduleName.'/'.$id);
-		
+		$Model =& ClassRegistry::init($config['model']);
+		if (!$Model->createEmptyTranslation($id, $this->params['language']))
+		{
+			list($contentPlugin,$modelName) = pluginSplit($config['model']);
+			trigger_error('Method '.$modelName.'::createEmptyTranslation() (TradTradutoreBehavior method) could not create an empty translation!');
+			die;
+		}
+			
+		$this->redirect(array('action' => 'edit', $moduleName, $id));
 	}
 }
