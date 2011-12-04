@@ -11,6 +11,7 @@ class DashBoardShell extends Shell
 		$this->out('./cake dashboard synch');
 		$this->out('./cake dashboard synch force-update');
 		$this->out();
+		$this->in('Press ENTER to continue...');
 		$this->synch();
 	}
 	
@@ -19,14 +20,14 @@ class DashBoardShell extends Shell
 		$force_update = false;
 		if (isset($this->args[0]) && $this->args[0] == 'force-update')
 			$force_update = true;
-		else
-			$force_update = $this->in('Force update for all dashboard entries?', array('y', 'n'), 'n') == 'y';
+#		else
+#			$force_update = $this->in('Force update for all dashboard entries?', array('y', 'n'), 'n') == 'y';
 
 		$modules = Configure::read('jj.modules');
 		
 		foreach ($modules as $name => $module)
 		{
-			if (!in_array('dashboard', $module['plugged']))
+			if (!isset($module['plugged']) || !in_array('dashboard', $module['plugged']))
 				continue;
 
 			$this->out('Synching dashboard for ' . $name);
