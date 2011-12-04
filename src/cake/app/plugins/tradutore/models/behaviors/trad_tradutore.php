@@ -680,18 +680,19 @@ class TradTradutoreBehavior extends ModelBehavior
 			$this->hasSetLanguage[$Model->alias]++;
 		}
 		
-		if (!$this->deleting[$Model->alias])
-		{
-			if (is_array($query['conditions']) || !isset($query['conditions']))
-				if (!(isset($query['emptyTranslation']) && $query['emptyTranslation'] == true))
-					$query['conditions']['NOT']['language'] = 'IS NOT NULL'; 
-		}
+#		if (!$this->deleting[$Model->alias])
+#		{
+#			if (is_array($query['conditions']) || !isset($query['conditions']))
+#				if (!(isset($query['emptyTranslation']) && $query['emptyTranslation'] == true))
+#					$query['conditions']['NOT']['language'] = 'IS NOT NULL'; 
+#		}
 		
 		$this->already_done[$Model->alias] = array();
 		$contain = $this->__changeContain($Model, $query['contain']);
 		$query['contain'] = $contain;
 		$this->already_done[$Model->alias] = array();
 		$query = $this->__createQuery($Model, $query);
+		$c = array();
 		
 		if (isset($settings['className']))
 		{       
@@ -702,8 +703,7 @@ class TradTradutoreBehavior extends ModelBehavior
 				{
 					foreach ($query['fields'] as $k => $field)
 					{
-						$f = explode('.', $field);
-						$model_child = $f[0];
+						list($model_child, $field) = explode('.', $field);
 						if ($model_child == $settings['className'])
 							$c[$settings['className']]['fields'][] = $field;
 					}
@@ -978,21 +978,14 @@ class TradTradutoreBehavior extends ModelBehavior
 		$__settings = $this->__settings[$Model->alias];
         $settings   = $this->settings[$Model->alias];
 		
-		$Model->data[$settings['className']][$settings['foreignKey']] = $id;
-
-		
-		$lang = explode('.', $__settings['languageField']['translation']);
-		$lang = $lang[1];
+		list($className, $lang) = explode('.', $__settings['languageField']['translation']);
 
 		$Model->data[$settings['className']][$lang] = $language;
+		$Model->data[$settings['className']][$settings['foreignKey']] = $id;
 		
-		$Translate = & ClassRegistry::init($settings['className']);
-		$Translate->id = false;
-
-		if ($Translate->save($Model->data[$settings['className']]))
-			return true;
-		else
-			return false;
+		$Translate =& ClassRegistry::init($settings['className']);
+		$Translate->create();
+		return $Translate->save($Model->data, false);
 	}
 }
 
