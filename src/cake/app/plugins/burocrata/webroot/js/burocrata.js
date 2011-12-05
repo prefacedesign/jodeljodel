@@ -2060,6 +2060,9 @@ var BuroColorPicker = Class.create(BuroCallbackable, {
 			return;
 		if (!CP)
 			CP = new ColorPicker();
+		
+		BuroCR.set(id_base, this);
+		
 		this.input.observe('focus', this.openCP.bind(this));
 		this.input.observe('keydown', this.keydown.bind(this));
 		this.input.observe('keyup', this.keyup.bind(this));
@@ -2077,6 +2080,7 @@ var BuroColorPicker = Class.create(BuroCallbackable, {
 	closeCP: function()
 	{
 		CP.close();
+		return this;
 	},
 	change: function(color)
 	{
@@ -2099,6 +2103,13 @@ var BuroColorPicker = Class.create(BuroCallbackable, {
 		this.sample.setStyle({
 			backgroundColor: this.input.value
 		});
+		return this;
+	},
+	setColor: function(color)
+	{
+		this.input.value = color;
+		this.updateSample().closeCP();
+		return this;
 	}
 });
 
