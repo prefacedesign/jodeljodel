@@ -10,7 +10,10 @@ class TradLanguageSelectorComponent extends Object
     function initialize(&$Controller)
     {
 		$this->Controller =& $Controller;
+
 		$main_language = Configure::read('Tradutore.mainLanguage');
+		$this->Controller->set('mainLanguage', $main_language);
+
 		if (isset($Controller->params['language']))
 			$lang = $Controller->params['language'];
 		elseif (isset($Controller->params['named']['language']))
@@ -33,7 +36,6 @@ class TradLanguageSelectorComponent extends Object
 			$this->Session->write('Tradutore.currentLanguage', $main_language);
 
 		$this->setLanguage($this->Session->read('Tradutore.currentLanguage'));
-		$this->Controller->set('mainLanguage', $main_language);
 	}
    
     function setLanguage($lang = null)
