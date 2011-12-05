@@ -157,4 +157,44 @@ class DashDashboardController extends DashboardAppController
 		else
 			$this->set('jsonVars', array('success' => false));
 	}
+	
+	function synch($force_update = false)
+	{
+		$this->autoRender = false;
+		$this->header('Content-Type: text/plain');
+		
+		$modules = Configure::read('jj.modules');
+		
+		foreach ($modules as $name => $module)
+		{
+			if (!isset($module['plugged']) || !in_array('dashboard', $module['plugged']))
+				continue;
+
+			echo 'Synching dashboard for ' . $name;
+			echo "\n";
+
+			$Model =& ClassRegistry::init($module['model']);
+			if (!$Model->Behaviors->attached('DashDashboardable'))
+			{
+				echo "  {$module['model']} has not DashDashboardable behavior attached!\n";
+				echo 'Synch failed';
+				echo "\n";
+			}
+			else
+			{
+				extract($Model->synchronizeWithDashboard($force_update));
+				echo "  Removed entries: " . count($childless);
+				echo "\n";
+				echo "  Updated entries: " . count($outdated);
+				echo "\n";
+				echo "  Created entries: " . count($doesnt_have);
+				echo "\n";
+				echo 'Synch done.';
+				echo "\n";
+			}
+
+			echo "\n";
+		}
+		
+	}
 }

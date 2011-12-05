@@ -187,8 +187,6 @@ class DashDashboardableBehavior extends ModelBehavior
 		$dashInfo['DashDashboardItem']['id'] = $Model->alias.'@'.$item_id;
 		
 		//saves the summary into the dashboard
-		if (!isset($dashInfo['DashDashboardItem']['modified']))
-			debug('asdasdasdasd');
 		$this->getDashboard()->saveDashItem($dashInfo);
 	}
 
