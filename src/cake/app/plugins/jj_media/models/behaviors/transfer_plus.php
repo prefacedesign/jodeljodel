@@ -95,12 +95,30 @@ class TransferPlusBehavior extends ModelBehavior {
  */
 	private function changeFileName(&$Model)
 	{
-		if (!empty($Model->data[$Model->alias]['file']['name']))
+		extract($this->settings[$Model->alias]);
+		if (is_string($Model->data[$Model->alias]['file']))
 		{
-			extract($this->settings[$Model->alias]);
-			$original_filename = $Model->data[$Model->alias]['file']['name'];
-			$Model->data[$Model->alias][$fieldName] = $original_filename;
-			$Model->data[$Model->alias]['file']['name'] = uniqid('', true) . '.' . array_pop(explode('.', $original_filename));
+			$dirName = dirname($Model->data[$Model->alias]['file']) . DS;
+			$fileName = basename($Model->data[$Model->alias]['file']);
+			
+			$Model->data[$Model->alias][$fieldName] = $fileName;
+			$Model->data[$Model->alias]['file'] = $dirName . $this->hashFileName($Model->data[$Model->alias]['file']);
+			
+			rename($dirName . $fileName, $Model->data[$Model->alias]['file']);
 		}
+		elseif (!empty($Model->data[$Model->alias]['file']['name']))
+		{
+			$Model->data[$Model->alias][$fieldName] = $Model->data[$Model->alias]['file']['name'];
+			$Model->data[$Model->alias]['file']['name'] = $this->hashFileName($Model->data[$Model->alias]['file']['name']);
+		}
+	}
+/**
+ * Creates a hash for filename
+ * 
+ * @access private
+ */
+	private function hashFileName($original_filename)
+	{
+		return uniqid('', true) . '.' . array_pop(explode('.', $original_filename));
 	}
 }
