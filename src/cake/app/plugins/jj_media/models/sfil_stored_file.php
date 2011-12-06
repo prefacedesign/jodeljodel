@@ -21,6 +21,8 @@ class SfilStoredFile extends JjMediaAppModel {
 
 	var $name = 'SfilStoredFile';
 
+	var $useDbConfig = 'assets';
+	
 	var $validate = array(
 		'checksum' => array(
 			'notempty' => array(
@@ -63,7 +65,6 @@ class SfilStoredFile extends JjMediaAppModel {
  */
 	var $actsAs = array(
 		'Containable',
-		'JjMedia.TransferPlus',
 		'Media.Transfer' => array(
 			'trustClient' => false,
 			'transferDirectory' => MEDIA_TRANSFER,
@@ -85,4 +86,36 @@ class SfilStoredFile extends JjMediaAppModel {
 			'level' => 2
 		)
 	);
+
+/**
+ * Reimplements the TransferBehavior::transferTo() method from Media plugin
+ * 
+ * @access public
+ * @return array 
+ */
+	function transferTo($via, $from) {
+		extract($from);
+
+		$irregular = array(
+			'image' => 'img',
+			'text' => 'txt'
+		);
+		$name = Mime_Type::guessName($mimeType ? $mimeType : $file);
+
+		if (isset($irregular[$name])) {
+			$short = $irregular[$name];
+		} else {
+			$short = substr($name, 0, 3);
+		}
+		
+		$extension = !empty($extension) ? '.' . strtolower($extension) : null;
+		
+		$newFilename  = uniqid('', true) . $extension;
+		
+		$this->data[$this->alias]['original_filename'] = $filename . $extension;
+		if (is_string($this->data[$this->alias]['file']))
+			$this->data[$this->alias]['file'] = dirname($this->data[$this->alias]['file']) . DS . $newFilename;
+		
+		return $short . DS . $newFilename;
+	}
 }
