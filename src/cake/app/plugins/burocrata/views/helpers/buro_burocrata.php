@@ -2362,8 +2362,6 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$gen_options['callbacks']['onRestart']['js'] .= "$('{$act_id}').hide(); $('{$prv_id}').hide();";
 		
 		$script = '';
-		if (empty($value))
-			$script .= "$('{$act_id}').hide(); $('{$prv_id}').hide();";
 		$script .= "$('{$chg_id}').observe('click', function(ev){ev.stop(); BuroCR.get('{$gen_options['baseID']}').again();});";
 		$script .= "$('{$rmv_id}').observe('click', function(ev){ev.stop(); BuroCR.get('{$gen_options['baseID']}').again(true);});";
 		
@@ -2371,7 +2369,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out .= $this->_upload($gen_options, $file_input_options);
 		
 		// Div for previews
-		$out .= $this->Bl->sdiv(array('id' => $prv_id));
+		$out .= $this->Bl->sdiv(array('id' => $prv_id, 'style' => empty($value) ? 'display:none;' : ''));
 			$url = '';
 			if (!empty($value))
 				$url = $this->Bl->imageURL($value, $gen_options['version']);
@@ -2379,7 +2377,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out .= $this->Bl->ediv();
 		
 		// Div for actions ID must be `'act' . $gen_options['baseID']`
-		$out .= $this->Bl->sdiv(array('id' => $act_id));
+		$out .= $this->Bl->sdiv(array('id' => $act_id, 'style' => empty($value) ? 'display:none;' : ''));
 			$change_link = $this->Bl->a(array('href' => '#', 'id' => $chg_id), array(), $gen_options['change_file_text']);
 			$remove_link = $this->Bl->a(array('href' => '#', 'id' => $rmv_id), array(), $gen_options['remove_file_text']);
 			$out .= $this->Bl->pDry($change_link . __d('burocrata','Burocrata::inputImage - or ', true) . $remove_link);

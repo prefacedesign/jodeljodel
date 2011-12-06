@@ -567,7 +567,10 @@ class BuroOfficeBoyHelper extends AppHelper
 					break;
 			}
 			
-			$script = "{$obj}.{$action}(json.content);";
+			$script  = "var tmp = {$obj}, hg = tmp.getHeight();";
+			$script .= "tmp.setStyle({height: hg + 'px', 'overflow':'hidden'});";
+			$script .= "tmp.{$action}(json.content);";
+			$script .= "tmp.setStyle.bind(tmp,{height:'', 'overflow':''}).delay(1);";
 			break;
 		}
 		return $script;
