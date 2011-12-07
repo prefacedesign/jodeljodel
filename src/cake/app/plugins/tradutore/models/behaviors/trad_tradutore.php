@@ -703,7 +703,7 @@ class TradTradutoreBehavior extends ModelBehavior
 				{
 					foreach ($query['fields'] as $k => $field)
 					{
-						list($model_child, $field) = explode('.', $field);
+						list($model_child) = explode('.', $field);
 						if ($model_child == $settings['className'])
 							$c[$settings['className']]['fields'][] = $field;
 					}
