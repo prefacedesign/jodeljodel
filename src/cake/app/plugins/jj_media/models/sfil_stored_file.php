@@ -21,8 +21,6 @@ class SfilStoredFile extends JjMediaAppModel {
 
 	var $name = 'SfilStoredFile';
 
-	var $useDbConfig = 'assets';
-	
 	var $validate = array(
 		'checksum' => array(
 			'notempty' => array(
