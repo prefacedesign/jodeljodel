@@ -82,4 +82,17 @@ class TypeView extends View
 		$this->viewVars['type'] = $typeBkp;		
 		return $out;
 	}
+
+/**
+ * This method overwrites the View::_paths() method so it can include the dashboard plugin path as candidate
+ * 
+ * @access public
+ * @return array Array of possible paths from View::_paths() merged with dashboard plugin path
+ */	
+	function _paths($plugin = null, $cached = true)
+	{
+		$paths = parent::_paths($plugin, $cached);
+		array_push($paths, App::pluginPath('backstage') . 'views' . DS);
+		return $paths;
+	}
 }
