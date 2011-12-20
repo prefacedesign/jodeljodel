@@ -23,17 +23,8 @@ echo $this->Bl->shtml(array(
 				'href' => '/favicon.ico'
 			)
 		);	
-		echo $this->Decorator->css(array(
-				'plugin' => 'typographer',
-				'controller' => 'type_stylesheet',
-				'action' => 'style',
-				'backstage'
-			)
-		);
-		echo $this->Decorator->css(
-			'instant.css',
-			'inline'
-		);
+		echo $this->Decorator->css(array('scheme' => 'backstage'));
+		echo $this->Decorator->css('instant.css','inline');
 		
 		echo $scripts_for_layout;
 	echo $this->Bl->ehead();

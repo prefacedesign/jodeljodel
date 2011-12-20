@@ -1,7 +1,7 @@
 <?php
 
 //essa classe escreve CSS
-//TODO implementar as regrinhas doidas.
+//TODO implementar as regrinhas doidas. (depois de muito tempo, o Lucas acha que é o esquema de regras específicas dos navegadores)
 
 class TypeDecoratorHelper extends AppHelper
 {
@@ -12,9 +12,14 @@ class TypeDecoratorHelper extends AppHelper
 
 	function sr($match_rule) {return $this->srule($match_rule);}
 	function er() {return $this->erule();}
-	function r($match_rule, $propreties) {return $this->regra($$match_rule, $propreties);}
+	function r($match_rule, $properties) {return $this->rule($match_rule, $properties);}
 
-
+/**
+ * Contructor
+ * 
+ * @access public
+ * @return void 
+ */
 	function __construct($options)
 	{
 		parent::__construct($options);
@@ -43,7 +48,12 @@ class TypeDecoratorHelper extends AppHelper
 		}
 	}
 	
-	
+/**
+ * Starts one rule declaration
+ * 
+ * @access public
+ * @return void|string One CSS rule or void, {@see self::_return()}
+ */
 	function srule($match_rule) 
 	{
 		return $this->_return(
@@ -54,39 +64,58 @@ class TypeDecoratorHelper extends AppHelper
 			. ($this->compact ? ' ' : "\n")
 		);
 	}
-	
+
+/**
+ * Ends one rule declaration
+ * 
+ * @access public
+ * @return void|string One CSS rule or void, {@see self::_return()}
+ */
 	function erule()
 	{
 		return $this->_return("}\n");
 	}
 	
-	
-	function propreties($propreties)
+/**
+ * Constructs the rule body (list of CSS properties)
+ * 
+ * @access public
+ * @return void|string One CSS rule or void, {@see self::_return()}
+ */
+	function properties($properties)
 	{
 		$t = '';
-	
-		foreach ($propreties as $n => $value)
-		{
+		foreach ($properties as $n => $value)
 			$t .=  $this->_writeProprety($n, $value);
-		}
 		
 		return $this->_return($t);		
 	}
 	
-	
-	function rule($match_rule, $propreties)
+/**
+ * Constructs one CSS rule
+ * 
+ * @access public
+ * @return void|string One CSS rule or void, {@see self::_return()}
+ */
+	function rule($match_rule, $properties)
 	{
 		$mode_backup = $this->mode; //para retornar ao invés de echoar ou colocar na fila
 		$this->mode = 'inline';     // ---
 		
 		$t = $this->srule($match_rule) 
- 		   . $this->propreties($propreties)
+ 		   . $this->properties($properties)
 		   . $this->erule();
 		
 		$this->mode = $mode_backup;
 		return $this->_return($t);
 	}
-	
+
+/**
+ * method description
+ * 
+ * @access public
+ * @return string Create the CSS link, or style tag.
+ */
 	function css($address, $inline = false, $media = 'all')
 	{
 		if ($inline)
@@ -98,33 +127,20 @@ class TypeDecoratorHelper extends AppHelper
 		{
 			if (is_array($address))
 			{
-				if (isset($address['plugin']) && $address['plugin'] == 'typographer' && $address['controller'] == 'type_stylesheet')
-				{
-					//@todo If possible use reverse routing for this:					
-					if (isset($address[0]))
-					{
-						$new_address = $address[0] . '-';
-					}
-					if (isset($address[1]))
-					{
-						$new_address .= $address[1] . '-';
-					}
-					$new_address = '/css/' . $new_address . $address['action'];
-					
-					$new_address .= '.css';
-					
-					$address = Router::url($new_address);
-				}
-				else
-				{
-					$address = Router::url($address);
-				}
+				$address += array('plugin' => 'typographer','controller' => 'type_stylesheet','action' => 'style');
+				$address = Router::url($address);
 			}
 			
 			return "\n" . '<link rel="stylesheet" media="'. $media .'" type="text/css" href="' . $address . '" />';
 		}
 	}
-	
+
+/**
+ * Create an <style> tag for inline code
+ * 
+ * @access protected
+ * @return string Inline CSS code
+ */
 	function _inlineCssCode (&$css, $media = 'all')
 	{
 		return "\n". '<style type="text/css" media="'. $media .'">'."\n". $css . "\n</style>\n";
@@ -156,8 +172,14 @@ class TypeDecoratorHelper extends AppHelper
 			   . $value 
 			   .($this->compact ? ';' : ";\n");
 	}
-	
-	function _return($r)
+
+/**
+ * Echoes or returns the formated rules depending on $this->mode
+ * 
+ * @access protected
+ * @return void|string The formated rules or void
+ */
+	protected function _return($r)
 	{
 		switch ($this->mode)
 		{
@@ -171,13 +193,6 @@ class TypeDecoratorHelper extends AppHelper
 				$this->css_buffers[$this->active_css_buffer] .= $r;
 			break;
 		}
-		
 		return $r;
 	}
-	
-	
 }
-
-
-
-?>

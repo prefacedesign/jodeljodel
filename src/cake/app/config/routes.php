@@ -44,6 +44,10 @@
 	Router::connect('/admin', array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'index'));
 	Router::connect('/admin/cork/:action/*', array('plugin' => 'corktile', 'controller' => 'cork_corktiles'));
 	Router::connect('/admin/:action/*', array('plugin' => 'backstage', 'controller' => 'back_contents'));
+	Router::connect('/admin/:language', array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'index'), array('language' => '[a-t]{3}'));
+	Router::connect('/admin/:language/cork/:action/*', array('plugin' => 'corktile', 'controller' => 'cork_corktiles'), array('language' => '[a-t]{3}'));
+	Router::connect('/admin/:language/:action/*', array('plugin' => 'backstage', 'controller' => 'back_contents'), array('language' => '[a-t]{3}'));
+
 
 /**
  * Connecting the `login` and `logout` action of user plugin
@@ -71,7 +75,16 @@
 		array('plugin' => 'typographer', 'controller' => 'type_stylesheet'),
 		array(
 			'pass' => array('scheme'),
-			'scheme' => '[a-z0-9_]+'
+			'scheme' => '[a-z0-9_]+',
+		)
+	);
+
+	Router::connect('/css/:scheme-:type-:action.css/*',
+		array('plugin' => 'typographer', 'controller' => 'type_stylesheet'),
+		array(
+			'pass' => array('scheme', 'type'),
+			'scheme' => '[a-z0-9_]+',
+			'type' => '[a-z0-9_]+'
 		)
 	);
 	
