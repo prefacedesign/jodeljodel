@@ -41,12 +41,12 @@
 /**
  * Connecting the two responsible plugins for admin actions
  */
-	Router::connect('/admin', array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'index'));
-	Router::connect('/admin/cork/:action/*', array('plugin' => 'corktile', 'controller' => 'cork_corktiles'));
-	Router::connect('/admin/:action/*', array('plugin' => 'backstage', 'controller' => 'back_contents'));
 	Router::connect('/admin/:language', array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'index'), array('language' => '[a-t]{3}'));
 	Router::connect('/admin/:language/cork/:action/*', array('plugin' => 'corktile', 'controller' => 'cork_corktiles'), array('language' => '[a-t]{3}'));
 	Router::connect('/admin/:language/:action/*', array('plugin' => 'backstage', 'controller' => 'back_contents'), array('language' => '[a-t]{3}'));
+	Router::connect('/admin', array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'index'));
+	Router::connect('/admin/cork/:action/*', array('plugin' => 'corktile', 'controller' => 'cork_corktiles'));
+	Router::connect('/admin/:action/*', array('plugin' => 'backstage', 'controller' => 'back_contents'));
 
 
 /**
