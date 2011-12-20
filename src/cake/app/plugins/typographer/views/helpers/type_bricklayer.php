@@ -441,7 +441,13 @@ class TypeBricklayerHelper extends AppHelper
 	function sanchor($attr = array(), $options = array())
 	{
 		if (isset($options['url']))
+		{
+			$View = ClassRegistry::getObject('view');
+			if (!empty($View->params['language']) && is_array($options['url']))
+				$options['url'] += array('language' => $View->params['language']);
+		
 			$attr['href'] = Router::url($options['url']);
+		}
 		
 		return $this->sa($attr, $options);
 	}
