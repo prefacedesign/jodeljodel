@@ -120,7 +120,6 @@ class TradLanguageSelectorComponent extends Object
  */
 	protected function getClientIP()
 	{
-		return '187.106.36.4';
 		if (getenv("HTTP_CLIENT_IP"))
 			return getenv("HTTP_CLIENT_IP");
 		elseif (getenv("HTTP_X_FORWARDED_FOR"))
