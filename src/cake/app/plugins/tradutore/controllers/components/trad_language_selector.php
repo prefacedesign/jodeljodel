@@ -6,7 +6,7 @@ class TradLanguageSelectorComponent extends Object
 	var $components = array('Session', 'Cookie');
 	var $Controller;
 	
-	static $_coutryLanguage = array(
+	static $_countryLanguage = array(
 		'Angola' => 'por',
 		'Brazil' => 'por',
 		'Portugal' => 'por',
@@ -34,13 +34,27 @@ class TradLanguageSelectorComponent extends Object
 		$lang = '';
 		if (count(Configure::read('Tradutore.languages')) > 1)
 		{
+			// tries to get the language from the URL
 			$lang = $this->getURLLanguage();
-			if (empty($lang))
+			
+			if (!$this->isValidLanguage($lang))
 			{
-				$lang = $this->guessLanguage();
-				if ($lang)
+				// tries to get the language from previous set Cookie
+				$lang = $this->Cookie->read('lang');
+				
+				// tries to guess the language using the configured method
+				if (!$this->isValidLanguage($lang))
+					$lang = $this->guessLanguage();
+				
+				// just loads the default language
+				if (!$this->isValidLanguage($lang))
+					$lang = $mainLanguage;
+				
+				// if someone of previous ways was successfull, redirects for a URL with the language parameter
+				if ($this->isValidLanguage($lang))
 					$this->Controller->redirect(array('language' => $lang));
 			}
+		
 		}
 		
 		if (!$this->isValidLanguage($lang))
@@ -81,42 +95,41 @@ class TradLanguageSelectorComponent extends Object
  * Tries to guess the user preferred language.
  * 
  * @access public
- * @return string The language guess
+ * @return string The language guess, or an empty string when the guessing was not possible
  */
 	function guessLanguage()
 	{
-		$auto = $this->Cookie->read('lang');
-		if (empty($auto))
+		$guess = '';
+		switch (Configure::read('Tradutore.guessingMethod'))
 		{
-			switch (Configure::read('Tradutore.guessingMethod'))
-			{
-				case 'http':
-					$I18n =& I18n::getInstance();
-					$I18n->l10n->get();
-					$auto = $I18n->l10n->catalog($I18n->l10n->lang);
-					$auto = $auto['localeFallback'];
-				break;
-			
-				case 'ip':
-					App::import('Vendor', 'Tradutore.Net_GeoIP', array('file' => 'geoip'.DS.'Net'.DS.'GeoIP.php'));
-					$databaseFile = dirname(dirname(dirname(__FILE__))) . DS . 'vendors' . DS . 'geoip' . DS . 'data' . DS . 'GeoIP.dat';
-					$geoip = Net_GeoIP::getInstance($databaseFile, Net_GeoIP::STANDARD);
-					$country = $geoip->lookupCountryName($this->getClientIP());
-					
-					if (isset(self::$_coutryLanguage[$country]))
-						$auto = self::$_coutryLanguage[$country];
-				break;
-			}
-			if (!$this->isValidLanguage($auto))
-				$auto = Configure::read('Tradutore.mainLanguage');
+			case 'http':
+				$I18n =& I18n::getInstance();
+				$I18n->l10n->get();
+				$guess = $I18n->l10n->catalog($I18n->l10n->lang);
+				$guess = $guess['localeFallback'];
+			break;
+		
+			case 'ip':
+				App::import('Vendor', 'Tradutore.Net_GeoIP', array('file' => 'geoip'.DS.'Net'.DS.'GeoIP.php'));
+				$databaseFile = dirname(dirname(dirname(__FILE__))) . DS . 'vendors' . DS . 'geoip' . DS . 'data' . DS . 'GeoIP.dat';
+				$geoip = Net_GeoIP::getInstance($databaseFile, Net_GeoIP::STANDARD);
+				$country = $geoip->lookupCountryName($this->getClientIP());
+				
+				if (isset(self::$_countryLanguage[$country]))
+					$guess = self::$_countryLanguage[$country];
+				else
+					$guess = Configure::read('Tradutore.guessingFallback');
+			break;
 		}
-		return $auto;
+
+		return $guess;
 	}
+
 /**
- * method description
+ * Tries to get the client IP using the HTTP data
  * 
  * @access public
- * @return type description
+ * @return string|false the IP address when found. False otherwise
  */
 	protected function getClientIP()
 	{
@@ -125,8 +138,11 @@ class TradLanguageSelectorComponent extends Object
 		elseif (getenv("HTTP_X_FORWARDED_FOR"))
 			return getenv("HTTP_X_FORWARDED_FOR");
 		else 
-			return getenv("REMOTE_ADDR"); 
+			return getenv("REMOTE_ADDR");
+
+		return false;
 	}
+
 /**
  * Sends the current language all over the application
  * Also, it writes the language to cookie to use it in latter requests
@@ -144,15 +160,16 @@ class TradLanguageSelectorComponent extends Object
 		$this->Session->write('Tradutore.currentLanguage', $lang);
 		$this->Controller->set('currentLanguage', $lang);
 	}
-	
+
+
 	function setInterfaceLanguage($lang = null)
     {
         Configure::write('Config.language', $lang);
 		
 		$this->Controller->set('currentInterfaceLanguage', $lang);
 	}
-	
-	
+
+
 	function setModelLanguage($lang = null)
     {
 		App::import('Behavior','Tradutore.TradTradutore');
