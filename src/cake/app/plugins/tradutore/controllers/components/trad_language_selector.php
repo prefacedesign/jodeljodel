@@ -42,23 +42,21 @@ class TradLanguageSelectorComponent extends Object
 				// tries to get the language from previous set Cookie
 				$lang = $this->Cookie->read('lang');
 				
-				// tries to guess the language using the configured method
 				if (!$this->isValidLanguage($lang))
+				{
+					// tries to guess the language using the configured method
 					$lang = $this->guessLanguage();
 				
-				// just loads the default language
-				if (!$this->isValidLanguage($lang))
-					$lang = $mainLanguage;
-				
-				// if someone of previous ways was successfull, redirects for a URL with the language parameter
-				if ($this->isValidLanguage($lang))
-					$this->Controller->redirect(array('language' => $lang));
+					// just loads the default language
+					if (!$this->isValidLanguage($lang))
+						$lang = $mainLanguage;
+				}
 			}
 		
 		}
 		
 		if (!$this->isValidLanguage($lang))
-			$this->Controller->redirect(array('language' => $mainLanguage));
+			$lang = $mainLanguage;
 		
 		$this->setLanguage($lang);
 	}
