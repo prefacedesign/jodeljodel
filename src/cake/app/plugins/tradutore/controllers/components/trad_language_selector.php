@@ -131,14 +131,31 @@ class TradLanguageSelectorComponent extends Object
  */
 	protected function getClientIP()
 	{
-		if (getenv("HTTP_CLIENT_IP"))
-			return getenv("HTTP_CLIENT_IP");
-		elseif (getenv("HTTP_X_FORWARDED_FOR"))
-			return getenv("HTTP_X_FORWARDED_FOR");
+		if (($ip = getenv("HTTP_CLIENT_IP")) && $this->isLocalIp($ip) === false)
+			return $ip;
+		elseif (($ip = getenv("HTTP_X_FORWARDED_FOR")) && $this->isLocalIp($ip) === false)
+			return $ip;
 		else 
 			return getenv("REMOTE_ADDR");
 
 		return false;
+	}
+/**
+ * Check if it is an ip from local network
+ * 
+ * @access protected
+ * @return boolean True, if it is an ip from local network
+ */
+	protected function isLocalIp($ip)
+	{
+		$intIP = ip2long($ip);
+		if ($intIP === false || $intIP < 0)
+			return null;
+		
+		return
+			   $intIP >= 167772160  && $intIP <= 184549375   // 10.0.0.0 - 10.255.255.255
+			|| $intIP >= 2886729728 && $intIP <= 2887778303  // 172.16.0.0 - 172.31.255.255
+			|| $intIP >= 3232235520 && $intIP <= 3232301055; // 192.168.0.0 - 192.168.255.255
 	}
 
 /**
