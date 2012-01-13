@@ -2217,10 +2217,6 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$gen_options['error']['size'] = __d('burocrata', 'The uploaded file is too large. (filesize > upload_max_filesize or filesize > Model::$validate definitions)', true);
 		$gen_options['error']['post_max_size'] = __d('burocrata', 'The uploaded file is too large. (filesize > post_max_size)', true);
 		
-		if (empty($gen_options['callbacks']['onReject']['js']))
-			$gen_options['callbacks']['onReject']['js'] = '';
-		$gen_options['callbacks']['onReject']['js'] .= "alert(json.error); this.again();";
-		
 		return compact('gen_options', 'file_input_options');
 	}
 

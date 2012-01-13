@@ -1810,6 +1810,9 @@ var BuroUpload = Class.create(BuroCallbackable, {
 			this.form.insert(new Element('input', {name: pair.key, value: pair.value}));
 		}.bind(this));
 		
+		this.div_hidden.up().removeClassName('error');
+		this.div_hidden.up().select('.error-message').invoke('remove');
+		
 		this.form.insert(this.tmp_input).submit();
 		this._submitted = true;
 		this.uploading = true;
@@ -1878,7 +1881,13 @@ var BuroUpload = Class.create(BuroCallbackable, {
 			else
 				this.responseJSON.error = $H(this.responseJSON.validationErrors).values()[0];
 		}
+		
+		this.div_hidden.up().addClassName('error');
+		this.div_hidden.up().insert(new Element('div', {className:'error-message'}).update(this.responseJSON.error));
+		
 		this.trigger('onReject', this.tmp_input, this.responseJSON, this.responseJSON.saved);
+
+		this.again();
 	}
 });
 
