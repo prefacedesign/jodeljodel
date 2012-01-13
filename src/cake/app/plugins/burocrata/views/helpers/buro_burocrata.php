@@ -2207,12 +2207,19 @@ class BuroBurocrataHelper extends XmlTagHelper
 			trigger_error('BuroBurocrataHelper::_uploadParams() - Changing the upload model is not supported yet! Using the default.');
 			$gen_options['model'] = 'JjMedia.SfilStoredFile';
 		}
-	
+		
 		if (isset($file_input_options['error']))
 		{
 			$gen_options['error'] = $file_input_options['error'];
 			unset($file_input_options['error']);
 		}
+		
+		$gen_options['error']['size'] = __d('burocrata', 'The uploaded file is too large. (filesize > upload_max_filesize or filesize > Model::$validate definitions)', true);
+		$gen_options['error']['post_max_size'] = __d('burocrata', 'The uploaded file is too large. (filesize > post_max_size)', true);
+		
+		if (empty($gen_options['callbacks']['onReject']['js']))
+			$gen_options['callbacks']['onReject']['js'] = '';
+		$gen_options['callbacks']['onReject']['js'] .= "alert(json.error); this.again();";
 		
 		return compact('gen_options', 'file_input_options');
 	}
@@ -2345,6 +2352,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		if (empty($gen_options['remove_file_text']))
 			$gen_options['remove_file_text'] = __d('burocrata','Burocrata::inputImage - Remove  image', true);
 		
+		$gen_options['error'] += array('validImage' => __d('burocrata','The uploaded file is not a valid image file.',true));
+		
 		$value = $this->Form->value($file_input_options['fieldName']);
 		
 		$ids = array('act', 'prv', 'img', 'chg', 'rmv');
@@ -2364,6 +2373,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$script = '';
 		$script .= "$('{$chg_id}').observe('click', function(ev){ev.stop(); BuroCR.get('{$gen_options['baseID']}').again();});";
 		$script .= "$('{$rmv_id}').observe('click', function(ev){ev.stop(); BuroCR.get('{$gen_options['baseID']}').again(true);});";
+		
+		$gen_options['model'] = 'JjMedia.SfilImageFile';
 		
 		$out .= $this->BuroOfficeBoy->addHtmlEmbScript($script);
 		$out .= $this->_upload($gen_options, $file_input_options);

@@ -1873,7 +1873,10 @@ var BuroUpload = Class.create(BuroCallbackable, {
 		this.hidden_input.value = '';
 		if (this.responseJSON.validationErrors && this.errors)
 		{
-			this.responseJSON.error = this.errors[$H(this.responseJSON.validationErrors).values()[0]];
+			if (this.errors[$H(this.responseJSON.validationErrors).values()[0]])
+				this.responseJSON.error = this.errors[$H(this.responseJSON.validationErrors).values()[0]];
+			else
+				this.responseJSON.error = $H(this.responseJSON.validationErrors).values()[0];
 		}
 		this.trigger('onReject', this.tmp_input, this.responseJSON, this.responseJSON.saved);
 	}

@@ -64,6 +64,7 @@ class JjMediaController extends JjMediaAppController {
 		parent::beforeFilter();
 		if ($this->Auth)
 			$this->Auth->allow('*');
+		$this->TypeLayoutSchemePicker->pick('backstage');
 	}
 
 /**
@@ -158,7 +159,7 @@ class JjMediaController extends JjMediaAppController {
 /**
  * upload action
  *
- * Used to receive upload from a form, containing the data from upload on data[MODEL][file].
+ * Receive upload form POST, containing the data from upload on data[MODEL][file].
  * It already saves the file, generating the filtered copies, and renders a JSON, directly on view.
  * 
  * @access public
@@ -171,39 +172,39 @@ class JjMediaController extends JjMediaAppController {
 		$validationErrors = array();
 		
 		$version = $fieldName = $model_name = null;
-		
 		if (!empty($this->buroData['data']))
 			list($version, $fieldName, $model_name) = SecureParams::unpack($this->buroData['data']);
 		
 		if (is_null($version) || is_null($fieldName) || is_null($model_name))
-			$error = Configure::read()>0?'JjMediaController::upload - Configuration data not available.':true;
-		
-		if ($error === false && !$this->loadModel($model_name))
+		{
+			$validationErrors['file'] = 'post_max_size';
+		}
+		elseif (!$this->loadModel($model_name))
+		{
 			$error = Configure::read()>0?'JjMediaController::upload - Model '.$model_name.' not found.':true;
-		
-		if ($error === false)
+		}
+		else
 		{
 			list($plugin, $model_name) = pluginSplit($model_name);
-			$model_alias = $this->{$model_name}->alias;
+			$Model =& $this->{$model_name};
+			$model_alias = $Model->alias;
 			
 			if (!empty($this->data))
 			{
-				$scope = $this->{$model_name}->findTheScope($fieldName);
+				$scope = $Model->findTheScope($fieldName);
 				if ($scope)
-					$this->{$model_name}->setScope($scope);
-				$saved = $this->{$model_name}->save($this->data);
+					$Model->setScope($scope);
 				
-				if ($saved == false)
-					$validationErrors = $this->validateErrors($this->{$model_name});
-				else
-					$saved = $this->{$model_name}->id;
-				
-				if ($saved)
+				$Model->set($this->data);
+				$validationErrors = $this->validateErrors($Model);
+
+				if (empty($validationErrors) && $Model->save(null, false))
 				{
+					$saved = $Model->id;
 					$filename = $this->data[$model_alias]['file']['name'];
 					list($fieldModelName, $fieldName) = pluginSplit($fieldName);
 					if (!empty($this->data[$fieldModelName][$fieldName]))
-						$this->{$model_name}->delete($this->data[$fieldModelName][$fieldName]);
+						$Model->delete($this->data[$fieldModelName][$fieldName]);
 				}
 			}
 		}

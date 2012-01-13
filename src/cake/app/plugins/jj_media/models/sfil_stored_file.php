@@ -86,6 +86,15 @@ class SfilStoredFile extends JjMediaAppModel {
 				'rule' => array('numeric'),
 			),
 		),
+		'file' => array(
+			'resource'   => array('rule' => 'checkResource'),
+			'access'     => array('rule' => 'checkAccess'),
+			'location'   => array('rule' => array('checkLocation', array(
+				MEDIA_TRANSFER, '/tmp/'
+			))),
+			'permission' => array('rule' => array('checkPermission', '*')),
+			'size'       => array('rule' => array('checkSize', '5M')),
+		),
 	);
 
 
