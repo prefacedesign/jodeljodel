@@ -1812,6 +1812,7 @@ var BuroUpload = Class.create(BuroCallbackable, {
 		
 		this.div_hidden.up().removeClassName('error');
 		this.div_hidden.up().select('.error-message').invoke('remove');
+		this.div_hidden.setLoading();
 		
 		this.form.insert(this.tmp_input).submit();
 		this._submitted = true;
@@ -1823,6 +1824,7 @@ var BuroUpload = Class.create(BuroCallbackable, {
 			return;
 		
 		this.uploading = false;
+		this.div_hidden.unsetLoading();
 		
 		var d, i = this.iframe;
 		if (i.contentDocument) {
