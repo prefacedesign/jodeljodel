@@ -20,21 +20,7 @@ $ug->create()
 :$ug->save(array('UserGroup' => array('name' => 'Superusuarios',    'alias' => 'superusers','parent_id' => 2)))
 quit
 
-./cake jj_console
-App::import('Component', 'Auth');
-App::import('Model','JjUsers.UserUser');
-$ug = ClassRegistry::init('JjUsers.UserGroup');
-$auth = ClassRegistry::init('AuthComponent');
-$pass = $auth->password('1234');
-:$ug->UserUser->save(array('UserUser' => array('name' => 'Eleonora C. Albano','username' => 'albano@unicamp.br','password' => $pass, 'user_group_id' => 3)))
-$ug->UserUser->create();
-:$ug->UserUser->save(array('UserUser' => array('name' => 'Lucas Vignoli','username' => 'lucas@preface.com.br','password' => $pass, 'user_group_id' => 5)))
-$ug->UserUser->create();
-:$ug->UserUser->save(array('UserUser' => array('name' => 'Daniel Abrahao','username' => 'daniel@preface.com.br','password' => $pass, 'user_group_id' => 5)))
-$ug->UserUser->create();
-:$ug->UserUser->save(array('UserUser' => array('name' => 'Rodrigo Caravita','username' => 'rodrigo@preface.com.br','password' => $pass, 'user_group_id' => 5)))
-$ug->UserUser->create();
-:$ug->UserUser->save(array('UserUser' => array('name' => 'Super-usuario','username' => 'preface@preface.com.br','password' => $pass, 'user_group_id' => 6)))
-$ug->UserUser->create();
-:$ug->UserUser->save(array('UserUser' => array('name' => 'Teste de Redator','username' => 'redator@preface.com.br','password' => $pass, 'user_group_id' => 4)))
-quit
+./cake jodel_user add "Lucas Vignoli" lucas@preface.com.br "1234" techies
+./cake jodel_user add "Daniel Abrahao" lucas@preface.com.br "1234" techies
+./cake jodel_user add "Super-usuario" preface@preface.com.br "1234" superusers
+./cake jodel_user add "Teste de Redator" redator@preface.com.br "1234" redactors
