@@ -2,10 +2,28 @@
 
 class JodelUserShell extends Shell
 {
+	var $UserGroup;
+	var $UserUser;
+
+/**
+ * method description
+ * 
+ * @access public
+ * @return type description
+ */
 	public function startup()
 	{
+		App::import('Model','JjUsers.UserUser');
+		$this->UserGroup =& ClassRegistry::init('JjUsers.UserGroup');
+		$this->UserUser =& $this->UserGroup->UserUser;
 	}
-	
+
+/**
+ * method description
+ * 
+ * @access public
+ * @return type description
+ */
 	public function main()
 	{
 		// Usage:
@@ -20,17 +38,17 @@ class JodelUserShell extends Shell
 		do
 		{
 			$this->nl();
-			$this->out(' Group related procedures:');
-			$this->out('  (gl) List groups');
-			$this->out('  (ga) Add one user group');
-			$this->out('  (gd) Delete one user group');
-		
-			$this->nl();
 			$this->out(' User related procedures:');
 			$this->out('  (ul) List all users');
 			$this->out('  (ua) Add new user');
 			$this->out('  (ud) Delete existent user');
 			$this->out('  (um) Move user from a group to another');
+		
+			$this->nl();
+			$this->out(' Group related procedures:');
+			$this->out('  (gl) List groups');
+			$this->out('  (ga) Add one user group');
+			$this->out('  (gd) Delete one user group');
 		
 			$this->nl();
 			$this->out(' (q) Quit');
@@ -52,12 +70,15 @@ class JodelUserShell extends Shell
 			$this->out(PHP_EOL);
 		} while ($op != 'q');
 	}
-	
+/**
+ * method description
+ * 
+ * @access public
+ * @return type description
+ */
 	public function add()
 	{
 		App::import('Component', 'Auth');
-		App::import('Model','JjUsers.UserUser');
-		$ug = ClassRegistry::init('JjUsers.UserGroup');
 		$data['name'] = $data['username'] = $data['password'] = $data['user_group_id'] = '';
 		
 		// Get name
@@ -92,7 +113,7 @@ class JodelUserShell extends Shell
 		// Get the user group
 		if (isset($this->args[0]))
 		{
-			$groups = $ug->find('all', array(
+			$groups = $this->UserGroup->find('all', array(
 				'contain' => false,
 				'conditions' => array(
 					'or' => array(
@@ -107,7 +128,7 @@ class JodelUserShell extends Shell
 		
 		while (empty($data['user_group_id']))
 		{
-			$list = $ug->find('list', array('fields' => array('alias', 'id')));
+			$list = $this->UserGroup->find('list', array('fields' => array('alias', 'id')));
 			$options = array_keys($list);
 			$options[] = 'c';
 
@@ -121,19 +142,21 @@ class JodelUserShell extends Shell
 				$data['user_group_id'] = $list[$alias];
 		}
 		
-		$ug->UserUser->create(array('UserUser' => $data));
+		$this->UserUser->create(array('UserUser' => $data));
 
-		if ($ug->UserUser->save())
+		if ($this->UserUser->save())
 			$this->out('New user added!');
 		else
 			$this->error('Adding new user failed.');
 	}
-	
+/**
+ * method description
+ * 
+ * @access public
+ * @return type description
+ */
 	public function delete()
 	{
-		App::import('Model','JjUsers.UserUser');
-		$uu = ClassRegistry::init('JjUsers.UserUser');
-		
 		$username = '';
 		if (isset($this->args[0]))
 			$username = array_shift($this->args);
@@ -146,24 +169,26 @@ class JodelUserShell extends Shell
 			if ($username == 'c')
 				return;
 			
-			$user = $uu->find('first', array('conditions' => compact('username'), 'contain' => false));
+			$user = $this->UserUser->find('first', array('conditions' => compact('username'), 'contain' => false));
 			if (empty($user))
 				$this->out('User `'.$username.'` not found! Try again...');
 			$username = '';
 		} while (empty($user));
 		
-		if ($uu->delete($user['UserUser']['id']))
+		if ($this->UserUser->delete($user['UserUser']['id']))
 			$this->out('User successfully deleted!');
 		else
 			$this->error('Deleting user failed.');
 	}
-	
+/**
+ * method description
+ * 
+ * @access public
+ * @return type description
+ */
 	public function list_all()
 	{
-		App::import('Model','JjUsers.UserUser');
-		$uu = ClassRegistry::init('JjUsers.UserUser');
-		
-		$users = $uu->find('all', array());
+		$users = $this->UserUser->find('all', array());
 		
 		$name_length = max(array_map('mb_strlen', Set::extract('/UserUser/name', $users))) + 2;
 		$username_length = max(array_map('mb_strlen', Set::extract('/UserUser/username', $users))) + 4;
@@ -177,13 +202,14 @@ class JodelUserShell extends Shell
 		}
 		
 	}
-	
+/**
+ * method description
+ * 
+ * @access public
+ * @return type description
+ */
 	public function move()
 	{
-		App::import('Model','JjUsers.UserUser');
-		$uu = ClassRegistry::init('JjUsers.UserUser');
-		$ug =& $uu->UserGroup;
-		
 		$username = '';
 		if (isset($this->args[0]))
 			$username = array_shift($this->args);
@@ -196,7 +222,7 @@ class JodelUserShell extends Shell
 			if ($username == 'c')
 				return;
 			
-			$user = $uu->find('first', array('conditions' => compact('username'), 'contain' => false));
+			$user = $this->UserUser->find('first', array('conditions' => compact('username'), 'contain' => false));
 			if (empty($user))
 				$this->out('User `'.$username.'` not found! Try again...');
 			$username = '';
@@ -204,40 +230,147 @@ class JodelUserShell extends Shell
 		
 		
 		// Get the user group
+		$user['UserUser']['user_group_id'] = $this->getGroup();
+		
+		if ($this->UserUser->save($user))
+			$this->out('User successfully updated!');
+		else
+			$this->error('Updating user failed.');
+	}
+/**
+ * method description
+ * 
+ * @access public
+ * @return type description
+ */
+	public function group_list()
+	{
+		$groups = $this->UserGroup->find('threaded', array('contain' => false));
+		$this->printGroupTree($groups);
+	}
+/**
+ * method description
+ * 
+ * @access public
+ * @return type description
+ */
+	public function group_add()
+	{
+		$group['name'] = '';
+		if (isset($this->args[0]))
+			$group['name'] = array_shift($this->args);
+		
+		while (empty($group['name']))
+			$group['name'] = $this->in('What is the name for this new user group?');
+		
+		$group['alias'] = '';
+		if (isset($this->args[0]))
+			$group['alias'] = array_shift($this->args);
+		do
+		{
+			while (empty($group['alias']))
+				$group['alias'] = $this->in('What is the alias for this new user group?', false, strtolower(Inflector::slug($group['name'])));
+			$count = $this->UserGroup->find('count', array(
+				'contain' => false, 
+				'conditions' => array('alias' => $group['alias'])
+			));
+			if ($count)
+			{
+				$this->out();
+				$this->out('There is already one user group with the choosen alias. Choose another one.');
+				$group['alias'] = '';
+			}
+		} while ($count != 0 || empty($group['alias']));
+		
+		$this->out();
+		$group['parent_id'] = $this->getGroup('Now, select one group to be the parent of this new one');
+		if (empty($group['parent_id']))
+		{
+			$this->error('No parent group selected. Creating group failed.');
+			return;
+		}
+		
+		$this->UserGroup->create(array('UserGroup' => $group));
+		if ($this->UserGroup->save())
+			$this->out('Group successfully created');
+		else
+			$this->error('It was not possible to create the new group.');
+	}
+/**
+ * method description
+ * 
+ * @access public
+ * @return type description
+ */
+	public function group_delete()
+	{
+		$group_id = $this->getGroup();
+		$users = $this->UserUser->find('count', array(
+			'conditions' => array('UserUser.user_group_id' => $group_id), 
+			'contain' => false
+		));
+		if ($users)
+		{
+			$this->error('The group is not empty. Before deletion, remove all users from it.');
+			return;
+		}
+		
+		if ($this->UserGroup->delete($group_id))
+			$this->out('Group successfully deleted');
+		else
+			$this->error('It was not possible to delete the group.');
+	}
+/**
+ * method description
+ * 
+ * @access protected
+ * @return type description
+ */
+	protected function printGroupTree($data, $deep = 0)
+	{
+		foreach ($data as $value)
+		{
+			$pad = str_pad('', $deep * 2);
+			$this->out($pad . $value['UserGroup']['name'] . ' (' . $value['UserGroup']['alias'] . ')');
+			if ($value['children'])
+				$this->printGroupTree($value['children'], $deep+1);
+		}
+	}
+/**
+ * method description
+ * 
+ * @access public
+ * @return type description
+ */
+	public function getGroup($msg = 'Choose one user group')
+	{
 		if (isset($this->args[0]))
 		{
-			$groups = $ug->find('all', array(
+			$groups = $this->UserGroup->find('all', array(
 				'contain' => false,
 				'conditions' => array(
-					'or' => array(
-						'alias' => $this->args[0],
-						'name LIKE' => '%'.$this->args[0].'%'
-					)
+					'alias' => $this->args[0],
 				)
 			));
 			if (count($groups) == 1)
-				$user['UserUser']['user_group_id'] = $groups[0]['UserGroup']['id'];
+				return $groups[0]['UserGroup']['id'];
 		}
 		
-		while (empty($user['UserUser']['user_group_id']))
+		while (empty($data['user_group_id']))
 		{
-			$list = $ug->find('list', array('fields' => array('alias', 'id')));
+			$list = $this->UserGroup->find('list', array('fields' => array('alias', 'id')));
 			$options = array_keys($list);
 			$options[] = 'c';
 
 			$this->out();
-			$alias = $this->in('Choose one user group:'.PHP_EOL.' '.implode(PHP_EOL.' ', array_keys($list)).PHP_EOL.'or (c) to cancel', $options);
+			$alias = $this->in($msg.':'.PHP_EOL.' '.implode(PHP_EOL.' ', array_keys($list)).PHP_EOL.'or (c) to cancel', $options);
 			
 			if ($alias == 'c')
-				return;
+				return false;
 			
 			if (isset($list[$alias]))
-				$user['UserUser']['user_group_id'] = $list[$alias];
+				return $list[$alias];
 		}
-		
-		if ($uu->save($user))
-			$this->out('User successfully updated!');
-		else
-			$this->error('Updating user failed.');
+		return false;
 	}
 }
