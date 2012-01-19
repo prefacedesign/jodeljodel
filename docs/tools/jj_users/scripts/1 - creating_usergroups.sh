@@ -1,25 +1,13 @@
 <?php
+# Creating the groups
+./cake jodel_user group_add "Todos os usuários" all_users -no-parent
+./cake jodel_user group_add "Administradores" admin all_users
+./cake jodel_user group_add "Editores" editors admin
+./cake jodel_user group_add "Redatores" redators admin
+./cake jodel_user group_add "Técnicos" techies admin
+./cake jodel_user group_add "Superusuarios" superusers admin
 
-// Script to create the first user groups
-// Intended to be ran through the jj_console; 
-// Paste it on the console.
-
-./cake jj_console
-App::import('Model','JjUsers.UserGroup');
-$ug = ClassRegistry::init('JjUsers.UserGroup');
-:$ug->save(array('UserGroup' => array('name' => 'Todos os usuarios','alias' => 'all_users')))
-$ug->create()
-:$ug->save(array('UserGroup' => array('name' => 'Administradores',  'alias' => 'admin',     'parent_id' => 1))) 
-$ug->create()
-:$ug->save(array('UserGroup' => array('name' => 'Editores',         'alias' => 'editors',   'parent_id' => 2))) 
-$ug->create()
-:$ug->save(array('UserGroup' => array('name' => 'Redatores',        'alias' => 'redactors', 'parent_id' => 2)))
-$ug->create()
-:$ug->save(array('UserGroup' => array('name' => 'Tecnicos',         'alias' => 'techies',   'parent_id' => 2)))
-$ug->create()
-:$ug->save(array('UserGroup' => array('name' => 'Superusuarios',    'alias' => 'superusers','parent_id' => 2)))
-quit
-
+# Creating the users
 ./cake jodel_user add "Lucas Vignoli" lucas@preface.com.br "1234" techies
 ./cake jodel_user add "Daniel Abrahao" lucas@preface.com.br "1234" techies
 ./cake jodel_user add "Super-usuario" preface@preface.com.br "1234" superusers
