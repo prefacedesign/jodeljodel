@@ -256,13 +256,14 @@ class JodelUserShell extends Shell
  */
 	public function group_add()
 	{
+		// Get the name
 		$group['name'] = '';
 		if (isset($this->args[0]))
 			$group['name'] = array_shift($this->args);
-		
 		while (empty($group['name']))
 			$group['name'] = $this->in('What is the name for this new user group?');
 		
+		// Get the alias
 		$group['alias'] = '';
 		if (isset($this->args[0]))
 			$group['alias'] = array_shift($this->args);
@@ -282,12 +283,16 @@ class JodelUserShell extends Shell
 			}
 		} while ($count != 0 || empty($group['alias']));
 		
-		$this->out();
-		$group['parent_id'] = $this->getGroup('Now, select one group to be the parent of this new one');
-		if (empty($group['parent_id']))
+		// Get the parent
+		if (!isset($this->params['no-parent']))
 		{
-			$this->error('No parent group selected. Creating group failed.');
-			return;
+			$this->out();
+			$group['parent_id'] = $this->getGroup('Now, select one group to be the parent of this new one');
+			if (empty($group['parent_id']))
+			{
+				$this->error('No parent group selected. Creating group failed.');
+				return;
+			}
 		}
 		
 		$this->UserGroup->create(array('UserGroup' => $group));
