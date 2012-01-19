@@ -3,7 +3,7 @@
 ./cake jodel_user group_add "Todos os usuários" all_users -no-parent
 ./cake jodel_user group_add "Administradores" admin all_users
 ./cake jodel_user group_add "Editores" editors admin
-./cake jodel_user group_add "Redatores" redators admin
+./cake jodel_user group_add "Redatores" redactors admin
 ./cake jodel_user group_add "Técnicos" techies admin
 ./cake jodel_user group_add "Superusuarios" superusers admin
 
