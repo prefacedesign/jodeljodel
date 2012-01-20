@@ -9,7 +9,7 @@
 
 # Creating the users
 ./cake jodel_user add "Lucas Vignoli" lucas@preface.com.br "1234" techies
-./cake jodel_user add "Daniel Abrahao" lucas@preface.com.br "1234" techies
+./cake jodel_user add "Daniel Abrahao" daniel@preface.com.br "1234" techies
 ./cake jodel_user add "Super-usuario" preface@preface.com.br "1234" superusers
 ./cake jodel_user add "Teste de Redator" redator@preface.com.br "1234" redactors
 

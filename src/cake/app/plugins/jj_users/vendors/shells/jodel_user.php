@@ -145,9 +145,9 @@ class JodelUserShell extends Shell
 		$this->UserUser->create(array('UserUser' => $data));
 
 		if ($this->UserUser->save())
-			$this->out('New user added!');
+			$this->out('New user added!' . PHP_EOL);
 		else
-			$this->error('Adding new user failed.');
+			$this->error('Adding new user failed.' . PHP_EOL);
 	}
 /**
  * method description
@@ -176,9 +176,9 @@ class JodelUserShell extends Shell
 		} while (empty($user));
 		
 		if ($this->UserUser->delete($user['UserUser']['id']))
-			$this->out('User successfully deleted!');
+			$this->out('User successfully deleted!' . PHP_EOL);
 		else
-			$this->error('Deleting user failed.');
+			$this->error('Deleting user failed.' . PHP_EOL);
 	}
 /**
  * method description
@@ -321,9 +321,9 @@ class JodelUserShell extends Shell
 		}
 		
 		if ($this->UserGroup->delete($group_id))
-			$this->out('Group successfully deleted');
+			$this->out('Group successfully deleted' . PHP_EOL);
 		else
-			$this->error('It was not possible to delete the group.');
+			$this->error('It was not possible to delete the group.' . PHP_EOL);
 	}
 /**
  * method description
