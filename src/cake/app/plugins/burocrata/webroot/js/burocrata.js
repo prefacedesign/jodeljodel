@@ -828,7 +828,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		return this;
 	},
 	showAutocomplete: function() {this.autocomplete.input.show(); return this;},
-	hideAutocomplete: function() {this.autocomplete.input.hide(); return this;},
+	hideAutocomplete: function() {this.autocomplete.input.hide(); return this;}
 });
 
 
