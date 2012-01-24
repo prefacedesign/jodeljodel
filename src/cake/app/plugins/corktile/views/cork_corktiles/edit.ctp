@@ -21,13 +21,14 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 			'content' => __d('corktile', 'Corktile edit page: Your data cannot be saved - TEXT.', true)
 		)
 	);
+	$url = Router::url(array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'index'));
 	echo $this->Popup->popup('notice',
 		array(
 			'type' => 'notice',
 			'title' => __d('corktile', 'Corktile edit page: Your data has been saved - TITLE.',true),
 			'content' => __d('corktile', 'Corktile edit page: Your data has been saved - TEXT.',true),
 			'actions' => array('ok' => 'ok'),
-			'callback' => "if (action=='ok') window.location = '/dashboard/dash_dashboard';"
+			'callback' => "if (action=='ok') window.location = '$url'"
 		)
 	);
 	
