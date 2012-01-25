@@ -150,4 +150,12 @@ class AppController extends Controller {
 		return true;
 	}
 	
+	protected function jodelError($message)
+	{
+		if (Configure::read() == 0)
+			$this->cakeError('error500');
+		
+		$this->header("HTTP/1.0 500 Internal Server Error");
+		$this->cakeError('error', array('code' => 500, 'name' => __('Jodel Jodel internal error', true), 'message' => $message));
+	}
 }
