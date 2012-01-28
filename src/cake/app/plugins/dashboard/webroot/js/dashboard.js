@@ -68,34 +68,33 @@ var SearchInput = Class.create({
  * 
  * @access 
  */
+var ExpandedRow = false;
 var TableRow = Class.create({
-	theExpandedRow: "",
 	initialize: function(row_id)
 	{
 		this.row = $(row_id);
-		this.arrow = $(row_id).down('.last_col').down('a');
-		this.arrow.observe('click', this.dashToggleExpandableRow.bind(this));
-		
+		this.arrow = $(row_id).down('.arrow > a');
+		this.arrow.observe('click', this.toggleRow.bind(this));
 	},
-	dashToggleExpandableRow: function(ev)
+	toggleRow: function(ev)
 	{
 		ev.stop();
-
-		if ($(self.theExpandedRow))
-		{
-			$(self.theExpandedRow).removeClassName('expanded');
-			$(self.theExpandedRow).next().removeClassName('expanded');
-			$(self.theExpandedRow).next().next().removeClassName('expanded');
-		}
-		if (self.theExpandedRow != this.row.id)
-		{
-			self.theExpandedRow = this.row.id;
-			this.row.addClassName('expanded');
-			this.row.next().addClassName('expanded');
-			this.row.next().next().addClassName('expanded');
-		}
-		else
-			self.theExpandedRow = false;
+		var sameRow = ExpandedRow == this;
+		
+		if (ExpandedRow !== false)
+			ExpandedRow.close();
+		if (!sameRow)
+			this.open();
+	},
+	close: function()
+	{
+		[this.row, this.row.next(),this.row.next().next()].invoke('removeClassName', 'expanded');
+		ExpandedRow = false;
+	},
+	open: function()
+	{
+		[this.row, this.row.next(),this.row.next().next()].invoke('addClassName', 'expanded');
+		ExpandedRow = this;
 	}
 });
 

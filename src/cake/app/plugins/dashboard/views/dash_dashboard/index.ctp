@@ -12,7 +12,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 	echo $this->Bl->h1Dry(__d('dashboard','Page title - Dashboard', true));
 	
 	echo $this->Bl->sboxContainer(array('class' => 'dash_toolbox'),array('size' => array('M' => 12, 'g' => -1)));
-	
+		
 		echo $this->Bl->sdiv(array('id' => 'dash_additem'));
 			echo $this->Bl->sdiv(array('class' => 'dash_itemlist'));
 				echo $this->Bl->h3Dry(__d('dashboard','Add new content:', true));
@@ -221,7 +221,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 	echo $this->Bl->eboxContainer();
 	
 	$ajax_request = $ajax->remoteFunction(array(
-		'url' => array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'after_delete'),
+		'url' => array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'render_table'),
 		'update' => 'dashboard_table',
 		'loading' => "$('dashboard_table').setLoading();",
 		'complete' => "$('dashboard_table').unsetLoading();"
@@ -302,6 +302,11 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 	echo $ajax->div('dashboard_table');
 		echo $this->element('filter');
 	echo $ajax->divEnd('dashboard_table');
+	echo $this->Bl->anchor(
+		array(),
+		array('url' => '/files/palestras.csv'),
+		'Planilha de pedidos de palestras no Unicamp Itinerante'
+	);
 echo $this->Bl->ebox();
 
 ?>

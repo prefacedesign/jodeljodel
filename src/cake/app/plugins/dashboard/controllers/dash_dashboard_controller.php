@@ -18,7 +18,10 @@ class DashDashboardController extends DashboardAppController
 		'DashDashboardItem' => array(
 			'limit' => LIMIT,
 			'contain' => false,
-			'order' => 'modified DESC'
+			'order' => 'modified DESC',
+			'conditions' => array(
+				'NOT' => array('name' => null)
+			)
 		)
 	);
 	var $components = array('Session', 'RequestHandler');
@@ -31,70 +34,31 @@ class DashDashboardController extends DashboardAppController
  * 
  * @todo Enable to select the page where a certain id is located.
  */
-	function index($page = 1)
+	function index()
 	{
 		$this->set('itemSettings', Configure::read('Dashboard.itemSettings'));
 		$this->set('statusOptions', Configure::read('Dashboard.statusOptions'));
 		
-		if (isset($this->params['named']['page']))
-			$page = $this->params['named']['page'];
-
-		$this->Session->write('Dashboard.page', $page);
-		
-		$conditions = array();
-		if (isset($this->params['named']['page']))
-		{
-			$c = $this->Session->read('Dashboard.searchOptions');
-			if ($c)
-				$conditions = $c;
-		}
-		else
-			$this->Session->write('Dashboard.searchOptions', array());
-		
-		$status = $this->Session->read('Dashboard.status');
-		$filter = $this->Session->read('Dashboard.filter');
-		
-		if ($status != 'all' && !empty($status))
-			$conditions['status'] = $status;
-		if ($filter != 'all' && !empty($filter))
-			$conditions['type'] = $filter;
-		
-		$this->paginate = array(
-			'DashDashboardItem' => array(
-				'limit' => LIMIT,
-				'page' => $page,
-				'contain' => false,
-				'order' => 'modified DESC',
-				'conditions' => $conditions
-			)
-		);
-
-		$this->set('filter', $filter);
-		$this->set('filter_status', $status);
-		$this->data = $this->paginate('DashDashboardItem');
-		$this->helpers['Paginator'] = array('ajax' => 'Ajax');
-		
-		if($this->RequestHandler->isAjax()) {
-            $this->render('filter');            
-        } 
+		$this->filter_and_search();
 	}
 	
-	function after_delete()
+	function render_table()
 	{
-		$this->index($this->Session->read('page'));
+		$this->filter_and_search();
+		$this->render('filter');
 	}
 	
 	function filter($module)
 	{
 		$this->Session->write('Dashboard.filter', $module);
-		$this->filter_and_search();
+		$this->render_table();
 	}
 	
 	
 	function filter_published_draft($status)
 	{
 		$this->Session->write('Dashboard.status', $status);
-		$this->filter_and_search();
+		$this->render_table();
 	}
 	
 	
@@ -109,7 +73,7 @@ class DashDashboardController extends DashboardAppController
 		}
 		
 		$this->Session->write('Dashboard.searchOptions', $conditions);
-		$this->filter_and_search();
+		$this->render_table();
 	}
 	
 	
@@ -120,10 +84,11 @@ class DashDashboardController extends DashboardAppController
 		if ($c)
 			$conditions = $c;
 		
-		$status = $this->Session->read('Dashboard.status');
+		$filter_status = $this->Session->read('Dashboard.status');
 		$filter = $this->Session->read('Dashboard.filter');
-		if ($status != 'all' && !empty($status))
-			$conditions['status'] = $status;
+		
+		if ($filter_status != 'all' && !empty($filter_status))
+			$conditions['status'] = $filter_status;
 		if ($filter != 'all' && !empty($filter))
 			$conditions['type'] = $filter;
 			
@@ -138,10 +103,8 @@ class DashDashboardController extends DashboardAppController
 		$this->data = $this->paginate('DashDashboardItem');
 		$this->helpers['Paginator'] = array('ajax' => 'Ajax');
 		$this->set('itemSettings', Configure::read('Dashboard.itemSettings'));
-		$this->layout = 'ajax';
-		$this->render('filter', 'ajax');
+		$this->set(compact('filter', 'filter_status'));
 	}
-
 
 /**
  * 
@@ -152,12 +115,16 @@ class DashDashboardController extends DashboardAppController
 	{
 		$this->view = 'JjUtils.Json';
 	
-		if ($this->DashDashboardItem->deleteItem($id))
-			$this->set('jsonVars', array('success' => true));
-		else
-			$this->set('jsonVars', array('success' => false));
+		$success = $this->DashDashboardItem->deleteItem($id);
+		$this->set('jsonVars', compact('success'));
 	}
-	
+
+/**
+ * method description
+ * 
+ * @access public
+ * @return type description
+ */
 	function synch($force_update = false)
 	{
 		$this->autoRender = false;

@@ -62,7 +62,7 @@
 				$curSettings = $itemSettings['default'];
 		
 			$arrow = $this->Bl->sdiv(array('class' => 'arrow'))
-					 . $this->Bl->anchor(array(), array('url' => ''), ' ')
+					 . $this->Bl->anchor(array(), array('url' => array('action' => 'index')), ' ')
 					 . $this->Bl->ediv();
 					 
 			$languageStr = '';
@@ -201,13 +201,17 @@
 				 }
 				 elseif ($curSettings['edit_version'] == 'corktile')
 				 {
-					 $links .= $this->Bl->anchor(array('class' => 'link_button'), array('url' => array(
-									'plugin' => 'corktile',
-									'controller' => 'cork_corktiles',
-									'action' => 'edit',
-									$item['DashDashboardItem']['dashable_id']
+					 $links .= $this->Bl->anchor(
+					 	array('class' => 'link_button'), 
+					 	array('url' => 
+					 		array(
+								'plugin' => 'corktile',
+								'controller' => 'cork_corktiles',
+								'action' => 'edit',
+								$item['DashDashboardItem']['dashable_id']
 							 )
-						 ), __d('dashboard','Dashboard: Edit', true)
+						 ), 
+						 __d('dashboard','Dashboard: Edit', true)
 					 );
 				}
 			}
@@ -218,9 +222,7 @@
 				array(array(),array('escape' => false, 'colspan' => 3),$links)
 			));
 			
-			echo $this->Html->scriptBlock("
-				new TableRow('row_$row_number');
-			");
+			echo $this->Html->scriptBlock("new TableRow('row_$row_number');");
 		}
 		
 	echo $this->Bl->esmartTable();
