@@ -45,11 +45,16 @@ class JjConsoleShell extends Shell {
 				break;
 				
 				default:
+					$this->out();
 					$issuedCommands[] = $command;
 					if (substr($command,0,1) == ":")
 					{
 						$command = substr($command,1);
-						eval ('print_r(' . $command . ');');
+						$result = eval ('return (' . $command . ');');
+						if (is_array($result))
+							print_r($result);
+						else
+							var_dump($result);
 					}
 					else
 					{
