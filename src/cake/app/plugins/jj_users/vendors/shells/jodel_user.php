@@ -145,7 +145,7 @@ class JodelUserShell extends Shell
 		$this->UserUser->create(array('UserUser' => $data));
 
 		if ($this->UserUser->save())
-			$this->out('New user added!' . PHP_EOL);
+			$this->out('New user \''.$data['name'].'\' added!' . PHP_EOL);
 		else
 			$this->error('Adding new user failed.' . PHP_EOL);
 	}
@@ -297,7 +297,7 @@ class JodelUserShell extends Shell
 		
 		$this->UserGroup->create(array('UserGroup' => $group));
 		if ($this->UserGroup->save())
-			$this->out('Group successfully created');
+			$this->out('Group \''.$group['alias'].'\' successfully created');
 		else
 			$this->error('It was not possible to create the new group.');
 	}
