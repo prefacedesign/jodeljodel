@@ -84,19 +84,13 @@ class JjMediaController extends JjMediaAppController {
  * @param mixed $two If $one parameter is a boolean, this param receive the 
  *                   packed parameters
  */
-	function index($one = null, $two = null)
+	function index($download = null, $data = null, $name = null)
 	{
 		$this->view = 'Media';
-		$cache = true; $modified = null; $download = false;
+		$cache = true; $modified = null;
 		
-		$packed_parameters = $one;
-		if (!is_null($two))
-		{
-			$packed_parameters = $two;
-			$download = (boolean) $one;
-		}
-		
-		$unpacked = SecureParams::unpack($packed_parameters);
+		$unpacked = SecureParams::unpack($data);
+
 		if (count($unpacked) != 2)
 			$this->cakeError('error404');
 		
@@ -113,6 +107,9 @@ class JjMediaController extends JjMediaAppController {
 			$this->{$model_name}->contain();
 			$file_data = $this->{$model_name}->findById($sfil_stored_files_id);
 			
+			if (empty($name))
+				$this->redirect(array($download, $data, $file_data[$this->{$model_name}->alias]['original_filename']));
+
 			if(!empty($file_data))
 			{
 				if (!empty($version) && !empty($file_data[$model_alias]['transformation']))

@@ -59,7 +59,7 @@
  * Connecting '/dl' for forcing download of upload files and '/vw' for just viewing
  */
 	Router::connect('/dl/*', array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'index', '1'));
-	Router::connect('/vw/*', array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'index'));
+	Router::connect('/vw/*', array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'index', '0'));
 
 /**
  * Here, we are connecting '/css/sheet-layout_scheme.css' to a action called
