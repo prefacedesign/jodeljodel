@@ -143,13 +143,14 @@ class JjMediaController extends JjMediaAppController {
 				$assetFilemTime = filemtime($path . $id);
 				$eTag = Security::hash( $assetFilemTime . filesize($path . $id) );
 				
+				header('Content-Disposition: filename="' . $name . '.' . $extension . '";');
 				if (env('HTTP_IF_NONE_MATCH') && env('HTTP_IF_NONE_MATCH') == $eTag)
 				{
 					header("HTTP/1.1 304 Not Modified");
-					die;
+					$this->_stop();
 				}
 				header("Etag: " . $eTag);
-				
+
 				$this->set(compact('id', 'name', 'mimeType', 'download', 'path', 'extension', 'cache', 'modified'));
 			}
 		}
