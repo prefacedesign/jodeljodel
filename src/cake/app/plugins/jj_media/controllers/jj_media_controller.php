@@ -107,7 +107,10 @@ class JjMediaController extends JjMediaAppController {
 			$this->{$model_name}->contain();
 			$file_data = $this->{$model_name}->findById($sfil_stored_files_id);
 			
-			if (empty($name))
+			if (empty($file_data))
+				$this->cakeError('error404');
+
+			if (empty($name) && !$download)
 				$this->redirect(array($download, $data, $file_data[$this->{$model_name}->alias]['original_filename']));
 
 			if(!empty($file_data))
@@ -135,12 +138,11 @@ class JjMediaController extends JjMediaAppController {
 				
 				$path .= $file_data[$model_alias]['dirname'] . DS;
 				
-				
+				header('Content-Disposition: filename="' . $name . '.' . $extension . '";');
+
 				// Check (via header) if the client already have an copy on cache
 				$assetFilemTime = filemtime($path . $id);
 				$eTag = Security::hash( $assetFilemTime . filesize($path . $id) );
-				
-				header('Content-Disposition: filename="' . $name . '.' . $extension . '";');
 				if (env('HTTP_IF_NONE_MATCH') && env('HTTP_IF_NONE_MATCH') == $eTag)
 				{
 					header("HTTP/1.1 304 Not Modified");
