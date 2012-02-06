@@ -65,7 +65,7 @@ class BackContentsController extends BackstageAppController
     function edit($moduleName = false, $id = null)
     {
 		if (empty($moduleName) || !($config = Configure::read('jj.modules.'.$moduleName)))
-			$this->cakeError('error404');
+			$this->jodelError('Jodel module ' .$moduleName. ' not found.');
 		
 		list($contentPlugin, $modelName) = pluginSplit($config['model']);
 		
@@ -77,13 +77,20 @@ class BackContentsController extends BackstageAppController
             if (method_exists($Model, 'createEmpty'))
 			{
                 if ($Model->createEmpty())
+				{
+                	if (empty($Model->id))
+                		$this->jodelError('Your createEmpty method returned true, but the model doesn`t have an ID. Are you sure that createEmpty really created an database row?');
+
 					$this->redirect(array($moduleName, $Model->id));
+				}
 				elseif (Configure::read())
-					trigger_error('Could not create an empty record.') and die;
+				{
+					$this->jodelError('Could not create an empty record.');
+				}
 			}
 			else
 			{
-				trigger_error('Method '.$modelName.'::createEmpty() on '.$contentPlugin.' not found!') and die;
+				$this->jodelError('Method '.$modelName.'::createEmpty() on '.$contentPlugin.' not found!');
 			}
         }
         else
@@ -193,7 +200,9 @@ class BackContentsController extends BackstageAppController
 		{	
 			$options = $this->backstageModel->getBackstageFindOptions($this->data['dash_search']);
 			if (!is_array($options))
-				trigger_error('BackContentsController::search - options must be an array') and die;
+			{
+				$this->jodelError('BackContentsController::search - options must be an array');
+			}
 			else
 			{
 				$this->Session->write('Backstage.searchOptions', $options);
@@ -307,27 +316,26 @@ class BackContentsController extends BackstageAppController
 	}
 	
 	
-	/** 
-	 * To create a empty translation register. This action calls
-	 * a createEmptytranlation method of TradTradutore Behavior
-	 *
-	 * @access public
-	 * @param string $moduleName Module name, configured on bootstrap.php
-	 * @param string $id The id of the row to set a new status to.
-	 */
-	
+/** 
+ * To create a empty translation register. This action calls
+ * a createEmptytranlation method of TradTradutore Behavior
+ *
+ * @access public
+ * @param string $moduleName Module name, configured on bootstrap.php
+ * @param string $id The id of the row to set a new status to.
+ */
 	function create_empty_translation($moduleName, $id = null)
 	{
 		if (empty($moduleName) || !($config = Configure::read('jj.modules.'.$moduleName)))
-			$this->cakeError('error404');
+			$this->jodelError('Jodel module ' .$moduleName. ' not found.');
 		
-		list($contentPlugin, $modelName) = pluginSplit($config['model']);
-		
-        $fullModelName = $config['model'];
-        $Model =& ClassRegistry::init($fullModelName);
-		
-		if ($Model->createEmptyTranslation($id, $this->params['language']))
-			$this->redirect('edit/'.$moduleName.'/'.$id);
-		
+		$Model =& ClassRegistry::init($config['model']);
+		if (!$Model->createEmptyTranslation($id, $this->params['language']))
+		{
+			list($contentPlugin,$modelName) = pluginSplit($config['model']);
+			$this->jodelError('Method '.$modelName.'::createEmptyTranslation() (TradTradutoreBehavior method) could not create an empty translation!');
+		}
+			
+		$this->redirect(array('action' => 'edit', $moduleName, $id));
 	}
 }

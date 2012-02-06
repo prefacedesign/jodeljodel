@@ -33,45 +33,175 @@
  * (this is the summary of one registry). This function is used to insert or update a registry into the dashboard_items table
  *  
  */
-	class DashDashboardableBehavior extends ModelBehavior
-	{		
-	
-		function afterSave(&$Model, $created)
+class DashDashboardableBehavior extends ModelBehavior
+{		
+/**
+ * Callback method that creates one DashDashboard entry for every attached Model item.
+ * 
+ * @access public
+ * @return void
+ */
+	function afterSave(&$Model, $created)
+	{
+		if($Model->Behaviors->attached('TempTemp'))
 		{
-			$continue = false;
-			if(isset($Model->Behaviors->TempTemp))
-			{
-				if ($Model->data[$Model->name][$Model->Behaviors->TempTemp->__settings[$Model->name]['field']] == 0)
-					$continue = true;
-			}
-			else
-				$continue = true;
-			
-			if ($continue === true)
-			{
-				$dashInfo = $Model->getDashboardInfo($Model->id);	//gets the summarized description of this registry
-				$dashInfo['id'] = $Model->alias.'@'.$Model->id;	    //creates an ID for the dashboard that is the concatenation of Model and Id inside model
-				
-				$dashboard = ClassRegistry::init(array('class' => 'Dashboard.DashDashboardItem'));		//creates a refference to the dashboard model
-				$dashboard->saveDashItem($dashInfo);		//saves the summary into the dashboard
-			}
+			$tempField = $Model->Behaviors->TempTemp->__settings[$Model->alias]['field'];
+			if ($Model->data[$Model->alias][$tempField] != 0)
+				return;
 		}
 		
-		function afterDelete(&$Model)
-		{
-			$dashId = $Model->alias.'@'.$Model->id;		//recovers the ID for the dashboard that is the concatenation of Model and Id inside model
-			$dashboard = ClassRegistry::init(array('class' => 'Dashboard.DashDashboardItem'));		//creates a refference to the dashboard model
-			$dashboard->removeDashItem($dashId);	//removes the item from the dashboard
-		}
-		
-		
-		//@todo This function is completely wrong. It should only update those that need updating, and
-		// 		it should also find entries in the Dashboard that don't have equivalent entries in the table,
-		//		and vice-versa. I.E. the synch should be done based upon the variable names.
-		function synchronizeWithDashboard(&$Model)
-		{
-			$Model->saveAll($Model->find('all')); //saves all the registries (so they are inserted or updated in the dashboards since aftersave is called)
-		}
+		$this->updateItem($Model, $Model->id);
 	}
 
-?>
+/**
+ * Callback method used to remove the Dashboard item from table
+ * 
+ * @access public
+ * @param Model $Model
+ * @return void 
+ */
+	function afterDelete(&$Model)
+	{
+		$this->getDashboard()->removeDashItem($Model->alias.'@'.$Model->id);
+	}
+	
+/**
+ * Method used to synch every DashDashboard entries 
+ * 
+ * @access public
+ * @param Model $Model
+ * @param boolean $force_update If true, will update all dashboard entries, else, will update only those witch modified field differ
+ * @return void
+ */
+	function synchronizeWithDashboard(&$Model, $force_update = false)
+	{
+		$DashDashboard =& $this->getDashboard();
+		$dbo = $DashDashboard->getDatasource();
+		$dbo->begin($Model);
+		
+		// Remove childless entries
+		$DashDashboard->bindModel(array('belongsTo' => array(
+			$Model->alias => array(
+				'className' => $Model->name,
+				'foreignKey' => 'dashable_id',
+			)
+		)));
+		$childless = $DashDashboard->find('all', array(
+			'contain' => array($Model->alias),
+			'conditions' => array(
+				'DashDashboardItem.dashable_model' => $Model->alias,
+				$Model->alias . '.' . $Model->primaryKey => null
+			)
+		));
+		$DashDashboard->deleteAll(
+			array('DashDashboardItem.id' => Set::extract('/DashDashboardItem/id', $childless))
+		);
+
+		$to_update = array();
+		
+		// Select out-dated entries
+		if ($force_update)
+		{
+			$outdated = $DashDashboard->find('all', array(
+				'conditions' => array('DashDashboardItem.dashable_model' => $Model->alias)
+			));
+		}
+		else
+		{
+			$DashDashboard->bindModel(array('belongsTo' => array(
+				$Model->alias => array(
+					'className' => $Model->name,
+					'foreignKey' => 'dashable_id',
+				)
+			)));
+			
+			// Here was needed to create an kludge for translatable models that holds modified date on translate model.
+			$modifiedModel = $Model->alias;
+			if ($Model->Behaviors->attached('TradTradutore'))
+			{
+				$translatable = $Model->Behaviors->TradTradutore->__settings[$Model->alias]['translatableFields']['translatable'];
+				if (in_array("{$Model->alias}.modified", $translatable))
+				{
+					$className = $Model->Behaviors->TradTradutore->settings[$Model->alias]['className'];
+					$foreignKey = $Model->Behaviors->TradTradutore->settings[$Model->alias]['foreignKey'];
+					$DashDashboard->bindModel(array('belongsTo' => array(
+						$className => array(
+							'foreignKey' => false,
+							'conditions' => array(
+								"$className.language" => Configure::read('Tradutore.mainLanguage'),
+								"DashDashboardItem.dashable_id = $className.$foreignKey"
+							)
+						)
+					)));
+					$modifiedModel = $className;
+				}
+			}
+			
+			$outdated = $DashDashboard->find('all', array(
+				'language' => Configure::read('Tradutore.mainLanguage'),
+				'conditions' => array(
+					'DashDashboardItem.dashable_model' => $Model->alias,
+					"DashDashboardItem.modified <> $modifiedModel.modified"
+				)
+			));
+		}
+		if (!empty($outdated))
+			$to_update = Set::extract('/DashDashboardItem/dashable_id', $outdated);
+		
+		
+		// And last but not least, items without dashboard entries
+		$Model->bindModel(array('hasOne' => array(
+			'DashDashboardItem' => array(
+				'className' => 'Dashboard.DashDashboardItem',
+				'foreignKey' => 'dashable_id',
+				'conditions' => array('DashDashboardItem.dashable_model' => $Model->alias)
+			)
+		)));
+		$doesnt_have = $Model->find('all', array(
+			'contain' => array('DashDashboardItem'),
+			'conditions' => array('DashDashboardItem.id' => null)
+		));
+		$to_update += Set::extract("/{$Model->alias}/{$Model->primaryKey}", $doesnt_have);
+
+		$to_update = array_unique($to_update);
+		foreach ($to_update as $id)
+			$this->updateItem($Model, $id);
+
+		$dbo->commit($Model);
+		
+		return compact('childless', 'outdated', 'doesnt_have');
+	}
+
+/**
+ * Method used to update one specific dashboard item.
+ * 
+ * @access protected
+ * @return void
+ */
+	protected function updateItem(&$Model, $item_id)
+	{
+		//gets the summarized description of this registry
+		$dashInfo['DashDashboardItem'] = $Model->getDashboardInfo($item_id);
+		
+		//creates an ID for the dashboard that is the concatenation of Model and Id inside model
+		$dashInfo['DashDashboardItem']['id'] = $Model->alias.'@'.$item_id;
+		
+		//saves the summary into the dashboard
+		$this->getDashboard()->saveDashItem($dashInfo);
+	}
+
+/**
+ * This method creates an instance of DashDashboard model and caches it with an static var.
+ * 
+ * @access protected
+ * @return Model The object of DashDashboard model
+ */
+	protected function getDashboard()
+	{
+		static $DashDashboard = false;
+		if ($DashDashboard === false)
+			$DashDashboard =& ClassRegistry::init(array('class' => 'Dashboard.DashDashboardItem'));
+		return $DashDashboard;
+	}
+}
+

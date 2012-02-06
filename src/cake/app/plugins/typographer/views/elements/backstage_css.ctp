@@ -1102,7 +1102,7 @@
 	
 	$this->Decorator->rule(
 		'.buro_form input[disabled]', array(
-			'border' => 'none',
+			'border-color' => $palette['bg']->write(),
 			'background-color' => $palette['read_only_bg']->write(),
 	));
 	

@@ -100,8 +100,13 @@ class CsItem extends ContentStreamAppModel
 		$this->data[$this->alias]['type'] = $contentType;
 		
 		// Start the transaction
+		$transaction = false;
 		$dbo = $this->getDataSource();
-		$dbo->begin($this);
+		if (!$dbo->_transactionStarted)
+		{
+			$transaction = true;
+			$dbo->begin($this);
+		}
 		
 		// Loads the config
 		App::import('Lib', 'ContentStream.CsConfigurator');
@@ -117,12 +122,14 @@ class CsItem extends ContentStreamAppModel
 			$this->create($this->data);
 			if ($this->save())
 			{
-				$dbo->commit($this);
+				if ($transaction)
+					$dbo->commit($this);
 				return true;
 			}
 		}
 		
-		$dbo->rollback($this);
+		if ($transaction)
+			$dbo->rollback($this);
 		return false;
 	}
 

@@ -132,9 +132,7 @@ class AppController extends Controller {
 	{
 		if (!empty($this->SectSectionHandler->thisSection['acos']))
 		{
-			$user = $this->Auth->user();
-			list($userPlugin, $userModel) = pluginSplit($this->Auth->userModel);
-			$user = $user[$userModel];
+			$username = $this->Auth->user('username');
 			
 			foreach ($this->SectSectionHandler->thisSection['acos'] as $aco => $actions)
 			{
@@ -145,13 +143,19 @@ class AppController extends Controller {
 				}
 				
 				foreach($actions as $action)
-				{
-					if (!$this->Acl->check($user['username'], $aco, $action))
+					if (!$this->Acl->check($username, $aco, $action))
 						return false;
-				}
 			}
 		}
 		return true;
 	}
 	
+	protected function jodelError($message)
+	{
+		if (Configure::read() == 0)
+			$this->cakeError('error500');
+		
+		$this->header("HTTP/1.0 500 Internal Server Error");
+		$this->cakeError('error', array('code' => 500, 'name' => __('Jodel Jodel internal error', true), 'message' => $message));
+	}
 }

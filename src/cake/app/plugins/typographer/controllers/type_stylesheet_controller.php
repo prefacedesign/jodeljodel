@@ -4,6 +4,8 @@ class TypeStylesheetController extends TypographerAppController
 {
 	var $name = 'TypeStylesheet';
 	var $layout = 'css';
+	var $components = array('Typographer.TypeLayoutSchemePicker');
+	var $uses = array();
 	var $helpers = array(
 		'Typographer.TypeDecorator' => array(
 			'name' => 'Decorator',
@@ -19,7 +21,14 @@ class TypeStylesheetController extends TypographerAppController
 		)
 	);
 
-	function  beforeFilter() {
+/**
+ * AuthComponent access hardcoded
+ * 
+ * @access public
+ * @return void
+ */
+	function  beforeFilter()
+	{
 		parent::beforeFilter();
 
 		if (isset($this->Auth))
@@ -27,10 +36,23 @@ class TypeStylesheetController extends TypographerAppController
 			$this->Auth->allow('*');
 		}
 	}
-	
-	var $components = array('Typographer.TypeLayoutSchemePicker');
-	var $uses = array();
-	
+
+/**
+ * Avoid the parent beforeRender triggering.
+ * 
+ * @access public
+ * @return void
+ */
+	function beforeRender()
+	{
+	}
+
+/**
+ * Action for rendering CSS
+ * 
+ * @access public
+ * @return view
+ */	
 	function style($layout_scheme = 'standard', $type = 'main')
 	{
 		$this->TypeLayoutSchemePicker->pick($layout_scheme);
@@ -43,7 +65,7 @@ class TypeStylesheetController extends TypographerAppController
 		
 		if (env('HTTP_IF_NONE_MATCH') && env('HTTP_IF_NONE_MATCH') == $eTag)
 		{
-			header("HTTP/1.1 304 Not Modified");
+			$this->header("HTTP/1.1 304 Not Modified");
 			$this->_stop();
 		}
 		
@@ -52,10 +74,5 @@ class TypeStylesheetController extends TypographerAppController
 		header('Content-type: text/css');
 		
 		$this->set(compact('element'));		
-	}
-	
-	function beforeRender()
-	{
-		//faz nada - isto é para evitar o beforeRender do pai, que não tem nada a ver por aqui.
 	}
 }

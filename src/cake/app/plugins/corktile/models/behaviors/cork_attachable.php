@@ -34,22 +34,24 @@ class CorkAttachableBehavior extends ModelBehavior {
 /**
  * Called after each save operation.
  *
- * @todo Use primaryKey instead of id.
- *
+ * @access public
+ * @param Model $Model
+ * @param boolean $created
  * @return boolean True.
  */
 	function afterSave(&$Model, $created) 
 	{
 		if (!$created)
 		{
-			if (isset($Model->data[$Model->alias]['modified']))
+			$data = $Model->read();
+			if (isset($data[$Model->alias]['modified']))
 			{
 				$CorkCorktile =& ClassRegistry::init('Corktile.CorkCorktile');
 				
 				if ($CorkCorktile->updateModifiedDate(
-							$Model->data[$Model->alias]['id'], 
+							$data[$Model->alias][$Model->primaryKey], 
 							$this->settings[$Model->alias]['type'], 
-							$Model->data[$Model->alias]['modified']
+							$data[$Model->alias]['modified']
 						) === false
 					)
 					return false;

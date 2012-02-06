@@ -2207,12 +2207,15 @@ class BuroBurocrataHelper extends XmlTagHelper
 			trigger_error('BuroBurocrataHelper::_uploadParams() - Changing the upload model is not supported yet! Using the default.');
 			$gen_options['model'] = 'JjMedia.SfilStoredFile';
 		}
-	
+		
 		if (isset($file_input_options['error']))
 		{
 			$gen_options['error'] = $file_input_options['error'];
 			unset($file_input_options['error']);
 		}
+		
+		$gen_options['error']['size'] = __d('burocrata', 'The uploaded file is too large. (filesize > upload_max_filesize or filesize > Model::$validate definitions)', true);
+		$gen_options['error']['post_max_size'] = __d('burocrata', 'The uploaded file is too large. (filesize > post_max_size)', true);
 		
 		return compact('gen_options', 'file_input_options');
 	}
@@ -2345,6 +2348,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		if (empty($gen_options['remove_file_text']))
 			$gen_options['remove_file_text'] = __d('burocrata','Burocrata::inputImage - Remove  image', true);
 		
+		$gen_options['error'] += array('validImage' => __d('burocrata','The uploaded file is not a valid image file.',true));
+		
 		$value = $this->Form->value($file_input_options['fieldName']);
 		
 		$ids = array('act', 'prv', 'img', 'chg', 'rmv');
@@ -2362,16 +2367,16 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$gen_options['callbacks']['onRestart']['js'] .= "$('{$act_id}').hide(); $('{$prv_id}').hide();";
 		
 		$script = '';
-		if (empty($value))
-			$script .= "$('{$act_id}').hide(); $('{$prv_id}').hide();";
 		$script .= "$('{$chg_id}').observe('click', function(ev){ev.stop(); BuroCR.get('{$gen_options['baseID']}').again();});";
 		$script .= "$('{$rmv_id}').observe('click', function(ev){ev.stop(); BuroCR.get('{$gen_options['baseID']}').again(true);});";
+		
+		$gen_options['model'] = 'JjMedia.SfilImageFile';
 		
 		$out .= $this->BuroOfficeBoy->addHtmlEmbScript($script);
 		$out .= $this->_upload($gen_options, $file_input_options);
 		
 		// Div for previews
-		$out .= $this->Bl->sdiv(array('id' => $prv_id));
+		$out .= $this->Bl->sdiv(array('id' => $prv_id, 'style' => empty($value) ? 'display:none;' : ''));
 			$url = '';
 			if (!empty($value))
 				$url = $this->Bl->imageURL($value, $gen_options['version']);
@@ -2379,7 +2384,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out .= $this->Bl->ediv();
 		
 		// Div for actions ID must be `'act' . $gen_options['baseID']`
-		$out .= $this->Bl->sdiv(array('id' => $act_id));
+		$out .= $this->Bl->sdiv(array('id' => $act_id, 'style' => empty($value) ? 'display:none;' : ''));
 			$change_link = $this->Bl->a(array('href' => '#', 'id' => $chg_id), array(), $gen_options['change_file_text']);
 			$remove_link = $this->Bl->a(array('href' => '#', 'id' => $rmv_id), array(), $gen_options['remove_file_text']);
 			$out .= $this->Bl->pDry($change_link . __d('burocrata','Burocrata::inputImage - or ', true) . $remove_link);

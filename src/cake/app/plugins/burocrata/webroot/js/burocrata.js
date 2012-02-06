@@ -828,7 +828,7 @@ var BuroBelongsTo = Class.create(BuroCallbackable, {
 		return this;
 	},
 	showAutocomplete: function() {this.autocomplete.input.show(); return this;},
-	hideAutocomplete: function() {this.autocomplete.input.hide(); return this;},
+	hideAutocomplete: function() {this.autocomplete.input.hide(); return this;}
 });
 
 
@@ -1810,6 +1810,10 @@ var BuroUpload = Class.create(BuroCallbackable, {
 			this.form.insert(new Element('input', {name: pair.key, value: pair.value}));
 		}.bind(this));
 		
+		this.div_hidden.up().removeClassName('error');
+		this.div_hidden.up().select('.error-message').invoke('remove');
+		this.div_hidden.setLoading();
+		
 		this.form.insert(this.tmp_input).submit();
 		this._submitted = true;
 		this.uploading = true;
@@ -1820,6 +1824,7 @@ var BuroUpload = Class.create(BuroCallbackable, {
 			return;
 		
 		this.uploading = false;
+		this.div_hidden.unsetLoading();
 		
 		var d, i = this.iframe;
 		if (i.contentDocument) {
@@ -1873,9 +1878,18 @@ var BuroUpload = Class.create(BuroCallbackable, {
 		this.hidden_input.value = '';
 		if (this.responseJSON.validationErrors && this.errors)
 		{
-			this.responseJSON.error = this.errors[$H(this.responseJSON.validationErrors).values()[0]];
+			if (this.errors[$H(this.responseJSON.validationErrors).values()[0]])
+				this.responseJSON.error = this.errors[$H(this.responseJSON.validationErrors).values()[0]];
+			else
+				this.responseJSON.error = $H(this.responseJSON.validationErrors).values()[0];
 		}
+		
+		this.div_hidden.up().addClassName('error');
+		this.div_hidden.up().insert(new Element('div', {className:'error-message'}).update(this.responseJSON.error));
+		
 		this.trigger('onReject', this.tmp_input, this.responseJSON, this.responseJSON.saved);
+
+		this.again();
 	}
 });
 
@@ -2060,6 +2074,9 @@ var BuroColorPicker = Class.create(BuroCallbackable, {
 			return;
 		if (!CP)
 			CP = new ColorPicker();
+		
+		BuroCR.set(id_base, this);
+		
 		this.input.observe('focus', this.openCP.bind(this));
 		this.input.observe('keydown', this.keydown.bind(this));
 		this.input.observe('keyup', this.keyup.bind(this));
@@ -2077,6 +2094,7 @@ var BuroColorPicker = Class.create(BuroCallbackable, {
 	closeCP: function()
 	{
 		CP.close();
+		return this;
 	},
 	change: function(color)
 	{
@@ -2099,6 +2117,13 @@ var BuroColorPicker = Class.create(BuroCallbackable, {
 		this.sample.setStyle({
 			backgroundColor: this.input.value
 		});
+		return this;
+	},
+	setColor: function(color)
+	{
+		this.input.value = color;
+		this.updateSample().closeCP();
+		return this;
 	}
 });
 

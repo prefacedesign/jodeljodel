@@ -151,7 +151,7 @@ class CsContentStreamHolderBehavior extends ModelBehavior
 			}
 			
 			foreach ($this->settings[$Model->alias]['streams'] as $fk => $stream)
-				if ($Model->{$stream['assocName']}->createEmpty($stream['type']))
+				if (empty($Model->data[$Model->alias][$fk]) && $Model->{$stream['assocName']}->createEmpty($stream['type']))
 					$Model->data[$Model->alias][$fk] = $Model->{$stream['assocName']}->id;
 		}
 		

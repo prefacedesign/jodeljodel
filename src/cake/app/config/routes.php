@@ -41,9 +41,13 @@
 /**
  * Connecting the two responsible plugins for admin actions
  */
+	Router::connect('/admin/:language', array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'index'), array('language' => '[a-t]{3}'));
+	Router::connect('/admin/:language/cork/:action/*', array('plugin' => 'corktile', 'controller' => 'cork_corktiles'), array('language' => '[a-t]{3}'));
+	Router::connect('/admin/:language/:action/*', array('plugin' => 'backstage', 'controller' => 'back_contents'), array('language' => '[a-t]{3}'));
 	Router::connect('/admin', array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'index'));
 	Router::connect('/admin/cork/:action/*', array('plugin' => 'corktile', 'controller' => 'cork_corktiles'));
 	Router::connect('/admin/:action/*', array('plugin' => 'backstage', 'controller' => 'back_contents'));
+
 
 /**
  * Connecting the `login` and `logout` action of user plugin
@@ -55,7 +59,7 @@
  * Connecting '/dl' for forcing download of upload files and '/vw' for just viewing
  */
 	Router::connect('/dl/*', array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'index', '1'));
-	Router::connect('/vw/*', array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'index'));
+	Router::connect('/vw/*', array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'index', '0'));
 
 /**
  * Here, we are connecting '/css/sheet-layout_scheme.css' to a action called
@@ -71,7 +75,16 @@
 		array('plugin' => 'typographer', 'controller' => 'type_stylesheet'),
 		array(
 			'pass' => array('scheme'),
-			'scheme' => '[a-z0-9_]+'
+			'scheme' => '[a-z0-9_]+',
+		)
+	);
+
+	Router::connect('/css/:scheme-:type-:action.css/*',
+		array('plugin' => 'typographer', 'controller' => 'type_stylesheet'),
+		array(
+			'pass' => array('scheme', 'type'),
+			'scheme' => '[a-z0-9_]+',
+			'type' => '[a-z0-9_]+'
 		)
 	);
 	

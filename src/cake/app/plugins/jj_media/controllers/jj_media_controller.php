@@ -64,6 +64,7 @@ class JjMediaController extends JjMediaAppController {
 		parent::beforeFilter();
 		if ($this->Auth)
 			$this->Auth->allow('*');
+		$this->TypeLayoutSchemePicker->pick('backstage');
 	}
 
 /**
@@ -83,19 +84,13 @@ class JjMediaController extends JjMediaAppController {
  * @param mixed $two If $one parameter is a boolean, this param receive the 
  *                   packed parameters
  */
-	function index($one = null, $two = null)
+	function index($download = null, $data = null, $name = null)
 	{
 		$this->view = 'Media';
-		$cache = true; $modified = null; $download = false;
+		$cache = true; $modified = null;
 		
-		$packed_parameters = $one;
-		if (!is_null($two))
-		{
-			$packed_parameters = $two;
-			$download = (boolean) $one;
-		}
-		
-		$unpacked = SecureParams::unpack($packed_parameters);
+		$unpacked = SecureParams::unpack($data);
+
 		if (count($unpacked) != 2)
 			$this->cakeError('error404');
 		
@@ -112,6 +107,12 @@ class JjMediaController extends JjMediaAppController {
 			$this->{$model_name}->contain();
 			$file_data = $this->{$model_name}->findById($sfil_stored_files_id);
 			
+			if (empty($file_data))
+				$this->cakeError('error404');
+
+			if (empty($name) && !$download)
+				$this->redirect(array($download, $data, $file_data[$this->{$model_name}->alias]['original_filename']));
+
 			if(!empty($file_data))
 			{
 				if (!empty($version) && !empty($file_data[$model_alias]['transformation']))
@@ -137,18 +138,18 @@ class JjMediaController extends JjMediaAppController {
 				
 				$path .= $file_data[$model_alias]['dirname'] . DS;
 				
-				
+				header('Content-Disposition: filename="' . $name . '.' . $extension . '";');
+
 				// Check (via header) if the client already have an copy on cache
 				$assetFilemTime = filemtime($path . $id);
 				$eTag = Security::hash( $assetFilemTime . filesize($path . $id) );
-				
 				if (env('HTTP_IF_NONE_MATCH') && env('HTTP_IF_NONE_MATCH') == $eTag)
 				{
 					header("HTTP/1.1 304 Not Modified");
-					die;
+					$this->_stop();
 				}
 				header("Etag: " . $eTag);
-				
+
 				$this->set(compact('id', 'name', 'mimeType', 'download', 'path', 'extension', 'cache', 'modified'));
 			}
 		}
@@ -158,7 +159,7 @@ class JjMediaController extends JjMediaAppController {
 /**
  * upload action
  *
- * Used to receive upload from a form, containing the data from upload on data[MODEL][file].
+ * Receive upload form POST, containing the data from upload on data[MODEL][file].
  * It already saves the file, generating the filtered copies, and renders a JSON, directly on view.
  * 
  * @access public
@@ -171,39 +172,39 @@ class JjMediaController extends JjMediaAppController {
 		$validationErrors = array();
 		
 		$version = $fieldName = $model_name = null;
-		
 		if (!empty($this->buroData['data']))
 			list($version, $fieldName, $model_name) = SecureParams::unpack($this->buroData['data']);
 		
 		if (is_null($version) || is_null($fieldName) || is_null($model_name))
-			$error = Configure::read()>0?'JjMediaController::upload - Configuration data not available.':true;
-		
-		if ($error === false && !$this->loadModel($model_name))
+		{
+			$validationErrors['file'] = 'post_max_size';
+		}
+		elseif (!$this->loadModel($model_name))
+		{
 			$error = Configure::read()>0?'JjMediaController::upload - Model '.$model_name.' not found.':true;
-		
-		if ($error === false)
+		}
+		else
 		{
 			list($plugin, $model_name) = pluginSplit($model_name);
-			$model_alias = $this->{$model_name}->alias;
+			$Model =& $this->{$model_name};
+			$model_alias = $Model->alias;
 			
 			if (!empty($this->data))
 			{
-				$scope = $this->{$model_name}->findTheScope($fieldName);
+				$scope = $Model->findTheScope($fieldName);
 				if ($scope)
-					$this->{$model_name}->setScope($scope);
-				$saved = $this->{$model_name}->save($this->data);
+					$Model->setScope($scope);
 				
-				if ($saved == false)
-					$validationErrors = $this->validateErrors($this->{$model_name});
-				else
-					$saved = $this->{$model_name}->id;
-				
-				if ($saved)
+				$Model->set($this->data);
+				$validationErrors = $this->validateErrors($Model);
+
+				if (empty($validationErrors) && $Model->save(null, false))
 				{
+					$saved = $Model->id;
 					$filename = $this->data[$model_alias]['file']['name'];
 					list($fieldModelName, $fieldName) = pluginSplit($fieldName);
 					if (!empty($this->data[$fieldModelName][$fieldName]))
-						$this->{$model_name}->delete($this->data[$fieldModelName][$fieldName]);
+						$Model->delete($this->data[$fieldModelName][$fieldName]);
 				}
 			}
 		}
