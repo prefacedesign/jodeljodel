@@ -450,9 +450,9 @@ class StatusBehavior extends ModelBehavior
 				{
 					foreach($this->__settings[$Model->Behaviors->TradTradutore->settings[$Model->alias]['className']] as $index => $translatableStatus)
 					{
-						$active = Configure::read('StatusBehavior.options.'.$index);
-						$condition = array($Model->Behaviors->TradTradutore->settings[$Model->alias]['className'].'.'.$active['field'] => $currentActiveStatus[$active['field']]['active']);
-						$conditions = array($Model->hasOne[$Model->Behaviors->TradTradutore->settings[$Model->alias]['className']]['conditions'], $condition);
+						$active = Configure::read('StatusBehavior.options.'.$index);	
+						$conditions[] = $Model->hasOne[$Model->Behaviors->TradTradutore->settings[$Model->alias]['className']]['conditions'];
+						$conditions[$Model->Behaviors->TradTradutore->settings[$Model->alias]['className'].'.'.$active['field']] = $currentActiveStatus[$active['field']]['active'];
 						$Model->hasOne[$Model->Behaviors->TradTradutore->settings[$Model->alias]['className']]['conditions'] = $conditions;
 						$Model->hasOne[$Model->Behaviors->TradTradutore->settings[$Model->alias]['className']]['type'] = 'LEFT';
 					}
