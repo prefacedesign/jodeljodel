@@ -102,6 +102,21 @@ class BuroOfficeBoyHelper extends AppHelper
  */
 	protected $scripts = array();
 
+	public function beforeRender()
+	{
+		if (!$this->Ajax->isAjax())
+		{
+			$this->Html->script('prototype', array('inline' => false));
+			$this->Html->script('effects', array('inline' => false));
+			$this->Html->script('controls', array('inline' => false));
+			$this->Html->script('slider', array('inline' => false));
+			$this->Html->script('/dashboard/js/core.js', array('inline' => false));
+			$this->Html->script('/burocrata/js/burocrata.js', array('inline' => false));
+			$this->Html->script('/burocrata/js/color-picker.js', array('inline' => false));
+			$this->Html->script('/popup/js/popup.js', array('inline' => false));
+		}
+	}
+
 /**
  * afterRender callback used for print automagically all created scripts on HTML <head>
  * when it is not a Ajax request
@@ -113,15 +128,6 @@ class BuroOfficeBoyHelper extends AppHelper
 		$View = ClassRegistry::getObject('view');
 		if ($View && !$this->Ajax->isAjax())
 		{
-			
-			$this->Html->script('prototype', array('inline' => false));
-			$this->Html->script('effects', array('inline' => false));
-			$this->Html->script('controls', array('inline' => false));
-			$this->Html->script('slider', array('inline' => false));
-			$this->Html->script('/dashboard/js/core.js', array('inline' => false));
-			$this->Html->script('/burocrata/js/burocrata.js', array('inline' => false));
-			$this->Html->script('/burocrata/js/color-picker.js', array('inline' => false));
-			$this->Html->script('/popup/js/popup.js', array('inline' => false));
 			$this->Html->scriptBlock('var debug = ' . Configure::read() . ';', array('inline' => false));
 
 			$script = implode("\n", $this->scripts);

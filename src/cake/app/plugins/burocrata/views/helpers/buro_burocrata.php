@@ -2028,7 +2028,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		if(method_exists($Model, 'findFilteredOptions'))
 			$options_to_list = $Model->{'findFilteredOptions'}($options['filter_options']);
 		else
-			$options_to_list = $model->find('list', array('conditions' => $conditions));
+			$options_to_list = $Model->find('list', array('conditions' => $conditions));
 		
 		return $this->input(
 			array('class' => 'combo'), 

@@ -80,7 +80,7 @@ class BuroBurocrataComponent extends Object
  */
 	public function beforeRender(&$controller)
 	{
-		if($controller->layout_scheme)
+		if (!empty($controller->layout_scheme))
 			$controller->TypeLayoutSchemePicker->pick($controller->layout_scheme);
 	}
 
