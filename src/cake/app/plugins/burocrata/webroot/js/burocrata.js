@@ -242,15 +242,12 @@ var BuroForm = Class.create(BuroCallbackable, {
 				
 				onSuccess: function (response, json) {
 					this.json = json;
-					switch (this.json.saved)
+					if (!Object.isUndefined(this.json.saved))
 					{
-						case true:
+						if (json.saved)
 							this.trigger('onSave', this.form, response, this.json, this.json.saved);
-							break;
-
-						case false:
+						else
 							this.trigger('onReject', this.form, response, this.json, this.json.saved);
-							break;
 					}
 					this.trigger('onSuccess', this.form, response, this.json);
 				}.bind(this)
