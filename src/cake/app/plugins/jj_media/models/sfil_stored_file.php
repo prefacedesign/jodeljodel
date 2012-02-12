@@ -9,6 +9,8 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
+App::import('Core', 'File');
+
 /**
  * Media enhanced plugin
  *
@@ -55,6 +57,8 @@ class SfilStoredFile extends JjMediaAppModel {
 
 	var $name = 'SfilStoredFile';
 
+	var $useDbConfig = 'assets';
+	
 	var $validate = array(
 		'checksum' => array(
 			'notempty' => array(
