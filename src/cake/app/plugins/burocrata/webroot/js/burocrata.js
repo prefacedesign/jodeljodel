@@ -177,7 +177,9 @@ var BuroForm = Class.create(BuroCallbackable, {
 			this.addParameters(arguments[4]);
 		}
 		
-		this.lastSavedData = this.serialize();
+		(function(){
+			this.lastSavedData = this.serialize();
+		}).bind(this).defer(1);
 	},
 	addParameters: function(params, pattern)
 	{
