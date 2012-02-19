@@ -41,7 +41,7 @@ class UserUser extends JjUsersAppModel {
 		if (empty($this->data)) 
 			$data = $this->read();
 		
-		return array('UserGroup' => array('id' => $data['UserUser']['user_group_id']));
+		return array('UserGroup' => array('id' => $data[$this->alias]['user_group_id']));
 	}
 }
 ?>
