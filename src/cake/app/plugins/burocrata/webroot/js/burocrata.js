@@ -219,10 +219,13 @@ var BuroForm = Class.create(BuroCallbackable, {
 	},
 	submits: function(ev)
 	{
+		if (this.ajax && !this.ajax.done())
+			return;
+		
 		this.updateLastSavedData();
 		
 		this.trigger('onStart', this.form);
-		new BuroAjax(
+		this.ajax = new BuroAjax(
 			this.url,
 			{parameters: this.lastSavedData},
 			{
@@ -513,7 +516,11 @@ var BuroAjax = Class.create(BuroCallbackable, {
 		
 		this.trigger('onStart');
 		
-		new Ajax.Request(this.url, this.ajax_options);
+		this.request = new Ajax.Request(this.url, this.ajax_options);
+	},
+	done: function()
+	{
+		return this.request._complete;
 	},
 	requestOnComplete: function (re) {
 		this.trigger('onComplete', re);
