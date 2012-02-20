@@ -454,7 +454,7 @@ class StatusBehavior extends ModelBehavior
 						$conditions[] = $Model->hasOne[$Model->Behaviors->TradTradutore->settings[$Model->alias]['className']]['conditions'];
 						$conditions[$Model->Behaviors->TradTradutore->settings[$Model->alias]['className'].'.'.$active['field']] = $currentActiveStatus[$active['field']]['active'];
 						$Model->hasOne[$Model->Behaviors->TradTradutore->settings[$Model->alias]['className']]['conditions'] = $conditions;
-						$Model->hasOne[$Model->Behaviors->TradTradutore->settings[$Model->alias]['className']]['type'] = 'LEFT';
+						$Model->hasOne[$Model->Behaviors->TradTradutore->settings[$Model->alias]['className']]['type'] = 'RIGHT';
 					}
 				}
 			}	
