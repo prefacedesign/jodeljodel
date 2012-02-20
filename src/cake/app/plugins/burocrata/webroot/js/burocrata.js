@@ -105,7 +105,7 @@ var BuroCallbackable = Class.create({
 			args.push(arguments[i]);
 		
 		try {
-			this.callbacks.get(name).each(this.applyFunction.bind(this, args));
+			this.callbacks.get(name).invoke('apply', this, args);
 		} catch(e)
 		{
 			if (debug && console && console.error)
@@ -113,10 +113,6 @@ var BuroCallbackable = Class.create({
 		}
 		
 		return true;
-	},
-	applyFunction: function(args, _function)
-	{
-		_function.apply(this, args);
 	}
 });
 
