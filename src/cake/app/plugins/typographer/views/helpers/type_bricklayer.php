@@ -145,14 +145,12 @@ class TypeBricklayerHelper extends AppHelper
 				return false;
 		}
 		
-		$t = '';
-		$t .= $this->stag($wrapTag, $htmlAttr);
-			foreach($sections as $sectionName => $sectionSettings)
-				if ($sectionSettings['active'] && $sectionSettings['display'])
-					$t .= $this->menuItem(array(), compact('sectionName','sectionSettings','writeCaptions','specificClasses','menuLevel','hiddenCaptions'));
-		$t .= $this->etag($wrapTag);
+		$items = array();
+		foreach($sections as $sectionName => $sectionSettings)
+			if ($sectionSettings['active'] && $sectionSettings['display'])
+				$items[] = $this->menuItem(array(), compact('sectionName','sectionSettings','writeCaptions','specificClasses','menuLevel','hiddenCaptions'));
 		
-		return $t;
+		return $this->tag($wrapTag, $htmlAttr, array('close_me' => false), implode("\n", $items));
 	}
 	
 /**
