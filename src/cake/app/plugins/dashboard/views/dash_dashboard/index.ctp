@@ -302,11 +302,6 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 	echo $ajax->div('dashboard_table');
 		echo $this->element('filter');
 	echo $ajax->divEnd('dashboard_table');
-	echo $this->Bl->anchor(
-		array(),
-		array('url' => '/files/palestras.csv'),
-		'Planilha de pedidos de palestras no Unicamp Itinerante'
-	);
 echo $this->Bl->ebox();
 
 ?>
