@@ -25,7 +25,7 @@ class TypeBricklayerHelper extends AppHelper
  * @see TypeBricklayerHelper::etag
  */
 	static $tags_without_space_after = array(
-		'i', 'em', 'span', 'a'
+		'i', 'em', 'span', 'a', 'strong'
 	);
 
 /**
