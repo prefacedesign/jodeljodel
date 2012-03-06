@@ -13,7 +13,8 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 		);
 							
 		echo $this->Bl->sdiv(array('id' => 'dash_link_to_additem', 'class' => 'expanded'));
-			echo $this->Bl->anchor(array(), compact('url'), __d('backstage','Add new '.$moduleName,true));
+			if (in_array('create', $backstageSettings['actions']))
+				echo $this->Bl->anchor(array(), compact('url'), __d('backstage','Add new '.$moduleName,true));
 		echo $this->Bl->ediv();
 		echo $bl->floatBreak();
 	echo $this->Bl->eboxContainer();
@@ -47,59 +48,62 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 				
 				
 				echo $this->Bl->sdiv(array('class' => 'filters'));
-					echo $this->Bl->h4Dry(__d('dashboard','Status', true));
-					$linkFilters = array();
-					$modulesCount = count($backstageSettings['statusOptions']);
-					foreach($backstageSettings['statusOptions'] as $module)
+					if (isset($backstageSettings['statusOptions']))
 					{
-						$filterLink = $ajax->link(__d('dashboard', 'Dashboard status: ' . $module, true), 			
+						echo $this->Bl->h4Dry(__d('dashboard','Status', true));
+						$linkFilters = array();
+						$modulesCount = count($backstageSettings['statusOptions']);
+						foreach($backstageSettings['statusOptions'] as $module)
+						{
+							$filterLink = $ajax->link(__d('dashboard', 'Dashboard status: ' . $module, true), 			
+								array(
+									'plugin' => 'backstage',
+									'controller' => 'back_contents',
+									'action' => 'filter_published_draft',
+									$module,
+									$moduleName
+								), 
+								array(
+									'before' => "$('backstage_custom_table').setLoading();",
+									'complete' => "$('backstage_custom_table').unsetLoading();",
+									'id' => 'filter_published_draft_'.$module,
+									'update' => 'backstage_custom_table'
+								)
+							);
+							$linkFilters[] = $filterLink;
+							if ($filter_status == $module)
+								$selected = true;
+							else
+								$selected = false;
+							$this->Html->scriptBlock($this->Js->domReady("
+								new StatusFilter('filter_published_draft_$module', '$selected');
+							"), array('inline' => false));
+						}
+						$filterLink = $ajax->link(__d('dashboard','Show All', true), 			
 							array(
 								'plugin' => 'backstage',
 								'controller' => 'back_contents',
 								'action' => 'filter_published_draft',
-								$module,
+								'all',
 								$moduleName
 							), 
 							array(
 								'before' => "$('backstage_custom_table').setLoading();",
 								'complete' => "$('backstage_custom_table').unsetLoading();",
-								'id' => 'filter_published_draft_'.$module,
+								'id' => 'filter_published_draft_all',
 								'update' => 'backstage_custom_table'
 							)
 						);
 						$linkFilters[] = $filterLink;
-						if ($filter_status == $module)
+						if ($filter_status == 'all' || empty($filter_status))
 							$selected = true;
 						else
 							$selected = false;
 						$this->Html->scriptBlock($this->Js->domReady("
-							new StatusFilter('filter_published_draft_$module', '$selected');
+							new StatusFilter('filter_published_draft_all', '$selected');
 						"), array('inline' => false));
+						echo $this->Text->toList($linkFilters, ' ', ' ');
 					}
-					$filterLink = $ajax->link(__d('dashboard','Show All', true), 			
-						array(
-							'plugin' => 'backstage',
-							'controller' => 'back_contents',
-							'action' => 'filter_published_draft',
-							'all',
-							$moduleName
-						), 
-						array(
-							'before' => "$('backstage_custom_table').setLoading();",
-							'complete' => "$('backstage_custom_table').unsetLoading();",
-							'id' => 'filter_published_draft_all',
-							'update' => 'backstage_custom_table'
-						)
-					);
-					$linkFilters[] = $filterLink;
-					if ($filter_status == 'all' || empty($filter_status))
-						$selected = true;
-					else
-						$selected = false;
-					$this->Html->scriptBlock($this->Js->domReady("
-						new StatusFilter('filter_published_draft_all', '$selected');
-					"), array('inline' => false));
-					echo $this->Text->toList($linkFilters, ' ', ' ');
 				echo $this->Bl->ediv();
 				echo $bl->floatBreak();
 				echo $this->Bl->floatBreak();

@@ -38,7 +38,10 @@
 			$size = array('M' => $col['size'], 'u' => (-$cell_padding_right - $cell_padding_left - $border_width));
 		
 		$this->Bl->TypeStyleFactory->widthGenerateClasses(array(0 => $size));
-		$smartTableColumns[] = array(array('class' => $this->Bl->TypeStyleFactory->widthClassNames($size)), array(), $this->Paginator->sort($col['label'],$col['field']));
+		if (isset($col['field']))
+			$smartTableColumns[] = array(array('class' => $this->Bl->TypeStyleFactory->widthClassNames($size)), array(), $this->Paginator->sort($col['label'],$col['field']));
+		else	
+			$smartTableColumns[] = array(array('class' => $this->Bl->TypeStyleFactory->widthClassNames($size)), array(), $col['label']);
 		$count++;
 	}
 	
