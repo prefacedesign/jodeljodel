@@ -62,15 +62,18 @@ class CorkHelper extends AppHelper
 			return null;
 		}
 		
-		$htmlAttributes = $this->Bl->_mergeAttributes(array('class' => array('cork')), $htmlAttributes);
+		$cacheKey = "cork_{$options['key']}";
+		$cache = Cache::read($cacheKey);
+		if ($cache)
+			return $cache;
 		
-		//@todo: Probably cache should emcompass all this: till the bottom todo
+		$htmlAttributes = $this->Bl->_mergeAttributes(array('class' => array('cork')), $htmlAttributes);
 
 		$View =& ClassRegistry::getObject('view');
 		if (!isset($options['location']))
 			$options['location'] = $View->getVar('ourLocation');
 		
-		$CorkCorktile = & ClassRegistry::init('Corktile.CorkCorktile');
+		$CorkCorktile =& ClassRegistry::init('Corktile.CorkCorktile');
 		$corkData = $CorkCorktile->getData($options); //This one handles all data logic.
 		$options['options'] += $corkData[$CorkCorktile->alias]['options'];
 		
@@ -92,9 +95,8 @@ class CorkHelper extends AppHelper
 			)
 		);
 		$t .= $this->Bl->ediv();
-		
-		//@todo: Probably cache should emcompass all this. till here
 
+		$cache = Cache::write($cacheKey, $t);
 		return $t;
 	}
 }

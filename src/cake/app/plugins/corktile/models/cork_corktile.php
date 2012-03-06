@@ -172,7 +172,17 @@ class CorkCorktile extends CorktileAppModel
 	{
 		return $this->findById($id);
 	}
-
+/**
+ * After save callback: to delete cache, after database changes
+ * 
+ * @access public
+ * @return void
+ */
+	function afterSave()
+	{
+		if (isset($this->data[$this->alias]['id']) && ($key = $this->data[$this->alias]['id']))
+			Cache::delete("cork_{$key}");
+	}
 /**
  * The data that must be saved into the dashboard. Part of the Dashboard contract.
  * 

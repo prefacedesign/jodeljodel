@@ -105,7 +105,7 @@ var BuroCallbackable = Class.create({
 			args.push(arguments[i]);
 		
 		try {
-			this.callbacks.get(name).each(this.applyFunction.bind(this, args));
+			this.callbacks.get(name).invoke('apply', this, args);
 		} catch(e)
 		{
 			if (debug && console && console.error)
@@ -113,10 +113,6 @@ var BuroCallbackable = Class.create({
 		}
 		
 		return true;
-	},
-	applyFunction: function(args, _function)
-	{
-		_function.apply(this, args);
 	}
 });
 
@@ -223,10 +219,13 @@ var BuroForm = Class.create(BuroCallbackable, {
 	},
 	submits: function(ev)
 	{
+		if (this.ajax && !this.ajax.done())
+			return;
+		
 		this.updateLastSavedData();
 		
 		this.trigger('onStart', this.form);
-		new BuroAjax(
+		this.ajax = new BuroAjax(
 			this.url,
 			{parameters: this.lastSavedData},
 			{
@@ -517,7 +516,11 @@ var BuroAjax = Class.create(BuroCallbackable, {
 		
 		this.trigger('onStart');
 		
-		new Ajax.Request(this.url, this.ajax_options);
+		this.request = new Ajax.Request(this.url, this.ajax_options);
+	},
+	done: function()
+	{
+		return this.request._complete;
 	},
 	requestOnComplete: function (re) {
 		this.trigger('onComplete', re);

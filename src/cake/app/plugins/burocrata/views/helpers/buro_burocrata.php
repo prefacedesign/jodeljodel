@@ -829,6 +829,30 @@ class BuroBurocrataHelper extends XmlTagHelper
 		return $out;
 	}
 
+/**
+ * This input works exactly like the Form::select() with 'multiple' => 'checkbox' (which does not work with Burocrata)
+ * 
+ * @access public
+ * @param array $options An array that defines all configurable parameters
+ * @return string The HTML well formated
+ * @return 
+ */
+	function inputMultipleCheckbox($options)
+	{
+		$checkboxmultiple = $this->Html->tags['checkboxmultiple'];
+		$baseID = $this->_readFormAttribute('baseID');
+		$this->Html->tags['checkboxmultiple'] = '<input type="checkbox" name="%s[]"%s buro:form="'.$baseID.'" />';
+		
+		$options += array('options' => array());
+		$options['type'] = 'select';
+		$options['options']['multiple'] = 'checkbox';
+		
+		$input = $this->input(null, $options);
+		
+		$this->Html->tags['checkboxmultiple'] = $checkboxmultiple;
+		
+		return $input;
+	}
 
 /**
  * Render an autocomplete input.
