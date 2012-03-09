@@ -114,6 +114,7 @@ class BackContentsController extends BackstageAppController
 			$defaultOptions['conditions']['publishing_status'] = $this->status;
 		
 		$this->backstageModel = ClassRegistry::init(array('class' =>  $this->modules[$moduleName]['model']));
+		
 		if (isset($this->backstageSettings[$moduleName]['limitSize']))
 			$defaultOptions['limit'] = $this->backstageSettings[$moduleName]['limitSize'];
 		else
@@ -124,13 +125,39 @@ class BackContentsController extends BackstageAppController
 			$defaultOptions['conditions'][$this->backstageModel->alias.'.'.$this->backstageModel->Behaviors->TempTemp->__settings[$this->backstageModel->alias]['field']] = 0;
 		
 		$options = array();
+		
+		//get first options to filter backstage table, if paramsFoward is set in config
+		if (isset($this->backstageSettings[$moduleName]['paramsFoward']))
+		{
+			if (method_exists($this->backstageModel, 'getBackstageListData'))
+				$options = $this->backstageModel->getBackstageListData($this->__getParams($moduleName));
+			else
+				trigger_error('BackContentsController::index - getBackstageListData action not exists in '.$this->backstageModel->alias.'. This action should exists to paramsFoward parameter in backstage config') and die;
+		}	
+		//get header data to backstage table, if customHeader is set in config
+		if (isset($this->backstageSettings[$moduleName]['customHeader']))
+		{
+			if (method_exists($this->backstageModel, 'getBackstageHeaderData'))
+				$headerData = $this->backstageModel->getBackstageHeaderData($this->__getParams($moduleName));
+			$this->set('headerData', $headerData);
+		}
+		
 		$op = $this->Session->read('Backstage.searchOptions');
 		if ($op)
-			$options = $op;
+			$options = array_merge_recursive($options, $op);
 		
 		$finalOptions = array_merge_recursive($options, $defaultOptions);
-		
+
 		return $finalOptions;
+	}
+	
+	private function __getParams($moduleName)
+	{
+		$params = array();
+		foreach($this->backstageSettings[$moduleName]['paramsFoward'] as $key => $param)
+			$params[$param] = $this->params['pass'][$key+1];
+		
+		return $params;
 	}
 	
 	
@@ -198,7 +225,7 @@ class BackContentsController extends BackstageAppController
 		
 		if (method_exists($this->backstageModel, 'getBackstageFindOptions'))
 		{	
-			$options = $this->backstageModel->getBackstageFindOptions($this->data['dash_search']);
+			$options = $this->backstageModel->getBackstageFindOptions($this->data);
 			if (!is_array($options))
 			{
 				$this->jodelError('BackContentsController::search - options must be an array');

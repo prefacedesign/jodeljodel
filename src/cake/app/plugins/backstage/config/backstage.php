@@ -12,6 +12,9 @@ Configure::write('Backstage.itemSettings',array(
 				'modified' => array('label' => __d('backstage', 'ModuleName header: modified', true), 'field' => 'modified', 'size' => '2'),
 			),
 			'customRow' => false,
+			'customHeader' => true,
+			'customSearch' => true,
+			'paramsFoward' => array(0 => 'some_field_to_filter'),
 			'contain' => array('ModelModel'),
 		),
 	)
