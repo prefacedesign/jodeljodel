@@ -49,6 +49,9 @@ var SearchInput = Class.create({
 		this.input.observe('blur', this.showLabel.bind(this));
 		
 		this.label = this.input.previous('label');
+		
+		if (!this.input.value.blank())
+			this.hideLabel();
 	},
 	hideLabel: function(ev)
 	{
