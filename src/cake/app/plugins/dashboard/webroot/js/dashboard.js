@@ -109,7 +109,7 @@ var FilterLink = Class.create({
 	{
 		this.link = $(link_id).observe('click',this.linkClick.bind(this)).observe('mouseout', this.linkMouseOut.bind(this)).observe('mouseover', this.linkMouseOver.bind(this));
 		this.filter_all = filter_all ? $(filter_all) : this.link;
-		if (this.selected = selected)
+		if (selected)
 			this.select();
 	},
 	linkMouseOver: function(ev)
@@ -123,7 +123,7 @@ var FilterLink = Class.create({
 	},
 	linkClick: function(ev)
 	{
-		if (this.selected)
+		if (this.link.hasClassName('selected'))
 			this.unselect();
 		else
 			this.select();
@@ -132,7 +132,6 @@ var FilterLink = Class.create({
 	{
 		this.link.up().select('a').invoke('removeClassName', 'selected');
 		this.link.addClassName('selected').removeClassName('force_unselected');
-		this.selected = true;
 	},
 	unselect: function()
 	{
@@ -141,6 +140,5 @@ var FilterLink = Class.create({
 			this.link.addClassName('force_unselected');
 		if (this.filter_all);
 			this.filter_all.addClassName('selected').removeClassName('force_unselected');
-		this.selected = false;
 	}
 });
