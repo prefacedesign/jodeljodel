@@ -104,9 +104,15 @@ class BuroBurocrataHelper extends XmlTagHelper
 			
 			$this->_nestedInput = false;
 			
+			if (
+				isset($this->Form->fieldset[$this->modelAlias]) &&
+				in_array($options['fieldName'], $this->Form->fieldset[$this->modelAlias]['validates'])
+			) {
+				$options['required'] = true;
+			}
+			
 			if ($options['type'] != 'hidden' && $container !== false)
 				$out .= $this->sinputcontainer(is_array($container) ? $container : array(), $options);
-			
 			
 			$method = Inflector::variable('input'.$options['type']);
 			if (method_exists($this, $method) && empty($options['forceForm']))
@@ -762,6 +768,9 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$htmlAttributes = am($defaults, $htmlAttributes);
 		$htmlAttributes = $this->addClass($htmlAttributes, self::$defaultContainerClass);
 		$htmlAttributes = $this->addClass($htmlAttributes, 'input_' . Inflector::underscore($options['type']));
+
+		if ($options['required'])
+			$htmlAttributes = $this->addClass($htmlAttributes, 'required');
 		
 		if (isset($options['fieldName']))
 		{
