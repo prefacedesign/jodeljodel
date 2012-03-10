@@ -61,7 +61,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 			'content' => __d('backstage', 'Your data cannot be saved - TEXT.', true)
 		)
 	);
-	if(!isset($location))
+	if($ourLocation[1] == 'dashboard')
 		$dashboard_url = $this->Html->url(array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'index'));
 	else
 		$dashboard_url = $this->Html->url(array('plugin' => 'backstage', 'controller' => 'back_contents', 'action' => 'index', $moduleName));

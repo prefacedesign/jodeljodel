@@ -3,110 +3,127 @@ $this->Html->script('prototype', array('inline' => false));
 $this->Html->script('/backstage/js/core.js', array('inline' => false));
 $this->Html->script('/backstage/js/backstage.js', array('inline' => false));
 
-echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
+echo $this->Bl->sbox(array('class' => $moduleName),array('size' => array('M' => 12, 'g' => -1)));
 	echo $this->Bl->h1Dry(__d('backstage','Page title header - BackstageCustom module '.$moduleName, true));
-	echo $this->Bl->sboxContainer(array('class' => 'dash_toolbox'),array('size' => array('M' => 12, 'g' => -1)));	
-		$url = array(
-			'language' => $mainLanguage,
-			'plugin' => 'backstage','controller' => 'back_contents',
-			'action' => 'edit', $moduleName
-		);
-							
-		echo $this->Bl->sdiv(array('id' => 'dash_link_to_additem', 'class' => 'expanded'));
-			echo $this->Bl->anchor(array(), compact('url'), __d('backstage','Add new '.$moduleName,true));
-		echo $this->Bl->ediv();
-		echo $bl->floatBreak();
-	echo $this->Bl->eboxContainer();
+	if (in_array('create', $backstageSettings['actions']))
+	{
+		echo $this->Bl->sboxContainer(array('class' => 'dash_toolbox'),array('size' => array('M' => 12, 'g' => -1)));	
+			$url = array(
+				'language' => $mainLanguage,
+				'plugin' => 'backstage','controller' => 'back_contents',
+				'action' => 'edit', $moduleName
+			);
+			
+			echo $this->Bl->sdiv(array('id' => 'dash_link_to_additem', 'class' => 'expanded'));
+				echo $this->Bl->anchor(array(), compact('url'), __d('backstage','Add new '.$moduleName,true));
+			echo $this->Bl->ediv();
+			echo $bl->floatBreak();
+		echo $this->Bl->eboxContainer();
+	}
 	
-	echo $this->Bl->sboxContainer(array(),array('size' => array('M' => 12, 'g' => -1)));
-		echo $this->Bl->sdiv(array('class' => array('dash_filter')));
-			echo $this->Bl->sdiv(array('id' => 'dash_filter_list'));
-				echo $this->Bl->sdiv(array('class' => 'filters'));
-				
-					// SEARCH INPUT		
-					$this->Html->scriptBlock($this->Js->domReady("
-						new SearchInput('dash_search');
-					"), array('inline' => false));
+	$modules = Configure::read('jj.modules');
+	
+	if (isset($backstageSettings['customHeader']) && $backstageSettings['customHeader'] == true)
+		echo $this->Jodel->insertModule($modules[$moduleName]['model'], array('view', 'backstage_custom', 'header'));
+		
+	if (!isset($backstageSettings['customSearch']) || $backstageSettings['customSearch'] == false)
+	{
+		echo $this->Bl->sboxContainer(array(),array('size' => array('M' => 12, 'g' => -1)));
+			echo $this->Bl->sdiv(array('class' => array('dash_filter')));
+				echo $this->Bl->sdiv(array('id' => 'dash_filter_list'));
+					echo $this->Bl->sdiv(array('class' => 'filters'));
 					
-					echo $this->Bl->h4Dry(__d('dashboard','Text', true));
+						// SEARCH INPUT		
+						$this->Html->scriptBlock($this->Js->domReady("
+							new SearchInput('dash_search');
+						"), array('inline' => false));
+						
+						echo $this->Bl->h4Dry(__d('dashboard','Text', true));
+						
+						echo $this->Bl->sdiv(array('class' => array('dash_search')));
+							echo $form->input('dash_search', array('label' => __d('dashboard','or search for a content previously inserted',true)));
+							echo $ajax->observeField('dash_search', 
+								array(
+									'url' => array('action' => 'search', $moduleName),
+									'frequency' => 2.5,
+									'loading' => "$('backstage_custom_table').setLoading(); ",
+									'complete' => "$('backstage_custom_table').unsetLoading();",
+									'update' => 'backstage_custom_table'
+								) 
+							); 
+						echo $this->Bl->ediv();
+						echo $bl->floatBreak();
+					echo $this->Bl->ediv();
 					
-					echo $this->Bl->sdiv(array('class' => array('dash_search')));
-						echo $form->input('dash_search', array('label' => __d('dashboard','or search for a content previously inserted',true)));
-						echo $ajax->observeField('dash_search', 
-							array(
-								'url' => array('action' => 'search', $moduleName),
-								'frequency' => 2.5,
-								'loading' => "$('backstage_custom_table').setLoading(); ",
-								'complete' => "$('backstage_custom_table').unsetLoading();",
-								'update' => 'backstage_custom_table'
-							) 
-						); 
+					
+					echo $this->Bl->sdiv(array('class' => 'filters'));
+						if (isset($backstageSettings['statusOptions']))
+						{
+							echo $this->Bl->h4Dry(__d('dashboard','Status', true));
+							$linkFilters = array();
+							$modulesCount = count($backstageSettings['statusOptions']);
+							foreach($backstageSettings['statusOptions'] as $module)
+							{
+								$filterLink = $ajax->link(__d('dashboard', 'Dashboard status: ' . $module, true), 			
+									array(
+										'plugin' => 'backstage',
+										'controller' => 'back_contents',
+										'action' => 'filter_published_draft',
+										$module,
+										$moduleName
+									), 
+									array(
+										'before' => "$('backstage_custom_table').setLoading();",
+										'complete' => "$('backstage_custom_table').unsetLoading();",
+										'id' => 'filter_published_draft_'.$module,
+										'update' => 'backstage_custom_table'
+									)
+								);
+								$linkFilters[] = $filterLink;
+								if ($filter_status == $module)
+									$selected = true;
+								else
+									$selected = false;
+								$this->Html->scriptBlock($this->Js->domReady("
+									new StatusFilter('filter_published_draft_$module', '$selected');
+								"), array('inline' => false));
+							}
+							$filterLink = $ajax->link(__d('dashboard','Show All', true), 			
+								array(
+									'plugin' => 'backstage',
+									'controller' => 'back_contents',
+									'action' => 'filter_published_draft',
+									'all',
+									$moduleName
+								), 
+								array(
+									'before' => "$('backstage_custom_table').setLoading();",
+									'complete' => "$('backstage_custom_table').unsetLoading();",
+									'id' => 'filter_published_draft_all',
+									'update' => 'backstage_custom_table'
+								)
+							);
+							$linkFilters[] = $filterLink;
+							if ($filter_status == 'all' || empty($filter_status))
+								$selected = true;
+							else
+								$selected = false;
+							$this->Html->scriptBlock($this->Js->domReady("
+								new StatusFilter('filter_published_draft_all', '$selected');
+							"), array('inline' => false));
+							echo $this->Text->toList($linkFilters, ' ', ' ');
+						}
 					echo $this->Bl->ediv();
 					echo $bl->floatBreak();
+					echo $this->Bl->floatBreak();
 				echo $this->Bl->ediv();
-				
-				
-				echo $this->Bl->sdiv(array('class' => 'filters'));
-					echo $this->Bl->h4Dry(__d('dashboard','Status', true));
-					$linkFilters = array();
-					$modulesCount = count($backstageSettings['statusOptions']);
-					foreach($backstageSettings['statusOptions'] as $module)
-					{
-						$filterLink = $ajax->link(__d('dashboard', 'Dashboard status: ' . $module, true), 			
-							array(
-								'plugin' => 'backstage',
-								'controller' => 'back_contents',
-								'action' => 'filter_published_draft',
-								$module,
-								$moduleName
-							), 
-							array(
-								'before' => "$('backstage_custom_table').setLoading();",
-								'complete' => "$('backstage_custom_table').unsetLoading();",
-								'id' => 'filter_published_draft_'.$module,
-								'update' => 'backstage_custom_table'
-							)
-						);
-						$linkFilters[] = $filterLink;
-						if ($filter_status == $module)
-							$selected = true;
-						else
-							$selected = false;
-						$this->Html->scriptBlock($this->Js->domReady("
-							new StatusFilter('filter_published_draft_$module', '$selected');
-						"), array('inline' => false));
-					}
-					$filterLink = $ajax->link(__d('dashboard','Show All', true), 			
-						array(
-							'plugin' => 'backstage',
-							'controller' => 'back_contents',
-							'action' => 'filter_published_draft',
-							'all',
-							$moduleName
-						), 
-						array(
-							'before' => "$('backstage_custom_table').setLoading();",
-							'complete' => "$('backstage_custom_table').unsetLoading();",
-							'id' => 'filter_published_draft_all',
-							'update' => 'backstage_custom_table'
-						)
-					);
-					$linkFilters[] = $filterLink;
-					if ($filter_status == 'all' || empty($filter_status))
-						$selected = true;
-					else
-						$selected = false;
-					$this->Html->scriptBlock($this->Js->domReady("
-						new StatusFilter('filter_published_draft_all', '$selected');
-					"), array('inline' => false));
-					echo $this->Text->toList($linkFilters, ' ', ' ');
-				echo $this->Bl->ediv();
-				echo $bl->floatBreak();
-				echo $this->Bl->floatBreak();
 			echo $this->Bl->ediv();
-		echo $this->Bl->ediv();
-		
-	echo $this->Bl->eboxContainer();
+			
+		echo $this->Bl->eboxContainer();
+	}
+	else
+		echo $this->Jodel->insertModule($modules[$moduleName]['model'], array('view', 'backstage_custom', 'search'));
+	
 	
 	$ajax_request = $ajax->remoteFunction(array(
 		'url' => array('plugin' => 'backstage', 'controller' => 'back_contents', 'action' => 'after_delete', $moduleName),

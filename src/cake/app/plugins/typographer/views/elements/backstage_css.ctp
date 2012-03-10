@@ -1044,7 +1044,7 @@
 	));
 	
 	$this->Decorator->rule(
-		'.dash_filter', array(
+		'.dash_filter, .dash_header', array(
 			'margin-top' => $vg->size(array('m' => 3)),
 			'margin-bottom' => $vg->size(array('m' => 2)),
 			'font-size' => $vg->size(array('u' => $line_height* 11/18)),
