@@ -101,76 +101,46 @@ var TableRow = Class.create({
 	}
 });
 
-
 /**
- * 
- * 
- * @access 
+ * Toogles the filter link on and off
  */
-var StatusFilter = Class.create({
-	lastStatus: "",
-	initialize: function(status_id, selected)
+var FilterLink = Class.create({
+	initialize: function(link_id, selected, filter_all)
 	{
-		this.status = $(status_id);
-		this.status.observe('click', this.selectStatus.bind(this));
-		
-		if(selected != '')
-		{
-			self.lastStatus = status_id;
-			this.status.addClassName('selected');
-		}
+		this.link = $(link_id).observe('click',this.linkClick.bind(this)).observe('mouseout', this.linkMouseOut.bind(this)).observe('mouseover', this.linkMouseOver.bind(this));
+		this.filter_all = filter_all ? $(filter_all) : this.link;
+		if (this.selected = selected)
+			this.select();
 	},
-	selectStatus: function(ev)
+	linkMouseOver: function(ev)
 	{
-		ev.stop();
-
-		if (self.lastStatus)
-		{
-			$(self.lastStatus).removeClassName('selected');
-		}
-		if (self.lastStatus != this.status.id)
-		{
-			self.lastStatus = this.status.id;
-			this.status.addClassName('selected');
-		}
-		else
-			self.lastStatus = false;
-	}
-});
-
-
-/**
- * 
- * 
- * @access 
- */
-var TypeFilter = Class.create({
-	lastType: "",
-	initialize: function(type_id, selected)
-	{
-		this.type = $(type_id);
-		this.type.observe('click', this.selectType.bind(this));
-		
-		if(selected != '')
-		{
-			self.lastType = type_id;
-			this.type.addClassName('selected');
-		}
+		this.mouseOver = true;
 	},
-	selectType: function(ev)
+	linkMouseOut: function(ev)
 	{
-		ev.stop();
-
-		if (self.lastType)
-		{
-			$(self.lastType).removeClassName('selected');
-		}
-		if (self.lastType != this.type.id)
-		{
-			self.lastType = this.type.id;
-			this.type.addClassName('selected');
-		}
+		this.link.removeClassName('force_unselected');
+		this.mouseOver = false;
+	},
+	linkClick: function(ev)
+	{
+		if (this.selected)
+			this.unselect();
 		else
-			self.lastType = false;
+			this.select();
+	},
+	select: function()
+	{
+		this.link.up().select('a').invoke('removeClassName', 'selected');
+		this.link.addClassName('selected').removeClassName('force_unselected');
+		this.selected = true;
+	},
+	unselect: function()
+	{
+		this.link.removeClassName('selected');
+		if (this.mouseOver)
+			this.link.addClassName('force_unselected');
+		if (this.filter_all);
+			this.filter_all.addClassName('selected').removeClassName('force_unselected');
+		this.selected = false;
 	}
 });

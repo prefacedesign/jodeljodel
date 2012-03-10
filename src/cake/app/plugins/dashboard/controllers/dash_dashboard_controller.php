@@ -48,8 +48,10 @@ class DashDashboardController extends DashboardAppController
 		$this->render('filter');
 	}
 	
-	function filter($module)
+	function filter($module = null)
 	{
+		if ($this->Session->read('Dashboard.filter') == $module)
+			$module = '';
 		$this->Session->write('Dashboard.filter', $module);
 		$this->render_table();
 	}
@@ -57,6 +59,8 @@ class DashDashboardController extends DashboardAppController
 	
 	function filter_published_draft($status)
 	{
+		if ($this->Session->read('Dashboard.status') == $status)
+			$status = '';
 		$this->Session->write('Dashboard.status', $status);
 		$this->render_table();
 	}

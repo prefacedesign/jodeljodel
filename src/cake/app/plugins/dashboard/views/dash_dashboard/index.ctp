@@ -3,10 +3,10 @@ $this->Html->script('prototype', array('inline' => false));
 $this->Html->script('/dashboard/js/core.js', array('inline' => false));
 $this->Html->script('/dashboard/js/dashboard.js', array('inline' => false));
 
-$this->Html->scriptBlock($this->Js->domReady("
+$this->BuroOfficeBoy->addHtmlEmbScript("
 	new Dashboard();
 	new ItemList('dash_additem', 'dash_link_to_additem');
-"), array('inline' => false));
+");
 
 echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 	echo $this->Bl->h1Dry(__d('dashboard','Page title - Dashboard', true));
@@ -59,9 +59,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 				echo $this->Bl->sdiv(array('class' => 'filters'));
 				
 					// SEARCH INPUT		
-					$this->Html->scriptBlock($this->Js->domReady("
-						new SearchInput('dash_search');
-					"), array('inline' => false));
+					$this->BuroOfficeBoy->addHtmlEmbScript("new SearchInput('dash_search');");
 					
 					echo $this->Bl->h4Dry(__d('dashboard','Text', true));
 					
@@ -89,10 +87,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 					{	
 						$filterLink = $ajax->link(__d('dashboard', 'Dashboard status: ' . $module, true), 			
 							array(
-								'plugin' => 'dashboard',
-								'controller' => 'dash_dashboard',
-								'action' => 'filter_published_draft',
-								$module
+								'plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'filter_published_draft', $module
 							), 
 							array(
 								'before' => "$('dashboard_table').setLoading();",
@@ -103,21 +98,13 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 						);
 						$linkFilters[] = $filterLink;
 						
-						if ($filter_status == $module)
-							$selected = true;
-						else
-							$selected = false;
-						$this->Html->scriptBlock($this->Js->domReady("
-							new StatusFilter('filter_published_draft_$module', '$selected');
-						"), array('inline' => false));
+						$selected = $filter_status == $module ? 'true' : 'false';
+						$this->BuroOfficeBoy->addHtmlEmbScript("new FilterLink('filter_published_draft_$module', $selected, 'filter_published_draft_all');");
 					}
 					
 					$filterLink = $ajax->link(__d('dashboard','Show All', true), 			
 						array(
-							'plugin' => 'dashboard',
-							'controller' => 'dash_dashboard',
-							'action' => 'filter_published_draft',
-							'all'
+							'plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'filter_published_draft', 'all'
 						), 
 						array(
 							'before' => "$('dashboard_table').setLoading();",
@@ -127,32 +114,18 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 						)
 					);
 					$linkFilters[] = $filterLink;
-					if ($filter_status == 'all' || empty($filter_status))
-						$selected = true;
-					else
-						$selected = false;
-					$this->Html->scriptBlock($this->Js->domReady("
-						new StatusFilter('filter_published_draft_all', '$selected');
-					"), array('inline' => false));
+
+					$selected = $filter_status == 'all' || empty($filter_status) ? 'true' : 'false';
+					$this->BuroOfficeBoy->addHtmlEmbScript("new FilterLink('filter_published_draft_all', $selected);");
 					echo $this->Text->toList($linkFilters, ' ', ' ');
 				echo $this->Bl->ediv();
 				echo $bl->floatBreak();
+
+
+
 				echo $this->Bl->sdiv(array('class' => 'filters'));
 					
-					echo $this->Bl->h4Dry(__d('dashboard','Type', true));
 					$linkFilters = array();
-					
-					$modulesCount = 0;
-					foreach(Configure::read('jj.modules') as $moduleName => $module)
-					{
-						if (isset($module['plugged']) || $moduleName == 'corktile') 
-						{
-							$curSettings = isset($itemSettings[$moduleName]) ? $itemSettings[$moduleName] : $itemSettings['default'];
-							if ((in_array('dashboard', $module['plugged']) && in_array('create', $curSettings['actions'])) || $moduleName == 'corktile')
-								$modulesCount++;
-
-						}
-					}
 					foreach(Configure::read('jj.modules') as $moduleName => $module)
 					{
 						if (isset($module['plugged']) || $moduleName == 'corktile')
@@ -160,39 +133,29 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 							$curSettings = isset($itemSettings[$moduleName]) ? $itemSettings[$moduleName] : $itemSettings['default'];
 							if ((in_array('dashboard', $module['plugged']) && in_array('create', $curSettings['actions'])) || $moduleName == 'corktile')
 							{
-								$filterLink = $ajax->link(__($module['humanName'], true), 			
+								$filterLink = $ajax->link(
+									$module['humanName'],
 									array(
-										'plugin' => 'dashboard',
-										'controller' => 'dash_dashboard',
-										'action' => 'filter',
-										$moduleName
+										'plugin' => 'dashboard','controller' => 'dash_dashboard','action' => 'filter', $moduleName
 									), 
 									array(
 										'before' => "$('dashboard_table').setLoading();",
 										'complete' => "$('dashboard_table').unsetLoading();",
 										'id' => 'filter_'.$moduleName,
-										'update' => 'dashboard_table'
+										'update' => 'dashboard_table',
 									)
 								);
 								$linkFilters[] = $filterLink;
 								
-								if ($filter == $moduleName)
-									$selected = true;
-								else
-									$selected = false;
-								$this->Html->scriptBlock($this->Js->domReady("
-									new TypeFilter('filter_$moduleName', '$selected');
-								"), array('inline' => false));
+								$selected = $filter == $moduleName ? 'true' : 'false';
+								$this->BuroOfficeBoy->addHtmlEmbScript("new FilterLink('filter_$moduleName', $selected, 'filter_all');");
 							}
 
 						}
 					}
 					$filterLink = $ajax->link(__d('dashboard','Show All', true), 			
 						array(
-							'plugin' => 'dashboard',
-							'controller' => 'dash_dashboard',
-							'action' => 'filter',
-							'all'
+							'plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'filter', 'all'
 						), 
 						array(
 							'before' => "$('dashboard_table').setLoading();",
@@ -203,15 +166,15 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 					);
 					$linkFilters[] = $filterLink;
 					
-					if ($filter == 'all' || empty($filter))
-						$selected = true;
-					else
-						$selected = false;
-					$this->Html->scriptBlock($this->Js->domReady("
-						new TypeFilter('filter_all', '$selected');
-					"), array('inline' => false));
+					$selected = $filter == 'all' || empty($filter) ? 'true' : 'false';
+					$this->BuroOfficeBoy->addHtmlEmbScript("new FilterLink('filter_all', $selected);");
 					
-					echo $this->Text->toList($linkFilters, ' ', ' ');
+					
+					echo $this->Bl->h4Dry(__d('dashboard','Type', true));
+
+					echo $this->Bl->sdiv(array('class' => 'list_container'));
+						echo $this->Text->toList($linkFilters, ' ', ' ');
+					echo $this->Bl->ediv();
 				echo $this->Bl->ediv();
 					
 				echo $this->Bl->floatBreak();

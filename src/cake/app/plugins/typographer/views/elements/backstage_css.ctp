@@ -1062,13 +1062,21 @@
 			'color' => $palette['text']->write(),
 			'border-bottom' => 'none',
 			'background-color' => $palette['bg']->write(),
-			'margin-right' => $hg->size(array('m' => 1))
+			'margin-right' => $hg->size('m'),
+			'padding' => '0 ' . $hg->size('m'),
+			'display' => 'inline-block'
 	));
 	
 	$this->Decorator->rule(
 		'#dash_filter_list a:hover, #dash_filter_list a.selected', array(
 			'color' => $palette['bg']->write() . ' !important',
 			'background-color' => $palette['internal_selection']->write() . ' !important',
+	));
+	
+	$this->Decorator->rule(
+		'#dash_filter_list a.force_unselected:hover', array(
+			'color' => $palette['text']->write() . ' !important',
+			'background' => 'none !important',
 	));
 	
 	$this->Decorator->rule(
@@ -1079,6 +1087,12 @@
 			'text-transform' => 'uppercase',
 			'letter-spacing' => $letterSpacing,
 			'float' => 'left'
+	));
+	
+	$this->Decorator->rule(
+		'.dash_filter .list_container', array(
+			'float' => 'left',
+			'width' => $hg->size('10M')
 	));
 	
 	$border_size = 1;
