@@ -20,7 +20,7 @@ class DashDashboardController extends DashboardAppController
 			'contain' => false,
 			'order' => 'modified DESC',
 			'conditions' => array(
-				'NOT' => array('name' => null)
+				'NOT' => array('DashDashboardItem.name' => null)
 			)
 		)
 	);
@@ -72,10 +72,11 @@ class DashDashboardController extends DashboardAppController
 		if (!empty($this->data['dash_search']))
 		{
 			$conditions['OR'] = array();
-			$conditions['OR'][] = array('name LIKE' => '%'.$this->data['dash_search'].'%');
-			$conditions['OR'][] = array('info LIKE' => '%'.$this->data['dash_search'].'%');
+			$conditions['OR'][] = array('DashDashboardItem.name LIKE' => '%'.$this->data['dash_search'].'%');
+			$conditions['OR'][] = array('DashDashboardItem.info LIKE' => '%'.$this->data['dash_search'].'%');
 		}
 		
+		$this->Session->write('Dashboard.searchQuery', $this->data['dash_search']);
 		$this->Session->write('Dashboard.searchOptions', $conditions);
 		$this->render_table();
 	}
@@ -108,6 +109,7 @@ class DashDashboardController extends DashboardAppController
 		$this->helpers['Paginator'] = array('ajax' => 'Ajax');
 		$this->set('itemSettings', Configure::read('Dashboard.itemSettings'));
 		$this->set(compact('filter', 'filter_status'));
+		$this->set('searchQuery', $this->Session->read('Dashboard.searchQuery'));
 	}
 
 /**
