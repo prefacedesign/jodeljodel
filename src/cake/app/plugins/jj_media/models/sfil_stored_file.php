@@ -57,8 +57,6 @@ class SfilStoredFile extends JjMediaAppModel {
 
 	var $name = 'SfilStoredFile';
 
-	var $useDbConfig = 'assets';
-	
 	var $validate = array(
 		'checksum' => array(
 			'notempty' => array(
@@ -94,7 +92,7 @@ class SfilStoredFile extends JjMediaAppModel {
 			'resource'   => array('rule' => 'checkResource'),
 			'access'     => array('rule' => 'checkAccess'),
 			'location'   => array('rule' => array('checkLocation', array(
-				MEDIA_TRANSFER, '/tmp/'
+				MEDIA_TRANSFER, '/tmp/', 'D:\wamp\tmp'
 			))),
 			'permission' => array('rule' => array('checkPermission', '*')),
 			'size'       => array('rule' => array('checkSize', '5M')),
@@ -155,12 +153,8 @@ class SfilStoredFile extends JjMediaAppModel {
 		}
 		
 		$extension = !empty($extension) ? '.' . strtolower($extension) : null;
-		
 		$newFilename  = uniqid('', true) . $extension;
-		
 		$this->data[$this->alias]['original_filename'] = $filename . $extension;
-		if (is_string($this->data[$this->alias]['file']))
-			$this->data[$this->alias]['file'] = dirname($this->data[$this->alias]['file']) . DS . $newFilename;
 		
 		return $short . DS . $newFilename;
 	}
