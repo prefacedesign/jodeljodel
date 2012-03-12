@@ -39,7 +39,10 @@
 		elseif ($type[1] != 'cork')
 			$type[] = 'content_stream';
 		
-		echo $this->Jodel->insertModule($streams[$content_type]['model'], $type, $module_data);
+		echo $this->Bl->div(
+			array('class' => $content_type), null,
+			$this->Jodel->insertModule($streams[$content_type]['model'], $type, $module_data)
+		);
 		
 		$this->data = $data_bkp;
 	}

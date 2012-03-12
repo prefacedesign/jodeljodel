@@ -183,6 +183,11 @@
 		)
 	);
 	
+	$this->Decorator->rule(
+		'.pie_text p+p', array(
+			'margin-top' => $u->t($line_height)
+	));
+	
 	
 	// Ordered List
 	
