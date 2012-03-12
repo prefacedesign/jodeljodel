@@ -183,7 +183,7 @@ class BackContentsController extends BackstageAppController
 					else
 						$this->Session->write('Backstage.page', 0);
 						
-					if (!isset($this->params['named']['page']))
+					if ($page === null)
 						$this->Session->write('Backstage.searchOptions', array());
 					
 					$options = $this->__getOptions($moduleName);
