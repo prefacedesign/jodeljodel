@@ -28,12 +28,6 @@ class DashDashboardItem extends AppModel
 		)
 	);
 	
-	var $belongsTo = array(
-		'MexcSpace' => array(
-			'className' => 'MexcSpace.MexcSpace'
-		)
-	);
-	
 /**
  * Inserts or updates one item in the dashboard
  *
