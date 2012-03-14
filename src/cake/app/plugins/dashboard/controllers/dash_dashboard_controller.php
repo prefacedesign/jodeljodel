@@ -13,7 +13,7 @@ define ('LIMIT', Configure::read('Dashboard.limitSize'));
 class DashDashboardController extends DashboardAppController
 {
 	var $name = 'DashDashboard';
-	var $uses = array('Dashboard.DashDashboardItem');
+	var $uses = array('Dashboard.DashDashboardItem', 'MexcSpace.MexcSpace');
 	var $paginate = array(
 		'DashDashboardItem' => array(
 			'limit' => LIMIT,
@@ -28,6 +28,11 @@ class DashDashboardController extends DashboardAppController
 	var $helpers = array('Text');
 
 
+	function beforeFilter()
+	{
+		parent::beforeFilter();
+		$this->set('spaces', $this->MexcSpace->find('all', array('conditions' => array('parent_id IS NULL'))));
+	}
 
 /**
  * This is the actual dashboard page.
@@ -36,6 +41,11 @@ class DashDashboardController extends DashboardAppController
  */
 	function index()
 	{
+		if (isset($this->params['named']['page']))
+			$this->Session->write('Dashboard.page', $this->params['named']['page']);
+		else
+			$this->Session->write('Dashboard.page', 0);
+		
 		$this->set('itemSettings', Configure::read('Dashboard.itemSettings'));
 		$this->set('statusOptions', Configure::read('Dashboard.statusOptions'));
 		
@@ -44,7 +54,8 @@ class DashDashboardController extends DashboardAppController
 	
 	function render_table()
 	{
-		$this->filter_and_search();
+		$page = $this->Session->read('Dashboard.page');
+		$this->filter_and_search($page);
 		$this->render('filter');
 	}
 	
@@ -53,6 +64,12 @@ class DashDashboardController extends DashboardAppController
 		if ($this->Session->read('Dashboard.filter') == $module)
 			$module = '';
 		$this->Session->write('Dashboard.filter', $module);
+		$this->render_table();
+	}
+	
+	function filter_space($space = null)
+	{
+		$this->Session->write('Dashboard.space', $space);
 		$this->render_table();
 	}
 	
@@ -82,7 +99,7 @@ class DashDashboardController extends DashboardAppController
 	}
 	
 	
-	function filter_and_search()
+	function filter_and_search($page = null)
 	{
 		$conditions = array();
 		$c = $this->Session->read('Dashboard.searchOptions');
@@ -90,26 +107,33 @@ class DashDashboardController extends DashboardAppController
 			$conditions = $c;
 		
 		$filter_status = $this->Session->read('Dashboard.status');
+		$filter_space = $this->Session->read('Dashboard.space');
 		$filter = $this->Session->read('Dashboard.filter');
 		
 		if ($filter_status != 'all' && !empty($filter_status))
 			$conditions['status'] = $filter_status;
+		if ($filter_space != 'all' && !empty($filter_space))
+		{
+			$conds = $this->MexcSpace->getConditionsForSpaceFiltering($filter_space);
+			$conditions['mexc_space_id'] =  $conds['mexc_space_id'];
+		}
 		if ($filter != 'all' && !empty($filter))
-			$conditions['type'] = $filter;
+			$conditions['type'] = $filter;		
 			
 		$this->paginate = array(
 			'DashDashboardItem' => array(
 				'limit' => LIMIT,
 				'contain' => false,
 				'order' => 'modified DESC',
-				'conditions' => $conditions
+				'conditions' => $conditions,
+				'page' => isset($page) ? $page : 0
 			)
 		);
 		$this->data = $this->paginate('DashDashboardItem');
 		$this->helpers['Paginator'] = array('ajax' => 'Ajax');
 		$this->set('itemSettings', Configure::read('Dashboard.itemSettings'));
-		$this->set(compact('filter', 'filter_status'));
 		$this->set('searchQuery', $this->Session->read('Dashboard.searchQuery'));
+		$this->set(compact('filter', 'filter_status', 'filter_space'));
 	}
 
 /**
