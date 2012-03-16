@@ -84,7 +84,7 @@ class DashDashboardItem extends AppModel
 	function deleteItem($id)
 	{
 		$item = $this->find('first', array(
-			'conditions' => array('id' => $id),
+			'conditions' => array('DashDashboardItem.id' => $id),
 			'fields' => array('DashDashboardItem.dashable_id', 'DashDashboardItem.type')
 		));
 		
