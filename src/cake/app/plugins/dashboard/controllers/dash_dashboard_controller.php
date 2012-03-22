@@ -13,7 +13,7 @@ define ('LIMIT', Configure::read('Dashboard.limitSize'));
 class DashDashboardController extends DashboardAppController
 {
 	var $name = 'DashDashboard';
-	var $uses = array('Dashboard.DashDashboardItem', 'MexcSpace.MexcSpace');
+	var $uses = array('Dashboard.DashDashboardItem');
 	var $paginate = array(
 		'DashDashboardItem' => array(
 			'limit' => LIMIT,
@@ -31,7 +31,6 @@ class DashDashboardController extends DashboardAppController
 	function beforeFilter()
 	{
 		parent::beforeFilter();
-		$this->set('spaces', $this->MexcSpace->find('all', array('conditions' => array('parent_id IS NULL'))));
 	}
 
 /**
@@ -67,13 +66,6 @@ class DashDashboardController extends DashboardAppController
 		$this->render_table();
 	}
 	
-	function filter_space($space = null)
-	{
-		$this->Session->write('Dashboard.space', $space);
-		$this->render_table();
-	}
-	
-	
 	function filter_published_draft($status)
 	{
 		if ($this->Session->read('Dashboard.status') == $status)
@@ -107,16 +99,10 @@ class DashDashboardController extends DashboardAppController
 			$conditions = $c;
 		
 		$filter_status = $this->Session->read('Dashboard.status');
-		$filter_space = $this->Session->read('Dashboard.space');
 		$filter = $this->Session->read('Dashboard.filter');
 		
 		if ($filter_status != 'all' && !empty($filter_status))
 			$conditions['status'] = $filter_status;
-		if ($filter_space != 'all' && !empty($filter_space))
-		{
-			$conds = $this->MexcSpace->getConditionsForSpaceFiltering($filter_space);
-			$conditions['mexc_space_id'] =  $conds['mexc_space_id'];
-		}
 		if ($filter != 'all' && !empty($filter))
 			$conditions['type'] = $filter;		
 			
@@ -133,7 +119,7 @@ class DashDashboardController extends DashboardAppController
 		$this->helpers['Paginator'] = array('ajax' => 'Ajax');
 		$this->set('itemSettings', Configure::read('Dashboard.itemSettings'));
 		$this->set('searchQuery', $this->Session->read('Dashboard.searchQuery'));
-		$this->set(compact('filter', 'filter_status', 'filter_space'));
+		$this->set(compact('filter', 'filter_status'));
 	}
 
 /**
