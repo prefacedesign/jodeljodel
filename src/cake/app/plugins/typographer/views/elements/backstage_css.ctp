@@ -80,7 +80,7 @@
 	
 	$this->Decorator->rule(
 		'.autocomplete.list ul li', array(
-			'height' => $vg->size(array('g' => 1, 'm' => 1)),
+			'height' => 'auto',
 			'border-bottom' => $u->t(1) . ' dotted ' . $palette['text']->write(),
 			'cursor' => 'pointer',
 			'padding-left' => $hg->size(array('m' => 2)),
