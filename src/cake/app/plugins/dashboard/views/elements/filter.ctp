@@ -175,7 +175,7 @@
 			{
 				$standardUrl = $this->Bl->moduleViewURL($item['DashDashboardItem']['type'],$item['DashDashboardItem']['dashable_id']);
 				
-				if ($curSettings['edit_version'] != 'corktile')
+				if ($curSettings['edit_version'] != 'corktile' && is_array($standardUrl))
 				{
 					$links .= $this->Bl->anchor(
 						array('class' => 'link_button'),

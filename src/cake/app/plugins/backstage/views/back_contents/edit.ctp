@@ -67,16 +67,21 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 		$dashboard_url = $this->Html->url(array('plugin' => 'backstage', 'controller' => 'back_contents', 'action' => 'index', $moduleName));
 	$view_url = $this->Html->url($this->Bl->moduleViewURL($moduleName, $this->data[$modelName]['id']));
 
+	$actions = array(
+		'ok' => __d('backstage', 'Your data has been saved - BACK TO DASHBOARD', true), 
+		'edit' => __d('backstage', 'Your data has been saved - CONTINUE EDITING', true),
+	);
+	if (is_array($view_url))
+	{
+		$actions['view'] = __d('backstage', 'Your data has been saved - VIEW THIS ON THE PUBLIC PAGE', true);
+	}
+	
 	echo $this->Popup->popup('notice',
 		array(
 			'type' => 'notice',
 			'title' => __d('backstage', 'Your data has been saved - TITLE.',true),
 			'content' => __d('backstage', 'Your data has been saved - TEXT.',true),
-			'actions' => array(
-				'ok' => __d('backstage', 'Your data has been saved - BACK TO DASHBOARD', true), 
-				'edit' => __d('backstage', 'Your data has been saved - CONTINUE EDITING', true),
-				'view' => __d('backstage', 'Your data has been saved - VIEW THIS ON THE PUBLIC PAGE', true)
-			),
+			'actions' => $actions,
 			'callback' => "if (action=='ok') window.location = '$dashboard_url'; if (action=='view') window.location = '$view_url';"
 		)
 	);
