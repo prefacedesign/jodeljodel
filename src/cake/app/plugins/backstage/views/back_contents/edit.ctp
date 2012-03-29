@@ -71,7 +71,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 		'ok' => __d('backstage', 'Your data has been saved - BACK TO DASHBOARD', true), 
 		'edit' => __d('backstage', 'Your data has been saved - CONTINUE EDITING', true),
 	);
-	if (is_array($view_url))
+	if ($this->Bl->moduleViewURL($moduleName, $this->data[$modelName]['id']))
 	{
 		$actions['view'] = __d('backstage', 'Your data has been saved - VIEW THIS ON THE PUBLIC PAGE', true);
 	}
