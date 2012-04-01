@@ -19,14 +19,10 @@ else
 				);
 			echo $bl->ebox();
 			echo $bl->sbox(array('id' => 'user_area'), array('size' => array('M' => 4)));
-				echo $bl->pDry($userData['name']);
+				echo $bl->pDry($userData['full_name']);
 				echo $bl->anchor(array(), 
 					array(
-						'url' => array(
-							'plugin' => 'jj_users', 
-							'controller' => 'user_users', 
-							'action' => 'logout'
-						)
+						'url' => array('plugin' => 'jj_users', 'controller' => 'user_users', 'action' => 'logout')
 					), 
 					__('Logout', true)
 				);

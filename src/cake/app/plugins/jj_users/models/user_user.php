@@ -3,6 +3,10 @@ class UserUser extends JjUsersAppModel
 {
 	var $name = 'UserUser';
 	
+	var $virtualFields = array(
+		'full_name' => 'CONCAT(COALESCE(UserUser.name,""), " ", COALESCE(UserUser.surname,""))'
+	);
+	
 	var $actsAs = array(
 		'Containable', 
 		'Acl' => array('type' => 'requester'), 
