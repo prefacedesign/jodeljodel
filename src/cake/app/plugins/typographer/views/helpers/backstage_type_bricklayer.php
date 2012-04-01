@@ -26,7 +26,9 @@ class BackstageTypeBricklayerHelper extends TypeBricklayerHelper
 	
 		if (!isset($curModule['viewUrl']))
 			$curModule['viewUrl'] = array();
-		
+		elseif ($curModule['viewUrl'] == false)
+			return false;
+			
 		if (!is_array($curModule['viewUrl']))
 		{
 			trigger_error('BackstageTypeBricklayerHelper::moduleView() - `viewUrl` configuration must be an array.');

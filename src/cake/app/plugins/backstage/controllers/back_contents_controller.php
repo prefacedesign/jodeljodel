@@ -147,7 +147,7 @@ class BackContentsController extends BackstageAppController
 			$options = array_merge_recursive($options, $op);
 		
 		$finalOptions = array_merge_recursive($options, $defaultOptions);
-
+		
 		return $finalOptions;
 	}
 	
@@ -181,12 +181,16 @@ class BackContentsController extends BackstageAppController
 					if (isset($this->params['named']['page']))
 						$this->Session->write('Backstage.page', $this->params['named']['page']);
 					else
+					{
 						$this->Session->write('Backstage.page', 0);
+						if ($page === null)
+							$this->Session->write('Backstage.searchOptions', array());
+					}
 						
-					if ($page === null)
-						$this->Session->write('Backstage.searchOptions', array());
+					
 					
 					$options = $this->__getOptions($moduleName);
+					
 					if ($page)
 						$options['page'] = $page;
 					
@@ -215,7 +219,7 @@ class BackContentsController extends BackstageAppController
 	
 	function after_delete($moduleName)
 	{
-		$page = $this->Session->read('page');
+		$page = $this->Session->read('Backstage.page');
 		$this->index($moduleName, $page);
 	}
 	
