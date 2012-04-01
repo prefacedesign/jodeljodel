@@ -1,5 +1,6 @@
 <?php
-class UserUser extends JjUsersAppModel {
+class UserUser extends JjUsersAppModel
+{
 	var $name = 'UserUser';
 	
 	var $actsAs = array(
@@ -35,13 +36,20 @@ class UserUser extends JjUsersAppModel {
 	
 	function parentNode()
 	{
-		if (!$this->id && empty($this->data)) 
-			return null;    
-		$data = $this->data;    		
-		if (empty($this->data)) 
-			$data = $this->read();
+		if (!$this->id && $this->data[$this->alias][$this->primaryKey]) {
+			$this->id = $this->data[$this->alias][$this->primaryKey];
+		}
 		
-		return array('UserGroup' => array('id' => $data[$this->alias]['user_group_id']));
+		if (!empty($this->data[$this->alias]['user_group_id'])) {
+			$user_group_id = $data[$this->alias]['user_group_id'];
+		} elseif ($this->id) {
+			$user_group_id = $this->field('user_group_id');
+		} else {
+			return null;
+		}
+
+		return array('UserGroup' => array('id' => $user_group_id));
+	}
 	}
 }
 ?>
