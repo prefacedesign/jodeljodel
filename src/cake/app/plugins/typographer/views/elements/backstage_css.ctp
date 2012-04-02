@@ -670,9 +670,13 @@
 			'background-color' => $palette['bg']->write(),
 			'border-top' => $u->t(1) . ' solid ' . $palette['menu_border']->write(),
 			'padding' => $vg->size(array('g' => 1)) . ' 0 ' . $vg->size(array('g' => 2)) . ' 0',
-#			'margin-top' => $u->t(-1)
 		)
 	);
+	
+	$this->Decorator->rule(
+		'#content > div.box', array(
+			'position' => 'relative'
+	));
 	
 	$this->Decorator->rule(
 		'#header .menu',
@@ -893,8 +897,8 @@
 	$this->Decorator->rule(
 		'.pagination', array(
 			'position' => 'absolute',
-			'right' => $hg->size('g'),
-			'top' => $u->t(74),
+			'right' => 0,
+			'top' => $vg->size(array('u' => 2+$line_height, 'm' => 2, 'g' => 1.5)), // total height of a .h1div
 			'z-index' => 1
 	));
 	
@@ -1186,7 +1190,7 @@
 			'clear' => 'left',
 			'width' => 'auto',
 			'height' => $u->t($line_height),
-			'margin' => sprintf('%s %s 0', $hg->size(array('g' => 0.5)), $hg->size(array('g' => 0.5)))
+			'margin' => sprintf('%s %s 0', $hg->size(array('g' => 0.15)), $hg->size(array('g' => 0.5)))
 	));
 	
 	$this->Decorator->rule(
