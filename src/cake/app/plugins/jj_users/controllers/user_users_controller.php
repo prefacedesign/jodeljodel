@@ -15,7 +15,7 @@ class UserUsersController extends JjUsersAppController
  * @access public
  * @var array
  */
-	var $components = array('Burocrata.BuroBurocrata');
+	var $components = array('Burocrata.BuroBurocrata', 'RequestHandler');
 
 /**
  * beforeFilter callback, used for overwrite the default messages of AuthComponent
@@ -60,19 +60,21 @@ class UserUsersController extends JjUsersAppController
  * @access public
  * @return void
  */
-	function preferences() {
+	function preferences()
+	{
 		if (!empty($this->data)) {
 			$error = $this->BuroBurocrata->loadPostedModel($this, $Model);
 			
 			$this->data[$Model->alias][$Model->primaryKey] = $user_id = $this->Auth->user($Model->primaryKey);
 			
+			$saved = false;
 			$Model->set($this->data);
-			if (!($error = !$Model->validates())) {
+			if ($Model->validates()) {
 				if (!empty($this->data[$Model->alias]['password_change'])) {
 					$this->data[$Model->alias]['password'] = $this->Auth->password($this->data[$Model->alias]['password_change']);
 				}
 				
-				if (!($error = !$Model->save($this->data, false))) {
+				if ($Model->save($this->data, false)) {
 					$this->UserUser->contain();
 					$user = $this->UserUser->findById($user_id);
 					$this->Auth->login($user);
@@ -81,7 +83,7 @@ class UserUsersController extends JjUsersAppController
 			}
 			
 			$this->view = 'JjUtils.Json';
-			$this->set('jsonVars', compact('error', 'saved'));
+			$this->set(compact('error', 'saved'));
 		} else {
 			$this->data = $this->Auth->user();
 		}
