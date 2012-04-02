@@ -44,6 +44,18 @@ class DashboardAppController extends AppController
 	var $layout = 'backstage';
 
 /**
+ * Overwrtiging the startupProcess method so we can set (forced) 
+ * the language before the pageSections load.
+ * 
+ * @access public
+ */
+	function startupProcess()
+	{
+		$this->TradLanguageSelector->setInterfaceLanguage(Configure::read('Tradutore.mainLanguage'));
+		parent::startupProcess();
+	}
+
+/**
  * Used to overwrite any configuration of StatusBehavior.
  * 
  * @access public
@@ -65,7 +77,6 @@ class DashboardAppController extends AppController
 	{
 		parent::beforeRender();
 		$this->TypeLayoutSchemePicker->pick('backstage');
-		$this->TradLanguageSelector->setInterfaceLanguage(Configure::read('Tradutore.mainLanguage'));
 	}
 
 }

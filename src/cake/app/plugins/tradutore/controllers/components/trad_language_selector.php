@@ -46,10 +46,6 @@ class TradLanguageSelectorComponent extends Object
 				{
 					// tries to guess the language using the configured method
 					$lang = $this->guessLanguage();
-				
-					// just loads the default language
-					if (!$this->isValidLanguage($lang))
-						$lang = $mainLanguage;
 				}
 			}
 		
@@ -179,9 +175,12 @@ class TradLanguageSelectorComponent extends Object
 
 	function setInterfaceLanguage($lang = null)
     {
-        Configure::write('Config.language', $lang);
-		
-		$this->Controller->set('currentInterfaceLanguage', $lang);
+    	if (!$this->Session->check('Tradutore.currentInterfaceLanguage'))
+    	{
+		    Configure::write('Config.language', $lang);
+#			$this->Controller->set('currentInterfaceLanguage', $lang);
+			$this->Session->write('Tradutore.currentInterfaceLanguage', $lang);
+    	}
 	}
 
 

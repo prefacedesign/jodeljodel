@@ -15,7 +15,24 @@ class UserUsersController extends JjUsersAppController
  * @access public
  * @var array
  */
-	var $components = array('Burocrata.BuroBurocrata', 'RequestHandler');
+	var $components = array(
+		'Burocrata.BuroBurocrata',
+		'RequestHandler',
+		'Tradutore.TradLanguageSelector',
+		'PageSections.SectSectionHandler'
+	);
+
+/**
+ * Overwrtiging the startupProcess method so we can set (forced) 
+ * the language before the pageSections load.
+ * 
+ * @access public
+ */
+	function startupProcess()
+	{
+		$this->TradLanguageSelector->setInterfaceLanguage(Configure::read('Tradutore.mainLanguage'));
+		parent::startupProcess();
+	}
 
 /**
  * beforeFilter callback, used for overwrite the default messages of AuthComponent
