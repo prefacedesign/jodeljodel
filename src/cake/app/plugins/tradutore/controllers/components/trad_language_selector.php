@@ -175,11 +175,11 @@ class TradLanguageSelectorComponent extends Object
 
 	function setInterfaceLanguage($lang = null)
     {
-    	if (!$this->Session->check('Tradutore.currentInterfaceLanguage'))
+    	if (!Configure::read('Tradutore.currentInterfaceLanguage'))
     	{
 		    Configure::write('Config.language', $lang);
+			Configure::write('Tradutore.currentInterfaceLanguage', $lang)
 #			$this->Controller->set('currentInterfaceLanguage', $lang);
-			$this->Session->write('Tradutore.currentInterfaceLanguage', $lang);
     	}
 	}
 
