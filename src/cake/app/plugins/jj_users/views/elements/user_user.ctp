@@ -17,14 +17,6 @@ switch ($type[0])
 					)
 				);
 
-					echo $this->Buro->input(
-						array(), 
-						array(
-							'fieldName' => 'id',
-							'type' => 'hidden'
-						)
-					);
-	
 					echo $this->Buro->sinput(
 						array(),
 						array(
@@ -38,7 +30,9 @@ switch ($type[0])
 							array(),
 							array(
 								'fieldName' => 'name',
-								'type' => 'text'
+								'type' => 'text',
+								'label' => __d('jj_users', 'name label', true),
+								'instructions' => __d('jj_users', 'name instructions', true)
 							)
 						);
 	
@@ -46,7 +40,9 @@ switch ($type[0])
 							array(),
 							array(
 								'fieldName' => 'surname',
-								'type' => 'text'
+								'type' => 'text',
+								'label' => __d('jj_users', 'surname label', true),
+								'instructions' => __d('jj_users', 'surname instructions', true)
 							)
 						);
 			
@@ -66,7 +62,9 @@ switch ($type[0])
 							array(),
 							array(
 								'fieldName' => 'username',
-								'type' => 'text'
+								'type' => 'text',
+								'label' => __d('jj_users', 'username label', true),
+								'instructions' => __d('jj_users', 'username instructions', true)
 							)
 						);
 			
@@ -74,7 +72,9 @@ switch ($type[0])
 							array(),
 							array(
 								'fieldName' => 'password_change',
-								'type' => 'text'
+								'type' => 'text',
+								'label' => __d('jj_users', 'password_change label', true),
+								'instructions' => __d('jj_users', 'password_change instructions', true)
 							)
 						);
 			
@@ -82,7 +82,9 @@ switch ($type[0])
 							array(),
 							array(
 								'fieldName' => 'password_retype',
-								'type' => 'text'
+								'type' => 'text',
+								'label' => __d('jj_users', 'password_retype label', true),
+								'instructions' => __d('jj_users', 'password_retype instructions', true)
 							)
 						);
 					echo $this->Buro->einput();
