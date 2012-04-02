@@ -302,6 +302,14 @@ $sections = array(
 				'headerCaption' => __('Sections: example headerCaption', true),
 				'humanName' => __('Sections: example humanName',true),
 			),
+			'preferences' => array(
+				'linkCaption' => __('Sections: preferences linkCaption', true),
+				'pageTitle' => array(null, __('Sections: preferences pageTitle',true)),
+				'headerCaption' => __('Sections: preferences headerCaption', true),
+				'humanName' => __('Sections: preferences humanName',true),
+				'url' => array('plugin' => 'jj_users', 'controller' => 'user_users', 'action' => 'preferences'),
+				'acos' => array('backstage_area')
+			),
 			'burocrata_save' => array(
 				'linkCaption' => __('Sections: burocrata_save linkCaption', true),
 				'url' => array(
@@ -506,7 +514,18 @@ $sectionMap = array(
 			)
 		),
 	),
-
+	
+	
+	array(
+		'rule' => array('plugin' => 'jj_users'),
+		'location' => array('backstage'),
+		'subRules' => array(
+			array(
+				'rule' => array('controller' => 'user_users', 'action' => 'preferences'),
+				'location' => array(null, 'preferences')
+			)
+		)
+	),
 	array(
 		'rule' => array('plugin' => 'backstage'),
 		'location' => array('backstage'),
@@ -552,10 +571,6 @@ $sectionMap = array(
 	array(
 		'rule' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'save'),
 		'location' => array('backstage','burocrata_save'),
-	),
-	array(
-		'rule' => array('plugin' => 'burocrata_user'),
-		'location' => array('backstage', 'example'),
 	),
 	array(
 		'rule' => array('plugin' => 'page_sections', 'controller' => 'testing', 'action' => 'section_one'),

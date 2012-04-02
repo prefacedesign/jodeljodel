@@ -709,6 +709,12 @@
 	);
 	
 	$this->Decorator->rule(
+		'#header .menu a.menu_item_1_preferences', array(
+			'float' => 'right',
+			'margin-right' => $hg->size(array('g' => 0.5))
+	));
+	
+	$this->Decorator->rule(
 		'#footer div.box',
 		array(
 			'margin-top' => $vg->size(array('m' => 2))

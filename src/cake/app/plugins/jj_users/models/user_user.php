@@ -15,20 +15,25 @@ class UserUser extends JjUsersAppModel
 	
 	var $validate = array(
 		'user_group_id' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-			),
+			'numeric' => array('rule' => array('numeric')),
+		),
+		'name' => array(
+			'notempty' => array('rule' => array('notempty'))
+		),
+		'email' => array(
+			'notempty' => array('rule' => array('notempty')),
+			'email' => array('rule' => array('email'))
 		),
 		'username' => array(
-			'notempty' => array(
-				'rule' => array('notempty')
-			),
+			'notempty' => array('rule' => array('notempty')),
 		),
-		'password' => array(
-			'notempty' => array(
-				'rule' => array('notempty')
-			),
+		'password_change' => array(
+			'notempty' => array('rule' => array('notempty')),
+			'minLength' => array('rule' => array('minLength', 6))
 		),
+		'password_retype' => array(
+			'same' => array('rule' => array('identicalFieldValues', 'password'))
+		)
 	);
 
 	var $belongsTo = array(
@@ -54,6 +59,11 @@ class UserUser extends JjUsersAppModel
 
 		return array('UserGroup' => array('id' => $user_group_id));
 	}
+	
+	function beforeValidate($options)
+	{
+		if (empty($this->data[$this->alias]['password_change']) && empty($this->data[$this->alias]['password_retype']))
+			unset($this->data[$this->alias]['password_change'], $this->data[$this->alias]['password_retype']);
+		return true;
 	}
 }
-?>
