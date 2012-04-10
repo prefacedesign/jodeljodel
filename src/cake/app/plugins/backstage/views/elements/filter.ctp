@@ -1,8 +1,12 @@
 <?php
+	$params = array('controller' => 'back_contents', 'action' => 'index');
+	foreach($paginator->params['pass'] as $param)
+		$params[] = $param;
+	
 	$paginator->options(
 		array(
 			'update'=>'backstage_custom_table', 
-			'url'=>array('controller'=>'BackContents', 'action'=>'index', $moduleName), 
+			'url' => $params,
 			'before' => "$('backstage_custom_table').setLoading();",
 			'complete' => "$('backstage_custom_table').unsetLoading();"
 		)

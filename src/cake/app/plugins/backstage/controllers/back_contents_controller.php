@@ -161,7 +161,7 @@ class BackContentsController extends BackstageAppController
 	}
 	
 	
-	function index($moduleName, $page = null)
+	function index($moduleName)
 	{
 		$conditions = array();
 		if (!isset($this->modules[$moduleName]))
@@ -178,20 +178,18 @@ class BackContentsController extends BackstageAppController
 					trigger_error('BackContentsController::index - '.$moduleName.' configurations not found on backstage config') and die;
 				else
 				{
-					if (isset($this->params['named']['page']))
-						$this->Session->write('Backstage.page', $this->params['named']['page']);
+					if (!isset($this->params['named']['page']))
+					{
+						$this->Session->write('Backstage.searchOptions', array());
+					}
 					else
 					{
-						$this->Session->write('Backstage.page', 0);
-						if ($page === null)
-							$this->Session->write('Backstage.searchOptions', array());
+						$page = $this->params['named']['page'];
 					}
 						
-					
-					
 					$options = $this->__getOptions($moduleName);
 					
-					if ($page)
+					if (isset($page))
 						$options['page'] = $page;
 					
 					$this->paginate = array($this->backstageModel->alias => $options);
@@ -219,8 +217,7 @@ class BackContentsController extends BackstageAppController
 	
 	function after_delete($moduleName)
 	{
-		$page = $this->Session->read('Backstage.page');
-		$this->index($moduleName, $page);
+		$this->index($moduleName);
 	}
 	
 	function search($moduleName)
