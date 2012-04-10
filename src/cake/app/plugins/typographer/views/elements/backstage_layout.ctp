@@ -13,24 +13,21 @@ else
 	echo $bl->sdiv(array('id' => 'main_column'));
 
 		echo $bl->sdiv(array('id' => 'header'));
-			echo $bl->sbox(array(),array('size' => array('M' => 5, 'g' => -1)));
+			echo $bl->sbox(array('id' => 'logo'),array('size' => array('M' => 8, 'g' => -1)));
 				echo $bl->p(array(), array('escape' => false),
 					$bl->emDry(preg_replace('/\/$/','', Router::url('/',true))) . ' / ' . __('Content management area', true)
 				);
-			echo $bl->ebox();		
-			echo $bl->sdiv(array('id' => 'user_area'));
-				echo $bl->pDry($userData['name']);
+			echo $bl->ebox();
+			echo $bl->sbox(array('id' => 'user_area'), array('size' => array('M' => 4)));
+				echo $bl->pDry($userData['full_name']);
 				echo $bl->anchor(array(), 
 					array(
-						'url' => array(
-							'plugin' => 'jj_users', 
-							'controller' => 'user_users', 
-							'action' => 'logout'
-						)
+						'url' => array('plugin' => 'jj_users', 'controller' => 'user_users', 'action' => 'logout')
 					), 
 					__('Logout', true)
 				);
-			echo $bl->ediv();
+			echo $bl->ebox();
+			echo $this->Bl->floatBreak();
 			echo $bl->menu(array(), array('menuLevel' => 1));
 		echo $bl->ediv();
 		

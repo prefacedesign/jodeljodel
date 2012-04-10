@@ -32,22 +32,24 @@ class AddAliasToAclBehavior extends ModelBehavior
 	 
 	function afterSave(&$model, $created)
 	{
-		if (isset($model->data[$model->alias][$this->settings[$model->alias]['field']]))
+		extract($this->settings[$model->alias], EXTR_PREFIX_ALL, 'set');
+
+		if (isset($model->data[$model->alias][$set_field]))
 		{
 			$node = $model->node(array($model->alias => array('id' => $model->id)));
 			
-			if ($this->settings[$model->alias]['type'] == 'requester')
+			if ($set_type == 'requester')
 				$aclModel = ClassRegistry::init('Aro');
 			else
 				$aclModel = ClassRegistry::init('Aco');
 
 			$data = array($aclModel->alias => array(
 					'id' => $node[0]['Aro']['id'],
-					'alias' => $model->data[$model->alias][$this->settings[$model->alias]['field']]
+					'alias' => $model->data[$model->alias][$set_field]
 				)
 			);
-			
-			$aclModel->create();
+			if ($created)
+				$aclModel->create();
 			$aclModel->save($data);
 		}
 	}

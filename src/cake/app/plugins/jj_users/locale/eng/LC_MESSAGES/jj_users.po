@@ -1,0 +1,75 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Jodewl\n"
+"POT-Creation-Date: 2012-04-02 07:38-0400\n"
+"PO-Revision-Date: 2012-04-02 07:47-0400\n"
+"Last-Translator: Daniel Abrahão <daniel@preface.com.br>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: /views/elements/user_user.ctp:24
+msgid "name_surname super_field label"
+msgstr "Name"
+
+#: /views/elements/user_user.ctp:25
+msgid "name_surname super_field instructions"
+msgstr " "
+
+#: /views/elements/user_user.ctp:34
+msgid "name label"
+msgstr "First name"
+
+#: /views/elements/user_user.ctp:35
+msgid "name instructions"
+msgstr " "
+
+#: /views/elements/user_user.ctp:44
+msgid "surname label"
+msgstr "Last name"
+
+#: /views/elements/user_user.ctp:45
+msgid "surname instructions"
+msgstr " "
+
+#: /views/elements/user_user.ctp:56
+msgid "account super_field label"
+msgstr "Account"
+
+#: /views/elements/user_user.ctp:57
+msgid "account super_field instructions"
+msgstr " "
+
+#: /views/elements/user_user.ctp:66
+msgid "username label"
+msgstr "Username"
+
+#: /views/elements/user_user.ctp:67
+msgid "username instructions"
+msgstr "Next time signing in, use it as username"
+
+#: /views/elements/user_user.ctp:76
+msgid "password_change label"
+msgstr "Change password"
+
+#: /views/elements/user_user.ctp:77
+msgid "password_change instructions"
+msgstr "If you do not want to change, leave it blank"
+
+#: /views/elements/user_user.ctp:86
+msgid "password_retype label"
+msgstr "Retype password"
+
+#: /views/elements/user_user.ctp:87
+msgid "password_retype instructions"
+msgstr " "
+
+#: /views/elements/user_user.ctp:95
+msgid "submit label"
+msgstr "Save"
+

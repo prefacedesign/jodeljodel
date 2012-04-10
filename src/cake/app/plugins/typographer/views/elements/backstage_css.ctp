@@ -601,47 +601,40 @@
 		'#header',
 		array(
 			'width' => 'auto',
-			'height' => $vg->size(array('g' => 6)),
+#			'height' => $vg->size(array('g' => 6, 'u' => 2)),
 			'position' => 'relative'
 		)
 	);
 	
+	$image_url = $ig->url(
+		array(
+				'w' => $hg->size(array('u' => 1600/4.844), false),
+				'h' => $hg->size(array('g' => 5/2), false),
+				'iw' => 1600,
+				'ih' => 218,
+				'base_name' => 'backstage_site_logo',
+				'layers' => array(
+					array('type' => 'apply_color',  'color' => $palette['menu_bg']),
+					array('type' => 'tint_image', 'path' => '/img/matrixes/site_logo.png', 'color' => $palette['text'])
+				)
+			)
+		); 
+	$top = $vg->size(array('g' => (3 - 5/2)));
+	
 	$this->Decorator->rule(
-		'#header div.box', array(
+		'#header #logo', array(
 			'height' => $vg->size(array('g' => 5)),
-			'background-image' => "url('". $ig->url(
-				array(
-						'w' => $hg->size(array('u' => 1600/4.844), false),
-						'h' => $hg->size(array('g' => 5/2), false),
-						'iw' => 1600,
-						'ih' => 218,
-						'base_name' => 'backstage_site_logo',
-						'layers' => array(
-							array(
-								'type' => 'apply_color', 
-								'color' => $palette['menu_bg']
-							),
-							array(
-								'type' => 'tint_image',
-								'path' => '/img/matrixes/site_logo.png',
-								'color' => $palette['text']
-							)
-						)
-					)
-				)	
-				.  "')",
-			'background-repeat' => 'no-repeat',
-			'background-position' => '0 '. $vg->size(array('g' => (3 - 5/2)))
+			'background' => "transparent 0 $top url($image_url) no-repeat"
 	));
 	
 	$this->Decorator->rule(
-		'#header em', array(
+		'#header #logo em', array(
 			'font-style' => 'normal',
 			'font-weight' => 'bold'
 	)); 
 	
 	$this->Decorator->rule(
-		'#header div.box p', array(
+		'#header #logo p', array(
 			'margin-top' => $vg->size(array('g' => '3', 'm' => 1))
 	));
 	
@@ -649,21 +642,17 @@
 		'#user_area', array(
 			'background-color' => $palette['meta_menu_bg']->write(),
 			'margin-top' => $vg->size(array('g' => 1)),
-			'width' => $hg->size(array('M' => '4')),
 			'height' => $vg->size(array('g' => '2')),
-			'float' => 'right'
 	));
 	
 	$this->Decorator->rule(
 		'#user_area p', array(
-			'display' => 'block',
 			'float' => 'left',
 			'margin-left' => $hg->size(array('g' => 1)),
 			'margin-top' => $hg->size(array('m' => 2))
 	));
 	$this->Decorator->rule(
 		'#user_area a', array(
-			'display' => 'block',
 			'float' => 'right',
 			'margin-right' => $hg->size(array('g' => 1)),
 			'margin-top' => $hg->size(array('m' => 2))
@@ -678,22 +667,21 @@
 	$this->Decorator->rule(
 		'#content',
 		array(
-			'width' => 'auto',
 			'background-color' => $palette['bg']->write(),
 			'border-top' => $u->t(1) . ' solid ' . $palette['menu_border']->write(),
 			'padding' => $vg->size(array('g' => 1)) . ' 0 ' . $vg->size(array('g' => 2)) . ' 0',
-			'position' => 'relative',
-			'z-index' => 1
 		)
 	);
 	
 	$this->Decorator->rule(
+		'#content > div.box', array(
+			'position' => 'relative'
+	));
+	
+	$this->Decorator->rule(
 		'#header .menu',
 		array(
-			'position' => 'absolute',
-			'top' => $u->t(88),
-			'left' => $hg->size(array('m' => 2)),
-			'z-index' => 100
+			'height' => $vg->size(array('g' => 1, 'u' => 2)),
 		)
 	);
 	
@@ -701,12 +689,11 @@
 		'#header .menu a',
 		array(
 			'float' => 'left',
-			'display' => 'block',
 			'height' => $vg->size(array('g' => 1)),
 			'background-color' => $palette['unselected_tab_bg']->write(),
 			'color' => $palette['unselected_tab_text']->write(),
 			'padding' => $vg->size(array('m' => 0.5)) . ' ' . $hg->size(array('g' => 0.5)) . ' 0 ' . $hg->size(array('g' => 0.5)),
-			'margin-right' => $hg->size(array('g' => 0.5)),
+			'margin-left' => $hg->size(array('g' => 0.5)),
 			'border-bottom' => '0 !important'
 		)
 	);
@@ -714,7 +701,7 @@
 	$this->Decorator->rule(
 		'#header .menu a.selected',
 		array(
-			'height' => $vg->size(array('g' => 1.2)),
+			'height' => $vg->size(array('u' => '21')),
 			'background-color' => $palette['bg']->write(),
 			'color' => $palette['text']->write(),
 			'font-weight' => 'bold',
@@ -724,6 +711,12 @@
 			'border-bottom' => '0 !important'
 		)
 	);
+	
+	$this->Decorator->rule(
+		'#header .menu a.menu_item_1_preferences', array(
+			'float' => 'right',
+			'margin-right' => $hg->size(array('g' => 0.5))
+	));
 	
 	$this->Decorator->rule(
 		'#footer div.box',
@@ -904,8 +897,8 @@
 	$this->Decorator->rule(
 		'.pagination', array(
 			'position' => 'absolute',
-			'right' => $hg->size('g'),
-			'top' => $u->t(74),
+			'right' => 0,
+			'top' => $vg->size(array('u' => 2+$line_height, 'm' => 2, 'g' => 1.5)), // total height of a .h1div
 			'z-index' => 1
 	));
 	
@@ -1197,7 +1190,7 @@
 			'clear' => 'left',
 			'width' => 'auto',
 			'height' => $u->t($line_height),
-			'margin' => sprintf('%s %s 0', $hg->size(array('g' => 0.5)), $hg->size(array('g' => 0.5)))
+			'margin' => sprintf('%s %s 0', $hg->size(array('g' => 0.15)), $hg->size(array('g' => 0.5)))
 	));
 	
 	$this->Decorator->rule(

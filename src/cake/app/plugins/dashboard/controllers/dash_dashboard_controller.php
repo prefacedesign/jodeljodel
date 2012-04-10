@@ -4,7 +4,6 @@
  */
  
 App::import('Config','Dashboard.dash');
-define ('LIMIT', Configure::read('Dashboard.limitSize'));
 
 /**
  * 
@@ -16,7 +15,6 @@ class DashDashboardController extends DashboardAppController
 	var $uses = array('Dashboard.DashDashboardItem');
 	var $paginate = array(
 		'DashDashboardItem' => array(
-			'limit' => LIMIT,
 			'contain' => false,
 			'order' => 'modified DESC',
 			'conditions' => array(
@@ -27,11 +25,6 @@ class DashDashboardController extends DashboardAppController
 	var $components = array('Session', 'RequestHandler');
 	var $helpers = array('Text');
 
-
-	function beforeFilter()
-	{
-		parent::beforeFilter();
-	}
 
 /**
  * This is the actual dashboard page.
@@ -108,7 +101,7 @@ class DashDashboardController extends DashboardAppController
 			
 		$this->paginate = array(
 			'DashDashboardItem' => array(
-				'limit' => LIMIT,
+				'limit' => Configure::read('Dashboard.limitSize'),
 				'contain' => false,
 				'order' => 'modified DESC',
 				'conditions' => $conditions,

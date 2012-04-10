@@ -4,935 +4,871 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-08-29 17:09-0300\n"
-"PO-Revision-Date: 2011-09-09 11:47-0300\n"
-"Last-Translator: Daniel <daniel@preface.com.br>\n"
+"POT-Creation-Date: 2012-04-02 07:52-0400\n"
+"PO-Revision-Date: 2012-04-02 07:55-0400\n"
+"Last-Translator: Daniel Abrahão <daniel@preface.com.br>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: \config\bootstrap.php:50
+#: /app_controller.php:159
+msgid "Jodel Jodel internal error"
+msgstr ""
+
+#: /config/bootstrap.php:50
 msgid "MODULE Person human name"
 msgstr ""
 
-#: \config\bootstrap.php:55
+#: /config/bootstrap.php:56
 msgid "MODULE Gallery human name"
 msgstr ""
 
-#: \config\bootstrap.php:62
+#: /config/bootstrap.php:61
 msgid "MODULE TextTextCork human name"
 msgstr ""
 
-#: \config\bootstrap.php:69
+#: /config/bootstrap.php:66
+msgid "MODULE CsCork human name"
+msgstr ""
+
+#: /config/bootstrap.php:71
 msgid "MODULE CorkCorkTile human name"
 msgstr ""
 
-#: \config\bootstrap.php:125
+#: /config/bootstrap.php:127
 msgid "%d-%d de %s de %d"
 msgstr ""
 
-#: \config\bootstrap.php:135
+#: /config/bootstrap.php:137
 msgid "%d de %s a %d de %s de %d"
 msgstr ""
 
-#: \plugins\backstage\views\elements\language_edit_select.ctp:11
-#: \plugins\backstage\views\elements\language_show_edited_language.ctp:11
+#: /plugins/backstage/views/elements/language_edit_select.ctp:11
+#: /plugins/backstage/views/elements/language_show_edited_language.ctp:11
 msgid "anchorList and"
 msgstr "e"
 
-#: \plugins\backstage\views\elements\language_edit_select.ctp:35
-#: \plugins\backstage\views\elements\language_show_edited_language.ctp:35
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:52;66
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:700
+#: /plugins/backstage/views/elements/language_edit_select.ctp:35
+#: /plugins/backstage/views/elements/language_show_edited_language.ctp:35
+#: /plugins/burocrata/views/helpers/backstage_buro_burocrata.php:52;66
+#: /plugins/burocrata/views/helpers/buro_burocrata.php:1593
 msgid "anchorList or"
 msgstr "ou"
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:330
-msgid "Burocrata: default save button"
-msgstr "Salvar"
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:600
-msgid "Burocrata::submit - Submit label"
-msgstr "Enviar"
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:611;690
-msgid "Burocrata::okOrCancel - Cancel label"
-msgstr "Cancelar"
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:672
-msgid "Burocrata::okOrCancel - OK label"
-msgstr "Ok"
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:910
-msgid "Burocrata: nothing found on autocomplete."
-msgstr "Nada encontrado."
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1013;1667
-msgid "Burocrata: create a new related item"
-msgstr "Criar um novo"
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1014;1668
-msgid "Burocrata: edit related data"
-msgstr "Editar"
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1015
-msgid "Burocrata: nothing found on autocomplete"
-msgstr "Nada encontrado."
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1016
-msgid "Burocrata: choose another related item"
-msgstr "Escolher um outro"
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1017
-msgid "Burocrata: Bring last item back"
-msgstr "Usar último item"
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1413
-msgid "Burocrata::orderdItensMenu - close list"
-msgstr "Cancelar"
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1509
-msgid "Burocrata::orderedItensControls - up"
-msgstr "Mover pra cima"
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1515
-msgid "Burocrata::orderedItensControls - down"
-msgstr "Mover pra baixo"
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1521
-msgid "Burocrata::orderedItensControls - delete"
-msgstr "Excluir"
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1527
-msgid "Burocrata::orderedItensControls - duplicate"
-msgstr "Duplicar"
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1533
-msgid "Burocrata::orderedItensControls - edit"
-msgstr "Editar"
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1669
-msgid "Burocrata: view related data"
-msgstr "Ver dados completos"
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1670
-msgid "Burocrata: unlink related data"
-msgstr "Remover"
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:1671
-msgid "Burocrata: confirm unlinking"
-msgstr "Deseja remover mesmo?"
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2094
-msgid "Burocrata::inputUpload - Change file"
-msgstr "Alterar"
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2122
-msgid "Burocrata::inputUpload - Download file"
-msgstr "Baixar arquivo"
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2126
-msgid "Burocrata::inputUpload - File: "
-msgstr "Arquivo:"
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2156
-msgid "Burocrata::inputImage - Change image"
-msgstr "Alterar essa imagem"
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2158
-msgid "Burocrata::inputImage - Remove  image"
-msgstr "Remover essa imagem"
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2197
-msgid "Burocrata::inputImage - or "
-msgstr " ou "
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2277
-msgid "Burocrata::inputTextile - Preview"
-msgstr "Visualizar"
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2318
-msgid "Burocrata::_popupTextileLink - Instructions for link"
+#: /plugins/backstage/views/elements/show_language_being_edited.ctp:27
+msgid "Backstage edit page: publish"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2319
-msgid "Burocrata::_popupTextileLink - What is the text for this link"
-msgstr "Qual é o texto para esse link?"
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2320
-msgid "Burocrata::_popupTextileLink - What is the URL of this link"
-msgstr "Qual é o endereço para o link?"
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2321
-msgid "Burocrata::_popupTextileLink - Title of link popup"
-msgstr "Link"
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2353
-msgid "Burocrata::_popupTextileTitle - Instructions for link"
+#: /plugins/backstage/views/elements/show_language_being_edited.ctp:29;34
+msgid "Backstage edit page: Could change publishing status: communication error."
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2354
-msgid "Burocrata::_popupTextileTitle - What is the type of this title"
+#: /plugins/backstage/views/elements/show_language_being_edited.ctp:32
+msgid "Backstage edit page: mark it as draft"
 msgstr ""
 
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2355
-msgid "Burocrata::_popupTextileTitle - Title"
-msgstr ""
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2356
-msgid "Burocrata::_popupTextileTitle - Subtitle"
-msgstr ""
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2357
-msgid "Burocrata::_popupTextileTitle - What is the title"
-msgstr ""
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2358
-msgid "Burocrata::_popupTextileTitle - Title of title popup"
-msgstr ""
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2402
-msgid "Burocrata::_popupTextilePreview - Title of preview popup"
-msgstr ""
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2427
-msgid "Burocrata::_popupTextileFile - Title of `add file` popup"
-msgstr ""
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2428
-msgid "Burocrata::_popupTextileFile - Label of file input"
-msgstr ""
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2466
-msgid "Burocrata::_popupTextileImage - Title of `add image` popup"
-msgstr ""
-
-#: \plugins\burocrata\views\helpers\buro_burocrata.php:2467
-msgid "Burocrata::_popupTextileImage - Label of file input"
-msgstr ""
-
-#: \plugins\corktile\models\cork_corktile.php:76
+#: /plugins/corktile/models/cork_corktile.php:89
 msgid "CorkCorktile Model: Could not save the CorkContent"
 msgstr ""
 
-#: \plugins\corktile\models\cork_corktile.php:92
+#: /plugins/corktile/models/cork_corktile.php:105
 msgid "CorkCorktile Model: Could not save the Cork meta data"
 msgstr ""
 
-#: \plugins\corktile\models\cork_corktile.php:113
+#: /plugins/corktile/models/cork_corktile.php:125
 msgid "CorkCorktile Model: Could not update the Cork meta data"
 msgstr ""
 
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:4
-msgid "Corktile edit page: Editing a fixed content"
-msgstr ""
-
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:25
-msgid "Corktile edit page: Your data cannot be saved - TITLE."
-msgstr ""
-
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:26
-msgid "Corktile edit page: Your data cannot be saved - TEXT."
-msgstr ""
-
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:32
-msgid "Corktile edit page: Your data has been saved - TITLE."
-msgstr ""
-
-#: \plugins\corktile\views\cork_corktiles\edit.ctp:33
-msgid "Corktile edit page: Your data has been saved - TEXT."
-msgstr ""
-
-#: \plugins\dashboard\views\dash_dashboard\table_examples.ctp:4
+#: /plugins/dashboard/views/dash_dashboard/table_examples.ctp:4
 msgid "Backstage index page: Page title - Dashboard"
 msgstr ""
 
-#: \plugins\jj_utils\vendors\shells\jj_console.php:13
+#: /plugins/jj_utils/vendors/shells/jj_console.php:13
 msgid "JjConsoleShell::main What is the command to execute? Say \"quit\" to exit, \"help\" to achieve help."
 msgstr ""
 
-#: \plugins\jj_utils\vendors\shells\jj_console.php:38
+#: /plugins/jj_utils/vendors/shells/jj_console.php:38
 msgid "This is the help"
 msgstr ""
 
-#: \plugins\media\vendors\shells\media.php:94
+#: /plugins/media/vendors/shells/media.php:94
 msgid "What would you like to do?"
 msgstr ""
 
-#: \plugins\media\views\elements\attachments.ctp:59
+#: /plugins/media/views/elements/attachments.ctp:59
 msgid "%s"
 msgstr ""
 
-#: \plugins\media\views\elements\attachments.ctp:70
+#: /plugins/media/views/elements/attachments.ctp:70
 msgid "File"
 msgstr ""
 
-#: \plugins\media\views\elements\attachments.ctp:73
+#: /plugins/media/views/elements/attachments.ctp:73
 msgid "An error occured while transferring the file."
 msgstr ""
 
-#: \plugins\media\views\elements\attachments.ctp:74
+#: /plugins/media/views/elements/attachments.ctp:74
 msgid "The file is invalid."
 msgstr ""
 
-#: \plugins\media\views\elements\attachments.ctp:75
+#: /plugins/media/views/elements/attachments.ctp:75
 msgid "The file cannot be processed."
 msgstr ""
 
-#: \plugins\media\views\elements\attachments.ctp:76
+#: /plugins/media/views/elements/attachments.ctp:76
 msgid "The file cannot be transferred from or to location."
 msgstr ""
 
-#: \plugins\media\views\elements\attachments.ctp:77
+#: /plugins/media/views/elements/attachments.ctp:77
 msgid "Executable files cannot be uploaded."
 msgstr ""
 
-#: \plugins\media\views\elements\attachments.ctp:78;79
+#: /plugins/media/views/elements/attachments.ctp:78;79
 msgid "The file is too large."
 msgstr ""
 
-#: \plugins\media\views\elements\attachments.ctp:80
+#: /plugins/media/views/elements/attachments.ctp:80
 msgid "The file has the wrong extension."
 msgstr ""
 
-#: \plugins\media\views\elements\attachments.ctp:81
+#: /plugins/media/views/elements/attachments.ctp:81
 msgid "The file has the wrong MIME type."
 msgstr ""
 
-#: \plugins\media\views\elements\attachments.ctp:84
+#: /plugins/media/views/elements/attachments.ctp:84
 msgid "Textual replacement"
 msgstr ""
 
-#: \plugins\media\views\elements\attachments.ctp:86
+#: /plugins/media/views/elements/attachments.ctp:86
 msgid "A textual replacement must be provided."
 msgstr ""
 
-#: \plugins\media\views\elements\attachments.ctp:129
+#: /plugins/media/views/elements/attachments.ctp:129
 msgid "Release"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:84
+#: /plugins/page_sections/config/sections.php:84
 msgid "Sections: public_page linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:91;92
+#: /plugins/page_sections/config/sections.php:91;92
 msgid "Sections: public_page pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:93
+#: /plugins/page_sections/config/sections.php:93
 msgid "Sections: public_page humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:96
+#: /plugins/page_sections/config/sections.php:96
 msgid "Sections: about linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:102
+#: /plugins/page_sections/config/sections.php:102
 msgid "Sections: about pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:103
+#: /plugins/page_sections/config/sections.php:103
 msgid "Sections: about headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:104
+#: /plugins/page_sections/config/sections.php:104
 msgid "Sections: about humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:109
+#: /plugins/page_sections/config/sections.php:109
 msgid "Sections: about_dinafon linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:115
+#: /plugins/page_sections/config/sections.php:115
 msgid "Sections: about_dinafon pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:116
+#: /plugins/page_sections/config/sections.php:116
 msgid "Sections: about_dinafon headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:117
+#: /plugins/page_sections/config/sections.php:117
 msgid "Sections: about_dinafon humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:120
+#: /plugins/page_sections/config/sections.php:120
 msgid "Sections: people linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:126
+#: /plugins/page_sections/config/sections.php:126
 msgid "Sections: people pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:127
+#: /plugins/page_sections/config/sections.php:127
 msgid "Sections: people headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:128
+#: /plugins/page_sections/config/sections.php:128
 msgid "Sections: people humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:131
+#: /plugins/page_sections/config/sections.php:131
 msgid "Sections: profile linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:137
+#: /plugins/page_sections/config/sections.php:137
 msgid "Sections: profile pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:138
+#: /plugins/page_sections/config/sections.php:138
 msgid "Sections: profile headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:139
+#: /plugins/page_sections/config/sections.php:139
 msgid "Sections: profile humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:146
+#: /plugins/page_sections/config/sections.php:146
 msgid "Sections: contact linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:152
+#: /plugins/page_sections/config/sections.php:152
 msgid "Sections: contact pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:153
+#: /plugins/page_sections/config/sections.php:153
 msgid "Sections: contact headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:154
+#: /plugins/page_sections/config/sections.php:154
 msgid "Sections: contact humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:157
+#: /plugins/page_sections/config/sections.php:157
 msgid "Sections: papers linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:163
+#: /plugins/page_sections/config/sections.php:163
 msgid "Sections: papers pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:164
+#: /plugins/page_sections/config/sections.php:164
 msgid "Sections: papers headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:165
+#: /plugins/page_sections/config/sections.php:165
 msgid "Sections: papers humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:169
+#: /plugins/page_sections/config/sections.php:169
 msgid "Sections: papers_index linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:175
+#: /plugins/page_sections/config/sections.php:175
 msgid "Sections: papers_index pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:176
+#: /plugins/page_sections/config/sections.php:176
 msgid "Sections: papers_index headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:177
+#: /plugins/page_sections/config/sections.php:177
 msgid "Sections: papers_index humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:180
+#: /plugins/page_sections/config/sections.php:180
 msgid "Sections: one_paper linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:187
+#: /plugins/page_sections/config/sections.php:187
 msgid "Sections: one_paper pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:188
+#: /plugins/page_sections/config/sections.php:188
 msgid "Sections: one_paper headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:189
+#: /plugins/page_sections/config/sections.php:189
 msgid "Sections: one_paper humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:194
+#: /plugins/page_sections/config/sections.php:194
 msgid "Sections: events linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:200
+#: /plugins/page_sections/config/sections.php:200
 msgid "Sections: events pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:201
+#: /plugins/page_sections/config/sections.php:201
 msgid "Sections: events headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:202
+#: /plugins/page_sections/config/sections.php:202
 msgid "Sections: events humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:206
+#: /plugins/page_sections/config/sections.php:206
 msgid "Sections: events_index linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:213
+#: /plugins/page_sections/config/sections.php:213
 msgid "Sections: events_index pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:214
+#: /plugins/page_sections/config/sections.php:214
 msgid "Sections: events_index headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:215
+#: /plugins/page_sections/config/sections.php:215
 msgid "Sections: events_index humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:220
+#: /plugins/page_sections/config/sections.php:220
 msgid "Sections: news linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:226
+#: /plugins/page_sections/config/sections.php:226
 msgid "Sections: news pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:227
+#: /plugins/page_sections/config/sections.php:227
 msgid "Sections: news headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:228
+#: /plugins/page_sections/config/sections.php:228
 msgid "Sections: news humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:232
+#: /plugins/page_sections/config/sections.php:232
 msgid "Sections: news_index linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:238
+#: /plugins/page_sections/config/sections.php:238
 msgid "Sections: news_index pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:239
+#: /plugins/page_sections/config/sections.php:239
 msgid "Sections: news_index headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:240
+#: /plugins/page_sections/config/sections.php:240
 msgid "Sections: news_index humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:243
+#: /plugins/page_sections/config/sections.php:243
 msgid "Sections: news_item linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:250
+#: /plugins/page_sections/config/sections.php:250
 msgid "Sections: news_item pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:251
+#: /plugins/page_sections/config/sections.php:251
 msgid "Sections: news_item headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:252
+#: /plugins/page_sections/config/sections.php:252
 msgid "Sections: news_item humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:259
+#: /plugins/page_sections/config/sections.php:259
 msgid "Sections: backstage linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:268
+#: /plugins/page_sections/config/sections.php:268
 msgid "Sections: backstage pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:269
+#: /plugins/page_sections/config/sections.php:269
 msgid "Sections: backstage headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:270
+#: /plugins/page_sections/config/sections.php:270
 msgid "Sections: backstage humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:273
+#: /plugins/page_sections/config/sections.php:273
 msgid "Sections: login linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:280
+#: /plugins/page_sections/config/sections.php:281
 msgid "Sections: login pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:281
+#: /plugins/page_sections/config/sections.php:282
 msgid "Sections: login headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:282
+#: /plugins/page_sections/config/sections.php:283
 msgid "Sections: login humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:285
-msgid "Sections: example linkCaption"
-msgstr ""
-
-#: \plugins\page_sections\config\sections.php:288
-msgid "Sections: example pageTitle"
-msgstr ""
-
-#: \plugins\page_sections\config\sections.php:289
-msgid "Sections: example headerCaption"
-msgstr ""
-
-#: \plugins\page_sections\config\sections.php:290
-msgid "Sections: example humanName"
-msgstr ""
-
-#: \plugins\page_sections\config\sections.php:293
+#: /plugins/page_sections/config/sections.php:286
 msgid "Sections: dashboard linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:300
+#: /plugins/page_sections/config/sections.php:293
 msgid "Sections: dashboard pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:301
+#: /plugins/page_sections/config/sections.php:294
 msgid "Sections: dashboard headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:302
+#: /plugins/page_sections/config/sections.php:295
 msgid "Sections: dashboard humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:305
+#: /plugins/page_sections/config/sections.php:298
+msgid "Sections: example linkCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:301
+msgid "Sections: example pageTitle"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:302
+msgid "Sections: example headerCaption"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:303
+msgid "Sections: example humanName"
+msgstr ""
+
+#: /plugins/page_sections/config/sections.php:306
+msgid "Sections: preferences linkCaption"
+msgstr "Preferências"
+
+#: /plugins/page_sections/config/sections.php:307
+msgid "Sections: preferences pageTitle"
+msgstr "Preferências"
+
+#: /plugins/page_sections/config/sections.php:308
+msgid "Sections: preferences headerCaption"
+msgstr "Preferências de usuário"
+
+#: /plugins/page_sections/config/sections.php:309
+msgid "Sections: preferences humanName"
+msgstr "Preferências de usuário"
+
+#: /plugins/page_sections/config/sections.php:314
 msgid "Sections: burocrata_save linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:315;325
+#: /plugins/page_sections/config/sections.php:324;334
 msgid "Sections: set_publishing_status linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:335
+#: /plugins/page_sections/config/sections.php:344
 msgid "Sections: corktile_edit linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:343
+#: /plugins/page_sections/config/sections.php:352
 msgid "Sections: corktile_edit pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:344
+#: /plugins/page_sections/config/sections.php:353
 msgid "Sections: corktile_edit headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:345
+#: /plugins/page_sections/config/sections.php:354
 msgid "Sections: corktile_edit humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:348
+#: /plugins/page_sections/config/sections.php:357
 msgid "Sections: edit linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:356
+#: /plugins/page_sections/config/sections.php:365
 msgid "Sections: edit pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:357
+#: /plugins/page_sections/config/sections.php:366
 msgid "Sections: edit headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:358
+#: /plugins/page_sections/config/sections.php:367
 msgid "Sections: edit humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:361
+#: /plugins/page_sections/config/sections.php:370
 msgid "Sections: news_edit linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:370
+#: /plugins/page_sections/config/sections.php:379
 msgid "Sections: news_edit pageTitle"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:371
+#: /plugins/page_sections/config/sections.php:380
 msgid "Sections: news_edit headerCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:372
+#: /plugins/page_sections/config/sections.php:381
 msgid "Sections: news_edit humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:375
+#: /plugins/page_sections/config/sections.php:384
 msgid "Sections: news_form linkCaption"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:383
+#: /plugins/page_sections/config/sections.php:392
 msgid "Sections: news_form humanName"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:392
+#: /plugins/page_sections/config/sections.php:401
 msgid "Section One"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:400
+#: /plugins/page_sections/config/sections.php:409
 msgid "The Section One"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:401
+#: /plugins/page_sections/config/sections.php:410
 msgid "The Section One Header"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:402
+#: /plugins/page_sections/config/sections.php:411
 msgid "The Human Section One name"
 msgstr ""
 
-#: \plugins\page_sections\config\sections.php:406
+#: /plugins/page_sections/config/sections.php:415
 msgid "Section Two"
 msgstr ""
 
-#: \plugins\tags\views\tags\admin_add.ctp:16
+#: /plugins/tags/views/tags/admin_add.ctp:16
 msgid "Add %s"
 msgstr ""
 
-#: \plugins\tags\views\tags\admin_add.ctp:16
-#: \plugins\tags\views\tags\admin_edit.ctp:16
-#: \plugins\tags\views\tags\admin_index.ctp:78
-#: \plugins\tags\views\tags\admin_view.ctp:14;55;56;58
-#: \plugins\tags\views\tags\view.ctp:14
+#: /plugins/tags/views/tags/admin_add.ctp:16
+#: /plugins/tags/views/tags/admin_edit.ctp:16
+#: /plugins/tags/views/tags/admin_index.ctp:78
+#: /plugins/tags/views/tags/admin_view.ctp:14;55;56;58
+#: /plugins/tags/views/tags/view.ctp:14
 msgid "Tag"
 msgstr ""
 
-#: \plugins\tags\views\tags\admin_add.ctp:21
-#: \plugins\tags\views\tags\admin_edit.ctp:24
+#: /plugins/tags/views/tags/admin_add.ctp:21
+#: /plugins/tags/views/tags/admin_edit.ctp:24
 msgid "Submit"
 msgstr ""
 
-#: \plugins\tags\views\tags\admin_add.ctp:25
-#: \plugins\tags\views\tags\admin_edit.ctp:29
-#: \plugins\tags\views\tags\admin_view.ctp:57
-#: \plugins\tags\views\tags\view.ctp:55
+#: /plugins/tags/views/tags/admin_add.ctp:25
+#: /plugins/tags/views/tags/admin_edit.ctp:29
+#: /plugins/tags/views/tags/admin_view.ctp:57
+#: /plugins/tags/views/tags/view.ctp:55
 msgid "List %s"
 msgstr ""
 
-#: \plugins\tags\views\tags\admin_add.ctp:25
-#: \plugins\tags\views\tags\admin_edit.ctp:29
-#: \plugins\tags\views\tags\admin_index.ctp:14
-#: \plugins\tags\views\tags\admin_view.ctp:57
-#: \plugins\tags\views\tags\index.ctp:14
-#: \plugins\tags\views\tags\view.ctp:55
+#: /plugins/tags/views/tags/admin_add.ctp:25
+#: /plugins/tags/views/tags/admin_edit.ctp:29
+#: /plugins/tags/views/tags/admin_index.ctp:14
+#: /plugins/tags/views/tags/admin_view.ctp:57
+#: /plugins/tags/views/tags/index.ctp:14
+#: /plugins/tags/views/tags/view.ctp:55
 msgid "Tags"
 msgstr ""
 
-#: \plugins\tags\views\tags\admin_edit.ctp:16
-#: \plugins\tags\views\tags\admin_view.ctp:55
+#: /plugins/tags/views/tags/admin_edit.ctp:16
+#: /plugins/tags/views/tags/admin_view.ctp:55
 msgid "Edit %s"
 msgstr ""
 
-#: \plugins\tags\views\tags\admin_edit.ctp:28
-#: \plugins\tags\views\tags\admin_index.ctp:65
+#: /plugins/tags/views/tags/admin_edit.ctp:28
+#: /plugins/tags/views/tags/admin_index.ctp:65
 msgid "Delete"
 msgstr ""
 
-#: \plugins\tags\views\tags\admin_edit.ctp:28
-#: \plugins\tags\views\tags\admin_index.ctp:65
-#: \plugins\tags\views\tags\admin_view.ctp:56
+#: /plugins/tags/views/tags/admin_edit.ctp:28
+#: /plugins/tags/views/tags/admin_index.ctp:65
+#: /plugins/tags/views/tags/admin_view.ctp:56
 msgid "Are you sure you want to delete # %s?"
 msgstr ""
 
-#: \plugins\tags\views\tags\admin_index.ctp:18
-#: \plugins\tags\views\tags\index.ctp:18
+#: /plugins/tags/views/tags/admin_index.ctp:18
+#: /plugins/tags/views/tags/index.ctp:18
 msgid "Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%"
 msgstr ""
 
-#: \plugins\tags\views\tags\admin_index.ctp:30
-#: \plugins\tags\views\tags\index.ctp:30
+#: /plugins/tags/views/tags/admin_index.ctp:30
+#: /plugins/tags/views/tags/index.ctp:30
 msgid "Actions"
 msgstr ""
 
-#: \plugins\tags\views\tags\admin_index.ctp:63
-#: \plugins\tags\views\tags\index.ctp:63
+#: /plugins/tags/views/tags/admin_index.ctp:63
+#: /plugins/tags/views/tags/index.ctp:63
 msgid "View"
 msgstr ""
 
-#: \plugins\tags\views\tags\admin_index.ctp:64
+#: /plugins/tags/views/tags/admin_index.ctp:64
 msgid "Edit"
 msgstr ""
 
-#: \plugins\tags\views\tags\admin_index.ctp:72
-#: \plugins\tags\views\tags\index.ctp:70
+#: /plugins/tags/views/tags/admin_index.ctp:72
+#: /plugins/tags/views/tags/index.ctp:70
 msgid "previous"
 msgstr ""
 
-#: \plugins\tags\views\tags\admin_index.ctp:74
-#: \plugins\tags\views\tags\index.ctp:72
+#: /plugins/tags/views/tags/admin_index.ctp:74
+#: /plugins/tags/views/tags/index.ctp:72
 msgid "next"
 msgstr ""
 
-#: \plugins\tags\views\tags\admin_index.ctp:78
-#: \plugins\tags\views\tags\admin_view.ctp:58
+#: /plugins/tags/views/tags/admin_index.ctp:78
+#: /plugins/tags/views/tags/admin_view.ctp:58
 msgid "New %s"
 msgstr ""
 
-#: \plugins\tags\views\tags\admin_view.ctp:16
-#: \plugins\tags\views\tags\view.ctp:16
+#: /plugins/tags/views/tags/admin_view.ctp:16
+#: /plugins/tags/views/tags/view.ctp:16
 msgid "Id"
 msgstr ""
 
-#: \plugins\tags\views\tags\admin_view.ctp:21
-#: \plugins\tags\views\tags\view.ctp:21
+#: /plugins/tags/views/tags/admin_view.ctp:21
+#: /plugins/tags/views/tags/view.ctp:21
 msgid "Identifier"
 msgstr ""
 
-#: \plugins\tags\views\tags\admin_view.ctp:26
-#: \plugins\tags\views\tags\view.ctp:26
+#: /plugins/tags/views/tags/admin_view.ctp:26
+#: /plugins/tags/views/tags/view.ctp:26
 msgid "Name"
 msgstr ""
 
-#: \plugins\tags\views\tags\admin_view.ctp:31
-#: \plugins\tags\views\tags\view.ctp:31
+#: /plugins/tags/views/tags/admin_view.ctp:31
+#: /plugins/tags/views/tags/view.ctp:31
 msgid "Keyname"
 msgstr ""
 
-#: \plugins\tags\views\tags\admin_view.ctp:36
-#: \plugins\tags\views\tags\view.ctp:36
+#: /plugins/tags/views/tags/admin_view.ctp:36
+#: /plugins/tags/views/tags/view.ctp:36
 msgid "Weight"
 msgstr ""
 
-#: \plugins\tags\views\tags\admin_view.ctp:41
-#: \plugins\tags\views\tags\view.ctp:41
+#: /plugins/tags/views/tags/admin_view.ctp:41
+#: /plugins/tags/views/tags/view.ctp:41
 msgid "Created"
 msgstr ""
 
-#: \plugins\tags\views\tags\admin_view.ctp:46
-#: \plugins\tags\views\tags\view.ctp:46
+#: /plugins/tags/views/tags/admin_view.ctp:46
+#: /plugins/tags/views/tags/view.ctp:46
 msgid "Modified"
 msgstr ""
 
-#: \plugins\tags\views\tags\admin_view.ctp:56
+#: /plugins/tags/views/tags/admin_view.ctp:56
 msgid "Delete %s"
 msgstr ""
 
-#: \plugins\text_cork\models\text_text_cork.php:37
+#: /plugins/text_cork/models/text_text_cork.php:37
 msgid "TextTextCork Model: This text hasn't been written yet. It's up to the site content editor to write it."
 msgstr ""
 
-#: \plugins\text_cork\views\elements\text_text_cork.ctp:43;52
-msgid "Cork Form - TextTextCork.text"
-msgstr ""
-
-#: \plugins\text_cork\views\elements\text_text_cork.ctp:44;53
-msgid "Cork Form - TextTextCork.text - instructions"
-msgstr ""
-
-#: \plugins\typographer\views\elements\backstage_layout.ctp:18
+#: /plugins/typographer/views/elements/backstage_layout.ctp:18
 msgid "Content management area"
 msgstr "Página administrativa"
 
-#: \plugins\typographer\views\elements\backstage_layout.ctp:31
+#: /plugins/typographer/views/elements/backstage_layout.ctp:27
 msgid "Logout"
 msgstr "Deslogar-se"
 
-#: \plugins\typographer\views\elements\backstage_layout.ctp:43
+#: /plugins/typographer/views/elements/backstage_layout.ctp:41
 msgid "Powered by Jodel Jodel"
 msgstr "Poderificado por Jodel Jodel"
 
-#: \plugins\typographer\views\elements\backstage_layout.ctp:46
+#: /plugins/typographer/views/elements/backstage_layout.ctp:44
 msgid "This site, alongside its public version, was developed by "
 msgstr "Este site, assim como sua versão pública, foi desenvolvido pela "
 
-#: \plugins\typographer\views\elements\dinafon_layout.ctp:61
+#: /plugins/typographer/views/elements/dinafon_layout.ctp:61
 msgid "Dinafon layout: switch language"
 msgstr ""
 
-#: \plugins\typographer\views\elements\dinafon_layout.ctp:178
+#: /plugins/typographer/views/elements/dinafon_layout.ctp:178
 msgid "Dinafon layout: short description about Dinafon"
 msgstr ""
 
-#: \plugins\typographer\views\elements\dinafon_layout.ctp:187
+#: /plugins/typographer/views/elements/dinafon_layout.ctp:187
 msgid "Dinafon layout: e-mail label"
 msgstr ""
 
-#: \plugins\typographer\views\elements\dinafon_layout.ctp:188
+#: /plugins/typographer/views/elements/dinafon_layout.ctp:188
 msgid "Dinafon layout: e-mail of dinafon"
 msgstr ""
 
-#: \plugins\typographer\views\elements\dinafon_layout.ctp:189
+#: /plugins/typographer/views/elements/dinafon_layout.ctp:189
 msgid "Dinafon layout: phone label"
 msgstr ""
 
-#: \plugins\typographer\views\elements\dinafon_layout.ctp:190
+#: /plugins/typographer/views/elements/dinafon_layout.ctp:190
 msgid "Dinafon layout: phone of dinafon "
 msgstr ""
 
-#: \plugins\typographer\views\elements\dinafon_layout.ctp:191
+#: /plugins/typographer/views/elements/dinafon_layout.ctp:191
 msgid "Dinafon layout: address label"
 msgstr ""
 
-#: \plugins\typographer\views\elements\dinafon_layout.ctp:192
+#: /plugins/typographer/views/elements/dinafon_layout.ctp:192
 msgid "Dinafon layout: address line 1"
 msgstr ""
 
-#: \plugins\typographer\views\elements\dinafon_layout.ctp:193
+#: /plugins/typographer/views/elements/dinafon_layout.ctp:193
 msgid "Dinafon layout: address line 2"
 msgstr ""
 
-#: \plugins\typographer\views\elements\dinafon_layout.ctp:194
+#: /plugins/typographer/views/elements/dinafon_layout.ctp:194
 msgid "Dinafon layout: address line 3"
 msgstr ""
 
-#: \plugins\typographer\views\elements\dinafon_layout.ctp:195
+#: /plugins/typographer/views/elements/dinafon_layout.ctp:195
 msgid "Dinafon layout: address line 4"
 msgstr ""
 
-#: \plugins\typographer\views\elements\dinafon_layout.ctp:196
+#: /plugins/typographer/views/elements/dinafon_layout.ctp:196
 msgid "Dinafon layout: address line 5"
 msgstr ""
 
-#: \plugins\typographer\views\elements\dinafon_layout.ctp:202
+#: /plugins/typographer/views/elements/dinafon_layout.ctp:202
 msgid "Layout e programação por %s"
 msgstr ""
 
-#: \views\pages\home.ctp:12
+#: /views/errors/error404.ctp:4
+msgid "The requested address %s was not found on this server."
+msgstr ""
+
+#: /views/pages/home.ctp:12
 msgid "Your tmp directory is writable."
 msgstr ""
 
-#: \views\pages\home.ctp:16
+#: /views/pages/home.ctp:16
 msgid "Your tmp directory is NOT writable."
 msgstr ""
 
-#: \views\pages\home.ctp:26
+#: /views/pages/home.ctp:26
 msgid "The %s is being used for caching. To change the config edit APP/config/core.php "
 msgstr ""
 
-#: \views\pages\home.ctp:30
+#: /views/pages/home.ctp:30
 msgid "Your cache is NOT working. Please check the settings in APP/config/core.php"
 msgstr ""
 
-#: \views\pages\home.ctp:40
+#: /views/pages/home.ctp:40
 msgid "Your database configuration file is present."
 msgstr ""
 
-#: \views\pages\home.ctp:45
+#: /views/pages/home.ctp:45
 msgid "Your database configuration file is NOT present."
 msgstr ""
 
-#: \views\pages\home.ctp:47
+#: /views/pages/home.ctp:47
 msgid "Rename config/database.php.default to config/database.php"
 msgstr ""
 
-#: \views\pages\home.ctp:64
+#: /views/pages/home.ctp:64
 msgid "Cake is able to connect to the database."
 msgstr ""
 
-#: \views\pages\home.ctp:68
+#: /views/pages/home.ctp:68
 msgid "Cake is NOT able to connect to the database."
 msgstr ""
 
-#: \views\pages\home.ctp:74
+#: /views/pages/home.ctp:74
 msgid "Editing this Page"
 msgstr ""
 
-#: \views\pages\home.ctp:77
+#: /views/pages/home.ctp:77
 msgid ""
 "To change the content of this page, edit: %s\n"
 "\t\tTo change its layout, edit: %s\n"
 "\t\tYou can also add some CSS styles for your pages at: %s"
 msgstr ""
 
-#: \webroot\test.php:88
+#: /webroot/test.php:88
 msgid "Debug setting does not allow access to this url."
 msgstr ""
+
+#~ msgid "Burocrata: default save button"
+#~ msgstr "Salvar"
+
+#~ msgid "Burocrata::submit - Submit label"
+#~ msgstr "Enviar"
+
+#~ msgid "Burocrata::okOrCancel - Cancel label"
+#~ msgstr "Cancelar"
+
+#~ msgid "Burocrata::okOrCancel - OK label"
+#~ msgstr "Ok"
+
+#~ msgid "Burocrata: nothing found on autocomplete."
+#~ msgstr "Nada encontrado."
+
+#~ msgid "Burocrata: create a new related item"
+#~ msgstr "Criar um novo"
+
+#~ msgid "Burocrata: edit related data"
+#~ msgstr "Editar"
+
+#~ msgid "Burocrata: nothing found on autocomplete"
+#~ msgstr "Nada encontrado."
+
+#~ msgid "Burocrata: choose another related item"
+#~ msgstr "Escolher um outro"
+
+#~ msgid "Burocrata: Bring last item back"
+#~ msgstr "Usar último item"
+
+#~ msgid "Burocrata::orderdItensMenu - close list"
+#~ msgstr "Cancelar"
+
+#~ msgid "Burocrata::orderedItensControls - up"
+#~ msgstr "Mover pra cima"
+
+#~ msgid "Burocrata::orderedItensControls - down"
+#~ msgstr "Mover pra baixo"
+
+#~ msgid "Burocrata::orderedItensControls - delete"
+#~ msgstr "Excluir"
+
+#~ msgid "Burocrata::orderedItensControls - duplicate"
+#~ msgstr "Duplicar"
+
+#~ msgid "Burocrata::orderedItensControls - edit"
+#~ msgstr "Editar"
+
+#~ msgid "Burocrata: view related data"
+#~ msgstr "Ver dados completos"
+
+#~ msgid "Burocrata: unlink related data"
+#~ msgstr "Remover"
+
+#~ msgid "Burocrata: confirm unlinking"
+#~ msgstr "Deseja remover mesmo?"
+
+#~ msgid "Burocrata::inputUpload - Change file"
+#~ msgstr "Alterar"
+
+#~ msgid "Burocrata::inputUpload - Download file"
+#~ msgstr "Baixar arquivo"
+
+#~ msgid "Burocrata::inputUpload - File: "
+#~ msgstr "Arquivo:"
+
+#~ msgid "Burocrata::inputImage - Change image"
+#~ msgstr "Alterar essa imagem"
+
+#~ msgid "Burocrata::inputImage - Remove  image"
+#~ msgstr "Remover essa imagem"
+
+#~ msgid "Burocrata::inputImage - or "
+#~ msgstr " ou "
+
+#~ msgid "Burocrata::inputTextile - Preview"
+#~ msgstr "Visualizar"
+
+#~ msgid "Burocrata::_popupTextileLink - What is the text for this link"
+#~ msgstr "Qual é o texto para esse link?"
+
+#~ msgid "Burocrata::_popupTextileLink - What is the URL of this link"
+#~ msgstr "Qual é o endereço para o link?"
+
+#~ msgid "Burocrata::_popupTextileLink - Title of link popup"
+#~ msgstr "Link"
 
 #~ msgid "Save"
 #~ msgstr "Salvar"

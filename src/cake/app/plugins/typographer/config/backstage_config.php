@@ -65,7 +65,7 @@ $unit = new Unit(
 $horizontal_grid = new Grid(
 	array(
 		'M_size' => 80,
-		'm_size' => 4.5,
+		'm_size' => 5,
 		'g_size' => 18,
  		'M_quantity' => 12,
 		'alignment' => 'center',

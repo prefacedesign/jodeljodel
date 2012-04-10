@@ -43,17 +43,14 @@
  */
 	Router::connect('/admin/:language', array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'index'), array('language' => '[a-t]{3}'));
 	Router::connect('/admin/:language/cork/:action/*', array('plugin' => 'corktile', 'controller' => 'cork_corktiles'), array('language' => '[a-t]{3}'));
+	Router::connect('/admin/:language/user/:action/*', array('plugin' => 'jj_users', 'controller' => 'user_users', 'action' => 'logout'), array('language' => '[a-t]{3}'));
 	Router::connect('/admin/:language/:action/*', array('plugin' => 'backstage', 'controller' => 'back_contents'), array('language' => '[a-t]{3}'));
+	
 	Router::connect('/admin', array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'index'));
 	Router::connect('/admin/cork/:action/*', array('plugin' => 'corktile', 'controller' => 'cork_corktiles'));
+	Router::connect('/admin/user/:action/*', array('plugin' => 'jj_users', 'controller' => 'user_users', 'action' => 'logout'));
 	Router::connect('/admin/:action/*', array('plugin' => 'backstage', 'controller' => 'back_contents'));
 
-
-/**
- * Connecting the `login` and `logout` action of user plugin
- */
-	Router::connect('/login/*', array('plugin' => 'jj_users', 'controller' => 'user_users', 'action' => 'login'));
-	Router::connect('/logout/*', array('plugin' => 'jj_users', 'controller' => 'user_users', 'action' => 'logout'));
 
 /**
  * Connecting '/dl' for forcing download of upload files and '/vw' for just viewing
