@@ -12,6 +12,11 @@
 		$content_type = $data['CsItem']['type'];
 	}
 	
+	if (empty($content_type) && isset($this->data['CsItem']['type']))
+	{
+		$content_type = $this->data['CsItem']['type'];	
+	}
+	
 	// If $content_type stills empty here, tries to get directly from database, based on POST
 	if (empty($content_type) && !empty($this->data['CsItem']['id']))
 	{
