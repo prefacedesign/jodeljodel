@@ -27,11 +27,16 @@ class CorktileAppController extends AppController
 	);
 	var $layout = 'backstage';	
 	
+	function startupProcess()
+	{
+		$this->TradLanguageSelector->setInterfaceLanguage(Configure::read('Tradutore.mainLanguage'));
+		parent::startupProcess();
+	}
+	
 	function beforeRender()
 	{
 		parent::beforeRender();
 		$this->TypeLayoutSchemePicker->pick('backstage');
-		$this->TradLanguageSelector->setInterfaceLanguage(Configure::read('Tradutore.mainLanguage'));
 	}
 }
 
