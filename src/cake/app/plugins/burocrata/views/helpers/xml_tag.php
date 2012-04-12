@@ -103,11 +103,19 @@ class XmlTagHelper extends AppHelper
 			return $this->dispatchMethod($n, $args);
 		}
 		
+		$count = count($args);
 		if (method_exists($this, 's' . $n))
 		{
-			@list($atributos, $opcoes, $conteudo) = $args;
-			$opcoes_padrao = array('escape' => false, 'close_me' => false);
-			$opcoes = am($opcoes_padrao, $opcoes);
+			$atributos = $opcoes = array();
+			$conteudo = null;
+			switch ($count)
+			{
+				case 0: break;
+				case 1: $atributos = $args[0]; break;
+				case 2: list($atributos, $opcoes) = $args; break;
+				case 3: list($atributos, $opcoes, $conteudo) = $args; break;
+			}
+			$opcoes += array('escape' => false, 'close_me' => false);
 			extract($opcoes);
 			
 			if ($close_me || empty($conteudo))
@@ -133,7 +141,7 @@ class XmlTagHelper extends AppHelper
 		{
 			$tag = $encontrados[2];
 			{
-				switch(count($args))
+				switch($count)
 				{
 					case 2:
 						list($atributos, $opcoes) = $args;
@@ -153,7 +161,7 @@ class XmlTagHelper extends AppHelper
 		}
 		else //if (in_array($n, PedreiroHelper::$tags_automaticas))
 		{
-			switch(count($args))
+			switch($count)
 			{
 				case 3:
 					list($atributos, $opcoes, $conteudo) = $args;

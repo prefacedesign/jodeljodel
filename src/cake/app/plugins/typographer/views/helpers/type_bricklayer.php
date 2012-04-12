@@ -909,7 +909,19 @@ class TypeBricklayerHelper extends AppHelper
 		
 		if (method_exists($this, 's' . $n))
 		{ //@todo Make a class of it
-			@list($attr, $options, $content) = $args;
+			
+			$attr = $options = array();
+			$content = null;
+			switch (count($args))
+			{
+				case 0: break;
+				case 1: $attr = $args[0]; break;
+				case 2: list($attr, $options) = $args; break;
+				case 3: list($attr, $options, $content) = $args; break;
+				default:
+					trigger_error('TypeBricklayerHelper::__call() - Max parameter count is 3!!!');
+				break;
+			}
 			$standard_options = array('escape' => false, 'close_me' => false);
 			$options = am($standard_options, $options);
 			
