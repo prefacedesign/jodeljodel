@@ -1363,8 +1363,17 @@ class BuroBurocrataHelper extends XmlTagHelper
 			return false;
 		}
 		
+		if ($ParentModel->Behaviors->attached('TradTradutore'))
+		{
+			$RealModel = &$ParentModel->{$ParentModel->Behaviors->TradTradutore->settings[$ParentModel->alias]['className']};
+		}
+		else
+		{
+			$RealModel = &$ParentModel;
+		}
+		
 		// Test if the parent model is ContentStreamed
-		if (!$ParentModel->Behaviors->attached('CsContentStreamHolder')) {
+		if (!$RealModel->Behaviors->attached('CsContentStreamHolder')) {
 			trigger_error('BuroBurocrataHelper::inputContentStream - The model need to be attached with ContentStream.CsContentStreamHolder behavior.');
 			return false;
 		}
@@ -1373,7 +1382,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		App::import('Lib', 'ContentStream.CsConfigurator');
 		$config = CsConfigurator::getConfig();
 		
-		$settings = $ParentModel->Behaviors->CsContentStreamHolder->settings[$ParentModel->alias];
+		$settings = $RealModel->Behaviors->CsContentStreamHolder->settings[$RealModel->alias];
 		if (isset($settings['streams'][$options['foreignKey']]))
 		{
 			$settings = $settings['streams'][$options['foreignKey']];
@@ -1385,7 +1394,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			return false;
 		}
 		
-		$ContentStream = &$ParentModel->{$settings['assocName']};
+		$ContentStream = &$RealModel->{$settings['assocName']};
 		$content_stream_id = $this->data[$ParentModel->alias][$options['foreignKey']];
 		$data = $ContentStream->findById($content_stream_id);
 		

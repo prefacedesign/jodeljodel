@@ -20,5 +20,9 @@
  */
 class BurocrataAppController extends AppController
 {
-
+	function startupProcess()
+	{
+		$this->TradLanguageSelector->setInterfaceLanguage(Configure::read('Tradutore.mainLanguage'));
+		parent::startupProcess();
+	}
 }
