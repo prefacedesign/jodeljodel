@@ -62,14 +62,21 @@ class CorkHelper extends AppHelper
 			return null;
 		}
 		
-		$cacheKey = "cork_{$options['key']}";
+		$View =& ClassRegistry::getObject('view');
+		if (isset($View->params['language']))
+		{
+			$cacheKey = "cork_{$options['key']}_{$View->params['language']}";
+		}
+		else
+		{
+			$cacheKey = "cork_{$options['key']}";
+		}
 		$cache = Cache::read($cacheKey);
 		if ($cache)
 			return $cache;
 		
 		$htmlAttributes = $this->Bl->_mergeAttributes(array('class' => array('cork')), $htmlAttributes);
 
-		$View =& ClassRegistry::getObject('view');
 		if (!isset($options['location']))
 			$options['location'] = $View->getVar('ourLocation');
 		
