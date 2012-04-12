@@ -431,6 +431,9 @@ class TradTradutoreBehavior extends ModelBehavior
 	
 	function __changeContain(&$Model, &$contain)
 	{
+		if (!is_array($contain))
+			$contain = array($contain);
+			
 		if (isset($this->__settings[$Model->alias]))
 		{
 			$__settings = $this->__settings[$Model->alias];
@@ -448,38 +451,41 @@ class TradTradutoreBehavior extends ModelBehavior
         // If required they must be included in fields list.
 		if (isset($contain['fields']))
 		{
-			foreach ($contain['fields'] as $i => $queryField) 
+			if (is_array($contain['fields']))
 			{
-				// Search for translatable fields.
-				$isTranslatableField = false;
-				if (in_array($Model->name . '.' . $queryField, $translatableFields) === true) 
-				{	
-					// Relative translatable field name found on query.
-					$queryField = $Model->name . '.' . $queryField;
-					$isTranslatableField = true;
-				} 
-				else 
+				foreach ($contain['fields'] as $i => $queryField) 
 				{
-					if (in_array($queryField, $translatableFields) === true) 
-					{
-						// Absolute translatable field name found on query.
+					// Search for translatable fields.
+					$isTranslatableField = false;
+					if (in_array($Model->name . '.' . $queryField, $translatableFields) === true) 
+					{	
+						// Relative translatable field name found on query.
+						$queryField = $Model->name . '.' . $queryField;
 						$isTranslatableField = true;
-					}
-				}
-
-				// Replace translatable field name by translation field name.
-				if ($isTranslatableField) 
-				{
-					$queryField          = str_replace($Model->name . '.', $settings['className'] . '.', $queryField);
-					if (isset($Model->hasOne[$settings['className']]))
+					} 
+					else 
 					{
-						$contain[$settings['className']]['fields'][$i] = $queryField;
-						unset($contain['fields'][$i]);
+						if (in_array($queryField, $translatableFields) === true) 
+						{
+							// Absolute translatable field name found on query.
+							$isTranslatableField = true;
+						}
 					}
-					else
-						$contain['fields'][$i] = $queryField;
-					array_push($translatableFieldsInQuery, $queryField);
-				} 
+
+					// Replace translatable field name by translation field name.
+					if ($isTranslatableField) 
+					{
+						$queryField          = str_replace($Model->name . '.', $settings['className'] . '.', $queryField);
+						if (isset($Model->hasOne[$settings['className']]))
+						{
+							$contain[$settings['className']]['fields'][$i] = $queryField;
+							unset($contain['fields'][$i]);
+						}
+						else
+							$contain['fields'][$i] = $queryField;
+						array_push($translatableFieldsInQuery, $queryField);
+					} 
+				}
 			}
 		}
 		if (count($translatableFieldsInQuery) > 0) 
@@ -532,13 +538,12 @@ class TradTradutoreBehavior extends ModelBehavior
 			}
 		}
 		
-			
 		foreach ($Model->hasMany as $child)
 		{
 			if (isset($this->already_done[$Model->alias]) && in_array($child['className'], $this->already_done[$Model->alias]) === false) 
 			{
 				$this->already_done[$Model->alias][] = $child['className'];
-				if (isset($contain[$child['className']]))
+				if (isset($contain[$child['className']]) && is_array($contain[$child['className']]))
 					$contain[$child['className']] = $this->__changeContain($Model->{$child['className']}, $contain[$child['className']]);
 			}
 		}
