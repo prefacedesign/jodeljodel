@@ -50,7 +50,7 @@ class UserUser extends JjUsersAppModel
 		}
 		
 		if (!empty($this->data[$this->alias]['user_group_id'])) {
-			$user_group_id = $data[$this->alias]['user_group_id'];
+			$user_group_id = $this->data[$this->alias]['user_group_id'];
 		} elseif ($this->id) {
 			$user_group_id = $this->field('user_group_id');
 		} else {
