@@ -280,6 +280,7 @@ class MediaView extends View {
  */
 	function _flushBuffer() {
 		@flush();
-		@ob_flush();
+		if (ob_get_level())
+			ob_flush();
 	}
 }
