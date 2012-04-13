@@ -3,26 +3,65 @@
 switch ($type[0])
 {
 	case 'full':
-		echo $this->Bl->anchor(
-			array(),
-			array(
-				'url' => $this->Bl->fileUrl($data['SfilStoredFile']['id'], false, true)
-			),
-			$data['SfilStoredFile']['original_filename']
-		);
-		
-		// File size
-		$labels = array('', 'K', 'M', 'G');
-		$size = $data['SfilStoredFile']['size'];
-		$i = 0;
-		while ($size > 1000)
-		{
-			$size /= 1024;
-			$i++;
-		}
-		
-		$size = round($size, 3-log($size, 10)) . ' ' . $labels[$i] . 'B';
-		echo $this->Bl->spanDry($size);
+		echo $this->Bl->sdiv(array('class' => 'pie_file'));
+			
+			$name = Mime_Type::guessName(MEDIA_TRANSFER . $data['SfilStoredFile']['dirname'] . DS . $data['SfilStoredFile']['basename']);
+			$mime = $data['SfilStoredFile']['mime_type'];
+			$img_name = false;
+			switch ($name)
+			{
+				case 'image': $img_name = 'picture.png'; break;
+				case 'audio': $img_name = 'music.png'; break;
+				case 'video': $img_name = 'film.png'; break;
+				
+				case 'text':
+				case 'document':
+					if (strpos($mime, 'pdf') !== false)
+						$img_name = 'page_white_acrobat.png';
+					else
+						$img_name = 'page_white_word.png';
+				break;
+				
+				default:
+					if (strpos($mime, 'zip') !== false)
+						$img_name = 'page_white_zip.png';
+					elseif (strpos($mime, 'excel') !== false)
+						$img_name = 'page_white_excel.png';
+					elseif (strpos($mime, 'spreadsheet') !== false)
+						$img_name = 'page_white_excel.png';
+					elseif (strpos($mime, 'wordprocessing') !== false)
+						$img_name = 'page_white_word.png';
+					elseif (strpos($mime, 'rar') !== false)
+						$img_name = 'page_white_zip.png';
+					else
+						$img_name = 'page_white.png';
+			}
+			
+			if ($img_name)
+				echo $this->Bl->img(array('src' => $this->Bl->url('/pie_file/img/'.$img_name))), '&ensp;';
+			
+			echo $this->Bl->anchor(
+				array('class' => 'visitable'),
+				array(
+					'url' => $this->Bl->fileUrl($data['SfilStoredFile']['id'], false, true)
+				),
+				!empty($data['PieFile']['title']) ? $data['PieFile']['title'] : $data['SfilStoredFile']['original_filename']
+			), '&ensp;';
+			
+			// File size
+			$labels = array('', 'K', 'M', 'G');
+			$size = $data['SfilStoredFile']['size'];
+			$i = 0;
+			while ($size > 1000)
+			{
+				$size /= 1024;
+				$i++;
+			}
+			
+			$size = round($size, 3-log($size, 10)) . ' ' . $labels[$i] . 'B';
+			echo $this->Bl->span(array('class' => 'light'), array(), $size);
+			
+		echo $this->Bl->ediv();
 	break;
 	
 	case 'buro':
