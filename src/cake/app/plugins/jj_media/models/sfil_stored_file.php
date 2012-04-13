@@ -132,6 +132,38 @@ class SfilStoredFile extends JjMediaAppModel {
 	);
 
 /**
+ * Return the properties of an image
+ *
+ * Used to return the properties of an image
+ * @access public
+ * @param integer $id The id of the image
+ * @param string  $version The version of the image
+ *
+ */
+	function properties($id, $version)
+	{	
+		if (empty($id) || empty($version))
+			return array();
+		
+		$this->contain();
+		$file_data = $this->findById($id);
+		
+		if (empty($file_data))
+			return array();
+
+		if (!empty($file_data[$this->alias]['transformation']))
+			$version = $file_data[$this->alias]['transformation'] . '_' . $version;
+		
+		$id = $name = $file_data[$this->alias]['basename'];
+		$path = MEDIA_FILTER . $version . DS;
+		
+		$path .= $file_data[$this->alias]['dirname'] . DS;
+		
+		return getimagesize($path . $id);
+		
+	}
+	
+/**
  * Reimplements the TransferBehavior::transferTo() method from Media plugin
  * 
  * @access public

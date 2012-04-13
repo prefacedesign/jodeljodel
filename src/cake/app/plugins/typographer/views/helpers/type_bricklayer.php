@@ -233,7 +233,25 @@ class TypeBricklayerHelper extends AppHelper
 		return $this->url($url);
 	}
 
-
+/**
+ * Returns properties of the image, like extension and sizes
+ * 
+ * @access public
+ * @param integer $id The file id of the image
+ * @param string $version The filter version of image to be displayed
+ * @return array An array with the properties
+ */
+	public function imageProperties($id, $version = '')
+	{
+		if (!$id)
+			return false;
+		
+		App::import('Model', array('JjMedia.SfilStoredFile'));
+		$Media = new SfilStoredFile();
+		
+		return $Media->properties($id, $version);
+	}
+	
 /**
  * Creates a img tag pointing the specific image, if an ID is provided.
  * 
