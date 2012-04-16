@@ -735,7 +735,7 @@ class TradTradutoreBehavior extends ModelBehavior
 			}
 		}
 		
-		if (isset($query['fields']) && is_array($query['fields']) && !isset($query['list']))
+		if (isset($query['fields']) && is_array($query['fields']) && !isset($query['list']) && empty($query['group']))
 		{
 			foreach ($query['fields'] as $k => $field)
 			{
@@ -754,17 +754,16 @@ class TradTradutoreBehavior extends ModelBehavior
 		
 		if (!is_array($query['fields']))
 		{
-			if (substr($query['fields'], 0, 5) != 'COUNT')		
+			if (substr($query['fields'], 0, 5) != 'COUNT' && empty($query['group']))		
 				unset($query['fields']);
 		}
-		else
+		elseif (empty($query['group']))
 			unset($query['fields']);
 		
 		
 		if (isset($query['list']))
 			$query['recursive'] = 1;
 
-		
 		return $query;
     }
 
