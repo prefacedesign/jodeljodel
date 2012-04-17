@@ -35,6 +35,13 @@ class BackstageTypeBricklayerHelper extends TypeBricklayerHelper
 			return false;
 		}
 		
+		$languages = Configure::read('Tradutore.languages');
+		if (count($languages) > 1)
+		{
+			$language = Configure::read('Tradutore.mainLanguage');
+			$curModule['viewUrl']['language'] = $language;
+		}
+		
 		$plugin = Inflector::underscore($plugin);
 		return $curModule['viewUrl'] + array(
 			'plugin' => $plugin, 
