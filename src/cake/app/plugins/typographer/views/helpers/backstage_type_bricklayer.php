@@ -43,12 +43,13 @@ class BackstageTypeBricklayerHelper extends TypeBricklayerHelper
 		}
 		
 		$plugin = Inflector::underscore($plugin);
-		return $curModule['viewUrl'] + array(
+		$curModule['viewUrl'][] = $id;
+		$defaults =  array(
 			'plugin' => $plugin, 
 			'controller' => Inflector::pluralize($plugin),
-			'action' => 'view',
-			$id
+			'action' => 'view'
 		);
+		return $curModule['viewUrl']+$defaults;
 	}
 
 /* Handles the Backstage links.
