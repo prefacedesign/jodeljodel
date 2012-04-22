@@ -35,13 +35,21 @@ class BackstageTypeBricklayerHelper extends TypeBricklayerHelper
 			return false;
 		}
 		
+		$languages = Configure::read('Tradutore.languages');
+		if (count($languages) > 1)
+		{
+			$language = Configure::read('Tradutore.mainLanguage');
+			$curModule['viewUrl']['language'] = $language;
+		}
+		
 		$plugin = Inflector::underscore($plugin);
-		return $curModule['viewUrl'] + array(
+		$curModule['viewUrl'][] = $id;
+		$defaults =  array(
 			'plugin' => $plugin, 
 			'controller' => Inflector::pluralize($plugin),
-			'action' => 'view',
-			$id
+			'action' => 'view'
 		);
+		return $curModule['viewUrl']+$defaults;
 	}
 
 /* Handles the Backstage links.
