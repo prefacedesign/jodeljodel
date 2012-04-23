@@ -131,7 +131,15 @@ class Grid
 		$this->unit         = $grid_params['unit'];
 	}
 	
-	//tem o -1.0 como default pois é muito comum que se tenha 10 módulos - 1!
+/**
+ * Calculates the size in string format or array format to number
+ * and returns it as string
+ * 
+ * @access public
+ * @param array|string $size 
+ * @param boolean If true, will append the unit to the string
+ * @return string The number of size
+ */
 	function size ($size, $write_unit = true)
 	{
 		if (is_string($size))
@@ -143,11 +151,7 @@ class Grid
 		}
 		else
 		{
-			if ($size == 'A')
-			{
-				trigger_error('ai');
-			}
-			$size = array_merge($this->standard_size, $size);
+			$size += $this->standard_size;
 		}
 
 	
@@ -156,36 +160,28 @@ class Grid
 			+ $size['g'] * $this->g_size
 			+ $size['u'];
 		
-		
 		if ($write_unit)
-			$t = $this->unit->t($t);
-		
+			return $this->unit->t($t);
 		return $t;
 	}
-	
+
+/**
+ * Create a name using the list of parameters
+ * 
+ * @access public
+ * @param array $size
+ * @return string The size name
+ */
 	function sizeName($size)
 	{
 		$t = '';
-		if (isset($size['M']) && ($size['M'] != 0))
+		foreach (array('M', 'm', 'g', 'u') as $unit)
 		{
-			$t .= '_' . $size['M'] . 'M';
+			if (!empty($size[$unit]))
+			{
+				$t .= '_' . $size[$unit] . $unit;
+			}
 		}
-		
-		if (isset($size['m']) && ($size['m'] != 0))
-		{
-			$t .= '_' . $size['m'] . 'm';
-		}
-		
-		if (isset($size['g']) && ($size['g'] != 0))
-		{
-			$t .= '_' . $size['g'] . 'g';
-		}
-		
-		if (isset($size['u']) && ($size['u'] != 0))
-		{
-			$t .= '_' . $size['u'] . 'u';
-		}
-		
 		return $t;
 	}
 
@@ -232,7 +228,15 @@ class Color
 	
 	function __construct ($r = 0, $g = 0, $b = 0)
 	{
-		$this->setRGB($r, $g, $b);
+		if (!is_string($r))
+			$this->setRGB($r, $g, $b);
+		else
+			$this->setHex($r);
+	}
+	
+	function __toString()
+	{
+		return $this->write();
 	}
 	
 	function setRGB ($r = 0, $g = 0, $b = 0)
@@ -241,6 +245,18 @@ class Color
 		$this->g = max(0, min(255, floor($g)));
 		$this->b = max(0, min(255, floor($b)));
 		return $this;
+	}
+	
+	function setHex ($string)
+	{
+		preg_match_all('/[0-9A-Fa-f]{2,2}/', $string, $matches);
+		
+		if (isset($matches[0]) && count($matches[0]) == 3)
+		{
+			$this->r = hexdec($matches[0][0]);
+			$this->g = hexdec($matches[0][1]);
+			$this->b = hexdec($matches[0][2]);
+		}
 	}
 	
 	function blendWith ($with_color, $opacity = 0.5)
@@ -257,11 +273,13 @@ class Color
 		{
 			case 'rgb':
 				return 'RGB(' . $this->r . ',' . $this->g . ',' . $this->b . ')';
+			
 			case 'pure_hexa':
-				return sprintf("%02x", $this->r) . sprintf("%02x", $this->g) . sprintf("%02x", $this->b);				
+				return sprintf('%02x%02x%02x', $this->r, $this->g, $this->b);
+				
 			case 'hexa':
 			default:
-				return '#' . sprintf("%02x", $this->r) . sprintf("%02x", $this->g) . sprintf("%02x", $this->b);
+				return sprintf('#%02x%02x%02x', $this->r, $this->g, $this->b);
 		}
 	}
 };
@@ -571,6 +589,3 @@ class CompoundImage extends ImageGenerator
 
 
 
-
-
-?>
