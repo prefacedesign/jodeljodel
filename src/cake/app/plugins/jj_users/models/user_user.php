@@ -32,7 +32,7 @@ class UserUser extends JjUsersAppModel
 			'minLength' => array('rule' => array('minLength', 6))
 		),
 		'password_retype' => array(
-			'same' => array('rule' => array('identicalFieldValues', 'password'))
+			'same' => array('rule' => array('identicalFieldValues', 'password_change'))
 		)
 	);
 
