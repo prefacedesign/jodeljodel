@@ -322,7 +322,7 @@ class SectSectionHandlerComponent extends Object {
 		foreach ($sectionsContext as $k => $section)
 		{
 			if (!isset($section['linkCaption']))
-				$sectionsContext[$k]['linkCaption'] = Inflector::humanize($k); 
+				$section['linkCaption'] = $sectionsContext[$k]['linkCaption'] = Inflector::humanize($k); 
 		
 			if (!isset($section['active']))
 				$sectionsContext[$k]['active'] = true;
