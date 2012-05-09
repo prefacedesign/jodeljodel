@@ -1,4 +1,5 @@
-<?php
+#!/bin/bash
+
 # Creating the groups
 ./cake jodel_user group_add "Todos os usuários" all_users -no-parent
 ./cake jodel_user group_add "Administradores" admin all_users
