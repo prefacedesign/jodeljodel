@@ -465,6 +465,11 @@
 			'margin-top' => $hg->size(array('m' => 2))
 	));
 	
+	$this->Decorator->rule(
+		'.buro .input_textile .textarea_container.focus', array(
+			'margin-top' => $hg->size(array('m' => 2, 'u' => -1)) . ' !important'
+	));
+	
 	
 	$this->Decorator->rule(
 		'a.link_button.buro_textile', array(
