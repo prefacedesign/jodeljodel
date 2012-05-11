@@ -147,7 +147,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 				
 				if ($inputOptions['type'] == 'radio') 
 					$inputOptions['label'] = true;
-				if ($inputOptions['type'] == 'checkbox')
+				elseif ($inputOptions['type'] == 'checkbox')
 					if (isset($options['options']['label']))
 						$inputOptions['label'] = $options['options']['label'];
 				
@@ -155,9 +155,6 @@ class BuroBurocrataHelper extends XmlTagHelper
 					$out .= $this->Form->input($options['fieldName'], $inputOptions);
 				else
 					$out .= $this->Bl->input(Set::filter($inputOptions));
-				
-				if (in_array($options['type'], self::$aggregatedInput))
-					$out .= $this->Bl->floatBreak();
 			}
 			else
 			{
