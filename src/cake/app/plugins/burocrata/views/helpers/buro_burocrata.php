@@ -805,14 +805,13 @@ class BuroBurocrataHelper extends XmlTagHelper
 	{
 		$out = '';
 		$inputOptions = array('type' => 'textarea', 'forceForm' => true, 'container' => false, 'label' => false) + $options;
-		unset($inputOptions['options']);
 		unset($inputOptions['instructions']);
 
 		extract($options);
 		
-		$_htmlAttributes += array(
+		$_htmlAttributes = am($_htmlAttributes, array(
 			'id' => $this->baseID()
-		);
+		));
 		
 		// Label
 		$out .= $this->label(array(),compact('fieldName'), $label);
