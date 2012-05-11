@@ -2746,14 +2746,20 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		unset($options['options']);
 		
+		$out = '';
 		
-		$out = $this->label(array(), array(), $options['label']);
+		if (!empty($options['label']))
+			$out .= $this->label(array(), array(), $options['label']);
+		
+		if (!empty($options['instructions']))
+			$out .= $this->instructionsDry($options['instructions']);
 		
 		$out .= $this->Bl->div(array('id' => 'samp' . $baseID, 'class' => 'sample'));
 		
 		$options['type'] = 'text';
 		$options['container'] = false;
 		$options['label'] = false;
+		$options['instructions'] = false;
 		$out .= $this->input($htmlAttributes, $options);
 		$out .= $this->BuroOfficeBoy->color(compact('baseID'));
 		

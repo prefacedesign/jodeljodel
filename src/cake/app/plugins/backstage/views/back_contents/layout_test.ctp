@@ -223,6 +223,17 @@ echo $this->Bl->sbox(null, array('size' => array('M' => 7, 'g' => -1)));
 		);
 		
 		
+		// Color
+		echo $this->Buro->input(
+			null,
+			array(
+				'type' => 'color',
+				'fieldName' => 'color',
+				'label' => 'Label for a color input',
+				'instructions' => 'Instructions a color input',
+			)
+		);
+		
 	
 		echo $this->Buro->sinput(
 			null, 
