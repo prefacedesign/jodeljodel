@@ -809,9 +809,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 
 		extract($options);
 		
-		$_htmlAttributes = am($_htmlAttributes, array(
-			'id' => $this->baseID()
-		));
+		$_htmlAttributes = am(array('id' => $this->baseID()), $_htmlAttributes);
 		
 		// Label
 		$out .= $this->label(array(),compact('fieldName'), $label);
