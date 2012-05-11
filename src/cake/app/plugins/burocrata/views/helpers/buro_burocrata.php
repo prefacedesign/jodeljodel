@@ -854,6 +854,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$options += array('options' => array());
 		$options['type'] = 'select';
+		$options['container'] = false;
 		$options['options']['multiple'] = 'checkbox';
 		
 		$input = $this->input(null, $options);
