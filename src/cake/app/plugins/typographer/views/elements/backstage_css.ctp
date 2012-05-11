@@ -1153,6 +1153,12 @@
 	);
 	
 	$this->Decorator->rule(
+		'.input_datetime select', array(
+			'min-width' => $hg->size('M')
+		)
+	);
+	
+	$this->Decorator->rule(
 		'select.buro.list', array(
 			'height' => 'auto',
 			'width' => $u->t($hg->size(array('M' => 5, 'g' => -1),false))

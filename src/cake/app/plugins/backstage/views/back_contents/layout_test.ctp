@@ -91,6 +91,7 @@ echo $this->Bl->sbox(null, array('size' => array('M' => 7, 'g' => -1)));
 				'instructions' => 'Instructions for radio input',
 				'options' => array(
 					'default' => 'option_1',
+					'separator' => $this->Bl->br(),
 					'options' => array(
 						'option_1' => 'Option 1',
 						'option_2' => 'Option 2',
@@ -153,7 +154,7 @@ echo $this->Bl->sbox(null, array('size' => array('M' => 7, 'g' => -1)));
 					'empty' => false,
 					'dateFormat' => 'DMY',
 					'timeFormat' => null,
-					'separator' => '-',
+					'separator' => ' - ',
 					'minYear' => date('Y')-50,
 					'maxYear' => date('Y')
 				)
@@ -172,13 +173,14 @@ echo $this->Bl->sbox(null, array('size' => array('M' => 7, 'g' => -1)));
 				'options' => array(
 					'empty' => false,
 					'dateFormat' => 'NONE',
-					'timeFormat' => '24'
+					'timeFormat' => '24',
+					'interval' => 10 // minutes
 				)
 			)
 		);
 		
 	
-		// Datetime without complete
+		// Datetime complete (definitely not encouraged to be used)
 		echo $this->Buro->input(
 			null,
 			array(
@@ -190,7 +192,7 @@ echo $this->Bl->sbox(null, array('size' => array('M' => 7, 'g' => -1)));
 					'empty' => true,
 					'dateFormat' => 'DMY',
 					'timeFormat' => '24',
-					'separator' => '-',
+					'separator' => ' - ',
 					'minYear' => date('Y')-50,
 					'maxYear' => date('Y')
 				)

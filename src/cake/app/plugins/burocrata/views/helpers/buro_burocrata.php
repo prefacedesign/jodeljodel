@@ -44,7 +44,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 	protected static $defaultContainerClass = 'buro';
 	protected static $defaultObjectClass = 'buro';
 	
-	protected static $aggregatedInput = array('radio', 'checkbox');
+	protected static $aggregatedInput = array('radio', 'checkbox', 'datetime');
 
 	public function beforeRender()
 	{
