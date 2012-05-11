@@ -857,7 +857,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$out = '';
 		
 		if (!empty($options['label']))
-			$out .= $this->Bl->H4Dry($options['label']);
+			$out .= $this->Bl->h4Dry($options['label']);
 		$options['label'] = false;
 		
 		if (!empty($options['instructions']))
