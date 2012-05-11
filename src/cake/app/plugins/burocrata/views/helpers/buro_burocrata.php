@@ -854,11 +854,21 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$options['container'] = false;
 		$options['options']['multiple'] = 'checkbox';
 		
-		$input = $this->input(null, $options);
+		$out = '';
+		
+		if (!empty($options['label']))
+			$out .= $this->Bl->H4Dry($options['label']);
+		$options['label'] = false;
+		
+		if (!empty($options['instructions']))
+			$out .= $this->instructions(array(),array(),$options['instructions']);
+		unset($options['instructions']);
+		
+		$out .= $this->input(null, $options);
 		
 		$this->Html->tags['checkboxmultiple'] = $checkboxmultiple;
 		
-		return $input;
+		return $out;
 	}
 
 /**

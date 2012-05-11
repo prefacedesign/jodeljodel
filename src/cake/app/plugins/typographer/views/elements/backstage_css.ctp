@@ -1144,9 +1144,13 @@
 			'border' => $u->t($border_size) . ' solid ' .  $palette['input_borders']->write(),
 			'height' => $u->t($vg->size(array('g' => 1.5),false) - 2*$border_size),
 			'padding-left' => $u->t($padding_size),
-			'width' => $hg->size(array('M' => 2, 'g' => -1, 'u' => -$padding_size-2*$border_size)),
-			'margin-right' => $hg->size(array('g' => 1))
 	));
+	
+	$this->Decorator->rule(
+		'.input_select select.buro', array(
+			'width' => $hg->size('5M-g')
+		)
+	);
 	
 	$this->Decorator->rule(
 		'select.buro.list', array(
@@ -1162,44 +1166,16 @@
 	));
 	
 	$this->Decorator->rule(
-		'input.buro.radio, input.buro.checkbox', array(
-			'height' => 'auto',
-			'width' => $u->t($hg->size(array('g' => 1),false)),
-			'clear' => 'both',
-			'float' => 'left'
+		'.input_checkbox label, .input_radio label, .input_multiple_checkbox .checkbox label', array(
+			'line-height' => $u->t(4/3*$line_height),
+			'diaplay' => 'block'
 	));
 	
 	$this->Decorator->rule(
-		'.input_radio input+label', array(
-			'font-weight' => 'normal !important',
-			'float' => 'left',
-			'margin-top' => $u->t(9)
-	));
-	
-	$this->Decorator->rule(
-		'.input_checkbox label', array(
-			'font-weight' => 'normal !important',
-			'float' => 'left',
-			'margin-left' => $hg->size(array('m' => 2)),
-			'margin-top' => $hg->size(array('g' => 0.5))
-	));
-	
-	$this->Decorator->rule(
-		'.input_radio input.buro', array(
-			'float' => 'left',
-			'clear' => 'left',
-			'width' => 'auto',
-			'height' => $u->t($line_height),
-			'margin' => sprintf('%s %s 0', $hg->size(array('g' => 0.15)), $hg->size(array('g' => 0.5)))
-	));
-	
-	$this->Decorator->rule(
-		'.input_checkbox input.buro', array(
-			'float' => 'left',
-			'clear' => 'left',
-			'width' => 'auto',
-			'height' => $u->t($line_height),
-			'margin' => sprintf('%s 0', $hg->size(array('g' => 0.5)))
+		'.input_radio input.buro, .input_checkbox input.buro, .input_multiple_checkbox .checkbox input ', array(
+			'height' => $u->t(4/3*$line_height),
+			'margin-right' => $hg->size('m'),
+			'vertical-align' => 'text-top'
 	));
 	
 	$this->Decorator->rule(
