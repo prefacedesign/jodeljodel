@@ -366,4 +366,9 @@ class BackContentsController extends BackstageAppController
 			
 		$this->redirect(array('action' => 'edit', $moduleName, $id));
 	}
+	
+	function layout_test()
+	{
+		
+	}
 }
