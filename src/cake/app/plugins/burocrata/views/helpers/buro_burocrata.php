@@ -2458,6 +2458,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$baseID = $this->baseID();
 		$options = array('type' => 'textarea', 'container' => false) + $options + array('baseID' => $baseID);
+		if (isset($config_options['default']))
+			$options['options']['default'] = $config_options['default'];
 		
 		$config_options['enabled_buttons'] = array_intersect($config_options['enabled_buttons'], $button_list);
 		
