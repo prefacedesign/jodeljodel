@@ -2222,15 +2222,11 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	protected function _uploadParams($options)
 	{
-		$modelAlias = $this->_readFormAttribute('modelAlias');
-		if (!$modelAlias)
-			trigger_error('Can\'t create a upload file that is not inside a buro form.', E_USER_WARNING);
-		
 		$file_input_options = array_filter($options);
 		unset($file_input_options['options']);
-		$file_input_options += array('fieldName' => $modelAlias . '.sfil_sored_file_id');
+		$file_input_options += array('fieldName' => 'sfil_sored_file_id');
 		if (strpos($file_input_options['fieldName'], '.') === false)
-			$file_input_options['fieldName'] = $modelAlias . '.' . $file_input_options['fieldName'];
+			$file_input_options['fieldName'] = $file_input_options['fieldName'];
 		
 		$defaults = array(
 			'baseID' => $this->baseID(),
