@@ -1220,6 +1220,13 @@
 	));
 	
 	$this->Decorator->rule(
+		'.superfield_container', array(
+			'margin-top' => $u->t($line_height)
+		)
+	);
+	
+	
+	$this->Decorator->rule(
 		'.alternative_option', array(
 			'margin' => $vg->size(array('m' => 1)) . ' 0 0 ' . $vg->size(array('m' => 1)),
 			'float' => 'left'

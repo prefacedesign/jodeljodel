@@ -102,8 +102,6 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$container = $options['container'];
 			unset($options['container']);
 			
-			$this->_nestedInput = false;
-			
 			if (
 				isset($this->Form->fieldset[$this->modelAlias]) &&
 				in_array($options['fieldName'], $this->Form->fieldset[$this->modelAlias]['validates'])
@@ -186,7 +184,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			return $this->esuperfield();
 			
 		$this->_nestedInput = --$this->_nestedOrder > 0;
-		return $this->Bl->ediv();
+		//return $this->Bl->ediv();
 	}
 
 
@@ -696,8 +694,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 		if (isset($label))
 			$out .= $this->Bl->h6Dry($label);
 			
-		if (isset($instructions))
-			$out .= $this->Bl->p(array(), isset($options['escape']) && $options['escape'] ? array('escape' => $options['escape']) : array(), $instructions); 
+		if (!empty($instructions))
+			$out .= $this->instructions(array(), array(), $instructions);
+		
+		$out .= $this->Bl->sdiv(array('class' => 'superfield_container'));
 		
 		return "\n".$out;
 	}
@@ -714,7 +714,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 	public function esuperfield()
 	{
 		$this->_nestedOrder--;
-		return $this->Bl->ediv();
+		return $this->Bl->ediv() . $this->Bl->ediv();
 	}
 
 
