@@ -1141,13 +1141,13 @@
 	
 	$this->Decorator->rule(
 		'select.buro', array(
-			'border' => $u->t($border_size) . ' solid ' .  $palette['input_borders']->write(),
-			'height' => $u->t($vg->size(array('g' => 1.5),false) - 2*$border_size),
-			'padding-left' => $u->t($padding_size),
+			'border' => $u->t($border_size) . ' solid ' .  $palette['input_borders'],
+			'height' => $vg->size('1.5gm-2u'),
+			'padding' => $u->t(3) . ' ' . $u->t(4),
 	));
 	
 	$this->Decorator->rule(
-		'.input_select select.buro', array(
+		'.input_select select.buro, .input_relational select.buro.combo', array(
 			'width' => $hg->size('5M-g')
 		)
 	);
@@ -1161,13 +1161,6 @@
 	$this->Decorator->rule(
 		'select.buro.list', array(
 			'height' => 'auto',
-			'width' => $u->t($hg->size(array('M' => 5, 'g' => -1),false))
-	));
-	
-	$this->Decorator->rule(
-		'select.buro.combo', array(
-			'height' => $vg->size('1.5gm-2u'),
-			'padding' => sprintf('%s 0', $vg->size('m')),
 			'width' => $u->t($hg->size(array('M' => 5, 'g' => -1),false))
 	));
 	
