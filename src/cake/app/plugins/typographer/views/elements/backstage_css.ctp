@@ -1148,7 +1148,8 @@
 	
 	$this->Decorator->rule(
 		'.input_select select.buro, .input_relational select.buro.combo', array(
-			'width' => $hg->size('5M-g')
+			'width' => $hg->size('5M-g'),
+			'margin-top' => $vg->size('3u')
 		)
 	);
 	
