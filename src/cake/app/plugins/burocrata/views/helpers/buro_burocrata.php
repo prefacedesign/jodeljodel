@@ -2209,9 +2209,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 	{
 		$file_input_options = array_filter($options);
 		unset($file_input_options['options']);
+
 		$file_input_options += array('fieldName' => 'sfil_sored_file_id');
-		if (strpos($file_input_options['fieldName'], '.') === false)
-			$file_input_options['fieldName'] = $file_input_options['fieldName'];
+		if (strpos($file_input_options['fieldName'], '.') === false && $this->model())
+			$file_input_options['fieldName'] = $this->model() . '.' . $file_input_options['fieldName'];
 		
 		$defaults = array(
 			'baseID' => $this->baseID(),
