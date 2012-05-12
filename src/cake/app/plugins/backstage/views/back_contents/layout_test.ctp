@@ -141,6 +141,39 @@ echo $this->Bl->sbox(null, array('size' => array('M' => 7, 'g' => -1)));
 			)
 		);
 		
+		// unitary_autocomplete
+		// many_children
+		// list
+		// editable_list
+		// combo
+		// radio
+		
+		echo $this->Buro->input(
+			null,
+			array(
+				'type' => 'relational',
+				'fieldName' => 'rel_combo',
+				'label' => 'Label for relational combo input',
+				'instructions' => 'Instructions for relational combo input',
+				'options' => array(
+					'type' => 'combo',
+					'model' => 'Galery'
+				)
+			)
+		);
+		
+		echo $this->Buro->input(
+			null,
+			array(
+				'type' => 'relational',
+				'fieldName' => 'rel_list',
+				'options' => array(
+					'type' => 'list',
+					'size' => 4,
+					'model' => 'Galery'
+				)
+			)
+		);
 		
 		// Datetime without time
 		echo $this->Buro->input(
@@ -246,25 +279,45 @@ echo $this->Bl->sbox(null, array('size' => array('M' => 7, 'g' => -1)));
 			)
 		);
 		
-			echo $this->Buro->input(
-				null,
-				array(
-					'type' => 'text',
-					'fieldName' => 'text_inside',
-					'label' => 'Label for text input inside a super_field',
-					'description' => 'Description for text input inside a super_field'
+		// Text
+		echo $this->Buro->input(
+			null,
+			array(
+				'type' => 'text',
+				'fieldName' => 'text',
+				'label' => 'Label for text input',
+				'instructions' => 'Instructions for text input',
+				'options' => array(
+					'default' => 'Integer at enim eget tortor'
 				)
-			);
+			)
+		);
 	
-			echo $this->Buro->input(
-				null,
-				array(
-					'type' => 'password',
-					'fieldName' => 'password_inside',
-					'label' => 'Label for password input inside a super_field',
-					'description' => 'Description for password input inside a super_field'
+		// Password
+		echo $this->Buro->input(
+			null,
+			array(
+				'type' => 'password',
+				'fieldName' => 'password',
+				'label' => 'Label for password input',
+				'instructions' => 'Instructions for password input',
+				'options' => array(
+					'default' => 'Integer at enim eget tortor'
 				)
-			);
+			)
+		);
+	
+		echo $this->Buro->input(
+			null,
+			array(
+				'type' => 'checkbox',
+				'fieldName' => 'checkbox_2',
+				'label' => false,
+				'options' => array(
+					'label' => 'Sub-label for checkbox input'
+				)
+			)
+		);
 	
 		echo $this->Buro->einput();
 		
