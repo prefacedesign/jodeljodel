@@ -1768,8 +1768,6 @@ class BuroBurocrataHelper extends XmlTagHelper
   * - `filter_options` - An array with conditions to filter the options to list
   * - `multiple` - Multiple select or not (can be true or false). Defaults to false.
   * - `size` - Size of the options that are showed. Defaults to 5.
-  * - `actions` - An array that defines all the URLs for CRUD actions Defaults to BuroBurocrataController actions.
-  * - `callbacks` - An array with possible callbacks with Jodel Callbacks convention.
   *
   * @access public
   * @param array $options An array with non-defaults values
@@ -1779,68 +1777,50 @@ class BuroBurocrataHelper extends XmlTagHelper
   * @todo Error handling
   */
 	public function inputRelationalList($options = array())
- 	{		
- 		$input_options = $options;
- 		$options = $options['options'];
- 		$defaults = array(
+ 	{
+ 		$options['options'] += array(
  			'model' => false,
- 			'assocName' => false,
 			'multiple' => false,
 			'size' => 5,
  			'baseID' => $this->baseID(),
 			'filter_options' => array()
  		);
- 		$options = am($defaults, $options);
+ 		$gen_options = $options['options'];
+ 		unset($options['options']);
  		
-		$model =& ClassRegistry::init($options['model']);
+ 		if (empty($gen_options['model']))
+ 		{
+ 			trigger_error('BuroBurocrata::inputRelationalList() - `model` parameter must be set.');
+ 			return false;
+ 		}
+ 		
+		$model =& ClassRegistry::init($gen_options['model']);
 		$conditions = array();
 		if (isset($model->Behaviors->TempTemp->__settings[$model->alias]))
 		{
 			$sets = $model->Behaviors->TempTemp->__settings[$model->alias];
 			$conditions = array($model->alias.'.'.$sets['field'] => false);
 		}
-		if(method_exists($model, 'findFilteredOptions'))
-			$options_to_list = $model->{'findFilteredOptions'}($options['filter_options']);
-		else
-			$options_to_list = $model->find('list', array('conditions' => $conditions));
 
- 			
-		if ($options['multiple'])
-		{
- 			$out = $this->input(
- 				array(
-					'multiple' => $options['multiple'],
-					'class' => 'list',
-					'size' => $options['size'],
-					'name' => 'data['.$model->alias.']['.$model->alias.']'
- 				), 
- 				array(
-					'options' => array('options' => $options_to_list),
- 					'label' => $input_options['label'], 
- 					'instructions' => $input_options['instructions'], 
- 					'type' => 'select', 
-					'fieldName' =>$input_options['fieldName']
- 				)
- 			);
-		}
-		else
-		{
-			$out = $this->input(
-				array(
-					'class' => 'list',
-					'size' => $options['size']
-				), 
-				array(
-					'options' => array('options' => $options_to_list),
-					'label' => $input_options['label'], 
-					'instructions' => $input_options['instructions'], 
-					'type' => 'select', 
-					'fieldName' => $input_options['fieldName'],
-				)
-			);
-		}
 		
-		return $out;
+ 		// Setting select input options
+ 		$options['type'] = 'select';
+ 		$options['container'] = false;
+
+		if(method_exists($model, 'findFilteredOptions'))
+			$options['options']['options'] = $model->{'findFilteredOptions'}($options['filter_options']);
+		else
+			$options['options']['options'] = $model->find('list', array('conditions' => $conditions));
+ 		
+		$options['options']['multiple'] = (boolean) $gen_options['multiple'];
+ 		
+
+		// Setting html attributes
+ 		$htmlAttributes = $options['_htmlAttributes'];
+ 		$htmlAttributes = $this->addClass($htmlAttributes, 'list');
+ 		$htmlAttributes = $this->addClass($htmlAttributes, $gen_options['size'], 'size');
+
+ 		return $this->input($htmlAttributes, $options);
 	}
 	
 	
