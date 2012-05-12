@@ -1124,7 +1124,7 @@
 	));
 	
 	$this->Decorator->rule(
-		'.buro_form input:focus, #login_box input[type=text]:focus, #login_box input[type=password]:focus, .buro_form .textarea_container.focus', array(
+		'.buro_form input[type=text]:focus, .buro_form input[type=password]:focus, #login_box input[type=text]:focus, #login_box input[type=password]:focus, .buro_form .textarea_container.focus', array(
 			'border-width' => $u->t($border_size+1),
 			'margin' => implode(' ', array($u->t($margin_top-1), $u->t(-1), $u->t($margin_bottom-1), $u->t(-1)))
 	));
@@ -1167,8 +1167,7 @@
 	
 	$this->Decorator->rule(
 		'.input_checkbox label, .input_radio label, .input_multiple_checkbox .checkbox label', array(
-			'line-height' => $u->t(4/3*$line_height),
-			'diaplay' => 'block'
+			'line-height' => $u->t(4/3*$line_height)
 	));
 	
 	$this->Decorator->rule(
@@ -1177,6 +1176,7 @@
 			'margin-right' => $hg->size('m'),
 			'vertical-align' => 'text-top'
 	));
+	
 	
 	$this->Decorator->rule(
 		'.input_has_many select', array(
@@ -1203,7 +1203,7 @@
 	));
 	
 	$this->Decorator->rule(
-		'.buro_form .superfield label', array(
+		'.buro_form .superfield label.buro', array(
 			'text-transform' => 'none',
 			'font-size' => $u->t($line_height * 13/18),
 			'line-height' => $u->t($line_height),
