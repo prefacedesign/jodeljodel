@@ -947,15 +947,17 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			data.title = this.texts.title;
 		
 		content = this.templates.item.interpolate(data),
-		div = new Element('div').insert(content).down();			
+		div = new Element('div').insert(content).down();					
 		
 		this.addNewMenu(order);
 		if (this.menus[order])
 			this.menus[order].div.insert({after: div});
 		
+		
 		item = new BuroListOfItemsItem(div).addCallbacks({'buro:controlClick': this.routeAction.bind(this)})
 		this.items.push(item);
 		this.updateSiblings(item);
+		
 		
 		if (animate)
 			new Effect.BlindDown(div, {
@@ -1479,7 +1481,7 @@ var BuroListOfItemsItem = Class.create(BuroCallbackable, {
 		this.div = $(div);
 		this.id = this.div.readAttribute('buro:id');
 		this.content = this.div.down('div.ordered_list_content');
-		this.controls = this.div.down('div.ordered_list_controls');
+		this.controls = this.div.down('.ordered_list_controls');
 		this.controls.childElements().each(this.observeControls.bind(this));
 		this.checkSiblings();
 	},
