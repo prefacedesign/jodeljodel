@@ -1,5 +1,4 @@
 <?php
-	
 	switch($type[0])
 	{
 		case 'cork':
@@ -41,7 +40,8 @@
 							'type' => 'textile',
 							'fieldName' => 'text',
 							'label' => __d('corktile', 'Cork Form - TextTextCork.text',true),
-							'instructions' => __d('corktile','Cork Form - TextTextCork.text - instructions',true)
+							'instructions' => __d('corktile','Cork Form - TextTextCork.text - instructions',true),
+							'options' => $this->data['CorkCorktile']['options']
 						));
 					}
 					else

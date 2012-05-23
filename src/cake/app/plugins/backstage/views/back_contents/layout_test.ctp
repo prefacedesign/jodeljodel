@@ -56,7 +56,7 @@ echo $this->Bl->sbox(null, array('size' => array('M' => 7, 'g' => -1)));
 				'label' => 'Label for textile input',
 				'instructions' => 'Instructions for textile input',
 				'options' => array(
-					'allow' => array('bold', 'italic', 'link', 'title', 'image', 'file', 'subscript', 'superscript'),
+					'enabled_buttons' => array('bold', 'italic', 'link', 'title', 'image', 'file', 'subscript', 'superscript'),
 					'allow_preview' => false,
 					'default' => 'Enim eget tortor cursus tristique. Cras vel vehicula nisi? Phasellus nisl massa, commodo sed porttitor quis, imperdiet quis lacus. Aliquam erat volutpat. Sed dictum, dui blandit sodales dapibus, sapien massa mollis augue, in porta ligula odio vel sapien. Donec interdum metus eu nunc tristique mattis. Donec luctus aliquam lectus, quis fermentum arcu dignissim at.',
 				)
