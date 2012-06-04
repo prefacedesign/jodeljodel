@@ -115,8 +115,16 @@ class CsItem extends ContentStreamAppModel
 		$stream_config = $config['streams'][$contentType];
 		$Model = ClassRegistry::init($stream_config['model']);
 		
-		$Model->create($this->data);
-		if ($Model->save())
+		if(method_exists($Model, 'saveContentStream'))
+		{
+			$saved = $Model->saveContentStream($this->data);
+		}
+		else
+		{
+			$Model->create($this->data);
+			$saved = $Model->save();
+		}
+		if ($saved)
 		{
 			$this->data[$this->alias]['foreign_key'] = $Model->id;
 			$this->create($this->data);
