@@ -165,47 +165,43 @@ class BackContentsController extends BackstageAppController
 	{
 		$conditions = array();
 		if (!isset($this->modules[$moduleName]))
-			trigger_error('BackContentsController::index - '.$moduleName.' not found in jj.modules') and die;
-		elseif (!isset($this->modules[$moduleName]['model']))
-			trigger_error('BackContentsController::index - '.$moduleName.'[`model`] not found in jj.modules') and die;
+			$this->jodelError('BackContentsController::index - '.$moduleName.' not found in jj.modules');
+		
+		if (!isset($this->modules[$moduleName]['model']))
+			$this->jodelError('BackContentsController::index - '.$moduleName.'[`model`] not found in jj.modules');
+
+		if (!in_array('backstage_custom',$this->modules[$moduleName]['plugged'])) 
+			$this->jodelError('BackContentsController::index - '.$moduleName.' configured in jj.modules must have `backstage_custom` in plugged options');
+
+		if (!isset($this->backstageSettings[$moduleName]))
+			$this->jodelError('BackContentsController::index - '.$moduleName.' configurations not found on backstage config');
+
+		if (!isset($this->params['named']['page']))
+		{
+			$this->Session->write('Backstage.searchOptions', array());
+		}
 		else
 		{
-			if (!in_array('backstage_custom',$this->modules[$moduleName]['plugged'])) 
-				trigger_error('BackContentsController::index - '.$moduleName.' configured in jj.modules must have `backstage_custom` in plugged options') and die;
-			else
-			{
-				if (!isset($this->backstageSettings[$moduleName]))
-					trigger_error('BackContentsController::index - '.$moduleName.' configurations not found on backstage config') and die;
-				else
-				{
-					if (!isset($this->params['named']['page']))
-					{
-						$this->Session->write('Backstage.searchOptions', array());
-					}
-					else
-					{
-						$page = $this->params['named']['page'];
-					}
-						
-					$options = $this->__getOptions($moduleName);
-					
-					if (isset($page))
-						$options['page'] = $page;
-					
-					$this->paginate = array($this->backstageModel->alias => $options);
-					
-					$this->set('backstageSettings', $this->backstageSettings[$moduleName]);
-					$this->set('moduleName', $moduleName);
-					$this->set('modelName', $this->backstageModel->alias);
-					$this->set('filter_status', $this->status);
-					$this->data = $this->paginate($this->backstageModel);
-					$this->helpers['Paginator'] = array('ajax' => 'Ajax');
-					
-					if($this->RequestHandler->isAjax()) {
-						$this->render('filter');            
-					}
-				}
-			}
+			$page = $this->params['named']['page'];
+		}
+			
+		$options = $this->__getOptions($moduleName);
+		
+		if (isset($page))
+			$options['page'] = $page;
+		
+		$this->paginate = array($this->backstageModel->alias => $options);
+		
+		$this->set('backstageSettings', $this->backstageSettings[$moduleName]);
+		$this->set('moduleName', $moduleName);
+		$this->set('modelName', $this->backstageModel->alias);
+		$this->set('filter_status', $this->status);
+		$this->data = $this->paginate($this->backstageModel);
+		$this->helpers['Paginator'] = array('ajax' => 'Ajax');
+		
+		if($this->RequestHandler->isAjax())
+		{
+			$this->render('filter');
 		}
 	}
 	
