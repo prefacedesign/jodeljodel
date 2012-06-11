@@ -430,7 +430,7 @@
 		'.box_popup .popup_progress_bar', array(
 			'margin-top' => $vg->size('g'),
 			'height' => $vg->size('g'),
-			'background' => $palette['bg'],
+			'background' => $palette['menu_bg'],
 		)
 	);
 	
