@@ -85,7 +85,12 @@ var Popup = Class.create({
 		});
 		
 		this.activeElement = document.activeElement;
-		$(this.links.values().first()).focus();
+		
+		try
+		{
+			$(this.links.values().first()).focus();
+		}
+		catch (err) {}
 		
 		this.divCont.fire('popup:opened');
 	},
@@ -120,56 +125,98 @@ var ProgressPopup = Class.create({
 		this.popup = Popups.available_popups.get(this.popup_id);
 		this.popup.call_progress = this;
 		
-		this.can_continue = true;
+		this.morphEffect = false;
+		this.isCancelled = false;
 		this.url_cancel = false;
+
+		this.onlyCancel();
 		
-		this.kill_popup();
+		this.callURL(url);
+	},
+	completed: function(response)
+	{
+		if (!response.responseJSON)
+		{
+			this.updateMsg('Um erro na comunicação impediu que o processo fosse realizado com sucesso.');
+			this.showEnd();
+			return;
+		}
+
+		var json = response.responseJSON;
+	
+		if (json.msg)
+			this.updateMsg(json.msg);
 		
+		if (!json.error)
+		{
+			if (this.isCancelled)
+			{
+				this.callCancel();
+				return;
+			}
+			
+			this.updatePercentage(json.percentage);
+			if (json.percentage == 100)
+			{
+				this.showEnd();
+				return;
+			}
+			
+			this.callURL(json.nextURL)
+		}
+	},
+	updateMsg: function(msg)
+	{
+		this.popup.divCont.down('.popup_message').update(msg);
+	},
+	updatePercentage: function(percentage)
+	{
+		if (this.morphEffect)
+			this.morphEffect.cancel();
+		
+		var filler = this.popup.divCont.down('.popup_progress_bar_filler');
+		if (filler)
+		{
+			if (percentage == 100)
+				filler.setStyle({width:'100%'});
+			else
+				this.morphEffect = new Effect.Morph(filler, {
+					style: 'width: '+Math.min(100, percentage+5)+'%',
+					duration: 2, 
+					transition: Effect.Transitions.linear
+				});
+		}
+	},
+	callURL: function(url)
+	{
 		new Ajax.Request(url, {
 			onComplete: this.completed.bind(this)
 		});
 	},
-	completed: function(response)
+	callCancel: function()
 	{
-		if (response.responseJSON)
+		if (this.url_cancel && this.url_cancel != '')
 		{
-			var json = response.responseJSON;
-			this.popup.divCont.down('.msg').update(json.msg);
-			
-			if (json.erro == 0)
-			{
-				this.popup.divCont.down('.enchimento_da_barra').morph('width: '+json.porcentagem+'%', {duration: 3});
-				if (json.porcentagem != 100)
-				{
-					if (this.can_continue)
-					{
-						new ProgressPopup(json.url_prox, this.popup_id);
-					}
-					else
-					{
-						this.call_cancel();
-					}
-				}
-				else
-				{
-					this.show_end();
-				}
-			}
+			new Ajax.Request(this.url_cancel,{
+				onComplete:function() {
+					closePopup(this.popup_id+'_cancelling');
+				}.bind(this)
+			});
 		}
 		else
 		{
-			alert('Erro na comunicação.');
+			closePopup(this.popup_id+'_cancelling');
 		}
 	},
-	kill_popup: function()
+	onlyCancel: function()
 	{
 		var links = this.popup.divCont.select('.callbacks a');
 		links[0].show();
 		links[1].hide();
 	},
-	show_end: function()
+	showEnd: function()
 	{
-		this.popup.divCont.down('.carregando').hide();
+		this.popup.divCont.down('.popup_loading').hide();
 		
 		var links = this.popup.divCont.select('.callbacks a');
 		links[0].hide();
@@ -177,17 +224,8 @@ var ProgressPopup = Class.create({
 	},
 	cancel: function(url)
 	{
-		openPopup(this.popup_id+'_cancelando');
+		showPopup(this.popup_id+'_cancelling');
 		this.url_cancel = url;
-		this.can_continue = false;
-	},
-	call_cancel: function()
-	{
-		if (this.url_cancel && this.url_cancel != '')
-			new Ajax.Request(this.url_cancel,{
-				onComplete:function(){closePopup(this.popup_id+'_cancelando');}.bind(this)
-			});
-		else
-			closePopup(this.popup_id+'_cancelando');
+		this.isCancelled = true;
 	}
 });

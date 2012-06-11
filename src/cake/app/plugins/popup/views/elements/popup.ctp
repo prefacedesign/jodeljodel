@@ -3,7 +3,7 @@
 	$this->Html->script('prototype', array('inline' => false));
 	$this->Html->script('/popup/js/popup', array('inline' => false));
 	
-	extract(array('links_callbacks' => array(), 'list_links' => array()), EXTR_SKIP);
+	extract(array('links_callbacks' => array(), 'list_links' => false), EXTR_SKIP);
 	
 	if (!empty($actions) && is_array($actions))
 	{
@@ -19,8 +19,9 @@
 			$list_links[$box_action] = $box_link_id;
 		}
 		$links_callbacks = implode('&emsp;', $links_callbacks);
-		$list_links = $this->Js->object($list_links);
 	}
+	
+	$list_links = $this->Js->object($list_links);
 	
 	if (!empty($actions) && is_string($actions))
 	{
@@ -47,3 +48,4 @@
 	echo $this->Bl->eboxcontainer();
 	
 	echo $this->Html->scriptBlock("new Popup('$id', $list_links).addCallback(function(action){ $callback; });");
+
