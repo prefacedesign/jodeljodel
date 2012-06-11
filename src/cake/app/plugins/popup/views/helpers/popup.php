@@ -145,6 +145,7 @@ class PopupHelper extends AppHelper
 		return 
 			$this->_popup($options)
 			. $this->_popup(array(
+				'type' => 'notice',
 				'id' => $options['id'].'_cancelling',
 				'title' => __d('popup', 'Wait for cancelling proccess', true),
 				'content' => $this->Bl->div(array('class' => 'popup_loading')),
