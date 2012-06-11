@@ -227,7 +227,7 @@
 					));
 					
 					echo $this->Html->scriptBlock("
-						new TableRow('row_$row_number');
+						new TableRow('row_$row_number', 3);
 					");
 				}
 			}
