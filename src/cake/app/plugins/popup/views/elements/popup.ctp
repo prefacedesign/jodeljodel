@@ -21,7 +21,8 @@
 		$links_callbacks = implode('&emsp;', $links_callbacks);
 	}
 	
-	$list_links = $this->Js->object($list_links);
+	if (!is_string($list_links))
+		$list_links = $this->Js->object($list_links);
 	
 	if (!empty($actions) && is_string($actions))
 	{
