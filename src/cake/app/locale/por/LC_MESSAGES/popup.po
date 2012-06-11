@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2012-06-10 23:59-0400\n"
-"PO-Revision-Date: 2012-06-11 00:00-0400\n"
+"POT-Creation-Date: 2012-06-11 00:21-0400\n"
+"PO-Revision-Date: 2012-06-11 00:21-0400\n"
 "Last-Translator: Daniel Abrahão <daniel@preface.com.br>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -48,5 +48,9 @@ msgstr " "
 
 #: /views/translate_strings/translate_strings.ctp:25
 msgid "Popup plugin form type"
+msgstr " "
+
+#: /views/translate_strings/translate_strings.ctp:26
+msgid "Popup plugin progress type"
 msgstr " "
 

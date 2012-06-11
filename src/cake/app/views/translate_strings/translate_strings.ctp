@@ -23,6 +23,7 @@ __d('popup', 'Popup plugin error type');
 __d('popup', 'Popup plugin success type');
 __d('popup', 'Popup plugin notice type');
 __d('popup', 'Popup plugin form type');
+__d('popup', 'Popup plugin progress type');
 
 /** Dashboard language names
  */
