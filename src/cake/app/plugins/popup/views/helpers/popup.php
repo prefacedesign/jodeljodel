@@ -17,7 +17,12 @@ class PopupHelper extends AppHelper
  * @var array
  * @access public
  */
-	var $helpers = array('Html', 'Ajax', 'Javascript', 'Js' => 'prototype',
+	var $helpers = array(
+		'Html', 'Js' => 'prototype',
+		'Burocrata.BuroOfficeBoy',
+		'Typographer.*TypeBricklayer' => array(
+			'name' => 'Bl'
+		),
 		'Burocrata.*BuroBurocrata' => array(
 			'name' => 'Buro'
 		)
@@ -94,10 +99,62 @@ class PopupHelper extends AppHelper
 		
 		return $this->_popup($options);
 	}
-
-
+	
 /**
- * Call the popup element
+ * Creates a popup with a progress bar and the necessary JS for the progress bar to work
+ * 
+ * The options for this popup are:
+ *  -`url` array|string The URL that will be called after opening the popup
+ *  -`url_cancel` array|string The URL that will be called after the user abort the proccess
+ * 
+ * 
+ * @access protected
+ */
+	protected function _progress($options)
+	{
+		$options += array(
+			'url' => null,
+			'url_cancel' => null
+		);
+		
+		$url = $this->Html->url($options['url']);
+		$url_cancelar = isset($options['url_cancel']) ? $this->Html->url($options['url_cancel']) : '';
+		
+		// montando o conteúdo do popup
+		$content[] = $this->Bl->div(array('class' => 'popup_loading'));
+		$content[] = $this->Bl->div(array('class' => 'popup_message'));
+		$content[] = $this->Bl->div(array('class' => 'popup_progress_bar'), array(), 
+			$this->Bl->div(array('class' => 'popup_progress_bar_filler'))
+		);
+		$content[] = $this->BuroOfficeBoy->addHtmlEmbScript("
+			$('{$options['id']}').observe('popup:opened', function(ev){
+				$('{$options['id']}').down('.popup_message').update();
+				$('{$options['id']}').down('.popup_progress_bar_filler').setStyle({width: 0});
+				new ProgressPopup('$url', '{$options['id']}');
+			});
+		");
+		
+		// creating the JS callback for the buttons
+		$callback = "if(action == 0) cancelProgress('{$options['id']}', '{$options['url_cancel']}');";
+		
+		// creting $options array
+		$options['callback'] = $callback;
+		$options['content'] = implode($content);
+		$options['actions'] = array(__d('popup', 'Cancelar', true), __d('popup','Ok', true));
+		
+		return 
+			$this->_popup($options)
+			. $this->_popup(array(
+				'type' => 'notice',
+				'id' => $options['id'].'_cancelling',
+				'title' => __d('popup', 'Wait for cancelling proccess', true),
+				'content' => $this->Bl->div(array('class' => 'popup_loading')),
+				'links_callbacks' => ''
+			));
+	}
+	
+/**
+ * Call the popup element (base for every popup)
  * 
  * @access protected
  * @param array $options
@@ -106,57 +163,10 @@ class PopupHelper extends AppHelper
 	protected function _popup($options)
 	{
 		$View =& ClassRegistry::getObject('View');
+		$options += array(
+			'plugin' => 'popup',
+			'callback' => ''
+		);
 		return $View->element('popup', $options);
-	}
-	
-	
-	
-	
-	//@todo: translate to english and test the Progress
-	
-	
-	/**
-	 * progresso
-	 *
-	 * Monta um popup com uma barra de progresso e um sistema para acionar a barra.
-	 * 
-	 * @access	public
-	 * @param	string $id O ID do popup pelo qual será chamado
-	 * @param	array $parametros O array com os parâmetros de configuração
-	 */
-	function progresso($id, $parametros = array())
-	{
-		$url = $this->Html->url($parametros['url']);
-		$url_cancelar = isset($parametros['url_cancelar']) ? $this->Html->url($parametros['url_cancelar']) : '';
-		
-		// montando o conteúdo do popup
-		$conteudo[] = '<div class="carregando"></div>';
-		$conteudo[] = '<div class="mensagem"></div>';
-		$conteudo[] = '
-			<div class="barra_de_progresso">	
-				<div class="enchimento_da_barra"></div>
-			</div>';
-		$conteudo[] = $this->Javascript->codeBlock("
-			$('$id').observe('popup:abriu', function(ev){
-				$('$id').down('.mensagem').update();
-				$('$id').down('.enchimento_da_barra').setStyle('width: 0;');
-				new ChamadasProgresso('$url', '$id');
-			});
-		");
-		
-		// montando o callback dos botões
-		$callback = "if(acao == 0) cancelaProgresso('$id', '$url_cancelar');";
-		
-		
-		$parametros['callback'] = $callback;
-		$parametros['conteudo'] = implode($conteudo);
-		$parametros['acoes'] = array('Cancelar', 'Ok');
-		return 
-			$this->generico($id, $parametros)
-			. $this->generico($id.'_cancelando', array(
-				'titulo' => 'Aguarde enquando o pedido é cancelado',
-				'conteudo' => '<div class="carregando"></div>',
-				'acoes' => array()
-			));
 	}
 }

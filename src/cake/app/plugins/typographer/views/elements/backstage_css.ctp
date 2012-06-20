@@ -6,31 +6,7 @@
 		)
 	);
 	
-	$box_shadow = '0 '.$vg->size(array('u' => 3)).' '. $vg->size(array('u' => 10)). ' ' . $palette['popin_shadow']->write();
-	$this->Decorator->rule(
-		'.box_popup', array(
-			'z-index' => '1000',
-			'border' => '1px solid white',
-			'position' => 'absolute',
-			'background' => 'white',
-			'width' => $vg->size(array('M' => 7, 'g' => -1)),
-			'padding' => $hg->size(array('g' => 1)) . ' 0',
-			'box-shadow' => $box_shadow,
-			'-webkit-box-shadow' => $box_shadow,
-			'-moz-box-shadow' => $box_shadow
-	));
-	
-	$this->Decorator->rule(
-		'.popup_maya_veil', array(
-			'background' => 'black',
-			'position' => 'fixed',
-			'width' => '100%',
-			'height' => '100%',
-			'z-index' => '999',
-			'left' => 0,
-			'top' => 0
-	));
-	
+
 	$this->Decorator->rule('.loading',
 		array(
 			'min-height' => $u->t(53)
@@ -390,6 +366,32 @@
 			'background' => $palette['normal_popin']->write(),
 	));
 	
+	
+	$box_shadow = '0 '.$vg->size(array('u' => 3)).' '. $vg->size(array('u' => 10)). ' ' . $palette['popin_shadow']->write();
+	$this->Decorator->rule(
+		'.box_popup', array(
+			'z-index' => '1000',
+			'border' => '1px solid white',
+			'position' => 'absolute',
+			'background' => 'white',
+			'width' => $vg->size(array('M' => 7, 'g' => -1)),
+			'padding' => $hg->size(array('g' => 1)) . ' 0',
+			'box-shadow' => $box_shadow,
+			'-webkit-box-shadow' => $box_shadow,
+			'-moz-box-shadow' => $box_shadow
+	));
+	
+	$this->Decorator->rule(
+		'.popup_maya_veil', array(
+			'background' => 'black',
+			'position' => 'fixed',
+			'width' => '100%',
+			'height' => '100%',
+			'z-index' => '999',
+			'left' => 0,
+			'top' => 0
+	));
+	
 	$this->Decorator->rule(
 		'.box_popup h2', array(
 			'font-size' => $u->t($line_height * 13/18),
@@ -422,7 +424,25 @@
 		'.box_popup.form_box input', array('margin-bottom' => $vg->size(array('g' => 1))));
 	$this->Decorator->rule(
 		'.box_popup.form_box .callbacks', array('margin-top' => $vg->size(array('g' => 0.5))));
-		
+	
+	// progress popup
+	$this->Decorator->rule(
+		'.box_popup .popup_progress_bar', array(
+			'margin-top' => $vg->size('g'),
+			'height' => $vg->size('g'),
+			'background' => $palette['menu_bg'],
+		)
+	);
+	
+	$this->Decorator->rule(
+		'.box_popup .popup_progress_bar .popup_progress_bar_filler', array(
+			'height' => $vg->size('g'),
+			'background' => $palette['internal_selection'],
+			'width' => 0
+		)
+	);
+	
+	
 	
 	$this->Decorator->rule(
 		'a.link_button', array(
