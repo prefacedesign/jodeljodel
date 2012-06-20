@@ -140,8 +140,7 @@
 			
 					//@todo Substitute this with an AJAX call.
 					echo $this->Bl->smartTableRowDry(array(
-						array(array(),array('colspan' => 3),' '), 
-						array(array('id' => "item_info_$k"),array('colspan' => 4, 'rowspan' => 2), '')
+						array(array(),array('colspan' => 3),' ')
 					));
 					
 					
