@@ -68,9 +68,7 @@ echo $this->Bl->sbox(array('class' => $moduleName),array('size' => array('M' => 
 									array(
 										'plugin' => 'backstage',
 										'controller' => 'back_contents',
-										'action' => 'filter_published_draft',
-										$module,
-										$moduleName
+										'action' => 'filter_published_draft', $moduleName, $module
 									), 
 									array(
 										'before' => "$('backstage_custom_table').setLoading();",
@@ -92,9 +90,7 @@ echo $this->Bl->sbox(array('class' => $moduleName),array('size' => array('M' => 
 								array(
 									'plugin' => 'backstage',
 									'controller' => 'back_contents',
-									'action' => 'filter_published_draft',
-									'all',
-									$moduleName
+									'action' => 'filter_published_draft', $moduleName, 'all'
 								), 
 								array(
 									'before' => "$('backstage_custom_table').setLoading();",

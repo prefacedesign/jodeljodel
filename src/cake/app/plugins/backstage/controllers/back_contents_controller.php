@@ -205,7 +205,7 @@ class BackContentsController extends BackstageAppController
 		}
 	}
 	
-	function filter_published_draft($status, $moduleName)
+	function filter_published_draft($moduleName, $status)
 	{
 		$this->Session->write('Backstage.status', $status);
 		$this->filter_and_search($moduleName);
