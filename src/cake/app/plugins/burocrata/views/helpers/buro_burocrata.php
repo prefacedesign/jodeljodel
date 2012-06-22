@@ -2057,6 +2057,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		else
 			$options_to_list = $Model->find('list', array('conditions' => $conditions));
 		
+		$options_to_list = am(array(null => ''), $options_to_list);
+		
 		return $this->input(
 			array('class' => 'combo'), 
 			array(
