@@ -1808,7 +1808,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  		$options['container'] = false;
 
 		if(method_exists($model, 'findFilteredOptions'))
-			$options['options']['options'] = $model->{'findFilteredOptions'}($options['filter_options']);
+			$options['options']['options'] = $model->{'findFilteredOptions'}($gen_options['filter_options']);
 		else
 			$options['options']['options'] = $model->find('list', array('conditions' => $conditions));
  		
