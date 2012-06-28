@@ -262,9 +262,6 @@ $sections = array(
 			'controller' => 'back_contents',
 			'action' => 'index'
 		),
-		'acos' => array(
-			'backstage_area' => array('read')
-		),
 		'pageTitle' => array(__('Sections: backstage pageTitle',true)),
 		'headerCaption' => __('Sections: backstage headerCaption', true),
 		'humanName' => __('Sections: backstage humanName',true),
@@ -277,7 +274,6 @@ $sections = array(
 					'action' => 'login'
 				),
 				'display' => false,
-				'acos' => array(),
 				'pageTitle' => array(null, __('Sections: login pageTitle',true)),
 				'headerCaption' => __('Sections: login headerCaption', true),
 				'humanName' => __('Sections: login humanName',true),
@@ -289,7 +285,7 @@ $sections = array(
 					'controller' => 'dash_dashboard',
 					'action' => 'index'
 				),
-				'acos' => array('backstage_area' => array('read')),
+				'permissions' => array('dashboard'),
 				'pageTitle' => array(null, __('Sections: dashboard pageTitle',true)),
 				'headerCaption' => __('Sections: dashboard headerCaption', true),
 				'humanName' => __('Sections: dashboard humanName',true),
@@ -308,7 +304,44 @@ $sections = array(
 				'headerCaption' => __('Sections: preferences headerCaption', true),
 				'humanName' => __('Sections: preferences humanName',true),
 				'url' => array('plugin' => 'jj_users', 'controller' => 'user_users', 'action' => 'preferences'),
-				'acos' => array('backstage_area')
+				'permissions' => array('backstage'),
+			),
+			'admin' => array(
+				'linkCaption' => __('Sections: admin linkCaption', true),
+				'pageTitle' => array(null, __('Sections: admin pageTitle',true)),
+				'headerCaption' => __('Sections: admin headerCaption', true),
+				'humanName' => __('Sections: admin humanName',true),
+				'url' => array('plugin' => 'backstage','controller' => 'back_contents','action' => 'index', 'user_users'),
+				'permissions' => array('backstage', 'user_list'),
+				'subSections' => array(
+					'user_users' => array(
+						'linkCaption' => __('Sections: user_users linkCaption', true),
+						'url' => array('plugin' => 'backstage','controller' => 'back_contents','action' => 'index', 'user_users'),
+						'permissions' => array('backstage', 'user_list'),
+						'pageTitle' => array(null, null, __('Sections: user_users pageTitle',true)),
+						'headerCaption' => __('Sections: user_users headerCaption', true),
+						'humanName' => __('Sections: user_users humanName',true),
+						
+					),
+					'user_profiles' => array(
+						'linkCaption' => __('Sections: user_profiles linkCaption', true),
+						'url' => array('plugin' => 'backstage','controller' => 'back_contents','action' => 'index', 'user_profiles'),
+						'permissions' => array('backstage', 'user_permission_tree'),
+						'pageTitle' => array(null, null, __('Sections: user_profiles pageTitle',true)),
+						'headerCaption' => __('Sections: user_profiles headerCaption', true),
+						'humanName' => __('Sections: user_profiles humanName',true),
+						
+					),
+					'user_permissions' => array(
+						'linkCaption' => __('Sections: user_permissions linkCaption', true),
+						'url' => array('plugin' => 'backstage','controller' => 'back_contents','action' => 'index', 'user_permissions'),
+						'permissions' => array('backstage', 'user_permission_tree'),
+						'pageTitle' => array(null, null, __('Sections: user_permissions pageTitle',true)),
+						'headerCaption' => __('Sections: user_permissions headerCaption', true),
+						'humanName' => __('Sections: user_permissions humanName',true),
+						
+					),
+				)
 			),
 			'burocrata_save' => array(
 				'linkCaption' => __('Sections: burocrata_save linkCaption', true),
@@ -318,7 +351,7 @@ $sections = array(
 					'action' => 'save'
 				),
 				'display' => false,
-				'acos' => array('backstage_area' => array('edit','create')),
+				'permissions' => array('backstage', 'OR' => array('backstage_edit_draft', 'backstage_edit_published')),
 			),
 			'set_publishing_status' => array(
 				'linkCaption' => __('Sections: set_publishing_status linkCaption', true),
@@ -328,7 +361,7 @@ $sections = array(
 					'action' => 'set_publishing_status'
 				),
 				'display' => false,
-				'acos' => array('backstage_area' => array('publish')),
+				'permissions' => array('backstage', 'backstage_edit_publishing_status'),
 			),
 			'dashboard_delete' => array(
 				'linkCaption' => __('Sections: set_publishing_status linkCaption', true),
@@ -338,7 +371,27 @@ $sections = array(
 					'action' => 'delete_item'
 				),
 				'display' => false,
-				'acos' => array('backstage_area' => array('delete')),
+				'permissions' => array('backstage', 'backstage_delete_item'),
+			),
+			'backstage_delete' => array(
+				'url' => array(
+					'plugin' => 'backstage',
+					'controller' => 'back_contents',
+					'action' => 'delete_item'
+				),
+				'display' => false,
+				'permissions' => array('backstage', 'backstage_delete_item'),
+				'subSections' => array(
+					'user_delete' => array(
+						'url' => array(
+							'plugin' => 'backstage',
+							'controller' => 'back_contents',
+							'action' => 'delete_item',
+							0 => 'user_users',
+						),
+						'permissions' => array('backstage', 'user_delete'),
+					),
+				)
 			),
 			'corktile_edit' => array(
 				'linkCaption' => __('Sections: corktile_edit linkCaption', true),
@@ -348,7 +401,7 @@ $sections = array(
 					'action' => 'edit'
 				),
 				'display' => false,
-				'acos' => array('backstage_area' => array('edit','create')),
+				'permissions' => array('backstage', 'backstage_edit_published'),
 				'pageTitle' => array(null, __('Sections: corktile_edit pageTitle',true)),
 				'headerCaption' => __('Sections: corktile_edit headerCaption', true),
 				'humanName' => __('Sections: corktile_edit humanName',true),
@@ -361,7 +414,7 @@ $sections = array(
 					'action' => 'edit'
 				),
 				'display' => false,
-				'acos' => array('backstage_area' => array('read')),
+				'permissions' => array('backstage', 'backstage_edit_draft'),
 				'pageTitle' => array(null, __('Sections: edit pageTitle',true)),
 				'headerCaption' => __('Sections: edit headerCaption', true),
 				'humanName' => __('Sections: edit humanName',true),
@@ -392,6 +445,16 @@ $sections = array(
 								'humanName' => __('Sections: news_form humanName',true),
 							),
 						),
+					),
+					'user_edit' => array(
+						'url' => array(
+							'plugin' => 'backstage',
+							'controller' => 'back_contents',
+							'action' => 'edit',
+							0 => 'user_users',
+						),
+						'pageTitle' => array(null, __('Sections: User edit pageTitle',true)),
+						'permissions' => array('backstage', 'OR' => array('user_add', 'user_edit')),
 					),
 				)
 			),
@@ -523,6 +586,10 @@ $sectionMap = array(
 			array(
 				'rule' => array('controller' => 'user_users', 'action' => 'preferences'),
 				'location' => array(null, 'preferences')
+			),
+			array(
+				'rule' => array('controller' => 'user_users', 'action' => 'login'),
+				'location' => array(null, 'login')
 			)
 		)
 	),
@@ -533,20 +600,52 @@ $sectionMap = array(
 			array(
 				'rule' => array('controller' => 'back_contents', 'action' => 'edit'),
 				'location' => array(null,'dashboard'),
-				'subRules' => array(				
+				'subRules' => array(
 					array(
-						'rule' => array('controller' => 'back_contents', 'action' => 'edit', 'pass' => array(0 => 'example')),
-						'location' => array(null,'example'),
+						'rule' => array('controller' => 'back_contents', 'action' => 'edit', 'pass' => array(0 => 'user_users')),
+						'location' => array(null, 'edit', 'user_edit'),
 					),
-				)
+					array(
+						'rule' => array('controller' => 'back_contents', 'action' => 'edit', 'pass' => array(0 => 'user_profiles')),
+						'location' => array(null, 'admin', 'user_profiles'),
+					),
+					array(
+						'rule' => array('controller' => 'back_contents', 'action' => 'edit', 'pass' => array(0 => 'user_permissions')),
+						'location' => array(null, 'admin', 'user_permissions'),
+					),
+				),
 			),
 			array(
-				'rule' => array('controller' => 'back_contents', 'action' => 'index', 'pass' => array(0 => 'example')),
-				'location' => array(null,'example'),
+				'rule' => array('controller' => 'back_contents', 'action' => 'index'),
+				'location' => array(null,'admin'),
+				'subRules' => array(	
+					array(
+						'rule' => array('controller' => 'back_contents', 'action' => 'index', 'pass' => array(0 => 'user_users')),
+						'location' => array(null, null, 'user_users'),
+					),
+					array(
+						'rule' => array('controller' => 'back_contents', 'action' => 'index', 'pass' => array(0 => 'user_profiles')),
+						'location' => array(null, null, 'user_profiles'),
+					),
+					array(
+						'rule' => array('controller' => 'back_contents', 'action' => 'index', 'pass' => array(0 => 'user_permissions')),
+						'location' => array(null, null, 'user_permissions'),
+					),
+				),
 			),
 			array(
 				'rule' => array('controller' => 'back_contents', 'action' => 'set_publishing_status'),
 				'location' => array(null,'set_publishing_status'),
+			),
+			array(
+				'rule' => array('controller' => 'back_contents', 'action' => 'delete_item'),
+				'location' => array(null,'backstage_delete'),
+				'subRules' => array(				
+					array(
+						'rule' => array('controller' => 'back_contents', 'action' => 'delete_item', 'pass' => array(0 => 'user_users')),
+						'location' => array(null, null, 'user_delete'),
+					),
+				)
 			),
 		),
 	),

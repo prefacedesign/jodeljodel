@@ -16,7 +16,7 @@
  */
 
 App::import('Config','Tradutore.languages');
-
+App::import('Model', 'App');
 
 /**
  * Tradutore behavior.
@@ -878,8 +878,8 @@ class TradTradutoreBehavior extends ModelBehavior
 				unset($results[$i][$settings['className']]);
 			}
 		}
-
         return $results;
+		
     }
 	
 	
@@ -927,7 +927,7 @@ class TradTradutoreBehavior extends ModelBehavior
 				}
 			}
 		}
-
+		
 		return true;
 		
     }

@@ -62,8 +62,8 @@ class JjMediaController extends JjMediaAppController {
 	function beforeFilter()
 	{
 		parent::beforeFilter();
-		if ($this->Auth)
-			$this->Auth->allow('*');
+		if ($this->JjAuth)
+			$this->JjAuth->allow('*');
 		$this->TypeLayoutSchemePicker->pick('backstage');
 	}
 

@@ -31,9 +31,9 @@ class TypeStylesheetController extends TypographerAppController
 	{
 		parent::beforeFilter();
 
-		if (isset($this->Auth))
+		if (isset($this->JjAuth))
 		{
-			$this->Auth->allow('*');
+			$this->JjAuth->allow('*');
 		}
 	}
 

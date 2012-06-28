@@ -23,15 +23,25 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 					if (isset($module['plugged']))
 					{
 						$curSettings = isset($itemSettings[$moduleName]) ? $itemSettings[$moduleName] : $itemSettings['default'];
-					
+
 						if (in_array('dashboard', $module['plugged']) && in_array('create', $curSettings['actions']))
 						{
+							$class = '';
+							$onclick = '';
+							if (isset($module['permissions']) && isset($module['permissions']['create']))
+							{
+								if (!$this->JjAuth->can($module['permissions']['create']))
+								{
+									$onclick = "return false;";
+									$class = 'disabled';
+								}
+							}
 							$url = array(
 								'language' => $mainLanguage,
 								'plugin' => 'backstage','controller' => 'back_contents',
 								'action' => 'edit', $moduleName
 							);
-							$linkList[] = $this->Bl->anchor(array(), compact('url'), __($module['humanName'], true));
+							$linkList[] = $this->Bl->anchor(array('class' => $class, 'onclick' => $onclick), compact('url'), __($module['humanName'], true));
 						}
 					}
 				}
@@ -84,7 +94,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 					$linkFilters = array();
 					$modulesCount = count($statusOptions);
 					foreach($statusOptions as $module)
-					{	
+					{							
 						$filterLink = $ajax->link(__d('dashboard', 'Dashboard status: ' . $module, true), 			
 							array(
 								'plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'filter_published_draft', $module
@@ -133,22 +143,42 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 							$curSettings = isset($itemSettings[$moduleName]) ? $itemSettings[$moduleName] : $itemSettings['default'];
 							if ((in_array('dashboard', $module['plugged']) && in_array('create', $curSettings['actions'])) || $moduleName == 'corktile')
 							{
-								$filterLink = $ajax->link(
-									$module['humanName'],
-									array(
-										'plugin' => 'dashboard','controller' => 'dash_dashboard','action' => 'filter', $moduleName
-									), 
-									array(
-										'before' => "$('dashboard_table').setLoading();",
-										'complete' => "$('dashboard_table').unsetLoading();",
-										'id' => 'filter_'.$moduleName,
-										'update' => 'dashboard_table',
-									)
-								);
+								$can_view = true;
+								if (isset($module['permissions']) && isset($module['permissions']['view']))
+								{
+									if (!$this->JjAuth->can($module['permissions']['view']))
+										$can_view = false;
+								}
+								if ($can_view)
+								{
+									$url = array('plugin' => 'dashboard','controller' => 'dash_dashboard','action' => 'filter', $moduleName);
+									$filterLink = $ajax->link(
+										$module['humanName'],
+										array('plugin' => 'dashboard','controller' => 'dash_dashboard','action' => 'filter', $moduleName),
+										array(
+											'before' => "$('dashboard_table').setLoading();",
+											'complete' => "$('dashboard_table').unsetLoading();",
+											'id' => 'filter_'.$moduleName,
+											'update' => 'dashboard_table',
+										)
+									);
+									$selected = $filter == $moduleName ? 'true' : 'false';
+									$this->BuroOfficeBoy->addHtmlEmbScript("new FilterLink('filter_$moduleName', $selected, 'filter_all');");
+								}
+								else
+								{
+									$filterLink = $ajax->link(
+										$module['humanName'],
+										array(),
+										array(
+											'class'	=> 'disabled',
+											'onclick' => "return false;",
+											'id' => 'filter_'.$moduleName,
+											'update' => 'dashboard_table',
+										)
+									);
+								}
 								$linkFilters[] = $filterLink;
-								
-								$selected = $filter == $moduleName ? 'true' : 'false';
-								$this->BuroOfficeBoy->addHtmlEmbScript("new FilterLink('filter_$moduleName', $selected, 'filter_all');");
 							}
 
 						}

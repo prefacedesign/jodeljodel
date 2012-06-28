@@ -7,7 +7,7 @@ if (isset($error))
 	
 	if (!$error)
 	{
-		$object['content'] = $this->Buro->insertForm('JjUsers.UserUser');
+		$object['content'] = $this->Buro->insertForm('JjUsers.UserUser', array('preferences'));
 	}
 	
 	echo $this->Js->object($object);
@@ -19,7 +19,7 @@ else
 	echo $this->Bl->ebox();
 
 	echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
-		echo $this->Buro->insertForm('JjUsers.UserUser');
+		echo $this->Buro->insertForm('JjUsers.UserUser', array('preferences'));
 	echo $this->Bl->ebox();
 
 	echo $this->Popup->popup('error',

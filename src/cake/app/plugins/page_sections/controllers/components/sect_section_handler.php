@@ -43,12 +43,30 @@ class SectSectionHandlerComponent extends Object {
 	 */
 	function startup(&$controller)
 	{
-		if (isset($controller->Auth))
+		if (isset($controller->JjAuth))
 		{
-			if (empty($this->thisSection['acos']))
-				$controller->Auth->allow($controller->params['action']);
+			if (empty($this->thisSection['permissions']))
+				$controller->JjAuth->allow($controller->params['action']);
 			else
-				$controller->Auth->deny($controller->params['action']);
+			{
+				if ($controller->JjAuth->can($this->thisSection['permissions']))
+					$controller->JjAuth->allow($controller->params['action']);
+				else
+				{
+					$options = array();
+					if (isset($controller->params['plugin']))
+						$options['plugin'] = $controller->params['plugin'];
+					if (isset($controller->params['plugin']))
+						$options['controller'] = $controller->params['controller'];
+					if (isset($controller->params['plugin']))
+						$options['action'] = $controller->params['action'];
+					if ($controller->JjAuth->loginRedirect === $options)
+					{
+						$controller->JjAuth->logout();
+					}
+					$controller->JjAuth->deny($controller->params['action']);
+				}
+			}
 		}
 	}
 	 
@@ -346,8 +364,8 @@ class SectSectionHandlerComponent extends Object {
 			if (!isset($section['humanName']))
 				$sectionsContext[$k]['humanName'] = $section['linkCaption'];
 				
-			if (!isset($section['acos']))
-				$sectionsContext[$k]['acos'] = array();
+			if (!isset($section['permissions']))
+				$sectionsContext[$k]['permissions'] = array();
 			
 			if (isset($section['subSections']))
 				$this->_insertDefaultsIntoSections($sectionsContext[$k]['subSections'], $depth + 1);

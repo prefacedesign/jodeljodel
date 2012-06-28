@@ -6,6 +6,17 @@ __d('backstage', 'Editing a gallery');
 __d('backstage', 'Editing a new');
 __d('backstage', 'Editing a paper');
 
+/** Users 
+ */
+__d('backstage', 'Editing a user_users');
+__d('backstage', 'Editing a user_profiles');
+__d('backstage', 'Editing a user_permissions');
+__d('backstage', 'Page title header - BackstageCustom module user_users');
+__d('backstage', 'Page title header - BackstageCustom module user_profiles');
+__d('backstage', 'Page title header - BackstageCustom module user_permissions');
+__d('backstage', 'Add new user_users');
+__d('backstage', 'Add new user_profiles');
+__d('backstage', 'Add new user_permissions');
 
 
 /** Dashboard special translation strings

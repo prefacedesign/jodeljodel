@@ -29,6 +29,8 @@ else
 			echo $bl->ebox();
 			echo $this->Bl->floatBreak();
 			echo $bl->menu(array(), array('menuLevel' => 1));
+			if (isset($ourLocation[2]) && ($ourLocation[2] == 'user_users' || $ourLocation[2] == 'user_profiles' || $ourLocation[2] == 'user_permissions'))
+				echo $bl->menu(array(), array('menuLevel' => 2));
 		echo $bl->ediv();
 		
 		echo $bl->sdiv(array('id' => 'content'));

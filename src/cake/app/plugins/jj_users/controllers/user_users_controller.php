@@ -19,8 +19,11 @@ class UserUsersController extends JjUsersAppController
 		'Burocrata.BuroBurocrata',
 		'RequestHandler',
 		'Tradutore.TradLanguageSelector',
-		'PageSections.SectSectionHandler'
+		'PageSections.SectSectionHandler',
+		'Session'
 	);
+	
+	var $uses = array('JjUsers.UserUser', 'JjUsers.UserProfile');
 
 /**
  * Overwrtiging the startupProcess method so we can set (forced) 
@@ -42,8 +45,8 @@ class UserUsersController extends JjUsersAppController
  */
 	function beforeFilter()
 	{
-		$this->Auth->loginError = __d('backstage', 'Login failed. Invalid username or password.', true);
-		$this->Auth->authError = __d('backstage', 'You are not authorized to access that location.', true);
+		$this->JjAuth->loginError = __d('backstage', 'Login failed. Invalid username or password.', true);
+		$this->JjAuth->authError = __d('backstage', 'You are not authorized to access that location.', true);
 		parent::beforeFilter();
 	}
 
@@ -56,8 +59,8 @@ class UserUsersController extends JjUsersAppController
 	function login()
 	{
 		$this->set('typeLayout','login');
-		if ($this->Auth->user())
-			$this->redirect($this->Auth->loginRedirect);
+		if ($this->JjAuth->user())
+			$this->redirect($this->JjAuth->loginRedirect);
 	}
 
 /**
@@ -68,7 +71,7 @@ class UserUsersController extends JjUsersAppController
  */
 	function logout()
 	{
-		$this->redirect($this->Auth->logout());
+		$this->redirect($this->JjAuth->logout());
 	}
 
 /**
@@ -82,19 +85,19 @@ class UserUsersController extends JjUsersAppController
 		if (!empty($this->data)) {
 			$error = $this->BuroBurocrata->loadPostedModel($this, $Model);
 			
-			$this->data[$Model->alias][$Model->primaryKey] = $user_id = $this->Auth->user($Model->primaryKey);
+			$this->data[$Model->alias][$Model->primaryKey] = $user_id = $this->JjAuth->user($Model->primaryKey);
 			
 			$saved = false;
 			$Model->set($this->data);
 			if ($Model->validates()) {
 				if (!empty($this->data[$Model->alias]['password_change'])) {
-					$this->data[$Model->alias]['password'] = $this->Auth->password($this->data[$Model->alias]['password_change']);
+					$this->data[$Model->alias]['password'] = $this->JjAuth->password($this->data[$Model->alias]['password_change']);
 				}
 				
 				if ($Model->save($this->data, false)) {
 					$this->UserUser->contain();
 					$user = $this->UserUser->findById($user_id);
-					$this->Auth->login($user);
+					$this->JjAuth->login($user);
 					$saved = true;
 				}
 			}
@@ -102,7 +105,7 @@ class UserUsersController extends JjUsersAppController
 			$this->view = 'JjUtils.Json';
 			$this->set(compact('error', 'saved'));
 		} else {
-			$this->data = $this->Auth->user();
+			$this->data = $this->JjAuth->user();
 		}
 	}
 }

@@ -102,7 +102,7 @@ class BuroBurocrataController extends BurocrataAppController
 	public function beforeFilter()
 	{
 		parent::beforeFilter();
-		$this->Auth->allow('*');
+		$this->JjAuth->allow('*');
 		
 		StatusBehavior::setGlobalActiveStatuses(array('publishing_status' => array('active' => array('published','draft'), 'overwrite' => false)));
 	}

@@ -7,6 +7,19 @@ echo $this->Bl->sbox(array('class' => $moduleName),array('size' => array('M' => 
 	echo $this->Bl->h1Dry(__d('backstage','Page title header - BackstageCustom module '.$moduleName, true));
 	if (in_array('create', $backstageSettings['actions']))
 	{
+		
+		$curModule = Configure::read('jj.modules.'.$moduleName);
+		$class = '';
+		$onclick = '';;
+		if (isset($curModule['permissions']) && isset($curModule['permissions']['create']))
+		{
+			if (!$this->JjAuth->can($curModule['permissions']['create']))
+			{
+				$onclick = "return false;";
+				$class = 'disabled';
+			}
+		}
+		
 		echo $this->Bl->sboxContainer(array('class' => 'dash_toolbox'),array('size' => array('M' => 12, 'g' => -1)));	
 			$url = array(
 				'language' => $mainLanguage,
@@ -15,7 +28,7 @@ echo $this->Bl->sbox(array('class' => $moduleName),array('size' => array('M' => 
 			);
 			
 			echo $this->Bl->sdiv(array('id' => 'dash_link_to_additem', 'class' => 'expanded'));
-				echo $this->Bl->anchor(array(), compact('url'), __d('backstage','Add new '.$moduleName,true));
+				echo $this->Bl->anchor(array('class' => $class, 'onclick' => $onclick), compact('url'), __d('backstage','Add new '.$moduleName,true));
 			echo $this->Bl->ediv();
 			echo $bl->floatBreak();
 		echo $this->Bl->eboxContainer();
@@ -68,7 +81,9 @@ echo $this->Bl->sbox(array('class' => $moduleName),array('size' => array('M' => 
 									array(
 										'plugin' => 'backstage',
 										'controller' => 'back_contents',
-										'action' => 'filter_published_draft', $moduleName, $module
+										'action' => 'filter_published_draft',
+										$module,
+										$moduleName
 									), 
 									array(
 										'before' => "$('backstage_custom_table').setLoading();",
@@ -90,7 +105,9 @@ echo $this->Bl->sbox(array('class' => $moduleName),array('size' => array('M' => 
 								array(
 									'plugin' => 'backstage',
 									'controller' => 'back_contents',
-									'action' => 'filter_published_draft', $moduleName, 'all'
+									'action' => 'filter_published_draft',
+									'all',
+									$moduleName
 								), 
 								array(
 									'before' => "$('backstage_custom_table').setLoading();",

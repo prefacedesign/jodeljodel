@@ -74,6 +74,14 @@ class BackContentsController extends BackstageAppController
         
         if (is_null($id))
         {
+			if (isset($config['permissions']) && isset($config['permissions']['create']))
+			{
+				if (!$this->JjAuth->can($config['permissions']['create']))
+				{
+					$this->JjAuth->stop();
+				}
+			}
+			
             if (method_exists($Model, 'createEmpty'))
 			{
                 if ($Model->createEmpty())
@@ -81,6 +89,7 @@ class BackContentsController extends BackstageAppController
                 	if (empty($Model->id))
                 		$this->jodelError('Your createEmpty method returned true, but the model doesn`t have an ID. Are you sure that createEmpty really created an database row?');
 
+					$this->Session->write('Backstage.adding_record', true);
 					$this->redirect(array($moduleName, $Model->id));
 				}
 				elseif (Configure::read())
@@ -99,7 +108,39 @@ class BackContentsController extends BackstageAppController
                 $this->data = $Model->findBurocrata($id);
             else
                 $this->data = $Model->findById($id);
-				
+			
+			$adding = $this->Session->read('Backstage.adding_record');
+			$this->Session->delete('Backstage.adding_record');
+			
+			if ($adding)
+			{
+				if (isset($config['permissions']) && isset($config['permissions']['create']))
+				{
+					if (!$this->JjAuth->can($config['permissions']['create']))
+						$this->JjAuth->stop();
+				}
+			}
+			else
+			{
+				if (isset($config['permissions']) && ((isset($config['permissions']['edit_draft']) && isset($config['permissions']['edit_published'])) || isset($config['permissions']['edit'])))
+				{
+					if (isset($this->data[$Model->alias]['publishing_status']) && $this->data[$Model->alias]['publishing_status'] == 'published')
+					{	
+						if (!$this->JjAuth->can($config['permissions']['edit_published']))
+							$this->JjAuth->stop();
+					}
+					elseif (isset($this->data[$Model->alias]['publishing_status']) && $this->data[$Model->alias]['publishing_status'] == 'draft')
+					{	
+						if (!$this->JjAuth->can($config['permissions']['edit_draft']))
+							$this->JjAuth->stop();
+					}
+					elseif (!isset($this->data[$Model->alias]['publishing_status']) && isset($config['permissions']['edit']))
+					{
+						if (!$this->JjAuth->can($config['permissions']['edit']))
+							$this->JjAuth->stop();
+					}
+				}
+			}
         }
         if (isset($Model->Behaviors->TradTradutore->settings[$Model->alias]))
 			$this->set('translateModel', Inflector::camelize($Model->Behaviors->TradTradutore->settings[$Model->alias]['className']));
@@ -165,47 +206,51 @@ class BackContentsController extends BackstageAppController
 	{
 		$conditions = array();
 		if (!isset($this->modules[$moduleName]))
-			$this->jodelError('BackContentsController::index - '.$moduleName.' not found in jj.modules');
-		
-		if (!isset($this->modules[$moduleName]['model']))
-			$this->jodelError('BackContentsController::index - '.$moduleName.'[`model`] not found in jj.modules');
-
-		if (!in_array('backstage_custom',$this->modules[$moduleName]['plugged'])) 
-			$this->jodelError('BackContentsController::index - '.$moduleName.' configured in jj.modules must have `backstage_custom` in plugged options');
-
-		if (!isset($this->backstageSettings[$moduleName]))
-			$this->jodelError('BackContentsController::index - '.$moduleName.' configurations not found on backstage config');
-
-		if (!isset($this->params['named']['page']))
-		{
-			$this->Session->write('Backstage.searchOptions', array());
-		}
+			trigger_error('BackContentsController::index - '.$moduleName.' not found in jj.modules') and die;
+		elseif (!isset($this->modules[$moduleName]['model']))
+			trigger_error('BackContentsController::index - '.$moduleName.'[`model`] not found in jj.modules') and die;
 		else
 		{
-			$page = $this->params['named']['page'];
-		}
-			
-		$options = $this->__getOptions($moduleName);
-		
-		if (isset($page))
-			$options['page'] = $page;
-		
-		$this->paginate = array($this->backstageModel->alias => $options);
-		
-		$this->set('backstageSettings', $this->backstageSettings[$moduleName]);
-		$this->set('moduleName', $moduleName);
-		$this->set('modelName', $this->backstageModel->alias);
-		$this->set('filter_status', $this->status);
-		$this->data = $this->paginate($this->backstageModel);
-		$this->helpers['Paginator'] = array('ajax' => 'Ajax');
-		
-		if($this->RequestHandler->isAjax())
-		{
-			$this->render('filter');
+			if (!in_array('backstage_custom',$this->modules[$moduleName]['plugged'])) 
+				trigger_error('BackContentsController::index - '.$moduleName.' configured in jj.modules must have `backstage_custom` in plugged options') and die;
+			else
+			{
+				if (!isset($this->backstageSettings[$moduleName]))
+					trigger_error('BackContentsController::index - '.$moduleName.' configurations not found on backstage config') and die;
+				else
+				{
+					if (!isset($this->params['named']['page']))
+					{
+						$this->Session->write('Backstage.searchOptions', array());
+					}
+					else
+					{
+						$page = $this->params['named']['page'];
+					}
+						
+					$options = $this->__getOptions($moduleName);
+					
+					if (isset($page))
+						$options['page'] = $page;
+					
+					$this->paginate = array($this->backstageModel->alias => $options);
+					
+					$this->set('backstageSettings', $this->backstageSettings[$moduleName]);
+					$this->set('moduleName', $moduleName);
+					$this->set('modelName', $this->backstageModel->alias);
+					$this->set('filter_status', $this->status);
+					$this->data = $this->paginate($this->backstageModel);
+					$this->helpers['Paginator'] = array('ajax' => 'Ajax');
+					
+					if($this->RequestHandler->isAjax()) {
+						$this->render('filter');            
+					}
+				}
+			}
 		}
 	}
 	
-	function filter_published_draft($moduleName, $status)
+	function filter_published_draft($status, $moduleName)
 	{
 		$this->Session->write('Backstage.status', $status);
 		$this->filter_and_search($moduleName);

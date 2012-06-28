@@ -17,5 +17,43 @@ Configure::write('Backstage.itemSettings',array(
 			'paramsFoward' => array(0 => 'some_field_to_filter'),
 			'contain' => array('ModelModel'),
 		),
+		'user_users' => array(
+			'actions' => array('delete','edit', 'create'),
+			'limitSize' => 100,
+			'statusOptions' => array('published', 'draft'),
+			'columns' => array(
+				'name' => array('label' => __d('backstage', 'UserUser header: name', true), 'field' => 'name', 'size' => '2'),
+				'profiles' => array('label' => __d('backstage', 'UserUser header: profiles', true), 'size' => '4'),
+				'actions' => array('label' => __d('backstage', 'UserUser header: actions', true), 'size' => '3'),
+			),
+			'customRow' => true,
+			'customSearch' => true,
+			'contain' => array('UserProfile'),
+		),
+		'user_profiles' => array(
+			'actions' => array('delete','edit', 'create'),
+			'limitSize' => 100,
+			'statusOptions' => array('published', 'draft'),
+			'columns' => array(
+				'name' => array('label' => __d('backstage', 'UserProfile header: name', true), 'field' => 'name', 'size' => '2'),
+				'profiles' => array('label' => __d('backstage', 'UserProfile header: permissions', true), 'size' => '4'),
+				'actions' => array('label' => __d('backstage', 'UserProfile header: actions', true), 'size' => '3'),
+			),
+			'customRow' => true,
+			'customSearch' => true,
+			'contain' => array('UserPermission'),
+		),
+		'user_permissions' => array(
+			'actions' => array('delete','edit', 'create'),
+			'limitSize' => 100,
+			'statusOptions' => array('published', 'draft'),
+			'columns' => array(
+				'name' => array('label' => __d('backstage', 'UserPermission header: name', true), 'field' => 'name', 'size' => '3'),
+				'description' => array('label' => __d('backstage', 'UserPermission header: description', true), 'field' => 'name', 'size' => '6'),
+				'actions' => array('label' => __d('backstage', 'UserPermission header: actions', true), 'size' => '3'),
+			),
+			'customRow' => true,
+			'customSearch' => true,
+		),
 	)
 );

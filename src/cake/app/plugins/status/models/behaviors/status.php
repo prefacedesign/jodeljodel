@@ -116,6 +116,7 @@
  * 
  */
  App::import('Config', 'Status.sta_config');
+ App::import('Model', 'App');
  
 //@todo: change the name of the behavior to StaStatus behavior
  
@@ -444,6 +445,7 @@ class StatusBehavior extends ModelBehavior
 			
 		if (isset($Model->Behaviors->TradTradutore))
 		{
+			
 			if (isset($Model->Behaviors->TradTradutore->settings[$Model->alias]))
 			{
 				if (isset($this->__settings[$Model->Behaviors->TradTradutore->settings[$Model->alias]['className']]))

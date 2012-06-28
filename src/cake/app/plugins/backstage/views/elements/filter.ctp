@@ -140,13 +140,32 @@
 			
 					//@todo Substitute this with an AJAX call.
 					echo $this->Bl->smartTableRowDry(array(
-						array(array(),array('colspan' => 3),' ')
+						array(array(),array('colspan' => 3),' '), 
+						array(array('id' => "item_info_$k"),array('colspan' => 4, 'rowspan' => 2), '')
 					));
 					
 					
 					// Does this entry has publishing and drafting capabilities?
 					if (in_array('publish_draft', $backstageSettings['actions']))
 					{
+					
+						$can_publish = true;
+						if (isset($modules[$moduleName]['permissions']) && isset($modules[$moduleName]['permissions']['edit_publishing_status']))
+						{
+							if (!$this->JjAuth->can($modules[$moduleName]['permissions']['edit_publishing_status']))
+								$can_publish = false;
+						}
+						if ($can_publish)
+						{
+							$onclick = "";
+							$class = 'link_button';
+						}
+						else
+						{
+							$onclick = "return false;";
+							$class = 'link_button disabled';
+						}
+						
 						$draftLink = $ajax->link(__d('dashboard','Hide from public', true), 			
 							array(
 								'plugin' => 'backstage',
@@ -156,7 +175,8 @@
 								$item[$modelName]['id'], 'draft'
 							), array(
 								'complete' => "if(request.responseJSON.success) {showPopup('draft_alert_ok');} else {showPopup('draft_alert_failure');}",
-								'class' => 'link_button'
+								'class' => $class,
+								'onclick' => $onclick
 							)
 						);
 					
@@ -169,7 +189,8 @@
 								$item[$modelName]['id'], 'published'
 							), array(
 								'complete' => "if(request.responseJSON.success) {showPopup('publish_alert_ok');} else {showPopup('publish_alert_failure');}",
-								'class' => 'link_button'
+								'class' => $class,
+								'onclick' => $onclick
 							)
 						);
 					}
@@ -179,10 +200,26 @@
 					if (in_array('delete', $backstageSettings['actions']))
 					{
 						$delete_url = $this->Html->url(array('plugin' => 'backstage', 'controller' => 'back_contents', 'action' => 'delete_item', $moduleName, $item[$modelName]['id']));
+						$can_delete = true;
+						if (isset($modules[$moduleName]['permissions']) && isset($modules[$moduleName]['permissions']['delete']))
+						{
+							if (!$this->JjAuth->can($modules[$moduleName]['permissions']['delete']))
+								$can_delete = false;
+						}
+						if ($can_delete)
+						{
+							$onclick = "deleteID = '". $delete_url . "'; showPopup('delete_alert_confirmation'); event.returnValue = false; return false;";
+							$class = 'link_button';
+						}
+						else
+						{
+							$onclick = "return false;";
+							$class = 'link_button disabled';
+						}
 						$links .= $this->Bl->anchor(
 							array(
-								'class' => 'link_button',
-								'onclick' => "deleteID = '". $delete_url . "'; showPopup('delete_alert_confirmation'); event.returnValue = false; return false;",
+								'class' => $class,
+								'onclick' => $onclick,
 							), 
 							array('url' => ''),
 							__d('dashboard','Delete content', true)
@@ -206,17 +243,33 @@
 					}
 					
 					if (in_array('edit', $backstageSettings['actions']))
-					{
-						 
-						 $links .= $this->Bl->anchor(array('class' => 'link_button'), array('url' => array(
-										'plugin' => 'backstage',
-										'controller' => 'back_contents',
-										'action' => 'edit',
-										$moduleName,
-										$item[$modelName]['id']
-								 )
-							 ), __d('dashboard','Dashboard: Edit', true)
-						 );
+					{ 
+						$can_edit = true;
+						if (isset($modules[$moduleName]['permissions']) && isset($modules[$moduleName]['permissions']['edit_draft']) && isset($modules[$moduleName]['permissions']['edit_published']))
+						{
+							if ($item[$modelName]['publishing_status'] == 'published')
+							{
+								if (!$this->JjAuth->can($modules[$moduleName]['permissions']['edit_published']))
+									$can_edit = false;
+							}
+							else
+							{
+								if (!$this->JjAuth->can($modules[$moduleName]['permissions']['edit_draft']))
+									$can_edit = false;
+							}
+						} 
+						
+						$links .= $this->Bl->anchor(
+							array('class' => $class, 'onclick' => $onclick), 
+							array('url' => array(
+								'plugin' => 'backstage',
+								'controller' => 'back_contents',
+								'action' => 'edit',
+								$moduleName,
+								$item[$modelName]['id']
+							)),
+							__d('dashboard','Dashboard: Edit', true)
+						);
 					}
 						 
 					$links .= $this->Bl->ediv();

@@ -70,7 +70,29 @@
 			'model' => 'CorkCorktile',
 			'humanName' => __('MODULE CorkCorkTile human name', true),
 			'plugged' => array('dashboard', 'backstage')
-		)
+		),
+		//admin user sections
+		'user_users' => array(
+			'model' => 'JjUsers.UserUser',
+			'humanName' => __('MODULE UserUser human name', true),
+			'plugged' => array('backstage', 'backstage_custom'),
+			'permissions' => array(
+				'delete' => array('user_delete'), 
+				'edit' => array('user_edit'),
+				'create' => array('user_add'),
+				'view' => array('user_list'),
+			),
+		),
+		'user_profiles' => array(
+			'model' => 'JjUsers.UserProfile',
+			'humanName' => __('MODULE UserProfile human name', true),
+			'plugged' => array('backstage', 'backstage_custom')
+		),
+		'user_permissions' => array(
+			'model' => 'JjUsers.UserPermission',
+			'humanName' => __('MODULE UserPermission human name', true),
+			'plugged' => array('backstage', 'backstage_custom')
+		),
  ));
  
  

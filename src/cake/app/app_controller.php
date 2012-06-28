@@ -31,13 +31,13 @@
  * @subpackage    cake.app
  */
 class AppController extends Controller {
-	var $helpers = array('Html', 'Form', 'Session', 'Time');
+	var $helpers = array('Html', 'Form', 'Session', 'Time', 'Ajax', 'JjUsers.JjAuth');
 	var $components = array(
-		'Acl',
 		'Tradutore.TradLanguageSelector',
 		'PageSections.SectSectionHandler',
-		'Auth' => array(
+		'JjUsers.JjAuth' => array(
 			'userModel' => 'JjUsers.UserUser',
+			'sessionKey' => 'JjAuth.UserUser',
 			'authorize' => 'controller',
 			'loginRedirect' => array(
 				'plugin' => 'dashboard',
@@ -51,8 +51,8 @@ class AppController extends Controller {
 	function beforeFilter()
 	{
 		parent::beforeFilter();		
-		$user = $this->Auth->user();
-		list($userPlugin, $userModel) = pluginSplit($this->Auth->userModel);
+		$user = $this->JjAuth->user();
+		list($userPlugin, $userModel) = pluginSplit($this->JjAuth->userModel);
 		$user = $user[$userModel];
 		
 		App::Import('Behavior', 'Status.Status');
@@ -109,7 +109,7 @@ class AppController extends Controller {
 		
 		if ($this->params['action'] == $standardUrl['action'] && $this->params['controller'] == $standardUrl['controller'])
 		{
-			if ($this->Acl->check($user['username'], 'view_drafts', 'read'))
+			if ($this->JjAuth->can('view_drafts'))
 			{
 				//if the user have the permission view_drafts then the status are changed to published and draft
 				StatusBehavior::setGlobalActiveStatuses(array(
@@ -124,30 +124,13 @@ class AppController extends Controller {
 	function beforeRender()
 	{
 		parent::beforeRender();		
-		$userData = $this->Auth->user();
+		$userData = $this->JjAuth->user();
 		$this->set('userData',$userData['UserUser']);
 	}
 	
 	function isAuthorized()
 	{
-		if (!empty($this->SectSectionHandler->thisSection['acos']))
-		{
-			$username = $this->Auth->user('username');
-			
-			foreach ($this->SectSectionHandler->thisSection['acos'] as $aco => $actions)
-			{
-				if (is_numeric($aco)) //array('aco') -- defaults to array('aco' => 'read')
-				{
-					$aco = $actions;
-					$actions = array('*');
-				}
-				
-				foreach($actions as $action)
-					if (!$this->Acl->check($username, $aco, $action))
-						return false;
-			}
-		}
-		return true;
+		return false;
 	}
 	
 	protected function jodelError($message)

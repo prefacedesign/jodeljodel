@@ -15,15 +15,38 @@ echo $this->Bl->sbox(array(), array('size'=> array('M' => 12, 'g' => -1)));
 		//@todo Implement the ajax funcionality through the Bricklayer, to make it customizable.
 		//@todo Publish option should only be available when the document is validated.
 		
+		$config = Configure::read('jj.modules.'.$moduleName);
+		$class = '';
+		$onclick = "";
+		$can_edit_publishing_status = true;
+		if (isset($config['permissions']) && isset($config['permissions']['edit_publishing_status']))
+		{
+			if (!$this->JjAuth->can($config['permissions']['edit_publishing_status']))
+			{
+				$can_edit_publishing_status = false;
+				$class = 'disabled';
+				$onclick = "return false;";
+			}
+		}
+		
+		$can_create = true;
+		if (isset($config['permissions']) && isset($config['permissions']['create']))
+		{
+			if (!$this->JjAuth->can($config['permissions']['create']))
+			{
+				$can_create = false;
+			}
+		}
+		
 		$draftLink = $ajax->link(__d('backstage', 'publish', true), 
 			array('action' => 'set_publishing_status', $moduleName, $this->data[$modelName]['id'],'published'),
-			array('complete' => "if(request.responseJSON.success) { $('edit_page_title_draft').hide(); $('edit_page_title_published').show()} else {alert('".__d('backstage','Could not change publishing status: communication error.',true)."')}"));
+			array('class' => $class, 'onclick' => $onclick, 'complete' => "if(request.responseJSON.success) { $('edit_page_title_draft').hide(); $('edit_page_title_published').show()} else {alert('".__d('backstage','Could not change publishing status: communication error.',true)."')}"));
 		$draftText = sprintf(__d('backstage', 'Now, this document is hidden. You can %s.', true), $draftLink);
 		
 		$publishLink = $ajax->link(
 			__d('backstage', 'mark it as draft', true), 
 			array('action' => 'set_publishing_status', $moduleName, $this->data[$modelName]['id'],'draft'),
-			array('complete' => "if(request.responseJSON.success) { $('edit_page_title_published').hide(); $('edit_page_title_draft').show()} else {alert('".__d('backstage', 'Could not change publishing status: communication error.',true)."')}")
+			array('class' => $class, 'onclick' => $onclick, 'complete' => "if(request.responseJSON.success) { $('edit_page_title_published').hide(); $('edit_page_title_draft').show()} else {alert('".__d('backstage', 'Could not change publishing status: communication error.',true)."')}")
 		);
 		$publishText = sprintf(__d('backstage', 'Now, this document is published. You can %s.',true), $publishLink);
 			
@@ -49,8 +72,8 @@ echo $this->Bl->ebox();
 echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 	if (isset($this->data[$modelName]['languages']))
 	{
-		echo $this->element('language_edit_select', array('plugin' => 'backstage', 'translatedLanguages' => $this->data[$modelName]['languages']));
-		echo $this->element('show_language_being_edited',array('plugin' => 'backstage'));
+		echo $this->element('language_edit_select', array('plugin' => 'backstage', 'can_create' => $can_create, 'translatedLanguages' => $this->data[$modelName]['languages']));
+		echo $this->element('show_language_being_edited',array('plugin' => 'backstage', 'can_edit_publishing_status' => $can_edit_publishing_status));
 	}	
 	
 	
@@ -61,7 +84,10 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 			'content' => __d('backstage', 'Your data cannot be saved - TEXT.', true)
 		)
 	);
-	if($ourLocation[1] == 'dashboard')
+	
+	$curModule = Configure::read('jj.modules.'.$moduleName);
+	
+	if(!in_array('backstage_custom', $curModule['plugged']))
 		$dashboard_url = $this->Html->url(array('plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'index'));
 	else
 		$dashboard_url = $this->Html->url(array('plugin' => 'backstage', 'controller' => 'back_contents', 'action' => 'index', $moduleName));

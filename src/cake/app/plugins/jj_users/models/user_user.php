@@ -9,14 +9,9 @@ class UserUser extends JjUsersAppModel
 	
 	var $actsAs = array(
 		'Containable', 
-		'Acl' => array('type' => 'requester'), 
-		'JjUsers.AddAliasToAcl' => array('type' => 'requester', 'field' => 'username')
 	);
 	
 	var $validate = array(
-		'user_group_id' => array(
-			'numeric' => array('rule' => array('numeric')),
-		),
 		'name' => array(
 			'notempty' => array('rule' => array('notempty'))
 		),
@@ -29,41 +24,57 @@ class UserUser extends JjUsersAppModel
 		),
 		'password_change' => array(
 			'notempty' => array('rule' => array('notempty')),
-			'minLength' => array('rule' => array('minLength', 6))
+			'minLength' => array('rule' => array('minLength', 6), 'message' => 'A senha deve conter no mínimo 6 caracteres.')
 		),
 		'password_retype' => array(
 			'same' => array('rule' => array('identicalFieldValues', 'password_change'))
-		)
+		),
 	);
 
-	var $belongsTo = array(
-		'UserGroup' => array(
-			'className' => 'UserGroup',
-			'foreignKey' => 'user_group_id'
-		)
-	);
 	
-	function parentNode()
+	var $hasAndBelongsToMany = array('UserProfile' => array('className' => 'JjUsers.UserProfile', 'joinTable' => 'user_users_user_profiles'));
+	
+	
+	/* Creates a blank row in the table. It is part of the backstage contract.
+	 *
+	 */
+	function createEmpty()
 	{
-		if (!$this->id && $this->data[$this->alias][$this->primaryKey]) {
-			$this->id = $this->data[$this->alias][$this->primaryKey];
-		}
 		
-		if (!empty($this->data[$this->alias]['user_group_id'])) {
-			$user_group_id = $this->data[$this->alias]['user_group_id'];
-		} elseif ($this->id) {
-			$user_group_id = $this->field('user_group_id');
-		} else {
-			return null;
+		$data = $this->saveAll(array(), array('validate' => false));
+		$data = $this->find('first', array('conditions' => array($this->alias.'.id' => $this->id)));
+		
+		return $data;
+	}
+	
+	function saveBurocrata($data)
+	{	
+		App::import('Component','JjUsers.JjAuth');
+		
+		$this->set($data);
+		
+		if ($this->validates()) {
+			if (!empty($data[$this->alias]['password_change'])) {
+				$data[$this->alias]['password'] = JjAuthComponent::password($data[$this->alias]['password_change']);
+			}
+			
+			return $this->saveAll($data);
 		}
-
-		return array('UserGroup' => array('id' => $user_group_id));
+		else {
+			return false;
+		}
 	}
 	
 	function beforeValidate($options)
 	{
 		if (empty($this->data[$this->alias]['password_change']) && empty($this->data[$this->alias]['password_retype']))
 			unset($this->data[$this->alias]['password_change'], $this->data[$this->alias]['password_retype']);
+			
+		if ((!isset($this->data['UserProfile']['UserProfile']) || empty($this->data['UserProfile']['UserProfile'])) && isset($this->data[$this->alias]['validate_profiles'])) 
+		{
+			$this->invalidate('non_existent_field'); // fake validation error on Profile
+			$this->UserProfile->invalidate('UserProfile', 'Por favor, selecione ao menos um perfil');
+		}
 		return true;
 	}
 }

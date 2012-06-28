@@ -16,7 +16,7 @@
 		
 	$missingLanguages =	array_diff(Configure::read('Tradutore.languages'), array_keys($translatedLanguages));
 	
-	if (!empty($missingLanguages))
+	if (!empty($missingLanguages) && $can_create)
 	{
 		$linkList = array();
 		foreach($missingLanguages as $lang)

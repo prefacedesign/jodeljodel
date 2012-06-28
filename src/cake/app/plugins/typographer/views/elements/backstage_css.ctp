@@ -461,6 +461,12 @@
 	));
 	
 	$this->Decorator->rule(
+		'a.link_button.disabled', array(
+			'color' => $palette['button_fg_disabled']->write(),
+			'background-color' => $palette['button_bg_disabled']->write(),
+	));
+	
+	$this->Decorator->rule(
 		'a.link_button:visited', array(
 			'color' => $palette['text']->write(),
 	));
@@ -699,19 +705,70 @@
 	);
 	
 	$this->Decorator->rule(
+		'#content #edit_page_title_draft a.disabled, #content #edit_page_title_published a.disabled',
+		array(
+			'color' => $palette['button_fg_disabled']->write(),
+			'cursor' => 'text'
+		)
+	);
+	
+	$this->Decorator->rule(
+		'#content #edit_page_title_draft a.disabled:hover, #content #edit_page_title_published a.disabled:hover',
+		array(
+			'color' => $palette['button_fg_disabled']->write(),
+			'background-color' => 'transparent !important',
+		)
+	);
+	
+	
+	$this->Decorator->rule(
 		'#content > div.box', array(
 			'position' => 'relative'
 	));
 	
+	
 	$this->Decorator->rule(
-		'#header .menu',
+		'#header .menu.menu_1',
 		array(
 			'height' => $vg->size(array('g' => 1, 'u' => 2)),
 		)
 	);
 	
 	$this->Decorator->rule(
-		'#header .menu a',
+		'#header .menu.menu_2',
+ 		array(
+ 			'height' => $vg->size(array('g' => 1, 'u' => 2)),
+			'position' => 'absolute',
+			'top' => $vg->size('M3g'),
+			'right' => $hg->size('g'),
+			'z-index' => 100
+		)
+	);
+	
+	$this->Decorator->rule(
+		'#header .menu.menu_2 a.selected, #header .menu.menu_2 a:hover',
+		array(
+			'height' => $vg->size(array('u' => '21')),
+			'background-color' => $palette['text']->write(),
+			'color' => $palette['bg']->write(),
+		)
+	);
+	
+	$this->Decorator->rule(
+		'#header .menu.menu_2 a',
+		array(
+			'float' => 'left',
+			'height' => $vg->size(array('g' => 1)),
+			'background-color' => $palette['bg']->write(),
+			'color' => $palette['text']->write(),
+			'padding' => sprintf("%s %s %s %s !important", $u->t(0), $hg->size('m'), $u->t(0), $hg->size('m')),
+			'margin-left' => $hg->size(array('g' => 0.5)),
+			'border' => '0 !important',
+ 		)
+ 	);
+	
+	$this->Decorator->rule(
+		'#header .menu.menu_1 a',
 		array(
 			'float' => 'left',
 			'height' => $vg->size(array('g' => 1)),
@@ -724,7 +781,7 @@
 	);
 	
 	$this->Decorator->rule(
-		'#header .menu a.selected',
+		'#header .menu.menu_1 a.selected',
 		array(
 			'height' => $vg->size(array('u' => '21')),
 			'background-color' => $palette['bg']->write(),
@@ -736,6 +793,11 @@
 			'border-bottom' => '0 !important'
 		)
 	);
+	
+	$this->Decorator->rule(
+		'#header .menu a.menu_item_1_admin', array(
+			'float' => 'right',
+	));
 	
 	$this->Decorator->rule(
 		'#header .menu a.menu_item_1_preferences', array(
@@ -792,7 +854,9 @@
 		'.h1div', array(
 			'border-bottom' => $u->t(2) . ' solid ' . $palette['text']->write(),
 			'padding-bottom' => $vg->size(array('m' => 2)),
-			'margin-bottom' => $vg->size(array('g' => 1.5))
+			'margin-bottom' => $vg->size(array('g' => 1.5)),
+			'position' => 'relative',
+			'z-index' => 10
 	));
 	
 	$this->Decorator->rule(
@@ -1015,6 +1079,22 @@
 	));
 	
 	$this->Decorator->rule(
+		'#dash_link_to_additem.expanded a.disabled', array(
+			'color' => $palette['button_fg_disabled']->write()
+	));
+	
+	$this->Decorator->rule(
+		'#dash_additem div.dash_itemlist a.disabled', array(
+			'color' => $palette['button_fg_disabled']->write(),
+			'cursor' => 'text'
+	));
+	
+	$this->Decorator->rule(
+		'#dash_additem div.dash_itemlist a.disabled:hover', array(
+			'background-color' => 'transparent !important',
+	));
+
+	$this->Decorator->rule(
 		'#dash_additem h3', array(
 			'font-size' => $vg->size(array('u' => $line_height* 13/18)),
 			'display' => 'inline',
@@ -1022,6 +1102,8 @@
 			'text-transform' => 'uppercase',
 			'letter-spacing' => $letterSpacing
 	));
+	
+	
 	
 	$this->Decorator->rule(
 		'#dash_additem > span', array(
@@ -1088,6 +1170,18 @@
 			'margin-right' => $hg->size('m'),
 			'padding' => '0 ' . $hg->size('m'),
 			'display' => 'inline-block'
+	));
+	
+	$this->Decorator->rule(
+		'#dash_filter_list a.disabled', array(
+			'color' => $palette['button_fg_disabled']->write(),
+			'cursor' => 'text'
+	));
+	
+	$this->Decorator->rule(
+		'#dash_filter_list a.disabled:hover', array(
+			'color' => $palette['button_fg_disabled']->write() . ' !important',
+			'background' => 'none !important',
 	));
 	
 	$this->Decorator->rule(
@@ -1405,6 +1499,15 @@
 	));
 	
 	$this->Decorator->rule(
+		'table.admin_users', array(
+			'border-spacing' => 0,
+			'border-collapse' => 'collapse',
+			'text-align' => 'left',
+			'font-size' => $vg->size(array('u' => ($line_height * 11/18))),
+			'margin-top' => $vg->size('g')
+	));
+	
+	$this->Decorator->rule(
 		'#dashboard_table', array(
 			'clear' => 'both',
 	));
@@ -1432,12 +1535,31 @@
 	));
 	
 	$this->Decorator->rule(
+		'table.admin_users th', array(
+			'color' => $palette['text']->write(),
+			'height' => $vg->size(array('m' => 6)),
+			'font-size' => $vg->size(array('u' => ($line_height * 13/18)))
+	));
+	
+	$this->Decorator->rule(
 		'table.dashboard td, table.dashboard th, table.backstage td, table.backstage th', array(
 			'padding-left' => $u->t($cell_padding_left),
 			'padding-right' => $u->t($cell_padding_right),
 			'padding-bottom' => $vg->size(array('m'=> 1.5)),
 			'vertical-align' => 'text-top',
 			'text-align' => 'left'
+	));
+	
+	$this->Decorator->rule(
+		'table.admin_users td, table.admin_users th', array(
+			'padding-bottom' => $vg->size(array('m'=> 1.5)),
+			'vertical-align' => 'text-top',
+			'text-align' => 'left'
+	));
+	
+	$this->Decorator->rule(
+		'table.admin_users td div.actions', array(
+			'margin-top' => $vg->size('m2u')
 	));
 	
 	$this->Decorator->rule(
@@ -1473,9 +1595,9 @@
 	));
 	
 	$this->Decorator->rule(
-		'table.dashboard tr.main_info, table.dashboard tr.actions, table.backstage tr.main_info, table.backstage tr.actions', array(
-			'border-bottom' => $u->t($border_width) . ' dashed ' . $palette['text']->write()
-	));
+		'table.dashboard tr.main_info, table.dashboard tr.actions, table.backstage tr.main_info, table.backstage tr.actions, table.admin_users tr', array(
+ 			'border-bottom' => $u->t($border_width) . ' dashed ' . $palette['text']->write()
+ 	));
 	
 	$this->Decorator->rule(
 		'table.dashboard td, table.backstage td', array(
@@ -1613,6 +1735,15 @@
 			'font-size' => $u->t($line_height * 13/18),
 			'padding-left' => $hg->size(array('m' => 1)),
 			'padding-right' => $hg->size(array('m' => 1))
+	));
+	
+	$this->Decorator->rule(
+		'table.admin_users a.link_button', array(
+			'font-size' => $u->t($line_height * 13/18),
+			'padding-left' => $hg->size(array('m' => 1)),
+			'padding-right' => $hg->size(array('m' => 1)),
+			'height' => $vg->size('3m'),
+			'line-height' => $vg->size('g')
 	));
 	
 	$this->Decorator->rule(

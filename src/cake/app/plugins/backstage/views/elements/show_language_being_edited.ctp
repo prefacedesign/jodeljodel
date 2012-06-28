@@ -11,7 +11,7 @@
 				.  sprintf(__d('backstage',' the %s version.',true),__d('backstage',$lang,true))
 			);
 
-			if (isset($this->data[$modelName]['translate_publishing_status']))
+			if (isset($this->data[$modelName]['translate_publishing_status']) && $can_edit_publishing_status)
 			{
 				if ($this->data[$modelName]['translate_publishing_status'] == 'draft')
 				{

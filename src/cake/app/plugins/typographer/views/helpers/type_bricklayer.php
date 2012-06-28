@@ -73,7 +73,8 @@ class TypeBricklayerHelper extends AppHelper
 	var $helpers = array(
 		'Typographer.*TypeStyleFactory' => array(
 			'name' => 'TypeStyleFactory'
-		)
+		),
+		'JjUsers.JjAuth'
 	);	
 	
 
@@ -147,9 +148,14 @@ class TypeBricklayerHelper extends AppHelper
 		
 		$items = array();
 		foreach($sections as $sectionName => $sectionSettings)
-			if ($sectionSettings['active'] && $sectionSettings['display'])
+		{
+			$can = true;
+			if (isset($sectionSettings['permissions']))
+				$can = $this->JjAuth->can($sectionSettings['permissions']);
+			
+			if ($can && $sectionSettings['active'] && $sectionSettings['display'])
 				$items[] = $this->menuItem(array(), compact('sectionName','sectionSettings','writeCaptions','specificClasses','menuLevel','hiddenCaptions'));
-		
+		}
 		return $this->tag($wrapTag, $htmlAttr, array('close_me' => false), implode("\n", $items));
 	}
 	

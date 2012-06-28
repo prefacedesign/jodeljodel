@@ -120,7 +120,7 @@ class DashDashboardController extends DashboardAppController
  * 
  * @access 
  */
-	function delete_item($id)
+	function delete_item($id, $module)
 	{
 		$this->view = 'JjUtils.Json';
 	
