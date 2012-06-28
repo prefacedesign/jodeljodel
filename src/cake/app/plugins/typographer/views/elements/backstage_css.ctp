@@ -1186,12 +1186,12 @@
 	));
 	
 	$this->Decorator->rule(
-		'.input_checkbox label, .input_radio label, .input_multiple_checkbox .checkbox label', array(
+		'.input_checkbox label, .input_radio label, .input_multiple_checkbox .checkbox label, .input_relational .checkbox label', array(
 			'line-height' => $u->t(4/3*$line_height)
 	));
 	
 	$this->Decorator->rule(
-		'.input_radio input.buro, .input_checkbox input.buro, .input_multiple_checkbox .checkbox input ', array(
+		'.input_radio input.buro, .input_checkbox input.buro, .input_multiple_checkbox .checkbox input, .input_relational .checkbox input ', array(
 			'height' => $u->t(4/3*$line_height),
 			'margin-right' => $hg->size('m'),
 			'vertical-align' => 'text-top'

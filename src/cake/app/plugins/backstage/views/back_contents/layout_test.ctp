@@ -147,6 +147,7 @@ echo $this->Bl->sbox(null, array('size' => array('M' => 7, 'g' => -1)));
 		// editable_list
 		// combo
 		// radio
+		// multiple_checkbox
 		
 		echo $this->Buro->input(
 			null,
@@ -171,6 +172,20 @@ echo $this->Bl->sbox(null, array('size' => array('M' => 7, 'g' => -1)));
 					'type' => 'list',
 					'size' => 4,
 					'model' => 'Galery'
+				)
+			)
+		);
+		
+		echo $this->Buro->input(
+			null,
+			array(
+				'type' => 'relational',
+				'fieldName' => 'ModelRelated',
+				'label' => 'Label for relational checkbox input',
+				'instructions' => 'Instructions for relational checkbox input',
+				'options' => array(
+					'type' => 'multiple_checkbox',
+					'model' => 'Plugin.Model'
 				)
 			)
 		);

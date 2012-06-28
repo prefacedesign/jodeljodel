@@ -1823,6 +1823,78 @@ class BuroBurocrataHelper extends XmlTagHelper
  		return $this->input($htmlAttributes, $options);
 	}
 	
+/**
+ * * Construct a HABTM relational input with checkbox
+  *
+  * ### The options are:
+  *
+  * - `model` - The Alias used by related model (there is no default and MUST be passed).
+  * - `filter_options` - An array with conditions to filter the options to checkboxes options
+  *
+  * @access public
+  * @param array $options An array with non-defaults values
+  * @todo actions param implementation
+  * @todo allow param implementation
+  * @todo type param implementation
+  * @todo Error handling
+  */
+	public function inputRelationalMultipleCheckbox($options = array())
+ 	{
+ 		$options['options'] += array(
+ 			'model' => false,
+ 			'baseID' => $this->baseID(),
+			'filter_options' => array()
+ 		);
+ 		$gen_options = $options['options'];
+ 		unset($options['options']);
+ 		
+ 		if (empty($gen_options['model']))
+ 		{
+ 			trigger_error('BuroBurocrata::inputRelationalMultipleCheckbox() - `model` parameter must be set.');
+ 			return false;
+ 		}
+ 		
+		$model =& ClassRegistry::init($gen_options['model']);
+		$conditions = array();
+		if (isset($model->Behaviors->TempTemp->__settings[$model->alias]))
+		{
+			$sets = $model->Behaviors->TempTemp->__settings[$model->alias];
+			$conditions = array($model->alias.'.'.$sets['field'] => false);
+		}
+		
+		$checkboxmultiple = $this->Html->tags['checkboxmultiple'];
+		$baseID = $this->_readFormAttribute('baseID');
+		$this->Html->tags['checkboxmultiple'] = '<input type="checkbox" name="%s[]"%s buro:form="'.$baseID.'" />';
+		
+		$options += array('options' => array());
+		$options['type'] = 'select';
+		$options['container'] = false;
+		$options['options']['multiple'] = 'checkbox';
+		
+
+		if(method_exists($model, 'findFilteredOptions'))
+			$options['options']['options'] = $model->{'findFilteredOptions'}($gen_options['filter_options']);
+		else
+			$options['options']['options'] = $model->find('list', array('conditions' => $conditions));
+ 		
+ 		
+		$out = '';
+		
+		if (!empty($options['label']))
+			$out .= $this->Bl->h4Dry($options['label']);
+		$options['label'] = false;
+		
+		if (!empty($options['instructions']))
+			$out .= $this->instructions(array(),array(),$options['instructions']);
+		unset($options['instructions']);
+		
+		$out .= $this->input(null, $options);
+		
+		$this->Html->tags['checkboxmultiple'] = $checkboxmultiple;
+		
+		return $out;
+	}
+
 	
 /**
  * Construct a relational input that deals with related data based on passed variable
