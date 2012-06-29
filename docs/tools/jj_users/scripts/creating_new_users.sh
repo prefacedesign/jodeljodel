@@ -24,3 +24,10 @@
 
 # Creating the users
 ./cake jodel_new_user add "Super-usuario" preface@preface.com.br "123456" techie
+
+
+# Adding permission to profiles
+# ./cake jodel_new_user profile_permission_add "profile_wanted" new_permission_to_add
+
+# Adding profiles to users
+# ./cake jodel_new_user user_profile_add "preface@preface.com.br" profile_wanted

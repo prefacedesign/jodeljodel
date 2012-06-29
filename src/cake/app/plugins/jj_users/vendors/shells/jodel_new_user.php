@@ -39,7 +39,7 @@ class JodelNewUserShell extends Shell
 			$this->out('  (ul) List all users');
 			$this->out('  (ua) Add new user');
 			$this->out('  (ud) Delete existent user');
-		
+			$this->out('  (uap) Add profile to user');
 			
 			$this->nl();
 			$this->out(' Permissions related procedures:');
@@ -52,13 +52,13 @@ class JodelNewUserShell extends Shell
 			$this->out('  (prl) List profiles');
 			$this->out('  (pra) Add one profile');
 			$this->out('  (prd) Delete one profile');
-			$this->out('  (prp) Add permission to profile');
-			
+			$this->out('  (prp) Connect permissions with profile');
+			$this->out('  (prpa) Add permission to profile');
 			
 			$this->nl();
 			$this->out(' (q) Quit');
 
-			$op = $this->in('Choose one option', array('prl', 'pra', 'prd', 'prp', 'pl', 'pa', 'pd', 'ul', 'ua', 'ud', 'q'));
+			$op = $this->in('Choose one option', array('prl', 'pra', 'prd', 'prp', 'prpa', 'pl', 'pa', 'pd', 'ul', 'ua', 'ud', 'uap', 'q'));
 			
 			$this->out();
 			switch ($op)
@@ -66,7 +66,7 @@ class JodelNewUserShell extends Shell
 				case 'ul': $this->list_all(); break;
 				case 'ua': $this->add(); break;
 				case 'ud': $this->delete(); break;
-			
+				case 'uap': $this->user_profile_add(); break;
 				
 				case 'pl': $this->permission_list(); break;
 				case 'pa': $this->permission_add(); break;
@@ -76,6 +76,8 @@ class JodelNewUserShell extends Shell
 				case 'pra': $this->profile_add(); break;
 				case 'prd': $this->profile_delete(); break;
 				case 'prp': $this->profile_permission(); break;
+				
+				case 'prpa': $this->profile_permission_add(); break;
 			}
 			$this->out(PHP_EOL);
 		} while ($op != 'q');
@@ -459,7 +461,87 @@ class JodelNewUserShell extends Shell
 		if ($this->UserProfile->saveAll($data))
 			$this->out('Permissions successfully added to profile \''.$profile.'\'.');
 		else
-			$this->error('It was not possible to associate the permission with profile.');
+			$this->error('It was not possible to connect the permission with profile.');
+	}
+	
+/**
+ * method description
+ * 
+ * @access public
+ * @return type description
+ */
+	public function profile_permission_add()
+	{
+
+		$profile_id = $this->getProfile();
+		$profile = array_shift($this->args);
+		$permission_id = $this->getPermission();
+		$permission = array_shift($this->args);
+		
+		if (!$profile_id) 
+			$this->error('It was not possible to found the profile.');
+		if (!$permission_id)
+			$this->error('It was not possible to found the permission.');
+		
+		
+		$old_permissions = $this->UserProfile->findById($profile_id);
+		
+		$permissions = array();
+		$permissions[] = $permission_id;
+		foreach($old_permissions['UserPermission'] as $old_permission)
+		{
+			$permissions[] = $old_permission['id'];
+		}
+		
+		$data = array(
+			'UserProfile' => array('id' => $profile_id),
+			'UserPermission' => $permissions
+		);
+		
+		if ($this->UserProfile->saveAll($data))
+			$this->out('Permission \''.$permission.'\' successfully added to profile \''.$profile.'\'.');
+		else
+			$this->error('It was not possible to connect the permission with profile.');
+	}
+	
+/**
+ * method description
+ * 
+ * @access public
+ * @return type description
+ */
+	public function user_profile_add()
+	{
+
+		$user_id = $this->getUser();
+		$user = array_shift($this->args);
+		$profile_id = $this->getProfile();
+		$profile = array_shift($this->args);
+		
+		if (!$user_id) 
+			$this->error('It was not possible to found the user.');
+		if (!$profile_id)
+			$this->error('It was not possible to found the profile.');
+		
+		
+		$old_profiles = $this->UserUser->findById($user_id);
+		
+		$profiles = array();
+		$profiles[] = $profile_id;
+		foreach($old_profiles['UserProfile'] as $old_profile)
+		{
+			$profiles[] = $old_profile['id'];
+		}
+		
+		$data = array(
+			'UserUser' => array('id' => $user_id),
+			'UserProfile' => $profiles
+		);
+		
+		if ($this->UserUser->saveAll($data))
+			$this->out('Profile \''.$profile.'\' successfully added to user \''.$user.'\'.');
+		else
+			$this->error('It was not possible to connect the profile with user.');
 	}
 
 /**
@@ -480,6 +562,29 @@ class JodelNewUserShell extends Shell
 			));
 			if (count($profiles) == 1)
 				return $profiles[0]['UserProfile']['id'];
+		}
+		
+		return false;
+	}
+
+/**
+ * method description
+ * 
+ * @access public
+ * @return type description
+ */
+	public function getUser($msg = 'Choose one user')
+	{
+		if (isset($this->args[0]))
+		{
+			$users = $this->UserUser->find('all', array(
+				'contain' => false,
+				'conditions' => array(
+					'username' => $this->args[0],
+				)
+			));
+			if (count($users) == 1)
+				return $users[0]['UserUser']['id'];
 		}
 		
 		return false;
