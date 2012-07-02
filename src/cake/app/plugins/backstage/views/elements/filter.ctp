@@ -257,7 +257,18 @@
 								if (!$this->JjAuth->can($modules[$moduleName]['permissions']['edit_draft']))
 									$can_edit = false;
 							}
-						} 
+						}
+						
+						if ($can_edit)
+						{
+							$onclick = "";
+							$class = 'link_button';
+						}
+						else
+						{
+							$onclick = "return false;";
+							$class = 'link_button disabled';
+						}
 						
 						$links .= $this->Bl->anchor(
 							array('class' => $class, 'onclick' => $onclick), 
