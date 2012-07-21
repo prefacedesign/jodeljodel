@@ -104,7 +104,7 @@ class BuroOfficeBoyHelper extends AppHelper
 
 	public function beforeRender()
 	{
-		if (!$this->Ajax->isAjax())
+		if (!$this->Ajax->isAjax() && ClassRegistry::getObject('view'))
 		{
 			$this->Html->script('prototype', array('inline' => false));
 			$this->Html->script('effects', array('inline' => false));
