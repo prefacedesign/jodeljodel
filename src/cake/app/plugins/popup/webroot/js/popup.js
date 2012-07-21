@@ -53,7 +53,7 @@ var Popup = Class.create({
 	{
 		Popups.add(this);
 		
-		document.body.insert(this.divCont);
+		document.body.appendChild(this.divCont);
 		
 		this.links.each(function(pair)
 		{
@@ -77,7 +77,7 @@ var Popup = Class.create({
 			closePopup(Popups.open_popup);
 		
 		Popups.open_popup = this.id;
-		document.body.insert(new Element('div',{className: 'popup_maya_veil'}).setOpacity(0.45));
+		document.body.appendChild(new Element('div',{className: 'popup_maya_veil'}).setOpacity(0.45));
 		this.divCont.show();
 		this.divCont.setStyle({
 			top: document.viewport.getScrollOffsets().top + (document.viewport.getHeight()/2-this.divCont.getHeight()/2)+'px',
