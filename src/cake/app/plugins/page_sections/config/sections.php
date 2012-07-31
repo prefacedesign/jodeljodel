@@ -321,6 +321,27 @@ $sections = array(
 						'pageTitle' => array(null, null, __('Sections: user_users pageTitle',true)),
 						'headerCaption' => __('Sections: user_users headerCaption', true),
 						'humanName' => __('Sections: user_users humanName',true),
+						'subSections' => array(
+							'edit' => array(
+								'url' => array(
+									'plugin' => 'backstage',
+									'controller' => 'back_contents',
+									'action' => 'edit',
+									0 => 'user_users'
+								),
+								'pageTitle' => array(null, __('Sections: User edit pageTitle',true)),
+								'permissions' => array('backstage', 'OR' => array('user_add', 'user_edit')),
+							),
+							'delete' => array(
+								'url' => array(
+									'plugin' => 'backstage',
+									'controller' => 'back_contents',
+									'action' => 'delete_item',
+									0 => 'user_users',
+								),
+								'permissions' => array('backstage', 'user_delete'),
+							),
+						),
 						
 					),
 					'user_profiles' => array(
@@ -382,16 +403,16 @@ $sections = array(
 				'display' => false,
 				'permissions' => array('backstage', 'backstage_delete_item'),
 				'subSections' => array(
-					'user_delete' => array(
+					'news_delete' => array(
 						'url' => array(
 							'plugin' => 'backstage',
 							'controller' => 'back_contents',
 							'action' => 'delete_item',
-							0 => 'user_users',
+							0 => 'new',
 						),
-						'permissions' => array('backstage', 'user_delete'),
+						'permissions' => array('backstage', 'news_delete'),
 					),
-				)
+				),
 			),
 			'corktile_edit' => array(
 				'linkCaption' => __('Sections: corktile_edit linkCaption', true),
@@ -446,17 +467,7 @@ $sections = array(
 							),
 						),
 					),
-					'user_edit' => array(
-						'url' => array(
-							'plugin' => 'backstage',
-							'controller' => 'back_contents',
-							'action' => 'edit',
-							0 => 'user_users',
-						),
-						'pageTitle' => array(null, __('Sections: User edit pageTitle',true)),
-						'permissions' => array('backstage', 'OR' => array('user_add', 'user_edit')),
-					),
-				)
+				),
 			),
 		),
 	),
@@ -603,7 +614,7 @@ $sectionMap = array(
 				'subRules' => array(
 					array(
 						'rule' => array('controller' => 'back_contents', 'action' => 'edit', 'pass' => array(0 => 'user_users')),
-						'location' => array(null, 'edit', 'user_edit'),
+						'location' => array(null, 'admin', 'user_users', 'edit'),
 					),
 					array(
 						'rule' => array('controller' => 'back_contents', 'action' => 'edit', 'pass' => array(0 => 'user_profiles')),
@@ -643,7 +654,11 @@ $sectionMap = array(
 				'subRules' => array(				
 					array(
 						'rule' => array('controller' => 'back_contents', 'action' => 'delete_item', 'pass' => array(0 => 'user_users')),
-						'location' => array(null, null, 'user_delete'),
+						'location' => array(null, 'admin', 'user_users', 'delete'),
+					),
+					array(
+						'rule' => array('controller' => 'back_contents', 'action' => 'delete_item', 'pass' => array(0 => 'new')),
+						'location' => array(null, null, 'news_delete'),
 					),
 				)
 			),
