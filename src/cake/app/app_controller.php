@@ -78,6 +78,11 @@ class AppController extends Controller {
 				$module = split('_', $this->params['plugin']);
 				if (isset($module[1]))
 					$curModule = Configure::read('jj.modules.'.$module[1]);
+				if (empty($curModule))
+				{
+					if (isset($module[1]))
+						$curModule = Configure::read('jj.modules.'.Inflector::singularize($module[1]));
+				}
 			}
 		}
 		if (!empty($curModule))
