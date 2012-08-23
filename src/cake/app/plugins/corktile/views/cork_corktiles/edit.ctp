@@ -27,7 +27,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 7, 'g' => -1)));
 			'type' => 'notice',
 			'title' => __d('corktile', 'Corktile edit page: Your data has been saved - TITLE.',true),
 			'content' => __d('corktile', 'Corktile edit page: Your data has been saved - TEXT.',true),
-			'actions' => array('ok' => 'ok'),
+			'actions' => array('ok' => 'ok', 'edit' => __d('backstage', 'Your data has been saved - CONTINUE EDITING', true)),
 			'callback' => "if (action=='ok') window.location = '$url'"
 		)
 	);
