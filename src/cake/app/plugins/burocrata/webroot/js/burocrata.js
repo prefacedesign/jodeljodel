@@ -452,7 +452,7 @@ var BuroAutocomplete = Class.create(BuroCallbackable, {
 				ac.render();
 			}
 		}
-		
+		ac.update.setOpacity(1);
 		if (ac.entryCount != 1)
 			ac.update.down('.nothing_found').hide();
 		else
