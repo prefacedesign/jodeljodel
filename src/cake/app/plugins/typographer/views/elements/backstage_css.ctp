@@ -93,6 +93,11 @@
 	));
 	
 	$this->Decorator->rule(
+		'.many_children .buro_form .buro_form, .content_stream .buro_form .buro_form', array(
+			'background-color' => $palette['subform2']->write(),
+	));
+	
+	$this->Decorator->rule(
 		'.many_children .buro_form div.input, .content_stream .buro_form div.input', array(
 			'border' => 0,
 			'padding-bottom' => $vg->size(array('g' => 0.5))
