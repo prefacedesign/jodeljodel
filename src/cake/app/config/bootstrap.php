@@ -54,7 +54,16 @@
 			'model' => 'BurocrataUser.Galery',
 			'viewUrl' => array('action' => 'example_of_view', 'controller' => 'example_of_controller'),  //the default action is "view", and the default controller is the {prefix} . '_' . pluralize({plugin})  -> used to the see on page in the dashboard
 			'humanName' => __('MODULE Gallery human name', true),
-			'plugged' => array('dashboard','backstage')
+			'plugged' => array('dashboard','backstage'),
+			'additionalFilteringConditions' => array('Dashboard.additionalFilteringConditions'), // see plugins/dashboard/config/dash.php to more details (here, the component controlls if the user can edit one specific content)
+			'permissions' => array(
+				'delete' => array('backstage_delete_item', 'gallery'), 
+				'edit_draft' => array('backstage_edit_draft', 'gallery'),
+				'edit_published' => array('backstage_edit_published', 'gallery'),
+				'create' => array('backstage_edit_draft', 'gallery'),
+				'edit_publishing_status' => array('backstage_edit_publishing_status', 'gallery'),
+				'view' => array('backstage_view_item', 'gallery'),
+			),
 		),
 		'text_cork' => array(
 			'model' => 'TextCork.TextTextCork',

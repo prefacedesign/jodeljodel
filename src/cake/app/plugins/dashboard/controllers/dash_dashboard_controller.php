@@ -98,7 +98,29 @@ class DashDashboardController extends DashboardAppController
 			$conditions['status'] = $filter_status;
 		if ($filter != 'all' && !empty($filter))
 			$conditions['type'] = $filter;		
-			
+		
+		$additionalFilter = Configure::read('Dashboard.additionalFilteringConditions');
+		if(!empty($additionalFilter))
+		{
+			foreach($additionalFilter as $component)
+			{
+				list($plugin, $componentName) = pluginSplit($component);
+				App::import('Component', $component);
+
+				$componentFullName = $componentName.'Component';		
+				$component = new $componentFullName();
+				
+				if (method_exists($component, 'initialize')) {
+					$component->initialize($this);
+				}
+				if (method_exists($component, 'startup')) {
+					$component->startup($this);
+				}
+				
+				$conditions = $component->getDashboardFilterConditionsByPermission($conditions);
+			}
+		}
+		
 		$this->paginate = array(
 			'DashDashboardItem' => array(
 				'limit' => Configure::read('Dashboard.limitSize'),

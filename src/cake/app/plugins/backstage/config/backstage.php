@@ -16,6 +16,7 @@ Configure::write('Backstage.itemSettings',array(
 			'customSearch' => true,
 			'paramsFoward' => array(0 => 'some_field_to_filter'),
 			'contain' => array('ModelModel'),
+			'additionalFilteringConditions' => array('Dashboard.DashboardFiltering'), // see plugins/dashboard/config/dash.php to more details
 		),
 		'user_users' => array(
 			'actions' => array('delete','edit', 'create'),

@@ -122,24 +122,52 @@ class BackContentsController extends BackstageAppController
 			}
 			else
 			{
+				$canEdit = true;
+				
+				if (isset($config['additionalFilteringConditions']))
+				{
+					foreach($config['additionalFilteringConditions'] as $component)
+					{
+						list($plugin, $componentName) = pluginSplit($component);
+						App::import('Component', $component);
+
+						$componentFullName = $componentName.'Component';		
+						$component = new $componentFullName();
+						
+						if (method_exists($component, 'initialize')) {
+							$component->initialize($this);
+						}
+						if (method_exists($component, 'startup')) {
+							$component->startup($this);
+						}
+						
+						if (!$component->can($this->data[$Model->alias]))
+						{
+							$canEdit = false;
+						}
+					}
+				}
+				
 				if (isset($config['permissions']) && ((isset($config['permissions']['edit_draft']) && isset($config['permissions']['edit_published'])) || isset($config['permissions']['edit'])))
 				{
 					if (isset($this->data[$Model->alias]['publishing_status']) && $this->data[$Model->alias]['publishing_status'] == 'published')
 					{	
 						if (!$this->JjAuth->can($config['permissions']['edit_published']))
-							$this->JjAuth->stop();
+							$canEdit = false;
 					}
 					elseif (isset($this->data[$Model->alias]['publishing_status']) && $this->data[$Model->alias]['publishing_status'] == 'draft')
 					{	
 						if (!$this->JjAuth->can($config['permissions']['edit_draft']))
-							$this->JjAuth->stop();
+							$canEdit = false;
 					}
 					elseif (!isset($this->data[$Model->alias]['publishing_status']) && isset($config['permissions']['edit']))
 					{
 						if (!$this->JjAuth->can($config['permissions']['edit']))
-							$this->JjAuth->stop();
+							$canEdit = false;
 					}
 				}
+				
+				if (!$canEdit) $this->JjAuth->stop();
 			}
         }
         if (isset($Model->Behaviors->TradTradutore->settings[$Model->alias]))
@@ -183,13 +211,34 @@ class BackContentsController extends BackstageAppController
 			$this->set('headerData', $headerData);
 		}
 		
-		$op = $this->Session->read('Backstage.searchOptions');
-		if ($op)
-			$options = array_merge_recursive($options, $op);
+		$op = $this->Session->read('Backstage.searchOptions') ?: array();
 		
-		$finalOptions = array_merge_recursive($options, $defaultOptions);
-		
-		return $finalOptions;
+		$options = array_merge_recursive($options, $op, $defaultOptions);
+		if (isset($settings['additionalFilteringConditions']))
+		{
+			if(!isset($options['conditions']))
+			{
+				$options['conditions'] = array();
+			}
+			foreach($settings['additionalFilteringConditions'] as $component)
+			{
+				list($plugin, $componentName) = pluginSplit($component);
+				App::import('Component', $component);
+
+				$componentFullName = $componentName.'Component';		
+				$component = new $componentFullName();
+				
+				if (method_exists($component, 'initialize')) {
+					$component->initialize($this);
+				}
+				if (method_exists($component, 'startup')) {
+					$component->startup($this);
+				}
+				
+				$options['conditions'] = $component->getDashboardFilterConditionsByPermission($options['conditions']);
+			}
+		}
+		return $options;
 	}
 	
 	private function __getParams($moduleName)
