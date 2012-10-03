@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2012-04-02 07:52-0400\n"
-"PO-Revision-Date: 2012-10-03 18:40-0400\n"
+"POT-Creation-Date: 2012-10-03 18:43-0400\n"
+"PO-Revision-Date: 2012-10-03 18:53-0400\n"
 "Last-Translator: Daniel Abrahão <daniel@preface.com.br>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: \n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: /app_controller.php:159
+#: /app_controller.php:147
 msgid "Jodel Jodel internal error"
 msgstr ""
 
@@ -26,23 +26,35 @@ msgstr ""
 msgid "MODULE Gallery human name"
 msgstr ""
 
-#: /config/bootstrap.php:61
+#: /config/bootstrap.php:70
 msgid "MODULE TextTextCork human name"
 msgstr ""
 
-#: /config/bootstrap.php:66
+#: /config/bootstrap.php:75
 msgid "MODULE CsCork human name"
 msgstr ""
 
-#: /config/bootstrap.php:71
+#: /config/bootstrap.php:80
 msgid "MODULE CorkCorkTile human name"
 msgstr ""
 
-#: /config/bootstrap.php:127
+#: /config/bootstrap.php:86
+msgid "MODULE UserUser human name"
+msgstr ""
+
+#: /config/bootstrap.php:97
+msgid "MODULE UserProfile human name"
+msgstr ""
+
+#: /config/bootstrap.php:102
+msgid "MODULE UserPermission human name"
+msgstr ""
+
+#: /config/bootstrap.php:158
 msgid "%d-%d de %s de %d"
 msgstr ""
 
-#: /config/bootstrap.php:137
+#: /config/bootstrap.php:168
 msgid "%d de %s a %d de %s de %d"
 msgstr ""
 
@@ -54,7 +66,7 @@ msgstr "e"
 #: /plugins/backstage/views/elements/language_edit_select.ctp:35
 #: /plugins/backstage/views/elements/language_show_edited_language.ctp:35
 #: /plugins/burocrata/views/helpers/backstage_buro_burocrata.php:52;66
-#: /plugins/burocrata/views/helpers/buro_burocrata.php:1593
+#: /plugins/burocrata/views/helpers/buro_burocrata.php:1607
 msgid "anchorList or"
 msgstr "ou"
 
@@ -374,163 +386,231 @@ msgstr ""
 msgid "Sections: backstage linkCaption"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:268
+#: /plugins/page_sections/config/sections.php:265
 msgid "Sections: backstage pageTitle"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:269
+#: /plugins/page_sections/config/sections.php:266
 msgid "Sections: backstage headerCaption"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:270
+#: /plugins/page_sections/config/sections.php:267
 msgid "Sections: backstage humanName"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:273
+#: /plugins/page_sections/config/sections.php:270
 msgid "Sections: login linkCaption"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:281
+#: /plugins/page_sections/config/sections.php:277
 msgid "Sections: login pageTitle"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:282
+#: /plugins/page_sections/config/sections.php:278
 msgid "Sections: login headerCaption"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:283
+#: /plugins/page_sections/config/sections.php:279
 msgid "Sections: login humanName"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:286
+#: /plugins/page_sections/config/sections.php:282
 msgid "Sections: dashboard linkCaption"
 msgstr "Painel"
 
-#: /plugins/page_sections/config/sections.php:293
+#: /plugins/page_sections/config/sections.php:289
 msgid "Sections: dashboard pageTitle"
 msgstr "Painel do editor"
 
-#: /plugins/page_sections/config/sections.php:294
+#: /plugins/page_sections/config/sections.php:290
 msgid "Sections: dashboard headerCaption"
 msgstr "Painel do editor"
 
-#: /plugins/page_sections/config/sections.php:295
+#: /plugins/page_sections/config/sections.php:291
 msgid "Sections: dashboard humanName"
 msgstr "Painel do editor"
 
-#: /plugins/page_sections/config/sections.php:298
+#: /plugins/page_sections/config/sections.php:294
 msgid "Sections: example linkCaption"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:301
+#: /plugins/page_sections/config/sections.php:297
 msgid "Sections: example pageTitle"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:302
+#: /plugins/page_sections/config/sections.php:298
 msgid "Sections: example headerCaption"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:303
+#: /plugins/page_sections/config/sections.php:299
 msgid "Sections: example humanName"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:306
+#: /plugins/page_sections/config/sections.php:302
 msgid "Sections: preferences linkCaption"
 msgstr "Preferências"
 
-#: /plugins/page_sections/config/sections.php:307
+#: /plugins/page_sections/config/sections.php:303
 msgid "Sections: preferences pageTitle"
 msgstr "Preferências"
 
-#: /plugins/page_sections/config/sections.php:308
+#: /plugins/page_sections/config/sections.php:304
 msgid "Sections: preferences headerCaption"
 msgstr "Preferências de usuário"
 
-#: /plugins/page_sections/config/sections.php:309
+#: /plugins/page_sections/config/sections.php:305
 msgid "Sections: preferences humanName"
 msgstr "Preferências de usuário"
 
-#: /plugins/page_sections/config/sections.php:314
+#: /plugins/page_sections/config/sections.php:310
+msgid "Sections: admin linkCaption"
+msgstr "Administradores"
+
+#: /plugins/page_sections/config/sections.php:311
+msgid "Sections: admin pageTitle"
+msgstr "Gerenciar administradores"
+
+#: /plugins/page_sections/config/sections.php:312
+msgid "Sections: admin headerCaption"
+msgstr "Gerenciar administradores"
+
+#: /plugins/page_sections/config/sections.php:313
+msgid "Sections: admin humanName"
+msgstr "Gerenciar administradores"
+
+#: /plugins/page_sections/config/sections.php:318
+msgid "Sections: user_users linkCaption"
+msgstr "Administradores"
+
+#: /plugins/page_sections/config/sections.php:321
+msgid "Sections: user_users pageTitle"
+msgstr "Administradores"
+
+#: /plugins/page_sections/config/sections.php:322
+msgid "Sections: user_users headerCaption"
+msgstr "Administradores"
+
+#: /plugins/page_sections/config/sections.php:323
+msgid "Sections: user_users humanName"
+msgstr "Administradores"
+
+#: /plugins/page_sections/config/sections.php:332
+msgid "Sections: User edit pageTitle"
+msgstr "Editando um administrador"
+
+#: /plugins/page_sections/config/sections.php:348
+msgid "Sections: user_profiles linkCaption"
+msgstr "Perfis de usuário"
+
+#: /plugins/page_sections/config/sections.php:351
+msgid "Sections: user_profiles pageTitle"
+msgstr "Perfis de usuário"
+
+#: /plugins/page_sections/config/sections.php:352
+msgid "Sections: user_profiles headerCaption"
+msgstr "Perfis de usuário"
+
+#: /plugins/page_sections/config/sections.php:353
+msgid "Sections: user_profiles humanName"
+msgstr "Perfis de usuário"
+
+#: /plugins/page_sections/config/sections.php:357
+msgid "Sections: user_permissions linkCaption"
+msgstr "Permissões"
+
+#: /plugins/page_sections/config/sections.php:360
+msgid "Sections: user_permissions pageTitle"
+msgstr "Permissões"
+
+#: /plugins/page_sections/config/sections.php:361
+msgid "Sections: user_permissions headerCaption"
+msgstr "Permissões"
+
+#: /plugins/page_sections/config/sections.php:362
+msgid "Sections: user_permissions humanName"
+msgstr "Permissões"
+
+#: /plugins/page_sections/config/sections.php:368
 msgid "Sections: burocrata_save linkCaption"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:324;334
+#: /plugins/page_sections/config/sections.php:378;388
 msgid "Sections: set_publishing_status linkCaption"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:344
+#: /plugins/page_sections/config/sections.php:418
 msgid "Sections: corktile_edit linkCaption"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:352
+#: /plugins/page_sections/config/sections.php:426
 msgid "Sections: corktile_edit pageTitle"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:353
+#: /plugins/page_sections/config/sections.php:427
 msgid "Sections: corktile_edit headerCaption"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:354
+#: /plugins/page_sections/config/sections.php:428
 msgid "Sections: corktile_edit humanName"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:357
+#: /plugins/page_sections/config/sections.php:431
 msgid "Sections: edit linkCaption"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:365
+#: /plugins/page_sections/config/sections.php:439
 msgid "Sections: edit pageTitle"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:366
+#: /plugins/page_sections/config/sections.php:440
 msgid "Sections: edit headerCaption"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:367
+#: /plugins/page_sections/config/sections.php:441
 msgid "Sections: edit humanName"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:370
+#: /plugins/page_sections/config/sections.php:444
 msgid "Sections: news_edit linkCaption"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:379
+#: /plugins/page_sections/config/sections.php:453
 msgid "Sections: news_edit pageTitle"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:380
+#: /plugins/page_sections/config/sections.php:454
 msgid "Sections: news_edit headerCaption"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:381
+#: /plugins/page_sections/config/sections.php:455
 msgid "Sections: news_edit humanName"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:384
+#: /plugins/page_sections/config/sections.php:458
 msgid "Sections: news_form linkCaption"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:392
+#: /plugins/page_sections/config/sections.php:466
 msgid "Sections: news_form humanName"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:401
+#: /plugins/page_sections/config/sections.php:475
 msgid "Section One"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:409
+#: /plugins/page_sections/config/sections.php:483
 msgid "The Section One"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:410
+#: /plugins/page_sections/config/sections.php:484
 msgid "The Section One Header"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:411
+#: /plugins/page_sections/config/sections.php:485
 msgid "The Human Section One name"
 msgstr ""
 
-#: /plugins/page_sections/config/sections.php:415
+#: /plugins/page_sections/config/sections.php:489
 msgid "Section Two"
 msgstr ""
 
@@ -668,65 +748,13 @@ msgstr "Página administrativa"
 msgid "Logout"
 msgstr "Deslogar-se"
 
-#: /plugins/typographer/views/elements/backstage_layout.ctp:41
+#: /plugins/typographer/views/elements/backstage_layout.ctp:43
 msgid "Powered by Jodel Jodel"
 msgstr "Poderificado por Jodel Jodel"
 
-#: /plugins/typographer/views/elements/backstage_layout.ctp:44
+#: /plugins/typographer/views/elements/backstage_layout.ctp:46
 msgid "This site, alongside its public version, was developed by "
 msgstr "Este site, assim como sua versão pública, foi desenvolvido pela "
-
-#: /plugins/typographer/views/elements/dinafon_layout.ctp:61
-msgid "Dinafon layout: switch language"
-msgstr ""
-
-#: /plugins/typographer/views/elements/dinafon_layout.ctp:178
-msgid "Dinafon layout: short description about Dinafon"
-msgstr ""
-
-#: /plugins/typographer/views/elements/dinafon_layout.ctp:187
-msgid "Dinafon layout: e-mail label"
-msgstr ""
-
-#: /plugins/typographer/views/elements/dinafon_layout.ctp:188
-msgid "Dinafon layout: e-mail of dinafon"
-msgstr ""
-
-#: /plugins/typographer/views/elements/dinafon_layout.ctp:189
-msgid "Dinafon layout: phone label"
-msgstr ""
-
-#: /plugins/typographer/views/elements/dinafon_layout.ctp:190
-msgid "Dinafon layout: phone of dinafon "
-msgstr ""
-
-#: /plugins/typographer/views/elements/dinafon_layout.ctp:191
-msgid "Dinafon layout: address label"
-msgstr ""
-
-#: /plugins/typographer/views/elements/dinafon_layout.ctp:192
-msgid "Dinafon layout: address line 1"
-msgstr ""
-
-#: /plugins/typographer/views/elements/dinafon_layout.ctp:193
-msgid "Dinafon layout: address line 2"
-msgstr ""
-
-#: /plugins/typographer/views/elements/dinafon_layout.ctp:194
-msgid "Dinafon layout: address line 3"
-msgstr ""
-
-#: /plugins/typographer/views/elements/dinafon_layout.ctp:195
-msgid "Dinafon layout: address line 4"
-msgstr ""
-
-#: /plugins/typographer/views/elements/dinafon_layout.ctp:196
-msgid "Dinafon layout: address line 5"
-msgstr ""
-
-#: /plugins/typographer/views/elements/dinafon_layout.ctp:202
-msgid "Layout e programação por %s"
-msgstr ""
 
 #: /views/errors/error404.ctp:4
 msgid "The requested address %s was not found on this server."

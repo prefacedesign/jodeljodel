@@ -4,166 +4,326 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-09-16 12:15+0000\n"
-"PO-Revision-Date: 2011-09-16 09:20-0300\n"
-"Last-Translator: Rodrigo  <rodrigo@preface.com.br>\n"
+"POT-Creation-Date: 2012-10-03 18:43-0400\n"
+"PO-Revision-Date: 2012-10-03 19:33-0400\n"
+"Last-Translator: Daniel Abrahão <daniel@preface.com.br>\n"
 "Language-Team: \n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:19
+#: /plugins/backstage/config/backstage.php:8
+msgid "ModuleName header: title"
+msgstr ""
+
+#: /plugins/backstage/config/backstage.php:9
+msgid "ModuleName header: abstract"
+msgstr ""
+
+#: /plugins/backstage/config/backstage.php:10
+msgid "ModuleName header: publishing_status"
+msgstr ""
+
+#: /plugins/backstage/config/backstage.php:11
+msgid "ModuleName header: created"
+msgstr "Criado"
+
+#: /plugins/backstage/config/backstage.php:12
+msgid "ModuleName header: modified"
+msgstr "Modificado"
+
+#: /plugins/backstage/config/backstage.php:26
+msgid "UserUser header: name"
+msgstr "Nome"
+
+#: /plugins/backstage/config/backstage.php:27
+msgid "UserUser header: profiles"
+msgstr "Perfis de usuário"
+
+#: /plugins/backstage/config/backstage.php:28
+msgid "UserUser header: actions"
+msgstr "Ações"
+
+#: /plugins/backstage/config/backstage.php:39
+msgid "UserProfile header: name"
+msgstr "Nome do perfil"
+
+#: /plugins/backstage/config/backstage.php:40
+msgid "UserProfile header: permissions"
+msgstr "Permissões"
+
+#: /plugins/backstage/config/backstage.php:41
+msgid "UserProfile header: actions"
+msgstr "Ações"
+
+#: /plugins/backstage/config/backstage.php:52
+msgid "UserPermission header: name"
+msgstr "Permissão"
+
+#: /plugins/backstage/config/backstage.php:53
+msgid "UserPermission header: description"
+msgstr "Descrição"
+
+#: /plugins/backstage/config/backstage.php:54
+msgid "UserPermission header: actions"
+msgstr "Ações"
+
+#: /plugins/backstage/views/back_contents/edit.ctp:41
 msgid "publish"
 msgstr "publicá-lo"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:21;27
+#: /plugins/backstage/views/back_contents/edit.ctp:43;49
 msgid "Could not change publishing status: communication error."
 msgstr "Não foi possível mudar o estado de publicação. Houve um erro de comunicação."
 
-#: \plugins\backstage\views\back_contents\edit.ctp:22
+#: /plugins/backstage/views/back_contents/edit.ctp:44
 msgid "Now, this document is hidden. You can %s."
 msgstr "Neste momento o documento está oculto. Você pode %s."
 
-#: \plugins\backstage\views\back_contents\edit.ctp:25
+#: /plugins/backstage/views/back_contents/edit.ctp:47
 msgid "mark it as draft"
 msgstr "retirá-lo do ar"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:29
+#: /plugins/backstage/views/back_contents/edit.ctp:51
 msgid "Now, this document is published. You can %s."
 msgstr "Este documento está publicado. Você pode %s."
 
-#: \plugins\backstage\views\back_contents\edit.ctp:61
+#: /plugins/backstage/views/back_contents/edit.ctp:83
+#: /plugins/jj_users/views/user_users/preferences.ctp:28
 msgid "Your data cannot be saved - TITLE."
 msgstr "Falha ao salvar"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:62
+#: /plugins/backstage/views/back_contents/edit.ctp:84
+#: /plugins/jj_users/views/user_users/preferences.ctp:29
 msgid "Your data cannot be saved - TEXT."
 msgstr "Existem um ou mais campos cujo conteúdo não obedece os critérios editoriais. Estes campos estão em vermelho, com uma mensagem explicando o problema, corrija-os e salve de novo o documento."
 
-#: \plugins\backstage\views\back_contents\edit.ctp:79
-msgid "Your data has been saved - TITLE."
-msgstr "Sucesso"
-
-#: \plugins\backstage\views\back_contents\edit.ctp:80
-msgid "Your data has been saved - TEXT."
-msgstr "Os dados foram salvos com sucesso."
-
-#: \plugins\backstage\views\back_contents\edit.ctp:82
+#: /plugins/backstage/views/back_contents/edit.ctp:97
+#: /plugins/jj_users/views/elements/user_permission.ctp:17
+#: /plugins/jj_users/views/elements/user_profile.ctp:17
+#: /plugins/jj_users/views/elements/user_user.ctp:33
 msgid "Your data has been saved - BACK TO DASHBOARD"
 msgstr "Voltar"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:83
+#: /plugins/backstage/views/back_contents/edit.ctp:98
+#: /plugins/corktile/views/cork_corktiles/edit.ctp:30
+#: /plugins/jj_users/views/elements/user_permission.ctp:18
+#: /plugins/jj_users/views/elements/user_profile.ctp:18
+#: /plugins/jj_users/views/elements/user_user.ctp:34
 msgid "Your data has been saved - CONTINUE EDITING"
 msgstr "Continuar editando"
 
-#: \plugins\backstage\views\back_contents\edit.ctp:84
+#: /plugins/backstage/views/back_contents/edit.ctp:102
 msgid "Your data has been saved - VIEW THIS ON THE PUBLIC PAGE"
 msgstr "Visualizar"
 
-#: \plugins\backstage\views\elements\language_edit_select.ctp:14
-#: \plugins\backstage\views\elements\language_show_edited_language.ctp:14
+#: /plugins/backstage/views/back_contents/edit.ctp:108
+#: /plugins/jj_users/views/elements/user_permission.ctp:14
+#: /plugins/jj_users/views/elements/user_profile.ctp:14
+#: /plugins/jj_users/views/elements/user_user.ctp:30
+#: /plugins/jj_users/views/user_users/preferences.ctp:36
+msgid "Your data has been saved - TITLE."
+msgstr "Sucesso"
+
+#: /plugins/backstage/views/back_contents/edit.ctp:109
+#: /plugins/jj_users/views/elements/user_permission.ctp:15
+#: /plugins/jj_users/views/elements/user_profile.ctp:15
+#: /plugins/jj_users/views/elements/user_user.ctp:31
+#: /plugins/jj_users/views/user_users/preferences.ctp:37
+msgid "Your data has been saved - TEXT."
+msgstr "Os dados foram salvos com sucesso."
+
+#: /plugins/backstage/views/back_contents/index.ctp:7
+msgid "Page title header - BackstageCustom module "
+msgstr ""
+
+#: /plugins/backstage/views/back_contents/index.ctp:31
+msgid "Add new "
+msgstr "Adicione novo conteúdo"
+
+#: /plugins/backstage/views/elements/language_edit_select.ctp:14
+#: /plugins/backstage/views/elements/language_show_edited_language.ctp:14
 msgid "This content already has translations for %s."
 msgstr "Este conteúdo já possui traduções para %s."
 
-#: \plugins\backstage\views\elements\language_edit_select.ctp:34
-#: \plugins\backstage\views\elements\language_show_edited_language.ctp:34
+#: /plugins/backstage/views/elements/language_edit_select.ctp:34
+#: /plugins/backstage/views/elements/language_show_edited_language.ctp:34
 msgid "If you want you can create a version for %s"
 msgstr "Se desejar, você pode criar uma versão em %s"
 
-#: \plugins\backstage\views\elements\show_language_being_edited.ctp:9
+#: /plugins/backstage/views/elements/show_language_being_edited.ctp:9
 msgid "Editing"
 msgstr "Editando"
 
-#: \plugins\backstage\views\elements\show_language_being_edited.ctp:10
+#: /plugins/backstage/views/elements/show_language_being_edited.ctp:11
 msgid " the %s version."
 msgstr "a versão %s."
 
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:39
+#: /plugins/backstage/views/elements/show_language_being_edited.ctp:30
+msgid "Now, this version is hidden. You can %s."
+msgstr "Neste momento o documento está oculto. Você pode %s."
+
+#: /plugins/backstage/views/elements/show_language_being_edited.ctp:35
+msgid "Now, this version is published. You can %s."
+msgstr "Este documento está publicado. Você pode %s."
+
+#: /plugins/burocrata/views/helpers/backstage_buro_burocrata.php:39
 msgid "Save"
 msgstr "Salvar"
 
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:40
+#: /plugins/burocrata/views/helpers/backstage_buro_burocrata.php:40
 msgid "Save box: cancel this change."
 msgstr "cancelar a alteração"
 
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:54
+#: /plugins/burocrata/views/helpers/backstage_buro_burocrata.php:54
 msgid "mark it as ready"
 msgstr "sinalizar documento pronto"
 
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:55
+#: /plugins/burocrata/views/helpers/backstage_buro_burocrata.php:55
 msgid "remove it"
 msgstr "excluir"
 
-#: \plugins\burocrata\views\helpers\backstage_buro_burocrata.php:60
+#: /plugins/burocrata/views/helpers/backstage_buro_burocrata.php:60
 msgid "Version marked as draft. You can %s."
 msgstr "Documento marcado como rascunho. Você pode %s."
 
-#: \plugins\jj_users\controllers\user_users_controller.php:9
+#: /plugins/jj_users/controllers/user_users_controller.php:48
 msgid "Login failed. Invalid username or password."
 msgstr "Nome de usuário ou senha inválidos."
 
-#: \plugins\jj_users\controllers\user_users_controller.php:10
+#: /plugins/jj_users/controllers/user_users_controller.php:49
 msgid "You are not authorized to access that location."
 msgstr "Faça o login para continuar."
 
-#: \plugins\jj_users\views\user_users\login.ctp:5
+#: /plugins/jj_users/views/elements/user_permission.ctp:137
+#: /plugins/jj_users/views/elements/user_profile.ctp:164
+#: /plugins/jj_users/views/elements/user_user.ctp:271
+#, fuzzy
+msgid "Edit"
+msgstr "Editando"
+
+#: /plugins/jj_users/views/elements/user_permission.ctp:147
+#: /plugins/jj_users/views/elements/user_profile.ctp:174
+#: /plugins/jj_users/views/elements/user_user.ctp:292
+#, fuzzy
+msgid "Delete"
+msgstr "Excluir"
+
+#: /plugins/jj_users/views/elements/user_user.ctp:220
+msgid "New password success title"
+msgstr ""
+
+#: /plugins/jj_users/views/elements/user_user.ctp:221
+msgid "New password success content."
+msgstr ""
+
+#: /plugins/jj_users/views/elements/user_user.ctp:227
+msgid "New password new_password_failure title"
+msgstr ""
+
+#: /plugins/jj_users/views/elements/user_user.ctp:228
+msgid "New password new_password_failure content."
+msgstr ""
+
+#: /plugins/jj_users/views/user_users/login.ctp:5
 msgid "Login page: username label"
 msgstr "Usuário"
 
-#: \plugins\jj_users\views\user_users\login.ctp:8
+#: /plugins/jj_users/views/user_users/login.ctp:8
 msgid "Login page: password label"
 msgstr "Senha"
 
-#: \plugins\jj_users\views\user_users\login.ctp:10
+#: /plugins/jj_users/views/user_users/login.ctp:10
 msgid "Login page: Enter"
 msgstr "Entrar"
 
-#: \views\translate_strings\translate_strings.ctp:4
-msgid "Editing a cerveja_avaliacao"
-msgstr "Editando uma avaliação"
+#: /views/translate_strings/translate_strings.ctp:4
+msgid "Editing a person"
+msgstr ""
 
-#: \views\translate_strings\translate_strings.ctp:5
-msgid "Editing a cerveja_novidade"
-msgstr "Editando uma novidade"
+#: /views/translate_strings/translate_strings.ctp:5
+msgid "Editing a gallery"
+msgstr "Editando uma galeria de fotos"
 
-#: \views\translate_strings\translate_strings.ctp:6
-msgid "Editing a cerveja_cerveja"
-msgstr "Editando uma cerveja"
+#: /views/translate_strings/translate_strings.ctp:6
+msgid "Editing a new"
+msgstr "Editando uma notícia"
 
-#: \views\translate_strings\translate_strings.ctp:35
+#: /views/translate_strings/translate_strings.ctp:7
+msgid "Editing a paper"
+msgstr ""
+
+#: /views/translate_strings/translate_strings.ctp:11
+msgid "Editing a user_users"
+msgstr ""
+
+#: /views/translate_strings/translate_strings.ctp:12
+msgid "Editing a user_profiles"
+msgstr ""
+
+#: /views/translate_strings/translate_strings.ctp:13
+msgid "Editing a user_permissions"
+msgstr ""
+
+#: /views/translate_strings/translate_strings.ctp:14
+msgid "Page title header - BackstageCustom module user_users"
+msgstr ""
+
+#: /views/translate_strings/translate_strings.ctp:15
+msgid "Page title header - BackstageCustom module user_profiles"
+msgstr ""
+
+#: /views/translate_strings/translate_strings.ctp:16
+msgid "Page title header - BackstageCustom module user_permissions"
+msgstr ""
+
+#: /views/translate_strings/translate_strings.ctp:17
+msgid "Add new user_users"
+msgstr "Adicionar novo usuário"
+
+#: /views/translate_strings/translate_strings.ctp:18
+msgid "Add new user_profiles"
+msgstr "Criar novo perfil"
+
+#: /views/translate_strings/translate_strings.ctp:19
+msgid "Add new user_permissions"
+msgstr "Criar nova permissão"
+
+#: /views/translate_strings/translate_strings.ctp:52
 msgid "Language name: por"
 msgstr "português"
 
-#~ msgid "Editing a gallery"
-#~ msgstr "Editando uma galeria de fotos"
+#: /views/translate_strings/translate_strings.ctp:53
+msgid "Language name: eng"
+msgstr "inglês"
 
-#~ msgid "Editing a new"
-#~ msgstr "Editando uma notícia"
+#: /views/translate_strings/translate_strings.ctp:54
+msgid "Language name: nno"
+msgstr "norueguês"
 
-#~ msgid "Language name: eng"
-#~ msgstr "inglês"
+#: /views/translate_strings/translate_strings.ctp:55
+msgid "Language name: lav"
+msgstr "letão"
 
-#~ msgid "Language name: nno"
-#~ msgstr "norueguês"
+#: /views/translate_strings/translate_strings.ctp:56
+msgid "Language name: gre"
+msgstr "grego"
 
-#~ msgid "Language name: lav"
-#~ msgstr "letão"
+#: /views/translate_strings/translate_strings.ctp:57
+msgid "Language name: ukr"
+msgstr "ucraniano"
 
-#~ msgid "Language name: gre"
-#~ msgstr "grego"
+#: /views/translate_strings/translate_strings.ctp:58
+msgid "Language name: ger"
+msgstr "alemão"
 
-#~ msgid "Language name: ukr"
-#~ msgstr "ucraniano"
-
-#~ msgid "Language name: ger"
-#~ msgstr "alemão"
+#~ msgid "Editing a cerveja_avaliacao"
+#~ msgstr "Editando uma avaliação"
 
 #~ msgid "Page title - Dashboard"
 #~ msgstr "Página do editor"
-
-#~ msgid "Add new content:"
-#~ msgstr "Adicione novo conteúdo"
 
 #~ msgid "or"
 #~ msgstr "ou"
@@ -225,29 +385,14 @@ msgstr "português"
 #~ msgid "Dashboard header: Status"
 #~ msgstr "Status"
 
-#~ msgid "Dashboard header: Name"
-#~ msgstr "Nome"
-
 #~ msgid "Dashboard header: Extra info"
 #~ msgstr "Informação extra"
-
-#~ msgid "Dashboard header: Created"
-#~ msgstr "Criado"
-
-#~ msgid "Dashboard header: Modified"
-#~ msgstr "Modificado"
-
-#~ msgid "Dashboard header: Translations"
-#~ msgstr "Traduções"
 
 #~ msgid "Hide from public"
 #~ msgstr "Tirar do ar"
 
 #~ msgid "Publish to the great public"
 #~ msgstr "Publicar"
-
-#~ msgid "Delete content"
-#~ msgstr "Excluir"
 
 #~ msgid "Dashboard: Edit"
 #~ msgstr "Editar"
