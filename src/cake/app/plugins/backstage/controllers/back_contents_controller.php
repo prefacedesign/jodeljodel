@@ -206,6 +206,7 @@ class BackContentsController extends BackstageAppController
 		//get header data to backstage table, if customHeader is set in config
 		if (isset($this->backstageSettings[$moduleName]['customHeader']))
 		{
+			$headerData = array();
 			if (method_exists($this->backstageModel, 'getBackstageHeaderData'))
 				$headerData = $this->backstageModel->getBackstageHeaderData($this->__getParams($moduleName));
 			$this->set('headerData', $headerData);
