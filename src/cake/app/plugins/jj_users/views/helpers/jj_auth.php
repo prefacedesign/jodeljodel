@@ -3,21 +3,14 @@
 App::import('Lib', 'JjUsers.BigBadGuy');
 
 class JjAuthHelper extends AppHelper
-{	
-	protected $BigBadGuy;
-	public $View;
+{
 
 /**
- * The contructor of the class
+ * Caches a reference to the View object
  * 
  * @access public
  */
-	function __contruct()
-	{
-		
-		$this->__loadClasses();
-		return $parent;
-	}
+	public $View;
 
 /**
  * Gets and caches an View object reference
@@ -34,32 +27,17 @@ class JjAuthHelper extends AppHelper
 	}	
 
 /**
- * Initializes used and variables
- * 
- * @access protected
- */
-	protected function __loadClasses()
-	{
-		if (!empty($this->BigBadGuy))
-			return;
-		
-		$this->BigBadGuy = ClassRegistry::init('JjUsers.BigBadGuy');
-	}
-
-
-/**
  * Verify the permissions
  * 
  * @access protected
  */
 	public function can($what)
 	{
-		$this->__loadClasses();
 		$View = $this->__getView();
 		
 		$userData = $View->getVar('userData');
 		
-		return $this->BigBadGuy->can($what, $userData['permissions']);
+		return BigBadGuy::can($what, $userData['permissions']);
 	
 	}
 }

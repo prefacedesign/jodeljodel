@@ -5,8 +5,7 @@ App::import('Lib', 'JjUsers.BigBadGuy');
 
 class JjAuthComponent extends AuthComponent
 {	
-	protected $BigBadGuy;
-	protected $_controller;
+	protected $Controller;
 
 /**
  * Startup callback for initialize
@@ -16,50 +15,44 @@ class JjAuthComponent extends AuthComponent
 	function startup(&$controller)
 	{
 		$parent = parent::startup($controller);
-		$this->_controller = $controller;
-		$this->__loadClasses();
+		$this->Controller = $controller;
+		$this->compilePermissions();
 		return $parent;
 	}
 
 /**
- * Initializes used and variables
+ * Compile the array of permissions suming all UserPermission.slug from database.
+ * 
+ * For performance pouposes, this array is cached on a session var.
  * 
  * @access protected
  */
-	protected function __loadClasses()
+	protected function compilePermissions($force = false)
 	{
-
 		$permissions = $this->user('permissions');
-		$id = $this->user('id');
-		
-		if (!empty($this->BigBadGuy) && !empty($permissions))
-			return;
-
-		if (empty($permissions) && !empty($id))
+		if (!empty($permissions) && !$force)
 		{
-			$userModel =& $this->getModel();
-			$userData = $userModel->find('first', array('conditions' => array('UserUser.id' => $this->user('id')), 'contain' => array('UserProfile' => array('UserPermission'))));
-			
-			$permissions = array();
-
-			foreach($userData['UserProfile'] as $profile)
-			{
-				foreach($profile['UserPermission'] as $permission)
-				{
-					$permissions[$permission['slug']] = 1;
-				}
-			}
-			$userData['UserUser']['permissions'] = $permissions;
-			unset($userData['UserProfile']);
-			$this->Session->write('JjAuth.UserUser', $userData['UserUser']);
+			return;
 		}
-
+		
+		$id = $this->user('id');
 		if (empty($id))
 		{
 			$this->Session->delete('JjAuth.UserUser');
+			return;
 		}
 		
-		$this->BigBadGuy = ClassRegistry::init('JjUsers.BigBadGuy');
+		$userModel =& $this->getModel();
+		$userData = $userModel->find('first', array(
+			'conditions' => array('UserUser.id' => $this->user('id')),
+			'contain' => array('UserProfile' => array('UserPermission'))
+		));
+
+		$slugs = Set::extract('/UserPermission/slug', $userData['UserProfile']);
+		unset($userData['UserProfile']);
+
+		$userData['UserUser']['permissions'] = array_fill_keys($slugs, 1);
+		$this->Session->write('JjAuth.UserUser', $userData['UserUser']);
 	}
 
 
@@ -70,8 +63,8 @@ class JjAuthComponent extends AuthComponent
  */
 	public function can($what)
 	{
-		$this->__loadClasses();
-		return $this->BigBadGuy->can($what, $this->user('permissions'));	
+		$this->compilePermissions();
+		return BigBadGuy::can($what, $this->user('permissions'));	
 	}
 	
 /**
@@ -81,7 +74,7 @@ class JjAuthComponent extends AuthComponent
  */
 	public function stop($url = null)
 	{
-		$this->_controller->redirect($this->loginRedirect);
+		$this->Controller->redirect($this->loginRedirect);
 	}
 }
 

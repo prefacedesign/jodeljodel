@@ -134,7 +134,7 @@ class TypeBricklayerHelper extends AppHelper
 		
 		if (empty($ourLocation))
 		{
-			trigger_error('MexicoTypeBricklayerHelper::menu() - Unknown location. Check if you properly filled the $sectionMap on page_section plugin.config.');
+			trigger_error('TypeBricklayerHelper::menu() - Unknown location. Check if you properly filled the $sectionMap on page_section plugin.config.');
 			return false;
 		}
 		
@@ -151,7 +151,9 @@ class TypeBricklayerHelper extends AppHelper
 		{
 			$can = true;
 			if (isset($sectionSettings['permissions']))
+			{
 				$can = $this->JjAuth->can($sectionSettings['permissions']);
+			}
 			
 			if ($can && $sectionSettings['active'] && $sectionSettings['display'])
 				$items[] = $this->menuItem(array(), compact('sectionName','sectionSettings','writeCaptions','specificClasses','menuLevel','hiddenCaptions'));

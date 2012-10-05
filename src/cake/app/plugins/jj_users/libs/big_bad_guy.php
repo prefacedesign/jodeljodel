@@ -7,44 +7,41 @@ class BigBadGuy
  * 
  * @access public
  */
-	public function can($needle, $haystack)
+	public static function can($needle, $haystack)
 	{
-		$error = false;
-		
+		if (empty($needle))
+		{
+			trigger_error('BigBadGuy::can() - Testing for empty permissions: it doesnt make sense.');
+			// Returning true for backwards compatibility
+			return true;
+		}
+
 		if (!is_array($needle))
 		{
 			$needle = array($needle);
 		}
-		foreach($needle as $index => $permission)
+
+		$checks = array();
+		foreach ($needle as $index => $permission)
 		{
 			if (is_array($permission))
 			{
 				if ($index != 'OR')
 				{
-					$this->jodelError('You can pass an array, but the index must be OR, to pass or conditions');
+					trigger_error('You can pass an array, but the index must be OR, to pass or conditions');
+					$checks[] = false;
+					break;
 				}
-				else
-				{
-					$error = true;
-					foreach($permission as $ors)
-					{
-						if (isset($haystack[$ors]))
-						{
-							$error = false;
-						}
-					}
-				}
+				
+				$checks[] = count(array_intersect($permission, array_keys($haystack))) > 0;
 			}
-			else
+			elseif (is_string($permission))
 			{
-				if (!isset($haystack[$permission]))
-				{
-					$error = true;
-				}
+				$checks[] = isset($haystack[$permission]);
 			}
 		}
 		
-		return !$error;
+		return array_search(false, $checks) === false;
 	}
 }
 

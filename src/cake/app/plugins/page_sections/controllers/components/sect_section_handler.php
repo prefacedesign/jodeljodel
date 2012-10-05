@@ -363,9 +363,6 @@ class SectSectionHandlerComponent extends Object {
 				
 			if (!isset($section['humanName']))
 				$sectionsContext[$k]['humanName'] = $section['linkCaption'];
-				
-			if (!isset($section['permissions']))
-				$sectionsContext[$k]['permissions'] = array();
 			
 			if (isset($section['subSections']))
 				$this->_insertDefaultsIntoSections($sectionsContext[$k]['subSections'], $depth + 1);
