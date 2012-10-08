@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2012-10-03 18:43-0400\n"
-"PO-Revision-Date: 2012-10-03 19:33-0400\n"
+"POT-Creation-Date: 2012-10-08 17:58-0400\n"
+"PO-Revision-Date: 2012-10-08 18:13-0400\n"
 "Last-Translator: Daniel Abrahão <daniel@preface.com.br>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -257,27 +257,27 @@ msgstr ""
 
 #: /views/translate_strings/translate_strings.ctp:11
 msgid "Editing a user_users"
-msgstr ""
+msgstr "Editando um usuário"
 
 #: /views/translate_strings/translate_strings.ctp:12
 msgid "Editing a user_profiles"
-msgstr ""
+msgstr "Editando um perfil"
 
 #: /views/translate_strings/translate_strings.ctp:13
 msgid "Editing a user_permissions"
-msgstr ""
+msgstr "Editando uma permissão"
 
 #: /views/translate_strings/translate_strings.ctp:14
 msgid "Page title header - BackstageCustom module user_users"
-msgstr ""
+msgstr "Listagem de editores / administradores"
 
 #: /views/translate_strings/translate_strings.ctp:15
 msgid "Page title header - BackstageCustom module user_profiles"
-msgstr ""
+msgstr "Listagem dos perfis de usuário"
 
 #: /views/translate_strings/translate_strings.ctp:16
 msgid "Page title header - BackstageCustom module user_permissions"
-msgstr ""
+msgstr "Listagem das permissões"
 
 #: /views/translate_strings/translate_strings.ctp:17
 msgid "Add new user_users"
