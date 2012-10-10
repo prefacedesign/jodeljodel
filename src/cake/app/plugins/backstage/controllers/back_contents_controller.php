@@ -60,18 +60,18 @@ class BackContentsController extends BackstageAppController
  * @param string $moduleName Module name, configured on bootstrap.php
  * @param mixed $id The id of the row to be edited. If "null" it means that a new will be created.
  */
-	
-	
-    function edit($moduleName = false, $id = null)
-    {
+	function edit($moduleName = false, $id = null)
+	{
+		$this->header('Cache-Control: no-cache, max-age=0, must-revalidate, no-store');
+
 		if (empty($moduleName) || !($config = Configure::read('jj.modules.'.$moduleName)))
 			$this->jodelError('Jodel module ' .$moduleName. ' not found.');
-		
+
 		list($contentPlugin, $modelName) = pluginSplit($config['model']);
-		
-        $fullModelName = $config['model'];
-        $Model =& ClassRegistry::init($fullModelName);
-        
+
+		$fullModelName = $config['model'];
+		$Model =& ClassRegistry::init($fullModelName);
+
         if (is_null($id))
         {
 			if (isset($config['permissions']) && isset($config['permissions']['create']))
@@ -254,6 +254,8 @@ class BackContentsController extends BackstageAppController
 	
 	function index($moduleName)
 	{
+		$this->header('Cache-Control: no-cache, max-age=0, must-revalidate, no-store');
+		
 		$conditions = array();
 		if (!isset($this->modules[$moduleName]))
 			trigger_error('BackContentsController::index - '.$moduleName.' not found in jj.modules') and die;
