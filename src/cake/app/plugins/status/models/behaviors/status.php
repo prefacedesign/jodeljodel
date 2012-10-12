@@ -1,12 +1,23 @@
 <?php
+
 /**
  * StatusBehavior
  *
- * @copyright Preface Design
+ * Copyright 2010-2012, Preface Design LTDA (http://www.preface.com.br")
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ *
  * @author Rodrigo Caravita, Lucas Vignoli
- * @license MIT
  * @version 0.1
  * created 29. october 2010
+ * @copyright     Copyright 2010-2011, Preface Design LTDA (http://www.preface.com.br)
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @link          https://github.com/prefacedesign/jodeljodel Jodel Jodel public repository 
+ */
+
+/**
  *
  * This behavior lets you control registers with multiple status,
  * like published, or drafts. You can set a status with this behavior and

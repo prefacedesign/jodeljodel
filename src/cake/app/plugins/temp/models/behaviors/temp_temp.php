@@ -1,12 +1,20 @@
 <?php
+
+/**
+ *
+ * Copyright 2010-2012, Preface Design LTDA (http://www.preface.com.br")
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright     Copyright 2010-2011, Preface Design LTDA (http://www.preface.com.br)
+ * @author Rodrigo Caravita, Lucas Vignoli
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @link          https://github.com/prefacedesign/jodeljodel Jodel Jodel public repository 
+ */
+
 /**
  * Temp  Behavior
- *
- * @copyright Preface Design
- * @author Rodrigo Caravita, Lucas Vignoli
- * @license MIT
- * @version 0.1
- * created 20. september 2011
  *
  * This behavior is to control temp rows inserted in the tables pluggeds
  * in the dashboard, via the creatEmpty method. With this behavior we want to 

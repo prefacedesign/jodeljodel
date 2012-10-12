@@ -1,12 +1,17 @@
-<!DOCTYPE html
-PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<?php
 
-<html xmlns = "http://www.w3.org/1999/xhtml"  xml:lang = "pt-br"  lang = "pt-br">
-	<head>
-		<title>Jodel Jodel</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<?php 
+/**
+ *
+ * Copyright 2010-2012, Preface Design LTDA (http://www.preface.com.br")
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright     Copyright 2010-2011, Preface Design LTDA (http://www.preface.com.br)
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @link          https://github.com/prefacedesign/jodeljodel Jodel Jodel public repository 
+ */
+
 			echo $javascript->link('prototype');
 			echo $javascript->link('scriptaculous');
 		?>
