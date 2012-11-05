@@ -198,7 +198,7 @@ echo $this->Bl->sbox(null, array('size' => array('M' => 7, 'g' => -1)));
 				'instructions' => 'Instructions for relational checkbox input',
 				'options' => array(
 					'type' => 'multiple_checkbox',
-					'model' => 'Plugin.Model'
+					'model' => 'Galery'
 				)
 			)
 		);
