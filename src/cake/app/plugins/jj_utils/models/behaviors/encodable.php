@@ -85,7 +85,6 @@ class EncodableBehavior extends ModelBehavior {
  */
 	function beforeSave(&$Model, $options = array())
 	{
-		debug($Model->data);
 		$Model->data = $Model->encode($Model->data);
 		return true;
 	}
