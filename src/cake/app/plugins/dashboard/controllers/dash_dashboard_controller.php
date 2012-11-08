@@ -12,12 +12,6 @@
  * @link          https://github.com/prefacedesign/jodeljodel Jodel Jodel public repository 
  */
 
-/*
- *
- */
- 
-App::import('Config','Dashboard.dash');
-
 /**
  * 
  * 
@@ -38,6 +32,16 @@ class DashDashboardController extends DashboardAppController
 	var $components = array('Session', 'RequestHandler');
 	var $helpers = array('Text');
 
+/**
+ * Before filter callback: loads the plugin configuration parameters
+ * 
+ * @access public
+ */
+	function beforeFilter()
+	{
+		Configure::load('Dashboard.dash');
+		parent::beforeFilter();
+	}
 
 /**
  * This is the actual dashboard page.
@@ -113,24 +117,15 @@ class DashDashboardController extends DashboardAppController
 			$conditions['type'] = $filter;		
 		
 		$additionalFilter = Configure::read('Dashboard.additionalFilteringConditions');
-		if(!empty($additionalFilter))
+		if (!empty($additionalFilter))
 		{
-			foreach($additionalFilter as $component)
+			foreach ($additionalFilter as $filterName)
 			{
-				list($plugin, $componentName) = pluginSplit($component);
-				App::import('Component', $component);
-
-				$componentFullName = $componentName.'Component';		
-				$component = new $componentFullName();
-				
-				if (method_exists($component, 'initialize')) {
-					$component->initialize($this);
+				if (App::import('Lib', $filterName))
+				{
+					list ($filterPlugin, $filterName) = pluginSplit($filterName);
+					$conditions = $filterName::getPermissionConditions($this, $conditions);
 				}
-				if (method_exists($component, 'startup')) {
-					$component->startup($this);
-				}
-				
-				$conditions = $component->getDashboardFilterConditionsByPermission($conditions);
 			}
 		}
 		
