@@ -104,18 +104,42 @@ class DashDashboardController extends DashboardAppController
 	function filter_and_search($page = null)
 	{
 		$conditions = array();
-		$c = $this->Session->read('Dashboard.searchOptions');
-		if ($c)
-			$conditions = $c;
+		if ($this->Session->check('Dashboard.searchOptions'))
+			$conditions = $this->Session->read('Dashboard.searchOptions');
 		
 		$filter_status = $this->Session->read('Dashboard.status');
-		$filter = $this->Session->read('Dashboard.filter');
-		
 		if ($filter_status != 'all' && !empty($filter_status))
+		{
 			$conditions['status'] = $filter_status;
-		if ($filter != 'all' && !empty($filter))
-			$conditions['type'] = $filter;		
+		}
 		
+		$filter = $this->Session->read('Dashboard.filter');
+		if ($filter != 'all' && !empty($filter))
+		{
+			$conditions['type'] = $filter;
+		}
+
+		// Get permission conditions from the modules and its configurations
+		$allowedModules = array();
+		$modules = Configure::read('jj.modules');
+		foreach ($modules as $moduleName => $moduleConfig)
+		{
+			$plugged = isset($moduleConfig['plugged']) && in_array('dashboard', $moduleConfig['plugged']);
+			if ($plugged && isset($moduleConfig['permissions']['view']) && $this->JjAuth->can($moduleConfig['permissions']['view']))
+			{
+				$allowedModules[] = $moduleName;
+			}
+		}
+		
+		if (!empty($allowedModules))
+		{
+			if (empty($conditions['type']) || !in_array($conditions['type'], $allowedModules))
+			{
+				$conditions['type'] = $allowedModules;
+			}
+		}
+
+		// Get permission conditions from the additionalFilteringConditions configuration
 		$additionalFilter = Configure::read('Dashboard.additionalFilteringConditions');
 		if (!empty($additionalFilter))
 		{
