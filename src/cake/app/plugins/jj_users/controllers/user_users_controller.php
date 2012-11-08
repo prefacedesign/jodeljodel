@@ -35,7 +35,13 @@ class UserUsersController extends JjUsersAppController
 		'PageSections.SectSectionHandler',
 		'Session'
 	);
-	
+
+/**
+ * List of models
+ * 
+ * @access public
+ * @var array
+ */
 	var $uses = array('JjUsers.UserUser', 'JjUsers.UserProfile');
 
 /**
@@ -48,19 +54,6 @@ class UserUsersController extends JjUsersAppController
 	{
 		$this->TradLanguageSelector->setInterfaceLanguage(Configure::read('Tradutore.mainLanguage'));
 		parent::startupProcess();
-	}
-
-/**
- * beforeFilter callback, used for overwrite the default messages of AuthComponent
- * 
- * @access public
- * @return void
- */
-	function beforeFilter()
-	{
-		$this->JjAuth->loginError = __d('backstage', 'Login failed. Invalid username or password.', true);
-		$this->JjAuth->authError = __d('backstage', 'You are not authorized to access that location.', true);
-		parent::beforeFilter();
 	}
 
 /**
