@@ -1761,7 +1761,7 @@
 			'padding-left' => $hg->size(array('m' => 1)),
 			'padding-right' => $hg->size(array('m' => 1)),
 			'height' => $vg->size('3m'),
-			'line-height' => $vg->size('g')
+			'line-height' => $vg->size('3m')
 	));
 	
 	$this->Decorator->rule(
