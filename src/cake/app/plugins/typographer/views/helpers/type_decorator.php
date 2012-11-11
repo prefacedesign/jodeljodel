@@ -39,9 +39,16 @@ class TypeDecoratorHelper extends AppHelper
 		
 		if (isset($options['receive_tools']) && $options['receive_tools'])
 		{
-			foreach($options['tools'] as $tool_name => $tool)
+			if (!isset($options['tools']) || !is_array($options['tools']))
 			{
-				$this->{$tool_name} = $tool;
+				trigger_error('Tools not properly passed to typographer decorator. Check the config for the current layout_scheme.');
+			}
+			else
+			{
+				foreach($options['tools'] as $tool_name => $tool)
+				{
+					$this->{$tool_name} = $tool;
+				}
 			}
 		}
 		
