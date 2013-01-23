@@ -819,7 +819,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 
 		extract($options);
 		
-		$_htmlAttributes = am(array('id' => $this->baseID()), $_htmlAttributes);
+		$_htmlAttributes = am(array('id' => 'txt' . $this->baseID()), $_htmlAttributes);
 		
 		// Label
 		$out .= $this->label(array(),compact('fieldName'), $label);
@@ -2816,9 +2816,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$htmlAttributes = array(
 			'id' => 'inp' . $baseID
 		);
-		
-		unset($options['options']);
-		
+
 		$out = '';
 		
 		if (!empty($options['label']))

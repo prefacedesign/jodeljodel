@@ -153,6 +153,28 @@ echo $this->Bl->sbox(null, array('size' => array('M' => 7, 'g' => -1)));
 				)
 			)
 		);
+
+		// A drop-down box 
+		echo $this->Buro->input(
+			null,
+			array(
+				'type' => 'select',
+				'fieldName' => 'select_2',
+				'label' => 'Label for select input',
+				'instructions' => 'Instructions for select input',
+				'options' => array(
+					'empty' => true,
+					'default' => array('option_2', 'option_3'),
+					'multiple' => true,
+					'size' => 4,
+					'options' => array(
+						'option_1' => 'Option 1',
+						'option_2' => 'Option 2',
+						'option_3' => 'Option 3',
+					)
+				)
+			)
+		);
 		
 		// unitary_autocomplete
 		// many_children
@@ -294,6 +316,9 @@ echo $this->Bl->sbox(null, array('size' => array('M' => 7, 'g' => -1)));
 				'fieldName' => 'color',
 				'label' => 'Label for a color input',
 				'instructions' => 'Instructions a color input',
+				'options' => array(
+					'default' => '#4C4973'
+				)
 			)
 		);
 		
