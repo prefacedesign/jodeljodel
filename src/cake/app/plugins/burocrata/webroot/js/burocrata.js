@@ -194,6 +194,7 @@ var BuroForm = Class.create(BuroCallbackable, {
 	{
 		this.inputs.each(this.resetInput.bind(this));
 		this.trigger('onReset', this.form);
+		return this;
 	},
 	resetInput: function(input)
 	{
