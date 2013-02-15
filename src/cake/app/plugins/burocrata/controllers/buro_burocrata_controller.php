@@ -135,7 +135,7 @@ class BuroBurocrataController extends BurocrataAppController
 			if (!empty($this->buroData['language']))
 			{
 				App::import('Behavior','Tradutore.TradTradutore');
-				TradTradutoreBehavior::setGlobalLanguage('por');
+				TradTradutoreBehavior::setGlobalLanguage($this->buroData['language']);
 			}
 			
 			$methodName = $this->BuroBurocrata->getSaveMethod($this, $Model);
