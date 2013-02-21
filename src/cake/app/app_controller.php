@@ -1,24 +1,14 @@
 <?php
 /**
- * Application level Controller
  *
- * This file is application-wide controller file. You can put all
- * application-wide controller-related methods here.
- *
- * PHP versions 4 and 5
- *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2010-2012, Preface Design LTDA (http://www.preface.com.br")
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
- * @package       cake
- * @subpackage    cake.app
- * @since         CakePHP(tm) v 0.2.9
+ * @copyright     Copyright 2010-2011, Preface Design LTDA (http://www.preface.com.br)
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @link          https://github.com/prefacedesign/jodeljodel Jodel Jodel public repository 
  */
 
 /**
@@ -27,33 +17,38 @@
  * Add your application-wide methods in the class below, your controllers
  * will inherit them.
  *
- * @package       cake
- * @subpackage    cake.app
  */
-class AppController extends Controller {
+class AppController extends Controller
+{
+
+/**
+ * Default helpers
+ * 
+ * @access public
+ * @var array
+ */
 	var $helpers = array('Html', 'Form', 'Session', 'Time', 'Ajax', 'JjUsers.JjAuth');
+
+/**
+ * Default components
+ * 
+ * @access public
+ * @var array
+ */
 	var $components = array(
 		'Tradutore.TradLanguageSelector',
 		'PageSections.SectSectionHandler',
-		'JjUsers.JjAuth' => array(
-			'userModel' => 'JjUsers.UserUser',
-			'sessionKey' => 'JjAuth.UserUser',
-			'authorize' => 'controller',
-			'loginRedirect' => array(
-				'plugin' => 'dashboard',
-				'controller' => 'dash_dashboard',
-				'action' => 'index',
-			)
-		),
+		'JjUsers.JjAuth'
 	);
-	
-	
+
+/**
+ * Some JodelJodel bindings
+ * 
+ * @access public
+ */
 	function beforeFilter()
 	{
 		parent::beforeFilter();		
-		$user = $this->JjAuth->user();
-		list($userPlugin, $userModel) = pluginSplit($this->JjAuth->userModel);
-		$user = $user[$userModel];
 		
 		App::Import('Behavior', 'Status.Status');
 		
@@ -131,11 +126,6 @@ class AppController extends Controller {
 		parent::beforeRender();		
 		$userData = $this->JjAuth->user();
 		$this->set('userData',$userData['UserUser']);
-	}
-	
-	function isAuthorized()
-	{
-		return false;
 	}
 	
 	protected function jodelError($message)

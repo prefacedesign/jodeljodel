@@ -13,7 +13,8 @@
  */
 
 
-class SectSectionHandlerComponent extends Object {	
+class SectSectionHandlerComponent extends Object
+{
 	var $controller;
 	var $pageTitleArray = array();
 	var $ourLocation = array();
@@ -21,12 +22,16 @@ class SectSectionHandlerComponent extends Object {
 	var $sections = array();
 	var $thisSection = null;
 	var $breadcrumb = array();
-	
-	/** Gets the controller action params, retrieves the configuration
-	 *  and fetchs the current section and the current pageTitleArray.
-	 */
-	
-	function initialize(&$controller) 
+
+/**
+ * Gets the controller action params, retrieves the configuration
+ * and fetchs the current section and the current pageTitleArray.
+ *
+ * @access public
+ * @param object $controller
+ * @return void
+ */
+	function initialize(&$controller)
 	{
 		$this->controller =& $controller;
 		
@@ -40,45 +45,46 @@ class SectSectionHandlerComponent extends Object {
 		$this->_populateThisSectionOptions();
 		$this->_createBreadcrumb();
 	}
-	
-	/**
-	 * Sends the view vars.
-	 */
+
+/**
+ * Sends the view vars.
+ *
+ * @access public
+ * @param object $controller
+ * @return void
+ */
 	function beforeRender(&$controller) 
 	{
 		$this->_setTheViewVars();
 	}
-	
-	/**
-	 * Allows/denys access to the action according to the permissions
-	 * set. It only checks wheter it's a public action or controlled
-	 * access action.
-	 */
+
+/**
+ * Allows/denies access to the action according to the permissions
+ * set. It only checks wheter it's a public action or controlled
+ * access action.
+ * 
+ * @access public
+ * @param object $controller
+ * @return void
+ */
 	function startup(&$controller)
 	{
 		if (isset($controller->JjAuth))
 		{
-			if (empty($this->thisSection['permissions']))
+			$allowAccess = empty($this->thisSection['permissions'])
+				|| $controller->JjAuth->can($this->thisSection['permissions']);
+			
+			if ($allowAccess)
+			{
 				$controller->JjAuth->allow($controller->params['action']);
+			}
 			else
 			{
-				if ($controller->JjAuth->can($this->thisSection['permissions']))
-					$controller->JjAuth->allow($controller->params['action']);
-				else
+				if (Router::normalize($controller->here) == Router::normalize($controller->JjAuth->loginRedirect))
 				{
-					$options = array();
-					if (isset($controller->params['plugin']))
-						$options['plugin'] = $controller->params['plugin'];
-					if (isset($controller->params['plugin']))
-						$options['controller'] = $controller->params['controller'];
-					if (isset($controller->params['plugin']))
-						$options['action'] = $controller->params['action'];
-					if ($controller->JjAuth->loginRedirect === $options)
-					{
-						$controller->JjAuth->logout();
-					}
-					$controller->JjAuth->deny($controller->params['action']);
+					$controller->JjAuth->logout();
 				}
+				$controller->JjAuth->deny($controller->params['action']);
 			}
 		}
 	}

@@ -42,8 +42,9 @@ class EncodableBehavior extends ModelBehavior {
  * Setup
  *
  * One must give an array with every field that is encoded, and
- * its encode method. For now only 'serializable' is available.
+ * its encode method. For now only 'serialize' is available.
  *
+ * @access public
  * @param object AppModel
  * @param array $config Sample config is array('fields' => array('data' => 'serialize', 'other_data_field' => 'base64'));
  */
@@ -52,20 +53,20 @@ class EncodableBehavior extends ModelBehavior {
 		$settings = array_merge($this->_defaults, $config);
 		$this->settings[$model->alias] = $settings;
 	}
-	
+
 /**
  * After find callback
  *
  * Decodes the data according to enconding in settings.
  *
- * @param mixed $results The results of the find operation
+ * @access public
+ * @param array $results The results of the find operation
  * @param boolean $primary Whether this model is being queried directly (vs. being queried as an association)
  * @return mixed Result of the find operation
  */	
-	function afterFind($Model, $results, $primary = false) 
+	function afterFind(&$Model, $results, $primary = false) 
 	{
 		$config = $this->settings[$Model->alias];
-	
 		if (!empty($results)) 
 		{
 			foreach($results as $key => $result) 
@@ -79,62 +80,90 @@ class EncodableBehavior extends ModelBehavior {
 /**
  * Called before each save operation
  *
+ * @access public
  * @return boolean True if the operation should continue, false if it should abort
  */
-	function beforeSave(&$Model, $options = array()) 
+	function beforeSave(&$Model, $options = array())
 	{
 		$Model->data = $Model->encode($Model->data);
 		return true;
 	}
-	
+
 /**
- * Decodes all data.
+ * Decodes all data based on configuration parameters.
  *
- * @param string $matchId
+ * @access public
+ * @param object A reference for the Model object
  * @param array $data
- * @return boolean
- */	
-	public function decode($Model, &$data) 
+ * @return The array of modified data
+ */		
+	public function decode(&$Model, $data) 
 	{
 		$config = $this->settings[$Model->alias];
-	
 		foreach ($config['fields'] as $field => $method)
 		{
 			if (isset($data[$Model->alias][$field]))
-				$data[$Model->alias][$field] = $this->{'_' . $method}($data[$Model->alias][$field], 'decode');
+			{
+				$data[$Model->alias][$field] = $this->processData($data[$Model->alias][$field], $method, 'decode');
+			}
 		}
 		return $data;
 	}
 
 /**
- * Encodes all data.
+ * Encodes all data based on configuration parameters.
  *
- * @param string $matchId
+ * @access public
+ * @param object A reference for the Model object
  * @param array $data
- * @return boolean
+ * @return The array of modified data
  */	
-	public function encode($Model, &$data) 
+	public function encode(&$Model, $data)
 	{
 		$config = $this->settings[$Model->alias];
 		foreach ($config['fields'] as $field => $method)
 		{
 			if (isset($data[$Model->alias][$field]))
-				$data[$Model->alias][$field] = $this->{'_' . $method}($data[$Model->alias][$field], 'encode');
+			{
+				$data[$Model->alias][$field] = $this->processData($data[$Model->alias][$field], $method, 'encode');
+			}
 		}
 		return $data;
 	}
-	
+
 /**
+ * Caller for implemented processes
  * 
+ * @access protected
+ * @param mixed The data to be processed
+ * @return Processed data
+ */
+	protected function processData($data, $process, $action)
+	{
+		$method = '_' . $process;
+		if (!method_exists($this, $method))
+		{
+			trigger_error ('EncondableBehavior::encode() - Method '.$process.' not implemented for Encodable behavior.');
+			return $data;
+		}
+		
+		return $this->{$method}($data, $action);
+	}
+
+/**
+ * Implements data encoding using the native PHP serialize/unserialize functions
  *
- * @param boolean $matchId
- * @param array $data
+ * @access protected
+ * @param array $data The data that will be serialized or unserialized
+ * @param string $encodeOrDecode Specify what to do. Can be "encode" or "decode"
  * @return Encoded or decoded data.
  */		
-	private function _serialize($data, $encodeOrDecode = 'encode')
+	protected function _serialize($data, $encodeOrDecode = 'encode')
 	{
 		if ($encodeOrDecode == 'encode')
+		{
 			return is_array($data) ? @serialize($data) : $data;
+		}
 		else
 		{
 			if (is_string($data))

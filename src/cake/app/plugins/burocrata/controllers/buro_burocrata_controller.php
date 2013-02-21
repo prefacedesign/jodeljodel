@@ -10,17 +10,10 @@
  * @copyright     Copyright 2010-2011, Preface Design LTDA (http://www.preface.com.br)
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  * @link          https://github.com/prefacedesign/jodeljodel Jodel Jodel public repository 
- */
-
-
-/**
- * Controller for burocrata plugin.
- *
- * PHP versions 5
- *
  * @package       jodel
  * @subpackage    jodel.burocrata.controllers
  */
+
 
 /**
  * BuroBurocrataController.
@@ -139,8 +132,19 @@ class BuroBurocrataController extends BurocrataAppController
 		
 		if($error === false)
 		{
+			if (!empty($this->buroData['language']))
+			{
+				App::import('Behavior','Tradutore.TradTradutore');
+				TradTradutoreBehavior::setGlobalLanguage($this->buroData['language']);
+			}
+			
 			$methodName = $this->BuroBurocrata->getSaveMethod($this, $Model);
 			$saved = $Model->{$methodName}($this->data) !== false;
+
+			if (!empty($this->buroData['language']))
+			{
+				TradTradutoreBehavior::returnToPreviousGlobalLanguage();
+			}
 			
 			if($saved)
 			{

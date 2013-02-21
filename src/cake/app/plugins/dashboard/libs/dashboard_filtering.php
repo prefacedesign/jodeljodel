@@ -12,32 +12,20 @@
  * @link          https://github.com/prefacedesign/jodeljodel Jodel Jodel public repository 
  */
 
-
-class DashboardFilteringComponent extends Object
-{	
-	protected $_controller;
-
 /**
- * Startup callback for initialize
- * 
- * @access public
+ * A example of class for the Dashboard.additionalFilteringConditions configuration parameter
  */
-	function startup(&$controller)
-	{
-		$this->_controller = $controller;
-		
-		return true;
-	}
+class DashboardFiltering
+{	
 
 /**
  * Custom filter conditions
  * 
  * @access public
  */
-	public function getDashboardFilterConditionsByPermission($conditions)
+	public static function getPermissionConditions(&$Controller, $conditions)
 	{
-		// some code to treats the conditions array
-		
+		// some code that treats the conditions array
 		return $conditions;
 	}
 	
@@ -46,15 +34,12 @@ class DashboardFilteringComponent extends Object
  * 
  * @access public
  */
-	public function can($data)
+	public static function can(&$Controller, $data)
 	{
-		$can = true;
-		
 		// some code to verify if can
-		$can = $this->_controller->JjAuth->can($permission);
+		$can = $Controller->JjAuth->can($permission);
 		
 		return $can;
 	}
-	
 }
 

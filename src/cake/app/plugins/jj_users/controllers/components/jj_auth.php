@@ -17,20 +17,40 @@ App::import('Component', 'Auth');
 App::import('Lib', 'JjUsers.BigBadGuy');
 
 class JjAuthComponent extends AuthComponent
-{	
+{
+
+/**
+ * Holds a reference to the current controller object
+ * 
+ * @var object
+ * @access protected
+ */
 	protected $Controller;
 
 /**
- * Startup callback for initialize
+ * Initialize callback for initialize
  * 
  * @access public
  */
-	function startup(&$controller)
+	function initialize(&$Controller, $settings = array())
 	{
-		$parent = parent::startup($controller);
-		$this->Controller = $controller;
+		$settings += array(
+			'userModel' => 'JjUsers.UserUser',
+			'sessionKey' => 'JjAuth.UserUser',
+			'loginError' => __d('backstage', 'Login failed. Invalid username or password.', true),
+			'authError' => __d('backstage', 'You are not authorized to access that location.', true),
+			'loginAction' => array(
+				'plugin' => 'jj_users', 'controller' => 'user_users', 'action' => 'login'
+			),
+			'loginRedirect' => array(
+				'plugin' => 'dashboard', 'controller' => 'dash_dashboard', 'action' => 'index'
+			)
+		);
+
+		parent::initialize($Controller, $settings);
+		
+		$this->Controller = $Controller;
 		$this->compilePermissions();
-		return $parent;
 	}
 
 /**
@@ -51,7 +71,7 @@ class JjAuthComponent extends AuthComponent
 		$id = $this->user('id');
 		if (empty($id))
 		{
-			$this->Session->delete('JjAuth.UserUser');
+			$this->Session->delete($this->sessionKey);
 			return;
 		}
 		
@@ -65,7 +85,7 @@ class JjAuthComponent extends AuthComponent
 		unset($userData['UserProfile']);
 
 		$userData['UserUser']['permissions'] = array_fill_keys($slugs, 1);
-		$this->Session->write('JjAuth.UserUser', $userData['UserUser']);
+		$this->Session->write($this->sessionKey, $userData['UserUser']);
 	}
 
 
@@ -85,7 +105,7 @@ class JjAuthComponent extends AuthComponent
  * 
  * @access public
  */
-	public function stop($url = null)
+	public function stop()
 	{
 		$this->Controller->redirect($this->loginRedirect);
 	}
