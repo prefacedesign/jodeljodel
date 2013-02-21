@@ -845,20 +845,20 @@
 		)
 	);
 	
-	// $this->Decorator->rule(
-		// 'a:visited',
-		// array(
-			// 'color' => $palette['visited_links']->write(),
-			// 'border-color' => $palette['visited_links']->write()
-		// )
-	// );
-	
 	$this->Decorator->rule(
 		'a:hover, a:active',
 		array(
 			'color' => $palette['bg']->write(), 
 			'background-color' => $palette['text']->write(),
 			'border-color' => $palette['text']->write()
+		)
+	);
+
+	$this->Decorator->rule(
+		'a.disabled:hover', array(
+			'color' => $palette['text'],
+			'background-color' => 'transparent',
+			'cursor' => 'default'
 		)
 	);
 	
