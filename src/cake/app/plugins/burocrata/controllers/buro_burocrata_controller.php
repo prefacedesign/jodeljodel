@@ -358,46 +358,23 @@ class BuroBurocrataController extends BurocrataAppController
 					if (empty($this->buroData['id']))
 						$error = $debug?'BuroBurocrataController - ID was not present on POST.':true;
 					
+					if (!$error && method_exists($Model, 'duplicate'))
+					{
+						if (!$Model->duplicate($this->buroData['id']))
+							$error = $debug?'BuroBurocrataController - Model::duplicate() failed.':true;
+						else
+							$id = $Model->id;
+					}
+
 					if (!$error)
 					{
-						if (method_exists($Model, 'duplicate'))
-						{
-							if (!$Model->duplicate($this->buroData['id']))
-								$error = $debug?'BuroBurocrataController - Model::duplicate() failed.':true;
-							else
-								$id = $Model->id;
-						}
-						else
-						{
-							// Tries to duplicate (wont work if is necessary to duplicate children data)
-							$data = $Model->find('first', array(
-								'recursive' => -1,
-								'conditions' => array(
-									$Model->alias.'.'.$Model->primaryKey => $this->buroData['id']
-								)
-							));
-							
-							foreach (array('created', 'updated', 'modified', $Model->primaryKey) as $field)
-								if (isset($data[$Model->alias][$field]))
-									unset($data[$Model->alias][$field]);
-							
-							$Model->create();
-							if (!$Model->save($data, false))
-								$error = $debug?'BuroBurocrataController - Model did not save the duplicate data.':true;
-							else
-								$id = $Model->id;
-						}
+						$this->set('old_id', $this->buroData['id']);
+						$buroData = $this->BuroBurocrata->getViewData($this, $id);
+						$orderField = $Model->Behaviors->Ordered->settings[$Model->alias]['field'];
 						
-						if (!$error)
-						{
-							$this->set('old_id', $this->buroData['id']);
-							$buroData = $this->BuroBurocrata->getViewData($this, $id);
-							$orderField = $Model->Behaviors->Ordered->settings[$Model->alias]['field'];
-							
-							extract($buroData);
-							$order = $data[$Model->alias][$orderField];
-							$this->set(compact('data','order'));
-						}
+						extract($buroData);
+						$order = $data[$Model->alias][$orderField];
+						$this->set(compact('data','order'));
 					}
 				break;
 				
