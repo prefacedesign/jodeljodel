@@ -123,7 +123,7 @@
 							elseif ($index == 'publishing_status')
 								$rowContent = __d('dashboard', 'Dashboard status: ' . $field, true);
 							else
-								$rowContent = $field;
+								$rowContent = empty($field) ? '&nbsp;' : $field;
 						}
 						else
 						{
@@ -136,7 +136,7 @@
 									elseif ($index == 'publishing_status')
 										$rowContent = __d('dashboard', 'Dashboard status: ' . $field, true);
 									else
-										$rowContent = $field;
+										$rowContent = empty($field) ? '&nbsp;' : $field;
 								}
 							}
 						}

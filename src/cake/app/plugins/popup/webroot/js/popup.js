@@ -90,19 +90,31 @@ var Popup = Class.create({
 		if (Popups.open_popup !== false)
 			closePopup(Popups.open_popup);
 		
+		var centralHeight, centralWidth,
+			viewportOff = document.viewport.getScrollOffsets();
+
 		Popups.open_popup = this.id;
 		document.body.appendChild(new Element('div',{className: 'popup_maya_veil'}).setOpacity(0.45));
+
 		this.divCont.show();
+		centralHeight = Math.max(document.viewport.getHeight()-this.divCont.getHeight(), 20)/2;
+		centralWidth = Math.max((document.viewport.getWidth()-this.divCont.getWidth()), 20)/2;
+
 		this.divCont.setStyle({
-			top: document.viewport.getScrollOffsets().top + (document.viewport.getHeight()/2-this.divCont.getHeight()/2)+'px',
-			left: document.viewport.getScrollOffsets().left + (document.viewport.getWidth()/2-this.divCont.getWidth()/2)+'px'
+			top: (viewportOff.top + centralHeight) + 'px',
+			left: (viewportOff.left + centralWidth) + 'px'
 		});
-		
+
 		this.activeElement = document.activeElement;
 		
 		try
 		{
-			$(this.links.values().first()).focus();
+			var first_link = $(this.links.values().first());
+			if (Object.isElement(first_link))
+			{
+				if (first_link.cumulativeOffset().top < viewportOff.top+document.viewport.getHeight())
+					first_link.focus();
+			}
 		}
 		catch (err) {}
 		

@@ -316,6 +316,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$this->_addFormAttribute('modelAlias', $this->modelAlias);
 		$this->_addFormAttribute('data', $options['data'] ? $options['data'] : $View->data);
 		
+		if (!empty($View->params['language']))
+		{
+			$this->_addFormAttribute('parameters', array($this->internalParam('language') => $View->params['language']));
+			$this->_addFormAttribute('language', $View->params['language']);
+		}
+		
 		$this->data = $View->data = $this->_readFormAttribute('data');
 		
 		if ($this->modelAlias)
@@ -819,7 +825,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 
 		extract($options);
 		
-		$_htmlAttributes = am(array('id' => $this->baseID()), $_htmlAttributes);
+		$_htmlAttributes = am(array('id' => 'txt' . $this->baseID()), $_htmlAttributes);
 		
 		// Label
 		$out .= $this->label(array(),compact('fieldName'), $label);
@@ -914,8 +920,13 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'callbacks' => array()
 		);
 		$autocomplete_options = am($defaults, $options['options']);
-		$parameters = array();
+
+		if ($this->_readFormAttribute('language'))
+		{
+			$autocomplete_options['url']['language'] = $this->_readFormAttribute('language');
+		}
 		
+		$parameters = array();
 		$parameters[] = $this->internalParam('layout_scheme', $View->viewVars['layout_scheme']);
 		
 		if ($autocomplete_options['model'])
@@ -1066,6 +1077,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'baseID' => $this->baseID(),
 			'texts' => array()
 		);
+
+		if ($this->_readFormAttribute('language'))
+		{
+			$options['url']['language'] = $this->_readFormAttribute('language');
+		}
+
 		extract($options);
 		
 		if (!isset($texts['new_item']))		$texts['new_item'] = __d('burocrata','Burocrata: create a new related item', true);
@@ -1190,6 +1207,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		// Ajax call and OfficeBoy call
 		$url = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'unitary');
+		if ($this->_readFormAttribute('language'))
+		{
+			$url['language'] = $this->_readFormAttribute('language');
+		}
 		$ajax_options = array(
 				'baseID' => $edit_call_baseID,
 				'url' => $url,
@@ -1370,6 +1391,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'texts' => array('confirm' => array()),
 			'url' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'list_of_items')
 		);
+		if ($this->_readFormAttribute('language'))
+		{
+			$options['url']['language'] = $this->_readFormAttribute('language');
+		}
 		extract($options);
 		
 		// Usually the Cake core will display a "missing table" or "missing connection"
@@ -1492,6 +1517,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'parameters' => array(),
 			'url' =>array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'list_of_items')
 		);
+		if ($this->_readFormAttribute('language'))
+		{
+			$options['url']['language'] = $this->_readFormAttribute('language');
+		}
 		extract($options);
 		
 		if (empty($model_class_name)) {
@@ -1948,6 +1977,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'unlink_item' => __d('burocrata','Burocrata: unlink related data', true),
 			'confirm_unlink' => __d('burocrata','Burocrata: confirm unlinking', true)
 		);
+		if ($this->_readFormAttribute('language'))
+		{
+			$options['url']['language'] = $this->_readFormAttribute('language');
+		}
 		extract($options);
 		
 		$model_class_name = $model;
@@ -2045,6 +2078,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		
 		$url = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'editable_list');
+		if ($this->_readFormAttribute('language'))
+		{
+			$url['language'] = $this->_readFormAttribute('language');
+		}
 		$ajax_options = array(
 			'url' => $url,
 			'params' => array(
@@ -2580,8 +2617,14 @@ class BuroBurocrataHelper extends XmlTagHelper
 				__d('burocrata','Burocrata::inputTextile - Preview', true)
 			);
 			$out .= $this->_popupTextilePreview($prev_id, $options);
+
+			$url = array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'textile_preview');
+			if ($this->_readFormAttribute('language'))
+			{
+				$url['language'] = $this->_readFormAttribute('language');
+			}
 			$ajax_options = array(
-				'url' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'textile_preview'),
+				'url' => $url,
 				'params' => array('data[text]' => "@encodeURIComponent($('{$npt_id}').value)@"),
 				'callbacks' => array(
 					'onSuccess' => array(
@@ -2816,9 +2859,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$htmlAttributes = array(
 			'id' => 'inp' . $baseID
 		);
-		
-		unset($options['options']);
-		
+
 		$out = '';
 		
 		if (!empty($options['label']))

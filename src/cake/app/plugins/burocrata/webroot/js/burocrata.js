@@ -1,5 +1,4 @@
 
-
 /**
  *
  * Copyright 2010-2012, Preface Design LTDA (http://www.preface.com.br")
@@ -190,6 +189,44 @@ var BuroForm = Class.create(BuroCallbackable, {
 		(function(){
 			this.lastSavedData = this.serialize();
 		}).bind(this).defer(1);
+	},
+	reset: function()
+	{
+		this.inputs.each(this.resetInput.bind(this));
+		this.trigger('onReset', this.form);
+		return this;
+	},
+	resetInput: function(input)
+	{
+		switch (input.nodeName.toLowerCase())
+		{
+			case 'textarea':
+				input.value = input.innerHTML;
+				break;
+
+			case 'input':
+				switch (input.type)
+				{
+					case 'text':
+					case 'file':
+					case 'password':
+						input.value = input.readAttribute('value');
+						break;
+
+					case 'radio':
+					case 'checkbox':
+						input.checked = input.readAttribute('checked');
+						break;
+				}
+				break;
+
+			case 'select':
+				$A(input.options).each(function(option)
+				{
+					option.selected = option.readAttribute('selected');
+				});
+				break;
+		}
 	},
 	addParameters: function(params, pattern)
 	{
@@ -2103,6 +2140,21 @@ var BuroColorPicker = Class.create(BuroCallbackable, {
 		this.sample = $('samp'+id_base);
 		if (!this.input.value.blank())
 			this.updateSample();
+
+		this.observeForm();
+	},
+	observeForm: function()
+	{
+		var form = BuroCR.get('frm'+this.input.readAttribute('buro:form'));
+		if (!form)
+		{
+			window.setTimeout(this.observeForm.bind(this), 200);
+			return;
+		}
+		
+		form.addCallbacks({
+			onReset: this.updateSample.bind(this)
+		});
 	},
 	openCP: function(ev)
 	{
@@ -2168,6 +2220,20 @@ var BuroDynamicTextarea = Class.create({
 			this.input.observe('input', this.update.bind(this));
 
 		this.update();
+		this.observeForm();
+	},
+	observeForm: function()
+	{
+		var form = BuroCR.get('frm'+this.input.readAttribute('buro:form'));
+		if (!form)
+		{
+			window.setTimeout(this.observeForm.bind(this), 200);
+			return;
+		}
+
+		form.addCallbacks({
+			onReset: this.update.bind(this)
+		});
 	},
 	update: function(ev)
 	{

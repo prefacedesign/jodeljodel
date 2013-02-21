@@ -13,7 +13,7 @@
  */
 
 
-Configure::write('Dashboard.itemSettings',array(
+$config['Dashboard.itemSettings'] = array(
 		'default' => array(
 			'actions' => array('publish_draft','delete','edit', 'create', 'see_on_page'),
 			'edit_version' => 'backstage'
@@ -22,11 +22,10 @@ Configure::write('Dashboard.itemSettings',array(
 			'actions' => array('edit'),
 			'edit_version' => 'corktile'
 		),
-	)
-);
+	);
 
-Configure::write('Dashboard.limitSize', 20);
-Configure::write('Dashboard.statusOptions', array('published', 'draft'));
+$config['Dashboard.limitSize'] = 20;
+$config['Dashboard.statusOptions'] = array('published', 'draft');
 
 // You can configure additional components to build the conditions for the dashboard.
 // This component should receive the conditions array and then return the conditions 
@@ -34,4 +33,4 @@ Configure::write('Dashboard.statusOptions', array('published', 'draft'));
 // This feature should be used for more advanced settings in permissions scheme
 // when there are permissions based on dynamic content, for example.
 
-Configure::write('Dashboard.additionalFilteringConditions', array('Dashboard.DashboardFiltering'));
+$config['Dashboard.additionalFilteringConditions'] = array('Dashboard.DashboardFiltering');

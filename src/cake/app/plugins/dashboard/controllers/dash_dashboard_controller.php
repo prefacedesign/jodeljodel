@@ -12,12 +12,6 @@
  * @link          https://github.com/prefacedesign/jodeljodel Jodel Jodel public repository 
  */
 
-/*
- *
- */
- 
-App::import('Config','Dashboard.dash');
-
 /**
  * 
  * 
@@ -38,6 +32,16 @@ class DashDashboardController extends DashboardAppController
 	var $components = array('Session', 'RequestHandler');
 	var $helpers = array('Text');
 
+/**
+ * Before filter callback: loads the plugin configuration parameters
+ * 
+ * @access public
+ */
+	function beforeFilter()
+	{
+		Configure::load('Dashboard.dash');
+		parent::beforeFilter();
+	}
 
 /**
  * This is the actual dashboard page.
@@ -100,37 +104,52 @@ class DashDashboardController extends DashboardAppController
 	function filter_and_search($page = null)
 	{
 		$conditions = array();
-		$c = $this->Session->read('Dashboard.searchOptions');
-		if ($c)
-			$conditions = $c;
+		if ($this->Session->check('Dashboard.searchOptions'))
+			$conditions = $this->Session->read('Dashboard.searchOptions');
 		
 		$filter_status = $this->Session->read('Dashboard.status');
-		$filter = $this->Session->read('Dashboard.filter');
-		
 		if ($filter_status != 'all' && !empty($filter_status))
-			$conditions['status'] = $filter_status;
-		if ($filter != 'all' && !empty($filter))
-			$conditions['type'] = $filter;		
-		
-		$additionalFilter = Configure::read('Dashboard.additionalFilteringConditions');
-		if(!empty($additionalFilter))
 		{
-			foreach($additionalFilter as $component)
-			{
-				list($plugin, $componentName) = pluginSplit($component);
-				App::import('Component', $component);
+			$conditions['status'] = $filter_status;
+		}
+		
+		$filter = $this->Session->read('Dashboard.filter');
+		if ($filter != 'all' && !empty($filter))
+		{
+			$conditions['type'] = $filter;
+		}
 
-				$componentFullName = $componentName.'Component';		
-				$component = new $componentFullName();
-				
-				if (method_exists($component, 'initialize')) {
-					$component->initialize($this);
+		// Get permission conditions from the modules and its configurations
+		$allowedModules = array();
+		$modules = Configure::read('jj.modules');
+		foreach ($modules as $moduleName => $moduleConfig)
+		{
+			$plugged = isset($moduleConfig['plugged']) && in_array('dashboard', $moduleConfig['plugged']);
+			if ($plugged && isset($moduleConfig['permissions']['view']) && $this->JjAuth->can($moduleConfig['permissions']['view']))
+			{
+				$allowedModules[] = $moduleName;
+			}
+		}
+		
+		if (!empty($allowedModules))
+		{
+			if (empty($conditions['type']) || !in_array($conditions['type'], $allowedModules))
+			{
+				$conditions['type'] = $allowedModules;
+			}
+		}
+
+		// Get permission conditions from the additionalFilteringConditions configuration
+		$additionalFilter = Configure::read('Dashboard.additionalFilteringConditions');
+		if (!empty($additionalFilter))
+		{
+			foreach ($additionalFilter as $filterName)
+			{
+				if (App::import('Lib', $filterName))
+				{
+					list ($filterPlugin, $filterName) = pluginSplit($filterName);
+					$conditions = $filterName::getPermissionConditions($this, $conditions);
 				}
-				if (method_exists($component, 'startup')) {
-					$component->startup($this);
-				}
-				
-				$conditions = $component->getDashboardFilterConditionsByPermission($conditions);
 			}
 		}
 		

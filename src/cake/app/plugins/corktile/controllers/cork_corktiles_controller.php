@@ -33,6 +33,46 @@ class CorkCorktilesController extends CorktileAppController {
 	function edit($key)
 	{
 		$this->data = $this->CorkCorktile->getFullData($key);
+
+		$config = Configure::read('jj.modules.corktile');
+		
+		$canEdit = true;
+				
+		if (isset($config['additionalFilteringConditions']))
+		{
+			foreach($config['additionalFilteringConditions'] as $filterName)
+			{
+				if (App::import('Lib', $filterName))
+				{
+					list ($filterPlugin, $filterName) = pluginSplit($filterName);
+					if (!$filterName::can($this, $this->data[$this->CorkCorktile->alias]))
+					{
+						$canEdit = false;
+					}
+				}
+			}
+		}
+		
+		if (isset($config['permissions']) && ((isset($config['permissions']['edit_draft']) && isset($config['permissions']['edit_published'])) || isset($config['permissions']['edit'])))
+		{
+			if (isset($this->data[$this->CorkCorktile->alias]['publishing_status']) && $this->data[$this->CorkCorktile->alias]['publishing_status'] == 'published')
+			{	
+				if (!$this->JjAuth->can($config['permissions']['edit_published']))
+					$canEdit = false;
+			}
+			elseif (isset($this->data[$this->CorkCorktile->alias]['publishing_status']) && $this->data[$this->CorkCorktile->alias]['publishing_status'] == 'draft')
+			{	
+				if (!$this->JjAuth->can($config['permissions']['edit_draft']))
+					$canEdit = false;
+			}
+			elseif (!isset($this->data[$this->CorkCorktile->alias]['publishing_status']) && isset($config['permissions']['edit']))
+			{
+				if (!$this->JjAuth->can($config['permissions']['edit']))
+					$canEdit = false;
+			}
+		}
+		
+		if (!$canEdit) $this->JjAuth->stop();
 		
 		$this->set('contentPlugin', $this->data['ModuleInfo']['plugin']);
         $this->set('modelName', $this->data['ModuleInfo']['model']);

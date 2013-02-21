@@ -21,7 +21,6 @@
  
 App::import('Core','ModelBehavior');
 App::import('Behavior','Status.Status');
-App::import('Config','Backstage.backstage');
 
 /**
  * SOME CLASS INFORMATIONS
@@ -54,14 +53,20 @@ class BackContentsController extends BackstageAppController
 	var $backstageSettings;
 	var $limit = 20;
 	var $status = false;
-	
-	function __construct()
+
+/**
+ * Before filter callback (loads configuration parameters)
+ * 
+ * @access public
+ */
+	function beforeFilter()
 	{
-		parent::__construct();
+		App::import('Config','Backstage.backstage');
 		$this->modules = Configure::read('jj.modules');
 		$this->backstageSettings = Configure::read('Backstage.itemSettings');
+
+		parent::beforeFilter();
 	}
-	
 	
 /** 
  * Action to edit/create a model row. Model must have implemented
@@ -139,24 +144,15 @@ class BackContentsController extends BackstageAppController
 				
 				if (isset($config['additionalFilteringConditions']))
 				{
-					foreach($config['additionalFilteringConditions'] as $component)
+					foreach($config['additionalFilteringConditions'] as $filterName)
 					{
-						list($plugin, $componentName) = pluginSplit($component);
-						App::import('Component', $component);
-
-						$componentFullName = $componentName.'Component';		
-						$component = new $componentFullName();
-						
-						if (method_exists($component, 'initialize')) {
-							$component->initialize($this);
-						}
-						if (method_exists($component, 'startup')) {
-							$component->startup($this);
-						}
-						
-						if (!$component->can($this->data[$Model->alias]))
+						if (App::import('Lib', $filterName))
 						{
-							$canEdit = false;
+							list ($filterPlugin, $filterName) = pluginSplit($filterName);
+							if (!$filterName::can($this, $this->data[$Model->alias]))
+							{
+								$canEdit = false;
+							}
 						}
 					}
 				}
@@ -230,28 +226,21 @@ class BackContentsController extends BackstageAppController
 		$options = array_merge_recursive($options, $op, $defaultOptions);
 		if (isset($settings['additionalFilteringConditions']))
 		{
-			if(!isset($options['conditions']))
+			if (!isset($options['conditions']))
 			{
 				$options['conditions'] = array();
 			}
-			foreach($settings['additionalFilteringConditions'] as $component)
+			
+			foreach ($settings['additionalFilteringConditions'] as $filterName)
 			{
-				list($plugin, $componentName) = pluginSplit($component);
-				App::import('Component', $component);
-
-				$componentFullName = $componentName.'Component';		
-				$component = new $componentFullName();
-				
-				if (method_exists($component, 'initialize')) {
-					$component->initialize($this);
+				if (App::import('Lib', $filterName))
+				{
+					list ($filterPlugin, $filterName) = pluginSplit($filterName);
+					$options['conditions'] = $filterName::getPermissionConditions($this, $options['conditions']);
 				}
-				if (method_exists($component, 'startup')) {
-					$component->startup($this);
-				}
-				
-				$options['conditions'] = $component->getDashboardFilterConditionsByPermission($options['conditions']);
 			}
 		}
+		
 		return $options;
 	}
 	
