@@ -1548,8 +1548,9 @@ class BuroBurocrataHelper extends XmlTagHelper
 				);
 			}
 		}
-		
-		
+
+		$duplicateIsAvailable = method_exists($Model, 'duplicate');
+
 		// Javascripts
 		$ajax_call = array(
 			'baseID' => $this->baseID(),
@@ -1577,7 +1578,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$jsOptions['callbacks'] = array('onAction' => array('ajax' => $ajax_call))+$options['callbacks'];
 		
 		$jsOptions['templates']['menu'] = $this->orderedItensMenu(array(), array('allowed_content' => $allowed_content));
-		$jsOptions['templates']['item'] = $this->orderedItensItem(array('class' => $auto_order?'auto_order':''));
+		$jsOptions['templates']['item'] = $this->orderedItensItem(array('class' => $auto_order?'auto_order':''), compact('duplicateIsAvailable'));
 		$jsOptions['contents'] = $contents;
 		$jsOptions += compact('auto_order', 'parameters', 'texts', 'baseID', 'url');
 		
@@ -1712,7 +1713,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$out = $this->Bl->sdiv($htmlAttributes);
 		$out .= $this->Bl->div(array('class' => 'ordered_list_item_title'), array(), '#{title}');
-		$out .= $this->orderedItensControls();
+		$out .= $this->orderedItensControls(array(), $options);
 		$out .= $this->Bl->floatBreak();
 		$out .= $this->Bl->div(array('class' => 'ordered_list_content'), array(), '#{content}');
 		return $out;
@@ -1753,38 +1754,41 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$htmlAttributes = $this->addClass($htmlAttributes, self::$defaultContainerClass);
 		$htmlAttributes = $this->addClass($htmlAttributes, 'ordered_list_controls');
 		$out = $this->Bl->sdiv($htmlAttributes);
-		
+
 		$controls = array();
 		$label = __d('burocrata','Burocrata::orderedItensControls - up', true);
 		$controls[] = $this->Bl->button(
 			array('class' => 'ordered_list_up', 'buro:action' => 'up'), 
 			array(), 
 			$this->Bl->spanDry($label));
-		
+
 		$label = __d('burocrata','Burocrata::orderedItensControls - down', true);
 		$controls[] = $this->Bl->button(
 			array('class' => 'ordered_list_down', 'buro:action' => 'down'),
 			array(), 
 			$this->Bl->spanDry($label));
-		
+
 		$label = __d('burocrata','Burocrata::orderedItensControls - delete', true);
 		$controls[] = $this->Bl->button(
 			array('class' => 'ordered_list_delete', 'buro:action' => 'delete'), 
 			array(), 
 			$this->Bl->spanDry($label));
-		
-		$label = __d('burocrata','Burocrata::orderedItensControls - duplicate', true);
-		$controls[] = $this->Bl->anchor(
-			array('class' => 'ordered_list_duplicate', 'buro:action' => 'duplicate'),
-			array('url' => ''), 
-			$label);
-			
+
+		if (!empty($options['duplicateIsAvailable']))
+		{
+			$label = __d('burocrata','Burocrata::orderedItensControls - duplicate', true);
+			$controls[] = $this->Bl->anchor(
+				array('class' => 'ordered_list_duplicate', 'buro:action' => 'duplicate'),
+				array('url' => ''),
+				$label);
+		}
+
 		$label = __d('burocrata','Burocrata::orderedItensControls - edit', true);
 		$controls[] = $this->Bl->anchor(
 			array('class' => 'ordered_list_edit', 'buro:action' => 'edit'), 
 			array('url' => ''),
 			$label);
-		
+
 		$out .= implode("\n", $controls);
 		return $out;
 	}
@@ -1797,7 +1801,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function eorderedItensControls()
 	{
-		return '</div>';
+		return $this->Bl->ediv();
 	}
 
 

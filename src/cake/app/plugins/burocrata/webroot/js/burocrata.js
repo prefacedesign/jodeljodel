@@ -1005,7 +1005,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 			this.menus[order].div.insert({after: div});
 		
 		
-		item = new BuroListOfItemsItem(div).addCallbacks({'buro:controlClick': this.routeAction.bind(this)})
+		item = new BuroListOfItemsItem(div, this).addCallbacks({'buro:controlClick': this.routeAction.bind(this)})
 		this.items.push(item);
 		this.updateSiblings(item);
 		
@@ -1097,6 +1097,7 @@ var BuroListOfItems = Class.create(BuroCallbackable, {
 					menu.close().enable();
 				});
 				this.divForm.update().hide().setStyle({overflow: ''});
+				this.trigger('onFormClose');
 			}.bind(this)
 		});
 	},
@@ -1527,14 +1528,32 @@ var BuroListOfItemsMenu = Class.create(BuroCallbackable, {
  * @param element div The div containing the item
  */
 var BuroListOfItemsItem = Class.create(BuroCallbackable, {
-	initialize: function (div, type)
+	initialize: function (div, parent)
 	{
 		this.div = $(div);
+		this.linksEnabled = true;
 		this.id = this.div.readAttribute('buro:id');
 		this.content = this.div.down('div.ordered_list_content');
 		this.controls = this.div.down('.ordered_list_controls');
 		this.controls.childElements().each(this.observeControls.bind(this));
 		this.checkSiblings();
+
+		parent.addCallbacks({
+			'onFormClose': this.enableLinks.bind(this),
+			'onShowForm': this.disableLinks.bind(this)
+		});
+	},
+	enableLinks: function()
+	{
+		this.linksEnabled = true;
+		this.controls.setOpacity(1);
+		this.controls.childElements().invoke('removeClassName', 'disabled');
+	},
+	disableLinks: function()
+	{
+		this.linksEnabled = false;
+		this.controls.setOpacity(0.5);
+		this.controls.childElements().invoke('addClassName', 'disabled');
 	},
 	observeControls: function(element)
 	{
@@ -1544,6 +1563,8 @@ var BuroListOfItemsItem = Class.create(BuroCallbackable, {
 	controlClick: function(ev, element)
 	{
 		ev.stop();
+		if (!this.linksEnabled)
+			return;
 		var action = element.readAttribute('buro:action');
 		this.trigger('buro:controlClick', this, action, this.id);
 	},
