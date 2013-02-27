@@ -74,20 +74,21 @@ class CorkHelper extends AppHelper
 			trigger_error("CorkHelper::tile() - One must at least specify 'key' and 'type'"); 
 			return null;
 		}
-		
+
 		$View =& ClassRegistry::getObject('view');
-		if (isset($View->params['language']))
-		{
-			$cacheKey = "cork_{$options['key']}_{$View->params['language']}";
-		}
-		else
+		$use_cache = !isset($options['cache']) || $options['cache'] != false;
+		if ($use_cache)
 		{
 			$cacheKey = "cork_{$options['key']}";
+			if (isset($View->params['language']))
+			{
+				$cacheKey = "cork_{$options['key']}_{$View->params['language']}";
+			}
+			$cache = Cache::read($cacheKey);
+			if ($cache)
+				return $cache;
 		}
-		$cache = Cache::read($cacheKey);
-		if ($cache)
-			return $cache;
-		
+
 		$htmlAttributes = $this->Bl->_mergeAttributes(array('class' => array('cork')), $htmlAttributes);
 
 		if (!isset($options['location']))
@@ -116,7 +117,10 @@ class CorkHelper extends AppHelper
 		);
 		$t .= $this->Bl->ediv();
 
-		$cache = Cache::write($cacheKey, $t);
+		if ($use_cache)
+		{
+			Cache::write($cacheKey, $t);
+		}
 		return $t;
 	}
 }

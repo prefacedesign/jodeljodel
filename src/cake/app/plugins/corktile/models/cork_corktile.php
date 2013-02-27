@@ -185,6 +185,7 @@ class CorkCorktile extends CorktileAppModel
 	{
 		return $this->findById($id);
 	}
+
 /**
  * After save callback: to delete cache, after database changes
  * 
@@ -193,9 +194,17 @@ class CorkCorktile extends CorktileAppModel
  */
 	function afterSave()
 	{
-		if (isset($this->data[$this->alias]['id']) && ($key = $this->data[$this->alias]['id']))
-			Cache::delete("cork_{$key}");
+		if (!empty($this->data[$this->alias]['id']))
+		{
+			$key = "cork_{$this->data[$this->alias]['id']}";
+			if (isset($this->data[$this->alias]['language']))
+			{
+				$key = "{$key}_{$this->data[$this->alias]['language']}";
+			}
+			Cache::delete($key);
+		}
 	}
+
 /**
  * The data that must be saved into the dashboard. Part of the Dashboard contract.
  * 
@@ -272,20 +281,32 @@ class CorkCorktile extends CorktileAppModel
  *
  * Used by the CorkAttachable in order to update the container row. It implies 
  * that Dashboard will be updated also.
+ * 
+ * Also, this triggers the afterSafe callback, used for cleaning the cache.
+ *
+ * This method does so many things besides updating the modified field, that
+ * it deserves a more appropriate name
  *
  * @access public
- * @param string $content_id
- * @param string $type
- * @param string $modified
+ * @param string $content_id The content ID
+ * @param string $type The corktile type
+ * @param string $modified The timestamp to be used on modified field
+ * @param string $language When set, it guides the callback to mount the cache key.
  * @return boolean True - success. False - failure.
  */
-	function updateModifiedDate($content_id, $type, $modified)
+	function updateModifiedDate($content_id, $type, $modified, $language = false)
 	{
 		$data = $this->find('first', array('conditions' => compact('content_id','type')));
 		if (empty($data))
 			return false;
 			
-		$result = $this->save(array('CorkCorktile' => array('modified' => $modified, 'id' => $data['CorkCorktile']['id'])));
+		$result = $this->save(array(
+			'CorkCorktile' => array(
+				'modified' => $modified,
+				'language' => $language,
+				'id' => $data['CorkCorktile']['id']
+			)
+		));
 
 		return $result !== false;
 	}
