@@ -47,6 +47,8 @@ class CorkAttachableBehavior extends ModelBehavior {
 /**
  * Called after each save operation.
  *
+ * This method calls CorkCorktile::updateModifiedDate() when it is a update request.
+ * 
  * @access public
  * @param Model $Model
  * @param boolean $created
@@ -56,19 +58,20 @@ class CorkAttachableBehavior extends ModelBehavior {
 	{
 		if (!$created)
 		{
-			$data = $Model->read();
-			if (isset($data[$Model->alias]['modified']))
+			$translations = $Model->Behaviors->attached('TradTradutore');
+
+			$CorkCorktile =& ClassRegistry::init('Corktile.CorkCorktile');
+			$updated = $CorkCorktile->updateModifiedDate(
+				$Model->id,
+				$this->settings[$Model->alias]['type'], 
+				date('Y-m-d H:i:s'),
+				$translations ? $Model->data[$Model->alias . 'Translation']['language'] : false
+			);
+
+			if (!$updated)
 			{
-				$CorkCorktile =& ClassRegistry::init('Corktile.CorkCorktile');
-				
-				if ($CorkCorktile->updateModifiedDate(
-							$data[$Model->alias][$Model->primaryKey], 
-							$this->settings[$Model->alias]['type'], 
-							$data[$Model->alias]['modified']
-						) === false
-					)
-					return false;
-			}			
+				return false;
+			}
 		}
 		return true;
 	}
