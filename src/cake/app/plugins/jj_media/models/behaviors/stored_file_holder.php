@@ -106,8 +106,12 @@ class StoredFileHolderBehavior extends ModelBehavior
 			$SfilStoredFile =& $this->getFileModel($Model);
 			
 			foreach ($this->settings[$Model->alias]['keys'] as $key)
+			{
+				if (empty($this->runtime[$Model->alias]['ids_bkp'][$key]))
+					continue;
 				if (isset($Model->data[$Model->alias][$key]) && $Model->data[$Model->alias][$key] != $this->runtime[$Model->alias]['ids_bkp'][$key])
 					$SfilStoredFile->delete($this->runtime[$Model->alias]['ids_bkp'][$key]);
+			}
 		}
 	}
 
