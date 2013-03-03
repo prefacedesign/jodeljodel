@@ -1792,7 +1792,11 @@ var BuroEditableList = Class.create(BuroCallbackable, {
 	}
 });
 
-
+var CAPTIONS = {
+	upload: {
+		sending: 'Enviando o arquivo #{fileName}. Aguarde...'
+	}
+};
 
 /**
  * 
@@ -1823,9 +1827,22 @@ var BuroUpload = Class.create(BuroCallbackable, {
 		this.url = url;
 		this.errors = errors;
 		this.parameters = $H(parameters);
+
+		this.ajax_upload = (
+			'multiple' in new Element('input', {type: 'file'}) &&
+			!Object.isUndefined(File) &&
+			!Object.isUndefined((new XMLHttpRequest()).upload)
+		);
 		
+
+		if (this.ajax_upload)
+		{
+			new BuroAjaxUpload(id_base, url, errors, parameters);
+			return;
+		}
+
 		BuroCR.set(this.id_base, this);
-		
+
 		this.iframe = new Element('iframe', {
 			name: 'if'+this.id_base, 
 			id: 'if'+this.id_base, 
@@ -1971,6 +1988,143 @@ var BuroUpload = Class.create(BuroCallbackable, {
 	}
 });
 
+
+var BuroAjaxUpload = Class.create(BuroCallbackable,{
+	chunkSize: 1024*1024, // 1M
+	initialize: function(id_base, url, errors, parameters)
+	{
+		this.id_base = id_base;
+		this.url = url;
+
+		BuroCR.set(this.id_base, this);
+
+		if (document.loaded) this.loaded();
+		else document.observe('dom:loaded', this.loaded.bind(this))
+	},
+	loaded: function()
+	{
+		this.hidden_input = $('hi'+this.id_base);
+		this.div_hidden = $('div'+this.id_base);
+		this.progress_bar = new Element('div', {className: 'progress_bar'});
+		this.progress_bar.insert(new Element('div', {className: 'filling'}));
+		this.progress_bar.insert(new Element('span', {className: 'label'}));
+		this.upload_input = $('mi'+this.id_base);
+		this.upload_input.insert({ after: this.progress_bar });
+		this.upload_input.on('change', this.inputChange.bind(this));
+	},
+	reset: function()
+	{
+		this.currentByte =
+		this.hash =
+		this.file = null;
+	},
+	inputChange: function(ev)
+	{
+		if (!this.upload_input.files.length)
+		{
+			this.clearAll();
+		}
+		else if (this.upload_input.files.length == 1)
+		{
+			var file = this.upload_input.files[0],
+				caption = CAPTIONS.upload.sending.interpolate({fileName: file.name || file.fileName});
+			this.upload_input.insert({ after: (new Element('span')).insert(caption) })
+				.hide();
+
+			this.reset();
+			this.file = file;
+			this.uploadOnePiece();
+		}
+	},
+	getFileSize: function()
+	{
+		if (this.file)
+			return this.file.size || this.file.fileSize;
+		return null;
+	},
+	uploadOnePiece: function()
+	{
+		var startByte = this.currentByte || 0,
+			endByte = Math.min(startByte + this.chunkSize, this.getFileSize()),
+			isLast = endByte == this.getFileSize(),
+			chunk, form;
+
+		if (this.file.mozSlice)
+			chunk = this.file.mozSlice(startByte, endByte);
+		else if (this.file.webkitSlice)
+			chunk = this.file.webkitSlice(startByte, endByte);
+		else if (this.file.slice)
+			chunk = this.file.slice(startByte, chunkSize);
+
+		if (!chunk)
+			throw "Chunk is empty";
+
+		this.xhr = new XMLHttpRequest();
+		this.xhr.upload.addEventListener('error', this.handleError.bind(this));
+		this.xhr.upload.addEventListener('progress', this.handleProgress.bind(this));
+		this.xhr.upload.addEventListener('abort', this.handleAbort.bind(this));
+		this.xhr.onreadystatechange = this.uploadStatusChange.bind(this, startByte, endByte, isLast);
+
+		this.xhr.open('POST', this.url, true);
+		this.xhr.setRequestHeader('Cache-Control', 'no-cache');
+		this.xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+		this.xhr.setRequestHeader('X-Uploader-Start-Byte', startByte);
+		this.xhr.setRequestHeader('X-Uploader-Is-Last', isLast ? 'yes' : 'no');
+
+		form = new FormData();
+		form.append(this.upload_input.name, chunk);
+		if (this.hash)
+			form.append('data[hash]', this.hash);
+
+		this.xhr.send(form);
+	},
+	uploadStatusChange: function(startByte, endByte, isLast)
+	{
+		if (this.xhr.readyState != 4 || this.xhr.status != 200)
+			return;
+
+		var jsone = false;
+		if (this.xhr.response.isJSON())
+		{
+			json = this.xhr.response.evalJSON();
+			if (json && json.hash)
+			{
+				this.hash = json.hash;
+			}
+		}
+
+		this.currentByte = endByte;
+		if (!isLast)
+			this.uploadOnePiece();
+		else
+			this.finish();
+	},
+	handleError: function(ev)
+	{
+		console.log('Erro no ajax!')
+		console.log(ev);
+	},
+	handleProgress: function(ev)
+	{
+		if (ev.type == 'progress')
+			this.renderProgress((this.currentByte + ev.loaded)/this.getFileSize()*99);
+	},
+	handleAbort: function(ev)
+	{
+		console.log('Abortado!')
+		console.log(ev);
+	},
+	finish: function()
+	{
+		this.renderProgress(100);
+	},
+	renderProgress: function(progress)
+	{
+		var percent = Math.round(progress) + '%';
+		this.progress_bar.down('.filling').setStyle({width: percent})
+		this.progress_bar.down('.label').update(percent);
+	}
+});
 
 
 /**
