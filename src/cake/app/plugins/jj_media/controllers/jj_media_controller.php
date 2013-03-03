@@ -170,10 +170,16 @@ class JjMediaController extends JjMediaAppController {
  */
 	function upload()
 	{
+		if ($this->RequestHandler->isAjax())
+		{
+			$this->performAjaxUpload();
+			return;
+		}
+
 		$saved = $error = false;
 		$filename = '';
 		$validationErrors = array();
-		
+
 		$version = $fieldName = $model_name = null;
 		if (!empty($this->buroData['data']))
 			list($version, $fieldName, $model_name) = SecureParams::unpack($this->buroData['data']);
@@ -214,5 +220,67 @@ class JjMediaController extends JjMediaAppController {
 		$this->layout = 'ajax';
 		$this->view = 'Typographer.Type';
 		$this->set(compact('error', 'validationErrors', 'saved', 'version', 'filename'));
+	}
+
+/**
+ * Method to receive and glue pieces togheter on a ajax upload
+ *
+ * This method is NOT a action. It is called at JjMediaController::upload()
+ * when is detected that the upload is performed by a ajax request.
+ * 
+ * @access protected
+ * @return void
+ */
+	protected function performAjaxUpload()
+	{
+		$error = false;
+		$version = '';
+		
+		$startByte = env('HTTP_X_UPLOADER_START_BYTE');
+		$isLast = env('HTTP_X_UPLOADER_IS_LAST');
+
+		if (empty($this->data['SfilStoredFile']['file']['tmp_name']))
+		{
+			$error = 'upload-failed';
+			if (!empty($this->data['hash']) && file_exists(TMP . $hash))
+				unlink(TMP . $hash);
+
+			goto renderAjaxUpload;
+		}
+
+		if (empty($this->data['hash']))
+		{
+			$n = 0;
+			do {
+				$hash = uniqid('', true);
+			} while (file_exists(TMP . $hash));
+		}
+		else
+		{
+			$hash = $this->data['hash'];
+		}
+
+		$chunkFileName = $this->data['SfilStoredFile']['file']['tmp_name'];
+		$chunkFile = fopen($chunkFileName, 'rb');
+		$gluedFile = fopen(TMP . $hash, 'ab');
+
+		if (!$chunkFile || !$gluedFile)
+		{
+			$error = 'reading-file-error';
+			goto renderAjaxUpload;
+		}
+
+		fwrite($gluedFile, fread($chunkFile, filesize($chunkFileName)));
+		fclose($chunkFile);
+		fclose($gluedFile);
+
+		if ($isLast)
+		{
+			//$this->saveUpload();
+		}
+
+		renderAjaxUpload:
+		$this->view = 'JjUtils.Json';
+		$this->set('jsonVars', compact('error', 'validationErrors', 'saved', 'version', 'filename', 'hash'));
 	}
 }
