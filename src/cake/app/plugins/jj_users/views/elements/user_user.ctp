@@ -55,8 +55,8 @@ switch ($type[0])
 						'callbacks' => array(
 							'onStart' => array('lockForm', 'js' => 'form.setLoading()'),
 							'onComplete' => array('unlockForm', 'js' => 'form.unsetLoading()'),
-							'onReject' => array('js' => '$("content").scrollTo(); showPopup("error");', 'contentUpdate' => 'replace'),
-							'onSave' => array('js' => '$("content").scrollTo(); showPopup("custom_notice");'),
+							'onReject' => array('contentUpdate' => 'replace', 'js' => 'showPopup("error");'),
+							'onSave' => array('contentUpdate' => 'replace', 'js' => 'showPopup("custom_notice");'),
 						)
 					));
 				}
@@ -121,6 +121,16 @@ switch ($type[0])
 						{
 							$label = __d('jj_users', 'password_change label', true);
 							$instructions = __d('jj_users', 'password_change instructions', true);
+							echo $this->Buro->input(
+									array(),
+									array(
+										'type' => 'hidden',
+										'fieldName' => 'password',
+										'options' => array(
+											'value' => 'nothing_here'
+										)
+									)
+								);
 						}
 						echo $this->Buro->input(
 							array(),
