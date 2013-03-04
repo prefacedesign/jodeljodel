@@ -111,22 +111,32 @@ switch ($type[0])
 								'instructions' => __d('jj_users', 'username instructions', true)
 							)
 						);
-			
+
+						if (empty($this->data['UserUser']['password']))
+						{
+							$label = __d('jj_users', 'create password label', true);
+							$instructions = __d('jj_users', 'create password instructions', true);
+						}
+						else
+						{
+							$label = __d('jj_users', 'password_change label', true);
+							$instructions = __d('jj_users', 'password_change instructions', true);
+						}
 						echo $this->Buro->input(
 							array(),
 							array(
 								'fieldName' => 'password_change',
-								'type' => 'text',
-								'label' => __d('jj_users', 'password_change label', true),
-								'instructions' => __d('jj_users', 'password_change instructions', true)
+								'type' => 'password',
+								'label' => $label,
+								'instructions' => $instructions
 							)
 						);
-			
+
 						echo $this->Buro->input(
 							array(),
 							array(
 								'fieldName' => 'password_retype',
-								'type' => 'text',
+								'type' => 'password',
 								'label' => __d('jj_users', 'password_retype label', true),
 								'instructions' => __d('jj_users', 'password_retype instructions', true)
 							)
