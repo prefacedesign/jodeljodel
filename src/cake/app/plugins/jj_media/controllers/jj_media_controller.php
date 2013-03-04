@@ -158,7 +158,6 @@ class JjMediaController extends JjMediaAppController {
 		}
 	}
 
-
 /**
  * upload action
  *
@@ -238,12 +237,17 @@ class JjMediaController extends JjMediaAppController {
 		
 		$startByte = env('HTTP_X_UPLOADER_START_BYTE');
 		$isLast = env('HTTP_X_UPLOADER_IS_LAST');
+		$chunkSize = env('HTTP_X_UPLOADER_CHUNK_SIZE');
+		
+		$uploadError = empty($this->data['SfilStoredFile']['file']['tmp_name'])
+			|| !file_exists($chunkFileName = $this->data['SfilStoredFile']['file']['tmp_name'])
+			|| filesize($chunkFileName) != $chunkSize;
 
-		if (empty($this->data['SfilStoredFile']['file']['tmp_name']))
+		if ($uploadError)
 		{
 			$error = 'upload-failed';
-			if (!empty($this->data['hash']) && file_exists(TMP . $hash))
-				unlink(TMP . $hash);
+			//if (!empty($this->data['hash']) && file_exists(TMP . $hash))
+				//unlink(TMP . $hash);
 
 			goto renderAjaxUpload;
 		}
@@ -260,9 +264,16 @@ class JjMediaController extends JjMediaAppController {
 			$hash = $this->data['hash'];
 		}
 
-		$chunkFileName = $this->data['SfilStoredFile']['file']['tmp_name'];
+
 		$chunkFile = fopen($chunkFileName, 'rb');
 		$gluedFile = fopen(TMP . $hash, 'ab');
+
+		if (filesize(TMP . $hash) != $startByte)
+		{
+			$error = 'chunk-doesnt-fit';
+			$nextByte = filesize(TMP . $hash);
+			goto renderAjaxUpload;
+		}
 
 		if (!$chunkFile || !$gluedFile)
 		{
@@ -274,13 +285,20 @@ class JjMediaController extends JjMediaAppController {
 		fclose($chunkFile);
 		fclose($gluedFile);
 
-		if ($isLast)
+		if ($isLast == 'yes')
 		{
-			//$this->saveUpload();
+			$data = array(
+				'SfilStoredFile' => array('file' => TMP . $hash)
+			);
+			$this->saveUpload($data);
+		}
+		else
+		{
+			$nextByte = filesize(TMP . $hash);
 		}
 
 		renderAjaxUpload:
 		$this->view = 'JjUtils.Json';
-		$this->set('jsonVars', compact('error', 'validationErrors', 'saved', 'version', 'filename', 'hash'));
+		$this->set('jsonVars', compact('error', 'validationErrors', 'saved', 'version', 'filename', 'hash', 'nextByte'));
 	}
 }

@@ -1278,7 +1278,8 @@
 			'height' => $u->t($vg->size(array('g' => 1.5),false) - 2*$border_size - $padding_top),
 			'padding' => $u->t($padding_top) . ' ' . $u->t($padding_size),
 			'width' => $u->t($hg->size(array('M' => 5, 'g' => -1),false) - 2*($border_size + $padding_size)),
-			'position' => 'relative'
+			'position' => 'relative',
+			'margin-top' => $vg->size('m')
 		)
 	);
 

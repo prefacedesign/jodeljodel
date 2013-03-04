@@ -1794,7 +1794,12 @@ var BuroEditableList = Class.create(BuroCallbackable, {
 
 var CAPTIONS = {
 	upload: {
-		sending: 'Enviando o arquivo #{fileName}. Aguarde...'
+		sending: 'Enviando o arquivo #{fileName}. Aguarde...',
+		hours_left: 'Faltando #{hours} horas',
+		minutes_left: 'Faltando #{minutes} minutos',
+		seconds_left: 'Faltando #{seconds} segundos',
+		cancel: 'Cancelar',
+		try_again: 'Tentar de novo'
 	}
 };
 
@@ -2005,35 +2010,68 @@ var BuroAjaxUpload = Class.create(BuroCallbackable,{
 	{
 		this.hidden_input = $('hi'+this.id_base);
 		this.div_hidden = $('div'+this.id_base);
+
+		this.controls = new Element('div');
+		this.controls.insert(this.cancelLink = new Element('a', {href: '#'}).update(CAPTIONS.upload.cancel));
+		this.cancelLink.on('click', function(ev){ ev.stop(); this.abort(); }.bind(this));
+		this.controls.insert(this.tryAgainLink = new Element('a', {href: '#'}).update(CAPTIONS.upload.try_again));
+
 		this.progress_bar = new Element('div', {className: 'progress_bar'});
 		this.progress_bar.insert(new Element('div', {className: 'filling'}));
 		this.progress_bar.insert(new Element('span', {className: 'label'}));
+
 		this.upload_input = $('mi'+this.id_base);
+		this.upload_input.insert({ after: this.controls });
 		this.upload_input.insert({ after: this.progress_bar });
 		this.upload_input.on('change', this.inputChange.bind(this));
+
+		this.handleAbortBinded = this.handleAbort.bind(this);
+		this.handleErrorBinded = this.handleError.bind(this);
+		this.handleProgressBinded = this.handleProgress.bind(this);
+		this.uploadStatusChangeBinded = this.uploadStatusChange.bind(this);
+
+		this.reset();
 	},
 	reset: function()
 	{
-		this.currentByte =
-		this.hash =
-		this.file = null;
+		this.hash = this.startTime = this.file = null;
+		this.currentByte = this.errorCount = 0;
+		this.aborted = false;
+
+		this.upload_input.value = '';
+		this.progress_bar.setStyle({visibility: 'hidden'});
+		this.controls.setStyle({visibility: 'hidden'});
+	},
+	abort: function()
+	{
+		this.aborted = true;
+		this.xhr && this.xhr.abort();
+		this.reset();
+	},
+	again: function()
+	{
+		this.reset();
+		this.upload_input.show();
+		this.caption.remove();
 	},
 	inputChange: function(ev)
 	{
 		if (!this.upload_input.files.length)
 		{
-			this.clearAll();
+			this.reset();
 		}
 		else if (this.upload_input.files.length == 1)
 		{
 			var file = this.upload_input.files[0],
 				caption = CAPTIONS.upload.sending.interpolate({fileName: file.name || file.fileName});
-			this.upload_input.insert({ after: (new Element('span')).insert(caption) })
+			this.upload_input.insert({ after: this.caption = (new Element('span')).insert(caption) })
 				.hide();
 
 			this.reset();
 			this.file = file;
 			this.uploadOnePiece();
+			this.startTime = new Date().getTime();
+			this.controls.setStyle({visibility: 'visible'});
 		}
 	},
 	getFileSize: function()
@@ -2044,32 +2082,41 @@ var BuroAjaxUpload = Class.create(BuroCallbackable,{
 	},
 	uploadOnePiece: function()
 	{
-		var startByte = this.currentByte || 0,
-			endByte = Math.min(startByte + this.chunkSize, this.getFileSize()),
-			isLast = endByte == this.getFileSize(),
-			chunk, form;
+		if (this.xhr)
+		{
+			console.log('tentando enviar mais um sem terminar o anterior');
+			return;
+		}
+
+		var chunk, form;
+
+		this.endByte = Math.min(this.currentByte + this.chunkSize, this.getFileSize());
+		this.isLast = this.endByte == this.getFileSize();
 
 		if (this.file.mozSlice)
-			chunk = this.file.mozSlice(startByte, endByte);
+			chunk = this.file.mozSlice(this.currentByte, this.endByte);
 		else if (this.file.webkitSlice)
-			chunk = this.file.webkitSlice(startByte, endByte);
+			chunk = this.file.webkitSlice(this.currentByte, this.endByte);
 		else if (this.file.slice)
-			chunk = this.file.slice(startByte, chunkSize);
+			chunk = this.file.slice(this.currentByte, this.endByte - this.currentByte);
 
 		if (!chunk)
 			throw "Chunk is empty";
 
+		console.log(this.currentByte);
+
 		this.xhr = new XMLHttpRequest();
-		this.xhr.upload.addEventListener('error', this.handleError.bind(this));
-		this.xhr.upload.addEventListener('progress', this.handleProgress.bind(this));
-		this.xhr.upload.addEventListener('abort', this.handleAbort.bind(this));
-		this.xhr.onreadystatechange = this.uploadStatusChange.bind(this, startByte, endByte, isLast);
+		this.xhr.upload.addEventListener('error', this.handleErrorBinded);
+		this.xhr.upload.addEventListener('progress', this.handleProgressBinded);
+		this.xhr.upload.addEventListener('abort', this.handleAbortBinded);
+		this.xhr.onreadystatechange = this.uploadStatusChangeBinded;
 
 		this.xhr.open('POST', this.url, true);
 		this.xhr.setRequestHeader('Cache-Control', 'no-cache');
 		this.xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-		this.xhr.setRequestHeader('X-Uploader-Start-Byte', startByte);
-		this.xhr.setRequestHeader('X-Uploader-Is-Last', isLast ? 'yes' : 'no');
+		this.xhr.setRequestHeader('X-Uploader-Start-Byte', this.currentByte);
+		this.xhr.setRequestHeader('X-Uploader-Is-Last', this.isLast ? 'yes' : 'no');
+		this.xhr.setRequestHeader('X-Uploader-Chunk-Size', this.endByte-this.currentByte);
 
 		form = new FormData();
 		form.append(this.upload_input.name, chunk);
@@ -2078,12 +2125,16 @@ var BuroAjaxUpload = Class.create(BuroCallbackable,{
 
 		this.xhr.send(form);
 	},
-	uploadStatusChange: function(startByte, endByte, isLast)
+	uploadStatusChange: function()
 	{
 		if (this.xhr.readyState != 4 || this.xhr.status != 200)
 			return;
 
-		var jsone = false;
+		this.requestEnded();
+	},
+	requestEnded: function()
+	{
+		var json = false;
 		if (this.xhr.response.isJSON())
 		{
 			json = this.xhr.response.evalJSON();
@@ -2093,36 +2144,87 @@ var BuroAjaxUpload = Class.create(BuroCallbackable,{
 			}
 		}
 
-		this.currentByte = endByte;
-		if (!isLast)
-			this.uploadOnePiece();
-		else
-			this.finish();
+		if (json.error)
+		{
+			if (json.error == 'chunk-doesnt-fit' && json.nextByte)
+			{
+				this.currentByte = json.nextByte;
+			}
+			this.handleError();
+			return;
+		}
+
+		this.currentByte = this.endByte;
+		this.clearXHR();
+		this.errorCount = 0;
+
+		if (!this.aborted)
+		{
+			if (!this.isLast)
+				this.uploadOnePiece();
+			else
+				this.finish(json);
+		}
+	},
+	clearXHR: function()
+	{
+		this.xhr.upload.removeEventListener('error', this.handleErrorBinded);
+		this.xhr.upload.removeEventListener('progress', this.handleProgressBinded);
+		this.xhr.upload.removeEventListener('abort', this.handleAbortBinded);
+		this.xhr.onreadystatechange = null;
+		this.xhr = null;
 	},
 	handleError: function(ev)
 	{
-		console.log('Erro no ajax!')
-		console.log(ev);
+		this.errorCount++;
+		if (this.errorCount < 5)
+		{
+			this.clearXHR();
+			this.uploadOnePiece();
+		}
 	},
 	handleProgress: function(ev)
 	{
-		if (ev.type == 'progress')
-			this.renderProgress((this.currentByte + ev.loaded)/this.getFileSize()*99);
+		this.renderProgress((this.currentByte + ev.loaded)/this.getFileSize()*99);
 	},
 	handleAbort: function(ev)
 	{
 		console.log('Abortado!')
 		console.log(ev);
 	},
-	finish: function()
+	finish: function(json)
 	{
 		this.renderProgress(100);
+		this.reset();
+		
 	},
 	renderProgress: function(progress)
 	{
-		var percent = Math.round(progress) + '%';
+		var percent = Math.round(progress) + '%',
+			timeTaken = new Date().getTime() - this.startTime,
+			timeLeft = (timeTaken / (progress/100)) - timeTaken,
+			formatedTime = new Date();
+
+		if (false)
+		{
+			formatedTime.setHours(0,0,0,timeLeft);
+			if (formatedTime.getHours())
+				formatedTime = CAPTIONS.upload.hours_left.interpolate({hours: formatedTime.getHours() + ':' + formatedTime.getMinutes()});
+			else if (formatedTime.getMinutes())
+				formatedTime = CAPTIONS.upload.minutes_left.interpolate({minutes: formatedTime.getMinutes() + ':' + formatedTime.getSeconds()});
+			else if (formatedTime.getSeconds())
+				formatedTime = CAPTIONS.upload.seconds_left.interpolate({seconds: formatedTime.getSeconds()});
+			else
+				formatedTime = false;
+
+			console.log(formatedTime);
+		}
+
 		this.progress_bar.down('.filling').setStyle({width: percent})
 		this.progress_bar.down('.label').update(percent);
+
+		if (timeLeft > 2000)
+			this.progress_bar.setStyle({visibility: 'visible'});
 	}
 });
 
