@@ -131,6 +131,13 @@ switch ($type[0])
 					break;
 					
 					case 'table':
+						echo $this->Bl->br();
+						echo $this->Bl->sboxContainer(array(), array('size' => array('M' => 4)));
+						echo $this->Bl->pDry(__d('jj_users', 'Cada perfil engloba uma ou mais permissões do sistema administrativo. Atenção para a exclusão de perfis: não é possível excluir um perfil se o mesmo ainda está em uso por algum usuário.', true));
+						echo $this->Bl->eboxContainer();
+						echo $this->Bl->floatBreak();
+						echo $this->Bl->br();
+
 						$classSize = array('M' => 9, 'g' => -1);
 						$this->Bl->TypeStyleFactory->widthGenerateClasses(array(0 => $classSize));
 						$className = $this->Bl->TypeStyleFactory->widthClassNames($classSize);
@@ -166,7 +173,7 @@ switch ($type[0])
 							$smartTableRow[] = '&nbsp;';
 						
 						
-						$links = $this->Bl->sdiv(array('class' => 'actions', array()));
+						$links = $this->Bl->sdiv(array('class' => 'actions'));
 							
 							$links .= $this->Bl->anchor(
 								array('class' => 'link_button'), 
@@ -178,14 +185,17 @@ switch ($type[0])
 							);
 							
 							$delete_url = $this->Html->url(array('action' => 'delete_item','user_profiles', $data['UserProfile']['id']));
-							$links .= $this->Bl->anchor(
-								array(
+							$htmlAttr = array(
 									'class' => 'link_button',
 									'onclick' => "deleteID = '". $delete_url . "'; showPopup('delete_alert_confirmation'); event.returnValue = false; return false;",
-								), 
-								array('url' => ''),
-								__d('backstage','Delete', true)
-							);
+								);
+							if (!empty($data['UserUser']))
+							{
+								$htmlAttr['class'] .= ' disabled';
+								$htmlAttr['onclick'] = "alert('Existem usuários com o perfil \'{$data['UserProfile']['name']}\'. Por isso não é possível apagá-lo.'); return false;";
+							}
+
+							$links .= $this->Bl->anchor($htmlAttr, array('url' => ''), __d('backstage','Delete', true));
 							
 								
 						$links .= $this->Bl->ediv();

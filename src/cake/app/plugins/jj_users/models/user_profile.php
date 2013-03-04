@@ -32,32 +32,31 @@ class UserProfile extends JjUsersAppModel
 			'notempty' => array('rule' => array('notempty')),
 		)
 	);
-
+	
 	var $hasAndBelongsToMany = array(
 		'UserPermission' => array(
 			'className' => 'JjUsers.UserPermission', 
 			'joinTable' => 'user_profiles_user_permissions',
+		),
+		'UserUser' => array(
+			'className' => 'JjUsers.UserUser',
+			'joinTable' => 'user_users_user_profiles',
+			'unique' => false
 		)
 	);
-	
-	
+
 	function backDelete($id)
 	{
-		$this->bindModel(array(
-			'hasMany' => array(
-				'UserUsersUserProfile' => array(
-					'className' => 'jjUsers.UserUsersUserProfile',
-				)
-			)
-		));
-		
-		$this->UserUsersUserProfile->deleteAll(array('user_profile_id' => $id), false);
+		$this->contain('UserUser');
+		$data = $this->findById($id);
+		if (!empty($data['UserUser']))
+			return false;
 		return $this->delete($id);
 	}
 	
-	/* Creates a blank row in the table. It is part of the backstage contract.
-	 *
-	 */
+/**
+ * Creates a blank row in the table. It is part of the backstage contract.
+ */
 	function createEmpty()
 	{
 		
@@ -66,5 +65,14 @@ class UserProfile extends JjUsersAppModel
 		
 		return $data;
 	}
-	
+
+/**
+ * 
+ * 
+ * @access 
+ */
+	function afterSave()
+	{
+		
+	}
 }

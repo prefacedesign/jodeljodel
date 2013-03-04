@@ -478,16 +478,6 @@
 			'margin-right' => $hg->size(array('m' => 2)),
 	));
 	
-	$this->Decorator->rule(
-		'a.link_button.disabled', array(
-			'color' => $palette['button_fg_disabled']->write(),
-			'background-color' => $palette['button_bg_disabled']->write(),
-	));
-	
-	$this->Decorator->rule(
-		'a.link_button:visited', array(
-			'color' => $palette['text']->write(),
-	));
 	
 	$this->Decorator->rule(
 		'a.link_button:hover', array(
@@ -499,6 +489,13 @@
 		'a.link_button:active', array(
 			'color' => $palette['bg']->write(),
 			'background-color' => $palette['button_bg_hover']->write(),
+	));
+
+	$this->Decorator->rule(
+		'a.link_button.disabled, a.link_button.disabled:active, a.link_button.disabled:hover', array(
+			'color' => $palette['button_fg_disabled'],
+			'border-color' => $palette['button_fg_disabled'] . '!important',
+			'background-color' => $palette['button_bg_disabled']
 	));
 	
 	
