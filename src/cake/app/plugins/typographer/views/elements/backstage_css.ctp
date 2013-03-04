@@ -885,6 +885,12 @@
 		'.small_text', array(
 			'font-size' => $u->t($line_height * 11/18)
 	));
+
+	$this->Decorator->rule(
+		'.demoted', array(
+			'color' => $palette['button_fg_disabled']
+		)
+	);
 	
 	
 	// Control Box

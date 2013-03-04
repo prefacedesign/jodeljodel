@@ -246,7 +246,18 @@ switch ($type[0])
 					
 					case 'row':
 						$smartTableRow = array();
-						$smartTableRow[] = $data['UserUser']['name'];
+						$data['UserUser']['full_name'] = trim($data['UserUser']['full_name']);
+						if (empty($data['UserUser']['full_name']))
+						{
+							$smartTableRow[] .= $this->Bl->span(
+								array('class' => 'demoted'), array(),
+								__d('jj_users', 'Sem nome, ainda', true)
+							);
+						}
+						else
+						{
+							$smartTableRow[] = $data['UserUser']['full_name'];
+						}
 						
 						if (!empty($data['UserProfile']))
 						{
