@@ -59,20 +59,29 @@ class UserProfile extends JjUsersAppModel
  */
 	function createEmpty()
 	{
-		
-		$data = $this->saveAll(array($this->alias => array()), array('validate' => false));
-		$data = $this->find('first', array('conditions' => array($this->alias.'.id' => $this->id)));
-		
-		return $data;
+		$saved = $this->saveAll(array($this->alias => array()), array('validate' => false));
+		if ($saved)
+			return $this->id;
+		return false;
 	}
 
 /**
+ * Ensures that all related users be updated forcing permission reload of logged users.
  * 
- * 
- * @access 
+ * @access public
  */
 	function afterSave()
 	{
-		
+		$this->contain('UserUser');
+		$data = $this->read();
+
+		$usersId = Set::extract('/UserUser/id', $data);
+		if (!empty($usersId))
+		{
+			$this->UserUser->updateAll(
+				array('UserUser.modified' => '"' . date('Y-m-d H:i:s') . '"'),
+				array('UserUser.id' => $usersId)
+			);
+		}
 	}
 }
