@@ -97,24 +97,24 @@ class JjMediaController extends JjMediaAppController {
 		if (count($unpacked) != 2)
 			$this->cakeError('error404');
 		
-		$model_name = 'JjMedia.SfilStoredFile';
-		if (!$this->loadModel($model_name))
+		$modelName = 'JjMedia.SfilStoredFile';
+		if (!$this->loadModel($modelName))
 			return;
 		
 		list($sfil_stored_files_id, $version) = $unpacked;
-		list($plugin, $model_name) = pluginSplit($model_name);
-		$model_alias = $this->{$model_name}->alias;
+		list($plugin, $modelName) = pluginSplit($modelName);
+		$model_alias = $this->{$modelName}->alias;
 		
 		if(!empty($sfil_stored_files_id))
 		{
-			$this->{$model_name}->contain();
-			$file_data = $this->{$model_name}->findById($sfil_stored_files_id);
+			$this->{$modelName}->contain();
+			$file_data = $this->{$modelName}->findById($sfil_stored_files_id);
 			
 			if (empty($file_data))
 				$this->cakeError('error404');
 
 			if (empty($name) && !$download)
-				$this->redirect(array($download, $data, $file_data[$this->{$model_name}->alias]['original_filename']));
+				$this->redirect(array($download, $data, $file_data[$this->{$modelName}->alias]['original_filename']));
 
 			if(!empty($file_data))
 			{
@@ -175,50 +175,10 @@ class JjMediaController extends JjMediaAppController {
 			return;
 		}
 
-		$saved = $error = false;
-		$filename = '';
-		$validationErrors = array();
+		$this->saveUpload($this->data);
 
-		$version = $fieldName = $model_name = null;
-		if (!empty($this->buroData['data']))
-			list($version, $fieldName, $model_name) = SecureParams::unpack($this->buroData['data']);
-		
-		if (is_null($version) || is_null($fieldName) || is_null($model_name))
-		{
-			$validationErrors['file'] = 'post_max_size';
-		}
-		elseif (!$this->loadModel($model_name))
-		{
-			$error = Configure::read()>0?'JjMediaController::upload - Model '.$model_name.' not found.':true;
-		}
-		else
-		{
-			list($plugin, $model_name) = pluginSplit($model_name);
-			$Model =& $this->{$model_name};
-			$model_alias = $Model->alias;
-			
-			if (!empty($this->data))
-			{
-				$scope = $Model->findTheScope($fieldName);
-				if ($scope)
-					$Model->setScope($scope);
-				
-				$Model->set($this->data);
-				$validationErrors = $this->validateErrors($Model);
-
-				if (empty($validationErrors) && $Model->save(null, false))
-				{
-					$saved = $Model->id;
-					$filename = $this->data[$model_alias]['file']['name'];
-					list($fieldModelName, $fieldName) = pluginSplit($fieldName);
-					if (!empty($this->data[$fieldModelName][$fieldName]))
-						$Model->delete($this->data[$fieldModelName][$fieldName]);
-				}
-			}
-		}
 		$this->layout = 'ajax';
 		$this->view = 'Typographer.Type';
-		$this->set(compact('error', 'validationErrors', 'saved', 'version', 'filename'));
 	}
 
 /**
@@ -229,6 +189,7 @@ class JjMediaController extends JjMediaAppController {
  * 
  * @access protected
  * @return void
+ * @todo A garbage collector avoiding all the data that is left behind due errors
  */
 	protected function performAjaxUpload()
 	{
@@ -246,9 +207,6 @@ class JjMediaController extends JjMediaAppController {
 		if ($uploadError)
 		{
 			$error = 'upload-failed';
-			//if (!empty($this->data['hash']) && file_exists(TMP . $hash))
-				//unlink(TMP . $hash);
-
 			goto renderAjaxUpload;
 		}
 
@@ -258,20 +216,21 @@ class JjMediaController extends JjMediaAppController {
 			do {
 				$hash = uniqid('', true);
 			} while (file_exists(TMP . $hash));
+			mkdir(TMP . $hash);
 		}
 		else
 		{
 			$hash = $this->data['hash'];
 		}
 
-
 		$chunkFile = fopen($chunkFileName, 'rb');
-		$gluedFile = fopen(TMP . $hash, 'ab');
+		$gluedFileName = TMP . $hash . DS . 'file';
+		$gluedFile = fopen($gluedFileName, 'ab');
 
-		if (filesize(TMP . $hash) != $startByte)
+		if (filesize($gluedFileName) != $startByte)
 		{
 			$error = 'chunk-doesnt-fit';
-			$nextByte = filesize(TMP . $hash);
+			$nextByte = filesize($gluedFileName);
 			goto renderAjaxUpload;
 		}
 
@@ -287,10 +246,16 @@ class JjMediaController extends JjMediaAppController {
 
 		if ($isLast == 'yes')
 		{
-			$data = array(
-				'SfilStoredFile' => array('file' => TMP . $hash)
-			);
-			$this->saveUpload($data);
+			$originalName = TMP . $hash . DS . $this->data['original_name'];
+			rename($gluedFileName, $originalName);
+
+			$data = array('SfilBigFile' => array('file' => $originalName));
+			if (!$this->saveUpload($data, 'JjMedia.SfilBigFile'))
+			{
+				$validationErrors = $this->SfilBigFile->validationErrors;
+			}
+			unlink($originalName);
+			rmdir(TMP . $hash);
 		}
 		else
 		{
@@ -300,5 +265,59 @@ class JjMediaController extends JjMediaAppController {
 		renderAjaxUpload:
 		$this->view = 'JjUtils.Json';
 		$this->set('jsonVars', compact('error', 'validationErrors', 'saved', 'version', 'filename', 'hash', 'nextByte'));
+	}
+
+/**
+ * 
+ * 
+ * @access 
+ */
+	protected function saveUpload($data, $forceModel = null)
+	{
+		$saved = $error = false;
+		$filename = '';
+		$validationErrors = array();
+
+		$version = $fieldName = $modelName = null;
+		if (!empty($this->buroData['data']))
+			list($version, $fieldName, $modelName) = SecureParams::unpack($this->buroData['data']);
+
+		if ($forceModel)
+			$modelName = $forceModel;
+		
+		if (is_null($version) || is_null($fieldName) || is_null($modelName))
+		{
+			$validationErrors['file'] = 'post_max_size';
+		}
+		elseif (!$this->loadModel($modelName))
+		{
+			$error = Configure::read()>0?'JjMediaController::upload - Model '.$modelName.' not found.':true;
+		}
+		else
+		{
+			list($plugin, $modelName) = pluginSplit($modelName);
+			$Model =& $this->{$modelName};
+			$model_alias = $Model->alias;
+			
+			if (!empty($data))
+			{
+				$scope = $Model->findTheScope($fieldName);
+				if ($scope)
+					$Model->setScope($scope);
+				
+				$Model->set($data);
+				$validationErrors = $this->validateErrors($Model);
+
+				if (empty($validationErrors) && $Model->save(null, false))
+				{
+					$saved = $Model->id;
+					$filename = $this->data[$model_alias]['file']['name'];
+					list($fieldModelName, $fieldName) = pluginSplit($fieldName);
+					if (!empty($this->data[$fieldModelName][$fieldName]))
+						$Model->delete($this->data[$fieldModelName][$fieldName]);
+				}
+			}
+		}
+		$this->set(compact('error', 'validationErrors', 'saved', 'version', 'filename'));
 	}
 }

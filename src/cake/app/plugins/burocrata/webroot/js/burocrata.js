@@ -2000,6 +2000,9 @@ var BuroAjaxUpload = Class.create(BuroCallbackable,{
 	{
 		this.id_base = id_base;
 		this.url = url;
+		this.parameters = null;
+		if (typeof parameters == 'object')
+			this.parameters = parameters;
 
 		BuroCR.set(this.id_base, this);
 
@@ -2062,13 +2065,15 @@ var BuroAjaxUpload = Class.create(BuroCallbackable,{
 		}
 		else if (this.upload_input.files.length == 1)
 		{
-			var file = this.upload_input.files[0],
-				caption = CAPTIONS.upload.sending.interpolate({fileName: file.name || file.fileName});
-			this.upload_input.insert({ after: this.caption = (new Element('span')).insert(caption) })
-				.hide();
+			var caption, file = this.upload_input.files[0];
 
 			this.reset();
 			this.file = file;
+
+			caption = CAPTIONS.upload.sending.interpolate({fileName: this.getFileName()});
+			this.upload_input
+				.insert({ after: this.caption = (new Element('span')).insert(caption) })
+				.hide();
 			this.uploadOnePiece();
 			this.startTime = new Date().getTime();
 			this.controls.setStyle({visibility: 'visible'});
@@ -2078,6 +2083,12 @@ var BuroAjaxUpload = Class.create(BuroCallbackable,{
 	{
 		if (this.file)
 			return this.file.size || this.file.fileSize;
+		return null;
+	},
+	getFileName: function()
+	{
+		if (this.file)
+			return this.file.name || this.file.fileName;
 		return null;
 	},
 	uploadOnePiece: function()
@@ -2103,8 +2114,6 @@ var BuroAjaxUpload = Class.create(BuroCallbackable,{
 		if (!chunk)
 			throw "Chunk is empty";
 
-		console.log(this.currentByte);
-
 		this.xhr = new XMLHttpRequest();
 		this.xhr.upload.addEventListener('error', this.handleErrorBinded);
 		this.xhr.upload.addEventListener('progress', this.handleProgressBinded);
@@ -2120,8 +2129,14 @@ var BuroAjaxUpload = Class.create(BuroCallbackable,{
 
 		form = new FormData();
 		form.append(this.upload_input.name, chunk);
+		for (fieldName in this.parameters)
+			form.append(fieldName, this.parameters[fieldName]);
+
 		if (this.hash)
 			form.append('data[hash]', this.hash);
+
+		if (this.isLast)
+			form.append('data[original_name]', this.getFileName());
 
 		this.xhr.send(form);
 	},
