@@ -2363,9 +2363,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$gen_options['error'] = $file_input_options['error'];
 			unset($file_input_options['error']);
 		}
-		
-		$gen_options['error']['size'] = __d('burocrata', 'The uploaded file is too large. (filesize > upload_max_filesize or filesize > Model::$validate definitions)', true);
-		$gen_options['error']['post_max_size'] = __d('burocrata', 'The uploaded file is too large. (filesize > post_max_size)', true);
+
+		$this->BuroOfficeBoy->addCaption('upload', 'error_size', __d('burocrata', 'The uploaded file is too large. (filesize > upload_max_filesize or filesize > Model::$validate definitions)', true));
+		$this->BuroOfficeBoy->addCaption('upload', 'error_post_max_size', __d('burocrata', 'The uploaded file is too large. (filesize > post_max_size)', true));
+		$this->BuroOfficeBoy->addCaption('upload', 'error_location', __d('burocrata', 'The upload process could not be completed because the file was placed on a non-allowed directory.', true));
+		$this->BuroOfficeBoy->addCaption('upload', 'error_access', __d('burocrata', 'The resource is blocked and the webserver can not work properly with it.', true));
+		$this->BuroOfficeBoy->addCaption('upload', 'error_resource', __d('burocrata', 'The upload data does not define any type of resource', true)); 
 		
 		return compact('gen_options', 'file_input_options');
 	}

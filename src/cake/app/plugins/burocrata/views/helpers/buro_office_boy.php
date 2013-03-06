@@ -41,6 +41,17 @@ class BuroOfficeBoyHelper extends AppHelper
 	public $helpers = array('Html', 'Ajax', 'Js' => 'prototype');
 
 /**
+ * List of captions for JS
+ *
+ * This variable holds a list of captions that will or may be used by the Javascript
+ * for construct some interface items.
+ * 
+ * @access protected
+ * @var array
+ */
+	protected $captions = array();
+
+/**
  * Callbacks template
  *
  * @access protected
@@ -141,14 +152,37 @@ class BuroOfficeBoyHelper extends AppHelper
 		$View = ClassRegistry::getObject('view');
 		if ($View && !$this->Ajax->isAjax())
 		{
-			$this->Html->scriptBlock('var debug = ' . Configure::read() . ';', array('inline' => false));
+			$preScript = array();
+			$preScript[] = 'var debug = ' . Configure::read() . ';';
+			if (empty($this->captions))
+				$preScript[] = 'var buroCaptions = {};';
+			else
+				$preScript[] = 'var buroCaptions = '.$this->Js->object($this->captions).';';
 
 			$script = implode("\n", $this->scripts);
 			if (Configure::read('debug'))
-				$script = sprintf('try{ %s }catch(e){ console.log(e); }', $script);
-			
-			$View->addScript($this->Html->scriptBlock($this->Js->domReady($script)));
+				$script = sprintf('try{ %s }catch(e){ console.error(e); }', $script);
+
+			$script = implode("\n", $preScript) . "\n" . $this->Js->domReady($script);
+
+			$View->addScript($this->Html->scriptBlock($script));
 		}
+		elseif (!empty($this->captions))
+		{
+			$captions = $this->Js->object($this->captions);
+			echo $this->addHtmlEmbScript("BuroCaption.merge($captions)");
+		}
+	}
+
+/**
+ * Add caption for JS interface
+ *
+ * Those captions will be available using the buroCaption method
+ * @access public
+ */
+	public function addCaption($space, $key, $caption = '')
+	{
+		$this->captions[$space][$key] = $caption;
 	}
 
 /**
@@ -300,17 +334,14 @@ class BuroOfficeBoyHelper extends AppHelper
  */
 	public function upload($options)
 	{
-		$defaults = array('callbacks' => array(), 'baseID' => uniqid(), 'url' => '', 'error' => array());
+		$defaults = array('callbacks' => array(), 'baseID' => uniqid(), 'url' => '');
 		extract(am($defaults, $options));
 		unset($defaults);
-		
-		if (!empty($error)) $error = $this->Js->object($error);
-		else $error = '{}';
 		
 		if (!empty($parameters)) $parameters = $this->Js->object($parameters);
 		else $parameters = '{}';
 		
-		$script = sprintf("new BuroUpload('%s', '%s', %s, %s)", $baseID, $url, $error, $parameters);
+		$script = sprintf("new BuroUpload('%s', '%s', %s)", $baseID, $url, $parameters);
 		if(!empty($callbacks) && is_array($callbacks))
 			$script .= sprintf('.addCallbacks(%s)', $this->formatCallbacks('upload', $callbacks));
 		

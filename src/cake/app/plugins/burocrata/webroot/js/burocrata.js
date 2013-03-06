@@ -50,6 +50,46 @@ var BuroCR = new (Class.create(Hash, {
 
 
 /**
+ * Caption manager
+ *
+ * BuroCaption is an instace at window scope that is used to retrieve
+ * a caption given a namespace and a key.
+ *
+ * If either do not exists at the calling time, than it issues an error
+ *
+ * @access public
+ */
+var BuroCaption = new (Class.create({
+	initialize: function()
+	{},
+	get: function(space, key)
+	{
+		if (!this.isSet(space, key))
+			throw "BuroCaption::get() - Pair space/key given ("+space+"/"+key+") is not set.";
+
+		return buroCaptions[space][key];
+	},
+	isSet: function(space, key)
+	{
+		if (Object.isUndefined(buroCaptions[space]))
+			return false;
+		if (Object.isUndefined(buroCaptions[space][key]))
+			return false;
+		return true;
+	},
+	merge: function(data)
+	{
+		if (typeof data != 'object')
+			throw "BuroCaption::merge() - Data must be an object";
+
+		for (space in data)
+			for (key in data[space])
+				buroCaptions[space][key] = data[space][key];
+	}
+}))();
+
+
+/**
  * Abstract class that implements the behaviour of callbacks
  * with the methods `addCallbacks` and `trigger`
  * It works like Events
@@ -1807,7 +1847,7 @@ var BuroEditableList = Class.create(BuroCallbackable, {
  * @access public
  */
 var BuroUpload = Class.create(BuroCallbackable, {
-	initialize: function(id_base, url, errors, parameters)
+	initialize: function(id_base, url, parameters)
 	{
 		if (Prototype.Browser.IE)
 		{
@@ -1821,7 +1861,6 @@ var BuroUpload = Class.create(BuroCallbackable, {
 		this.uploading = false;
 		this.id_base = id_base;
 		this.url = url;
-		this.errors = errors;
 		this.parameters = $H(parameters);
 		
 		BuroCR.set(this.id_base, this);
@@ -1953,17 +1992,22 @@ var BuroUpload = Class.create(BuroCallbackable, {
 	},
 	rejected: function()
 	{
+		var errorName, errorMsg = [];
 		this.hidden_input.value = '';
-		if (this.responseJSON.validationErrors && this.errors)
+		if (typeof this.responseJSON.validationErrors == 'object')
 		{
-			if (this.errors[$H(this.responseJSON.validationErrors).values()[0]])
-				this.responseJSON.error = this.errors[$H(this.responseJSON.validationErrors).values()[0]];
-			else
-				this.responseJSON.error = $H(this.responseJSON.validationErrors).values()[0];
+			for (errorName in this.responseJSON.validationErrors)
+			{
+				errorName = this.responseJSON.validationErrors[errorName];
+				if (BuroCaption.isSet('upload', 'error_'+errorName))
+					errorMsg.push(BuroCaption.get('upload', 'error_'+errorName))
+				else
+					errorMsg.push(errorName);
+			}
 		}
 		
 		this.div_hidden.up().addClassName('error');
-		this.div_hidden.up().insert(new Element('div', {className:'error-message'}).update(this.responseJSON.error));
+		this.div_hidden.up().insert(new Element('div', {className:'error-message'}).update(errorMsg.join('<br />')));
 		
 		this.trigger('onReject', this.tmp_input, this.responseJSON, this.responseJSON.saved);
 
