@@ -154,6 +154,8 @@ class BuroOfficeBoyHelper extends AppHelper
 		{
 			$preScript = array();
 			$preScript[] = 'var debug = ' . Configure::read() . ';';
+
+			// Ajax calls will handle captions on JsonView or directly on View
 			if (empty($this->captions))
 				$preScript[] = 'var buroCaptions = {};';
 			else
@@ -167,22 +169,42 @@ class BuroOfficeBoyHelper extends AppHelper
 
 			$View->addScript($this->Html->scriptBlock($script));
 		}
-		elseif (!empty($this->captions))
-		{
-			$captions = $this->Js->object($this->captions);
-			echo $this->addHtmlEmbScript("BuroCaption.merge($captions)");
-		}
 	}
 
 /**
  * Add caption for JS interface
  *
- * Those captions will be available using the buroCaption method
+ * Those captions will be available using the BuroCaption instance on JS
+ *
  * @access public
  */
 	public function addCaption($space, $key, $caption = '')
 	{
 		$this->captions[$space][$key] = $caption;
+	}
+
+/**
+ * Returns all caption structure
+ * 
+ * @access public
+ */
+	public function getAllCaptions($flush = true)
+	{
+		$captions = $this->captions;
+		if ($flush)
+			$this->flushCaptions();
+
+		return $captions;
+	}
+
+/**
+ * Empties all registered captions
+ * 
+ * @access public
+ */
+	public function flushCaptions()
+	{
+		$this->captions = array();
 	}
 
 /**

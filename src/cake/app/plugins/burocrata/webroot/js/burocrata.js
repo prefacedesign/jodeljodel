@@ -83,8 +83,17 @@ var BuroCaption = new (Class.create({
 			throw "BuroCaption::merge() - Data must be an object";
 
 		for (space in data)
+		{
+			if (typeof data[space] != 'object')
+				throw "BuroCaption::merge() - Data inside each space must be object";
+
 			for (key in data[space])
+			{
+				if (!buroCaptions[space])
+					buroCaptions[space] = {};
 				buroCaptions[space][key] = data[space][key];
+			}
+		}
 	}
 }))();
 
@@ -629,10 +638,17 @@ var BuroAjax = Class.create(BuroCallbackable, {
 			this.trigger('onError', E_NOT_JSON);
 			if (debug != 0 && !this.fulldebug)
 				this.dumpResquest(re);
-		} else if (json.error != false) {
-			this.trigger('onError', E_JSON, json.error, json);
 		} else {
-			this.trigger('onSuccess', re, json);
+			if (json.extraCaptions) {
+				BuroCaption.merge(json.extraCaptions);
+				delete json.extraCaptions;
+			}
+			
+			if (json.error != false) {
+				this.trigger('onError', E_JSON, json.error, json);
+			} else {
+				this.trigger('onSuccess', re, json);
+			}
 		}
 	},
 	requestOnFailure: function(re)
