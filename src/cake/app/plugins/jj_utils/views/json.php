@@ -36,18 +36,31 @@ class JsonView extends TypeView
 		if(Configure::read() > 1)
 			Configure::write('debug', 1);
 		header('Content-Type: application/json; charset=UTF-8');
-		
-		$loaded;
-		if(!isset($this->Js))
-			$this->_loadHelpers($loaded, array('Js'));
-		$this->Js = $loaded['Js'];
-		
-		if(isset($this->viewVars['jsonVars'])) {
-			return $this->Js->object($this->viewVars['jsonVars']);
-		} else {
-			if(empty($layout))
+
+		if (isset($this->viewVars['jsonVars']))
+		{
+			return json_encode($this->viewVars['jsonVars']);
+		}
+		else
+		{
+			if (empty($layout))
 				$layout = 'ajax';
-			return parent::render($action, $layout, $file);
+
+			$out = parent::render($action, $layout, $file);
+
+			if (isset($this->BuroOfficeBoy))
+			{
+				$extraCaptions = $this->BuroOfficeBoy->getAllCaptions();
+				if (!empty($extraCaptions))
+				{
+					$json = json_decode($out, true);
+					if (is_array($json))
+						$json['extraCaptions'] = $extraCaptions;
+					$out = json_encode($json);
+				}
+			}
+
+			return $out;
 		}
 	}
 }

@@ -55,7 +55,7 @@ Configure::write('Backstage.itemSettings',array(
 			),
 			'customRow' => true,
 			'customSearch' => true,
-			'contain' => array('UserPermission'),
+			'contain' => array('UserPermission', 'UserUser'),
 		),
 		'user_permissions' => array(
 			'actions' => array('delete','edit', 'create'),

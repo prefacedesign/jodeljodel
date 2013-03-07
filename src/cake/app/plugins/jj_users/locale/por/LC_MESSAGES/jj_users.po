@@ -4,146 +4,164 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Jodel\n"
-"POT-Creation-Date: 2012-05-15 11:30+0000\n"
-"PO-Revision-Date: 2012-05-15 08:43-0300\n"
-"Last-Translator: Rodrigo  <rodrigo@preface.com.br>\n"
+"POT-Creation-Date: 2013-03-04 15:38-0300\n"
+"PO-Revision-Date: 2013-03-04 15:44-0300\n"
+"Last-Translator: Daniel Abrahão <daniel@preface.com.br>\n"
 "Language-Team: \n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: \plugins\jj_users\views\elements\user_permission.ctp:47
+#: /plugins/jj_users/models/user_user.php:115
+msgid "Por favor, selecione ao menos um perfil"
+msgstr ""
+
+#: /plugins/jj_users/views/elements/user_permission.ctp:60
 msgid "user_permisson name label"
 msgstr "Nome"
 
-#: \plugins\jj_users\views\elements\user_permission.ctp:48
+#: /plugins/jj_users/views/elements/user_permission.ctp:61
 msgid "user_permission name instructions"
 msgstr " "
 
-#: \plugins\jj_users\views\elements\user_permission.ctp:57
+#: /plugins/jj_users/views/elements/user_permission.ctp:70
 msgid "user_permission slug label"
 msgstr "Slug"
 
-#: \plugins\jj_users\views\elements\user_permission.ctp:58
+#: /plugins/jj_users/views/elements/user_permission.ctp:71
 msgid "user_permission slug instructions"
 msgstr " "
 
-#: \plugins\jj_users\views\elements\user_permission.ctp:67
+#: /plugins/jj_users/views/elements/user_permission.ctp:80
 msgid "user_permission description label"
 msgstr "Descrição"
 
-#: \plugins\jj_users\views\elements\user_permission.ctp:68
+#: /plugins/jj_users/views/elements/user_permission.ctp:81
 msgid "user_permission description instructions"
 msgstr " "
 
-#: \plugins\jj_users\views\elements\user_permission.ctp:77
-#: \plugins\jj_users\views\elements\user_profile.ctp:94
-#: \plugins\jj_users\views\elements\user_user.ctp:175;185
+#: /plugins/jj_users/views/elements/user_permission.ctp:90
+#: /plugins/jj_users/views/elements/user_profile.ctp:107
+#: /plugins/jj_users/views/elements/user_user.ctp:186;196
 msgid "submit label"
 msgstr "Salvar"
 
-#: \plugins\jj_users\views\elements\user_profile.ctp:48
+#: /plugins/jj_users/views/elements/user_profile.ctp:61
 msgid "user_profile name label"
 msgstr "Nome"
 
-#: \plugins\jj_users\views\elements\user_profile.ctp:49
+#: /plugins/jj_users/views/elements/user_profile.ctp:62
 msgid "user_profile name instructions"
 msgstr " "
 
-#: \plugins\jj_users\views\elements\user_profile.ctp:58
+#: /plugins/jj_users/views/elements/user_profile.ctp:71
 msgid "user_profile slug label"
 msgstr "Slug"
 
-#: \plugins\jj_users\views\elements\user_profile.ctp:59
+#: /plugins/jj_users/views/elements/user_profile.ctp:72
 msgid "user_profile slug instructions"
 msgstr "  "
 
-#: \plugins\jj_users\views\elements\user_profile.ctp:68
+#: /plugins/jj_users/views/elements/user_profile.ctp:81
 msgid "user_profile description label"
 msgstr "Descrição"
 
-#: \plugins\jj_users\views\elements\user_profile.ctp:69
+#: /plugins/jj_users/views/elements/user_profile.ctp:82
 msgid "user_profile description instructions"
 msgstr "  "
 
-#: \plugins\jj_users\views\elements\user_profile.ctp:78
+#: /plugins/jj_users/views/elements/user_profile.ctp:91
 msgid "UserPermission label"
 msgstr "Permissões"
 
-#: \plugins\jj_users\views\elements\user_profile.ctp:79
+#: /plugins/jj_users/views/elements/user_profile.ctp:92
 msgid "UserPermission instructions"
 msgstr " "
 
-#: \plugins\jj_users\views\elements\user_user.ctp:55
+#: /plugins/jj_users/views/elements/user_profile.ctp:136
+msgid "Cada perfil engloba uma ou mais permissões do sistema administrativo. Atenção para a exclusão de perfis: não é possível excluir um perfil se o mesmo ainda está em uso por algum usuário."
+msgstr ""
+
+#: /plugins/jj_users/views/elements/user_user.ctp:68
 msgid "name_surname super_field label"
 msgstr "Nome"
 
-#: \plugins\jj_users\views\elements\user_user.ctp:56
+#: /plugins/jj_users/views/elements/user_user.ctp:69
 msgid "name_surname super_field instructions"
 msgstr " "
 
-#: \plugins\jj_users\views\elements\user_user.ctp:65
+#: /plugins/jj_users/views/elements/user_user.ctp:78
 msgid "name label"
 msgstr "Primeiro nome"
 
-#: \plugins\jj_users\views\elements\user_user.ctp:66
+#: /plugins/jj_users/views/elements/user_user.ctp:79
 msgid "name instructions"
 msgstr " "
 
-#: \plugins\jj_users\views\elements\user_user.ctp:75
+#: /plugins/jj_users/views/elements/user_user.ctp:88
 msgid "surname label"
 msgstr "Sobrenome"
 
-#: \plugins\jj_users\views\elements\user_user.ctp:76
+#: /plugins/jj_users/views/elements/user_user.ctp:89
 msgid "surname instructions"
 msgstr " "
 
-#: \plugins\jj_users\views\elements\user_user.ctp:87
+#: /plugins/jj_users/views/elements/user_user.ctp:100
 msgid "account super_field label"
 msgstr "Sua conta"
 
-#: \plugins\jj_users\views\elements\user_user.ctp:88
+#: /plugins/jj_users/views/elements/user_user.ctp:101
 msgid "account super_field instructions"
 msgstr " "
 
-#: \plugins\jj_users\views\elements\user_user.ctp:97
+#: /plugins/jj_users/views/elements/user_user.ctp:110
 msgid "username label"
 msgstr "Nome de usuário"
 
-#: \plugins\jj_users\views\elements\user_user.ctp:98
+#: /plugins/jj_users/views/elements/user_user.ctp:111
 msgid "username instructions"
 msgstr "Da próxima vez que for acessar a página administrativa, você deverá usar esse nome de usuário."
 
-#: \plugins\jj_users\views\elements\user_user.ctp:107
+#: /plugins/jj_users/views/elements/user_user.ctp:117
+msgid "create password label"
+msgstr "Criar uma senha"
+
+#: /plugins/jj_users/views/elements/user_user.ctp:118
+msgid "create password instructions"
+msgstr " "
+
+#: /plugins/jj_users/views/elements/user_user.ctp:122
 msgid "password_change label"
 msgstr "Alterar a senha"
 
-#: \plugins\jj_users\views\elements\user_user.ctp:108
+#: /plugins/jj_users/views/elements/user_user.ctp:123
 msgid "password_change instructions"
-msgstr "Se não deseja alterar, deixe em branco"
+msgstr "Se quiser alterar a senha deste usuário, preencha esse campo e o seguinte. Caso contrário, favor deixar ambos em branco. "
 
-#: \plugins\jj_users\views\elements\user_user.ctp:117
+#: /plugins/jj_users/views/elements/user_user.ctp:140
 msgid "password_retype label"
 msgstr "Repita a senha"
 
-#: \plugins\jj_users\views\elements\user_user.ctp:118
+#: /plugins/jj_users/views/elements/user_user.ctp:141
 msgid "password_retype instructions"
 msgstr " "
 
-#: \plugins\jj_users\views\elements\user_user.ctp:129
-msgid "profiles super_field label"
-msgstr "Perfis"
-
-#: \plugins\jj_users\views\elements\user_user.ctp:130
-msgid "profiles super_field instructions"
-msgstr "Selecione um ou mais perfis abaixo"
-
-#: \plugins\jj_users\views\elements\user_user.ctp:155
+#: /plugins/jj_users/views/elements/user_user.ctp:169
 msgid "UserProfile label"
 msgstr "Perfis"
 
-#: \plugins\jj_users\views\elements\user_user.ctp:156
+#: /plugins/jj_users/views/elements/user_user.ctp:170
 msgid "UserProfile instructions"
 msgstr " "
 
+#: /plugins/jj_users/views/elements/user_user.ctp:264
+msgid "Sem nome, ainda"
+msgstr ""
+
+#~ msgid "profiles super_field label"
+#~ msgstr "Perfis"
+
+#~ msgid "profiles super_field instructions"
+#~ msgstr "Selecione um ou mais perfis abaixo"
