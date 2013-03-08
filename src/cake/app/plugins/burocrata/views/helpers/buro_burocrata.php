@@ -12,6 +12,9 @@
  * @link          https://github.com/prefacedesign/jodeljodel Jodel Jodel public repository 
  */
 
+
+App::import('Helper', 'Burocrata.XmlTag');
+App::import('Lib', 'JjUtils.SecureParams');
 /**
  * Main Helper for burocrata plugin
  *
@@ -20,21 +23,11 @@
  * @package       jodel
  * @subpackage    jodel.burocrata.views.helpers
  */
-
-App::import('Helper', 'Burocrata.XmlTag');
-App::import('Lib', 'JjUtils.SecureParams');
-
-/**
- * BuroOfficeBoy helper.
- *
- * Creates all javascript necessary for BuroBurocrataHelper work.
- *
- * @package       jodel
- * @subpackage    jodel.burocrata.views.helpers
- */
 class BuroBurocrataHelper extends XmlTagHelper
 {
-	public $helpers = array('Html', 'Form', 'Ajax', 'Js' => 'prototype', 'Burocrata.BuroOfficeBoy',
+	public $helpers = array('Html', 'Form', 'Ajax', 'Js' => 'prototype',
+		'Burocrata.BuroOfficeBoy',
+		'Burocrata.BuroCaptioner',
 		'JjUtils.Jodel',
 		'Typographer.*TypeBricklayer' => array(
 			'name' => 'Bl',
@@ -2364,12 +2357,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 			unset($file_input_options['error']);
 		}
 
-		$this->BuroOfficeBoy->addCaption('upload', 'error_size', __d('burocrata', 'The uploaded file is too large. (filesize > upload_max_filesize or filesize > Model::$validate definitions)', true));
-		$this->BuroOfficeBoy->addCaption('upload', 'error_post_max_size', __d('burocrata', 'The uploaded file is too large. (filesize > post_max_size)', true));
-		$this->BuroOfficeBoy->addCaption('upload', 'error_location', __d('burocrata', 'The upload process could not be completed because the file was placed on a non-allowed directory.', true));
-		$this->BuroOfficeBoy->addCaption('upload', 'error_access', __d('burocrata', 'The resource is blocked and the webserver can not work properly with it.', true));
-		$this->BuroOfficeBoy->addCaption('upload', 'error_resource', __d('burocrata', 'The upload data does not define any type of resource', true)); 
-		
+		$this->BuroCaptioner->addCaptions('upload');
+
 		return compact('gen_options', 'file_input_options');
 	}
 

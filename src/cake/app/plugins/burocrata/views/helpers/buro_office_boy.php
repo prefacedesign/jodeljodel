@@ -13,15 +13,6 @@
  */
 
 /**
- * Office boy Helper for burocrata.
- *
- * PHP versions 5
- *
- * @package       jodel
- * @subpackage    jodel.burocrata.views.helpers
- */
-
-/**
  * BuroOfficeBoy helper.
  *
  * Creates all javascript necessary for {@link BuroBurocrataHelper} work.
