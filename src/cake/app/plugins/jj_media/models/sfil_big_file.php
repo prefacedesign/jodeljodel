@@ -54,7 +54,7 @@ class SfilBigFile extends SfilStoredFile
 		'file' => array(
 			'resource'   => array('rule' => 'checkResource'),
 			'access'     => array('rule' => 'checkAccess'),
-			'location'   => array('rule' => array('checkLocation', array(TMP))),
+			'location'   => array('rule' => array('checkLocation', array(MEDIA_TRANSFER, TMP))),
 			'permission' => array('rule' => array('checkPermission', '*')),
 			'size'       => array('rule' => array('checkSize', '500M'))
 		),

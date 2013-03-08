@@ -311,10 +311,12 @@ class JjMediaController extends JjMediaAppController {
 				if (empty($validationErrors) && $Model->save(null, false))
 				{
 					$saved = $Model->id;
-					$filename = $this->data[$model_alias]['file']['name'];
+					if (isset($data[$model_alias]['file']['name']))
+						$filename = $data[$model_alias]['file']['name'];
+
 					list($fieldModelName, $fieldName) = pluginSplit($fieldName);
-					if (!empty($this->data[$fieldModelName][$fieldName]))
-						$Model->delete($this->data[$fieldModelName][$fieldName]);
+					if (!empty($data[$fieldModelName][$fieldName]))
+						$Model->delete($data[$fieldModelName][$fieldName]);
 				}
 			}
 		}

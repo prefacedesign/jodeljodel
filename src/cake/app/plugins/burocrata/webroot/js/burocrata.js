@@ -1897,7 +1897,7 @@ var BuroUpload = Class.create(BuroCallbackable, {
 
 		if (this.ajax_upload)
 		{
-			new BuroAjaxUpload(id_base, url, errors, parameters);
+			new BuroAjaxUpload(id_base, url, parameters);
 			return;
 		}
 
@@ -2056,7 +2056,7 @@ var BuroUpload = Class.create(BuroCallbackable, {
 
 var BuroAjaxUpload = Class.create(BuroCallbackable,{
 	chunkSize: 1024*1024, // 1M
-	initialize: function(id_base, url, errors, parameters)
+	initialize: function(id_base, url, parameters)
 	{
 		this.id_base = id_base;
 		this.url = url;
