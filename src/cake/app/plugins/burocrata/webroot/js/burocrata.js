@@ -61,13 +61,18 @@ var BuroCR = new (Class.create(Hash, {
  */
 var BuroCaption = new (Class.create({
 	initialize: function()
-	{},
-	get: function(space, key)
+	{
+	},
+	get: function(space, key, interpolateData)
 	{
 		if (!this.isSet(space, key))
 			throw "BuroCaption::get() - Pair space/key given ("+space+"/"+key+") is not set.";
 
-		return buroCaptions[space][key];
+		var caption = buroCaptions[space][key];
+		if (typeof interpolateData == 'object')
+			caption.interpolate(interpolateData);
+
+		return caption;
 	},
 	isSet: function(space, key)
 	{
@@ -1848,16 +1853,6 @@ var BuroEditableList = Class.create(BuroCallbackable, {
 	}
 });
 
-var CAPTIONS = {
-	upload: {
-		sending: 'Enviando o arquivo #{fileName}. Aguarde...',
-		hours_left: 'Faltando #{hours} horas',
-		minutes_left: 'Faltando #{minutes} minutos',
-		seconds_left: 'Faltando #{seconds} segundos',
-		cancel: 'Cancelar',
-		try_again: 'Tentar de novo'
-	}
-};
 
 /**
  * 
@@ -1874,6 +1869,18 @@ var CAPTIONS = {
 var BuroUpload = Class.create(BuroCallbackable, {
 	initialize: function(id_base, url, parameters)
 	{
+		this.ajax_upload = (
+			'multiple' in new Element('input', {type: 'file'}) &&
+			!Object.isUndefined(File) &&
+			!Object.isUndefined((new XMLHttpRequest()).upload)
+		);
+		
+		if (this.ajax_upload)
+		{
+			new BuroAjaxUpload(this, id_base, url, parameters);
+			return;
+		}
+
 		if (Prototype.Browser.IE)
 		{
 			var ua = navigator.userAgent;
@@ -1887,19 +1894,6 @@ var BuroUpload = Class.create(BuroCallbackable, {
 		this.id_base = id_base;
 		this.url = url;
 		this.parameters = $H(parameters);
-
-		this.ajax_upload = (
-			'multiple' in new Element('input', {type: 'file'}) &&
-			!Object.isUndefined(File) &&
-			!Object.isUndefined((new XMLHttpRequest()).upload)
-		);
-		
-
-		if (this.ajax_upload)
-		{
-			new BuroAjaxUpload(id_base, url, parameters);
-			return;
-		}
 
 		BuroCR.set(this.id_base, this);
 
@@ -2054,10 +2048,11 @@ var BuroUpload = Class.create(BuroCallbackable, {
 });
 
 
-var BuroAjaxUpload = Class.create(BuroCallbackable,{
+var BuroAjaxUpload = Class.create({
 	chunkSize: 1024*1024, // 1M
-	initialize: function(id_base, url, parameters)
+	initialize: function(parent, id_base, url, parameters)
 	{
+		this.parent = parent;
 		this.id_base = id_base;
 		this.url = url;
 		this.parameters = null;
@@ -2074,10 +2069,13 @@ var BuroAjaxUpload = Class.create(BuroCallbackable,{
 		this.hidden_input = $('hi'+this.id_base);
 		this.div_hidden = $('div'+this.id_base);
 
+		this.cancelLink = new Element('a', {href: '#'}).update(BuroCaption.get('upload', 'cancel'));
+		this.tryAgainLink = new Element('a', {href: '#'}).update(BuroCaption.get('upload', 'try_again'));
+
 		this.controls = new Element('div');
-		this.controls.insert(this.cancelLink = new Element('a', {href: '#'}).update(CAPTIONS.upload.cancel));
+		this.controls.insert(this.cancelLink);
 		this.cancelLink.on('click', function(ev){ ev.stop(); this.abort(); }.bind(this));
-		this.controls.insert(this.tryAgainLink = new Element('a', {href: '#'}).update(CAPTIONS.upload.try_again));
+		this.controls.insert();
 
 		this.progress_bar = new Element('div', {className: 'progress_bar'});
 		this.progress_bar.insert(new Element('div', {className: 'filling'}));
@@ -2130,7 +2128,7 @@ var BuroAjaxUpload = Class.create(BuroCallbackable,{
 			this.reset();
 			this.file = file;
 
-			caption = CAPTIONS.upload.sending.interpolate({fileName: this.getFileName()});
+			caption = BuroCaption.get('upload', 'sending', {fileName: this.getFileName()});
 			this.upload_input
 				.insert({ after: this.caption = (new Element('span')).insert(caption) })
 				.hide();
@@ -2284,11 +2282,11 @@ var BuroAjaxUpload = Class.create(BuroCallbackable,{
 		{
 			formatedTime.setHours(0,0,0,timeLeft);
 			if (formatedTime.getHours())
-				formatedTime = CAPTIONS.upload.hours_left.interpolate({hours: formatedTime.getHours() + ':' + formatedTime.getMinutes()});
+				formatedTime = BuroCaption.get('upload', 'hours_left', {hours: formatedTime.getHours() + ':' + formatedTime.getMinutes()});
 			else if (formatedTime.getMinutes())
-				formatedTime = CAPTIONS.upload.minutes_left.interpolate({minutes: formatedTime.getMinutes() + ':' + formatedTime.getSeconds()});
+				formatedTime = BuroCaption.get('upload', 'minutes_left', {minutes: formatedTime.getMinutes() + ':' + formatedTime.getSeconds()});
 			else if (formatedTime.getSeconds())
-				formatedTime = CAPTIONS.upload.seconds_left.interpolate({seconds: formatedTime.getSeconds()});
+				formatedTime = BuroCaption.get('upload', 'seconds_left', {seconds: formatedTime.getSeconds()});
 			else
 				formatedTime = false;
 
