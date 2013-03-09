@@ -79,7 +79,21 @@ switch ($type[0])
 		switch ($type[1])
 		{
 			case 'form':
-				echo $this->Buro->sform(array(), array('model' => 'PieFile.PieFile'));
+				if (isset($type[2]) && $type[2] == 'cork')
+				{
+					echo $this->Buro->sform(array(), array(
+						'model' => $fullModelName,
+						'type' => array('cork'),
+						'callbacks' => array(
+							'onReject' => array('js' => '$("content").scrollTo(); showPopup("error");', 'contentUpdate' => 'replace'),
+							'onSave' => array('js' => '$("content").scrollTo(); showPopup("notice");'),
+						)
+					));
+				}
+				else
+				{
+					echo $this->Buro->sform(array(), array('model' => 'PieFile.PieFile'));
+				}
 					
 					echo $this->Buro->input(
 						array(),
@@ -129,7 +143,14 @@ switch ($type[0])
 						)
 					);
 					
-					echo $this->Buro->submit(array(), array('cancel' => true));
+					if (isset($type[2]) && $type[2] == 'cork')
+					{
+						echo $this->Buro->submitBox(array(), array('publishControls' => false));
+					}
+					else
+					{
+						echo $this->Buro->submit(array(), array('cancel' => true));
+					}
 					
 				echo $this->Buro->eform();
 				echo $this->Bl->floatBreak();
