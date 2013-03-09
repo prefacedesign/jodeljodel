@@ -70,6 +70,21 @@
 			'humanName' => __('MODULE TextTextCork human name', true),
 			'plugged' => array('corktile')
 		),
+		'pie_image' => array(
+			'model' => 'PieImage.PieImage',
+			'humanName' => __('MODULE PieImage human name', true),
+			'plugged' => array('corktile')
+		),
+		'pie_file' => array(
+			'model' => 'PieFile.PieFile',
+			'humanName' => __('MODULE PieFile human name', true),
+			'plugged' => array('corktile')
+		),
+		'pie_title' => array(
+			'model' => 'PieTitle.PieTitle',
+			'humanName' => __('MODULE PieTitle human name', true),
+			'plugged' => array('corktile')
+		),
 		'cs_cork' => array(
 			'model' => 'ContentStream.CsCork',
 			'humanName' => __('MODULE CsCork human name', true),
