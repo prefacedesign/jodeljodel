@@ -97,6 +97,14 @@ class BuroOfficeBoyHelper extends AppHelper
 			'onRestart' => 'function(){%s}',
 			'onError' => 'function(code, error, json){%s}'
 		),
+		'upload_ajax' => array(
+			'onStart' => 'function(upload){%s}',
+			'onComplete' => 'function(upload, json){%s}',
+			'onPieceSent' => 'function(upload, json){%s}',
+			'onReject' => 'function(upload, json, saved){%s}',
+			'onRestart' => 'function(upload){%s}',
+			'onError' => 'function(upload, json){%s}'
+		),
 		'listOfItems' => array(
 			'onShowForm' => 'function(form){%s}',
 			'onAction' => 'function(action, id, content_type){%s}',
@@ -347,17 +355,34 @@ class BuroOfficeBoyHelper extends AppHelper
  */
 	public function upload($options)
 	{
-		$defaults = array('callbacks' => array(), 'baseID' => uniqid(), 'url' => '');
+		$defaults = array('baseID' => uniqid(), 'url' => '');
 		extract(am($defaults, $options));
 		unset($defaults);
 		
 		if (!empty($parameters)) $parameters = $this->Js->object($parameters);
 		else $parameters = '{}';
 		
-		$script = sprintf("new BuroUpload('%s', '%s', %s)", $baseID, $url, $parameters);
-		if(!empty($callbacks) && is_array($callbacks))
-			$script .= sprintf('.addCallbacks(%s)', $this->formatCallbacks('upload', $callbacks));
-		
+		$script = sprintf("new BuroUploadGeneric('%s', '%s', %s)", $baseID, $url, $parameters);
+		if(!empty($callbacks))
+		{
+			if (isset($callbacks['ajax']))
+			{
+				$script .= sprintf(".addCallbacks('ajax', %s)", $this->formatCallbacks('upload_ajax', $callbacks['ajax']));
+				unset($callbacks['ajax']);
+			}
+
+			$classic = array();
+			if (isset($callbacks['classic']))
+			{
+				$classic = $callbacks['classic'];
+				unset($callbacks['classic']);
+			}
+
+			$classic += $callbacks;
+			if (!empty($callbacks))
+				$script .= sprintf(".addCallbacks('classic', %s)", $this->formatCallbacks('upload', $classic));
+		}
+
 		return $this->addHtmlEmbScript($script);
 	}
 

@@ -2440,9 +2440,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$gen_options['callbacks']['onRestart']['js'] = '';
 		$gen_options['callbacks']['onRestart']['js'] .= "$('{$act_id}').hide(); $('{$prv_id}').hide();";
 		
-		$value = $this->Form->value($file_input_options['fieldName']);
-		
 		$script = '';
+		$value = $this->Form->value($file_input_options['fieldName']);
 		if (empty($value))
 			$script .= "$('{$act_id}').hide(); $('{$prv_id}').hide();";
 		$script .= "$('{$chg_id}').observe('click', function(ev){ev.stop(); BuroCR.get('{$gen_options['baseID']}').again();});";
