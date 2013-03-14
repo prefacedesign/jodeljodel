@@ -75,5 +75,7 @@ class BuroCaptionerHelper extends AppHelper
 				__d('burocrata', 'Tentar de novo', true));
 		$this->BuroOfficeBoy->addCaption('upload', 'remove',
 				__d('burocrata', 'Remover arquivo', true));
+		$this->BuroOfficeBoy->addCaption('upload', 'really_abort',
+				__d('burocrata', 'Really abort?', true));
 	}
 }

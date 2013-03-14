@@ -2120,7 +2120,7 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 		this.json = this.hash = this.startTime = this.file = null;
 		this.currentByte = this.errorCount = 0;
 		this.aborted = false;
-		this.state = BuroAjaxUpload.ST_READY;
+		this.state = this.ST_READY;
 		if (this.caption)
 		{
 			this.caption.remove();
@@ -2137,27 +2137,39 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 		this.cancelLink.hide();
 		switch (this.state)
 		{
-			case BuroAjaxUpload.ST_READY:
+			case this.ST_READY:
 				break;
 
-			case BuroAjaxUpload.ST_UPLOADING:
+			case this.ST_UPLOADING:
 				this.cancelLink.show();
 				break;
 
-			case BuroAjaxUpload.ST_DONE:
+			case this.ST_DONE:
 				this.removeFileLink.show();
 				break;
 
-			case BuroAjaxUpload.ST_ERROR:
+			case this.ST_ERROR:
 				this.tryAgainLink.show();
 				break;
 		}
 	},
 	abort: function()
 	{
+		if (this.xhr && this.xhr.readyState != 4)
+		{
+			this.xhr.onreadystatechange = function() {};
+			this.xhr.abort();
+			this.clearXHR();
+		}
+
+		if (!confirm(BuroCaption.get('upload', 'really_abort')))
+		{
+			this.uploadOnePiece();
+			return;
+		}
+
 		this.aborted = true;
-		this.xhr && this.xhr.abort();
-		// the xhr will trigger the handleAbort method.
+		this.handleAbort();
 	},
 	again: function()
 	{
@@ -2205,7 +2217,9 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 	uploadOnePiece: function()
 	{
 		if (this.xhr)
-			return;
+			return console.log('Opa! Tem alguém trabalhando, já.');
+
+		console.log('Empurrando mais um bloquinho.');
 
 		var chunk, form;
 
@@ -2225,7 +2239,6 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 		this.xhr = new XMLHttpRequest();
 		this.xhr.upload.addEventListener('error', this.handleErrorBinded);
 		this.xhr.upload.addEventListener('progress', this.handleProgressBinded);
-		this.xhr.upload.addEventListener('abort', this.handleAbortBinded);
 		this.xhr.onreadystatechange = this.uploadStatusChangeBinded;
 
 		this.xhr.open('POST', this.url, true);
@@ -2247,15 +2260,14 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 			form.append('data[original_name]', this.getFileName());
 
 		this.xhr.send(form);
-		this.state = BuroAjaxUpload.ST_UPLOADING;
+		this.state = this.ST_UPLOADING;
+		this.controlControls();
 	},
 	uploadStatusChange: function()
 	{
 		if (this.xhr.readyState != 4)
 			return;
-
-		this.state = BuroAjaxUpload.ST_DONE;
-
+	
 		if (this.xhr.status != 200)
 			this.handleError();
 
@@ -2265,12 +2277,17 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 	{
 		this.json = false;
 		if (this.xhr.response.isJSON())
-		{
 			this.json = this.xhr.response.evalJSON();
-			if (this.json && this.json.hash)
-			{
-				this.hash = this.json.hash;
-			}
+
+		if (this.aborted)
+			return this.handleAbort();
+
+		if (!this.json)
+			return this.handleError();
+
+		if (this.json.hash)
+		{
+			this.hash = this.json.hash;
 		}
 
 		if (this.json.error)
@@ -2280,25 +2297,21 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 				this.currentByte = this.json.nextByte;
 				// Trying to sync the JS with the server (tries 5 times, and then, aborts it)
 			}
-			this.handleError();
-			return;
+			return this.handleError();
 		}
 
 		this.currentByte = this.endByte;
 		this.clearXHR();
 		this.errorCount = 0;
 
-		if (!this.aborted)
+		if (!this.isLast)
 		{
-			if (!this.isLast)
-			{
-				this.trigger('onPieceSent', this);
-				this.uploadOnePiece();
-			}
-			else
-			{
-				this.finish();
-			}
+			this.trigger('onPieceSent', this);
+			this.uploadOnePiece();
+		}
+		else
+		{
+			this.finish();
 		}
 	},
 	clearXHR: function()
@@ -2312,19 +2325,24 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 	},
 	handleError: function(ev)
 	{
-		if (this.state == BuroAjaxUpload.ST_UPLOADING)
+		if (this.state == this.ST_UPLOADING)
 		{
 			this.errorCount++;
-			if (this.errorCount < BuroAjaxUpload.MAX_TRIES)
+			if (this.errorCount < this.MAX_TRIES)
 			{
 				this.clearXHR();
 				this.uploadOnePiece();
 				return;
 			}
 		}
-		this.state = BuroAjaxUpload.ST_ERROR;
+
+		if (this.aborted)
+			return this.handleAbort();
+
+		this.state = this.ST_ERROR;
 		this.controlControls();
 		this.trigger('onError', this, this.json);
+		console.log('erro definitivo!');
 	},
 	handleProgress: function(ev)
 	{
@@ -2333,12 +2351,16 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 	handleAbort: function(ev)
 	{
 		console.log('Abortado!')
-		console.log(ev);
+		this.reset();
+		this.controlControls();
 	},
 	finish: function()
 	{
 		this.renderProgress(100);
 		this.reset();
+		this.state = this.ST_DONE;
+		console.log('acabou!');
+		// todo handle finish
 		this.trigger('onComplete', this, this.json);
 	},
 	renderProgress: function(progress)
