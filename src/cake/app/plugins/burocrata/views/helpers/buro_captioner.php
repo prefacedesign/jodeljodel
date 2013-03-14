@@ -51,16 +51,29 @@ class BuroCaptionerHelper extends AppHelper
  */
 	protected function _upload()
 	{
-		$this->BuroOfficeBoy->addCaption('upload', 'error_size', __d('burocrata', 'The uploaded file is too large. (filesize > upload_max_filesize or filesize > Model::$validate definitions)', true));
-		$this->BuroOfficeBoy->addCaption('upload', 'error_post_max_size', __d('burocrata', 'The uploaded file is too large. (filesize > post_max_size)', true));
-		$this->BuroOfficeBoy->addCaption('upload', 'error_location', __d('burocrata', 'The upload process could not be completed because the file was placed on a non-allowed directory.', true));
-		$this->BuroOfficeBoy->addCaption('upload', 'error_access', __d('burocrata', 'The resource is blocked and the webserver can not work properly with it.', true));
-		$this->BuroOfficeBoy->addCaption('upload', 'error_resource', __d('burocrata', 'The upload data does not define any type of resource', true));
-		$this->BuroOfficeBoy->addCaption('upload', 'sending', __d('burocrata', 'Enviando o arquivo #{fileName}. Aguarde...', true));
-		$this->BuroOfficeBoy->addCaption('upload', 'hours_left', __d('burocrata', 'Faltando #{hours} horas', true));
-		$this->BuroOfficeBoy->addCaption('upload', 'minutes_left', __d('burocrata', 'Faltando #{minutes} minutos', true));
-		$this->BuroOfficeBoy->addCaption('upload', 'seconds_left', __d('burocrata', 'Faltando #{seconds} segundos', true));
-		$this->BuroOfficeBoy->addCaption('upload', 'cancel', __d('burocrata', 'Cancelar', true));
-		$this->BuroOfficeBoy->addCaption('upload', 'try_again', __d('burocrata', 'Tentar de novo', true));
+		$this->BuroOfficeBoy->addCaption('upload', 'error_size',
+				__d('burocrata', 'The uploaded file is too large. (filesize > upload_max_filesize or filesize > Model::$validate definitions)', true));
+		$this->BuroOfficeBoy->addCaption('upload', 'error_post_max_size',
+				__d('burocrata', 'The uploaded file is too large. (filesize > post_max_size)', true));
+		$this->BuroOfficeBoy->addCaption('upload', 'error_location',
+				__d('burocrata', 'The upload process could not be completed because the file was placed on a non-allowed directory.', true));
+		$this->BuroOfficeBoy->addCaption('upload', 'error_access',
+				__d('burocrata', 'The resource is blocked and the webserver can not work properly with it.', true));
+		$this->BuroOfficeBoy->addCaption('upload', 'error_resource',
+				__d('burocrata', 'The upload data does not define any type of resource', true));
+		$this->BuroOfficeBoy->addCaption('upload', 'sending',
+				__d('burocrata', 'Enviando o arquivo #{fileName}. Aguarde...', true));
+		$this->BuroOfficeBoy->addCaption('upload', 'hours_left',
+				__d('burocrata', 'Faltando #{hours} horas', true));
+		$this->BuroOfficeBoy->addCaption('upload', 'minutes_left',
+				__d('burocrata', 'Faltando #{minutes} minutos', true));
+		$this->BuroOfficeBoy->addCaption('upload', 'seconds_left',
+				__d('burocrata', 'Faltando #{seconds} segundos', true));
+		$this->BuroOfficeBoy->addCaption('upload', 'cancel',
+				__d('burocrata', 'Cancelar', true));
+		$this->BuroOfficeBoy->addCaption('upload', 'try_again',
+				__d('burocrata', 'Tentar de novo', true));
+		$this->BuroOfficeBoy->addCaption('upload', 'remove',
+				__d('burocrata', 'Remover arquivo', true));
 	}
 }
