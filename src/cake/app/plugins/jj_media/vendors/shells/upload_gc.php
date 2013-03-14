@@ -12,10 +12,44 @@
  * @link          https://github.com/prefacedesign/jodeljodel Jodel Jodel public repository 
  */
 
+/**
+ * Shell script for cleaning uploads that did not finish properly.
+ * 
+ * @package jodel.jj_media
+ * @subpackage .vendors.shell
+ */
 class UploadGcShell extends Shell
 {
+
+/**
+ * If verbose actions or not.
+ * 
+ * @access protected
+ */
+	protected $quiet = false;
+
+/**
+ * Overwriting parent method avoiding the default header
+ * 
+ * @access public
+ */
+	public function startup()
+	{
+		// intentionally left blank
+	}
+
+/**
+ * The main method: where things happen
+ * 
+ * @access public
+ */
 	function main()
 	{
+		if (isset($this->params['quiet']))
+		{
+			$this->quiet = true;
+		}
+
 		$tmp = new Folder(TMP);
 		$folders = reset($tmp->read()); // read only directories (array[0])
 
@@ -38,5 +72,16 @@ class UploadGcShell extends Shell
 				}
 			}
 		}
+	}
+
+/**
+ * Overwrites parent method to introduce the "quiet" variant
+ * 
+ * @access public
+ */
+	function out($msg = '')
+	{
+		if (!$this->quiet)
+			parent::out($msg);
 	}
 }
