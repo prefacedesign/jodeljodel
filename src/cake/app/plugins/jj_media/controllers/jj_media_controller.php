@@ -217,6 +217,7 @@ class JjMediaController extends JjMediaAppController {
 				$hash = uniqid('', true);
 			} while (file_exists(TMP . $hash));
 			mkdir(TMP . $hash);
+			chmod(TMP . $hash, 0777);
 		}
 		else
 		{
@@ -226,6 +227,7 @@ class JjMediaController extends JjMediaAppController {
 		$chunkFile = fopen($chunkFileName, 'rb');
 		$gluedFileName = TMP . $hash . DS . 'file';
 		$gluedFile = fopen($gluedFileName, 'ab');
+		chmod($chunkFileName, 0666);
 
 		if (filesize($gluedFileName) != $startByte)
 		{
@@ -243,6 +245,11 @@ class JjMediaController extends JjMediaAppController {
 		fwrite($gluedFile, fread($chunkFile, filesize($chunkFileName)));
 		fclose($chunkFile);
 		fclose($gluedFile);
+
+		// This file will tell the GC cron job to clean files when "abandoned"
+		$lastInteractionFile = TMP . $hash . DS . 'last_interaction';
+		file_put_contents($lastInteractionFile, time());
+		chmod($lastInteractionFile, 0666);
 
 		if ($isLast == 'yes')
 		{
