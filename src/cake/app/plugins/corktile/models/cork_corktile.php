@@ -197,7 +197,7 @@ class CorkCorktile extends CorktileAppModel
 		if (!empty($this->data[$this->alias]['id']))
 		{
 			$key = "cork_{$this->data[$this->alias]['id']}";
-			if (isset($this->data[$this->alias]['language']))
+			if (!empty($this->data[$this->alias]['language']))
 			{
 				$key = "{$key}_{$this->data[$this->alias]['language']}";
 			}
