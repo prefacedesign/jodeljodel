@@ -62,8 +62,8 @@ class UploadGcShell extends Shell
 			{
 				$file_interaction = (int) file_get_contents($tmp->pwd() . DS . 'last_interaction');
 
-				// as each piece is 1Mb, this will give the user the chance of uploading at 2,3 kbps (0,28 kb/s)
-				if (time() - $file_interaction > HOUR)
+				// as each piece is 1Mb, this will give the user the chance of uploading at 13,7 kbps (1,7 kb/s)
+				if (time() - $file_interaction > 600)
 				{
 					$this->out("Removing $folder");
 					foreach ($files as $file)

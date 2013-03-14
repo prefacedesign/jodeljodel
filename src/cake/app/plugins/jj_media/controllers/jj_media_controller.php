@@ -262,6 +262,7 @@ class JjMediaController extends JjMediaAppController {
 				$validationErrors = $this->SfilBigFile->validationErrors;
 			}
 			unlink($originalName);
+			unlink($lastInteractionFile);
 			rmdir(TMP . $hash);
 		}
 		else
