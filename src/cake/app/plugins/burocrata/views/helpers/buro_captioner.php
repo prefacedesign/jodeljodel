@@ -77,5 +77,20 @@ class BuroCaptionerHelper extends AppHelper
 				__d('burocrata', 'Remover arquivo', true));
 		$this->BuroOfficeBoy->addCaption('upload', 'really_abort',
 				__d('burocrata', 'Really abort?', true));
+		$this->BuroOfficeBoy->addCaption('upload', 'generic_error',
+				__d('burocrata', 'Something went wrong and the file was not sent.', true));
+		$this->BuroOfficeBoy->addCaption('upload', 'error_with_server_resp',
+				__d('burocrata', 'Something went wrong and the file was not sent. The server returned #{error}', true));
+	}
+
+/**
+ * Complement for image upload field
+ * 
+ * @access 
+ */
+	protected function _imageUpload()
+	{
+		$this->BuroOfficeBoy->addCaption('upload', 'error_validImage',
+				__d('burocrata','The uploaded file is not a valid image file.',true));
 	}
 }

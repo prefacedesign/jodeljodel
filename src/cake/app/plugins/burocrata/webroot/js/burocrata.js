@@ -1883,7 +1883,7 @@ var BuroUploadGeneric = Class.create({
 });
 
 /**
- * 
+ * Classic "Ajax" upload using the iframe method
  *
  * Callbacks:
  * - `onStart` function (input){}
@@ -2064,10 +2064,23 @@ var BuroUpload = Class.create(BuroCallbackable, {
 });
 
 
+/**
+ * HTML 5 upload, using XMLHttpRequest
+ *
+ * Callbacks:
+ *  - `onStart` function(upload){%s}
+ *  - `onComplete` function(upload, json){%s}
+ *  - `onPieceSent` function(upload, json){%s}
+ *  - `onReject` function(upload, json, saved){%s}
+ *  - `onRestart` function(upload){%s}
+ *  - `onError` function(upload, json){%s}
+ * 
+ * @access public
+ */
 var BuroAjaxUpload = Class.create(BuroCallbackable, {
 	chunkSize: 1024*1024, // 1M
 	MAX_TRIES: 5,
-	ST_READY: 1 , ST_UPLOADING: 2, ST_DONE: 3, ST_ERROR: 4,
+	ST_READY: 1 , ST_UPLOADING: 2, ST_DONE: 3, ST_ERROR: 4, ST_INVALIDATED: 5,
 	initialize: function(parent, id_base, url, parameters)
 	{
 		this.parent = parent;
@@ -2084,9 +2097,6 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 	},
 	loaded: function()
 	{
-		this.hidden_input = $('hi'+this.id_base);
-		this.div_hidden = $('div'+this.id_base);
-
 		this.cancelLink = new Element('a', {href: '#'}).update(BuroCaption.get('upload', 'cancel'));
 		this.cancelLink.on('click', function(ev){ ev.stop(); this.abort(); }.bind(this));
 		this.tryAgainLink = new Element('a', {href: '#'}).update(BuroCaption.get('upload', 'try_again'));
@@ -2127,6 +2137,7 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 			this.caption = null;
 		}
 		this.upload_input.show().value = '';
+		this.upload_input.up('.input').removeClassName('error').select('.error-message').invoke('remove');
 		this.progress_bar.setStyle({visibility: 'hidden'});
 		this.controlControls();
 	},
@@ -2171,8 +2182,10 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 		this.aborted = true;
 		this.handleAbort();
 	},
-	again: function()
+	again: function(ev)
 	{
+		if (ev) ev.stop();
+
 		this.reset();
 		this.upload_input.show();
 		
@@ -2180,6 +2193,9 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 	},
 	inputChange: function(ev)
 	{
+		if (this.state != this.ST_READY)
+			return;
+
 		if (!this.upload_input.files.length)
 		{
 			this.reset();
@@ -2286,9 +2302,7 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 			return this.handleError();
 
 		if (this.json.hash)
-		{
 			this.hash = this.json.hash;
-		}
 
 		if (this.json.error)
 		{
@@ -2298,6 +2312,17 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 				// Trying to sync the JS with the server (tries 5 times, and then, aborts it)
 			}
 			return this.handleError();
+		}
+
+		if (this.isLast)
+			this.renderProgress(100);
+
+		if (this.json.validationErrors)
+		{
+			this.state = this.ST_INVALIDATED;
+			this.handleError()
+			this.clearXHR();
+			return;
 		}
 
 		this.currentByte = this.endByte;
@@ -2316,6 +2341,8 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 	},
 	clearXHR: function()
 	{
+		if (!this.xhr)
+			return;
 		this.xhr.upload.removeEventListener('error', this.handleErrorBinded);
 		this.xhr.upload.removeEventListener('progress', this.handleProgressBinded);
 		this.xhr.upload.removeEventListener('abort', this.handleAbortBinded);
@@ -2325,9 +2352,13 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 	},
 	handleError: function(ev)
 	{
+		if (this.aborted)
+			return this.handleAbort();
+
 		if (this.state == this.ST_UPLOADING)
 		{
 			this.errorCount++;
+			console.log('eita, deixe-me tentar novamente.');
 			if (this.errorCount < this.MAX_TRIES)
 			{
 				this.clearXHR();
@@ -2336,12 +2367,14 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 			}
 		}
 
-		if (this.aborted)
-			return this.handleAbort();
+		this.renderError();
 
 		this.state = this.ST_ERROR;
 		this.controlControls();
-		this.trigger('onError', this, this.json);
+		if (this.json && this.json.validationErrors)
+			this.trigger('onReject', this, this.json, false);
+		else
+			this.trigger('onError', this, this.json);
 		console.log('erro definitivo!');
 	},
 	handleProgress: function(ev)
@@ -2350,13 +2383,11 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 	},
 	handleAbort: function(ev)
 	{
-		console.log('Abortado!')
 		this.reset();
 		this.controlControls();
 	},
 	finish: function()
 	{
-		this.renderProgress(100);
 		this.reset();
 		this.state = this.ST_DONE;
 		console.log('acabou!');
@@ -2390,6 +2421,37 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 
 		if (timeLeft > 2000)
 			this.progress_bar.setStyle({visibility: 'visible'});
+	},
+	renderError: function()
+	{
+		var errorName, errorMsg = [];
+		if (typeof this.json.validationErrors == 'object')
+		{
+			for (errorName in this.json.validationErrors)
+			{
+				errorName = this.json.validationErrors[errorName];
+				if (BuroCaption.isSet('upload', 'error_'+errorName))
+					errorMsg.push(BuroCaption.get('upload', 'error_'+errorName))
+				else
+					errorMsg.push(errorName);
+			}
+		}
+
+		if (this.json.error)
+		{
+			if (BuroCaption.isSet('upload', 'error_'+errorName))
+				errorMsg.push(BuroCaption.get('upload', 'error_'+errorName))
+			else if (BuroCaption.isSet('upload', 'error_with_server_resp'))
+				errorMsg.push(BuroCaption.get('upload', 'error_with_server_resp', this.json));
+		}
+
+		if (!errorMsg.length)
+			errorMsg.push(BuroCaption.get('upload', 'generic_error'));
+		
+		this.upload_input.up().up().addClassName('error');
+		this.controls.insert({
+			before: new Element('div', {className:'error-message'}).update(errorMsg.join('<br />'))
+		});
 	}
 });
 

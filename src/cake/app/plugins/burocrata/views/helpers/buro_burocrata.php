@@ -2488,8 +2488,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$gen_options['change_file_text'] = __d('burocrata','Burocrata::inputImage - Change image', true);
 		if (empty($gen_options['remove_file_text']))
 			$gen_options['remove_file_text'] = __d('burocrata','Burocrata::inputImage - Remove  image', true);
-		
-		$gen_options['error'] += array('validImage' => __d('burocrata','The uploaded file is not a valid image file.',true));
+
+		$this->BuroCaptioner->addCaptions('imageUpload');
 		
 		$value = $this->Form->value($file_input_options['fieldName']);
 		

@@ -175,7 +175,7 @@ class JjMediaController extends JjMediaAppController {
 			return;
 		}
 
-		$this->saveUpload($this->data);
+		$this->set($this->saveUpload($this->data));
 
 		$this->layout = 'ajax';
 		$this->view = 'Typographer.Type';
@@ -199,16 +199,24 @@ class JjMediaController extends JjMediaAppController {
 		$startByte = env('HTTP_X_UPLOADER_START_BYTE');
 		$isLast = env('HTTP_X_UPLOADER_IS_LAST');
 		$chunkSize = env('HTTP_X_UPLOADER_CHUNK_SIZE');
-		
-		$uploadError = empty($this->data['SfilStoredFile']['file']['tmp_name'])
-			|| !file_exists($chunkFileName = $this->data['SfilStoredFile']['file']['tmp_name'])
-			|| filesize($chunkFileName) != $chunkSize;
 
-		if ($uploadError)
+		$version = $fieldName = $modelName = null;
+		if (!empty($this->buroData['data']))
 		{
-			$error = 'upload-failed';
-			goto renderAjaxUpload;
+			list($version, $fieldName, $modelName) = SecureParams::unpack($this->buroData['data']);
+			list($plugin, $modelName) = pluginSplit($modelName);
 		}
+
+		if (empty($this->data[$modelName]['file']['tmp_name']))
+			$error = 'upload-failed';
+		elseif (!file_exists($chunkFileName = $this->data[$modelName]['file']['tmp_name']))
+			$error = 'upload-failed-no-tempfile';
+		elseif (filesize($chunkFileName) != $chunkSize)
+			$error = 'upload-failed-chunksize-wrong';
+
+		if ($error)
+			goto renderAjaxUpload;
+
 
 		if (empty($this->data['hash']))
 		{
@@ -256,14 +264,26 @@ class JjMediaController extends JjMediaAppController {
 			$originalName = TMP . $hash . DS . $this->data['original_name'];
 			rename($gluedFileName, $originalName);
 
-			$data = array('SfilBigFile' => array('file' => $originalName));
-			if (!$this->saveUpload($data, 'JjMedia.SfilBigFile'))
-			{
-				$validationErrors = $this->SfilBigFile->validationErrors;
-			}
+			$data = array($modelName => array('file' => $originalName));
+			$savedData = $this->saveUpload($data);
+
+			// remove temporary dir
 			unlink($originalName);
 			unlink($lastInteractionFile);
 			rmdir(TMP . $hash);
+
+			if (!$savedData['saved'])
+			{
+				$validationErrors = $savedData['validationErrors'];
+			}
+			else
+			{
+				App::import('Lib', array('JjUtils.SecureParams'));
+				$packed_params = SecureParams::pack(array($savedData['saved'], $savedData['version']), true);
+				$baseUrl = array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'index');
+				$dlurl = Router::url($baseUrl + array('1', $packed_params));
+				$url = Router::url($baseUrl + array($packed_params));
+			}
 		}
 		else
 		{
@@ -272,7 +292,7 @@ class JjMediaController extends JjMediaAppController {
 
 		renderAjaxUpload:
 		$this->view = 'JjUtils.Json';
-		$this->set('jsonVars', compact('error', 'validationErrors', 'saved', 'version', 'filename', 'hash', 'nextByte'));
+		$this->set('jsonVars', compact('error', 'validationErrors', 'saved', 'version', 'url', 'dlurl', 'hash', 'nextByte'));
 	}
 
 /**
@@ -328,6 +348,6 @@ class JjMediaController extends JjMediaAppController {
 				}
 			}
 		}
-		$this->set(compact('error', 'validationErrors', 'saved', 'version', 'filename'));
+		return compact('error', 'validationErrors', 'saved', 'version', 'filename');
 	}
 }
