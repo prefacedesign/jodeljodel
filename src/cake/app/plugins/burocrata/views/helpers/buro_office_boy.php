@@ -115,6 +115,21 @@ class BuroOfficeBoyHelper extends AppHelper
  */
 	protected $scripts = array();
 
+/**
+ * Boolean variable used to tracking if the layout was rendered
+ *
+ * @access protected
+ * @var boolean
+ */
+	protected $rendered = false;
+
+/**
+ * Before render logic
+ *
+ * This method links some script files to the HTML
+ *
+ * @access public
+ */
 	public function beforeRender()
 	{
 		if (!$this->Ajax->isAjax() && ClassRegistry::getObject('view'))
@@ -131,7 +146,9 @@ class BuroOfficeBoyHelper extends AppHelper
 	}
 
 /**
- * afterRender callback used for print automagically all created scripts on HTML <head>
+ * After render logic
+ *
+ * This callback is used for automagically print all created scripts on HTML <head>
  * when it is not a Ajax request
  * 
  * @access public
@@ -149,6 +166,8 @@ class BuroOfficeBoyHelper extends AppHelper
 			
 			$View->addScript($this->Html->scriptBlock($this->Js->domReady($script)));
 		}
+
+		$this->rendered = true;
 	}
 
 /**
@@ -368,8 +387,10 @@ class BuroOfficeBoyHelper extends AppHelper
  */
 	public function addHtmlEmbScript($script)
 	{
-		if($this->Ajax->isAjax())
+		if ($this->Ajax->isAjax())
 			return $this->Html->scriptBlock($script);
+		elseif ($this->rendered)
+			return $this->Html->scriptBlock($this->Js->domReady($script));
 		else
 			$this->scripts[] = $script;
 	}
