@@ -1871,11 +1871,11 @@ var BuroUploadGeneric = Class.create({
 
 		this.object = new BuroUpload(id_base, url, parameters);
 	},
-	addCallbacks: function($super, type, callback)
+	addCallbacks: function(type, callbacks)
 	{
 		if (type == 'ajax' && this.ajax_upload)
 			this.object.addCallbacks(callbacks);
-		else if (type == 'classic')
+		else if (type == 'classic' && !this.ajax_upload)
 			this.object.addCallbacks(callbacks);
 
 		return this;
