@@ -2344,13 +2344,6 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$gen_options = $options['options'] + $defaults;
 		
-		// Temporary warning
-		if ($gen_options['model'] != 'JjMedia.SfilStoredFile')
-		{
-			trigger_error('BuroBurocrataHelper::_uploadParams() - Changing the upload model is not supported yet! Using the default.');
-			$gen_options['model'] = 'JjMedia.SfilStoredFile';
-		}
-		
 		if (isset($file_input_options['error']))
 		{
 			$gen_options['error'] = $file_input_options['error'];

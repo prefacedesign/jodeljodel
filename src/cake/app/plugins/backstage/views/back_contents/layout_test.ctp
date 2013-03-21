@@ -289,7 +289,8 @@ echo $this->Bl->sbox(null, array('size' => array('M' => 7, 'g' => -1)));
 				'type' => 'upload',
 				'fieldName' => 'upload',
 				'label' => 'Label for a upload input',
-				'instructions' => 'Instructions for a upload input'
+				'instructions' => 'Instructions for a upload input',
+				'options' => array('model' => 'JjMedia.SfilBigFile')
 			)
 		);
 		
