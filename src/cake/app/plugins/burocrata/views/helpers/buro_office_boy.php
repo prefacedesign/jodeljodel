@@ -102,6 +102,7 @@ class BuroOfficeBoyHelper extends AppHelper
 			'onComplete' => 'function(upload, json){%s}',
 			'onPieceSent' => 'function(upload, json){%s}',
 			'onReject' => 'function(upload, json, saved){%s}',
+			'onSave' => 'function(upload, json, saved){%s}',
 			'onRestart' => 'function(upload){%s}',
 			'onError' => 'function(upload, json){%s}'
 		),

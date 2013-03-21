@@ -2339,8 +2339,9 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 			this.trigger('onPieceSent', this);
 			this.uploadOnePiece();
 		}
-		else
+		else if (this.state == this.ST_UPLOADING)
 		{
+			this.trigger('onSave', this, this.json);
 			this.finish();
 		}
 	},
