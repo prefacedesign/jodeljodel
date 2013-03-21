@@ -2439,6 +2439,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$script .= "$('{$act_id}').hide(); $('{$prv_id}').hide();";
 		$script .= "$('{$chg_id}').observe('click', function(ev){ev.stop(); BuroCR.get('{$gen_options['baseID']}').again();});";
 		$out .= $this->BuroOfficeBoy->addHtmlEmbScript($script);
+
+		if (!isset($gen_options['callbacks']['ajax']['onSave']['js']))
+			$gen_options['callbacks']['ajax']['onSave']['js'] = '';
+		$gen_options['callbacks']['ajax']['onSave']['js'] = "BuroCR.get('{$gen_options['baseID']}').addCaption(BuroCaption.get('upload', 'transfer_ok', json));";
 		
 		$out .= $this->_upload($gen_options, $file_input_options);
 		

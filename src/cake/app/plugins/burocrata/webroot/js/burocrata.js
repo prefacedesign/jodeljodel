@@ -2102,12 +2102,14 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 		this.tryAgainLink = new Element('a', {href: '#'}).update(BuroCaption.get('upload', 'try_again'));
 		this.tryAgainLink.on('click', this.again.bind(this));
 		this.removeFileLink = new Element('a', {href: '#'}).update(BuroCaption.get('upload', 'remove'));
-		this.removeFileLink.on('click', this.again.bind(this));
+		this.removeFileLink.on('click', this.removeFile.bind(this));
+		this.getFileLink = new Element('a', {href: ''}).update(BuroCaption.get('upload', 'get_file'));
 
 		this.controls = new Element('div');
 		this.controls.insert(this.cancelLink).insert(' ')
 					 .insert(this.tryAgainLink).insert(' ')
-					 .insert(this.removeFileLink)
+					 .insert(this.removeFileLink).insert(' ')
+					 .insert(this.getFileLink);
 
 		this.progress_bar = new Element('div', {className: 'progress_bar'});
 		this.progress_bar.insert(new Element('div', {className: 'filling'}));
@@ -2134,9 +2136,16 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 
 		this.upload_input.show().value = '';
 		this.upload_input.up('.input').removeClassName('error').select('.error-message').invoke('remove');
-		this.progress_bar.setStyle({visibility: 'hidden'});
+		this.progress_bar.hide();
 
 		this.clearCaption().clearXHR().controlControls();
+	},
+	addCaption: function(caption)
+	{
+		this.clearCaption();
+		this.upload_input.insert({
+			after: this.caption = (new Element('span')).insert(caption)
+		});
 	},
 	clearCaption: function()
 	{
@@ -2156,7 +2165,6 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 			this.xhr.upload.removeEventListener('abort', this.handleAbortBinded);
 			this.xhr.onreadystatechange = null;
 			this.xhr = null;
-			this.json = false;
 		}
 		return this;
 	},
@@ -2165,6 +2173,7 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 		this.tryAgainLink.hide();
 		this.removeFileLink.hide();
 		this.cancelLink.hide();
+		this.getFileLink.hide();
 		switch (this.state)
 		{
 			case this.ST_READY:
@@ -2176,6 +2185,7 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 
 			case this.ST_DONE:
 				this.removeFileLink.show();
+				this.getFileLink.show();
 				break;
 
 			case this.ST_ERROR:
@@ -2208,6 +2218,12 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 		this.reset();
 		this.trigger('onRestart', this);
 	},
+	removeFile: function(ev)
+	{
+		ev.stop();
+		if (confirm(BuroCaption.get('upload', 'really_remove')))
+			this.reset();
+	},
 	inputChange: function(ev)
 	{
 		if (this.state != this.ST_READY)
@@ -2219,15 +2235,14 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 		}
 		else if (this.upload_input.files.length == 1)
 		{
-			var caption, file = this.upload_input.files[0];
+			var file = this.upload_input.files[0];
 
 			this.reset();
 			this.file = file;
 
-			caption = BuroCaption.get('upload', 'sending', {fileName: this.getFileName()});
-			this.upload_input
-				.insert({ after: this.caption = (new Element('span')).insert(caption) })
-				.hide();
+			this.upload_input.hide();
+			this.addCaption(BuroCaption.get('upload', 'sending', {fileName: this.getFileName()}));
+
 			this.startTime = new Date().getTime();
 			this.controls.setStyle({visibility: 'visible'});
 
@@ -2402,6 +2417,7 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 	},
 	finish: function()
 	{
+		this.getFileLink.href = this.json.dlurl;
 		this.state = this.ST_DONE;
 		this.controlControls();
 		this.trigger('onComplete', this, this.json);
@@ -2432,7 +2448,7 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 		this.progress_bar.down('.label').update(percent);
 
 		if (timeLeft > 2000)
-			this.progress_bar.setStyle({visibility: 'visible'});
+			this.progress_bar.show();
 	},
 	renderError: function()
 	{

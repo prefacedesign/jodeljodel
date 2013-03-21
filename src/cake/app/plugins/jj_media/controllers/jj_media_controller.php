@@ -175,10 +175,9 @@ class JjMediaController extends JjMediaAppController {
 			return;
 		}
 
-		$this->set($this->saveUpload($this->data));
-
 		$this->layout = 'ajax';
 		$this->view = 'Typographer.Type';
+		$this->set('jsonVars', $this->saveUpload($this->data));
 	}
 
 /**
@@ -278,11 +277,7 @@ class JjMediaController extends JjMediaAppController {
 			}
 			else
 			{
-				App::import('Lib', array('JjUtils.SecureParams'));
-				$packed_params = SecureParams::pack(array($savedData['saved'], $savedData['version']), true);
-				$baseUrl = array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'index');
-				$dlurl = Router::url($baseUrl + array('1', $packed_params));
-				$url = Router::url($baseUrl + array($packed_params));
+				extract($savedData);
 			}
 		}
 		else
@@ -296,9 +291,17 @@ class JjMediaController extends JjMediaAppController {
 	}
 
 /**
- * 
- * 
- * @access 
+ * Performs the logic of saving the upload data
+ *
+ * This method receive the POSTed data from each action (classic or ajax upload)
+ * validates the upload and saves it.
+ * The returned data is a array of the generated data (that will generally be
+ * sent back to the view, through JSON object)
+ *
+ * @access protected
+ * @param array $data The POSTed data to be analised and saved
+ * @param string $forceModel When not null, will force a Model to be used, instead of the specified on POSTed data
+ * @return array The array of data of generated data
  */
 	protected function saveUpload($data, $forceModel = null)
 	{
@@ -345,9 +348,16 @@ class JjMediaController extends JjMediaAppController {
 					list($fieldModelName, $fieldName) = pluginSplit($fieldName);
 					if (!empty($data[$fieldModelName][$fieldName]))
 						$Model->delete($data[$fieldModelName][$fieldName]);
+
+					App::import('Lib', array('JjUtils.SecureParams'));
+					$packed_params = SecureParams::pack(array($saved, $version), true);
+					$baseUrl = array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'index');
+					$dlurl = Router::url($baseUrl + array('1', $packed_params));
+					$url = Router::url($baseUrl + array($packed_params));
 				}
 			}
 		}
-		return compact('error', 'validationErrors', 'saved', 'version', 'filename');
+
+		return compact('error', 'validationErrors', 'saved', 'version', 'filename', 'url', 'dlurl');
 	}
 }
