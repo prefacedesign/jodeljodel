@@ -2131,6 +2131,7 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 		this.currentByte = this.errorCount = 0;
 		this.aborted = false;
 		this.state = this.ST_READY;
+		this.clearXHR();
 		if (this.caption)
 		{
 			this.caption.remove();
@@ -2211,11 +2212,11 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 			this.upload_input
 				.insert({ after: this.caption = (new Element('span')).insert(caption) })
 				.hide();
-			this.uploadOnePiece();
 			this.startTime = new Date().getTime();
 			this.controls.setStyle({visibility: 'visible'});
 
 			this.trigger('onStart', this);
+			this.uploadOnePiece();
 		}
 	},
 	getFileSize: function()
@@ -2275,9 +2276,10 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 		if (this.isLast)
 			form.append('data[original_name]', this.getFileName());
 
-		this.xhr.send(form);
 		this.state = this.ST_UPLOADING;
 		this.controlControls();
+
+		this.xhr.send(form);
 	},
 	uploadStatusChange: function()
 	{
@@ -2292,6 +2294,9 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 	requestEnded: function()
 	{
 		this.json = false;
+		if (!this.xhr)
+			return;
+
 		if (this.xhr.response.isJSON())
 			this.json = this.xhr.response.evalJSON();
 
@@ -2352,15 +2357,18 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 	},
 	handleError: function(ev)
 	{
+		if (this.state == this.ST_ERROR)
+			return;
+
 		if (this.aborted)
 			return this.handleAbort();
 
 		if (this.state == this.ST_UPLOADING)
 		{
 			this.errorCount++;
-			console.log('eita, deixe-me tentar novamente.');
 			if (this.errorCount < this.MAX_TRIES)
 			{
+				console.log('eita, deixe-me tentar novamente.');
 				this.clearXHR();
 				this.uploadOnePiece();
 				return;
@@ -2388,10 +2396,8 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 	},
 	finish: function()
 	{
-		this.reset();
 		this.state = this.ST_DONE;
-		console.log('acabou!');
-		// todo handle finish
+		this.controlControls();
 		this.trigger('onComplete', this, this.json);
 	},
 	renderProgress: function(progress)
