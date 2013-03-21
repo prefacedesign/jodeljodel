@@ -2265,9 +2265,7 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 	uploadOnePiece: function()
 	{
 		if (this.xhr)
-			return console.log('Opa! Tem alguém trabalhando, já.');
-
-		console.log('Empurrando mais um bloquinho.');
+			return ;
 
 		var chunk, form;
 
@@ -2389,7 +2387,6 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 			this.errorCount++;
 			if (this.errorCount < this.MAX_TRIES)
 			{
-				console.log('eita, deixe-me tentar novamente.');
 				this.clearXHR();
 				this.uploadOnePiece();
 				return;
@@ -2404,7 +2401,6 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 			this.trigger('onReject', this, this.json, false);
 		else
 			this.trigger('onError', this, this.json);
-		console.log('erro definitivo!');
 	},
 	handleProgress: function(ev)
 	{
