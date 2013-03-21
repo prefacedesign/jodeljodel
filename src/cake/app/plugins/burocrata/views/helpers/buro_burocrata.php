@@ -2442,7 +2442,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 
 		if (!isset($gen_options['callbacks']['ajax']['onSave']['js']))
 			$gen_options['callbacks']['ajax']['onSave']['js'] = '';
-		$gen_options['callbacks']['ajax']['onSave']['js'] = "BuroCR.get('{$gen_options['baseID']}').addCaption(BuroCaption.get('upload', 'transfer_ok', json));";
+		$gen_options['callbacks']['ajax']['onSave']['js'] = "BuroCR.get('{$gen_options['baseID']}').addCaption(BuroCaption.get('upload', 'transfer_ok'));";
 		
 		$out .= $this->_upload($gen_options, $file_input_options);
 		
@@ -2503,7 +2503,11 @@ class BuroBurocrataHelper extends XmlTagHelper
 		if (empty($gen_options['callbacks']['onRestart']['js']))
 			$gen_options['callbacks']['onRestart']['js'] = '';
 		$gen_options['callbacks']['onRestart']['js'] .= "$('{$act_id}').hide(); $('{$prv_id}').hide();";
-		
+
+		if (empty($gen_options['callbacks']['ajax']['onSave']['js']))
+			$gen_options['callbacks']['ajax']['onSave']['js'] = '';
+		$gen_options['callbacks']['ajax']['onSave']['js'] .= "$('{$img_id}').src = json.dlurl; $('{$prv_id}').show();";
+			
 		$script = '';
 		$script .= "$('{$chg_id}').observe('click', function(ev){ev.stop(); BuroCR.get('{$gen_options['baseID']}').again();});";
 		$script .= "$('{$rmv_id}').observe('click', function(ev){ev.stop(); BuroCR.get('{$gen_options['baseID']}').again(true);});";
