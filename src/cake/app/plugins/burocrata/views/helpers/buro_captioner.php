@@ -62,19 +62,19 @@ class BuroCaptionerHelper extends AppHelper
 		$this->BuroOfficeBoy->addCaption('upload', 'error_resource',
 				__d('burocrata', 'The upload data does not define any type of resource', true));
 		$this->BuroOfficeBoy->addCaption('upload', 'sending',
-				__d('burocrata', 'Enviando o arquivo #{fileName}. Aguarde...', true));
-		$this->BuroOfficeBoy->addCaption('upload', 'hours_left',
-				__d('burocrata', 'Faltando #{hours} horas', true));
-		$this->BuroOfficeBoy->addCaption('upload', 'minutes_left',
-				__d('burocrata', 'Faltando #{minutes} minutos', true));
-		$this->BuroOfficeBoy->addCaption('upload', 'seconds_left',
-				__d('burocrata', 'Faltando #{seconds} segundos', true));
+				__d('burocrata', 'Uploading file #{fileName}. Please, wait...', true));
+		//$this->BuroOfficeBoy->addCaption('upload', 'hours_left',
+		//		__d('burocrata', 'Faltando #{hours} horas', true));
+		//$this->BuroOfficeBoy->addCaption('upload', 'minutes_left',
+		//		__d('burocrata', 'Faltando #{minutes} minutos', true));
+		//$this->BuroOfficeBoy->addCaption('upload', 'seconds_left',
+		//		__d('burocrata', 'Faltando #{seconds} segundos', true));
 		$this->BuroOfficeBoy->addCaption('upload', 'cancel',
-				__d('burocrata', 'Cancelar', true));
+				__d('burocrata', 'Cancel', true));
 		$this->BuroOfficeBoy->addCaption('upload', 'try_again',
-				__d('burocrata', 'Tentar de novo', true));
+				__d('burocrata', 'Try again', true));
 		$this->BuroOfficeBoy->addCaption('upload', 'remove',
-				__d('burocrata', 'Remover arquivo', true));
+				__d('burocrata', 'Remove this file', true));
 		$this->BuroOfficeBoy->addCaption('upload', 'really_abort',
 				__d('burocrata', 'Really abort?', true));
 		$this->BuroOfficeBoy->addCaption('upload', 'really_remove',
