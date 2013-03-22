@@ -999,6 +999,7 @@
 			'font-style' => 'italic',
 			'display'	=> 'block'
 	));
+
 	
 	
 	
@@ -1273,6 +1274,49 @@
 		'#login_box input[type=text], #login_box input[type=password]', array(
 			'width' => $u->t($hg->size(array('M' => 4, 'g' => -1),false) - 2*($border_size + $padding_size))
 	));
+
+	$this->Decorator->rule(
+		'.input.buro .progress_bar', array(
+			'border' => '1px solid ' . $palette['input_borders'],
+			'height' => $u->t($vg->size(array('g' => 1.5),false) - 2*$border_size - $padding_top),
+			'padding' => $u->t($padding_top) . ' ' . $u->t($padding_size),
+			'width' => $u->t($hg->size(array('M' => 5, 'g' => -1),false) - 2*($border_size + $padding_size)),
+			'position' => 'relative',
+			'margin-top' => $vg->size('m')
+		)
+	);
+
+	$this->Decorator->rule(
+		'.input.buro .progress_bar .filling', array(
+			'background' => $palette['menu_bg'],
+			'float' => 'left',
+			'height' => $u->t($vg->size(array('g' => 1.5),false) - 2*$border_size - $padding_top),
+			'width' => 0
+		)
+	);
+
+	$this->Decorator->rule(
+		'.buro_form .buro_form .input.buro .progress_bar .filling', array(
+			'background' => $palette['bg']
+		)
+	);
+
+	$this->Decorator->rule(
+		'.input.buro .progress_bar .label', array(
+			'position' => 'absolute',
+			'left' => 0,
+			'text-align' => 'center',
+			'width' => '100%'
+		)
+	);
+
+	// Input upload
+
+	$this->Decorator->rule(
+		'.upload_control', array(
+			'margin' => $vg->size('m') . ' 0'
+		)
+	);
 	
 	$this->Decorator->rule(
 		'select.buro', array(

@@ -13,15 +13,6 @@
  */
 
 /**
- * Office boy Helper for burocrata.
- *
- * PHP versions 5
- *
- * @package       jodel
- * @subpackage    jodel.burocrata.views.helpers
- */
-
-/**
  * BuroOfficeBoy helper.
  *
  * Creates all javascript necessary for {@link BuroBurocrataHelper} work.
@@ -39,6 +30,17 @@ class BuroOfficeBoyHelper extends AppHelper
  * @var array
  */
 	public $helpers = array('Html', 'Ajax', 'Js' => 'prototype');
+
+/**
+ * List of captions for JS
+ *
+ * This variable holds a list of captions that will or may be used by the Javascript
+ * for construct some interface items.
+ * 
+ * @access protected
+ * @var array
+ */
+	protected $captions = array();
 
 /**
  * Callbacks template
@@ -94,6 +96,16 @@ class BuroOfficeBoyHelper extends AppHelper
 			'onComplete' => 'function(input, response){%s}',
 			'onRestart' => 'function(){%s}',
 			'onError' => 'function(code, error, json){%s}'
+		),
+		'upload_ajax' => array(
+			'onLoad' => 'function(upload){%s}',
+			'onStart' => 'function(upload){%s}',
+			'onComplete' => 'function(upload, json){%s}',
+			'onPieceSent' => 'function(upload, json){%s}',
+			'onReject' => 'function(upload, json, saved){%s}',
+			'onSave' => 'function(upload, json, saved){%s}',
+			'onRestart' => 'function(upload){%s}',
+			'onError' => 'function(upload, json){%s}'
 		),
 		'listOfItems' => array(
 			'onShowForm' => 'function(form){%s}',
@@ -158,16 +170,61 @@ class BuroOfficeBoyHelper extends AppHelper
 		$View = ClassRegistry::getObject('view');
 		if ($View && !$this->Ajax->isAjax())
 		{
-			$this->Html->scriptBlock('var debug = ' . Configure::read() . ';', array('inline' => false));
+			$preScript = array();
+			$preScript[] = 'var debug = ' . Configure::read() . ';';
+
+			// Ajax calls will handle captions on JsonView or directly on View
+			if (empty($this->captions))
+				$preScript[] = 'var buroCaptions = {};';
+			else
+				$preScript[] = 'var buroCaptions = '.$this->Js->object($this->captions).';';
 
 			$script = implode("\n", $this->scripts);
 			if (Configure::read('debug'))
-				$script = sprintf('try{ %s }catch(e){ console.log(e); }', $script);
-			
-			$View->addScript($this->Html->scriptBlock($this->Js->domReady($script)));
+				$script = sprintf('try{ %s }catch(e){ console.error(e); }', $script);
+
+			$script = implode("\n", $preScript) . "\n" . $this->Js->domReady($script);
+
+			$View->addScript($this->Html->scriptBlock($script));
 		}
 
 		$this->rendered = true;
+	}
+
+/**
+ * Add caption for JS interface
+ *
+ * Those captions will be available using the BuroCaption instance on JS
+ *
+ * @access public
+ */
+	public function addCaption($space, $key, $caption = '')
+	{
+		$this->captions[$space][$key] = $caption;
+	}
+
+/**
+ * Returns all caption structure
+ * 
+ * @access public
+ */
+	public function getAllCaptions($flush = true)
+	{
+		$captions = $this->captions;
+		if ($flush)
+			$this->flushCaptions();
+
+		return $captions;
+	}
+
+/**
+ * Empties all registered captions
+ * 
+ * @access public
+ */
+	public function flushCaptions()
+	{
+		$this->captions = array();
 	}
 
 /**
@@ -319,20 +376,37 @@ class BuroOfficeBoyHelper extends AppHelper
  */
 	public function upload($options)
 	{
-		$defaults = array('callbacks' => array(), 'baseID' => uniqid(), 'url' => '', 'error' => array());
+		$defaults = array('baseID' => uniqid(), 'url' => '');
 		extract(am($defaults, $options));
 		unset($defaults);
 		
-		if (!empty($error)) $error = $this->Js->object($error);
-		else $error = '{}';
+		if (empty($parameters)) $parameters = '{}';
+		else $parameters = $this->Js->object($parameters);
+
+		if (empty($aditionalData)) $aditionalData = '{}';
+		else $aditionalData = $this->Js->object($aditionalData);
 		
-		if (!empty($parameters)) $parameters = $this->Js->object($parameters);
-		else $parameters = '{}';
-		
-		$script = sprintf("new BuroUpload('%s', '%s', %s, %s)", $baseID, $url, $error, $parameters);
-		if(!empty($callbacks) && is_array($callbacks))
-			$script .= sprintf('.addCallbacks(%s)', $this->formatCallbacks('upload', $callbacks));
-		
+		$script = sprintf("new BuroUploadGeneric('%s', '%s', %s, %s)", $baseID, $url, $parameters, $aditionalData);
+		if(!empty($callbacks))
+		{
+			if (isset($callbacks['ajax']))
+			{
+				$script .= sprintf(".addCallbacks('ajax', %s)", $this->formatCallbacks('upload_ajax', $callbacks['ajax']));
+				unset($callbacks['ajax']);
+			}
+
+			$classic = array();
+			if (isset($callbacks['classic']))
+			{
+				$classic = $callbacks['classic'];
+				unset($callbacks['classic']);
+			}
+
+			$classic += $callbacks;
+			if (!empty($callbacks))
+				$script .= sprintf(".addCallbacks('classic', %s)", $this->formatCallbacks('upload', $classic));
+		}
+
 		return $this->addHtmlEmbScript($script);
 	}
 
