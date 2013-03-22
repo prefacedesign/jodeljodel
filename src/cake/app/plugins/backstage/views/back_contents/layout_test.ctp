@@ -58,7 +58,7 @@ echo $this->Bl->sbox(null, array('size' => array('M' => 7, 'g' => -1)));
 					'default' => 'Suspendisse dignissim ante sit amet leo bibendum rhoncus? Integer at enim eget tortor cursus tristique. Cras vel vehicula nisi? Phasellus nisl massa, commodo sed porttitor quis, imperdiet quis lacus. Aliquam erat volutpat. Sed dictum, dui blandit sodales dapibus, sapien massa mollis augue, in porta ligula odio vel sapien. Donec interdum metus eu nunc tristique mattis. Donec luctus aliquam lectus, quis fermentum arcu dignissim at.'
 				)
 			)
-		);		
+		);
 		
 		// Textarea with textile controll
 		echo $this->Buro->input(
@@ -224,7 +224,25 @@ echo $this->Bl->sbox(null, array('size' => array('M' => 7, 'g' => -1)));
 				)
 			)
 		);
-		
+
+		echo $this->Buro->sform(null, array('model' => 'CsTest'));
+
+			echo $this->Buro->input(
+					array(),
+					array(
+						'type' => 'content_stream',
+						'label' => 'Label for a content_stream input',
+						'instructions' => 'Instructions for a content_stream input',
+						'options' => array(
+							'foreignKey' => 'cs_content_stream_id'
+						)
+					)
+				);
+			echo $this->Bl->floatBreak();
+
+		echo $this->Buro->eform();
+		echo $this->Bl->floatBreak();
+
 		// Datetime without time
 		echo $this->Buro->input(
 			null,
