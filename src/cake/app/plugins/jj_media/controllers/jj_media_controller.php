@@ -165,7 +165,6 @@ class JjMediaController extends JjMediaAppController {
  * It already saves the file, generating the filtered copies, and renders a JSON, directly on view.
  * 
  * @access public
- * @todo Receive, through posted data, the model that will handle the save
  */
 	function upload()
 	{
@@ -177,7 +176,7 @@ class JjMediaController extends JjMediaAppController {
 
 		$this->layout = 'ajax';
 		$this->view = 'Typographer.Type';
-		$this->set('jsonVars', $this->saveUpload($this->data));
+		$this->set($this->saveUpload($this->data));
 	}
 
 /**

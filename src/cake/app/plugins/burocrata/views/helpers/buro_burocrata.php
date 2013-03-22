@@ -2422,7 +2422,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$ids = array('act', 'prv', 'lnk', 'chg');
 		foreach ($ids as $id)
 			${$id.'_id'} = $id . $gen_options['baseID'];
-		
+
+		$fileCaption = __d('burocrata','Burocrata::inputUpload - File: ', true);
 		$value = $this->Form->value($file_input_options['fieldName']);
 		if (!empty($value))
 		{
@@ -2450,9 +2451,6 @@ class BuroBurocrataHelper extends XmlTagHelper
 		if (!isset($gen_options['callbacks']['ajax']['onSave']['js']))
 			$gen_options['callbacks']['ajax']['onSave']['js'] = '';
 		$gen_options['callbacks']['ajax']['onSave']['js'] .= "upload.addCaption(BuroCaption.get('upload', 'transfer_ok', {filename: upload.getFileName()}));";
-
-		$fileCaption = __d('burocrata','Burocrata::inputUpload - File: ', true);
-
 		if (!empty($value))
 		{
 			if (!isset($gen_options['callbacks']['ajax']['onLoad']['js']))

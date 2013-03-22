@@ -1960,9 +1960,9 @@ var BuroUpload = Class.create(BuroCallbackable, {
 			this.master_input.insert({after: this.tmp_input});
 		}
 
-		if (this.hidden_input.value.blank())
+		if (!this.hidden_input.value.blank())
 		{
-			['act' + this.id_base, 'prv' + this.id_base].each(Element.hide);
+			['act' + this.id_base, 'prv' + this.id_base].each(Element.show);
 		}
 	},
 	submit: function()
