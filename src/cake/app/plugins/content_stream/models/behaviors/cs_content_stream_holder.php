@@ -153,16 +153,9 @@ class CsContentStreamHolderBehavior extends ModelBehavior
  */
 	function beforeSave(&$Model)
 	{
-		if (empty($Model->data[$Model->alias][$Model->primaryKey]))
+		if (!$Model->exists())
 		{
-			$dbo = $Model->getDataSource();
-			
-			if (!$dbo->_transactionStarted)
-			{
-				$this->transactionContentStream = true;
-				$dbo->begin($Model);
-			}
-			
+			$this->transactionContentStream = $Model->getDataSource()->begin($Model);
 			foreach ($this->settings[$Model->alias]['streams'] as $fk => $stream)
 				if (empty($Model->data[$Model->alias][$fk]) && $Model->{$stream['assocName']}->createEmpty($stream['type']))
 					$Model->data[$Model->alias][$fk] = $Model->{$stream['assocName']}->id;
@@ -184,9 +177,8 @@ class CsContentStreamHolderBehavior extends ModelBehavior
 	{
 		if ($this->transactionContentStream)
 		{
-			$dbo = $Model->getDataSource();
-			if ($created) $dbo->commit($Model);
-			else		  $dbo->rollback($Model);
+			if ($created) $Model->getDataSource()->commit($Model);
+			else		  $Model->getDataSource()->rollback($Model);
 			$this->transactionContentStream = false;
 		}
 	}

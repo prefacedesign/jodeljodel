@@ -19,5 +19,7 @@
 		$url = $this->Bl->fileURL($saved, $version);
 		$dlurl = $this->Bl->fileURL($saved, $version, true);
 	}
+
+	$extraCaptions = $this->BuroOfficeBoy->getAllCaptions();
 	
-	echo json_encode(compact('error', 'validationErrors', 'saved', 'url', 'dlurl', 'filename'));
+	echo json_encode(compact('error', 'validationErrors', 'saved', 'url', 'dlurl', 'filename', 'extraCaptions'));

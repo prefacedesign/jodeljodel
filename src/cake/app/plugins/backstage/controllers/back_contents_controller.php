@@ -464,6 +464,12 @@ class BackContentsController extends BackstageAppController
 	
 	function layout_test()
 	{
-		
+		$this->loadModel('CsTest');
+		$data = $this->CsTest->findById(1);
+		if (empty($data))
+		{
+			$data = $this->CsTest->save(array('id' => 1));
+		}
+		$this->data = $data;
 	}
 }

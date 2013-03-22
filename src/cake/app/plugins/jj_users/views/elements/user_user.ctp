@@ -55,8 +55,8 @@ switch ($type[0])
 						'callbacks' => array(
 							'onStart' => array('lockForm', 'js' => 'form.setLoading()'),
 							'onComplete' => array('unlockForm', 'js' => 'form.unsetLoading()'),
-							'onReject' => array('js' => '$("content").scrollTo(); showPopup("error");', 'contentUpdate' => 'replace'),
-							'onSave' => array('js' => '$("content").scrollTo(); showPopup("custom_notice");'),
+							'onReject' => array('contentUpdate' => 'replace', 'js' => 'showPopup("error");'),
+							'onSave' => array('contentUpdate' => 'replace', 'js' => 'showPopup("custom_notice");'),
 						)
 					));
 				}
@@ -111,22 +111,42 @@ switch ($type[0])
 								'instructions' => __d('jj_users', 'username instructions', true)
 							)
 						);
-			
+
+						if (empty($this->data['UserUser']['password']))
+						{
+							$label = __d('jj_users', 'create password label', true);
+							$instructions = __d('jj_users', 'create password instructions', true);
+						}
+						else
+						{
+							$label = __d('jj_users', 'password_change label', true);
+							$instructions = __d('jj_users', 'password_change instructions', true);
+							echo $this->Buro->input(
+									array(),
+									array(
+										'type' => 'hidden',
+										'fieldName' => 'password',
+										'options' => array(
+											'value' => 'nothing_here'
+										)
+									)
+								);
+						}
 						echo $this->Buro->input(
 							array(),
 							array(
 								'fieldName' => 'password_change',
-								'type' => 'text',
-								'label' => __d('jj_users', 'password_change label', true),
-								'instructions' => __d('jj_users', 'password_change instructions', true)
+								'type' => 'password',
+								'label' => $label,
+								'instructions' => $instructions
 							)
 						);
-			
+
 						echo $this->Buro->input(
 							array(),
 							array(
 								'fieldName' => 'password_retype',
-								'type' => 'text',
+								'type' => 'password',
 								'label' => __d('jj_users', 'password_retype label', true),
 								'instructions' => __d('jj_users', 'password_retype instructions', true)
 							)
@@ -246,7 +266,18 @@ switch ($type[0])
 					
 					case 'row':
 						$smartTableRow = array();
-						$smartTableRow[] = $data['UserUser']['name'];
+						$data['UserUser']['full_name'] = trim($data['UserUser']['full_name']);
+						if (empty($data['UserUser']['full_name']))
+						{
+							$smartTableRow[] .= $this->Bl->span(
+								array('class' => 'demoted'), array(),
+								__d('jj_users', 'Sem nome, ainda', true)
+							);
+						}
+						else
+						{
+							$smartTableRow[] = $data['UserUser']['full_name'];
+						}
 						
 						if (!empty($data['UserProfile']))
 						{
