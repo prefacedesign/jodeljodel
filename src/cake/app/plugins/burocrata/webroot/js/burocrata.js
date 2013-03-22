@@ -2319,6 +2319,9 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 			this.handleError();
 
 		this.requestEnded();
+
+		if (this.isLast)
+			this.trigger('onComplete', this, this.json);
 	},
 	requestEnded: function()
 	{
@@ -2370,6 +2373,7 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 		}
 		else if (this.state == this.ST_UPLOADING)
 		{
+			this.hidden_input.value = this.json.saved;
 			this.trigger('onSave', this, this.json);
 			this.finish();
 		}
@@ -2416,7 +2420,6 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 		this.getFileLink.href = this.json.dlurl;
 		this.state = this.ST_DONE;
 		this.controlControls();
-		this.trigger('onComplete', this, this.json);
 	},
 	renderProgress: function(progress)
 	{

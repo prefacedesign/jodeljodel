@@ -84,7 +84,7 @@ class BuroCaptionerHelper extends AppHelper
 		$this->BuroOfficeBoy->addCaption('upload', 'error_with_server_resp',
 				__d('burocrata', 'Something went wrong and the file was not sent. The server returned #{error}', true));
 		$this->BuroOfficeBoy->addCaption('upload', 'transfer_ok',
-				__d('burocrata', 'The file was successfully recevied.', true));
+				__d('burocrata', 'The file #{filename} was successfully received.', true));
 		$this->BuroOfficeBoy->addCaption('upload', 'get_file',
 				__d('burocrata', 'Download the file', true));
 	}
