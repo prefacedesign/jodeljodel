@@ -2423,6 +2423,15 @@ class BuroBurocrataHelper extends XmlTagHelper
 		foreach ($ids as $id)
 			${$id.'_id'} = $id . $gen_options['baseID'];
 		
+		$value = $this->Form->value($file_input_options['fieldName']);
+		if (!empty($value))
+		{
+			$SfilStoredFile = ClassRegistry::init('JjMedia.SfilStoredFile');
+			$SfilStoredFile->id = $value;
+			$gen_options['aditionalData']['dlurl'] = $dlurl = $this->Bl->fileURL($value, '', true);
+			$gen_options['aditionalData']['filename'] = $SfilStoredFile->field('original_filename');
+		}
+
 		$out = '';
 		
 		if (empty($gen_options['callbacks']['onSave']['js']))
@@ -2433,26 +2442,32 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$gen_options['callbacks']['onRestart']['js'] = '';
 		$gen_options['callbacks']['onRestart']['js'] .= "$('{$act_id}').hide(); $('{$prv_id}').hide();";
 		
-		$script = '';
-		$value = $this->Form->value($file_input_options['fieldName']);
-		if (empty($value))
-			$script .= "$('{$act_id}').hide(); $('{$prv_id}').hide();";
-		$script .= "$('{$chg_id}').observe('click', function(ev){ev.stop(); BuroCR.get('{$gen_options['baseID']}').again();});";
-		$out .= $this->BuroOfficeBoy->addHtmlEmbScript($script);
+		$out .= $this->BuroOfficeBoy->addHtmlEmbScript(
+			"$('{$chg_id}').observe('click', function(ev){ev.stop(); BuroCR.get('{$gen_options['baseID']}').again();});"
+			. "$('{$act_id}').hide(); $('{$prv_id}').hide();"
+		);
 
 		if (!isset($gen_options['callbacks']['ajax']['onSave']['js']))
 			$gen_options['callbacks']['ajax']['onSave']['js'] = '';
-		$gen_options['callbacks']['ajax']['onSave']['js'] = "BuroCR.get('{$gen_options['baseID']}').addCaption(BuroCaption.get('upload', 'transfer_ok'));";
+		$gen_options['callbacks']['ajax']['onSave']['js'] .= "upload.addCaption(BuroCaption.get('upload', 'transfer_ok', {filename: upload.getFileName()}));";
+
+		$fileCaption = __d('burocrata','Burocrata::inputUpload - File: ', true);
+
+		if (!empty($value))
+		{
+			if (!isset($gen_options['callbacks']['ajax']['onLoad']['js']))
+				$gen_options['callbacks']['ajax']['onLoad']['js'] = '';
+			$gen_options['callbacks']['ajax']['onLoad']['js'] .= "upload.addCaption('$fileCaption ' + upload.getFileName());";
+		}
 		
 		$out .= $this->_upload($gen_options, $file_input_options);
 		
 		// Div for previews
 		$out .= $this->Bl->sdiv(array('id' => $prv_id));
 			$filename = __d('burocrata','Burocrata::inputUpload - Download file', true);
-			$htmlAttributes = array('id' => $lnk_id);
-			if (!empty($value))
-				$htmlAttributes['href'] = $this->Bl->fileURL($value, '', true);
-			$out .= $this->Bl->pDry(__d('burocrata','Burocrata::inputUpload - File: ', true) . $this->Bl->a($htmlAttributes, array(), $filename));
+			$out .= $this->Bl->pDry(
+				"$fileCaption " . $this->Bl->a(array('id' => $lnk_id, 'href' => $dlurl), array(), $filename)
+			);
 		$out .= $this->Bl->ediv();
 		
 		// Div for actions ID must be `'act' . $gen_options['baseID']`
@@ -2499,7 +2514,6 @@ class BuroBurocrataHelper extends XmlTagHelper
 		if (empty($gen_options['callbacks']['onSave']['js']))
 			$gen_options['callbacks']['onSave']['js'] = '';
 		$gen_options['callbacks']['onSave']['js'] .= "$('{$img_id}').src = ''; $('{$img_id}').writeAttribute({src: json.url, alt: json.filename}); $('{$act_id}').show(); $('{$prv_id}').show();";
-		
 		if (empty($gen_options['callbacks']['onRestart']['js']))
 			$gen_options['callbacks']['onRestart']['js'] = '';
 		$gen_options['callbacks']['onRestart']['js'] .= "$('{$act_id}').hide(); $('{$prv_id}').hide();";
@@ -2507,14 +2521,17 @@ class BuroBurocrataHelper extends XmlTagHelper
 		if (empty($gen_options['callbacks']['ajax']['onSave']['js']))
 			$gen_options['callbacks']['ajax']['onSave']['js'] = '';
 		$gen_options['callbacks']['ajax']['onSave']['js'] .= "$('{$img_id}').src = json.dlurl; $('{$prv_id}').show();";
+		if (empty($gen_options['callbacks']['ajax']['onRestart']['js']))
+			$gen_options['callbacks']['ajax']['onRestart']['js'] = '';
+		$gen_options['callbacks']['ajax']['onRestart']['js'] .= "$('{$img_id}').hide();";
+		
 			
 		$script = '';
 		$script .= "$('{$chg_id}').observe('click', function(ev){ev.stop(); BuroCR.get('{$gen_options['baseID']}').again();});";
 		$script .= "$('{$rmv_id}').observe('click', function(ev){ev.stop(); BuroCR.get('{$gen_options['baseID']}').again(true);});";
+		$out .= $this->BuroOfficeBoy->addHtmlEmbScript($script);
 		
 		$gen_options['model'] = 'JjMedia.SfilImageFile';
-		
-		$out .= $this->BuroOfficeBoy->addHtmlEmbScript($script);
 		$out .= $this->_upload($gen_options, $file_input_options);
 		
 		// Div for previews

@@ -98,6 +98,7 @@ class BuroOfficeBoyHelper extends AppHelper
 			'onError' => 'function(code, error, json){%s}'
 		),
 		'upload_ajax' => array(
+			'onLoad' => 'function(upload){%s}',
 			'onStart' => 'function(upload){%s}',
 			'onComplete' => 'function(upload, json){%s}',
 			'onPieceSent' => 'function(upload, json){%s}',
@@ -360,10 +361,13 @@ class BuroOfficeBoyHelper extends AppHelper
 		extract(am($defaults, $options));
 		unset($defaults);
 		
-		if (!empty($parameters)) $parameters = $this->Js->object($parameters);
-		else $parameters = '{}';
+		if (empty($parameters)) $parameters = '{}';
+		else $parameters = $this->Js->object($parameters);
+
+		if (empty($aditionalData)) $aditionalData = '{}';
+		else $aditionalData = $this->Js->object($aditionalData);
 		
-		$script = sprintf("new BuroUploadGeneric('%s', '%s', %s)", $baseID, $url, $parameters);
+		$script = sprintf("new BuroUploadGeneric('%s', '%s', %s, %s)", $baseID, $url, $parameters, $aditionalData);
 		if(!empty($callbacks))
 		{
 			if (isset($callbacks['ajax']))
