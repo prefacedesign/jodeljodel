@@ -56,26 +56,38 @@ class JjAuthComponent extends AuthComponent
 /**
  * Compile the array of permissions suming all UserPermission.slug from database.
  * 
- * For performance pouposes, this array is cached on a session var.
+ * For performance pouposes, this array is cached on a session var. But it checks
+ * for the `modified` field on users table to decide when is necessary to update
+ * the cache.
  * 
  * @access protected
+ * @param boolean $force When true, the cache will be updated
+ * @return void
  */
 	protected function compilePermissions($force = false)
 	{
-		$permissions = $this->user('permissions');
-		if (!empty($permissions) && !$force)
-		{
-			return;
-		}
-		
 		$id = $this->user('id');
 		if (empty($id))
 		{
 			$this->Session->delete($this->sessionKey);
 			return;
 		}
-		
+
 		$userModel =& $this->getModel();
+		$permissions = $this->user('permissions');
+
+		if (!empty($permissions))
+		{
+			$userModel->id = $id;
+			$last_modified_at = $userModel->field('modified');
+			$force = $force || $last_modified_at != $this->user('modified');
+
+			if (!$force)
+			{
+				return;
+			}
+		}
+
 		$userData = $userModel->find('first', array(
 			'conditions' => array('UserUser.id' => $this->user('id')),
 			'contain' => array('UserProfile' => array('UserPermission'))
@@ -87,7 +99,6 @@ class JjAuthComponent extends AuthComponent
 		$userData['UserUser']['permissions'] = array_fill_keys($slugs, 1);
 		$this->Session->write($this->sessionKey, $userData['UserUser']);
 	}
-
 
 /**
  * Verify the permissions

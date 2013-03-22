@@ -50,6 +50,60 @@ var BuroCR = new (Class.create(Hash, {
 
 
 /**
+ * Caption manager
+ *
+ * BuroCaption is an instace at window scope that is used to retrieve
+ * a caption given a namespace and a key.
+ *
+ * If either do not exists at the calling time, than it issues an error
+ *
+ * @access public
+ */
+var BuroCaption = new (Class.create({
+	initialize: function()
+	{
+	},
+	get: function(space, key, interpolateData)
+	{
+		if (!this.isSet(space, key))
+			throw "BuroCaption::get() - Pair space/key given ("+space+"/"+key+") is not set.";
+
+		var caption = buroCaptions[space][key];
+		if (typeof interpolateData == 'object')
+			caption = caption.interpolate(interpolateData);
+
+		return caption;
+	},
+	isSet: function(space, key)
+	{
+		if (Object.isUndefined(buroCaptions[space]))
+			return false;
+		if (Object.isUndefined(buroCaptions[space][key]))
+			return false;
+		return true;
+	},
+	merge: function(data)
+	{
+		if (typeof data != 'object')
+			throw "BuroCaption::merge() - Data must be an object";
+
+		for (space in data)
+		{
+			if (typeof data[space] != 'object')
+				throw "BuroCaption::merge() - Data inside each space must be object";
+
+			for (key in data[space])
+			{
+				if (!buroCaptions[space])
+					buroCaptions[space] = {};
+				buroCaptions[space][key] = data[space][key];
+			}
+		}
+	}
+}))();
+
+
+/**
  * Abstract class that implements the behaviour of callbacks
  * with the methods `addCallbacks` and `trigger`
  * It works like Events
@@ -589,10 +643,17 @@ var BuroAjax = Class.create(BuroCallbackable, {
 			this.trigger('onError', E_NOT_JSON);
 			if (debug != 0 && !this.fulldebug)
 				this.dumpResquest(re);
-		} else if (json.error != false) {
-			this.trigger('onError', E_JSON, json.error, json);
 		} else {
-			this.trigger('onSuccess', re, json);
+			if (json.extraCaptions) {
+				BuroCaption.merge(json.extraCaptions);
+				delete json.extraCaptions;
+			}
+			
+			if (json.error != false) {
+				this.trigger('onError', E_JSON, json.error, json);
+			} else {
+				this.trigger('onSuccess', re, json);
+			}
 		}
 	},
 	requestOnFailure: function(re)
@@ -1793,9 +1854,36 @@ var BuroEditableList = Class.create(BuroCallbackable, {
 });
 
 
+var BuroUploadGeneric = Class.create({
+	initialize: function(id_base, url, parameters, aditionalData)
+	{
+		this.ajax_upload = (
+			'multiple' in new Element('input', {type: 'file'}) &&
+			!Object.isUndefined(File) &&
+			!Object.isUndefined((new XMLHttpRequest()).upload)
+		);
+		
+		if (this.ajax_upload)
+		{
+			this.object = new BuroAjaxUpload(this, id_base, url, parameters, aditionalData);
+			return;
+		}
+
+		this.object = new BuroUpload(id_base, url, parameters);
+	},
+	addCallbacks: function(type, callbacks)
+	{
+		if (type == 'ajax' && this.ajax_upload)
+			this.object.addCallbacks(callbacks);
+		else if (type == 'classic' && !this.ajax_upload)
+			this.object.addCallbacks(callbacks);
+
+		return this;
+	}
+});
 
 /**
- * 
+ * Classic "Ajax" upload using the iframe method
  *
  * Callbacks:
  * - `onStart` function (input){}
@@ -1807,7 +1895,7 @@ var BuroEditableList = Class.create(BuroCallbackable, {
  * @access public
  */
 var BuroUpload = Class.create(BuroCallbackable, {
-	initialize: function(id_base, url, errors, parameters)
+	initialize: function(id_base, url, parameters)
 	{
 		if (Prototype.Browser.IE)
 		{
@@ -1821,11 +1909,10 @@ var BuroUpload = Class.create(BuroCallbackable, {
 		this.uploading = false;
 		this.id_base = id_base;
 		this.url = url;
-		this.errors = errors;
 		this.parameters = $H(parameters);
-		
+
 		BuroCR.set(this.id_base, this);
-		
+
 		this.iframe = new Element('iframe', {
 			name: 'if'+this.id_base, 
 			id: 'if'+this.id_base, 
@@ -1871,6 +1958,11 @@ var BuroUpload = Class.create(BuroCallbackable, {
 			this.tmp_input = this.master_input.clone().show();
 			this.tmp_input.observe('change', this.submit.bind(this));
 			this.master_input.insert({after: this.tmp_input});
+		}
+
+		if (!this.hidden_input.value.blank())
+		{
+			['act' + this.id_base, 'prv' + this.id_base].each(Element.show);
 		}
 	},
 	submit: function()
@@ -1953,17 +2045,22 @@ var BuroUpload = Class.create(BuroCallbackable, {
 	},
 	rejected: function()
 	{
+		var errorName, errorMsg = [];
 		this.hidden_input.value = '';
-		if (this.responseJSON.validationErrors && this.errors)
+		if (typeof this.responseJSON.validationErrors == 'object')
 		{
-			if (this.errors[$H(this.responseJSON.validationErrors).values()[0]])
-				this.responseJSON.error = this.errors[$H(this.responseJSON.validationErrors).values()[0]];
-			else
-				this.responseJSON.error = $H(this.responseJSON.validationErrors).values()[0];
+			for (errorName in this.responseJSON.validationErrors)
+			{
+				errorName = this.responseJSON.validationErrors[errorName];
+				if (BuroCaption.isSet('upload', 'error_'+errorName))
+					errorMsg.push(BuroCaption.get('upload', 'error_'+errorName))
+				else
+					errorMsg.push(errorName);
+			}
 		}
 		
 		this.div_hidden.up().addClassName('error');
-		this.div_hidden.up().insert(new Element('div', {className:'error-message'}).update(this.responseJSON.error));
+		this.div_hidden.up().insert(new Element('div', {className:'error-message'}).update(errorMsg.join('<br />')));
 		
 		this.trigger('onReject', this.tmp_input, this.responseJSON, this.responseJSON.saved);
 
@@ -1971,6 +2068,444 @@ var BuroUpload = Class.create(BuroCallbackable, {
 	}
 });
 
+
+/**
+ * HTML 5 upload, using XMLHttpRequest
+ *
+ * Callbacks:
+ *  - `onStart` function(upload){%s}
+ *  - `onComplete` function(upload, json){%s}
+ *  - `onPieceSent` function(upload, json){%s}
+ *  - `onReject` function(upload, json, saved){%s}
+ *  - `onRestart` function(upload){%s}
+ *  - `onError` function(upload, json){%s}
+ * 
+ * @access public
+ */
+var BuroAjaxUpload = Class.create(BuroCallbackable, {
+	chunkSize: 1024*1024, // 1M
+	MAX_TRIES: 5,
+	ST_READY: 1 , ST_UPLOADING: 2, ST_DONE: 3, ST_ERROR: 4, ST_INVALIDATED: 5,
+	initialize: function(parent, id_base, url, parameters, additionalData)
+	{
+		this.parent = parent;
+		this.id_base = id_base;
+		this.url = url;
+		this.parameters = null;
+		this.additionalData = additionalData;
+
+		if (typeof parameters == 'object')
+			this.parameters = parameters;
+
+		BuroCR.set(this.id_base, this);
+
+		if (document.loaded) this.loaded.bind(this).defer();
+		else document.observe('dom:loaded', this.loaded.bind(this))
+	},
+	loaded: function()
+	{
+		this.cancelLink = new Element('a', {href: '#'}).update(BuroCaption.get('upload', 'cancel'));
+		this.cancelLink.on('click', function(ev){ ev.stop(); this.abort(); }.bind(this));
+		this.tryAgainLink = new Element('a', {href: '#'}).update(BuroCaption.get('upload', 'try_again'));
+		this.tryAgainLink.on('click', this.again.bind(this));
+		this.removeFileLink = new Element('a', {href: '#'}).update(BuroCaption.get('upload', 'remove'));
+		this.removeFileLink.on('click', this.removeFile.bind(this));
+		this.getFileLink = new Element('a', {href: ''}).update(BuroCaption.get('upload', 'get_file'));
+
+		this.controls = new Element('div', {className: 'upload_control'});
+		this.controls.insert(this.cancelLink).insert(' ')
+					 .insert(this.tryAgainLink).insert(' ')
+					 .insert(this.removeFileLink).insert(' ')
+					 .insert(this.getFileLink);
+
+		this.progress_bar = new Element('div', {className: 'progress_bar'});
+		this.progress_bar.insert(new Element('div', {className: 'filling'}));
+		this.progress_bar.insert(new Element('span', {className: 'label'}));
+
+		this.upload_input = $('mi'+this.id_base);
+		this.upload_input.insert({ after: this.controls });
+		this.upload_input.insert({ after: this.progress_bar });
+		this.upload_input.on('change', this.inputChange.bind(this));
+
+		this.handleAbortBinded = this.handleAbort.bind(this);
+		this.handleErrorBinded = this.handleError.bind(this);
+		this.handleProgressBinded = this.handleProgress.bind(this);
+		this.uploadStatusChangeBinded = this.uploadStatusChange.bind(this);
+
+		this.hidden_input = $('hi' + this.id_base);
+
+		this.reset();
+
+		if (!this.hidden_input.value.blank())
+		{
+			this.upload_input.hide();
+			this.finish();
+		}
+		this.trigger('onLoad', this);
+	},
+	reset: function()
+	{
+		this.json = this.hash = this.startTime = this.file = null;
+		this.currentByte = this.errorCount = 0;
+		this.aborted = false;
+		this.state = this.ST_READY;
+
+		this.upload_input.show().value = '';
+		if (this.upload_input.up('.input'))
+			this.upload_input.up('.input').removeClassName('error').select('.error-message').invoke('remove');
+		this.progress_bar.hide();
+
+		this.clearCaption().clearXHR().controlControls();
+	},
+	addCaption: function(caption)
+	{
+		this.clearCaption();
+		this.upload_input.insert({
+			after: this.caption = (new Element('span')).insert(caption)
+		});
+	},
+	clearCaption: function()
+	{
+		if (this.caption)
+		{
+			this.caption.remove();
+			this.caption = null;
+		}
+		return this;
+	},
+	clearXHR: function()
+	{
+		if (this.xhr)
+		{
+			this.xhr.upload.removeEventListener('error', this.handleErrorBinded);
+			this.xhr.upload.removeEventListener('progress', this.handleProgressBinded);
+			this.xhr.upload.removeEventListener('abort', this.handleAbortBinded);
+			this.xhr.onreadystatechange = null;
+			this.xhr = null;
+		}
+		return this;
+	},
+	controlControls: function()
+	{
+		this.tryAgainLink.hide();
+		this.removeFileLink.hide();
+		this.cancelLink.hide();
+		this.getFileLink.hide();
+		switch (this.state)
+		{
+			case this.ST_READY:
+				break;
+
+			case this.ST_UPLOADING:
+				this.cancelLink.show();
+				break;
+
+			case this.ST_DONE:
+				this.removeFileLink.show();
+				this.getFileLink.show();
+				break;
+
+			case this.ST_ERROR:
+				this.tryAgainLink.show();
+				break;
+		}
+	},
+	abort: function()
+	{
+		if (this.xhr && this.xhr.readyState != 4)
+		{
+			this.xhr.onreadystatechange = function() {};
+			this.xhr.abort();
+			this.clearXHR();
+		}
+
+		if (!confirm(BuroCaption.get('upload', 'really_abort')))
+		{
+			this.uploadOnePiece();
+			return;
+		}
+
+		this.aborted = true;
+		this.handleAbort();
+	},
+	again: function(ev)
+	{
+		if (ev) ev.stop();
+
+		this.reset();
+		this.trigger('onRestart', this);
+	},
+	removeFile: function(ev)
+	{
+		ev.stop();
+		if (confirm(BuroCaption.get('upload', 'really_remove')))
+			this.again();
+	},
+	inputChange: function(ev)
+	{
+		if (this.state != this.ST_READY)
+			return;
+
+		if (!this.upload_input.files.length)
+		{
+			this.reset();
+		}
+		else if (this.upload_input.files.length == 1)
+		{
+			var file = this.upload_input.files[0];
+
+			this.reset();
+			this.file = file;
+
+			this.upload_input.hide();
+			this.addCaption(BuroCaption.get('upload', 'sending', {fileName: this.getFileName()}));
+
+			this.startTime = new Date().getTime();
+			this.controls.setStyle({visibility: 'visible'});
+
+			this.trigger('onStart', this);
+			this.uploadOnePiece();
+		}
+	},
+	getFileSize: function()
+	{
+		if (this.file)
+			return this.file.size || this.file.fileSize;
+		return null;
+	},
+	getFileName: function()
+	{
+		if (this.file)
+			return this.file.name || this.file.fileName;
+		else if (this.additionalData.filename)
+			return this.additionalData.filename;
+		return null;
+	},
+	uploadOnePiece: function()
+	{
+		if (this.xhr)
+			return ;
+
+		var chunk, form;
+
+		this.endByte = Math.min(this.currentByte + this.chunkSize, this.getFileSize());
+		this.isLast = this.endByte == this.getFileSize();
+
+		if (this.file.mozSlice)
+			chunk = this.file.mozSlice(this.currentByte, this.endByte);
+		else if (this.file.webkitSlice)
+			chunk = this.file.webkitSlice(this.currentByte, this.endByte);
+		else if (this.file.slice)
+			chunk = this.file.slice(this.currentByte, this.endByte - this.currentByte);
+
+		if (!chunk)
+			throw "Chunk is empty";
+
+		this.xhr = new XMLHttpRequest();
+		this.xhr.upload.addEventListener('error', this.handleErrorBinded);
+		this.xhr.upload.addEventListener('progress', this.handleProgressBinded);
+		this.xhr.onreadystatechange = this.uploadStatusChangeBinded;
+
+		this.xhr.open('POST', this.url, true);
+		this.xhr.setRequestHeader('Cache-Control', 'no-cache');
+		this.xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+		this.xhr.setRequestHeader('X-Uploader-Start-Byte', this.currentByte);
+		this.xhr.setRequestHeader('X-Uploader-Is-Last', this.isLast ? 'yes' : 'no');
+		this.xhr.setRequestHeader('X-Uploader-Chunk-Size', this.endByte-this.currentByte);
+
+		form = new FormData();
+		form.append(this.upload_input.name, chunk);
+		for (fieldName in this.parameters)
+			form.append(fieldName, this.parameters[fieldName]);
+
+		if (this.hash)
+			form.append('data[hash]', this.hash);
+
+		if (this.isLast)
+			form.append('data[original_name]', this.getFileName());
+
+		this.state = this.ST_UPLOADING;
+		this.controlControls();
+
+		this.xhr.send(form);
+	},
+	uploadStatusChange: function()
+	{
+		if (this.xhr.readyState != 4)
+			return;
+	
+		if (this.xhr.status != 200)
+			this.handleError();
+
+		this.requestEnded();
+
+		if (this.isLast)
+			this.trigger('onComplete', this, this.json);
+	},
+	requestEnded: function()
+	{
+		this.json = false;
+		if (!this.xhr)
+			return;
+
+		if (this.xhr.response.isJSON())
+			this.json = this.xhr.response.evalJSON();
+
+		if (this.aborted)
+			return this.handleAbort();
+
+		if (!this.json)
+			return this.handleError();
+
+		if (this.json.hash)
+			this.hash = this.json.hash;
+
+		if (this.json.error)
+		{
+			if (this.json.error == 'chunk-doesnt-fit' && this.json.nextByte)
+			{
+				this.currentByte = this.json.nextByte;
+				// Trying to sync the JS with the server (tries 5 times, and then, aborts it)
+			}
+			return this.handleError();
+		}
+
+		if (this.isLast)
+			this.renderProgress(100);
+
+		if (this.json.validationErrors)
+		{
+			this.state = this.ST_INVALIDATED;
+			this.handleError()
+			this.clearXHR();
+			return;
+		}
+
+		this.currentByte = this.endByte;
+		this.clearXHR();
+		this.errorCount = 0;
+
+		if (!this.isLast)
+		{
+			this.trigger('onPieceSent', this);
+			this.uploadOnePiece();
+		}
+		else if (this.state == this.ST_UPLOADING)
+		{
+			this.hidden_input.value = this.json.saved;
+			this.trigger('onSave', this, this.json);
+			this.finish();
+		}
+	},
+	handleError: function(ev)
+	{
+		if (this.state == this.ST_ERROR)
+			return;
+
+		if (this.aborted)
+			return this.handleAbort();
+
+		if (this.state == this.ST_UPLOADING)
+		{
+			this.errorCount++;
+			if (this.errorCount < this.MAX_TRIES)
+			{
+				this.clearXHR();
+				this.uploadOnePiece();
+				return;
+			}
+		}
+
+		this.renderError();
+
+		this.state = this.ST_ERROR;
+		this.controlControls();
+		if (this.json && this.json.validationErrors)
+			this.trigger('onReject', this, this.json, false);
+		else
+			this.trigger('onError', this, this.json);
+	},
+	handleProgress: function(ev)
+	{
+		this.renderProgress((this.currentByte + ev.loaded)/this.getFileSize()*99);
+	},
+	handleAbort: function(ev)
+	{
+		this.reset();
+		this.controlControls();
+	},
+	finish: function()
+	{
+		if (this.json && this.json.dlurl)
+			this.getFileLink.href = this.json.dlurl;
+		else if (this.additionalData.dlurl)
+			this.getFileLink.href = this.additionalData.dlurl;
+		else
+			throw "BuroAjaxUpload.finish() called, but not seems to be finished.";
+
+		this.state = this.ST_DONE;
+		this.controlControls();
+	},
+	renderProgress: function(progress)
+	{
+		var percent = Math.round(progress) + '%',
+			timeTaken = new Date().getTime() - this.startTime,
+			timeLeft = (timeTaken / (progress/100)) - timeTaken,
+			formatedTime = new Date();
+
+		if (false)
+		{
+			formatedTime.setHours(0,0,0,timeLeft);
+			if (formatedTime.getHours())
+				formatedTime = BuroCaption.get('upload', 'hours_left', {hours: formatedTime.getHours() + ':' + formatedTime.getMinutes()});
+			else if (formatedTime.getMinutes())
+				formatedTime = BuroCaption.get('upload', 'minutes_left', {minutes: formatedTime.getMinutes() + ':' + formatedTime.getSeconds()});
+			else if (formatedTime.getSeconds())
+				formatedTime = BuroCaption.get('upload', 'seconds_left', {seconds: formatedTime.getSeconds()});
+			else
+				formatedTime = false;
+
+			console.log(formatedTime);
+		}
+
+		this.progress_bar.down('.filling').setStyle({width: percent})
+		this.progress_bar.down('.label').update(percent);
+
+		if (timeLeft > 2000)
+			this.progress_bar.show();
+	},
+	renderError: function()
+	{
+		var errorName, errorMsg = [];
+		if (typeof this.json.validationErrors == 'object')
+		{
+			for (errorName in this.json.validationErrors)
+			{
+				errorName = this.json.validationErrors[errorName];
+				if (BuroCaption.isSet('upload', 'error_'+errorName))
+					errorMsg.push(BuroCaption.get('upload', 'error_'+errorName))
+				else
+					errorMsg.push(errorName);
+			}
+		}
+
+		if (this.json.error)
+		{
+			if (BuroCaption.isSet('upload', 'error_'+errorName))
+				errorMsg.push(BuroCaption.get('upload', 'error_'+errorName))
+			else if (BuroCaption.isSet('upload', 'error_with_server_resp'))
+				errorMsg.push(BuroCaption.get('upload', 'error_with_server_resp', this.json));
+		}
+
+		if (!errorMsg.length)
+			errorMsg.push(BuroCaption.get('upload', 'generic_error'));
+		
+		this.upload_input.up().up().addClassName('error');
+		this.controls.insert({
+			before: new Element('div', {className:'error-message'}).update(errorMsg.join('<br />'))
+		});
+	}
+});
 
 
 /**

@@ -97,24 +97,24 @@ class JjMediaController extends JjMediaAppController {
 		if (count($unpacked) != 2)
 			$this->cakeError('error404');
 		
-		$model_name = 'JjMedia.SfilStoredFile';
-		if (!$this->loadModel($model_name))
+		$modelName = 'JjMedia.SfilStoredFile';
+		if (!$this->loadModel($modelName))
 			return;
 		
 		list($sfil_stored_files_id, $version) = $unpacked;
-		list($plugin, $model_name) = pluginSplit($model_name);
-		$model_alias = $this->{$model_name}->alias;
+		list($plugin, $modelName) = pluginSplit($modelName);
+		$model_alias = $this->{$modelName}->alias;
 		
 		if(!empty($sfil_stored_files_id))
 		{
-			$this->{$model_name}->contain();
-			$file_data = $this->{$model_name}->findById($sfil_stored_files_id);
+			$this->{$modelName}->contain();
+			$file_data = $this->{$modelName}->findById($sfil_stored_files_id);
 			
 			if (empty($file_data))
 				$this->cakeError('error404');
 
 			if (empty($name) && !$download)
-				$this->redirect(array($download, $data, $file_data[$this->{$model_name}->alias]['original_filename']));
+				$this->redirect(array($download, $data, $file_data[$this->{$modelName}->alias]['original_filename']));
 
 			if(!empty($file_data))
 			{
@@ -158,7 +158,6 @@ class JjMediaController extends JjMediaAppController {
 		}
 	}
 
-
 /**
  * upload action
  *
@@ -166,53 +165,198 @@ class JjMediaController extends JjMediaAppController {
  * It already saves the file, generating the filtered copies, and renders a JSON, directly on view.
  * 
  * @access public
- * @todo Receive, through posted data, the model that will handle the save
  */
 	function upload()
+	{
+		if ($this->RequestHandler->isAjax())
+		{
+			$this->performAjaxUpload();
+			return;
+		}
+
+		$this->layout = 'ajax';
+		$this->view = 'Typographer.Type';
+		$this->set($this->saveUpload($this->data));
+	}
+
+/**
+ * Method to receive and glue pieces togheter on a ajax upload
+ *
+ * This method is NOT a action. It is called at JjMediaController::upload()
+ * when is detected that the upload is performed by a ajax request.
+ * 
+ * @access protected
+ * @return void
+ * @todo A garbage collector avoiding all the data that is left behind due errors
+ */
+	protected function performAjaxUpload()
+	{
+		$error = false;
+		$version = '';
+		
+		$startByte = env('HTTP_X_UPLOADER_START_BYTE');
+		$isLast = env('HTTP_X_UPLOADER_IS_LAST');
+		$chunkSize = env('HTTP_X_UPLOADER_CHUNK_SIZE');
+
+		$version = $fieldName = $modelName = null;
+		if (!empty($this->buroData['data']))
+		{
+			list($version, $fieldName, $modelName) = SecureParams::unpack($this->buroData['data']);
+			list($plugin, $modelName) = pluginSplit($modelName);
+		}
+
+		if (empty($this->data[$modelName]['file']['tmp_name']))
+			$error = 'upload-failed';
+		elseif (!file_exists($chunkFileName = $this->data[$modelName]['file']['tmp_name']))
+			$error = 'upload-failed-no-tempfile';
+		elseif (filesize($chunkFileName) != $chunkSize)
+			$error = 'upload-failed-chunksize-wrong';
+
+		if ($error)
+			goto renderAjaxUpload;
+
+
+		if (empty($this->data['hash']))
+		{
+			$n = 0;
+			do {
+				$hash = uniqid('', true);
+			} while (file_exists(TMP . $hash));
+			mkdir(TMP . $hash);
+			chmod(TMP . $hash, 0777);
+		}
+		else
+		{
+			$hash = $this->data['hash'];
+		}
+
+		$chunkFile = fopen($chunkFileName, 'rb');
+		$gluedFileName = TMP . $hash . DS . 'file';
+		$gluedFile = fopen($gluedFileName, 'ab');
+		chmod($chunkFileName, 0666);
+
+		if (filesize($gluedFileName) != $startByte)
+		{
+			$error = 'chunk-doesnt-fit';
+			$nextByte = filesize($gluedFileName);
+			goto renderAjaxUpload;
+		}
+
+		if (!$chunkFile || !$gluedFile)
+		{
+			$error = 'reading-file-error';
+			goto renderAjaxUpload;
+		}
+
+		fwrite($gluedFile, fread($chunkFile, filesize($chunkFileName)));
+		fclose($chunkFile);
+		fclose($gluedFile);
+
+		// This file will tell the GC cron job to clean files when "abandoned"
+		$lastInteractionFile = TMP . $hash . DS . 'last_interaction';
+		file_put_contents($lastInteractionFile, time());
+		chmod($lastInteractionFile, 0666);
+
+		if ($isLast == 'yes')
+		{
+			$originalName = TMP . $hash . DS . $this->data['original_name'];
+			rename($gluedFileName, $originalName);
+
+			$data = array($modelName => array('file' => $originalName));
+			$savedData = $this->saveUpload($data);
+
+			// remove temporary dir
+			unlink($originalName);
+			unlink($lastInteractionFile);
+			rmdir(TMP . $hash);
+
+			if (!$savedData['saved'])
+			{
+				$validationErrors = $savedData['validationErrors'];
+			}
+			else
+			{
+				extract($savedData);
+			}
+		}
+		else
+		{
+			$nextByte = filesize(TMP . $hash);
+		}
+
+		renderAjaxUpload:
+		$this->view = 'JjUtils.Json';
+		$this->set('jsonVars', compact('error', 'validationErrors', 'saved', 'version', 'url', 'dlurl', 'hash', 'nextByte'));
+	}
+
+/**
+ * Performs the logic of saving the upload data
+ *
+ * This method receive the POSTed data from each action (classic or ajax upload)
+ * validates the upload and saves it.
+ * The returned data is a array of the generated data (that will generally be
+ * sent back to the view, through JSON object)
+ *
+ * @access protected
+ * @param array $data The POSTed data to be analised and saved
+ * @param string $forceModel When not null, will force a Model to be used, instead of the specified on POSTed data
+ * @return array The array of data of generated data
+ */
+	protected function saveUpload($data, $forceModel = null)
 	{
 		$saved = $error = false;
 		$filename = '';
 		$validationErrors = array();
-		
-		$version = $fieldName = $model_name = null;
+
+		$version = $fieldName = $modelName = null;
 		if (!empty($this->buroData['data']))
-			list($version, $fieldName, $model_name) = SecureParams::unpack($this->buroData['data']);
+			list($version, $fieldName, $modelName) = SecureParams::unpack($this->buroData['data']);
+
+		if ($forceModel)
+			$modelName = $forceModel;
 		
-		if (is_null($version) || is_null($fieldName) || is_null($model_name))
+		if (is_null($version) || is_null($fieldName) || is_null($modelName))
 		{
 			$validationErrors['file'] = 'post_max_size';
 		}
-		elseif (!$this->loadModel($model_name))
+		elseif (!$this->loadModel($modelName))
 		{
-			$error = Configure::read()>0?'JjMediaController::upload - Model '.$model_name.' not found.':true;
+			$error = Configure::read()>0?'JjMediaController::upload - Model '.$modelName.' not found.':true;
 		}
 		else
 		{
-			list($plugin, $model_name) = pluginSplit($model_name);
-			$Model =& $this->{$model_name};
+			list($plugin, $modelName) = pluginSplit($modelName);
+			$Model =& $this->{$modelName};
 			$model_alias = $Model->alias;
 			
-			if (!empty($this->data))
+			if (!empty($data))
 			{
 				$scope = $Model->findTheScope($fieldName);
 				if ($scope)
 					$Model->setScope($scope);
 				
-				$Model->set($this->data);
+				$Model->set($data);
 				$validationErrors = $this->validateErrors($Model);
 
 				if (empty($validationErrors) && $Model->save(null, false))
 				{
 					$saved = $Model->id;
-					$filename = $this->data[$model_alias]['file']['name'];
+					if (isset($data[$model_alias]['file']['name']))
+						$filename = $data[$model_alias]['file']['name'];
+
 					list($fieldModelName, $fieldName) = pluginSplit($fieldName);
-					if (!empty($this->data[$fieldModelName][$fieldName]))
-						$Model->delete($this->data[$fieldModelName][$fieldName]);
+					if (!empty($data[$fieldModelName][$fieldName]))
+						$Model->delete($data[$fieldModelName][$fieldName]);
+
+					App::import('Lib', array('JjUtils.SecureParams'));
+					$packed_params = SecureParams::pack(array($saved, $version), true);
+					$baseUrl = array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'index');
+					$dlurl = Router::url($baseUrl + array('1', $packed_params));
+					$url = Router::url($baseUrl + array($packed_params));
 				}
 			}
 		}
-		$this->layout = 'ajax';
-		$this->view = 'Typographer.Type';
-		$this->set(compact('error', 'validationErrors', 'saved', 'version', 'filename'));
+
+		return compact('error', 'validationErrors', 'saved', 'version', 'filename', 'url', 'dlurl');
 	}
 }

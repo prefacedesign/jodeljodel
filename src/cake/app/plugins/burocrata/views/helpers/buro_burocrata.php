@@ -12,6 +12,9 @@
  * @link          https://github.com/prefacedesign/jodeljodel Jodel Jodel public repository 
  */
 
+
+App::import('Helper', 'Burocrata.XmlTag');
+App::import('Lib', 'JjUtils.SecureParams');
 /**
  * Main Helper for burocrata plugin
  *
@@ -20,21 +23,11 @@
  * @package       jodel
  * @subpackage    jodel.burocrata.views.helpers
  */
-
-App::import('Helper', 'Burocrata.XmlTag');
-App::import('Lib', 'JjUtils.SecureParams');
-
-/**
- * BuroOfficeBoy helper.
- *
- * Creates all javascript necessary for BuroBurocrataHelper work.
- *
- * @package       jodel
- * @subpackage    jodel.burocrata.views.helpers
- */
 class BuroBurocrataHelper extends XmlTagHelper
 {
-	public $helpers = array('Html', 'Form', 'Ajax', 'Js' => 'prototype', 'Burocrata.BuroOfficeBoy',
+	public $helpers = array('Html', 'Form', 'Ajax', 'Js' => 'prototype',
+		'Burocrata.BuroOfficeBoy',
+		'Burocrata.BuroCaptioner',
 		'JjUtils.Jodel',
 		'Typographer.*TypeBricklayer' => array(
 			'name' => 'Bl',
@@ -2351,22 +2344,23 @@ class BuroBurocrataHelper extends XmlTagHelper
 		
 		$gen_options = $options['options'] + $defaults;
 		
-		// Temporary warning
-		if ($gen_options['model'] != 'JjMedia.SfilStoredFile')
-		{
-			trigger_error('BuroBurocrataHelper::_uploadParams() - Changing the upload model is not supported yet! Using the default.');
-			$gen_options['model'] = 'JjMedia.SfilStoredFile';
-		}
-		
 		if (isset($file_input_options['error']))
 		{
 			$gen_options['error'] = $file_input_options['error'];
 			unset($file_input_options['error']);
 		}
-		
-		$gen_options['error']['size'] = __d('burocrata', 'The uploaded file is too large. (filesize > upload_max_filesize or filesize > Model::$validate definitions)', true);
-		$gen_options['error']['post_max_size'] = __d('burocrata', 'The uploaded file is too large. (filesize > post_max_size)', true);
-		
+
+		$value = $this->Form->value($file_input_options['fieldName']);
+		if (!empty($value))
+		{
+			$SfilStoredFile = ClassRegistry::init('JjMedia.SfilStoredFile');
+			$SfilStoredFile->id = $value;
+			$gen_options['aditionalData']['dlurl'] = $this->Bl->fileURL($value, '', true);
+			$gen_options['aditionalData']['filename'] = $SfilStoredFile->field('original_filename');
+		}
+
+		$this->BuroCaptioner->addCaptions('upload');
+
 		return compact('gen_options', 'file_input_options');
 	}
 
@@ -2437,7 +2431,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 		$ids = array('act', 'prv', 'lnk', 'chg');
 		foreach ($ids as $id)
 			${$id.'_id'} = $id . $gen_options['baseID'];
-		
+
+		$fileCaption = __d('burocrata','Burocrata::inputUpload - File: ', true);
 		$out = '';
 		
 		if (empty($gen_options['callbacks']['onSave']['js']))
@@ -2448,23 +2443,32 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$gen_options['callbacks']['onRestart']['js'] = '';
 		$gen_options['callbacks']['onRestart']['js'] .= "$('{$act_id}').hide(); $('{$prv_id}').hide();";
 		
-		$value = $this->Form->value($file_input_options['fieldName']);
-		
-		$script = '';
-		if (empty($value))
-			$script .= "$('{$act_id}').hide(); $('{$prv_id}').hide();";
-		$script .= "$('{$chg_id}').observe('click', function(ev){ev.stop(); BuroCR.get('{$gen_options['baseID']}').again();});";
-		$out .= $this->BuroOfficeBoy->addHtmlEmbScript($script);
+		$out .= $this->BuroOfficeBoy->addHtmlEmbScript(
+			"$('{$chg_id}').observe('click', function(ev){ev.stop(); BuroCR.get('{$gen_options['baseID']}').again();});"
+			. "$('{$act_id}').hide(); $('{$prv_id}').hide();"
+		);
+
+		if (!isset($gen_options['callbacks']['ajax']['onSave']['js']))
+			$gen_options['callbacks']['ajax']['onSave']['js'] = '';
+		$gen_options['callbacks']['ajax']['onSave']['js'] .= "upload.addCaption(BuroCaption.get('upload', 'transfer_ok', {filename: upload.getFileName()}));";
+
+		if (!empty($gen_options['aditionalData']['dlurl']))
+		{
+			if (!isset($gen_options['callbacks']['ajax']['onLoad']['js']))
+				$gen_options['callbacks']['ajax']['onLoad']['js'] = '';
+			$gen_options['callbacks']['ajax']['onLoad']['js'] .= "upload.addCaption('$fileCaption ' + upload.getFileName());";
+		}
 		
 		$out .= $this->_upload($gen_options, $file_input_options);
-		
+
+		$exists = !empty($gen_options['aditionalData']['dlurl']);
 		// Div for previews
 		$out .= $this->Bl->sdiv(array('id' => $prv_id));
 			$filename = __d('burocrata','Burocrata::inputUpload - Download file', true);
-			$htmlAttributes = array('id' => $lnk_id);
-			if (!empty($value))
-				$htmlAttributes['href'] = $this->Bl->fileURL($value, '', true);
-			$out .= $this->Bl->pDry(__d('burocrata','Burocrata::inputUpload - File: ', true) . $this->Bl->a($htmlAttributes, array(), $filename));
+			$out .= $this->Bl->pDry(
+				"$fileCaption " .
+				$this->Bl->a(array('id' => $lnk_id, 'href' => $exists ? $gen_options['aditionalData']['dlurl'] : ''), array(), $filename)
+			);
 		$out .= $this->Bl->ediv();
 		
 		// Div for actions ID must be `'act' . $gen_options['baseID']`
@@ -2497,10 +2501,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$gen_options['change_file_text'] = __d('burocrata','Burocrata::inputImage - Change image', true);
 		if (empty($gen_options['remove_file_text']))
 			$gen_options['remove_file_text'] = __d('burocrata','Burocrata::inputImage - Remove  image', true);
-		
-		$gen_options['error'] += array('validImage' => __d('burocrata','The uploaded file is not a valid image file.',true));
-		
-		$value = $this->Form->value($file_input_options['fieldName']);
+
+		$this->BuroCaptioner->addCaptions('imageUpload');
 		
 		$ids = array('act', 'prv', 'img', 'chg', 'rmv');
 		foreach ($ids as $id)
@@ -2511,30 +2513,34 @@ class BuroBurocrataHelper extends XmlTagHelper
 		if (empty($gen_options['callbacks']['onSave']['js']))
 			$gen_options['callbacks']['onSave']['js'] = '';
 		$gen_options['callbacks']['onSave']['js'] .= "$('{$img_id}').src = ''; $('{$img_id}').writeAttribute({src: json.url, alt: json.filename}); $('{$act_id}').show(); $('{$prv_id}').show();";
-		
 		if (empty($gen_options['callbacks']['onRestart']['js']))
 			$gen_options['callbacks']['onRestart']['js'] = '';
 		$gen_options['callbacks']['onRestart']['js'] .= "$('{$act_id}').hide(); $('{$prv_id}').hide();";
+
+		if (empty($gen_options['callbacks']['ajax']['onSave']['js']))
+			$gen_options['callbacks']['ajax']['onSave']['js'] = '';
+		$gen_options['callbacks']['ajax']['onSave']['js'] .= "$('{$img_id}').src = json.dlurl; $('{$prv_id}').show();";
+		if (empty($gen_options['callbacks']['ajax']['onRestart']['js']))
+			$gen_options['callbacks']['ajax']['onRestart']['js'] = '';
+		$gen_options['callbacks']['ajax']['onRestart']['js'] .= "$('{$prv_id}').hide();";
 		
-		$script = '';
-		$script .= "$('{$chg_id}').observe('click', function(ev){ev.stop(); BuroCR.get('{$gen_options['baseID']}').again();});";
-		$script .= "$('{$rmv_id}').observe('click', function(ev){ev.stop(); BuroCR.get('{$gen_options['baseID']}').again(true);});";
+		$out .= $this->BuroOfficeBoy->addHtmlEmbScript(
+			"$('{$chg_id}').observe('click', function(ev){ev.stop(); BuroCR.get('{$gen_options['baseID']}').again();});"
+			. "$('{$rmv_id}').observe('click', function(ev){ev.stop(); BuroCR.get('{$gen_options['baseID']}').again(true);});"
+			. "$('{$act_id}').hide();"
+		);
 		
 		$gen_options['model'] = 'JjMedia.SfilImageFile';
-		
-		$out .= $this->BuroOfficeBoy->addHtmlEmbScript($script);
 		$out .= $this->_upload($gen_options, $file_input_options);
 		
 		// Div for previews
-		$out .= $this->Bl->sdiv(array('id' => $prv_id, 'style' => empty($value) ? 'display:none;' : ''));
-			$url = '';
-			if (!empty($value))
-				$url = $this->Bl->imageURL($value, $gen_options['version']);
-			$out .= $this->Bl->img(array('id' => $img_id, 'alt' => '', 'src' => $url));
+		$exists = !empty($gen_options['aditionalData']['dlurl']);
+		$out .= $this->Bl->sdiv(array('id' => $prv_id, 'style' => $exists ? '' : 'display:none;'));
+			$out .= $this->Bl->img(array('id' => $img_id, 'alt' => '', 'src' => $exists ? $gen_options['aditionalData']['dlurl'] : ''));
 		$out .= $this->Bl->ediv();
-		
+
 		// Div for actions ID must be `'act' . $gen_options['baseID']`
-		$out .= $this->Bl->sdiv(array('id' => $act_id, 'style' => empty($value) ? 'display:none;' : ''));
+		$out .= $this->Bl->sdiv(array('id' => $act_id, 'style' => $exists ? '' : 'display:none;'));
 			$change_link = $this->Bl->a(array('href' => '#', 'id' => $chg_id), array(), $gen_options['change_file_text']);
 			$remove_link = $this->Bl->a(array('href' => '#', 'id' => $rmv_id), array(), $gen_options['remove_file_text']);
 			$out .= $this->Bl->pDry($change_link . __d('burocrata','Burocrata::inputImage - or ', true) . $remove_link);
