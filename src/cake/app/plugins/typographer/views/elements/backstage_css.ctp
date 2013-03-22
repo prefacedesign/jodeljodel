@@ -318,15 +318,6 @@
 			'border' => '0',
 			//'position' => 'absolute',
 	));
-
-
-	// Input upload
-
-	$this->Decorator->rule(
-		'.upload_control', array(
-			'margin' => $vg->size('m') . ' 0'
-		)
-	);
 	
 	
 	
@@ -1305,11 +1296,25 @@
 	);
 
 	$this->Decorator->rule(
+		'.buro_form .buro_form .input.buro .progress_bar .filling', array(
+			'background' => $palette['bg']
+		)
+	);
+
+	$this->Decorator->rule(
 		'.input.buro .progress_bar .label', array(
 			'position' => 'absolute',
 			'left' => 0,
 			'text-align' => 'center',
 			'width' => '100%'
+		)
+	);
+
+	// Input upload
+
+	$this->Decorator->rule(
+		'.upload_control', array(
+			'margin' => $vg->size('m') . ' 0'
 		)
 	);
 	
