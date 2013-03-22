@@ -318,6 +318,15 @@
 			'border' => '0',
 			//'position' => 'absolute',
 	));
+
+
+	// Input upload
+
+	$this->Decorator->rule(
+		'.upload_control', array(
+			'margin' => $vg->size('m') . ' 0'
+		)
+	);
 	
 	
 	

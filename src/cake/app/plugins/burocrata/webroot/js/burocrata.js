@@ -2112,7 +2112,7 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 		this.removeFileLink.on('click', this.removeFile.bind(this));
 		this.getFileLink = new Element('a', {href: ''}).update(BuroCaption.get('upload', 'get_file'));
 
-		this.controls = new Element('div');
+		this.controls = new Element('div', {className: 'upload_control'});
 		this.controls.insert(this.cancelLink).insert(' ')
 					 .insert(this.tryAgainLink).insert(' ')
 					 .insert(this.removeFileLink).insert(' ')
@@ -2239,7 +2239,7 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 	{
 		ev.stop();
 		if (confirm(BuroCaption.get('upload', 'really_remove')))
-			this.reset();
+			this.again();
 	},
 	inputChange: function(ev)
 	{
