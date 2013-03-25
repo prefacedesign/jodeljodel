@@ -2355,7 +2355,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 		{
 			$SfilStoredFile = ClassRegistry::init('JjMedia.SfilStoredFile');
 			$SfilStoredFile->id = $value;
-			$gen_options['aditionalData']['dlurl'] = $this->Bl->fileURL($value, '', true);
+			$gen_options['aditionalData']['dlurl'] = $this->Bl->fileURL($value, $gen_options['version'], true);
 			$gen_options['aditionalData']['filename'] = $SfilStoredFile->field('original_filename');
 		}
 
