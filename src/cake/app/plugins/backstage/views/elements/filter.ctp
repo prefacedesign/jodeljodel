@@ -117,8 +117,8 @@
 					{
 						if (isset($columnConfig['field']))
 							$field = $columnConfig['field'];
-						elseif (isset($item[$modelName][$key]))
-							$field = $item[$modelName][$key];
+						elseif (array_key_exists($key, $item[$modelName]))
+							$field = $key;
 						else
 							trigger_error("Backstage view error: it was not possible determine the database field for column '$key'.");
 
