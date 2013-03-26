@@ -1900,38 +1900,24 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$sets = $model->Behaviors->TempTemp->__settings[$model->alias];
 			$conditions = array($model->alias.'.'.$sets['field'] => false);
 		}
-		
-		$checkboxmultiple = $this->Html->tags['checkboxmultiple'];
-		$baseID = $this->_readFormAttribute('baseID');
-		$this->Html->tags['checkboxmultiple'] = '<input type="checkbox" name="%s[]"%s buro:form="'.$baseID.'" />';
+		unset($options['model']);
 		
 		$options += array('options' => array());
-		$options['type'] = 'select';
+		$options['type'] = 'multiple_checkbox';
 		$options['container'] = false;
-		$options['options']['multiple'] = 'checkbox';
-		
+		if (!empty($options['options']['assocName']))
+			$options['fieldName'] = $options['options']['assocName'];
+		else
+			$options['fieldName'] = $model->alias;
+		unset($options['options']['assocName']);
+			
 
 		if(method_exists($model, 'findFilteredOptions'))
 			$options['options']['options'] = $model->{'findFilteredOptions'}($gen_options['filter_options']);
 		else
 			$options['options']['options'] = $model->find('list', array('conditions' => $conditions));
- 		
- 		
-		$out = '';
-		
-		if (!empty($options['label']))
-			$out .= $this->Bl->h4Dry($options['label']);
-		$options['label'] = false;
-		
-		if (!empty($options['instructions']))
-			$out .= $this->instructions(array(),array(),$options['instructions']);
-		unset($options['instructions']);
-		
-		$out .= $this->input(null, $options);
-		
-		$this->Html->tags['checkboxmultiple'] = $checkboxmultiple;
-		
-		return $out;
+
+		return $this->input(null, $options);
 	}
 
 	
