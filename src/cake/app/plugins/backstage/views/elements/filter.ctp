@@ -125,7 +125,7 @@
 						list($dataModelName, $field) = pluginSplit($field, false, $modelName);
 
 						$data = false;
-						if (!empty($dataModelName) && isset($item[$dataModelName][$field]))
+						if (!empty($dataModelName) && array_key_exists($field, $item[$dataModelName]))
 							$data = $item[$dataModelName][$field];
 						else
 							trigger_error("Backstage view error: it was not possible to get the '$dataModelName.$field' data from data array.");
