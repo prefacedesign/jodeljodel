@@ -153,7 +153,7 @@ class JodelNewUserShell extends Shell
 		
 		$this->UserUser->create();
 		
-		if ($this->UserUser->saveAll($data))
+		if ($this->UserUser->saveAll($data, array('validate' => false)))
 			$this->out('New user \''.$data['UserUser']['name'].'\' added!' . PHP_EOL);
 		else
 			$this->error('Adding new user failed.' . PHP_EOL);
