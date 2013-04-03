@@ -275,7 +275,7 @@ echo $this->Bl->sbox(array(),array('size' => array('M' => 12, 'g' => -1)));
 			{
 				new Ajax.Request(deleteID, { 
 					parameters: {
-						format: 'json',
+						format: 'json'
 					},
 					onLoading : function() { $('dashboard_table').setLoading(); },
 					onSuccess: function (response,json) { 
