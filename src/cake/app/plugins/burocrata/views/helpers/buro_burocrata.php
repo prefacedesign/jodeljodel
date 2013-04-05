@@ -2312,7 +2312,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	protected function _uploadParams($options)
 	{
-		$file_input_options = array_filter($options);
+		$file_input_options = $options;
 		unset($file_input_options['options']);
 
 		$file_input_options += array('fieldName' => 'sfil_sored_file_id');
