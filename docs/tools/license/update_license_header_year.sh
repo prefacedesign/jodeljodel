@@ -15,7 +15,7 @@ YEAR=`date +%y`
 
 echo "Updating licenses to 20$YEAR"
 
-pushd `git root` > /dev/null
+pushd `git rev-parse --show-toplevel` > /dev/null
 
 find src/cake/app -type f -print0 | xargs -0 sed -i 's/\(Copyright\)\ 2010-20[0-9][0-9]\,\ \(Preface Design LTDA\)/\1\ 2010-20'$YEAR'\,\ \2/'
 
