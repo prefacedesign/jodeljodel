@@ -36,6 +36,7 @@ class AppController extends Controller
  * @var array
  */
 	var $components = array(
+		'RequestLog.RequestLoggable',
 		'Tradutore.TradLanguageSelector',
 		'PageSections.SectSectionHandler',
 		'JjUsers.JjAuth'
@@ -118,6 +119,8 @@ class AppController extends Controller
 				
 			}
 		}
+		
+		$this->RequestLoggable->log();
 	}
 	
 	

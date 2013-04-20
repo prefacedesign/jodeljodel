@@ -51,6 +51,11 @@ class JjAuthComponent extends AuthComponent
 		
 		$this->Controller = $Controller;
 		$this->compilePermissions();
+		
+		if (isset($this->Controller->RequestLoggable))
+		{
+			$this->Controller->RequestLoggable->set('user_id', $this->user('id'));
+		}
 	}
 
 /**
