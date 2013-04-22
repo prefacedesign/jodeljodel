@@ -187,7 +187,7 @@ class BackContentsController extends BackstageAppController
 	private function __getOptions($moduleName)
 	{
 		$defaultOptions = array();
-		$this->status = $this->Session->read('Backstage.status');
+		$this->status = $this->Session->read("Backstage.{$moduleName}.status");
 		if ($this->status != 'all' && !empty($this->status))
 			$defaultOptions['conditions']['publishing_status'] = $this->status;
 		
@@ -306,7 +306,7 @@ class BackContentsController extends BackstageAppController
 	
 	function filter_published_draft($status, $moduleName)
 	{
-		$this->Session->write('Backstage.status', $status);
+		$this->Session->write("Backstage.{$moduleName}.status", $status);
 		$this->filter_and_search($moduleName);
 	}
 	
