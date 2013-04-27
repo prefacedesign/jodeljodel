@@ -200,7 +200,7 @@ echo $this->Bl->sbox(array('class' => $moduleName),array('size' => array('M' => 
 			{
 				new Ajax.Request(deleteID, { 
 					parameters: {
-						format: 'json',
+						format: 'json'
 					},
 					onLoading : function() { $('backstage_custom_table').setLoading(); },
 					onSuccess: function (response,json) { 
