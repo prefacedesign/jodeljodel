@@ -113,42 +113,40 @@
 					
 					$smartTableRow = array();
 					$count = 0;
-					foreach($item[$modelName] as $index => $field)
+					foreach ($backstageSettings['columns'] as $key => $columnConfig)
 					{
-						$rowContent = '';
-						if (array_key_exists($index, $backstageSettings['columns'])) 
-						{
-							if ($index == 'created' || $index == 'modified')
-								$rowContent = strftime("%d/%m/%y", strtotime($field));
-							elseif ($index == 'publishing_status')
-								$rowContent = __d('dashboard', 'Dashboard status: ' . $field, true);
-							else
-								$rowContent = empty($field) ? '&nbsp;' : $field;
-						}
+						if (isset($columnConfig['field']))
+							$field = $columnConfig['field'];
+						elseif (array_key_exists($key, $item[$modelName]))
+							$field = $key;
 						else
-						{
-							foreach($backstageSettings['columns'] as $key => $value)
-							{
-								if ($index == $value['field'])
-								{
-									if ($index == 'created' || $index == 'modified')
-										$rowContent = strftime("%d/%m/%y", strtotime($field));
-									elseif ($index == 'publishing_status')
-										$rowContent = __d('dashboard', 'Dashboard status: ' . $field, true);
-									else
-										$rowContent = empty($field) ? '&nbsp;' : $field;
-								}
-							}
-						}
-						if (!empty($rowContent))
-						{
-							$count++;
-							if($count == $lastCol)
-								$smartTableRow[] = $arrow . $rowContent;
-							else
-								$smartTableRow[] = $rowContent;
-						}
+							trigger_error("Backstage view error: it was not possible determine the database field for column '$key'.");
+
+						list($dataModelName, $field) = pluginSplit($field, false, $modelName);
+
+						$data = false;
+						if (!empty($dataModelName) && array_key_exists($field, $item[$dataModelName]))
+							$data = $item[$dataModelName][$field];
+						else
+							trigger_error("Backstage view error: it was not possible to get the '$dataModelName.$field' data from data array.");
+
+						$rowContent = null;
+						if (empty($data) && $data !== '0')
+							$rowContent = '&ndash;';
+						elseif ($field == 'created' || $field == 'modified')
+							$rowContent = strftime("%d/%m/%y", strtotime($data));
+						elseif ($field == 'publishing_status')
+							$rowContent = __d('dashboard', 'Dashboard status: ' . $data, true);
+						else
+							$rowContent = $data;
+
+						$count++;
+						if($count == $lastCol)
+							$smartTableRow[] = $arrow . $rowContent;
+						else
+							$smartTableRow[] = $rowContent;
 					}
+
 					echo $this->Bl->smartTableRow(array('id' => 'row_'.$row_number), array(), $smartTableRow);
 			
 					//@todo Substitute this with an AJAX call.
