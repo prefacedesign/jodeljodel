@@ -247,8 +247,10 @@ class BackContentsController extends BackstageAppController
 	private function __getParams($moduleName)
 	{
 		$params = array();
-		foreach($this->backstageSettings[$moduleName]['paramsFoward'] as $key => $param)
-			$params[$param] = $this->params['pass'][$key+1];
+		foreach ($this->backstageSettings[$moduleName]['paramsFoward'] as $key => $param)
+		{
+			$params[$param] = isset($this->params['pass'][$key+1]) ? $this->params['pass'][$key+1] : '';
+		}
 		
 		return $params;
 	}
