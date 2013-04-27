@@ -2,12 +2,12 @@
 
 /**
  *
- * Copyright 2010-2012, Preface Design LTDA (http://www.preface.com.br")
+ * Copyright 2010-2013, Preface Design LTDA (http://www.preface.com.br)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2010-2011, Preface Design LTDA (http://www.preface.com.br)
+ * @copyright     Copyright 2010-2013, Preface Design LTDA (http://www.preface.com.br)
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  * @link          https://github.com/prefacedesign/jodeljodel Jodel Jodel public repository 
  */
@@ -187,7 +187,7 @@ class BackContentsController extends BackstageAppController
 	private function __getOptions($moduleName)
 	{
 		$defaultOptions = array();
-		$this->status = $this->Session->read('Backstage.status');
+		$this->status = $this->Session->read("Backstage.{$moduleName}.status");
 		if ($this->status != 'all' && !empty($this->status))
 			$defaultOptions['conditions']['publishing_status'] = $this->status;
 		
@@ -306,7 +306,7 @@ class BackContentsController extends BackstageAppController
 	
 	function filter_published_draft($status, $moduleName)
 	{
-		$this->Session->write('Backstage.status', $status);
+		$this->Session->write("Backstage.{$moduleName}.status", $status);
 		$this->filter_and_search($moduleName);
 	}
 	

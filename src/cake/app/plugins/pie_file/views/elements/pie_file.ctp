@@ -2,12 +2,12 @@
 
 /**
  *
- * Copyright 2010-2012, Preface Design LTDA (http://www.preface.com.br")
+ * Copyright 2010-2013, Preface Design LTDA (http://www.preface.com.br)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2010-2011, Preface Design LTDA (http://www.preface.com.br)
+ * @copyright     Copyright 2010-2013, Preface Design LTDA (http://www.preface.com.br)
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  * @link          https://github.com/prefacedesign/jodeljodel Jodel Jodel public repository 
  */
@@ -79,7 +79,21 @@ switch ($type[0])
 		switch ($type[1])
 		{
 			case 'form':
-				echo $this->Buro->sform(array(), array('model' => 'PieFile.PieFile'));
+				if (isset($type[2]) && $type[2] == 'cork')
+				{
+					echo $this->Buro->sform(array(), array(
+						'model' => $fullModelName,
+						'type' => array('cork'),
+						'callbacks' => array(
+							'onReject' => array('js' => '$("content").scrollTo(); showPopup("error");', 'contentUpdate' => 'replace'),
+							'onSave' => array('js' => '$("content").scrollTo(); showPopup("notice");'),
+						)
+					));
+				}
+				else
+				{
+					echo $this->Buro->sform(array(), array('model' => 'PieFile.PieFile'));
+				}
 					
 					echo $this->Buro->input(
 						array(),
@@ -129,7 +143,14 @@ switch ($type[0])
 						)
 					);
 					
-					echo $this->Buro->submit(array(), array('cancel' => true));
+					if (isset($type[2]) && $type[2] == 'cork')
+					{
+						echo $this->Buro->submitBox(array(), array('publishControls' => false));
+					}
+					else
+					{
+						echo $this->Buro->submit(array(), array('cancel' => true));
+					}
 					
 				echo $this->Buro->eform();
 				echo $this->Bl->floatBreak();
