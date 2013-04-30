@@ -256,7 +256,7 @@
 					if (in_array('edit', $backstageSettings['actions']))
 					{ 
 						$can_edit = true;
-						if (isset($modules[$moduleName]['permissions']) && isset($modules[$moduleName]['permissions']['edit_draft']) && isset($modules[$moduleName]['permissions']['edit_published']))
+						if (isset($item[$modelName]['publishing_status']) && isset($modules[$moduleName]['permissions']) && isset($modules[$moduleName]['permissions']['edit_draft']) && isset($modules[$moduleName]['permissions']['edit_published']))
 						{
 							if ($item[$modelName]['publishing_status'] == 'published')
 							{
@@ -268,6 +268,11 @@
 								if (!$this->JjAuth->can($modules[$moduleName]['permissions']['edit_draft']))
 									$can_edit = false;
 							}
+						}
+						elseif (isset($modules[$moduleName]['permissions']) && isset($modules[$moduleName]['permissions']['edit']))
+						{
+							if (!$this->JjAuth->can($modules[$moduleName]['permissions']['edit']))
+								$can_edit = false;
 						}
 						
 						if ($can_edit)
