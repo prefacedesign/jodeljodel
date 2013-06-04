@@ -114,7 +114,7 @@ class JjMediaController extends JjMediaAppController {
 				$this->cakeError('error404');
 
 			if (empty($name) && !$download)
-				$this->redirect(array($download, $data, $file_data[$this->{$modelName}->alias]['original_filename']));
+				$this->redirect(array($download, $data, $file_data[$this->{$modelName}->alias]['original_filename']), 301);
 
 			if(!empty($file_data))
 			{
