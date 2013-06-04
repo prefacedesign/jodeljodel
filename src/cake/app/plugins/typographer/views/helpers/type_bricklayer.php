@@ -418,35 +418,47 @@ class TypeBricklayerHelper extends AppHelper
 	
 	function stag($tag, $attr = null, $options = null)
 	{
-		$standard_options = array('close_me' => false);
-		$options = am($standard_options, $options);
-		extract($options);
+		if (is_array($options))
+			$options += array('close_me' => false);
+
+		if (!empty($options['close_me']) && in_array($tag, self::$tags_that_need_closing_tag))
+			$options['close_me'] = false;
 		
 		// Mount the attribute string
 		$attr_string = '';
-		
-		if(is_array($attr))
+		if ($attr)
 		{
-			foreach ($attr as $name => $value)
+			if (is_array($attr))
 			{
-				if(is_array($value))
+				foreach ($attr as $name => $value)
 				{
-					switch($name)
-					{
-						case 'class':	
-							$value = implode(' ', $value);
-						break;
-					}
+					if (is_array($value))
+						$value = implode(' ', $value);
+
+					if (empty($name) || is_numeric($name))
+						$attr_string .= " {$value}";
+					else
+						$attr_string .= " {$name}=\"{$value}\"";
 				}
-				$attr_string .= ' '.$name.'="'.$value.'"';
+			}
+			elseif (is_string($attr))
+			{
+				$attr_string = &$att;
 			}
 		}
-		return '<' . $tag . $attr_string . ($close_me ? ' /' : '') . '>';
+
+		if (!empty($options['close_me']))
+			return "<{$tag}{$attr_string} />";
+		else
+			return "<{$tag}{$attr_string}>";
 	}
 
 	function etag($tag)
 	{
-		return '</'.$tag.'>' . (in_array($tag, self::$tags_without_space_after) ? '' : "\n");
+		if (in_array($tag, self::$tags_without_space_after))
+			return "</{$tag}>";
+		else
+			return "</{$tag}>\n";
 	}
 	
 	function tag($tag, $attr = null, $options = null, $content = null)
@@ -456,17 +468,17 @@ class TypeBricklayerHelper extends AppHelper
 		$standard_options['close_me'] = empty($content);
 		
 		$options = am($standard_options, $options);
-		extract($options);
+		$escape = (boolean) $options['escape'];
 		unset($options['escape']);
 		
-		if ($close_me && in_array($tag, self::$tags_that_need_closing_tag))
-			$close_me = $options['close_me'] = false;
+		if ($options['close_me'] && in_array($tag, self::$tags_that_need_closing_tag))
+			$options['close_me'] = false;
 		
 		$t = $this->stag($tag, $attr, $options);
 		
-		if (!$close_me)
+		if (!$options['close_me'])
 		{
-			if (isset($options['escape']) && $options['escape'])
+			if ($escape && !empty($content))
 				$content = h($content);
 			$t .= $content . $this->etag($tag);
 		}
