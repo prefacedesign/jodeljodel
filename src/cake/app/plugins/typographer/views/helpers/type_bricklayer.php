@@ -267,8 +267,9 @@ class TypeBricklayerHelper extends AppHelper
 		if (!$id)
 			return false;
 		
-		App::import('Model', array('JjMedia.SfilStoredFile'));
-		$Media = new SfilStoredFile();
+		$Media = ClassRegistry::getObject('JjMedia.SfilStoredFile');
+		if (!$Media)
+			$Media = ClassRegistry::init('JjMedia.SfilStoredFile');
 		
 		return $Media->properties($id, $version);
 	}
