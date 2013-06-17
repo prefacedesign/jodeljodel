@@ -95,6 +95,25 @@ switch ($type[0])
 						)
 					);
 					
+					echo $this->Buro->input(array(),array(
+						'type' => 'select',
+						'fieldName' => 'link_type',
+						'label' => __d('content_stream', 'PieImage.link_type label',true),
+						'instructions' => __d('content_stream', 'PieImage.link_type instructions',true),
+						'options' => array('options' => array(
+							'none' => __d('content_stream', 'PieImage.link_type none',true),
+							'own' => __d('content_stream', 'PieImage.link_type own',true),
+							'external' => __d('content_stream', 'PieImage.link_type external',true),
+						))
+					));
+					
+					echo $this->Buro->input(array(),array(
+						'type' => 'text',
+						'fieldName' => 'link',
+						'label' => __d('content_stream', 'PieImage.link label',true),
+						'instructions' => __d('content_stream', 'PieImage.link instructions',true),
+					));
+					
 					if (isset($type[2]) && $type[2] == 'cork')
 					{
 						echo $this->Buro->submitBox(array(), array('publishControls' => false));

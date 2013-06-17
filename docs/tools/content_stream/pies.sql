@@ -1,6 +1,6 @@
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 
 -- -----------------------------------------------------
@@ -33,6 +33,8 @@ CREATE  TABLE IF NOT EXISTS `pie_images` (
   `file_id` INT NULL ,
   `title` VARCHAR(255) NULL ,
   `subtitle` TEXT NULL ,
+  `link_type` ENUM('none','own','external') NULL ,
+  `link` TEXT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
@@ -45,6 +47,7 @@ CREATE  TABLE IF NOT EXISTS `pie_files` (
   `file_id` INT NULL ,
   `title` VARCHAR(255) NULL ,
   `description` TEXT NULL ,
+  `filename` VARCHAR(255) NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
