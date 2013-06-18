@@ -55,16 +55,17 @@
  */
  
 App::import('Vendor','browserdetection');
-App::import('Config','RequestLog.loggable');
+Configure::load('RequestLog.loggable');
 
 class RequestLoggableComponent extends Object
 {
 	var $Controller;
 	var $Model;
 	var $loggable = true;
-	var $what_to_log = array();
 	
-	private static $data;
+	private $logData;
+	
+	var $components = array('Session', 'RequestHandler', 'PageSections.SectSectionHandler');
 	
 /**
  * Component initialization
@@ -76,7 +77,6 @@ class RequestLoggableComponent extends Object
     function initialize(&$Controller)
     {	
 		$this->loggable = Configure::read('RequestLog.loggable');
-		$this->what_to_log = Configure::read('RequestLog.what_to_log');
 		
 		if ($this->loggable)
 		{
@@ -87,7 +87,7 @@ class RequestLoggableComponent extends Object
 	}
 
 /**
- * Set initial values to self::data
+ * Set initial values to $this->logData
  * 
  * @access private
  * @return void
@@ -135,7 +135,7 @@ class RequestLoggableComponent extends Object
 		
 		$browser = array('userAgent' => '', 'name' => '', 'version' => '', 'platform' => '');
 		$browserInfo = am($browser, getBrowser());
-		$client_ip = RequestHandlerComponent::getClientIP();
+		$client_ip = $this->RequestHandler->getClientIP();
 		$url = isset($parameters['url']['url']) ? $parameters['url']['url'] : '';
 		$new_data = array($this->Model->alias => array(
 			'time' => date("Y-m-d h:i:s"),
@@ -158,7 +158,7 @@ class RequestLoggableComponent extends Object
 		{
 			if ($key != 'id')
 			{
-				if (empty(self::$data[$this->Model->alias][$key]) && isset($new_data[$this->Model->alias][$key]))
+				if (empty($this->logData[$this->Model->alias][$key]) && isset($new_data[$this->Model->alias][$key]))
 				{
 					$this->set($key, $new_data[$this->Model->alias][$key]);
 				}
@@ -167,7 +167,7 @@ class RequestLoggableComponent extends Object
 	}
 	
 /**
- * Set one value to self::data
+ * Set one value to $this->logData
  * 
  * @access public
  * @return void
@@ -186,25 +186,25 @@ class RequestLoggableComponent extends Object
 		
 		if (isset($this->Model->_schema[$key]))
 		{
-			self::$data[$this->Model->alias][$key] = $value;
+			$this->logData[$this->Model->alias][$key] = $value;
 		}
 		else
 		{
-			if (isset(self::$data[$this->Model->alias]['extra_fields']))
+			if (isset($this->logData[$this->Model->alias]['extra_fields']))
 			{
-				$data = unserialize(self::$data[$this->Model->alias]['extra_fields']);
+				$data = unserialize($this->logData[$this->Model->alias]['extra_fields']);
 				$data[$key] = $value;
 			}
 			else
 			{
 				$data = array($key => $value);
 			}
-			self::$data[$this->Model->alias]['extra_fields'] = serialize($data);
+			$this->logData[$this->Model->alias]['extra_fields'] = serialize($data);
 		}
 	}
 
 /**
- * Logs information previously saved into self::data
+ * Logs information previously saved into $this->logData
  * 
  * @access public
  * @return true if register is logged, false if not
@@ -213,46 +213,36 @@ class RequestLoggableComponent extends Object
 	{
 		if ($this->loggable)
 		{
-			if ((self::$data[$this->Model->alias]['plugin'] == 'dashboard' ||
-				self::$data[$this->Model->alias]['plugin'] == 'backstage' ||
-				(self::$data[$this->Model->alias]['plugin'] == 'burocrata' && 
-				self::$data[$this->Model->alias]['method'] == 'POST')) &&
-				!in_array('admin', $this->what_to_log))
+			$this->reallyLog = false;
+			$currentSectionContext =& $this->SectSectionHandler->sections;
+			
+			foreach($this->SectSectionHandler->ourLocation as $section)
 			{
-				
-				return false;
-			}
-			elseif (self::$data[$this->Model->alias]['plugin'] == 'jj_media' &&
-				self::$data[$this->Model->alias]['method'] == 'POST' &&
-				!in_array('admin', $this->what_to_log))
-			{
-				$post = unserialize(self::$data[$this->Model->alias]['post']);
-				if (isset($post['_b']['layout_scheme']) && $post['_b']['layout_scheme'] == 'backstage')
+				if (isset($currentSectionContext[$section]))
 				{
-					return false;
+					if (isset($currentSectionContext[$section]['requestLog']) && 
+						$currentSectionContext[$section]['requestLog'] === true)
+					{
+						$this->reallyLog = true;
+					}
+					if (isset($currentSectionContext[$section]['requestLog']) && 
+						$currentSectionContext[$section]['requestLog'] === false)
+					{
+						$this->reallyLog = false;
+					}
+					
+					if (isset($currentSectionContext[$section]['subSections']))
+						$currentSectionContext =& $currentSectionContext[$section]['subSections'];
+					else
+						break;
 				}
 			}
-			elseif (self::$data[$this->Model->alias]['plugin'] == 'typographer' &&
-				!in_array('css', $this->what_to_log))
+
+			if($this->reallyLog)
 			{
-				return false;
+				$this->Model->create();
+				return $this->Model->save($this->logData);
 			}
-			elseif (self::$data[$this->Model->alias]['plugin'] == 'jj_media' &&
-				self::$data[$this->Model->alias]['method'] == 'GET' &&
-				!in_array('media', $this->what_to_log))
-			{
-				return false;
-			}
-			elseif ((self::$data[$this->Model->alias]['plugin'] != 'jj_media' &&
-				self::$data[$this->Model->alias]['plugin'] != 'backstage' &&
-				self::$data[$this->Model->alias]['plugin'] != 'dashboard' &&
-				self::$data[$this->Model->alias]['plugin'] != 'burocrata') &&
-				!in_array('public', $this->what_to_log))
-			{
-				return false;
-			}
-			
-			return $this->Model->save(self::$data);
 		}
 		
 		return false;

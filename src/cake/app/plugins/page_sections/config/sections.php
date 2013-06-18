@@ -59,10 +59,11 @@ $config = array();
  *		//optional:  The module this section corresponds.
  *		'module' => 'SectionModule',
  *			
- *		// To wich ACO one must be authenticated in order to access this Sesssion.
+ *		// To wich PERMISSION one must be authenticated in order to access this Sesssion.
  *		// If there is more than one it will be checked against all of them.
- *		// DEFAULTS TO: array('section_name' => array('read'))	
- *		'acos' => array('permission_area' => array('read')),
+ *		'permissions' => array('backstage', 'backstage_delete_item'),
+ * 		// OR
+ * 		'permissions' => array('backstage', 'OR' => array('backstage_edit_publiched', 'backstage_edit_draft')),
  *
  *      // In case if there is some agroupment in the same menu level.
  *      'sectionGroup' => 'this_group' 
@@ -278,6 +279,7 @@ $sections = array(
 		'pageTitle' => array(__('Sections: backstage pageTitle',true)),
 		'headerCaption' => __('Sections: backstage headerCaption', true),
 		'humanName' => __('Sections: backstage humanName',true),
+		'requestLog' => true,
 		'subSections' => array(
 			'login' => array(
 				'linkCaption' => __('Sections: login linkCaption', true),
@@ -306,7 +308,6 @@ $sections = array(
 			'example' => array(
 				'linkCaption' => __('Sections: example linkCaption', true),
 				'url' => array('plugin' => 'backstage','controller' => 'back_contents','action' => 'index', 'module_name'),
-				'acos' => array('backstage_area' => array('read', 'edit', 'create')),
 				'pageTitle' => array(null, __('Sections: example pageTitle',true)),
 				'headerCaption' => __('Sections: example headerCaption', true),
 				'humanName' => __('Sections: example humanName',true),
@@ -440,6 +441,16 @@ $sections = array(
 				'headerCaption' => __('Sections: corktile_edit headerCaption', true),
 				'humanName' => __('Sections: corktile_edit humanName',true),
 			),
+			'content_stream_edit' => array(
+				'linkCaption' => __('Sections: content_stream_edit linkCaption', true),
+				'url' => array(
+					'plugin' => 'burocrata',
+					'controller' => 'buro_burocrata',
+					'action' => 'list_of_items'
+				),
+				'display' => false,
+				'permissions' => array('backstage'),
+			),
 			'edit' => array(
 				'linkCaption' => __('Sections: edit linkCaption', true),
 				'url' => array(
@@ -462,7 +473,6 @@ $sections = array(
 							0 => 'person',
 							1 => 'pers_person'
 						),
-						'acos' => array('new_news' => array('edit','read','create')),
 						'pageTitle' => array(null, null, __('Sections: news_edit pageTitle',true)),
 						'headerCaption' => __('Sections: news_edit headerCaption', true),
 						'humanName' => __('Sections: news_edit humanName',true),
@@ -475,7 +485,6 @@ $sections = array(
 									'action' => 'save',
 									//We need an extra parameter to identify this subSection
 								),
-								'acos' => array('backstage_area' => 'read'),
 								'humanName' => __('Sections: news_form humanName',true),
 							),
 						),
@@ -496,11 +505,9 @@ $sections = array(
 		'pageTitle' => array(null, __('The Section One', true)),
 		'headerCaption' => __('The Section One Header', true),
  		'humanName' => __('The Human Section One name', true),
-		'acos' => array()
  	 ),
 	 'section2' => array(
  		'linkCaption' => __('Section Two', true),
-		'acos' => array('section2'),
  		'url' => array(
  			'plugin' => 'page_sections',
  			'controller' => 'testing',
@@ -509,7 +516,6 @@ $sections = array(
 		'subSections' => array(
 			'section21' => array(
 				'linkCaption' => 'Section Two.One',
-				'acos' => array('section21'),
 				'url' => array(
 					'plugin' => 'page_sections',
 					'controller' => 'testing',
@@ -698,6 +704,10 @@ $sectionMap = array(
 	array(
 		'rule' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'save'),
 		'location' => array('backstage','burocrata_save'),
+	),
+	array(
+		'rule' => array('plugin' => 'burocrata', 'controller' => 'buro_burocrata', 'action' => 'list_of_items'),
+		'location' => array('backstage','content_stream_edit'),
 	),
 	array(
 		'rule' => array('plugin' => 'page_sections', 'controller' => 'testing', 'action' => 'section_one'),
