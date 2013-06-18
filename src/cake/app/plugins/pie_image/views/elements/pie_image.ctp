@@ -24,7 +24,28 @@ switch ($type[0])
 					default:
 						if (!empty($data['PieImage']['file_id']))
 						{
+							
+							if (!empty($data['PieImage']['link']) && 
+								$data['PieImage']['link_type'] == 'external')
+							{
+								echo $this->Bl->sanchor(array(), array('url' => $data['PieImage']['link']));
+							}
+							elseif ($data['PieImage']['link_type'] == 'own')
+							{
+								echo $this->Bl->sanchor(array(), array('url' => 
+									$this->Bl->imageURL($data['PieImage']['file_id'])
+								));
+							}
+							
 							echo $this->Bl->img(array(), array('id' => $data['PieImage']['file_id']));
+								
+							if ((!empty($data['PieImage']['link']) &&
+								$data['PieImage']['link_type'] == 'external') ||
+								$data['PieImage']['link_type'] == 'own')
+							{
+								echo $this->Bl->eanchor();
+							}
+							
 							echo $this->Bl->p(array('class' => 'subtitle'), array(),
 								$this->Bl->spanDry($data['PieImage']['title']) . ' ' . $data['PieImage']['subtitle']
 							);
