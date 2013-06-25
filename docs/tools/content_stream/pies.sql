@@ -63,6 +63,31 @@ CREATE  TABLE IF NOT EXISTS `pie_titles` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `pie_entities`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `pie_entities` (
+  `id` VARCHAR(36) NOT NULL ,
+  `type` ENUM('person','org','general') NULL ,
+  `full_name` VARCHAR(255) NULL ,
+  `org` VARCHAR(255) NULL ,
+  `photo` INT NULL ,
+  `url` VARCHAR(255) NULL ,
+  `email` VARCHAR(255) NULL ,
+  `tel` VARCHAR(25) NULL ,
+  `addr_street_address` VARCHAR(255) NULL ,
+  `addr_extended_address` VARCHAR(255) NULL ,
+  `addr_locality` VARCHAR(255) NULL ,
+  `addr_region` VARCHAR(255) NULL ,
+  `addr_postal_code` VARCHAR(255) NULL ,
+  `addr_country_name` VARCHAR(255) NULL ,
+  `category` VARCHAR(255) NULL ,
+  `note` TEXT NULL ,
+  `logo` INT NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
