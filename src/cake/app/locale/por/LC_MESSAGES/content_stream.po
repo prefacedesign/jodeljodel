@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2013-06-17 16:55-0300\n"
-"PO-Revision-Date: 2013-06-17 16:58-0300\n"
+"POT-Creation-Date: 2013-06-25 09:09-0300\n"
+"PO-Revision-Date: 2013-06-25 09:44-0300\n"
 "Last-Translator: Rodrigo Caravita <rodrigo@preface.com.br>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -34,9 +34,157 @@ msgstr "Divisória"
 msgid "Title for PieTitle content"
 msgstr "Título"
 
+#: /plugins/content_stream/config/config.php:49
+msgid "Title for PieEntity content"
+msgstr "Entidade"
+
 #: /plugins/pie_divider/views/elements/pie_divider.ctp:44
 msgid "PieDivider instructions"
 msgstr "Deseja adicionar uma divisória?"
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:187
+msgid "PieEntity.type label"
+msgstr "Tipo"
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:188
+msgid "PieEntity.type instructions"
+msgstr "  "
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:190
+msgid "PieEntity person type"
+msgstr "Pessoa"
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:191
+msgid "PieEntity org type"
+msgstr "Organização/Empresa"
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:192
+msgid "PieEntity general type"
+msgstr "Outro"
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:202
+msgid "PieEntity.full_name label"
+msgstr "Nome completo"
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:203
+msgid "PieEntity.full_name instructions"
+msgstr "  "
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:222
+msgid "PieEntity.photo label"
+msgstr "Foto/Imagem"
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:223
+msgid "PieEntity.photo instructions"
+msgstr "  "
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:244
+msgid "PieEntity.org label"
+msgstr "Nome da empresa ou organização"
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:245
+msgid "PieEntity.org instructions"
+msgstr " "
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:254
+msgid "PieEntity.logo label"
+msgstr "Logo"
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:255
+msgid "PieEntity.logo instructions"
+msgstr "  "
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:268
+msgid "More options"
+msgstr "Mais opções"
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:277
+msgid "PieEntity.note label"
+msgstr "Informações adicionais"
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:278
+msgid "PieEntity.note instructions"
+msgstr "  "
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:287
+msgid "PieEntity.url label"
+msgstr "URL"
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:288
+msgid "PieEntity.url instructions"
+msgstr "Caso queira adicionar um link, coloque o endereço completo "
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:297
+msgid "PieEntity.email label"
+msgstr "E-mail"
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:298
+msgid "PieEntity.email instructions"
+msgstr "  "
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:307
+msgid "PieEntity.tel label"
+msgstr "Telefone"
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:308
+msgid "PieEntity.tel instructions"
+msgstr "  "
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:317
+msgid "PieEntity.addr_street_address label"
+msgstr "Endereço"
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:318
+msgid "PieEntity.addr_street_address instructions"
+msgstr "  "
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:327
+msgid "PieEntity.addr_extended_address label"
+msgstr "Complemento"
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:328
+msgid "PieEntity.addr_extended_address instructions"
+msgstr "  "
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:337
+msgid "PieEntity.addr_region label"
+msgstr "Região"
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:338
+msgid "PieEntity.addr_region instructions"
+msgstr "  "
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:347
+msgid "PieEntity.addr_country_name label"
+msgstr "País"
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:348
+msgid "PieEntity.addr_country_name instructions"
+msgstr "  "
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:359
+msgid "PieEntity.addr_postal_code label"
+msgstr "CEP/Código postal"
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:360
+msgid "PieEntity.addr_postal_code instructions"
+msgstr "  "
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:369
+msgid "PieEntity.addr_locality label"
+msgstr "Localidade/Município"
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:370
+msgid "PieEntity.addr_locality instructions"
+msgstr "  "
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:379
+msgid "PieEntity.category label"
+msgstr "Categoria"
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:380
+msgid "PieEntity.category instructions"
+msgstr "Por exemplo: físico, professor, empresa de design "
 
 #: /plugins/pie_file/views/elements/pie_file.ctp:111
 msgid "PieFile.file_id label"
@@ -66,55 +214,55 @@ msgstr " "
 msgid "PieFile - Download file:"
 msgstr "Baixar arquivo:"
 
-#: /plugins/pie_image/views/elements/pie_image.ctp:70
+#: /plugins/pie_image/views/elements/pie_image.ctp:91
 msgid "PieImage.file_id label"
 msgstr "Imagem"
 
-#: /plugins/pie_image/views/elements/pie_image.ctp:71
+#: /plugins/pie_image/views/elements/pie_image.ctp:92
 msgid "PieImage.file_id instructions"
 msgstr " "
 
-#: /plugins/pie_image/views/elements/pie_image.ctp:83
+#: /plugins/pie_image/views/elements/pie_image.ctp:104
 msgid "PieImage.title label"
 msgstr "Título"
 
-#: /plugins/pie_image/views/elements/pie_image.ctp:84
+#: /plugins/pie_image/views/elements/pie_image.ctp:105
 msgid "PieImage.title instructions"
 msgstr " "
 
-#: /plugins/pie_image/views/elements/pie_image.ctp:93
+#: /plugins/pie_image/views/elements/pie_image.ctp:114
 msgid "PieImage.subtitle label"
 msgstr "Legenda"
 
-#: /plugins/pie_image/views/elements/pie_image.ctp:94
+#: /plugins/pie_image/views/elements/pie_image.ctp:115
 msgid "PieImage.subtitle instructions"
 msgstr " "
 
-#: /plugins/pie_image/views/elements/pie_image.ctp:101
+#: /plugins/pie_image/views/elements/pie_image.ctp:122
 msgid "PieImage.link_type label"
 msgstr "Tipo de link"
 
-#: /plugins/pie_image/views/elements/pie_image.ctp:102
+#: /plugins/pie_image/views/elements/pie_image.ctp:123
 msgid "PieImage.link_type instructions"
 msgstr "Escolha o tipo de link desta imagem"
 
-#: /plugins/pie_image/views/elements/pie_image.ctp:104
+#: /plugins/pie_image/views/elements/pie_image.ctp:125
 msgid "PieImage.link_type none"
 msgstr "Sem link"
 
-#: /plugins/pie_image/views/elements/pie_image.ctp:105
+#: /plugins/pie_image/views/elements/pie_image.ctp:126
 msgid "PieImage.link_type own"
 msgstr "Link para a imagem original"
 
-#: /plugins/pie_image/views/elements/pie_image.ctp:106
+#: /plugins/pie_image/views/elements/pie_image.ctp:127
 msgid "PieImage.link_type external"
 msgstr "Link para algo externo"
 
-#: /plugins/pie_image/views/elements/pie_image.ctp:113
+#: /plugins/pie_image/views/elements/pie_image.ctp:134
 msgid "PieImage.link label"
 msgstr "Link externo"
 
-#: /plugins/pie_image/views/elements/pie_image.ctp:114
+#: /plugins/pie_image/views/elements/pie_image.ctp:135
 msgid "PieImage.link instructions"
 msgstr "Caso esta imagem seja um link para algo externo, coloque o endereço completo do link aqui"
 
