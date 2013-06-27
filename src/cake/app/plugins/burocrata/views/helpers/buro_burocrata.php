@@ -55,7 +55,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 	public function beforeRender()
 	{
 		parent::beforeRender();
-		if (Configure::read() > 0)
+		if (Configure::read() > 0 && ClassRegistry::getObject('view'))
 			$this->Html->css('/burocrata/css/ajax_dump', 'stylesheet', array('inline' => false));
 	}
 
