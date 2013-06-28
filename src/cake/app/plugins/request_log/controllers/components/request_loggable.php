@@ -130,17 +130,9 @@ class RequestLoggableComponent extends Object
 			{
 				if (isset($currentSectionContext[$section]))
 				{
-					if (isset($currentSectionContext[$section]['requestLog']) && 
-						$currentSectionContext[$section]['requestLog'] === true)
-					{
-						$logCurrentSection = true;
-					}
-					if (isset($currentSectionContext[$section]['requestLog']) && 
-						$currentSectionContext[$section]['requestLog'] === false)
-					{
-						$logCurrentSection = false;
-					}
-					
+					if (isset($currentSectionContext[$section]['requestLog']))
+						$logCurrentSection = (boolean) $currentSectionContext[$section]['requestLog'];
+
 					if (isset($currentSectionContext[$section]['subSections']))
 						$currentSectionContext =& $currentSectionContext[$section]['subSections'];
 					else
