@@ -13,4 +13,8 @@
  */
  
 $config['RequestLog']['loggable'] = true;
-?>
+
+$config['RequestLog']['maskFields'] = array(
+	'UserUser.password', 'UserUser.password_change', 'UserUser.password_retype'
+);
+

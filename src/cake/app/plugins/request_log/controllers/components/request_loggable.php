@@ -18,6 +18,11 @@
  *
  */
  
+ 
+App::import('Vendor','browserdetection');
+Configure::load('RequestLog.loggable');
+
+
 /**
  * This component saves all system activity into a log
  * 
@@ -51,119 +56,207 @@
  *  - params
  *  - method
  *  - post (serialized info)
+ *  - redirected
+ *  - is_ajax
  *  - extra_fields (serialized info)
  */
- 
-App::import('Vendor','browserdetection');
-Configure::load('RequestLog.loggable');
-
 class RequestLoggableComponent extends Object
 {
-	var $Controller;
-	var $Model;
-	var $loggable = true;
-	
-	private $logData;
-	
-	var $components = array('Session', 'RequestHandler', 'PageSections.SectSectionHandler');
-	
+
 /**
- * Component initialization
+ * List of others components used internally
+ * 
+ * @access 
+ */
+	var $components = array('Session', 'RequestHandler', 'PageSections.SectSectionHandler');
+
+/**
+ * Holds a reference to the current Controller for internal use
+ * 
+ * @access protected
+ * @var object
+ */
+	protected $Controller;
+
+/**
+ * Holds a reference for the Model of the log database
+ * 
+ * @access protected
+ * @var object
+ */
+	protected $Model;
+
+/**
+ * Temporarily keeps data to be logged until it is not saved
+ * 
+ * @access protected
+ * @var array
+ */
+	protected $logData;
+
+/**
+ * Whether the component will or will not log the current request
+ * 
+ * @access protected
+ * @var boolean
+ */
+	protected $loggable = false;
+
+/**
+ * True if the log has been saved already
+ * 
+ * @access protected
+ * @var boolean
+ */
+	protected $saved = false;
+
+/**
+ * Component initialization using the `startup` callback
+ * (right after beforeFilter, but before the action)
  * 
  * @access public
+ * @param object $Controller
  * @return void
  */
-	
-    function initialize(&$Controller)
+    function startup(&$Controller)
     {	
-		$this->loggable = Configure::read('RequestLog.loggable');
-		
-		if ($this->loggable)
+		$loggable = (boolean) Configure::read('RequestLog.loggable');
+		if ($loggable)
 		{
-			$this->Controller = $Controller;
-			$this->Model = ClassRegistry::init('RequestLog.RequestLog');
-			$this->setValues();
+			$logCurrentSection = false;
+			$currentSectionContext =& $this->SectSectionHandler->sections;
+			
+			foreach ($this->SectSectionHandler->ourLocation as $section)
+			{
+				if (isset($currentSectionContext[$section]))
+				{
+					if (isset($currentSectionContext[$section]['requestLog']) && 
+						$currentSectionContext[$section]['requestLog'] === true)
+					{
+						$logCurrentSection = true;
+					}
+					if (isset($currentSectionContext[$section]['requestLog']) && 
+						$currentSectionContext[$section]['requestLog'] === false)
+					{
+						$logCurrentSection = false;
+					}
+					
+					if (isset($currentSectionContext[$section]['subSections']))
+						$currentSectionContext =& $currentSectionContext[$section]['subSections'];
+					else
+						break;
+				}
+			}
+
+			if ($logCurrentSection)
+			{
+				$this->Controller = $Controller;
+				$this->loggable = $loggable;
+				$this->Model = ClassRegistry::init('RequestLog.RequestLog');
+				$this->setInitialValues();
+			}
 		}
 	}
 
 /**
- * Set initial values to $this->logData
+ * Saves data to database before redirects (because there
+ * is no shutdown process after redirect)
  * 
- * @access private
+ * @access public
+ * @param object $Controller
+ * @param string $url
+ * @param int $status
+ * @param boolean $exit
  * @return void
  */
-    private function setValues()
+	public function beforeRedirect($Controller, $url, $status = null, $exit = true)
+	{
+		if ($exit)
+		{
+			$this->set('redirected', $url);
+			$this->log();
+		}
+	}
+
+/**
+ * Saves data to database on request shutdown
+ * 
+ * @access public
+ * @param object $Controller
+ * @return void
+ */
+	public function shutdown($Controller)
+	{
+		$this->log();
+	}
+
+/**
+ * Sets initial values to $this->logData
+ * 
+ * @access protected
+ * @return void
+ */
+    protected function setInitialValues()
 	{
 		if (!$this->loggable)
 		{
 			return;
 		}
-			
-		$data = $this->Controller->data;
+
 		$parameters = $this->Controller->params;
-		
-		$this->Controller->Session->start();
-		$this->Controller->Session->id(session_id());
-		
+
 		$params = '';
-		$session_id = '';
-		
-		if ($this->Controller->Session->id)
-			$session_id = $this->Controller->Session->id;
-		
-		foreach($parameters['pass'] as $param)
-		{
-			$params .= $param . '/';
-		}
-		foreach($parameters['named'] as $key => $param)
-		{
+		if (!empty($parameters['pass']))
+			$params = join('/', $parameters['pass']) . '/';
+
+		foreach ($parameters['named'] as $key => $param)
 			$params .= $key . ':' . $param . '/';
-		}
-		
-		if (isset($data['UserUser']['password']) && !empty($data['UserUser']['password']))
-		{
-			$data['UserUser']['password'] = '********';
-		}
-		if (isset($data['UserUser']['password_change']) && !empty($data['UserUser']['password_change']))
-		{
-			$data['UserUser']['password_change'] = '********';
-		}
-		if (isset($data['UserUser']['password_retype']) && !empty($data['UserUser']['password_retype']))
-		{
-			$data['UserUser']['password_retype'] = '********';
-		}
-		
-		$browser = array('userAgent' => '', 'name' => '', 'version' => '', 'platform' => '');
-		$browserInfo = am($browser, getBrowser());
-		$client_ip = $this->RequestHandler->getClientIP();
-		$url = isset($parameters['url']['url']) ? $parameters['url']['url'] : '';
-		$new_data = array($this->Model->alias => array(
+
+		$data = $this->maskData($this->Controller->data);
+		$browserInfo = getBrowser() + array('userAgent' => '', 'name' => '', 'version' => '', 'platform' => '');
+
+		$new_data = array(
 			'time' => date("Y-m-d h:i:s"),
-			'session_id' => $session_id,
-			'ip' => $client_ip,
+			'session_id' => $this->Session->id(),
+			'ip' => $this->RequestHandler->getClientIP(),
+			'is_ajax' => $this->RequestHandler->isAjax(),
+			'url' => $this->Controller->here,
 			'user_agent' => $browserInfo['userAgent'],
 			'browser_name' => $browserInfo['name'],
 			'browser_version' => $browserInfo['version'],
 			'os' => $browserInfo['platform'],
-			'url' => $url,
 			'plugin' => $parameters['plugin'],
 			'controller' => $parameters['controller'],
 			'action' => $parameters['action'],
 			'params' => $params,
 			'method' => $_SERVER['REQUEST_METHOD'],
 			'post' => substr(serialize($data), 0, 7300),
-		));
-		
-		foreach($this->Model->_schema as $key => $props)
+		);
+
+		foreach ($new_data as $key => $content)
 		{
-			if ($key != 'id')
-			{
-				if (empty($this->logData[$this->Model->alias][$key]) && isset($new_data[$this->Model->alias][$key]))
-				{
-					$this->set($key, $new_data[$this->Model->alias][$key]);
-				}
-			}
+			$this->set($key, $content);
 		}
+	}
+
+/**
+ * Applies mask over sensitive data, using the configuration parameters
+ *
+ * Empty values are left empty but I dont know if this is really a good ideia
+ * 
+ * @access protected
+ * @param array $data The array of data to lookup sensitive data
+ * @return array The data with sensitive data erased
+ */
+	protected function maskData($data)
+	{
+		foreach (Configure::read('RequestLog.maskFields') as $field)
+		{
+			list($modelName, $fieldName) = explode('.', $field);
+			if (!empty($data[$modelName][$fieldName]))
+				$data[$modelName][$fieldName] = '[MASKED]';
+		}
+		return $data;
 	}
 	
 /**
@@ -172,7 +265,7 @@ class RequestLoggableComponent extends Object
  * @access public
  * @return void
  */
-    function set($key, $value)
+    public function set($key, $value)
 	{
 		if (!$this->loggable)
 		{
@@ -190,62 +283,31 @@ class RequestLoggableComponent extends Object
 		}
 		else
 		{
-			if (isset($this->logData[$this->Model->alias]['extra_fields']))
-			{
-				$data = unserialize($this->logData[$this->Model->alias]['extra_fields']);
-				$data[$key] = $value;
-			}
-			else
-			{
-				$data = array($key => $value);
-			}
-			$this->logData[$this->Model->alias]['extra_fields'] = serialize($data);
+			if (empty($this->logData[$this->Model->alias]['extra_fields']))
+				$this->logData[$this->Model->alias]['extra_fields'] = array();
+
+			$this->logData[$this->Model->alias]['extra_fields'][$key] = $value;
 		}
 	}
 
 /**
- * Logs information previously saved into $this->logData
+ * Saves the log data previously stored into $this->logData
  * 
  * @access public
- * @return true if register is logged, false if not
+ * @return boolean True if data was saved, false if was not
  */
-	function log()
+	public function log()
 	{
-		if ($this->loggable)
+		if (!$this->loggable || $this->saved)
 		{
-			$this->reallyLog = false;
-			$currentSectionContext =& $this->SectSectionHandler->sections;
-			
-			foreach($this->SectSectionHandler->ourLocation as $section)
-			{
-				if (isset($currentSectionContext[$section]))
-				{
-					if (isset($currentSectionContext[$section]['requestLog']) && 
-						$currentSectionContext[$section]['requestLog'] === true)
-					{
-						$this->reallyLog = true;
-					}
-					if (isset($currentSectionContext[$section]['requestLog']) && 
-						$currentSectionContext[$section]['requestLog'] === false)
-					{
-						$this->reallyLog = false;
-					}
-					
-					if (isset($currentSectionContext[$section]['subSections']))
-						$currentSectionContext =& $currentSectionContext[$section]['subSections'];
-					else
-						break;
-				}
-			}
-
-			if($this->reallyLog)
-			{
-				$this->Model->create();
-				return $this->Model->save($this->logData);
-			}
+			return false;
 		}
-		
-		return false;
+
+		$this->saved = true;
+		if (!empty($this->logData[$this->Model->alias]['extra_fields']))
+			$this->logData[$this->Model->alias]['extra_fields'] = serialize($this->logData[$this->Model->alias]['extra_fields']);
+
+		$this->Model->create($this->logData);
+		return $this->Model->save();
 	}
 }
-?>
