@@ -119,8 +119,6 @@ class AppController extends Controller
 				
 			}
 		}
-		
-		$this->RequestLoggable->log();
 	}
 	
 	

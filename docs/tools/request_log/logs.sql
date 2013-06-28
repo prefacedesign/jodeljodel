@@ -1,6 +1,6 @@
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 
 -- -----------------------------------------------------
@@ -23,16 +23,18 @@ CREATE  TABLE IF NOT EXISTS `request_logs` (
   `params` TEXT NULL ,
   `method` VARCHAR(10) NULL ,
   `post` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' NULL ,
+  `is_ajax` TINYINT(1) NULL ,
+  `redirected` TEXT NULL ,
   `extra_fields` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `k_plugin_controller_action` (`plugin` ASC, `controller` ASC, `action` ASC) ,
   INDEX `k_time` (`time` ASC) ,
   INDEX `k_session_id` (`session_id` ASC) ,
   INDEX `k_ip` (`ip` ASC) ,
-  INDEX `k_url` (`url`(255) ASC) )
+  INDEX `k_url` (`url`(300) ASC) )
 ENGINE = MyISAM
-DEFAULT CHARACTER SET = latin1
-COLLATE = latin1_general_ci;
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_general_ci;
 
 
 

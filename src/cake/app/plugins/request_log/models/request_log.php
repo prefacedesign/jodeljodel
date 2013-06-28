@@ -12,11 +12,26 @@
  * @link          https://github.com/prefacedesign/jodeljodel Jodel Jodel public repository 
  */
 
+/**
+ * Model used for saving log data on database
+ * 
+ */
 class RequestLog extends RequestLogAppModel
 {
 
+/**
+ * CakePHP demand for PHP 4
+ * 
+ * @access public
+ */
 	var $name = 'RequestLog';
+
+/**
+ * A separated DB Config for logging on another database (or another server)
+ * 
+ * @access public
+ * @var string
+ */
 	var $useDbConfig = 'request_log';
-	var $useTable = 'request_logs';
-	
+
 }
