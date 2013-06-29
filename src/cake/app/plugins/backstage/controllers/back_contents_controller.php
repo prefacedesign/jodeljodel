@@ -159,12 +159,12 @@ class BackContentsController extends BackstageAppController
 				
 				if (isset($config['permissions']) && ((isset($config['permissions']['edit_draft']) && isset($config['permissions']['edit_published'])) || isset($config['permissions']['edit'])))
 				{
-					if (isset($this->data[$Model->alias]['publishing_status']) && $this->data[$Model->alias]['publishing_status'] == 'published')
+					if (isset($config['permissions']['edit_published']) && isset($this->data[$Model->alias]['publishing_status']) && $this->data[$Model->alias]['publishing_status'] == 'published')
 					{	
 						if (!$this->JjAuth->can($config['permissions']['edit_published']))
 							$canEdit = false;
 					}
-					elseif (isset($this->data[$Model->alias]['publishing_status']) && $this->data[$Model->alias]['publishing_status'] == 'draft')
+					elseif (isset($config['permissions']['edit_draft']) && isset($this->data[$Model->alias]['publishing_status']) && $this->data[$Model->alias]['publishing_status'] == 'draft')
 					{	
 						if (!$this->JjAuth->can($config['permissions']['edit_draft']))
 							$canEdit = false;
@@ -247,8 +247,10 @@ class BackContentsController extends BackstageAppController
 	private function __getParams($moduleName)
 	{
 		$params = array();
-		foreach($this->backstageSettings[$moduleName]['paramsFoward'] as $key => $param)
-			$params[$param] = $this->params['pass'][$key+1];
+		foreach ($this->backstageSettings[$moduleName]['paramsFoward'] as $key => $param)
+		{
+			$params[$param] = isset($this->params['pass'][$key+1]) ? $this->params['pass'][$key+1] : '';
+		}
 		
 		return $params;
 	}

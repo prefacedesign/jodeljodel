@@ -83,6 +83,16 @@ class DATABASE_CONFIG {
 		'database' => 'jodeljodel',
 		'encoding' => 'utf8'
 	);
+	
+	var $request_log = array(
+		'driver' => 'mysql',
+		'persistent' => false,
+		'host' => 'localhost',
+		'login' => 'jodeljodel',
+		'password' => 'jodeljodel',
+		'database' => 'jodel_logs',
+		'encoding' => 'utf8',
+	);
 
 	var $test = array(
 		'driver' => 'mysql',
