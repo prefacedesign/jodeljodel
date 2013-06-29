@@ -12,7 +12,7 @@
  * @link          https://github.com/prefacedesign/jodeljodel Jodel Jodel public repository 
  */
  
-$config['RequestLog']['loggable'] = true;
+$config['RequestLog']['loggable'] = false;
 
 $config['RequestLog']['maskFields'] = array(
 	'UserUser.password', 'UserUser.password_change', 'UserUser.password_retype'
