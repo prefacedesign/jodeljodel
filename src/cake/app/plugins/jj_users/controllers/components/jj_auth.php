@@ -62,6 +62,7 @@ class JjAuthComponent extends AuthComponent
  */
 	function startup($Controller)
 	{
+        parent::startup($Controller);
 		if (isset($this->Controller->RequestLoggable))
 		{
 			$this->Controller->RequestLoggable->set('user_id', $this->user('id'));
