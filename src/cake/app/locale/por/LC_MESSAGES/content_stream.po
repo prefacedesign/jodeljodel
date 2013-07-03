@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2013-06-17 16:55-0300\n"
-"PO-Revision-Date: 2013-06-17 16:58-0300\n"
-"Last-Translator: Rodrigo Caravita <rodrigo@preface.com.br>\n"
+"PO-Revision-Date: 2013-07-03 09:20-0300\n"
+"Last-Translator: Daniel Abrahão <daniel@preface.com.br>\n"
 "Language-Team: \n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -116,7 +116,7 @@ msgstr "Link externo"
 
 #: /plugins/pie_image/views/elements/pie_image.ctp:114
 msgid "PieImage.link instructions"
-msgstr "Caso esta imagem seja um link para algo externo, coloque o endereço completo do link aqui"
+msgstr "Coloque o endereço completo do link aqui"
 
 #: /plugins/pie_text/views/elements/pie_text.ctp:49
 msgid "PieText.text label"
