@@ -54,6 +54,22 @@ class JjAuthComponent extends AuthComponent
 	}
 
 /**
+ * Sets the user ID on RequestLoggable component, if it is being used
+ * 
+ * @access public
+ * @param object $Controller
+ * @return void
+ */
+	function startup($Controller)
+	{
+        parent::startup($Controller);
+		if (isset($this->Controller->RequestLoggable))
+		{
+			$this->Controller->RequestLoggable->set('user_id', $this->user('id'));
+		}
+	}
+
+/**
  * Compile the array of permissions suming all UserPermission.slug from database.
  * 
  * For performance pouposes, this array is cached on a session var. But it checks

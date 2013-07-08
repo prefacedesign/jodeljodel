@@ -2136,7 +2136,7 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 
 		this.reset();
 
-		if (!this.hidden_input.value.blank())
+		if (this.hidden_input.readAttribute('value'))
 		{
 			this.upload_input.hide();
 			this.finish();

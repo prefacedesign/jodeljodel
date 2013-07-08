@@ -116,7 +116,7 @@ switch ($type[0])
 						)
 					);
 					
-					echo $this->Buro->input(array(),array(
+					echo $this->Buro->input(array('id' => $selectId = uniqid('sel')), array(
 						'type' => 'select',
 						'fieldName' => 'link_type',
 						'label' => __d('content_stream', 'PieImage.link_type label',true),
@@ -133,7 +133,23 @@ switch ($type[0])
 						'fieldName' => 'link',
 						'label' => __d('content_stream', 'PieImage.link label',true),
 						'instructions' => __d('content_stream', 'PieImage.link instructions',true),
+						'container' => array(
+							'id' => $linkInput = uniqid('inp')
+						)
 					));
+
+					echo $this->Html->scriptBlock("
+						var changeHandler = function(ev) {
+							if ($('$selectId').value == 'external')
+								$('$linkInput').show();
+							else
+								$('$linkInput').hide();
+						};
+						$('$selectId').on('change', changeHandler);
+						changeHandler();
+					");
+
+					echo $this->Bl->br();
 					
 					if (isset($type[2]) && $type[2] == 'cork')
 					{
