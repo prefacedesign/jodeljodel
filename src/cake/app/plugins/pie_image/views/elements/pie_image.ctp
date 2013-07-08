@@ -24,7 +24,28 @@ switch ($type[0])
 					default:
 						if (!empty($data['PieImage']['file_id']))
 						{
+							
+							if (!empty($data['PieImage']['link']) && 
+								$data['PieImage']['link_type'] == 'external')
+							{
+								echo $this->Bl->sanchor(array(), array('url' => $data['PieImage']['link']));
+							}
+							elseif ($data['PieImage']['link_type'] == 'own')
+							{
+								echo $this->Bl->sanchor(array(), array('url' => 
+									$this->Bl->imageURL($data['PieImage']['file_id'])
+								));
+							}
+							
 							echo $this->Bl->img(array(), array('id' => $data['PieImage']['file_id']));
+								
+							if ((!empty($data['PieImage']['link']) &&
+								$data['PieImage']['link_type'] == 'external') ||
+								$data['PieImage']['link_type'] == 'own')
+							{
+								echo $this->Bl->eanchor();
+							}
+							
 							echo $this->Bl->p(array('class' => 'subtitle'), array(),
 								$this->Bl->spanDry($data['PieImage']['title']) . ' ' . $data['PieImage']['subtitle']
 							);
@@ -94,6 +115,41 @@ switch ($type[0])
 							'instructions' => __d('content_stream', 'PieImage.subtitle instructions', true)
 						)
 					);
+					
+					echo $this->Buro->input(array('id' => $selectId = uniqid('sel')), array(
+						'type' => 'select',
+						'fieldName' => 'link_type',
+						'label' => __d('content_stream', 'PieImage.link_type label',true),
+						'instructions' => __d('content_stream', 'PieImage.link_type instructions',true),
+						'options' => array('options' => array(
+							'none' => __d('content_stream', 'PieImage.link_type none',true),
+							'own' => __d('content_stream', 'PieImage.link_type own',true),
+							'external' => __d('content_stream', 'PieImage.link_type external',true),
+						))
+					));
+					
+					echo $this->Buro->input(array(),array(
+						'type' => 'text',
+						'fieldName' => 'link',
+						'label' => __d('content_stream', 'PieImage.link label',true),
+						'instructions' => __d('content_stream', 'PieImage.link instructions',true),
+						'container' => array(
+							'id' => $linkInput = uniqid('inp')
+						)
+					));
+
+					echo $this->Html->scriptBlock("
+						var changeHandler = function(ev) {
+							if ($('$selectId').value == 'external')
+								$('$linkInput').show();
+							else
+								$('$linkInput').hide();
+						};
+						$('$selectId').on('change', changeHandler);
+						changeHandler();
+					");
+
+					echo $this->Bl->br();
 					
 					if (isset($type[2]) && $type[2] == 'cork')
 					{
