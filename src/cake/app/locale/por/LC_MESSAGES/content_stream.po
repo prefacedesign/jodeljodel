@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2013-06-25 09:09-0300\n"
-"PO-Revision-Date: 2013-06-25 09:44-0300\n"
+"POT-Creation-Date: 2013-07-08 18:41-0300\n"
+"PO-Revision-Date: 2013-07-08 18:42-0300\n"
 "Last-Translator: Rodrigo Caravita <rodrigo@preface.com.br>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -98,91 +98,95 @@ msgstr "  "
 msgid "More options"
 msgstr "Mais opções"
 
-#: /plugins/pie_entity/views/elements/pie_entity.ctp:277
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:278
+msgid "Less options"
+msgstr "Menos opções"
+
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:288
 msgid "PieEntity.note label"
 msgstr "Informações adicionais"
 
-#: /plugins/pie_entity/views/elements/pie_entity.ctp:278
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:289
 msgid "PieEntity.note instructions"
 msgstr "  "
 
-#: /plugins/pie_entity/views/elements/pie_entity.ctp:287
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:298
 msgid "PieEntity.url label"
 msgstr "URL"
 
-#: /plugins/pie_entity/views/elements/pie_entity.ctp:288
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:299
 msgid "PieEntity.url instructions"
 msgstr "Caso queira adicionar um link, coloque o endereço completo "
 
-#: /plugins/pie_entity/views/elements/pie_entity.ctp:297
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:308
 msgid "PieEntity.email label"
 msgstr "E-mail"
 
-#: /plugins/pie_entity/views/elements/pie_entity.ctp:298
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:309
 msgid "PieEntity.email instructions"
 msgstr "  "
 
-#: /plugins/pie_entity/views/elements/pie_entity.ctp:307
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:318
 msgid "PieEntity.tel label"
 msgstr "Telefone"
 
-#: /plugins/pie_entity/views/elements/pie_entity.ctp:308
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:319
 msgid "PieEntity.tel instructions"
 msgstr "  "
 
-#: /plugins/pie_entity/views/elements/pie_entity.ctp:317
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:328
 msgid "PieEntity.addr_street_address label"
 msgstr "Endereço"
 
-#: /plugins/pie_entity/views/elements/pie_entity.ctp:318
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:329
 msgid "PieEntity.addr_street_address instructions"
 msgstr "  "
 
-#: /plugins/pie_entity/views/elements/pie_entity.ctp:327
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:338
 msgid "PieEntity.addr_extended_address label"
 msgstr "Complemento"
 
-#: /plugins/pie_entity/views/elements/pie_entity.ctp:328
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:339
 msgid "PieEntity.addr_extended_address instructions"
 msgstr "  "
 
-#: /plugins/pie_entity/views/elements/pie_entity.ctp:337
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:348
 msgid "PieEntity.addr_region label"
 msgstr "Região"
 
-#: /plugins/pie_entity/views/elements/pie_entity.ctp:338
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:349
 msgid "PieEntity.addr_region instructions"
 msgstr "  "
 
-#: /plugins/pie_entity/views/elements/pie_entity.ctp:347
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:358
 msgid "PieEntity.addr_country_name label"
 msgstr "País"
 
-#: /plugins/pie_entity/views/elements/pie_entity.ctp:348
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:359
 msgid "PieEntity.addr_country_name instructions"
 msgstr "  "
 
-#: /plugins/pie_entity/views/elements/pie_entity.ctp:359
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:370
 msgid "PieEntity.addr_postal_code label"
 msgstr "CEP/Código postal"
 
-#: /plugins/pie_entity/views/elements/pie_entity.ctp:360
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:371
 msgid "PieEntity.addr_postal_code instructions"
 msgstr "  "
 
-#: /plugins/pie_entity/views/elements/pie_entity.ctp:369
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:380
 msgid "PieEntity.addr_locality label"
 msgstr "Localidade/Município"
 
-#: /plugins/pie_entity/views/elements/pie_entity.ctp:370
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:381
 msgid "PieEntity.addr_locality instructions"
 msgstr "  "
 
-#: /plugins/pie_entity/views/elements/pie_entity.ctp:379
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:390
 msgid "PieEntity.category label"
 msgstr "Categoria"
 
-#: /plugins/pie_entity/views/elements/pie_entity.ctp:380
+#: /plugins/pie_entity/views/elements/pie_entity.ctp:391
 msgid "PieEntity.category instructions"
 msgstr "Por exemplo: físico, professor, empresa de design "
 

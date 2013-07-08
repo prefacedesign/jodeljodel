@@ -12,7 +12,6 @@
  * @link          https://github.com/prefacedesign/jodeljodel Jodel Jodel public repository 
  */
 
-
 switch ($type[0])
 {
 	case 'full':
@@ -268,6 +267,17 @@ switch ($type[0])
 							__d('content_stream', 'More options', true)
 						);
 					echo $this->Bl->ediv();
+					echo $this->Bl->sdiv(
+						array('id' => 'less_options_div', 'style' => 'display:none; margin-bottom: 10px;'), 
+						array()
+					);
+						echo $this->Bl->anchor(
+							array('id' => 'less_options_link'), 
+							array('url' => array()), 
+							__d('content_stream', 'Less options', true)
+						);
+					echo $this->Bl->ediv();
+					
 					echo $this->Bl->sdiv(array('id' => 'more_options_fields', 'style' => 'display:none'), array());
 						echo $this->Buro->input(
 							array(), 
@@ -380,6 +390,17 @@ switch ($type[0])
 								'instructions' => __d('content_stream', 'PieEntity.category instructions', true),
 							)
 						);
+						
+						echo $this->Bl->sdiv(
+							array('id' => 'less_options_div2', 'style' => 'display:none; margin-bottom: 30px;'), 
+							array()
+						);
+							echo $this->Bl->anchor(
+								array('id' => 'less_options_link2'), 
+								array('url' => array()), 
+								__d('content_stream', 'Less options', true)
+							);
+						echo $this->Bl->ediv();
 					echo $this->Bl->ediv();
 					
 					$this->Js->get('#PieEntityType')->event('change', '
@@ -403,6 +424,28 @@ switch ($type[0])
 					$this->Js->get('#more_options_link')->event('click', '
 						$("more_options_fields").show();
 						$("more_options_div").hide();
+						$("less_options_div").show();
+						$("less_options_div2").show();
+					');
+					$this->Js->get('#less_options_link')->event('click', '
+						$("more_options_fields").hide();
+						$("more_options_div").show();
+						$("less_options_div").hide();
+						$("less_options_div2").hide();
+						
+						$("more_options_fields").select("input", "textarea").each(function (el) {
+							el.value = "";
+						});
+					');
+					$this->Js->get('#less_options_link2')->event('click', '
+						$("more_options_fields").hide();
+						$("more_options_div").show();
+						$("less_options_div").hide();
+						$("less_options_div2").hide();
+						
+						$("more_options_fields").select("input", "textarea").each(function (el) {
+							el.value = "";
+						});
 					');
 					echo $this->Js->writeBuffer();
 					echo $this->Buro->submit(array(), array('cancel' => true));
