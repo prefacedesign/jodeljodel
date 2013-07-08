@@ -43,7 +43,11 @@ Configure::write('ContentStream.streams', array(
 	'pie_title' => array(
 		'model' => 'PieTitle.PieTitle',
 		'title' => __d('content_stream', 'Title for PieTitle content', true)
-	)
+	),
+	'pie_entity' => array(
+		'model' => 'PieEntity.PieEntity',
+		'title' => __d('content_stream', 'Title for PieEntity content', true)
+	),
 ));
 
 /**
@@ -53,7 +57,7 @@ Configure::write('ContentStream.streams', array(
  * @todo Type validation? Like "can´t publish gallery if number of images is less than X"
  */
 Configure::write('ContentStream.types', array(
-	'document' => array('pie_text', 'pie_image', 'pie_file', 'pie_divider', 'pie_title'),
+	'document' => array('pie_text', 'pie_image', 'pie_file', 'pie_divider', 'pie_title', 'pie_entity'),
 	'gallery' => array('pie_image'),
 	'folder' => array('pie_file'),
 	'article' => array('pie_text', 'pie_image'),

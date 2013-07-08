@@ -79,6 +79,30 @@ Configure::write('Media.filter_plus.content_stream', array(
 	)
 ));
 
+Configure::write('Media.filter_plus.entity_person', array(
+	'fields' => array('PieEntity.photo'),
+	'image' => array(
+		'backstage_preview' => array(
+			'fit' => array(
+				$backstageTools['hg']->size(array('M' => 3, 'g' => -1), false),
+				$backstageTools['vg']->size(array('M' => 4, 'g' => -1), false)
+			)
+		),
+	)
+));
+
+Configure::write('Media.filter_plus.entity_logo', array(
+	'fields' => array('PieEntity.logo'),
+	'image' => array(
+		'backstage_preview' => array(
+			'fit' => array(
+				$backstageTools['hg']->size(array('M' => 2, 'g' => -1), false),
+				$backstageTools['vg']->size(array('M' => 2, 'g' => -1), false)
+			)
+		),
+	)
+));
+
 Configure::write('Media.filter_plus.picture', array(
 	'fields' => array('Picture.file_upload_id'),
 	'image' => array(
