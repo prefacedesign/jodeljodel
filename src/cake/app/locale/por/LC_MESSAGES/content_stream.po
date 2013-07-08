@@ -4,32 +4,149 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-09-26 19:27-0300\n"
-"PO-Revision-Date: 2011-09-26 18:29-0400\n"
-"Last-Translator: Daniel <daniel@preface.com.br>\n"
+"POT-Creation-Date: 2013-06-17 16:55-0300\n"
+"PO-Revision-Date: 2013-07-03 09:20-0300\n"
+"Last-Translator: Daniel Abrahão <daniel@preface.com.br>\n"
 "Language-Team: \n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: \plugins\content_stream\config\config.php:16
+#: /plugins/content_stream/config/config.php:29
 msgid "Title for PieImage content"
 msgstr "Imagem"
 
-#: \plugins\content_stream\config\config.php:20
+#: /plugins/content_stream/config/config.php:33
 msgid "Title for PieFile content"
 msgstr "Arquivo"
 
-#: \plugins\content_stream\config\config.php:24
+#: /plugins/content_stream/config/config.php:37
 msgid "Title for PieText content"
 msgstr "Texto"
 
-#: \plugins\content_stream\config\config.php:28
+#: /plugins/content_stream/config/config.php:41
 msgid "Title for PieDivider content"
 msgstr "Divisória"
 
-#: \plugins\content_stream\config\config.php:32
+#: /plugins/content_stream/config/config.php:45
 msgid "Title for PieTitle content"
 msgstr "Título"
+
+#: /plugins/pie_divider/views/elements/pie_divider.ctp:44
+msgid "PieDivider instructions"
+msgstr "Deseja adicionar uma divisória?"
+
+#: /plugins/pie_file/views/elements/pie_file.ctp:111
+msgid "PieFile.file_id label"
+msgstr "Arquivo"
+
+#: /plugins/pie_file/views/elements/pie_file.ctp:112
+msgid "PieFile.file_id instructions"
+msgstr " "
+
+#: /plugins/pie_file/views/elements/pie_file.ctp:131
+msgid "PieFile.title label"
+msgstr "Título"
+
+#: /plugins/pie_file/views/elements/pie_file.ctp:132
+msgid "PieFile.title instructions"
+msgstr " "
+
+#: /plugins/pie_file/views/elements/pie_file.ctp:141
+msgid "PieFile.description label"
+msgstr "Descrição"
+
+#: /plugins/pie_file/views/elements/pie_file.ctp:142
+msgid "PieFile.description instructions"
+msgstr " "
+
+#: /plugins/pie_file/views/elements/pie_file.ctp:166
+msgid "PieFile - Download file:"
+msgstr "Baixar arquivo:"
+
+#: /plugins/pie_image/views/elements/pie_image.ctp:70
+msgid "PieImage.file_id label"
+msgstr "Imagem"
+
+#: /plugins/pie_image/views/elements/pie_image.ctp:71
+msgid "PieImage.file_id instructions"
+msgstr " "
+
+#: /plugins/pie_image/views/elements/pie_image.ctp:83
+msgid "PieImage.title label"
+msgstr "Título"
+
+#: /plugins/pie_image/views/elements/pie_image.ctp:84
+msgid "PieImage.title instructions"
+msgstr " "
+
+#: /plugins/pie_image/views/elements/pie_image.ctp:93
+msgid "PieImage.subtitle label"
+msgstr "Legenda"
+
+#: /plugins/pie_image/views/elements/pie_image.ctp:94
+msgid "PieImage.subtitle instructions"
+msgstr " "
+
+#: /plugins/pie_image/views/elements/pie_image.ctp:101
+msgid "PieImage.link_type label"
+msgstr "Tipo de link"
+
+#: /plugins/pie_image/views/elements/pie_image.ctp:102
+msgid "PieImage.link_type instructions"
+msgstr "Escolha o tipo de link desta imagem"
+
+#: /plugins/pie_image/views/elements/pie_image.ctp:104
+msgid "PieImage.link_type none"
+msgstr "Sem link"
+
+#: /plugins/pie_image/views/elements/pie_image.ctp:105
+msgid "PieImage.link_type own"
+msgstr "Link para a imagem original"
+
+#: /plugins/pie_image/views/elements/pie_image.ctp:106
+msgid "PieImage.link_type external"
+msgstr "Link para algo externo"
+
+#: /plugins/pie_image/views/elements/pie_image.ctp:113
+msgid "PieImage.link label"
+msgstr "Link externo"
+
+#: /plugins/pie_image/views/elements/pie_image.ctp:114
+msgid "PieImage.link instructions"
+msgstr "Coloque o endereço completo do link aqui"
+
+#: /plugins/pie_text/views/elements/pie_text.ctp:49
+msgid "PieText.text label"
+msgstr "Texto"
+
+#: /plugins/pie_text/views/elements/pie_text.ctp:50
+msgid "PieText.text instructions"
+msgstr " "
+
+#: /plugins/pie_title/views/elements/pie_title.ctp:63
+msgid "PieTitle.level label"
+msgstr "Nível"
+
+#: /plugins/pie_title/views/elements/pie_title.ctp:64
+msgid "PieTitle.level instructions"
+msgstr " "
+
+#: /plugins/pie_title/views/elements/pie_title.ctp:67
+msgid "PieTitle level 1"
+msgstr "Nível 1"
+
+#: /plugins/pie_title/views/elements/pie_title.ctp:68
+msgid "PieTitle level 2"
+msgstr "Nível 2"
+
+#: /plugins/pie_title/views/elements/pie_title.ctp:79
+msgid "PieTitle.title label"
+msgstr "Título"
+
+#: /plugins/pie_title/views/elements/pie_title.ctp:80
+msgid "PieTitle.title instructions"
+msgstr " "
 
