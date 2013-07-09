@@ -165,7 +165,7 @@ class RequestLoggableComponent extends Object
 	{
 		if ($exit)
 		{
-			$this->set('redirected', $url);
+			this->set('redirected', Router::url($url));
 			$this->log();
 		}
 	}
