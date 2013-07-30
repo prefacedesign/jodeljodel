@@ -2043,7 +2043,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$Model =& ClassRegistry::init($model_class_name);
 			foreach ($this->data[$assocName] as $data)
 			{
-				$data = array($model => $data);
+				$data = array($assocName => $data);
 				$contents[] = array(
 					'content' => $this->Jodel->insertModule($model_class_name, $type, $data),
 					'id' => $data[$assocName][$Model->primaryKey]
