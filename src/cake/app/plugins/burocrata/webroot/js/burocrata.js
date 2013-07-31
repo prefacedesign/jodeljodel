@@ -1859,7 +1859,8 @@ var BuroUploadGeneric = Class.create({
 	{
 		this.ajax_upload = (
 			'multiple' in new Element('input', {type: 'file'}) &&
-			!Object.isUndefined(File) &&
+			typeof File != 'undefined' &&
+			typeof FormData != 'undefined' &&
 			!Object.isUndefined((new XMLHttpRequest()).upload)
 		);
 		
@@ -2295,8 +2296,10 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 			chunk = this.file.mozSlice(this.currentByte, this.endByte);
 		else if (this.file.webkitSlice)
 			chunk = this.file.webkitSlice(this.currentByte, this.endByte);
-		else if (this.file.slice)
+		else if (this.file.slice && this.file.slice(2,1).size == 1)
 			chunk = this.file.slice(this.currentByte, this.endByte - this.currentByte);
+		else if (this.file.slice)
+			chunk = this.file.slice(this.currentByte, this.endByte);
 
 		if (!chunk)
 			throw "Chunk is empty";
