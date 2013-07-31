@@ -281,7 +281,7 @@ class JjMediaController extends JjMediaAppController {
 		}
 		else
 		{
-			$nextByte = filesize(TMP . $hash);
+			$nextByte = filesize($gluedFileName);
 		}
 
 		renderAjaxUpload:
