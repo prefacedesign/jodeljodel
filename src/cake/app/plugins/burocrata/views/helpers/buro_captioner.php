@@ -98,5 +98,7 @@ class BuroCaptionerHelper extends AppHelper
 	{
 		$this->BuroOfficeBoy->addCaption('upload', 'error_validImage',
 				__d('burocrata','The uploaded file is not a valid image file.',true));
+		$this->BuroOfficeBoy->addCaption('upload', 'error_pixels',
+				__d('burocrata','A imagem enviada é muito grande.',true));
 	}
 }
