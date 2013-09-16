@@ -208,7 +208,7 @@ class RequestLoggableComponent extends Object
 		$browserInfo = getBrowser() + array('userAgent' => '', 'name' => '', 'version' => '', 'platform' => '');
 
 		$new_data = array(
-			'time' => date("Y-m-d h:i:s"),
+			'time' => date("Y-m-d H:i:s"),
 			'session_id' => $this->Session->id(),
 			'ip' => $this->RequestHandler->getClientIP(),
 			'is_ajax' => $this->RequestHandler->isAjax(),
