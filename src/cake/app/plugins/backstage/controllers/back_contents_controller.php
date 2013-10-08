@@ -53,6 +53,7 @@ class BackContentsController extends BackstageAppController
 	var $backstageSettings;
 	var $limit = 20;
 	var $status = false;
+	var $custom_filter = array();
 
 /**
  * Before filter callback (loads configuration parameters)
@@ -186,12 +187,25 @@ class BackContentsController extends BackstageAppController
 	
 	private function __getOptions($moduleName)
 	{
+		$this->backstageModel = ClassRegistry::init(array('class' =>  $this->modules[$moduleName]['model']));
+		
 		$defaultOptions = array();
 		$this->status = $this->Session->read("Backstage.{$moduleName}.status");
 		if ($this->status != 'all' && !empty($this->status))
-			$defaultOptions['conditions']['publishing_status'] = $this->status;
+			$defaultOptions['conditions'][$this->backstageModel->alias.'.publishing_status'] = $this->status;
 		
-		$this->backstageModel = ClassRegistry::init(array('class' =>  $this->modules[$moduleName]['model']));
+		if (isset($this->backstageSettings[$moduleName]['customFilters']))
+		{
+			foreach($this->backstageSettings[$moduleName]['customFilters'] as $customFilter)
+			{
+				$fieldName = $customFilter['fieldName'];
+				$fieldValue = $this->Session->read("Backstage.{$fieldName}.{$moduleName}.status");
+				if ($fieldValue != 'all' && !empty($fieldValue))
+					$defaultOptions['conditions'][$fieldName] = $fieldValue;
+				
+				$this->custom_filter[$fieldName] = $fieldValue;
+			}
+		}
 		
 		if (isset($this->backstageSettings[$moduleName]['limitSize']))
 			$defaultOptions['limit'] = $this->backstageSettings[$moduleName]['limitSize'];
@@ -257,6 +271,7 @@ class BackContentsController extends BackstageAppController
 	
 	function index($moduleName)
 	{
+		$this->TradLanguageSelector->setLanguage(Configure::read('Tradutore.mainLanguage'));
 		$this->header('Cache-Control: no-cache, max-age=0, must-revalidate, no-store');
 		
 		$conditions = array();
@@ -294,6 +309,7 @@ class BackContentsController extends BackstageAppController
 					$this->set('moduleName', $moduleName);
 					$this->set('modelName', $this->backstageModel->alias);
 					$this->set('filter_status', $this->status);
+					$this->set('custom_filter', $this->custom_filter);
 					$this->data = $this->paginate($this->backstageModel);
 					$this->helpers['Paginator'] = array('ajax' => 'Ajax');
 					
@@ -337,6 +353,12 @@ class BackContentsController extends BackstageAppController
 	function filter_published_draft($status, $moduleName)
 	{
 		$this->Session->write("Backstage.{$moduleName}.status", $status);
+		$this->filter_and_search($moduleName);
+	}
+	
+	function filter_custom($fieldName, $status, $moduleName)
+	{
+		$this->Session->write("Backstage.{$fieldName}.{$moduleName}.status", $status);
 		$this->filter_and_search($moduleName);
 	}
 	
@@ -489,7 +511,7 @@ class BackContentsController extends BackstageAppController
 			$this->jodelError('Method '.$modelName.'::createEmptyTranslation() (TradTradutoreBehavior method) could not create an empty translation!');
 		}
 			
-		$this->redirect(array('action' => 'edit', $moduleName, $id));
+		$this->redirect(array('language' => $this->params['language'], 'action' => 'edit', $moduleName, $id));
 	}
 	
 	function layout_test()
