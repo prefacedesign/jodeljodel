@@ -30,6 +30,12 @@ Configure::write('Backstage.itemSettings',array(
 			'paramsFoward' => array(0 => 'some_field_to_filter'),
 			'contain' => array('ModelModel'),
 			'additionalFilteringConditions' => array('Dashboard.DashboardFiltering'), // see plugins/dashboard/config/dash.php to more details
+			'customFilters' => array(
+				'someIrrelevantIndexName' => array(
+					'fieldName' => 'some_field_name', // to be filtered by
+					'values' => array('value1', 'value2') // possibles values of the field
+				)
+			),
 		),
 		'user_users' => array(
 			'actions' => array('delete','edit', 'create'),
