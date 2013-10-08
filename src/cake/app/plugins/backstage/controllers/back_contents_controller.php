@@ -221,17 +221,16 @@ class BackContentsController extends BackstageAppController
 			$this->set('headerData', $headerData);
 		}
 		
-		$op = $this->Session->read('Backstage.searchOptions') ?: array();
-		
+		$op = $this->Session->read('Backstage.searchOptions') ?: array();		
 		$options = array_merge_recursive($options, $op, $defaultOptions);
-		if (isset($settings['additionalFilteringConditions']))
+		if (isset($this->modules[$moduleName]['additionalFilteringConditions']))
 		{
 			if (!isset($options['conditions']))
 			{
 				$options['conditions'] = array();
 			}
 			
-			foreach ($settings['additionalFilteringConditions'] as $filterName)
+			foreach ($this->modules[$moduleName]['additionalFilteringConditions'] as $filterName)
 			{
 				if (App::import('Lib', $filterName))
 				{
