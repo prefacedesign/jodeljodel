@@ -298,8 +298,37 @@ class BackContentsController extends BackstageAppController
 					$this->data = $this->paginate($this->backstageModel);
 					$this->helpers['Paginator'] = array('ajax' => 'Ajax');
 					
-					if($this->RequestHandler->isAjax()) {
-						$this->render('filter');            
+					$config = $this->modules[$moduleName];
+					if (isset($config['additionalFilteringConditions']))
+					{
+						$canView = true;
+						foreach($config['additionalFilteringConditions'] as $filterName)
+						{
+							if (App::import('Lib', $filterName))
+							{
+								list ($filterPlugin, $filterName) = pluginSplit($filterName);
+								if (!$filterName::can($this, $this->data))
+								{
+									$canView = false;
+								}
+							}
+						}
+						if (!$canView)
+						{
+							$this->JjAuth->stop();
+						}
+					}
+					elseif (isset($config['permissions']) && isset($config['permissions']['view']))
+					{
+						if (!$this->JjAuth->can($config['permissions']['view']))
+						{
+							$this->JjAuth->stop();
+						}
+					}
+
+					if($this->RequestHandler->isAjax())
+					{
+						$this->render('filter');
 					}
 				}
 			}
