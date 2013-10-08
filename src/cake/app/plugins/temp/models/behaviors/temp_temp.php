@@ -49,7 +49,7 @@
  */
  
  App::import('Config', 'Temp.tmp_config');
- App::import('Component', 'Session');
+ 
 
 class TempTempBehavior extends ModelBehavior 
 {
@@ -100,19 +100,21 @@ class TempTempBehavior extends ModelBehavior
 		else
 			$Model->data[$Model->name][$this->__settings[$Model->name]['field']] = 1;
 			
-		$Session = new SessionComponent();
 		$modifiedBefore = $this->__settings[$Model->name]['modifiedBefore'];
 		$options = Configure::read('TempBehavior.options');
 		
 		$tempTime = $options['tempTime'];
-		$nextClean = $Session->read('nextClean');
+		if (!empty($_SESSION['nextClean']))
+		{
+			$nextClean = $_SESSION['nextClean'];
+		}
 
 		$clean = false;
 		if (empty($nextClean))
 		{
 			$clean = true;
 			$nextClean = strtotime('+'.$tempTime. ' seconds');
-			$Session->write('nextClean',$nextClean);
+			$_SESSION['nextClean'] = $nextClean;
 		}
 		else
 		{
@@ -121,7 +123,7 @@ class TempTempBehavior extends ModelBehavior
 			{
 				$clean = true;
 				$nextClean = strtotime('+'.$tempTime. ' seconds');
-				$Session->write('nextClean',$nextClean);
+				$_SESSION['nextClean'] = $nextClean;
 			}
 		}
 		if ($clean)
