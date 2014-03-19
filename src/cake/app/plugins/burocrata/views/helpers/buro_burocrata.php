@@ -2522,7 +2522,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 			. "$('{$act_id}').hide();"
 		);
 		
-		$gen_options['model'] = 'JjMedia.SfilImageFile';
+		if (empty($gen_options['model']))
+			$gen_options['model'] = 'JjMedia.SfilImageFile';
 		$out .= $this->_upload($gen_options, $file_input_options);
 		
 		// Div for previews
