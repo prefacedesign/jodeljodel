@@ -57,6 +57,7 @@ class SfilImageFile extends SfilStoredFile
 			'location'   => array('rule' => array('checkLocation', array(MEDIA_TRANSFER, '/tmp/'))),
 			'permission' => array('rule' => array('checkPermission', '*')),
 			'size'       => array('rule' => array('checkSize', '5M')),
+			'pixels'     => array('rule' => array('checkPixels', '3000x2000')), // 6 megapixels (the dimension is not checked)
 			'validImage' => array('rule' => array('checkMimeType', false, array('image/jpeg', 'image/png', 'image/tiff', 'image/gif', 'application/pdf')))
 		),
 	);

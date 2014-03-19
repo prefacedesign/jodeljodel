@@ -154,8 +154,14 @@ class BuroBurocrataHelper extends XmlTagHelper
 				if ($inputOptions['type'] == 'radio') 
 					$inputOptions['label'] = true;
 				elseif ($inputOptions['type'] == 'checkbox')
+				{
+					// replace cakephp's  hidden field with zeroed default value, but adds the buro:form in it
+					$inputOptions['hiddenField'] = false;
+					$out .= $this->Form->input($options['fieldName'], array('type' => 'hidden', 'value' => 0)+$htmlAttributes);
+
 					if (isset($options['options']['label']))
 						$inputOptions['label'] = $options['options']['label'];
+				}
 				
 				if (!empty($options['fieldName']))
 					$out .= $this->Form->input($options['fieldName'], $inputOptions);
@@ -2516,7 +2522,8 @@ class BuroBurocrataHelper extends XmlTagHelper
 			. "$('{$act_id}').hide();"
 		);
 		
-		$gen_options['model'] = 'JjMedia.SfilImageFile';
+		if (empty($gen_options['model']))
+			$gen_options['model'] = 'JjMedia.SfilImageFile';
 		$out .= $this->_upload($gen_options, $file_input_options);
 		
 		// Div for previews
