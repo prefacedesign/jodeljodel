@@ -1146,11 +1146,6 @@
 	));
 	
 	$this->Decorator->rule(
-		'div.dash_search input', array(
-			'margin-top' => $vg->size('-6m-2u')
-	));
-	
-	$this->Decorator->rule(
 		'div.dash_search input, div.dash_search label', array(
 			'width' => $hg->size('4M-1.6g'),
 			'border' => sprintf('%s solid %s', $u->t(1), $palette['input_borders']->write()),
