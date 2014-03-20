@@ -69,12 +69,16 @@ var SearchInput = Class.create({
 	},
 	hideLabel: function(ev)
 	{
-		this.label.setStyle({visibility: 'hidden'});
+		if (this.label) {
+			this.label.setStyle({visibility: 'hidden'});
+		}
 	},
 	showLabel: function(ev)
 	{
-		if (this.input.value.blank())
-			this.label.setStyle({visibility: ''});
+		if (this.label) {
+			if (this.input.value.blank())
+				this.label.setStyle({visibility: ''});
+		}
 	}
 });
 
