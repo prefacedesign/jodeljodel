@@ -19,6 +19,11 @@ App::import('Lib', array('JjUtils.SecureParams'));
  *
  * Media JjMediaController
  *
+ * @property SfilStoredFile $SfilStoredFile
+ * @property TypeLayoutSchemePickerComponent $TypeLayoutSchemePicker
+ * @property RequestHandlerComponent $RequestHandler
+ * @property BuroBurocrataComponent $BuroBurocrata
+ *
  * @package jj_bedia
  * @subpackage jj_bedia.controllers
  */
@@ -37,7 +42,7 @@ class JjMediaController extends JjMediaAppController {
  * @var string
  * @access public
  */
-	var $uses = array();
+	var $uses = array('JjMedia.SfilStoredFile');
 
 /**
  * List of components
@@ -65,7 +70,7 @@ class JjMediaController extends JjMediaAppController {
 	function beforeFilter()
 	{
 		parent::beforeFilter();
-		if ($this->JjAuth)
+		if (isset($this->JjAuth))
 			$this->JjAuth->allow('*');
 		$this->TypeLayoutSchemePicker->pick('backstage');
 	}
@@ -97,24 +102,19 @@ class JjMediaController extends JjMediaAppController {
 		if (count($unpacked) != 2)
 			$this->cakeError('error404');
 		
-		$modelName = 'JjMedia.SfilStoredFile';
-		if (!$this->loadModel($modelName))
-			return;
-		
 		list($sfil_stored_files_id, $version) = $unpacked;
-		list($plugin, $modelName) = pluginSplit($modelName);
-		$model_alias = $this->{$modelName}->alias;
+		$model_alias = $this->SfilStoredFile->alias;
 		
 		if(!empty($sfil_stored_files_id))
 		{
-			$this->{$modelName}->contain();
-			$file_data = $this->{$modelName}->findById($sfil_stored_files_id);
+			$this->SfilStoredFile->contain();
+			$file_data = $this->SfilStoredFile->findById($sfil_stored_files_id);
 			
 			if (empty($file_data))
 				$this->cakeError('error404');
 
 			if (empty($name) && !$download)
-				$this->redirect(array($download, $data, $file_data[$this->{$modelName}->alias]['original_filename']), 301);
+				$this->redirect(array($download, $data, $file_data[$this->SfilStoredFile->alias]['original_filename']), 301);
 
 			if(!empty($file_data))
 			{
