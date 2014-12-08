@@ -163,6 +163,9 @@ class JjMediaController extends JjMediaAppController {
 		}
 	}
 
+	/**
+	 * Accessed whenever the filtered image doesn't exists
+	 */
 	function deliver_filter () {
 		/**
 		 * @type string $filter
@@ -184,12 +187,26 @@ class JjMediaController extends JjMediaAppController {
 		$fileName .= DS . $file['SfilStoredFile']['basename'];
 		$fileName = str_replace(array('\\', '/'), DS, $fileName);
 
-		if (!is_file($fileName) && is_readable($fileName)) {
-			Configure::read('JjMedia.options');
-			$mirror = Configure::read('JjMedia.mirror');
-			if ($mirror) {
+		if (!is_file($fileName) || !is_readable($fileName)) {
+			Configure::load('JjMedia.options');
 
+			$mirror = Configure::read('JjMedia.mirror');
+			if (!$mirror) {
+				$this->cakeError('error404');
+				exit;
 			}
+
+			if (substr($mirror, -1, 1) != '/') {
+				$mirror .= '/';
+			}
+			$mirror .= $file['SfilStoredFile']['dirname'] . '/' . $file['SfilStoredFile']['basename'];
+
+			$contents = file_get_contents($mirror);
+			if ($contents === false || file_put_contents($fileName, $contents) === false) {
+				$this->cakeError('error404');
+				exit;
+			}
+			unset($contents);
 		}
 
 		debug($fileName);
