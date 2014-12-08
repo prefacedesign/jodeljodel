@@ -163,6 +163,41 @@ class JjMediaController extends JjMediaAppController {
 		}
 	}
 
+	function deliver_filter () {
+		/**
+		 * @type string $filter
+		 * @type string $type
+		 * @type string $basename
+		 */
+		extract($this->params);
+		$this->autoRender = false;
+
+		$this->SfilStoredFile->Behaviors->disable('Coupler');
+		$file = $this->SfilStoredFile->find('first', array(
+			'conditions' => array(
+				'SfilStoredFile.basename' => $basename
+			)
+		));
+
+		$fileName  = MEDIA_TRANSFER;
+		$fileName .= $file['SfilStoredFile']['dirname'];
+		$fileName .= DS . $file['SfilStoredFile']['basename'];
+		$fileName = str_replace(array('\\', '/'), DS, $fileName);
+
+		if (!is_file($fileName) && is_readable($fileName)) {
+			Configure::read('JjMedia.options');
+			$mirror = Configure::read('JjMedia.mirror');
+			if ($mirror) {
+
+			}
+		}
+
+		debug($fileName);
+		debug($filter);
+		debug($file);
+
+	}
+
 /**
  * upload action
  *
