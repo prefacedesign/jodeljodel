@@ -60,7 +60,12 @@ class JjMediaController extends JjMediaAppController {
  */
 	public $layout_scheme;
 
-/**
+	/**
+	 * @var array
+	 */
+	public $buroData;
+
+	/**
  * beforeFilter callback for allow anyone to have access
  * And properly load the bricklayer helper
  * 
@@ -192,8 +197,7 @@ class JjMediaController extends JjMediaAppController {
 	protected function performAjaxUpload()
 	{
 		$error = false;
-		$version = '';
-		
+
 		$startByte = env('HTTP_X_UPLOADER_START_BYTE');
 		$isLast = env('HTTP_X_UPLOADER_IS_LAST');
 		$chunkSize = env('HTTP_X_UPLOADER_CHUNK_SIZE');
@@ -218,7 +222,6 @@ class JjMediaController extends JjMediaAppController {
 
 		if (empty($this->data['hash']))
 		{
-			$n = 0;
 			do {
 				$hash = uniqid('', true);
 			} while (file_exists(TMP . $hash));
@@ -326,6 +329,8 @@ class JjMediaController extends JjMediaAppController {
 		else
 		{
 			list($plugin, $modelName) = pluginSplit($modelName);
+
+			/** @var AppModel $Model */
 			$Model =& $this->{$modelName};
 			$model_alias = $Model->alias;
 			
