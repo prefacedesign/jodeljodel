@@ -242,8 +242,9 @@ class GeneratorPlusBehavior extends ModelBehavior {
 	 *
 	 * @param AppModel $Model
 	 * @param string   $scope
+	 * @param string   $onlyFilter
 	 */
-	public function createGeneratorConfigure (&$Model, $scope) {
+	public function createGeneratorConfigure (&$Model, $scope, $onlyFilter = null) {
 		$this->loadConfigure();
 
 		$filters = array();
@@ -261,6 +262,9 @@ class GeneratorPlusBehavior extends ModelBehavior {
 				}
 
 				foreach ($filter as $filter_name => $filter_instructions) {
+					if ($onlyFilter && $filter_name != $onlyFilter) {
+						continue;
+					}
 					$filters[$type][$scope . '_' . $filter_name] = $filter_instructions;
 				}
 			}
