@@ -213,6 +213,11 @@ class JjMediaController extends JjMediaAppController {
 
 		// At this point is safe to assume that $fileName points to a existing file that can be read
 
+		if (empty($filter)) {
+			$this->redirect($url);
+			exit;
+		}
+
 		$filter = str_replace($file['SfilStoredFile']['transformation'].'_', '', $filter);
 
 		$this->SfilStoredFile->setScope($file['SfilStoredFile']['transformation']);
