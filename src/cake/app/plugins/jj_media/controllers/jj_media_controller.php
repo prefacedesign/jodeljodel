@@ -182,6 +182,8 @@ class JjMediaController extends JjMediaAppController {
 			)
 		));
 
+		$url = Router::url(compact('filter', 'type', 'basename'));
+
 		$fileName  = MEDIA_TRANSFER;
 		$fileName .= $file['SfilStoredFile']['dirname'];
 		$fileName .= DS . $file['SfilStoredFile']['basename'];
@@ -209,10 +211,19 @@ class JjMediaController extends JjMediaAppController {
 			unset($contents);
 		}
 
-		debug($fileName);
-		debug($filter);
-		debug($file);
+		// At this point is safe to assume that $fileName points to a existing file that can be read
 
+		$filter = str_replace($file['SfilStoredFile']['transformation'].'_', '', $filter);
+
+		$this->SfilStoredFile->setScope($file['SfilStoredFile']['transformation']);
+		$this->SfilStoredFile->createGeneratorConfigure($file['SfilStoredFile']['transformation'], $filter);
+		// Avoiding the overwritten method on model
+		if ($this->SfilStoredFile->Behaviors->dispatchMethod($this->SfilStoredFile, 'make', array($fileName))) {
+			$this->redirect($url);
+			exit;
+		}
+
+		$this->cakeError('error404');
 	}
 
 /**
