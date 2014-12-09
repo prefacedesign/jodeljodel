@@ -133,6 +133,34 @@ class SfilStoredFile extends JjMediaAppModel {
 		)
 	);
 
+	/**
+	 * @param int    $file_id
+	 * @param string $version
+	 *
+	 * @return bool|string
+	 */
+	public function webPath ($file_id, $version = null) {
+		$this->Behaviors->disable('Coupler');
+		$data = $this->find('first', array('conditions' => array('id' => $file_id)));
+		$this->Behaviors->enable('Coupler');
+
+		if (empty($data)) {
+			return false;
+		}
+
+		/**
+		 * @var string $basename
+		 * @var string $dirname
+		 * @var string $transformation
+		 */
+		extract($data[$this->alias], EXTR_SKIP);
+		if (empty($version)) {
+			return '/' . MEDIA_TRANSFER_URL . "{$dirname}/{$basename}";
+		}
+
+		return '/' . MEDIA_FILTER_URL . "{$transformation}_{$version}/{$dirname}/{$basename}";
+	}
+
 /**
  * Return the properties of an image
  *
