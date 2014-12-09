@@ -253,7 +253,7 @@ class GeneratorPlusBehavior extends ModelBehavior {
 			$filters[$type] = array();
 		}
 
-		if (!empty($scope)) {
+		if (!empty($scope) && ($onlyFilter || Configure::read('JjMedia.asyncGeneration') == false)) {
 			/** @type array $filter_plus */
 			$filter_plus = Configure::read('Media.filter_plus.' . $scope);
 			foreach ($filter_plus as $type => $filter) {
@@ -282,6 +282,8 @@ class GeneratorPlusBehavior extends ModelBehavior {
 		if (Configure::read('Media.filter_plus')) {
 			return;
 		}
+
+		Configure::load('JjMedia.options');
 
 		/** @type string[] $layout_schemes */
 		$layout_schemes = Configure::read('Typographer.layout_schemes');

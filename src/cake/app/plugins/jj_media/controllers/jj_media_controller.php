@@ -416,11 +416,16 @@ class JjMediaController extends JjMediaAppController {
 					if (!empty($data[$fieldModelName][$fieldName]))
 						$Model->delete($data[$fieldModelName][$fieldName]);
 
-					App::import('Lib', array('JjUtils.SecureParams'));
-					$packed_params = SecureParams::pack(array($saved, $version), true);
-					$baseUrl = array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'index');
-					$dlurl = Router::url($baseUrl + array('1', $packed_params));
-					$url = Router::url($baseUrl + array($packed_params));
+					if (Configure::read('JjMedia.asyncGeneration') == false) {
+						App::import('Lib', array('JjUtils.SecureParams'));
+						$packed_params = SecureParams::pack(array($saved, $version), true);
+						$baseUrl = array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'index');
+						$dlurl = Router::url($baseUrl + array('1', $packed_params));
+						$url = Router::url($baseUrl + array($packed_params));
+					}
+					else {
+						$dlurl = $url = $this->SfilStoredFile->webPath($saved, $version);
+					}
 				}
 			}
 		}

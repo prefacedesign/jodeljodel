@@ -7,3 +7,11 @@
  * $type string|false
  */
 $config['JjMedia']['mirror'] = '';
+
+/**
+ * When set to false, the JjMedia will create the filtered images right after the original is saved.
+ * If set to true, the filtered image will be created only when requested.
+ *
+ * @type boolean
+ */
+$config['JjMedia']['asyncGeneration'] = true;

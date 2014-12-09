@@ -181,16 +181,30 @@ class SfilStoredFile extends JjMediaAppModel {
 		if (empty($file_data))
 			return array();
 
-		if (!empty($file_data[$this->alias]['transformation']))
-			$version = $file_data[$this->alias]['transformation'] . '_' . $version;
-		
-		$id = $name = $file_data[$this->alias]['basename'];
-		$path = MEDIA_FILTER . $version . DS;
-		
-		$path .= $file_data[$this->alias]['dirname'] . DS;
-		
-		return getimagesize($path . $id);
-		
+		$id = $file_data[$this->alias]['basename'];
+		if (empty($version))
+		{
+			$path = MEDIA_TRANSFER . $file_data[$this->alias]['dirname'] . DS . $id;
+			$webroot_path = '/' . MEDIA_TRANSFER_URL . $file_data[$this->alias]['dirname'] . '/' . $id;
+		}
+		else
+		{
+			if (!empty($file_data[$this->alias]['transformation']))
+				$version = $file_data[$this->alias]['transformation'] . '_' . $version;
+			
+			$path = MEDIA_FILTER . $version . DS . $file_data[$this->alias]['dirname'] . DS . $id;
+			$webroot_path = '/' . MEDIA_FILTER_URL . $version . '/' . $file_data[$this->alias]['dirname'] . '/' . $id;
+		}
+
+		if (file_exists($path))
+		{
+			$properties = getimagesize($path);
+			$data = $file_data[$this->alias];
+			$data['remote'] = 0;
+			return compact('properties', 'path', 'webroot_path', 'data');
+		}
+
+		return false;
 	}
 	
 /**
