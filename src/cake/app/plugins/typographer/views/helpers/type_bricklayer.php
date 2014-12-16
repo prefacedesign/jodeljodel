@@ -226,7 +226,9 @@ class TypeBricklayerHelper extends AppHelper
  */
 	public function imageURL($id, $version = '')
 	{
-		return $this->fileURL($id, $version);
+		/** @var SfilStoredFile $Media */
+		$Media = ClassRegistry::init('JjMedia.SfilStoredFile');
+		return $Media->webPath($id, $version);
 	}
 
 
@@ -290,9 +292,10 @@ class TypeBricklayerHelper extends AppHelper
 		
 		if (!empty($options['id']))
 		{
-			$htmlAttributes['src'] = $this->imageURL($options['id'], $options['version']);
-			unset($options['version']);
-			unset($options['id']);
+			$src = $this->imageURL($options['id'], $options['version']);
+			if (!empty($src))
+				$htmlAttributes['src'] = $src;
+			unset($options['version'],$options['id']);
 		}
 		return $this->stag('img', $htmlAttributes, $options);
 	}

@@ -30,6 +30,15 @@
 	Router::connect('/', array('controller' => 'principal', 'action' => 'index'));
 
 
+	Router::connect(
+		'/media/filter/:filter/:type/:basename',
+		array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'deliver_filter')
+	);
+	Router::connect(
+		'/media/transfer/:type/:basename',
+		array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'deliver_filter')
+	);
+
 /**
  * Adding `language` to the parsed named parameters
  *

@@ -133,6 +133,34 @@ class SfilStoredFile extends JjMediaAppModel {
 		)
 	);
 
+	/**
+	 * @param int    $file_id
+	 * @param string $version
+	 *
+	 * @return bool|string
+	 */
+	public function webPath ($file_id, $version = null) {
+		$this->Behaviors->disable('Coupler');
+		$data = $this->find('first', array('conditions' => array('id' => $file_id)));
+		$this->Behaviors->enable('Coupler');
+
+		if (empty($data)) {
+			return false;
+		}
+
+		/**
+		 * @var string $basename
+		 * @var string $dirname
+		 * @var string $transformation
+		 */
+		extract($data[$this->alias], EXTR_SKIP);
+		if (empty($version)) {
+			return '/' . MEDIA_TRANSFER_URL . "{$dirname}/{$basename}";
+		}
+
+		return '/' . MEDIA_FILTER_URL . "{$transformation}_{$version}/{$dirname}/{$basename}";
+	}
+
 /**
  * Return the properties of an image
  *
@@ -153,16 +181,30 @@ class SfilStoredFile extends JjMediaAppModel {
 		if (empty($file_data))
 			return array();
 
-		if (!empty($file_data[$this->alias]['transformation']))
-			$version = $file_data[$this->alias]['transformation'] . '_' . $version;
-		
-		$id = $name = $file_data[$this->alias]['basename'];
-		$path = MEDIA_FILTER . $version . DS;
-		
-		$path .= $file_data[$this->alias]['dirname'] . DS;
-		
-		return getimagesize($path . $id);
-		
+		$id = $file_data[$this->alias]['basename'];
+		if (empty($version))
+		{
+			$path = MEDIA_TRANSFER . $file_data[$this->alias]['dirname'] . DS . $id;
+			$webroot_path = '/' . MEDIA_TRANSFER_URL . $file_data[$this->alias]['dirname'] . '/' . $id;
+		}
+		else
+		{
+			if (!empty($file_data[$this->alias]['transformation']))
+				$version = $file_data[$this->alias]['transformation'] . '_' . $version;
+			
+			$path = MEDIA_FILTER . $version . DS . $file_data[$this->alias]['dirname'] . DS . $id;
+			$webroot_path = '/' . MEDIA_FILTER_URL . $version . '/' . $file_data[$this->alias]['dirname'] . '/' . $id;
+		}
+
+		if (file_exists($path))
+		{
+			$properties = getimagesize($path);
+			$data = $file_data[$this->alias];
+			$data['remote'] = 0;
+			return compact('properties', 'path', 'webroot_path', 'data');
+		}
+
+		return false;
 	}
 	
 /**

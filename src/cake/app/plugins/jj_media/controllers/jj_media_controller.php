@@ -19,6 +19,11 @@ App::import('Lib', array('JjUtils.SecureParams'));
  *
  * Media JjMediaController
  *
+ * @property SfilStoredFile $SfilStoredFile
+ * @property TypeLayoutSchemePickerComponent $TypeLayoutSchemePicker
+ * @property RequestHandlerComponent $RequestHandler
+ * @property BuroBurocrataComponent $BuroBurocrata
+ *
  * @package jj_bedia
  * @subpackage jj_bedia.controllers
  */
@@ -37,7 +42,7 @@ class JjMediaController extends JjMediaAppController {
  * @var string
  * @access public
  */
-	var $uses = array();
+	var $uses = array('JjMedia.SfilStoredFile');
 
 /**
  * List of components
@@ -55,7 +60,12 @@ class JjMediaController extends JjMediaAppController {
  */
 	public $layout_scheme;
 
-/**
+	/**
+	 * @var array
+	 */
+	public $buroData;
+
+	/**
  * beforeFilter callback for allow anyone to have access
  * And properly load the bricklayer helper
  * 
@@ -65,7 +75,7 @@ class JjMediaController extends JjMediaAppController {
 	function beforeFilter()
 	{
 		parent::beforeFilter();
-		if ($this->JjAuth)
+		if (isset($this->JjAuth))
 			$this->JjAuth->allow('*');
 		$this->TypeLayoutSchemePicker->pick('backstage');
 	}
@@ -97,24 +107,19 @@ class JjMediaController extends JjMediaAppController {
 		if (count($unpacked) != 2)
 			$this->cakeError('error404');
 		
-		$modelName = 'JjMedia.SfilStoredFile';
-		if (!$this->loadModel($modelName))
-			return;
-		
 		list($sfil_stored_files_id, $version) = $unpacked;
-		list($plugin, $modelName) = pluginSplit($modelName);
-		$model_alias = $this->{$modelName}->alias;
+		$model_alias = $this->SfilStoredFile->alias;
 		
 		if(!empty($sfil_stored_files_id))
 		{
-			$this->{$modelName}->contain();
-			$file_data = $this->{$modelName}->findById($sfil_stored_files_id);
+			$this->SfilStoredFile->contain();
+			$file_data = $this->SfilStoredFile->findById($sfil_stored_files_id);
 			
 			if (empty($file_data))
 				$this->cakeError('error404');
 
 			if (empty($name) && !$download)
-				$this->redirect(array($download, $data, $file_data[$this->{$modelName}->alias]['original_filename']), 301);
+				$this->redirect(array($download, $data, $file_data[$this->SfilStoredFile->alias]['original_filename']), 301);
 
 			if(!empty($file_data))
 			{
@@ -158,6 +163,74 @@ class JjMediaController extends JjMediaAppController {
 		}
 	}
 
+	/**
+	 * Accessed whenever the filtered image doesn't exists
+	 */
+	function deliver_filter () {
+		/**
+		 * @type string $filter
+		 * @type string $type
+		 * @type string $basename
+		 */
+		extract($this->params);
+		$this->autoRender = false;
+
+		$this->SfilStoredFile->Behaviors->disable('Coupler');
+		$file = $this->SfilStoredFile->find('first', array(
+			'conditions' => array(
+				'SfilStoredFile.basename' => $basename
+			)
+		));
+
+		$url = Router::url(compact('filter', 'type', 'basename'));
+
+		$fileName  = MEDIA_TRANSFER;
+		$fileName .= $file['SfilStoredFile']['dirname'];
+		$fileName .= DS . $file['SfilStoredFile']['basename'];
+		$fileName = str_replace(array('\\', '/'), DS, $fileName);
+
+		if (!is_file($fileName) || !is_readable($fileName)) {
+			Configure::load('JjMedia.options');
+
+			$mirror = Configure::read('JjMedia.mirror');
+			if (!$mirror) {
+				$this->cakeError('error404');
+				exit;
+			}
+
+			if (substr($mirror, -1, 1) != '/') {
+				$mirror .= '/';
+			}
+			$mirror .= $file['SfilStoredFile']['dirname'] . '/' . $file['SfilStoredFile']['basename'];
+
+			$contents = file_get_contents($mirror);
+			if ($contents === false || file_put_contents($fileName, $contents) === false) {
+				$this->cakeError('error404');
+				exit;
+			}
+			unset($contents);
+		}
+
+		// At this point is safe to assume that $fileName points to a existing file that can be read
+
+		if (empty($filter)) {
+			$this->redirect($url);
+			exit;
+		}
+
+		$filter = str_replace($file['SfilStoredFile']['transformation'].'_', '', $filter);
+
+		$this->SfilStoredFile->setScope($file['SfilStoredFile']['transformation']);
+		$this->SfilStoredFile->createGeneratorConfigure($file['SfilStoredFile']['transformation'], $filter);
+		// Avoiding the overwritten method on model
+		if ($this->SfilStoredFile->Behaviors->dispatchMethod($this->SfilStoredFile, 'make', array($fileName))) {
+			$this->redirect($url);
+			exit;
+		}
+
+		$this->cakeError('error404');
+	}
+
 /**
  * upload action
  *
@@ -192,8 +265,7 @@ class JjMediaController extends JjMediaAppController {
 	protected function performAjaxUpload()
 	{
 		$error = false;
-		$version = '';
-		
+
 		$startByte = env('HTTP_X_UPLOADER_START_BYTE');
 		$isLast = env('HTTP_X_UPLOADER_IS_LAST');
 		$chunkSize = env('HTTP_X_UPLOADER_CHUNK_SIZE');
@@ -218,7 +290,6 @@ class JjMediaController extends JjMediaAppController {
 
 		if (empty($this->data['hash']))
 		{
-			$n = 0;
 			do {
 				$hash = uniqid('', true);
 			} while (file_exists(TMP . $hash));
@@ -326,6 +397,8 @@ class JjMediaController extends JjMediaAppController {
 		else
 		{
 			list($plugin, $modelName) = pluginSplit($modelName);
+
+			/** @var AppModel $Model */
 			$Model =& $this->{$modelName};
 			$model_alias = $Model->alias;
 			
@@ -348,11 +421,16 @@ class JjMediaController extends JjMediaAppController {
 					if (!empty($data[$fieldModelName][$fieldName]))
 						$Model->delete($data[$fieldModelName][$fieldName]);
 
-					App::import('Lib', array('JjUtils.SecureParams'));
-					$packed_params = SecureParams::pack(array($saved, $version), true);
-					$baseUrl = array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'index');
-					$dlurl = Router::url($baseUrl + array('1', $packed_params));
-					$url = Router::url($baseUrl + array($packed_params));
+					if (Configure::read('JjMedia.asyncGeneration') == false) {
+						App::import('Lib', array('JjUtils.SecureParams'));
+						$packed_params = SecureParams::pack(array($saved, $version), true);
+						$baseUrl = array('plugin' => 'jj_media', 'controller' => 'jj_media', 'action' => 'index');
+						$dlurl = Router::url($baseUrl + array('1', $packed_params));
+						$url = Router::url($baseUrl + array($packed_params));
+					}
+					else {
+						$dlurl = $url = $this->SfilStoredFile->webPath($saved, $version);
+					}
 				}
 			}
 		}
