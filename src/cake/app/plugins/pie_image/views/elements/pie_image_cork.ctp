@@ -31,27 +31,7 @@ switch ($type[0])
 
 						$url = false;
 						$htmlAttr = array();
-						$assine =
-							!empty($data['CorkCorktile']['options']['type'])
-							&& $data['CorkCorktile']['options']['type'] == 'assine_revista';
-
-						$version = '';
-						if (isset($type[2]) && ($type[2] == 'quem_somos' || $type[2] == 'historia')) {
-							$version = 'preview_6M';
-						}
-						elseif (isset($data['CorkCorktile']['options']['type']) && $data['CorkCorktile']['options']['type'] == 'equipe') {
-							$version = 'preview_8M';
-						}
-
-						if ($assine) {
-							$prop = $this->Bl->imageProperties($data['PieImageCork']['file_id'], $version);
-							if ($prop['properties'][0] != 303) {
-								echo $this->Bl->span(array('style' => 'display:none'), array(), 'A imagem não está de acordo com as especificações.');
-								return;
-							}
-						}
-
-						$src = $this->Bl->imageURL($data['PieImageCork']['file_id'], $version);
+						$src = $this->Bl->imageURL($data['PieImageCork']['file_id']);
 
 						if (!empty($data['PieImageCork']['link']) && $data['PieImageCork']['link_type'] == 'external') {
 							$url = $data['PieImageCork']['link'];
@@ -66,7 +46,7 @@ switch ($type[0])
 						}
 
 						echo $this->Bl->span(
-							array('class' => 'fancy-border image ' . $version), array(),
+							array('class' => 'pie_image'), array(),
 							$this->Bl->img(array(
 								'src' => $src,
 								'alt' => ''
