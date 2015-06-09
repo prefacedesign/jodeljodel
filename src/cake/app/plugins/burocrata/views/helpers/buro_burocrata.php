@@ -2342,7 +2342,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			unset($file_input_options['error']);
 		}
 
-		$value = $this->Form->value($file_input_options['fieldName']);
+		$file_input_options['value'] = $value = $this->Form->value($file_input_options['fieldName']);
 		if (!empty($value))
 		{
 			$SfilStoredFile = ClassRegistry::init('JjMedia.SfilStoredFile');
@@ -2415,8 +2415,12 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function inputUpload($options)
 	{
+		/**
+		 * @type array $gen_options
+		 * @type array $file_input_options
+		 */
 		extract($this->_uploadParams($options));
-		
+
 		if (empty($gen_options['change_file_text']))
 			$gen_options['change_file_text'] = __d('burocrata','Burocrata::inputUpload - Change file', true);
 		
@@ -2487,6 +2491,10 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function inputImage($options)
 	{
+		/**
+		 * @type array $gen_options
+		 * @type array $file_input_options
+		 */
 		extract($this->_uploadParams($options));
 		
 		if (empty($gen_options['change_file_text']))
@@ -2521,15 +2529,16 @@ class BuroBurocrataHelper extends XmlTagHelper
 			. "$('{$rmv_id}').observe('click', function(ev){ev.stop(); BuroCR.get('{$gen_options['baseID']}').again(true);});"
 			. "$('{$act_id}').hide();"
 		);
-		
+
+		$gen_options['web_path'] = $this->Bl->imageURL($file_input_options['value'], $gen_options['version']);
 		if (empty($gen_options['model']))
 			$gen_options['model'] = 'JjMedia.SfilImageFile';
 		$out .= $this->_upload($gen_options, $file_input_options);
 		
 		// Div for previews
-		$exists = !empty($gen_options['aditionalData']['dlurl']);
+		$exists = !empty($gen_options['web_path']);
 		$out .= $this->Bl->sdiv(array('id' => $prv_id, 'style' => $exists ? '' : 'display:none;'));
-			$out .= $this->Bl->img(array('id' => $img_id, 'alt' => '', 'src' => $exists ? $gen_options['aditionalData']['dlurl'] : ''));
+			$out .= $this->Bl->img(array('id' => $img_id, 'alt' => '', 'src' => $exists ? $gen_options['web_path'] : ''));
 		$out .= $this->Bl->ediv();
 
 		// Div for actions ID must be `'act' . $gen_options['baseID']`
