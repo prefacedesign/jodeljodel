@@ -43,7 +43,7 @@ echo $this->Bl->sbox(array('class' => $moduleName),array('size' => array('M' => 
 			echo $this->Bl->sdiv(array('id' => 'dash_link_to_additem', 'class' => 'expanded'));
 				echo $this->Bl->anchor(array('class' => $class, 'onclick' => $onclick), compact('url'), __d('backstage','Add new '.$moduleName,true));
 			echo $this->Bl->ediv();
-			echo $bl->floatBreak();
+			echo $this->Bl->floatBreak();
 		echo $this->Bl->eboxContainer();
 	}
 	
@@ -78,7 +78,7 @@ echo $this->Bl->sbox(array('class' => $moduleName),array('size' => array('M' => 
 								) 
 							); 
 						echo $this->Bl->ediv();
-						echo $bl->floatBreak();
+						echo $this->Bl->floatBreak();
 					echo $this->Bl->ediv();
 					
 					
@@ -140,8 +140,86 @@ echo $this->Bl->sbox(array('class' => $moduleName),array('size' => array('M' => 
 							echo $this->Text->toList($linkFilters, ' ', ' ');
 						}
 					echo $this->Bl->ediv();
-					echo $bl->floatBreak();
 					echo $this->Bl->floatBreak();
+					
+					if (isset($backstageSettings['customFilters']))
+					{
+						foreach($backstageSettings['customFilters'] as $k => $customFilter)
+						{
+							echo $this->Bl->sdiv(array('class' => array('filters', $k)), array());
+								echo $this->Bl->h4Dry(__d('backstage','Custom filter label - '.$k, true));
+								$linkFilters = array();
+								foreach($customFilter['values'] as $module)
+								{
+									$filterLink = $ajax->link(__d('backstage', 'Custom filter status: ' . $module, true), 			
+										array(
+											'plugin' => 'backstage',
+											'controller' => 'back_contents',
+											'action' => 'filter_custom',
+											$customFilter['fieldName'],
+											$module,
+											$moduleName
+										), 
+										array(
+											'before' => "$('backstage_custom_table').setLoading();",
+											'complete' => "$('backstage_custom_table').unsetLoading();",
+											'id' => 'filter_custom_'.$customFilter['fieldName'].'_'.$module,
+											'update' => 'backstage_custom_table'
+										)
+									);
+									$linkFilters[] = $filterLink;
+									if (isset($custom_filter[$customFilter['fieldName']]))
+									{
+										if ($custom_filter[$customFilter['fieldName']] == $module)
+											$selected = true;
+										else
+											$selected = false;
+									}
+									else
+									{
+										$selected = false;
+									}
+									$this->Html->scriptBlock($this->Js->domReady("
+										new StatusFilter('filter_custom_".$customFilter['fieldName']."_".$module."', '$selected');
+									"), array('inline' => false));
+								}
+								$filterLink = $ajax->link(__d('dashboard','Show All', true), 			
+									array(
+										'plugin' => 'backstage',
+										'controller' => 'back_contents',
+										'action' => 'filter_custom',
+										$customFilter['fieldName'],
+										'all',
+										$moduleName
+									), 
+									array(
+										'before' => "$('backstage_custom_table').setLoading();",
+										'complete' => "$('backstage_custom_table').unsetLoading();",
+										'id' => 'filter_custom_'.$customFilter['fieldName'].'_all',
+										'update' => 'backstage_custom_table'
+									)
+								);
+								$linkFilters[] = $filterLink;
+								if (isset($custom_filter[$customFilter['fieldName']]))
+								{
+									if ($custom_filter[$customFilter['fieldName']] == 'all' || empty($custom_filter[$customFilter['fieldName']]))
+										$selected = true;
+									else
+										$selected = false;
+								}
+								else
+								{
+									$selected = true;
+								}	
+								$this->Html->scriptBlock($this->Js->domReady("
+									new StatusFilter('filter_custom_".$customFilter['fieldName']."_all', '$selected');
+								"), array('inline' => false));
+								echo $this->Text->toList($linkFilters, ' ', ' ');
+							echo $this->Bl->ediv();
+						}
+						echo $this->Bl->floatBreak();
+					}
+					
 				echo $this->Bl->ediv();
 			echo $this->Bl->ediv();
 			
