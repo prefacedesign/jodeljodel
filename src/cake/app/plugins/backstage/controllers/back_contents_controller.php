@@ -235,7 +235,8 @@ class BackContentsController extends BackstageAppController
 			$this->set('headerData', $headerData);
 		}
 		
-		$op = $this->Session->read('Backstage.searchOptions') ?: array();		
+
+		$op = $this->Session->read("Backstage.{$moduleName}.searchOptions") ?: array();
 		$options = array_merge_recursive($options, $op, $defaultOptions);
 		if (isset($this->modules[$moduleName]['additionalFilteringConditions']))
 		{
@@ -272,6 +273,13 @@ class BackContentsController extends BackstageAppController
 	function index($moduleName)
 	{
 		$this->TradLanguageSelector->setLanguage(Configure::read('Tradutore.mainLanguage'));
+
+ 		// control page choice through session
+		if (!empty($this->params['named']['page']))
+			$this->Session->write($moduleName.'.search.page', $this->params['named']['page']);
+		elseif ($this->Session->check($moduleName.'.search.page')) 
+			$this->params['named']['page'] = $this->Session->read($moduleName.'.search.page');
+ 
 		$this->header('Cache-Control: no-cache, max-age=0, must-revalidate, no-store');
 		
 		$conditions = array();
@@ -291,7 +299,7 @@ class BackContentsController extends BackstageAppController
 				{
 					if (!isset($this->params['named']['page']))
 					{
-						$this->Session->write('Backstage.searchOptions', array());
+						$this->Session->write("Backstage.{$moduleName}.searchOptions", array());
 					}
 					else
 					{
@@ -299,6 +307,7 @@ class BackContentsController extends BackstageAppController
 					}
 						
 					$options = $this->__getOptions($moduleName);
+					$this->data = $this->Session->read($moduleName.'.search.filter')?:array();
 					
 					if (isset($page))
 						$options['page'] = $page;
@@ -311,6 +320,7 @@ class BackContentsController extends BackstageAppController
 					$this->set('filter_status', $this->status);
 					$this->set('custom_filter', $this->custom_filter);
 					$this->data = $this->paginate($this->backstageModel);
+
 					$this->helpers['Paginator'] = array('ajax' => 'Ajax');
 					
 					$config = $this->modules[$moduleName];
@@ -366,6 +376,8 @@ class BackContentsController extends BackstageAppController
 	
 	function search($moduleName)
 	{		
+ 		if (!empty($this->data))
+			$this->Session->write($moduleName.'.search.filter', $this->data);
 		$this->backstageModel = ClassRegistry::init(array('class' =>  $this->modules[$moduleName]['model']));
 		
 		if (method_exists($this->backstageModel, 'getBackstageFindOptions'))
@@ -377,7 +389,7 @@ class BackContentsController extends BackstageAppController
 			}
 			else
 			{
-				$this->Session->write('Backstage.searchOptions', $options);
+				$this->Session->write("Backstage.{$moduleName}.searchOptions", $options);
 				$this->filter_and_search($moduleName);
 			}
 		}
@@ -393,7 +405,7 @@ class BackContentsController extends BackstageAppController
 			else
 				$options = array();
 			
-			$this->Session->write('Backstage.searchOptions', $options);
+			$this->Session->write("Backstage.{$moduleName}.searchOptions", $options);
 			$this->filter_and_search($moduleName);
 		}
 	}

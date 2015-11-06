@@ -68,12 +68,20 @@
 		'text_cork' => array(
 			'model' => 'TextCork.TextTextCork',
 			'humanName' => __('MODULE TextTextCork human name', true),
-			'plugged' => array('corktile')
+			'plugged' => array('corktile'),
+			'viewUrl' => false
+		),
+		'pie_image_cork' => array(
+			'model' => 'PieImage.PieImageCork',
+			'humanName' => __('MODULE PieImage human name', true),
+			'plugged' => array('corktile'),
+			'viewUrl' => false
 		),
 		'pie_image' => array(
 			'model' => 'PieImage.PieImage',
 			'humanName' => __('MODULE PieImage human name', true),
-			'plugged' => array('corktile')
+			'plugged' => array(),
+			'viewUrl' => false
 		),
 		'pie_file' => array(
 			'model' => 'PieFile.PieFile',

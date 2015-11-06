@@ -67,7 +67,7 @@ echo $this->Bl->sbox(array('class' => $moduleName),array('size' => array('M' => 
 						echo $this->Bl->h4Dry(__d('dashboard','Text', true));
 						
 						echo $this->Bl->sdiv(array('class' => array('dash_search')));
-							echo $form->input('dash_search', array('label' => __d('dashboard','or search for a content previously inserted',true)));
+							echo $form->input('dash_search', array('placeholder' =>__d('dashboard','or search for a content previously inserted',true), 'label' => false));
 							echo $ajax->observeField('dash_search', 
 								array(
 									'url' => array('action' => 'search', $moduleName),
