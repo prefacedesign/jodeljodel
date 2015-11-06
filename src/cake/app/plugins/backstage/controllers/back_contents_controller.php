@@ -316,7 +316,6 @@ class BackContentsController extends BackstageAppController
 					$config = $this->modules[$moduleName];
 					if (isset($config['additionalFilteringConditions']))
 					{
-						$canView = true;
 						foreach($config['additionalFilteringConditions'] as $filterName)
 						{
 							if (App::import('Lib', $filterName))
@@ -324,19 +323,17 @@ class BackContentsController extends BackstageAppController
 								list ($filterPlugin, $filterName) = pluginSplit($filterName);
 								if (!$filterName::can($this, $this->data))
 								{
-									$canView = false;
+									// Stop will redirect and stop the current script
+									$this->JjAuth->stop();
 								}
 							}
-						}
-						if (!$canView)
-						{
-							$this->JjAuth->stop();
 						}
 					}
 					elseif (isset($config['permissions']) && isset($config['permissions']['view']))
 					{
 						if (!$this->JjAuth->can($config['permissions']['view']))
 						{
+							// Stop will redirect and stop the current script
 							$this->JjAuth->stop();
 						}
 					}
