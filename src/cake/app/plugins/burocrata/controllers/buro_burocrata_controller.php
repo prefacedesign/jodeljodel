@@ -151,6 +151,10 @@ class BuroBurocrataController extends BurocrataAppController
 				$this->buroData['id'] = $saved = $Model->id;
 				$this->view();
 			}
+			else {
+				$this->buroData['id'] = $Model->id;
+				$this->view(false);
+			}
 		}
 		
 		$this->set(compact('saved', 'error'));
@@ -180,9 +184,18 @@ class BuroBurocrataController extends BurocrataAppController
  * @access public
  * @return json An javascript object that contains `error` and `content` properties
  */
-	public function view()
+	public function view($success = true)
 	{
 		$data = $this->BuroBurocrata->getViewData($this);
+		if (!$success) {
+			$Model = null;
+			$error = $this->BuroBurocrata->loadPostedModel($this, $Model);
+			if (isset($data['data'][$Model->alias])) {
+				$aux[$Model->alias] = array_replace_recursive($data['data'][$Model->alias], $this->data[$Model->alias]);
+				$data['data'] = array_replace_recursive($data['data'], $aux);
+				$data['data'] = $data['data'] + $this->data;
+			}
+		}
 		$this->data = $data['data'];
 		$this->set($data);
 	}
