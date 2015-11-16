@@ -78,7 +78,7 @@
 
 	if ($totalSize == 12)
 	{
-		$classSize = array('M' => $totalSize, 'g' => -1);
+		$classSize = array('M' => $totalSize);
 		$this->Bl->TypeStyleFactory->widthGenerateClasses(array(0 => $classSize));
 		$className = $this->Bl->TypeStyleFactory->widthClassNames($classSize);
 		$className = $className[0];
