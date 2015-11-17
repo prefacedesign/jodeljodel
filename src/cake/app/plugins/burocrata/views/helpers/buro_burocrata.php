@@ -1810,7 +1810,7 @@ class BuroBurocrataHelper extends XmlTagHelper
   * ### The options are:
   *
   * - `model` - The Alias used by related model (there is no default and MUST be passed).
-  * - `filter_options` - An array with conditions to filter the options to list
+  * - `filterOptions` - An array with conditions to filter the options to list
   * - `multiple` - Multiple select or not (can be true or false). Defaults to false.
   * - `size` - Size of the options that are showed. Defaults to 5.
   *
@@ -1828,7 +1828,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'multiple' => false,
 			'size' => 5,
  			'baseID' => $this->baseID(),
-			'filter_options' => array()
+			'filterOptions' => array()
  		);
  		$gen_options = $options['options'];
  		unset($options['options']);
@@ -1853,7 +1853,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  		$options['container'] = false;
 
 		if(method_exists($model, 'findFilteredOptions'))
-			$options['options']['options'] = $model->{'findFilteredOptions'}($gen_options['filter_options']);
+			$options['options']['options'] = $model->{'findFilteredOptions'}($gen_options['filterOptions']);
 		else
 			$options['options']['options'] = $model->find('list', array('conditions' => $conditions));
  		
@@ -1874,7 +1874,7 @@ class BuroBurocrataHelper extends XmlTagHelper
   * ### The options are:
   *
   * - `model` - The Alias used by related model (there is no default and MUST be passed).
-  * - `filter_options` - An array with conditions to filter the options to checkboxes options
+  * - `filterOptions` - An array with conditions to filter the options to checkboxes options
   *
   * @access public
   * @param array $options An array with non-defaults values
@@ -1888,7 +1888,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  		$options['options'] += array(
  			'model' => false,
  			'baseID' => $this->baseID(),
-			'filter_options' => array()
+			'filterOptions' => array()
  		);
  		$gen_options = $options['options'];
  		unset($options['options']);
@@ -1919,7 +1919,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			
 
 		if(method_exists($model, 'findFilteredOptions'))
-			$options['options']['options'] = $model->{'findFilteredOptions'}($gen_options['filter_options']);
+			$options['options']['options'] = $model->{'findFilteredOptions'}($gen_options['filterOptions']);
 		else
 			$options['options']['options'] = $model->find('list', array('conditions' => $conditions));
 
@@ -2131,7 +2131,7 @@ class BuroBurocrataHelper extends XmlTagHelper
   * ### The options are:
   *
   * - `model` - The Alias used by related model (there is no default and MUST be passed).
-  * - `filter_options` - An array with conditions to filter the options to list
+  * - `filterOptions` - An array with conditions to filter the options to list
   * - `actions` - An array that defines all the URLs for CRUD actions Defaults to BuroBurocrataController actions.
   * - `callbacks` - An array with possible callbacks with Jodel Callbacks convention.
   *
@@ -2149,7 +2149,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  		$options += array(
  			'model' => false,
  			'assocName' => false,
-			'filter_options' => array(),
+			'filterOptions' => array(),
 			'options' => array()
  		);
  		
@@ -2164,7 +2164,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$conditions = array($Model->alias.'.'.$sets['field'] => false);
 		}
 		if(method_exists($Model, 'findFilteredOptions'))
-			$options_to_list = $Model->{'findFilteredOptions'}($options['filter_options']);
+			$options_to_list = $Model->{'findFilteredOptions'}($options['filterOptions']);
 		else
 			$options_to_list = $Model->find('list', array('conditions' => $conditions));
 		
@@ -2185,7 +2185,7 @@ class BuroBurocrataHelper extends XmlTagHelper
  * ### The options are:
  *
  * - `model` - The Alias used by related model (there is no default and MUST be passed).
- * - `filter_options` - An array with conditions to filter the options to list
+ * - `filterOptions` - An array with conditions to filter the options to list
  * - `actions` - An array that defines all the URLs for CRUD actions Defaults to BuroBurocrataController actions.
  * - `callbacks` - An array with possible callbacks with Jodel Callbacks convention.
  *
@@ -2207,7 +2207,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			'assocName' => false,
 			'multiple' => false,
 			'baseID' => $this->baseID(),
-			'filter_options' => array()
+			'filterOptions' => array()
 		);
 		$options = am($defaults, $options);
 
@@ -2219,7 +2219,7 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$conditions = array($model->alias.'.'.$sets['field'] => false);
 		}
 		if(method_exists($model, 'findFilteredOptions'))
-			$options_to_list = $model->{'findFilteredOptions'}($options['filter_options']);
+			$options_to_list = $model->{'findFilteredOptions'}($options['filterOptions']);
 		else
 			$options_to_list = $model->find('list', array('conditions' => $conditions));
 
