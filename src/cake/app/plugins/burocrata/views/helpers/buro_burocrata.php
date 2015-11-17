@@ -2491,6 +2491,9 @@ class BuroBurocrataHelper extends XmlTagHelper
  */
 	public function inputImage($options)
 	{
+		if (empty($options['model'])) {
+			$options['options']['model'] = 'JjMedia.SfilImageFile';
+		}
 		/**
 		 * @type array $gen_options
 		 * @type array $file_input_options
@@ -2531,8 +2534,6 @@ class BuroBurocrataHelper extends XmlTagHelper
 		);
 
 		$gen_options['web_path'] = $this->Bl->imageURL($file_input_options['value'], $gen_options['version']);
-		if (empty($gen_options['model']))
-			$gen_options['model'] = 'JjMedia.SfilImageFile';
 		$out .= $this->_upload($gen_options, $file_input_options);
 		
 		// Div for previews
