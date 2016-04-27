@@ -2152,8 +2152,8 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 		this.state = this.ST_READY;
 
 		this.upload_input.show().value = '';
-		if (this.upload_input.up('.input'))
-			this.upload_input.up('.input').removeClassName('error').select('.error-message').invoke('remove');
+		if (this.upload_input.up('.input, .subinput'))
+			this.upload_input.up('.input, .subinput').removeClassName('error').select('.error-message').invoke('remove');
 		this.progress_bar.hide();
 
 		this.clearCaption().clearXHR().controlControls();
