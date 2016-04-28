@@ -2315,14 +2315,15 @@ class BuroBurocrataHelper extends XmlTagHelper
  		return $out;
  	}
 
-/**
- * Parses the upload parameters and return them for the file input
- * 
- * @access protected
- * @param array The array of input configuration, passed on helper method
- * @return array An array containing two keys: `gen_options`, that will contain all general options
- *               and `file_input_options` that will contain options just for the input field
- */
+	/**
+	 * Parses the upload parameters and return them for the file input
+	 *
+	 * @param array $options Array of input configuration, passed on helper method
+	 *
+	 * @return array An array containing two keys: `gen_options`, that will contain all general options
+	 *               and `file_input_options` that will contain options just for the input field
+	 * @throws Exception
+	 */
 	protected function _uploadParams($options)
 	{
 		$file_input_options = $options;
@@ -2377,33 +2378,33 @@ class BuroBurocrataHelper extends XmlTagHelper
 	}
 
 
-/**
- * Construct a upload input that will populate the fieldName given with the file database ID
- *
- * ### Accepted options:
- *
- *  - `model` - The alternate model for the stored file (must be a model extended from SfilStoredFile)
- *  - `callbacks` - An array with possible callbacks with Jodel Callbacks conven-
- *    tion.
- *  - `version`: The version of file that will be returned as URL for preview purposes (available on onSave callback)
- *  - `error`: A list of possible errors and its texts to be passed for onReject callback
- *
- * @access public
- * @param array $options An array with non-defaults values
- * @return string The HTML well formated
- * @todo Trigger errors
- */
-	protected function _upload($gen_options, $file_input_options)
-	{
+	/**
+	 * Construct a upload input that will populate the fieldName given with the file database ID
+	 *
+	 * ### Accepted options:
+	 *
+	 *  - `model` - The alternate model for the stored file (must be a model extended from SfilStoredFile)
+	 *  - `callbacks` - An array with possible callbacks with Jodel Callbacks conven-
+	 *    tion.
+	 *  - `version`: The version of file that will be returned as URL for preview purposes (available on onSave callback)
+	 *  - `error`: A list of possible errors and its texts to be passed for onReject callback
+	 *
+	 * @access public
+	 * @param array $gen_options An array with non-defaults values
+	 * @param array $file_input_options
+	 * @return string The HTML well formated
+	 * @todo Trigger errors
+	 */
+	protected function _upload($gen_options, $file_input_options) {
 		$View = $this->_getView();
 		$packed = SecureParams::pack(array($gen_options['version'], $file_input_options['fieldName'], $gen_options['model']));
 		list($model_plugin, $model_name) = pluginSplit($gen_options['model']);
-		
+
 		$gen_options['parameters'] += array($this->internalParam('layout_scheme') => $View->getVar('layout_scheme'));
 		$gen_options['parameters'] += array($this->internalParam('data') => $packed);
-		
+
 		$out = '';
-		
+
 		$this->sform(array(), array('url' => ''));
 		$out .= $this->Bl->sdiv(array('id' => 'div' . $gen_options['baseID']));
 			$out .= $this->input(
@@ -2412,12 +2413,12 @@ class BuroBurocrataHelper extends XmlTagHelper
 			);
 		$out .= $this->Bl->ediv();
 		$this->eform();
-		
+
 		$out .= $this->input(array('id' => 'hi' . $gen_options['baseID']), array('type' => 'hidden', 'fieldName' => $file_input_options['fieldName']));
-		
+
 		// JS class
 		$out .= $this->BuroOfficeBoy->upload($gen_options);
-		
+
 		return $out;
 	}
 
@@ -2451,15 +2452,15 @@ class BuroBurocrataHelper extends XmlTagHelper
 
 		$fileCaption = __d('burocrata','Burocrata::inputUpload - File: ', true);
 		$out = '';
-		
+
 		if (empty($gen_options['callbacks']['onSave']['js']))
 			$gen_options['callbacks']['onSave']['js'] = '';
 		$gen_options['callbacks']['onSave']['js'] .= "$('{$lnk_id}').update(json.filename).writeAttribute({href: json.dlurl}); $('{$act_id}').show(); $('{$prv_id}').show();";
-		
+
 		if (empty($gen_options['callbacks']['onRestart']['js']))
 			$gen_options['callbacks']['onRestart']['js'] = '';
 		$gen_options['callbacks']['onRestart']['js'] .= "$('{$act_id}').hide(); $('{$prv_id}').hide();";
-		
+
 		$out .= $this->BuroOfficeBoy->addHtmlEmbScript(
 			"$('{$chg_id}').observe('click', function(ev){ev.stop(); BuroCR.get('{$gen_options['baseID']}').again();});"
 			. "$('{$act_id}').hide(); $('{$prv_id}').hide();"
