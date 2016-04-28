@@ -2144,7 +2144,7 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 		}
 		this.trigger('onLoad', this);
 	},
-	reset: function()
+	reset: function(resetData)
 	{
 		this.json = this.hash = this.startTime = this.file = null;
 		this.currentByte = this.errorCount = 0;
@@ -2155,6 +2155,10 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 		if (this.upload_input.up('.input, .subinput'))
 			this.upload_input.up('.input, .subinput').removeClassName('error').select('.error-message').invoke('remove');
 		this.progress_bar.hide();
+
+		if (resetData) {
+			this.hidden_input.value = '';
+		}
 
 		this.clearCaption().clearXHR().controlControls();
 	},
@@ -2229,18 +2233,20 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 		this.aborted = true;
 		this.handleAbort();
 	},
-	again: function(ev)
-	{
+
+	again: function(ev) {
 		if (ev) ev.stop();
 
 		this.reset();
 		this.trigger('onRestart', this);
 	},
-	removeFile: function(ev)
-	{
+
+	removeFile: function(ev) {
 		ev.stop();
-		if (confirm(BuroCaption.get('upload', 'really_remove')))
-			this.again();
+		if (confirm(BuroCaption.get('upload', 'really_remove'))) {
+			this.reset(true);
+			this.trigger('onRestart', this);
+		}
 	},
 	inputChange: function(ev)
 	{
