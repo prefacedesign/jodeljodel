@@ -2364,8 +2364,11 @@ class BuroBurocrataHelper extends XmlTagHelper
 			}
 
 			$SfilStoredFile->id = $value;
-			$gen_options['aditionalData']['dlurl'] = $this->Bl->fileURL($value, $gen_options['version'], true);
-			$gen_options['aditionalData']['filename'] = $SfilStoredFile->field('original_filename');
+			$gen_options['aditionalData']['exists'] = $SfilStoredFile->exists();
+			if ($gen_options['aditionalData']['exists']) {
+				$gen_options['aditionalData']['dlurl'] = $SfilStoredFile->webPath($value, $gen_options['version']);
+				$gen_options['aditionalData']['filename'] = $SfilStoredFile->field('original_filename');
+			}
 		}
 
 		$this->BuroCaptioner->addCaptions('upload');
@@ -2466,22 +2469,20 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$gen_options['callbacks']['ajax']['onSave']['js'] = '';
 		$gen_options['callbacks']['ajax']['onSave']['js'] .= "upload.addCaption(BuroCaption.get('upload', 'transfer_ok', {filename: upload.getFileName()}));";
 
-		if (!empty($gen_options['aditionalData']['dlurl']))
-		{
+		if (!empty($gen_options['aditionalData']['exists'])) {
 			if (!isset($gen_options['callbacks']['ajax']['onLoad']['js']))
 				$gen_options['callbacks']['ajax']['onLoad']['js'] = '';
 			$gen_options['callbacks']['ajax']['onLoad']['js'] .= "upload.addCaption('$fileCaption ' + upload.getFileName());";
 		}
-		
-		$out .= $this->_upload($gen_options, $file_input_options);
 
-		$exists = !empty($gen_options['aditionalData']['dlurl']);
+		$out .= $this->_upload($gen_options, $file_input_options);
+		$href = !empty($gen_options['aditionalData']['exists']) ? $gen_options['aditionalData']['dlurl'] : '';
 		// Div for previews
 		$out .= $this->Bl->sdiv(array('id' => $prv_id));
 			$filename = __d('burocrata','Burocrata::inputUpload - Download file', true);
 			$out .= $this->Bl->pDry(
 				"$fileCaption " .
-				$this->Bl->a(array('id' => $lnk_id, 'href' => $exists ? $gen_options['aditionalData']['dlurl'] : ''), array(), $filename)
+				$this->Bl->a(array('id' => $lnk_id, 'href' => $href), array(), $filename)
 			);
 		$out .= $this->Bl->ediv();
 		
