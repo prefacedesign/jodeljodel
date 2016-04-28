@@ -2447,15 +2447,18 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 	},
 	finish: function()
 	{
+		this.getFileLink.show();
 		if (this.json && this.json.dlurl)
 			this.getFileLink.href = this.json.dlurl;
-		else if (this.additionalData.dlurl)
+		else if (this.additionalData && this.additionalData.dlurl)
 			this.getFileLink.href = this.additionalData.dlurl;
-		else
-			throw "BuroAjaxUpload.finish() called, but not seems to be finished.";
 
 		this.state = this.ST_DONE;
 		this.controlControls();
+
+		if ((this.json && typeof this.json.dlurl != "undefined") || (this.additionalData && typeof this.additionalData.dlurl != "undefined")){
+			this.getFileLink.hide();
+		}
 	},
 	renderProgress: function(progress)
 	{
