@@ -2350,9 +2350,19 @@ class BuroBurocrataHelper extends XmlTagHelper
 		}
 
 		$file_input_options['value'] = $value = $this->Form->value($file_input_options['fieldName']);
-		if (!empty($value))
-		{
-			$SfilStoredFile = ClassRegistry::init('JjMedia.SfilStoredFile');
+		if (!empty($value)) {
+			/** @type SfilStoredFile $SfilStoredFile */
+			if (!empty($gen_options['model'])) {
+				$SfilStoredFile = ClassRegistry::init($gen_options['model']);
+			}
+			else {
+				$SfilStoredFile = ClassRegistry::init('JjMedia.SfilStoredFile');
+			}
+
+			if (!is_a($SfilStoredFile, 'SfilStoredFile')) {
+				throw new Exception('The model which will receive the upload must be SfilStoredFile or a child class of it');
+			}
+
 			$SfilStoredFile->id = $value;
 			$gen_options['aditionalData']['dlurl'] = $this->Bl->fileURL($value, $gen_options['version'], true);
 			$gen_options['aditionalData']['filename'] = $SfilStoredFile->field('original_filename');
