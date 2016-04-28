@@ -22,6 +22,13 @@ App::import('Lib', 'JjUtils.SecureParams');
  *
  * @package       jodel
  * @subpackage    jodel.burocrata.views.helpers
+ *
+ * @property TypeBricklayerHelper Bl
+ * @property HtmlHelper Html
+ * @property FormHelper Form
+ * @property JodelHelper Jodel
+ * @property BuroOfficeBoyHelper BuroOfficeBoy
+ * @property BuroCaptionerHelper BuroCaptioner
  */
 class BuroBurocrataHelper extends XmlTagHelper
 {
@@ -2402,31 +2409,32 @@ class BuroBurocrataHelper extends XmlTagHelper
 	}
 
 
-/**
- * Creates a input for general files, using the general _upload() method
- * For more details, see {@link _upload()}
- * This method has one more option:
- *  - `change_file_text` - Text of link for change the file
- * 
- * @access public
- * @param array $options Array of options. See {@link _upload()}.
- * @return string The HTML of the input
- * @see _upload()
- */
-	public function inputUpload($options)
-	{
+	/**
+	 * Creates a input for general files, using the general _upload() method
+	 * For more details, see {@link _upload()}
+	 * This method has one more option:
+	 *  - `change_file_text` - Text of link for change the file
+	 *
+	 * @access public
+	 * @param array $options Array of options. See {@link _upload()}.
+	 * @return string The HTML of the input
+	 * @see BuroBurocrataHelper::_upload()
+	 */
+	public function inputUpload($options) {
 		/**
 		 * @type array $gen_options
 		 * @type array $file_input_options
 		 */
 		extract($this->_uploadParams($options));
 
-		if (empty($gen_options['change_file_text']))
-			$gen_options['change_file_text'] = __d('burocrata','Burocrata::inputUpload - Change file', true);
-		
-		$ids = array('act', 'prv', 'lnk', 'chg');
-		foreach ($ids as $id)
-			${$id.'_id'} = $id . $gen_options['baseID'];
+		if (empty($gen_options['change_file_text'])) {
+			$gen_options['change_file_text'] = __d('burocrata', 'Burocrata::inputUpload - Change file', true);
+		}
+
+		$act_id = "act{$gen_options['baseID']}";
+		$prv_id = "prv{$gen_options['baseID']}";
+		$lnk_id = "lnk{$gen_options['baseID']}";
+		$chg_id = "chg{$gen_options['baseID']}";
 
 		$fileCaption = __d('burocrata','Burocrata::inputUpload - File: ', true);
 		$out = '';
@@ -2476,21 +2484,20 @@ class BuroBurocrataHelper extends XmlTagHelper
 	}
 
 
-/**
- * Creates a input for general files, using the general _upload() method
- * For more details, see {@link _upload()}
- *
- * This method has one more option:
- *  - `change_file_text` - Text of link for change the file
- *  - `remove_file_text` - Text of link for change the file
- * 
- * @access public
- * @param array $options Array of options. See {@link _upload()}.
- * @return string The HTML of the input
- * @see _upload()
- */
-	public function inputImage($options)
-	{
+	/**
+	 * Creates a input for general files, using the general _upload() method
+	 * For more details, see {@link _upload()}
+	 *
+	 * This method has one more option:
+	 *  - `change_file_text` - Text of link for change the file
+	 *  - `remove_file_text` - Text of link for change the file
+	 *
+	 * @access public
+	 * @param array $options Array of options. See {@link _upload()}.
+	 * @return string The HTML of the input
+	 * @see BuroBurocrataHelper::_upload()
+	 */
+	public function inputImage($options) {
 		if (empty($options['model'])) {
 			$options['options']['model'] = 'JjMedia.SfilImageFile';
 		}
@@ -2499,20 +2506,24 @@ class BuroBurocrataHelper extends XmlTagHelper
 		 * @type array $file_input_options
 		 */
 		extract($this->_uploadParams($options));
-		
-		if (empty($gen_options['change_file_text']))
-			$gen_options['change_file_text'] = __d('burocrata','Burocrata::inputImage - Change image', true);
-		if (empty($gen_options['remove_file_text']))
-			$gen_options['remove_file_text'] = __d('burocrata','Burocrata::inputImage - Remove  image', true);
+
+		if (empty($gen_options['change_file_text'])) {
+			$gen_options['change_file_text'] = __d('burocrata', 'Burocrata::inputImage - Change image', true);
+		}
+		if (empty($gen_options['remove_file_text'])) {
+			$gen_options['remove_file_text'] = __d('burocrata', 'Burocrata::inputImage - Remove  image', true);
+		}
 
 		$this->BuroCaptioner->addCaptions('imageUpload');
-		
-		$ids = array('act', 'prv', 'img', 'chg', 'rmv');
-		foreach ($ids as $id)
-			${$id.'_id'} = $id . $gen_options['baseID'];
-		
+
+		$act_id = "act{$gen_options['baseID']}"; // Div with actions
+		$prv_id = "prv{$gen_options['baseID']}"; // Div with the preview
+		$img_id = "img{$gen_options['baseID']}"; // The preview image
+		$chg_id = "chg{$gen_options['baseID']}"; // Link for changing the file
+		$rmv_id = "rmv{$gen_options['baseID']}"; // Link for removing the file
+
 		$out = '';
-		
+
 		if (empty($gen_options['callbacks']['onSave']['js']))
 			$gen_options['callbacks']['onSave']['js'] = '';
 		$gen_options['callbacks']['onSave']['js'] .= "$('{$img_id}').src = ''; $('{$img_id}').writeAttribute({src: json.url, alt: json.filename}); $('{$act_id}').show(); $('{$prv_id}').show();";
