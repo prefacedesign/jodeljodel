@@ -2379,13 +2379,15 @@ var BuroAjaxUpload = Class.create(BuroCallbackable, {
 			return this.handleError();
 		}
 
-		if (this.isLast)
+		if (this.isLast) {
 			this.renderProgress(100);
+			this.clearCaption();
+		}
 
 		if (this.json.validationErrors)
 		{
 			this.state = this.ST_INVALIDATED;
-			this.handleError()
+			this.handleError();
 			this.clearXHR();
 			return;
 		}
