@@ -170,16 +170,17 @@ class SfilStoredFile extends JjMediaAppModel {
  * @param string  $version The version of the image
  *
  */
-	function properties($id, $version)
+	function properties($id, $version = false)
 	{	
-		if (empty($id) || empty($version))
+		if (empty($id))
 			return array();
 		
 		$this->contain();
 		$file_data = $this->findById($id);
 		
-		if (empty($file_data))
+		if (empty($file_data)) {
 			return array();
+		}
 
 		$id = $file_data[$this->alias]['basename'];
 		if (empty($version))
