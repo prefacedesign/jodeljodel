@@ -850,10 +850,10 @@ class BuroBurocrataHelper extends XmlTagHelper
 			$this->Bl->preDry($this->Bl->spanDry() . $this->Bl->br())
 			. $this->input($_htmlAttributes, array('error' => false) + $inputOptions)
 		);
-		
+
 		$out .= $this->error(array(), $inputOptions);
-		
-		$out .= $this->BuroOfficeBoy->addHtmlEmbScript(sprintf("new BuroDynamicTextarea('%s')", $_htmlAttributes['id']));
+
+		$out .= $this->BuroOfficeBoy->addHtmlEmbScript(sprintf("new BuroDynamicTextarea('%s');", $_htmlAttributes['id']));
 		return $out;
 	}
 
